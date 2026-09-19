@@ -1,0 +1,39 @@
+<!doctype html>
+<html lang="zh-CN">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>Project Y · 配置工作台</title><link rel="stylesheet" href="/styles.css"></head>
+<body>
+  <aside>
+    <div class="brand"><span class="mark">Y</span><div>PROJECT Y<small>配置工作台</small></div></div>
+    <div class="workspace-nav"><button id="overview-nav">⌕ 全局总览</button><button id="enums-nav">◇ 枚举管理</button><button id="constants-nav">◈ 常量管理</button></div>
+    <div class="aside-heading">表与目录 <span><button id="new-folder" class="icon" title="新建文件夹">▣＋</button><button id="new-table" class="icon" title="新建数据表">＋</button></span></div>
+    <nav id="tables" aria-label="表与文件夹"></nav>
+    <div class="aside-bottom"><span class="status-dot"></span>本地工作区<br><small>模块根节点仅用于组织与定位</small></div>
+  </aside>
+  <main>
+    <header><div><div class="eyebrow" id="eyebrow">GAME DATA / TABLE EDITOR</div><h1 id="title">配置工作台</h1><p id="description"></p></div><div class="actions"><button id="reload">重新加载</button><button id="validate">校验表</button><button id="save">保存源文件</button><button id="export" class="primary">导出到 Unity ↗</button></div></header>
+    <div class="summary"><div><small>数据表</small><strong id="table-count">—</strong></div><div><small>模块</small><strong id="module-count">—</strong></div><div><small id="detail-label">当前数据行</small><strong id="detail-count">—</strong></div><div><small>工作区状态</small><strong id="dirty-state">已同步</strong></div></div>
+    <section id="table-workspace">
+      <div class="folder-bar"><label>当前目录 <select id="folder-select" aria-label="当前目录"></select></label><button id="folder-rename">重命名 / 移动目录</button><button id="folder-delete">删除空目录</button><button id="folder-module">管理模块根节点</button></div>
+      <div class="table-meta"><label>表描述 <input id="table-description" aria-label="表描述"></label><label>主键 <select id="table-key" aria-label="主键"></select></label><span id="field-count"></span></div>
+      <div class="toolbar"><div class="tabs"><button id="data-tab" class="active">行数据</button><button id="schema-tab">字段定义</button></div><div class="actions"><input id="search" placeholder="搜索行内容…" aria-label="搜索行内容"><button id="add-column">＋ 添加列</button><button id="add-row">＋ 添加行</button><button id="delete-table" class="danger">删除表</button></div></div>
+      <section id="data-view"><div class="table-scroll"><table><thead id="columns"></thead><tbody id="rows"></tbody></table></div><p class="hint">表头依次为键名、类型、描述。点击键名编辑列；text 是待本地化文本，当前读写默认语言。</p></section>
+      <section id="schema-view" hidden><div id="field-list"></div><details><summary>高级：字段 JSON</summary><p class="hint">应用时按键名保留数据，为新增字段填入默认值；删除列会移除该列行数据。</p><textarea id="schema" spellcheck="false" aria-label="字段定义 JSON"></textarea><button id="apply-schema">应用字段定义到草稿</button></details></section>
+      <section class="formula-card"><div><div class="eyebrow">FORMULA PLAYGROUND</div><h2>公式试算</h2><p class="hint">与导出器共用解析器</p></div><div class="formula-inputs"><label>表达式<input id="formula" value="base + level * 5" spellcheck="false"></label><label>变量（JSON）<input id="variables" value='{"base":10,"level":1}' spellcheck="false"></label><button id="evaluate">计算</button><output id="formula-result">15</output></div></section>
+    </section>
+    <section id="catalog-workspace" hidden>
+      <div class="toolbar"><label>模块 <select id="module-select" aria-label="选择模块"></select></label><div class="actions"><button id="new-module">＋ 新建模块</button><button id="delete-module" class="danger">删除模块</button></div></div>
+      <div class="module-meta"><label>描述<input id="module-description" aria-label="模块描述"></label><label>模块根目录<select id="module-folder" aria-label="模块根目录"></select></label></div>
+      <p class="hint">取消目录绑定会保留模块、枚举和常量。引用使用稳定的「模块ID.枚举名」，移动目录不会改变引用。</p>
+      <div class="toolbar"><div class="tabs"><button id="enum-tab">枚举</button><button id="constant-tab">常量</button></div><button id="new-definition">＋ 新增枚举</button></div>
+      <div id="definition-list"></div>
+    </section>
+    <section id="overview-workspace" hidden>
+      <div class="toolbar"><input id="global-search" placeholder="搜索名称、描述、目录、枚举成员或常量值…" aria-label="全局搜索"><select id="kind-filter" aria-label="筛选信息类型"><option value="">全部类型</option><option value="table">数据表</option><option value="enum">枚举</option><option value="constant">常量</option><option value="text">text 字段</option></select><button id="sync-language">同步 Language.lua → LuaTxt</button></div>
+      <p class="hint">三类文本：表内 text 字段、Language.lua / LuaTxt、UITxt / PrefabTxt。当前使用默认文本，统一 i18n 汇总导出留待下一阶段。</p>
+      <div class="table-scroll"><table class="overview-table"><thead><tr><th>类型</th><th>名称 / 描述</th><th>模块 · 目录</th><th>基本信息</th><th></th></tr></thead><tbody id="overview-rows"></tbody></table></div>
+    </section>
+    <footer id="status" role="status">正在读取工作区…</footer>
+  </main>
+  <dialog id="edit-dialog"><form id="edit-form"><div class="dialog-heading"><h2 id="dialog-title"></h2><button type="button" id="dialog-close" aria-label="关闭">×</button></div><div id="dialog-fields"></div><p id="dialog-error" class="error" role="alert"></p><div class="dialog-actions"><button type="button" id="dialog-cancel">取消</button><button type="submit" class="primary">应用</button></div></form></dialog>
+  <script type="module" src="/app.js"></script>
+</body></html>

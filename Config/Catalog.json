@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "modules": [
+    {
+      "id": "Demo",
+      "folder": "",
+      "description": "框架示例的共享定义；目录绑定只用于管理",
+      "enums": [
+        {
+          "name": "Rarity",
+          "type": "int",
+          "description": "可复用的品质枚举示例，数值保持稳定",
+          "members": [
+            { "name": "Common", "value": 0, "description": "普通" },
+            { "name": "Rare", "value": 1, "description": "稀有" },
+            { "name": "Epic", "value": 2, "description": "史诗" }
+          ]
+        }
+      ],
+      "constants": [
+        { "name": "PreviewLimit", "type": "int", "value": 100, "description": "示例常量，尚未接入玩法" },
+        { "name": "DefaultRarity", "type": "enum", "enumRef": "Demo.Rarity", "value": 0, "description": "引用模块枚举的常量示例" }
+      ]
+    },
+    { "id": "Localization", "folder": "Localization", "description": "默认语言文本，预留 i18n 汇总", "enums": [], "constants": [] }
+  ]
+}

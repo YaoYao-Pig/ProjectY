@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "name": "LuaTxt",
+  "description": "Language.lua 默认文本与可编辑覆盖",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string",
+      "description": "稳定文本标识"
+    },
+    {
+      "name": "txt",
+      "type": "text",
+      "description": "开发语言文本"
+    },
+    {
+      "name": "desc",
+      "type": "string",
+      "description": "用途与翻译说明",
+      "default": ""
+    }
+  ],
+  "rows": [
+    {
+      "id": "Confirm",
+      "txt": "确认",
+      "desc": "通用确认按钮"
+    },
+    {
+      "id": "Cancel",
+      "txt": "取消",
+      "desc": "通用取消按钮"
+    },
+    {
+      "id": "RewardReceived",
+      "txt": "已获得奖励",
+      "desc": "领取奖励后的提示"
+    }
+  ]
+}

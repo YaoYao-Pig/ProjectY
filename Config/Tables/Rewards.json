@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "name": "Rewards",
+  "description": "框架示例奖励，演示数值、数组、枚举和公式。",
+  "key": "id",
+  "fields": [
+    { "name": "id", "type": "int", "description": "奖励唯一 ID", "min": 1 },
+    { "name": "title", "type": "text", "description": "奖励标题，需要本地化" },
+    { "name": "description", "type": "text", "description": "奖励说明，需要本地化" },
+    { "name": "base", "type": "int", "description": "公式使用的基础奖励值", "min": 0 },
+    { "name": "amount", "type": "formula", "description": "最终奖励公式", "variables": ["base", "level"] },
+    { "name": "category", "type": "enum", "description": "奖励分类（旧表内枚举示例）", "values": ["daily", "bonus"] },
+    { "name": "enabled", "type": "bool", "description": "配置示例，当前演示尚未消费此标记", "default": true },
+    { "name": "tags", "type": "string[]", "description": "检索标签", "default": [] }
+  ],
+  "rows": [
+    { "id": 1, "title": "PROJECT Y / FRAMEWORK", "description": "Lua drives the UI. C# owns the data.\nReward = base + level * 5", "base": 10, "amount": "base + level * 5", "category": "daily", "enabled": true, "tags": ["demo", "基础奖励"] },
+    { "id": 2, "title": "Bonus", "description": "A capped reward example.", "base": 25, "amount": "clamp(base * level ^ 2, 0, 1000)", "category": "bonus", "enabled": true, "tags": ["formula"] }
+  ]
+}

@@ -1,0 +1,90 @@
+---@meta
+-- Minimal common component hints. Runtime adapters: XLuaBindings / LuaViewHints.
+---@class CS.UnityEngine.Object
+---@field name string
+---@class CS.UnityEngine.Component : CS.UnityEngine.Object
+---@field transform CS.UnityEngine.Transform
+---@field gameObject CS.UnityEngine.GameObject
+---@class CS.UnityEngine.GameObject : CS.UnityEngine.Object
+---@field activeSelf boolean
+---@field SetActive fun(self: CS.UnityEngine.GameObject, active: boolean)
+---@class CS.UnityEngine.Transform : CS.UnityEngine.Component
+---@field position CS.UnityEngine.Vector3
+---@field localPosition CS.UnityEngine.Vector3
+---@field localScale CS.UnityEngine.Vector3
+---@class CS.UnityEngine.RectTransform : CS.UnityEngine.Transform
+---@field anchoredPosition CS.UnityEngine.Vector2
+---@field sizeDelta CS.UnityEngine.Vector2
+---@class CS.UnityEngine.Vector2
+---@field x number
+---@field y number
+---@class CS.UnityEngine.Vector3 : CS.UnityEngine.Vector2
+---@field z number
+---@class CS.UnityEngine.Color
+---@field r number
+---@field g number
+---@field b number
+---@field a number
+---@class CS.UnityEngine.Canvas : CS.UnityEngine.Component
+---@field sortingOrder integer
+---@field worldCamera CS.UnityEngine.Camera
+---@class CS.UnityEngine.Camera : CS.UnityEngine.Component
+---@class CS.UnityEngine.CanvasGroup : CS.UnityEngine.Component
+---@field alpha number
+---@field interactable boolean
+---@field blocksRaycasts boolean
+---@class CS.UnityEngine.UI.Graphic : CS.UnityEngine.Component
+---@field color CS.UnityEngine.Color
+---@field raycastTarget boolean
+---@class CS.UnityEngine.UI.Text : CS.UnityEngine.UI.Graphic
+---@field text string
+---@field fontSize integer
+---@class CS.UnityEngine.UI.Image : CS.UnityEngine.UI.Graphic
+---@field fillAmount number
+---@class CS.UnityEngine.UI.RawImage : CS.UnityEngine.UI.Graphic
+---@class UIEvent
+---@field AddListener fun(self: UIEvent, callback: function)
+---@field RemoveListener fun(self: UIEvent, callback: function)
+---@class CS.UnityEngine.UI.Selectable : CS.UnityEngine.Component
+---@field interactable boolean
+---@class CS.UnityEngine.UI.Button : CS.UnityEngine.UI.Selectable
+---@field onClick UIEvent
+---@class CS.UnityEngine.UI.Toggle : CS.UnityEngine.UI.Selectable
+---@field isOn boolean
+---@field onValueChanged UIEvent
+---@class CS.UnityEngine.UI.Slider : CS.UnityEngine.UI.Selectable
+---@field value number
+---@field minValue number
+---@field maxValue number
+---@field onValueChanged UIEvent
+---@class CS.UnityEngine.UI.Scrollbar : CS.UnityEngine.UI.Selectable
+---@field value number
+---@field size number
+---@field onValueChanged UIEvent
+---@class CS.UnityEngine.UI.ScrollRect : CS.UnityEngine.Component
+---@field content CS.UnityEngine.RectTransform
+---@field normalizedPosition CS.UnityEngine.Vector2
+---@field onValueChanged UIEvent
+---@class CS.UnityEngine.UI.Dropdown : CS.UnityEngine.UI.Selectable
+---@field value integer
+---@field onValueChanged UIEvent
+---@class CS.UnityEngine.UI.InputField : CS.UnityEngine.UI.Selectable
+---@field text string
+---@field onValueChanged UIEvent
+---@field onEndEdit UIEvent
+---@class CS.UnityEngine.UI.CanvasScaler : CS.UnityEngine.Component
+---@field referenceResolution CS.UnityEngine.Vector2
+---@class CS.UnityEngine.UI.GraphicRaycaster : CS.UnityEngine.Component
+---@class CS.TMPro.TextMeshProUGUI : CS.UnityEngine.UI.Graphic
+---@field text string
+---@field fontSize number
+---@class CS.ProjectY.UI.UITxt : CS.TMPro.TextMeshProUGUI
+---@field LocalizationId string
+---@field DefaultText string
+---@field Refresh fun(self: CS.ProjectY.UI.UITxt)
+---@class CS.ProjectY.UI.LuaReference : CS.UnityEngine.Component
+---@field Get fun(self: CS.ProjectY.UI.LuaReference, key: string): CS.UnityEngine.Component
+---@class CS.ProjectY.UI.LuaPanel : CS.UnityEngine.Component
+---@field Canvas CS.UnityEngine.Canvas
+---@field IsVisible boolean
+---@field SetWorldCamera fun(self: CS.ProjectY.UI.LuaPanel, camera: CS.UnityEngine.Camera)

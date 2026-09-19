@@ -1,0 +1,4 @@
+interface:
+  display_name: "ForAI 精简维护"
+  short_description: "根据实际代码改动维护分层文档、关键词索引与入口链接，减少重复"
+  default_prompt: "使用 $forai-write 根据本次实际改动同步相关 ForAI 文档与索引，核实入口并检查本地链接。"

@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "name": "PrefabTxt",
+  "description": "UITxt 通过 id 查询的默认语言文本",
+  "key": "id",
+  "fields": [
+    { "name": "id", "type": "string", "description": "Prefab 上配置的稳定文本 ID" },
+    { "name": "txt", "type": "text", "description": "开发语言文本" },
+    { "name": "desc", "type": "string", "description": "用途与翻译说明", "default": "" }
+  ],
+  "rows": [
+    { "id": "Common.Confirm", "txt": "确认", "desc": "通用确认按钮" },
+    { "id": "Common.Cancel", "txt": "取消", "desc": "通用取消按钮" }
+  ]
+}

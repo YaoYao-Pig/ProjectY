@@ -1,0 +1,4 @@
+interface:
+  display_name: "ForAI 按需读取"
+  short_description: "按关键词定位项目文档与代码入口，仅展开当前任务真正需要的上下文"
+  default_prompt: "使用 $forai-read 按 ForAI 索引定位当前任务需要的模块文档和代码入口，按需展开上下文。"

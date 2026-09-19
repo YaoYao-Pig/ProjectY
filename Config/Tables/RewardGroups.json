@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "name": "RewardGroups",
+  "description": "跨表引用示例。",
+  "key": "id",
+  "fields": [
+    { "name": "id", "type": "string" },
+    { "name": "rewards", "type": "int[]", "ref": "Rewards" },
+    { "name": "multiplier", "type": "float", "min": 0, "default": 1.0 }
+  ],
+  "rows": [
+    { "id": "starter", "rewards": [1, 2], "multiplier": 1.5 }
+  ]
+}
