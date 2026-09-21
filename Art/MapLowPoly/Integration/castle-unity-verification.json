@@ -1,0 +1,311 @@
+{
+  "project": "D:\\Program\\Unity\\Project Y",
+  "assets": [
+    {
+      "name": "Building_Castle",
+      "path": "Assets/DynamicAsset/MapLowPoly/Models/Building_Castle.fbx",
+      "guid": "19ff873c12772464eb5e78092037560f",
+      "size": [
+        3.3499999046325684,
+        3.700000047683716,
+        3.4149999618530273
+      ],
+      "bounds_min": [
+        -1.6749999523162842,
+        0.0,
+        -1.5999999642372131
+      ],
+      "bounds_max": [
+        1.6749999523162842,
+        3.700000047683716,
+        1.8149999976158142
+      ],
+      "root_transform": {
+        "position": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "localPosition": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "rotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "localRotation": {
+          "x": 0.0,
+          "y": 0.0,
+          "z": 0.0
+        },
+        "scale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        },
+        "lossyScale": {
+          "x": 1.0,
+          "y": 1.0,
+          "z": 1.0
+        }
+      },
+      "material_paths": [
+        "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_City.mat",
+        "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_Gable.mat",
+        "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_PlasterShade.mat",
+        "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_RockDark.mat",
+        "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_RockLight.mat",
+        "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_Roof.mat",
+        "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_RoofShade.mat",
+        "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_Stone.mat",
+        "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_Timber.mat",
+        "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_TimberLight.mat",
+        "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_Window.mat"
+      ],
+      "importer": {
+        "globalScale": 1.0,
+        "bakeAxisConversion": 1.0,
+        "isReadable": 0.0,
+        "importAnimation": 0.0,
+        "animationType": 0.0
+      },
+      "sha256": "80d0bf76f971acdbb75c0c7a7d5e8c7878f924b4c02cc9a46fd92750f5217e03"
+    }
+  ],
+  "materials": [
+    {
+      "name": "M_MapLP_RockDark",
+      "shader": "Standard",
+      "rgba_srgb": [
+        0.5372549,
+        0.5137254,
+        0.474509776,
+        1.0
+      ],
+      "smoothness": 0.12
+    },
+    {
+      "name": "M_MapLP_Stone",
+      "shader": "Standard",
+      "rgba_srgb": [
+        0.68235296,
+        0.6313726,
+        0.545098,
+        1.0
+      ],
+      "smoothness": 0.12
+    },
+    {
+      "name": "M_MapLP_City",
+      "shader": "Standard",
+      "rgba_srgb": [
+        0.737255,
+        0.635294139,
+        0.4823529,
+        1.0
+      ],
+      "smoothness": 0.12
+    },
+    {
+      "name": "M_MapLP_RockLight",
+      "shader": "Standard",
+      "rgba_srgb": [
+        0.694117665,
+        0.65882355,
+        0.58431375,
+        1.0
+      ],
+      "smoothness": 0.12
+    },
+    {
+      "name": "M_MapLP_Window",
+      "shader": "Standard",
+      "rgba_srgb": [
+        0.325490147,
+        0.41568625,
+        0.4078431,
+        1.0
+      ],
+      "smoothness": 0.12
+    },
+    {
+      "name": "M_MapLP_PlasterShade",
+      "shader": "Standard",
+      "rgba_srgb": [
+        0.7882353,
+        0.7254902,
+        0.5803921,
+        1.0
+      ],
+      "smoothness": 0.12
+    },
+    {
+      "name": "M_MapLP_Gable",
+      "shader": "Standard",
+      "rgba_srgb": [
+        0.894117653,
+        0.827451,
+        0.6784314,
+        1.0
+      ],
+      "smoothness": 0.12
+    },
+    {
+      "name": "M_MapLP_RoofShade",
+      "shader": "Standard",
+      "rgba_srgb": [
+        0.5294118,
+        0.3215686,
+        0.254901946,
+        1.0
+      ],
+      "smoothness": 0.12
+    },
+    {
+      "name": "M_MapLP_Roof",
+      "shader": "Standard",
+      "rgba_srgb": [
+        0.65882355,
+        0.411764681,
+        0.305882335,
+        1.0
+      ],
+      "smoothness": 0.12
+    },
+    {
+      "name": "M_MapLP_Timber",
+      "shader": "Standard",
+      "rgba_srgb": [
+        0.399999976,
+        0.3490196,
+        0.290196061,
+        1.0
+      ],
+      "smoothness": 0.12
+    },
+    {
+      "name": "M_MapLP_TimberLight",
+      "shader": "Standard",
+      "rgba_srgb": [
+        0.5490196,
+        0.458823442,
+        0.345098019,
+        1.0
+      ],
+      "smoothness": 0.12
+    }
+  ],
+  "checks": {
+    "dimensions_and_bounds": true,
+    "zero_root_rotation": true,
+    "unit_root_scale": true,
+    "origin": true,
+    "explicit_material_remap": true,
+    "standard_shader_and_palette": true,
+    "staging_hash_matches": true,
+    "static_import_settings": true,
+    "play_mode_not_entered": true
+  },
+  "scenes": {
+    "scenes": [
+      {
+        "name": "FrameworkDemo",
+        "path": "Assets/GameFramework/Samples/FrameworkDemo.unity",
+        "buildIndex": -1,
+        "isLoaded": true,
+        "isDirty": false,
+        "isActive": false,
+        "rootCount": 1
+      },
+      {
+        "name": "MapLowPolyPreview",
+        "path": "Assets/DynamicAsset/MapLowPoly/MapLowPolyPreview.unity",
+        "buildIndex": -1,
+        "isLoaded": true,
+        "isDirty": false,
+        "isActive": true,
+        "rootCount": 4
+      }
+    ]
+  },
+  "editor": {
+    "schema_version": "unity-mcp/editor_state@2",
+    "observed_at_unix_ms": 1790002474713,
+    "sequence": 5,
+    "unity": {
+      "instance_id": "Project Y@4bd7dd04e220f01d",
+      "unity_version": "2022.3.55f1c1",
+      "project_id": null,
+      "platform": "WindowsEditor",
+      "is_batch_mode": false
+    },
+    "editor": {
+      "is_focused": false,
+      "play_mode": {
+        "is_playing": false,
+        "is_paused": false,
+        "is_changing": false
+      },
+      "active_scene": {
+        "path": "Assets/DynamicAsset/MapLowPoly/MapLowPolyPreview.unity",
+        "guid": "96554939cf70981479bdcf78d9fe61be",
+        "name": "MapLowPolyPreview"
+      }
+    },
+    "activity": {
+      "phase": "idle",
+      "since_unix_ms": 1790002413811,
+      "reasons": [
+        "tick"
+      ]
+    },
+    "compilation": {
+      "is_compiling": false,
+      "is_domain_reload_pending": false,
+      "last_compile_started_unix_ms": null,
+      "last_compile_finished_unix_ms": null,
+      "last_domain_reload_before_unix_ms": null,
+      "last_domain_reload_after_unix_ms": 1790002339967
+    },
+    "assets": {
+      "is_updating": false,
+      "external_changes_dirty": false,
+      "external_changes_last_seen_unix_ms": 1790002341196,
+      "external_changes_dirty_since_unix_ms": null,
+      "external_changes_last_cleared_unix_ms": 1790002341274,
+      "refresh": {
+        "is_refresh_in_progress": false,
+        "last_refresh_requested_unix_ms": null,
+        "last_refresh_finished_unix_ms": null
+      }
+    },
+    "tests": {
+      "is_running": false,
+      "mode": null,
+      "current_job_id": null,
+      "started_unix_ms": null,
+      "started_by": "unknown",
+      "last_run": null
+    },
+    "transport": {
+      "unity_bridge_connected": null,
+      "last_message_unix_ms": null
+    },
+    "settings": {
+      "batch_execute_max_commands": 25
+    },
+    "advice": {
+      "ready_for_tools": true,
+      "blocking_reasons": [],
+      "recommended_retry_after_ms": 0,
+      "recommended_next_action": "none"
+    },
+    "staleness": {
+      "age_ms": 108,
+      "is_stale": false
+    }
+  }
+}

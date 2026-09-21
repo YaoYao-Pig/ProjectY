@@ -1,0 +1,186 @@
+{
+  "version": 1,
+  "name": "MapRegionTable",
+  "description": "地貌策略参数。X/Y 为不规则轮廓的 q/r 采样包围盒格数，实际格数小于包围盒面积；高度使用 Unity 世界单位。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "区域配置 ID，不是运行时实例 ID",
+      "min": 1
+    },
+    {
+      "name": "MapRegion",
+      "type": "enum",
+      "enumRef": "Map.E_MapRegion",
+      "description": "地貌类型，对应生成器与实例类"
+    },
+    {
+      "name": "minX",
+      "type": "float",
+      "description": "q 轴最小格数，向上取整",
+      "min": 1
+    },
+    {
+      "name": "maxX",
+      "type": "float",
+      "description": "q 轴最大格数，向下取整",
+      "min": 1
+    },
+    {
+      "name": "minY",
+      "type": "float",
+      "description": "r 轴最小格数，向上取整",
+      "min": 1
+    },
+    {
+      "name": "maxY",
+      "type": "float",
+      "description": "r 轴最大格数，向下取整",
+      "min": 1
+    },
+    {
+      "name": "minHeight",
+      "type": "float",
+      "description": "策略原始地面最低高度；最终边界过渡允许超出此范围"
+    },
+    {
+      "name": "maxHeight",
+      "type": "float",
+      "description": "策略原始地面最高高度；最终边界过渡允许超出此范围"
+    },
+    {
+      "name": "shapeIrregularity",
+      "type": "float",
+      "default": 0.65,
+      "min": 0,
+      "max": 1,
+      "description": "区域轮廓扰动幅度，0 为圆润轮廓，1 更曲折"
+    },
+    {
+      "name": "noiseScale",
+      "type": "float",
+      "default": 1,
+      "min": 0.1,
+      "max": 8,
+      "description": "基础噪声跨度的倍率；越大则山体/起伏越宽"
+    },
+    {
+      "name": "roughness",
+      "type": "float",
+      "default": 0.5,
+      "min": 0,
+      "max": 1,
+      "description": "分形噪声每层保留的振幅比例，越大细节越粗糙"
+    },
+    {
+      "name": "warpStrength",
+      "type": "float",
+      "default": 0.7,
+      "min": 0,
+      "max": 2,
+      "description": "采样坐标扰动强度，减少规则噪声形状"
+    },
+    {
+      "name": "waterLevel",
+      "type": "float",
+      "default": 0,
+      "description": "河湖目标水位，须位于该策略的 minHeight 与 maxHeight 之间；其他策略忽略"
+    },
+    {
+      "name": "riverWidth",
+      "type": "float",
+      "default": 1.5,
+      "min": 0.5,
+      "max": 12,
+      "description": "河谷横断面宽度参数，格子单位；仅河流策略使用"
+    },
+    {
+      "name": "lakeSize",
+      "type": "float",
+      "default": 0.5,
+      "min": 0.15,
+      "max": 0.75,
+      "description": "湖泊盆地占区域半径的比例；仅湖泊策略使用"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "MapRegion": 1,
+      "minX": 22,
+      "maxX": 28,
+      "minY": 22,
+      "maxY": 28,
+      "minHeight": 0,
+      "maxHeight": 4,
+      "roughness": 0.4,
+      "noiseScale": 1.25
+    },
+    {
+      "id": 2,
+      "MapRegion": 2,
+      "minX": 26,
+      "maxX": 34,
+      "minY": 26,
+      "maxY": 34,
+      "minHeight": 1,
+      "maxHeight": 19,
+      "roughness": 0.6,
+      "noiseScale": 1.2,
+      "warpStrength": 1.1
+    },
+    {
+      "id": 3,
+      "MapRegion": 3,
+      "minX": 28,
+      "maxX": 34,
+      "minY": 26,
+      "maxY": 32,
+      "minHeight": -3,
+      "maxHeight": 4,
+      "waterLevel": 0.8,
+      "lakeSize": 0.52
+    },
+    {
+      "id": 4,
+      "MapRegion": 4,
+      "minX": 24,
+      "maxX": 30,
+      "minY": 30,
+      "maxY": 38,
+      "minHeight": -1.5,
+      "maxHeight": 4,
+      "waterLevel": 0.6,
+      "riverWidth": 1.65,
+      "roughness": 0.4
+    },
+    {
+      "id": 5,
+      "MapRegion": 5,
+      "minX": 26,
+      "maxX": 32,
+      "minY": 26,
+      "maxY": 32,
+      "minHeight": 1,
+      "maxHeight": 7,
+      "roughness": 0.48,
+      "noiseScale": 1.1,
+      "warpStrength": 0.85
+    },
+    {
+      "id": 6,
+      "MapRegion": 6,
+      "minX": 28,
+      "maxX": 34,
+      "minY": 26,
+      "maxY": 32,
+      "minHeight": 5,
+      "maxHeight": 16,
+      "roughness": 0.36,
+      "noiseScale": 1.35,
+      "warpStrength": 0.6
+    }
+  ]
+}

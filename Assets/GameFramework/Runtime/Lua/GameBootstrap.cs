@@ -82,6 +82,25 @@ namespace ProjectY
             return (LuaTable)configQuery.Call(tableName, id)[0];
         }
 
+        /// <summary>调用返回函数的 Lua 模块；调用方须在当前调用内释放返回的 LuaTable/LuaFunction。</summary>
+        public object[] CallModule(string moduleName, params object[] arguments)
+        {
+            if (stopping || lua == null || configQuery == null) throw new InvalidOperationException("Lua runtime is not running.");
+            if (!LuaFileLoader.IsValidModuleName(moduleName)) throw new ArgumentException("Invalid Lua module name.", nameof(moduleName));
+            // 复用现有 LuaEnv 与 require 缓存，不保留额外委托或业务系统状态。
+            using (var require = lua.Global.Get<LuaFunction>("require"))
+            {
+                var exports = require.Call(moduleName);
+                var entry = exports[0] as LuaFunction;
+                if (entry == null)
+                {
+                    (exports[0] as IDisposable)?.Dispose();
+                    throw new InvalidOperationException("Lua module must return a function: " + moduleName);
+                }
+                using (entry) return entry.Call(arguments);
+            }
+        }
+
         private void Shutdown()
         {
             if (stopping) return;

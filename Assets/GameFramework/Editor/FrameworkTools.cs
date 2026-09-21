@@ -42,7 +42,7 @@ namespace ProjectY.Editor
         }
 
         [MenuItem("Project Y/Config/Open Local Editor")]
-        public static void OpenConfigEditor() => Application.OpenURL("http://127.0.0.1:4173");
+        public static void OpenConfigEditor() => WebServicesMenu.OpenConfigEditor();
 
         [MenuItem("Project Y/Demo/Create Missing Assets")]
         public static void CreateDemo()

@@ -1,0 +1,26 @@
+2026-09-21 22:47:13,300 - BlenderMCPServer - INFO - BlenderMCP server starting up
+2026-09-21 22:47:13,302 - BlenderMCPServer - INFO - Blender addon on disk is current (protocol 7).
+2026-09-21 22:47:13,303 - blender-mcp-telemetry - WARNING - Telemetry disabled via environment variable
+2026-09-21 22:47:13,305 - BlenderMCPServer - INFO - Connected to Blender at 127.0.0.1:9876
+2026-09-21 22:47:13,305 - BlenderMCPServer - INFO - Created new persistent connection to Blender
+2026-09-21 22:47:13,305 - BlenderMCPServer - INFO - Sending command: get_addon_info with params: None
+2026-09-21 22:47:13,305 - BlenderMCPServer - INFO - Command sent, waiting for response...
+2026-09-21 22:47:13,315 - BlenderMCPServer - INFO - Received complete response (398 bytes)
+2026-09-21 22:47:13,315 - BlenderMCPServer - INFO - Received 398 bytes of data
+2026-09-21 22:47:13,315 - BlenderMCPServer - INFO - Response parsed, status: success
+2026-09-21 22:47:13,315 - BlenderMCPServer - INFO - Blender addon up to date (protocol 7, addon [1, 7], Blender 5.2.2 LTS)
+2026-09-21 22:47:13,315 - BlenderMCPServer - INFO - Successfully connected to Blender on startup
+2026-09-21 22:47:13,318 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2026-09-21 22:47:13,320 - BlenderMCPServer - INFO - Sending command: execute_code with params: {'code': '"""给新增城堡建立独立预览，不改旧资源的展示布局。"""\nimport bpy\nimport math\nimport json\nfrom pathlib import Path\nfrom mathutils import Vector\n\nroot = Path("D:/Program/Unity/Project Y/Art/MapLowPoly")\nscene = bpy.data.scenes["MapLP_CastleStudio"]\nassert bpy.context.scene == scene\nassert "MapLP_CastleDisplay" not in bpy.data.collections\ndisplay = bpy.data.collections.new("MapLP_CastleDisplay")\nrig = bpy.data.collections.new("MapLP_CastleRig")\nscene.collection.children.link(display)\nscene.collection.children.link(rig)\nfor name in ("Building_Castle", "CityPlot7"):\n    obj = bpy.data.objects[name].copy()\n    obj.name = "CastleDisplay_" + name\n    display.objects.link(obj)\n    if name == "CityPlot7":\n        obj.scale.z = 0.22\nfor name in ("PreviewFloor", "Preview_Key", "Preview_Fill"):\n    obj = bpy.data.objects[name].copy()\n    obj.name = "Castle_" + name\n    rig.objects.link(obj)\n    if name == "PreviewFloor":\n        obj.location.z = 0.07\nscene.world = bpy.data.worlds["MapLP_PreviewWorld"]\ndata = bpy.data.cameras.new("Castle_PreviewCamera")\ncamera = bpy.data.objects.new("Castle_PreviewCamera", data)\nrig.objects.link(camera)\ncamera.location = (7, -10, 8.5)\ncamera.rotation_euler = (Vector((0, 0, 1.25))-camera.location).to_track_quat("-Z", "Y").to_euler()\ndata.type = "ORTHO"\ndata.ortho_scale = 7.1\nscene.camera = camera\nscene.render.engine = "BLENDER_EEVEE"\nscene.render.resolution_x = 1200\nscene.render.resolution_y = 1100\nscene.render.resolution_percentage = 100\nscene.render.image_settings.file_format = "PNG"\nscene.render.filepath = str(root / "Previews/Castle_Blender.png")\nscene.view_settings.view_transform = "Standard"\nscene.view_settings.look = "None"\nscene.view_settings.exposure = 0\nscene.view_settings.gamma = 1\nmasters = bpy.data.collections["MapLP_CastleMasters"]\nmasters.hide_render = True\nmasters.hide_viewport = True\n\n# 顶点逐个落在真实七格并集内，不把包围盒尺寸当作占地证明。\ncenters = [(0, 0), (math.sqrt(3), 0), (-math.sqrt(3), 0)]\ncenters += [(signx*math.sqrt(3)/2, signy*1.5) for signx in (-1, 1) for signy in (-1, 1)]\ndef in_hex(x, y, center):\n    dx, dy = abs(x-center[0]), abs(y-center[1])\n    return dx <= math.sqrt(3)/2+1e-6 and dy <= 1-dx/math.sqrt(3)+1e-6\ncastle = bpy.data.objects["Building_Castle"]\nassert all(any(in_hex(v.co.x, v.co.y, c) for c in centers) for v in castle.data.vertices)\nfor area in bpy.context.screen.areas:\n    if area.type == "VIEW_3D":\n        area.spaces.active.region_3d.view_perspective = "CAMERA"\nbpy.context.view_layer.update()\nprint(json.dumps({"preview": scene.render.filepath, "footprint_radius": 1,\n                  "all_vertices_inside_seven_hex_union": True}))\n'}
+2026-09-21 22:47:13,320 - BlenderMCPServer - INFO - Command sent, waiting for response...
+2026-09-21 22:47:13,382 - BlenderMCPServer - INFO - Received complete response (248 bytes)
+2026-09-21 22:47:13,382 - BlenderMCPServer - INFO - Received 248 bytes of data
+2026-09-21 22:47:13,383 - BlenderMCPServer - INFO - Response parsed, status: success
+2026-09-21 22:47:13,383 - BlenderMCPServer - INFO - Sending command: get_telemetry_consent with params: None
+2026-09-21 22:47:13,383 - BlenderMCPServer - INFO - Command sent, waiting for response...
+2026-09-21 22:47:13,431 - BlenderMCPServer - INFO - Received complete response (51 bytes)
+2026-09-21 22:47:13,431 - BlenderMCPServer - INFO - Received 51 bytes of data
+2026-09-21 22:47:13,431 - BlenderMCPServer - INFO - Response parsed, status: success
+2026-09-21 22:47:13,434 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2026-09-21 22:47:13,439 - BlenderMCPServer - INFO - Disconnecting from Blender on shutdown
+2026-09-21 22:47:13,439 - BlenderMCPServer - INFO - BlenderMCP server shut down

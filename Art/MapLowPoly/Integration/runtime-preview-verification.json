@@ -1,0 +1,21 @@
+{
+  "scene": "Assets/GameFramework/Samples/Map/MapRuntimePreview.unity",
+  "configuration_export": "8 tables, 17 rows; no generated files changed",
+  "snapshot_check": "Tools/Tests/map_render_snapshot.lua passed using project xLua and exported configuration",
+  "initial_play_result": {
+    "seed": 20260921,
+    "recipe": [1, 2, 3, 4, 1, 2, 3, 4],
+    "cells": 2598,
+    "water_cells_from_snapshot_check": 562,
+    "towns": 8,
+    "buildings": 41,
+    "generation_and_conversion_ms": 835,
+    "render_preparation_ms": 30
+  },
+  "compilation": "One explicit batched AssetDatabase.Refresh; compilation succeeded with three CS0618 warnings for xLua LuaTable.Get<T>(object) integer-index reads",
+  "visual_review": "Composited Game view capture shows terrain, biome color transitions, water, continuous building platforms, models, roads and Chinese controls. User changed seed and recipe during the session; the captured view shows seed 20260926, 24 regions and 8858 cells.",
+  "screenshot": "Previews/MapRuntime_GameView.png",
+  "capture_note": "Use manage_camera screenshot with include_image=true to capture the completed frame. The initial asynchronous capture omitted IMGUI and GPU-instanced draws.",
+  "left_in_play": true,
+  "exit_lifecycle_and_player_build_tested": false
+}

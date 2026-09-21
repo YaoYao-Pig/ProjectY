@@ -1,0 +1,2322 @@
+{
+  "schema_version": 1,
+  "style": "Project Y low-poly world map",
+  "source_blend": "Source/MapLowPoly.blend",
+  "blender_version": "5.2.2 LTS",
+  "units": "1 Blender unit = 1 Unity unit = 1 metre",
+  "coordinates": {
+    "blender_up": "+Z",
+    "blender_front": "-Y",
+    "unity_up": "+Y",
+    "unity_front": "+Z",
+    "expected_mapping": "Unity (x,y,z) = source Blender (-x,z,-y), requires stated Unity importer settings",
+    "fbx_axis_forward": "-Z",
+    "fbx_axis_up": "Y",
+    "global_scale": 1,
+    "apply_scale_options": "FBX_SCALE_UNITS",
+    "geometry_rotation_blender_z_degrees": 180,
+    "bake_space_transform": true,
+    "unity_importer": {
+      "bakeAxisConversion": true,
+      "globalScale": 1,
+      "useFileScale": true
+    },
+    "warning_zh": "默认 Unity 导入设置不保证本套模型的正面方向，必须使用已验证的轴转换设置。"
+  },
+  "previews": [
+    "Previews/MapLowPoly_Overview.png",
+    "Previews/MapLowPoly_Unity.png",
+    "Previews/Castle_Blender.png",
+    "Previews/Castle_Unity.png",
+    "Previews/MapLowPoly_Unity_WithCastle.png",
+    "Previews/ecosystem-kit.png",
+    "Previews/ecosystem-unity-overview.png"
+  ],
+  "source_scene": "MapLP_Studio",
+  "source_master_collection": "MapLP_AssetMasters",
+  "source_display_collection": "MapLP_Display",
+  "checks": {
+    "blender_scene_preserved": true,
+    "source_transforms_identity": true,
+    "nonzero_polygon_areas": true,
+    "flat_normals_and_uv": true,
+    "external_textures_required": false,
+    "fbx_export_finished": true,
+    "unity_import_verified": true,
+    "visual_review": "实际查看 Overview 渲染：三种轮廓可辨，城镇七格顶面连续，地块颜色与低多边形风格一致。",
+    "hex_neighbour_edges_match": true,
+    "city_plot7_area_matches_union": true,
+    "source_contains_only_own_scene": true,
+    "unity_axis_probe_verified": true,
+    "source_preserved_after_axis_export": true,
+    "unity_visual_review": "实际查看 Unity 相机截图：三种建筑正面可见，连续七格平台、相邻地块与独立水面显示正常；没有缺材质粉红或缩放轴错误。"
+  },
+  "assets": [
+    {
+      "name": "Building_House",
+      "usage_zh": "民居；单格建筑，陡双坡屋顶",
+      "fbx": "Staging/Building_House.fbx",
+      "bytes": 29820,
+      "vertices_source": 182,
+      "triangles": 272,
+      "dimensions_blender_xyz": [
+        1.0399999618530273,
+        0.6759999990463257,
+        1.75
+      ],
+      "dimensions_unity_xyz_expected": [
+        1.0399999618530273,
+        1.75,
+        0.6759999990463257
+      ],
+      "bounds_blender_min": [
+        -0.5199999809265137,
+        -0.35732775926589966,
+        0.0
+      ],
+      "bounds_blender_max": [
+        0.5199999809265137,
+        0.318672239780426,
+        1.75
+      ],
+      "bounds_unity_min_expected": [
+        -0.5199999809265137,
+        0.0,
+        -0.318672239780426
+      ],
+      "bounds_unity_max_expected": [
+        0.5199999809265137,
+        1.75,
+        0.35732775926589966
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "flat_normals": true,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        {
+          "name": "M_MapLP_Stone",
+          "hex_srgb": "#aea18b",
+          "rgba_srgb": [
+            0.6823529411764706,
+            0.6313725490196078,
+            0.5450980392156862,
+            1.0
+          ],
+          "rgba_linear": [
+            0.423267662525177,
+            0.35640013217926025,
+            0.2581828534603119,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Plaster",
+          "hex_srgb": "#ded0ad",
+          "rgba_srgb": [
+            0.8705882352941177,
+            0.8156862745098039,
+            0.6784313725490196,
+            1.0
+          ],
+          "rgba_linear": [
+            0.7304607629776001,
+            0.6307571530342102,
+            0.41788506507873535,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Gable",
+          "hex_srgb": "#e4d3ad",
+          "rgba_srgb": [
+            0.8941176470588236,
+            0.8274509803921568,
+            0.6784313725490196,
+            1.0
+          ],
+          "rgba_linear": [
+            0.7758222222328186,
+            0.6514056324958801,
+            0.41788506507873535,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_PlasterShade",
+          "hex_srgb": "#c9b994",
+          "rgba_srgb": [
+            0.788235294117647,
+            0.7254901960784313,
+            0.5803921568627451,
+            1.0
+          ],
+          "rgba_linear": [
+            0.5840784311294556,
+            0.48514994978904724,
+            0.2961382567882538,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_RoofShade",
+          "hex_srgb": "#875241",
+          "rgba_srgb": [
+            0.5294117647058824,
+            0.3215686274509804,
+            0.2549019607843137,
+            1.0
+          ],
+          "rgba_linear": [
+            0.24228112399578094,
+            0.08437620848417282,
+            0.052860647439956665,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Roof",
+          "hex_srgb": "#a8694e",
+          "rgba_srgb": [
+            0.6588235294117647,
+            0.4117647058823529,
+            0.3058823529411765,
+            1.0
+          ],
+          "rgba_linear": [
+            0.3915724754333496,
+            0.14126329123973846,
+            0.07618538290262222,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Timber",
+          "hex_srgb": "#66594a",
+          "rgba_srgb": [
+            0.4,
+            0.34901960784313724,
+            0.2901960784313726,
+            1.0
+          ],
+          "rgba_linear": [
+            0.13286831974983215,
+            0.09989872574806213,
+            0.06847816705703735,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_TimberLight",
+          "hex_srgb": "#8c7558",
+          "rgba_srgb": [
+            0.5490196078431373,
+            0.4588235294117647,
+            0.34509803921568627,
+            1.0
+          ],
+          "rgba_linear": [
+            0.2622506618499756,
+            0.177888423204422,
+            0.09758734703063965,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Window",
+          "hex_srgb": "#536a68",
+          "rgba_srgb": [
+            0.3254901960784314,
+            0.41568627450980394,
+            0.40784313725490196,
+            1.0
+          ],
+          "rgba_linear": [
+            0.08650045841932297,
+            0.1441284716129303,
+            0.1384316086769104,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        }
+      ]
+    },
+    {
+      "name": "Building_TownHall",
+      "usage_zh": "集会厅；七格建筑，完整连续基座与入口门廊",
+      "fbx": "Staging/Building_TownHall.fbx",
+      "bytes": 33772,
+      "vertices_source": 308,
+      "triangles": 460,
+      "dimensions_blender_xyz": [
+        3.0399999618530273,
+        1.965000033378601,
+        2.799999952316284
+      ],
+      "dimensions_unity_xyz_expected": [
+        3.0399999618530273,
+        2.799999952316284,
+        1.965000033378601
+      ],
+      "bounds_blender_min": [
+        -1.5199999809265137,
+        -0.9950000047683716,
+        0.0
+      ],
+      "bounds_blender_max": [
+        1.5199999809265137,
+        0.9700000286102295,
+        2.799999952316284
+      ],
+      "bounds_unity_min_expected": [
+        -1.5199999809265137,
+        0.0,
+        -0.9700000286102295
+      ],
+      "bounds_unity_max_expected": [
+        1.5199999809265137,
+        2.799999952316284,
+        0.9950000047683716
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "flat_normals": true,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        {
+          "name": "M_MapLP_Stone",
+          "hex_srgb": "#aea18b",
+          "rgba_srgb": [
+            0.6823529411764706,
+            0.6313725490196078,
+            0.5450980392156862,
+            1.0
+          ],
+          "rgba_linear": [
+            0.423267662525177,
+            0.35640013217926025,
+            0.2581828534603119,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Plaster",
+          "hex_srgb": "#ded0ad",
+          "rgba_srgb": [
+            0.8705882352941177,
+            0.8156862745098039,
+            0.6784313725490196,
+            1.0
+          ],
+          "rgba_linear": [
+            0.7304607629776001,
+            0.6307571530342102,
+            0.41788506507873535,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Gable",
+          "hex_srgb": "#e4d3ad",
+          "rgba_srgb": [
+            0.8941176470588236,
+            0.8274509803921568,
+            0.6784313725490196,
+            1.0
+          ],
+          "rgba_linear": [
+            0.7758222222328186,
+            0.6514056324958801,
+            0.41788506507873535,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_PlasterShade",
+          "hex_srgb": "#c9b994",
+          "rgba_srgb": [
+            0.788235294117647,
+            0.7254901960784313,
+            0.5803921568627451,
+            1.0
+          ],
+          "rgba_linear": [
+            0.5840784311294556,
+            0.48514994978904724,
+            0.2961382567882538,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_RoofShade",
+          "hex_srgb": "#875241",
+          "rgba_srgb": [
+            0.5294117647058824,
+            0.3215686274509804,
+            0.2549019607843137,
+            1.0
+          ],
+          "rgba_linear": [
+            0.24228112399578094,
+            0.08437620848417282,
+            0.052860647439956665,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Roof",
+          "hex_srgb": "#a8694e",
+          "rgba_srgb": [
+            0.6588235294117647,
+            0.4117647058823529,
+            0.3058823529411765,
+            1.0
+          ],
+          "rgba_linear": [
+            0.3915724754333496,
+            0.14126329123973846,
+            0.07618538290262222,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Timber",
+          "hex_srgb": "#66594a",
+          "rgba_srgb": [
+            0.4,
+            0.34901960784313724,
+            0.2901960784313726,
+            1.0
+          ],
+          "rgba_linear": [
+            0.13286831974983215,
+            0.09989872574806213,
+            0.06847816705703735,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_TimberLight",
+          "hex_srgb": "#8c7558",
+          "rgba_srgb": [
+            0.5490196078431373,
+            0.4588235294117647,
+            0.34509803921568627,
+            1.0
+          ],
+          "rgba_linear": [
+            0.2622506618499756,
+            0.177888423204422,
+            0.09758734703063965,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Window",
+          "hex_srgb": "#536a68",
+          "rgba_srgb": [
+            0.3254901960784314,
+            0.41568627450980394,
+            0.40784313725490196,
+            1.0
+          ],
+          "rgba_linear": [
+            0.08650045841932297,
+            0.1441284716129303,
+            0.1384316086769104,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        }
+      ]
+    },
+    {
+      "name": "Building_Workshop",
+      "usage_zh": "工坊；单格建筑，宽门、缓屋顶和烟囱",
+      "fbx": "Staging/Building_Workshop.fbx",
+      "bytes": 29100,
+      "vertices_source": 166,
+      "triangles": 248,
+      "dimensions_blender_xyz": [
+        1.0399999618530273,
+        0.6759999990463257,
+        2.124000072479248
+      ],
+      "dimensions_unity_xyz_expected": [
+        1.0399999618530273,
+        2.124000072479248,
+        0.6759999990463257
+      ],
+      "bounds_blender_min": [
+        -0.5199999809265137,
+        -0.33799999952316284,
+        0.0
+      ],
+      "bounds_blender_max": [
+        0.5199999809265137,
+        0.33799999952316284,
+        2.124000072479248
+      ],
+      "bounds_unity_min_expected": [
+        -0.5199999809265137,
+        0.0,
+        -0.33799999952316284
+      ],
+      "bounds_unity_max_expected": [
+        0.5199999809265137,
+        2.124000072479248,
+        0.33799999952316284
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "flat_normals": true,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        {
+          "name": "M_MapLP_Stone",
+          "hex_srgb": "#aea18b",
+          "rgba_srgb": [
+            0.6823529411764706,
+            0.6313725490196078,
+            0.5450980392156862,
+            1.0
+          ],
+          "rgba_linear": [
+            0.423267662525177,
+            0.35640013217926025,
+            0.2581828534603119,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_PlasterShade",
+          "hex_srgb": "#c9b994",
+          "rgba_srgb": [
+            0.788235294117647,
+            0.7254901960784313,
+            0.5803921568627451,
+            1.0
+          ],
+          "rgba_linear": [
+            0.5840784311294556,
+            0.48514994978904724,
+            0.2961382567882538,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Gable",
+          "hex_srgb": "#e4d3ad",
+          "rgba_srgb": [
+            0.8941176470588236,
+            0.8274509803921568,
+            0.6784313725490196,
+            1.0
+          ],
+          "rgba_linear": [
+            0.7758222222328186,
+            0.6514056324958801,
+            0.41788506507873535,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_RoofShade",
+          "hex_srgb": "#875241",
+          "rgba_srgb": [
+            0.5294117647058824,
+            0.3215686274509804,
+            0.2549019607843137,
+            1.0
+          ],
+          "rgba_linear": [
+            0.24228112399578094,
+            0.08437620848417282,
+            0.052860647439956665,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Roof",
+          "hex_srgb": "#a8694e",
+          "rgba_srgb": [
+            0.6588235294117647,
+            0.4117647058823529,
+            0.3058823529411765,
+            1.0
+          ],
+          "rgba_linear": [
+            0.3915724754333496,
+            0.14126329123973846,
+            0.07618538290262222,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Timber",
+          "hex_srgb": "#66594a",
+          "rgba_srgb": [
+            0.4,
+            0.34901960784313724,
+            0.2901960784313726,
+            1.0
+          ],
+          "rgba_linear": [
+            0.13286831974983215,
+            0.09989872574806213,
+            0.06847816705703735,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_TimberLight",
+          "hex_srgb": "#8c7558",
+          "rgba_srgb": [
+            0.5490196078431373,
+            0.4588235294117647,
+            0.34509803921568627,
+            1.0
+          ],
+          "rgba_linear": [
+            0.2622506618499756,
+            0.177888423204422,
+            0.09758734703063965,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Window",
+          "hex_srgb": "#536a68",
+          "rgba_srgb": [
+            0.3254901960784314,
+            0.41568627450980394,
+            0.40784313725490196,
+            1.0
+          ],
+          "rgba_linear": [
+            0.08650045841932297,
+            0.1441284716129303,
+            0.1384316086769104,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_RockDark",
+          "hex_srgb": "#898379",
+          "rgba_srgb": [
+            0.5372549019607843,
+            0.5137254901960784,
+            0.4745098039215686,
+            1.0
+          ],
+          "rgba_linear": [
+            0.25015828013420105,
+            0.22696587443351746,
+            0.19120168685913086,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        }
+      ]
+    },
+    {
+      "name": "CityPlot7",
+      "usage_zh": "中心加六邻格的合并城市地块；无内部格缝、顶面0、底面-1",
+      "fbx": "Staging/CityPlot7.fbx",
+      "bytes": 17276,
+      "vertices_source": 38,
+      "triangles": 72,
+      "dimensions_blender_xyz": [
+        5.196152210235596,
+        5.0,
+        1.0
+      ],
+      "dimensions_unity_xyz_expected": [
+        5.196152210235596,
+        1.0,
+        5.0
+      ],
+      "bounds_blender_min": [
+        -2.598076105117798,
+        -2.5,
+        -1.0
+      ],
+      "bounds_blender_max": [
+        2.598076105117798,
+        2.5,
+        0.0
+      ],
+      "bounds_unity_min_expected": [
+        -2.598076105117798,
+        -1.0,
+        -2.5
+      ],
+      "bounds_unity_max_expected": [
+        2.598076105117798,
+        0.0,
+        2.5
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "flat_normals": true,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        {
+          "name": "M_MapLP_Earth",
+          "hex_srgb": "#948365",
+          "rgba_srgb": [
+            0.5803921568627451,
+            0.5137254901960784,
+            0.396078431372549,
+            1.0
+          ],
+          "rgba_linear": [
+            0.2961382567882538,
+            0.22696587443351746,
+            0.13013647496700287,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_City",
+          "hex_srgb": "#bca27b",
+          "rgba_srgb": [
+            0.7372549019607844,
+            0.6352941176470588,
+            0.4823529411764706,
+            1.0
+          ],
+          "rgba_linear": [
+            0.5028864741325378,
+            0.3613067865371704,
+            0.19806931912899017,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        }
+      ]
+    },
+    {
+      "name": "Hex_City",
+      "usage_zh": "单格城市地块；土褐色整体顶面",
+      "fbx": "Staging/Hex_City.fbx",
+      "bytes": 16412,
+      "vertices_source": 12,
+      "triangles": 20,
+      "dimensions_blender_xyz": [
+        1.7320507764816284,
+        2.0,
+        1.0
+      ],
+      "dimensions_unity_xyz_expected": [
+        1.7320507764816284,
+        1.0,
+        2.0
+      ],
+      "bounds_blender_min": [
+        -0.8660253882408142,
+        -1.0,
+        -1.0
+      ],
+      "bounds_blender_max": [
+        0.8660253882408142,
+        1.0,
+        0.0
+      ],
+      "bounds_unity_min_expected": [
+        -0.8660253882408142,
+        -1.0,
+        -1.0
+      ],
+      "bounds_unity_max_expected": [
+        0.8660253882408142,
+        0.0,
+        1.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "flat_normals": true,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        {
+          "name": "M_MapLP_Earth",
+          "hex_srgb": "#948365",
+          "rgba_srgb": [
+            0.5803921568627451,
+            0.5137254901960784,
+            0.396078431372549,
+            1.0
+          ],
+          "rgba_linear": [
+            0.2961382567882538,
+            0.22696587443351746,
+            0.13013647496700287,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_City",
+          "hex_srgb": "#bca27b",
+          "rgba_srgb": [
+            0.7372549019607844,
+            0.6352941176470588,
+            0.4823529411764706,
+            1.0
+          ],
+          "rgba_linear": [
+            0.5028864741325378,
+            0.3613067865371704,
+            0.19806931912899017,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        }
+      ]
+    },
+    {
+      "name": "Hex_Grass",
+      "usage_zh": "草地；半径1的标准尖顶六边形，顶面0、底面-1",
+      "fbx": "Staging/Hex_Grass.fbx",
+      "bytes": 16428,
+      "vertices_source": 12,
+      "triangles": 20,
+      "dimensions_blender_xyz": [
+        1.7320507764816284,
+        2.0,
+        1.0
+      ],
+      "dimensions_unity_xyz_expected": [
+        1.7320507764816284,
+        1.0,
+        2.0
+      ],
+      "bounds_blender_min": [
+        -0.8660253882408142,
+        -1.0,
+        -1.0
+      ],
+      "bounds_blender_max": [
+        0.8660253882408142,
+        1.0,
+        0.0
+      ],
+      "bounds_unity_min_expected": [
+        -0.8660253882408142,
+        -1.0,
+        -1.0
+      ],
+      "bounds_unity_max_expected": [
+        0.8660253882408142,
+        0.0,
+        1.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "flat_normals": true,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        {
+          "name": "M_MapLP_GrassSide",
+          "hex_srgb": "#617944",
+          "rgba_srgb": [
+            0.3803921568627451,
+            0.4745098039215686,
+            0.26666666666666666,
+            1.0
+          ],
+          "rgba_linear": [
+            0.11953842639923096,
+            0.19120168685913086,
+            0.05780543014407158,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Grass",
+          "hex_srgb": "#759754",
+          "rgba_srgb": [
+            0.4588235294117647,
+            0.592156862745098,
+            0.32941176470588235,
+            1.0
+          ],
+          "rgba_linear": [
+            0.177888423204422,
+            0.30946892499923706,
+            0.08865558356046677,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        }
+      ]
+    },
+    {
+      "name": "Hex_Riverbed",
+      "usage_zh": "河床/河岸地块；水面由独立模型与水位控制",
+      "fbx": "Staging/Hex_Riverbed.fbx",
+      "bytes": 16428,
+      "vertices_source": 12,
+      "triangles": 20,
+      "dimensions_blender_xyz": [
+        1.7320507764816284,
+        2.0,
+        1.0
+      ],
+      "dimensions_unity_xyz_expected": [
+        1.7320507764816284,
+        1.0,
+        2.0
+      ],
+      "bounds_blender_min": [
+        -0.8660253882408142,
+        -1.0,
+        -1.0
+      ],
+      "bounds_blender_max": [
+        0.8660253882408142,
+        1.0,
+        0.0
+      ],
+      "bounds_unity_min_expected": [
+        -0.8660253882408142,
+        -1.0,
+        -1.0
+      ],
+      "bounds_unity_max_expected": [
+        0.8660253882408142,
+        0.0,
+        1.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "flat_normals": true,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        {
+          "name": "M_MapLP_Earth",
+          "hex_srgb": "#948365",
+          "rgba_srgb": [
+            0.5803921568627451,
+            0.5137254901960784,
+            0.396078431372549,
+            1.0
+          ],
+          "rgba_linear": [
+            0.2961382567882538,
+            0.22696587443351746,
+            0.13013647496700287,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Riverbed",
+          "hex_srgb": "#7d9671",
+          "rgba_srgb": [
+            0.49019607843137253,
+            0.5882352941176471,
+            0.44313725490196076,
+            1.0
+          ],
+          "rgba_linear": [
+            0.20507873594760895,
+            0.3049873113632202,
+            0.16513219475746155,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        }
+      ]
+    },
+    {
+      "name": "Hex_Rock",
+      "usage_zh": "山石地块；平坦拼接面，山峰使用独立装饰",
+      "fbx": "Staging/Hex_Rock.fbx",
+      "bytes": 16412,
+      "vertices_source": 12,
+      "triangles": 20,
+      "dimensions_blender_xyz": [
+        1.7320507764816284,
+        2.0,
+        1.0
+      ],
+      "dimensions_unity_xyz_expected": [
+        1.7320507764816284,
+        1.0,
+        2.0
+      ],
+      "bounds_blender_min": [
+        -0.8660253882408142,
+        -1.0,
+        -1.0
+      ],
+      "bounds_blender_max": [
+        0.8660253882408142,
+        1.0,
+        0.0
+      ],
+      "bounds_unity_min_expected": [
+        -0.8660253882408142,
+        -1.0,
+        -1.0
+      ],
+      "bounds_unity_max_expected": [
+        0.8660253882408142,
+        0.0,
+        1.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "flat_normals": true,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        {
+          "name": "M_MapLP_RockDark",
+          "hex_srgb": "#898379",
+          "rgba_srgb": [
+            0.5372549019607843,
+            0.5137254901960784,
+            0.4745098039215686,
+            1.0
+          ],
+          "rgba_linear": [
+            0.25015828013420105,
+            0.22696587443351746,
+            0.19120168685913086,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Rock",
+          "hex_srgb": "#9e9685",
+          "rgba_srgb": [
+            0.6196078431372549,
+            0.5882352941176471,
+            0.5215686274509804,
+            1.0
+          ],
+          "rgba_linear": [
+            0.34191441535949707,
+            0.3049873113632202,
+            0.2345505803823471,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        }
+      ]
+    },
+    {
+      "name": "Hex_Shore",
+      "usage_zh": "湖岸地块；颜色区分，地块边界保持标准规格",
+      "fbx": "Staging/Hex_Shore.fbx",
+      "bytes": 16412,
+      "vertices_source": 12,
+      "triangles": 20,
+      "dimensions_blender_xyz": [
+        1.7320507764816284,
+        2.0,
+        1.0
+      ],
+      "dimensions_unity_xyz_expected": [
+        1.7320507764816284,
+        1.0,
+        2.0
+      ],
+      "bounds_blender_min": [
+        -0.8660253882408142,
+        -1.0,
+        -1.0
+      ],
+      "bounds_blender_max": [
+        0.8660253882408142,
+        1.0,
+        0.0
+      ],
+      "bounds_unity_min_expected": [
+        -0.8660253882408142,
+        -1.0,
+        -1.0
+      ],
+      "bounds_unity_max_expected": [
+        0.8660253882408142,
+        0.0,
+        1.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "flat_normals": true,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        {
+          "name": "M_MapLP_Earth",
+          "hex_srgb": "#948365",
+          "rgba_srgb": [
+            0.5803921568627451,
+            0.5137254901960784,
+            0.396078431372549,
+            1.0
+          ],
+          "rgba_linear": [
+            0.2961382567882538,
+            0.22696587443351746,
+            0.13013647496700287,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Shore",
+          "hex_srgb": "#849c66",
+          "rgba_srgb": [
+            0.5176470588235295,
+            0.611764705882353,
+            0.4,
+            1.0
+          ],
+          "rgba_linear": [
+            0.23074005544185638,
+            0.3324515223503113,
+            0.13286831974983215,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        }
+      ]
+    },
+    {
+      "name": "Hex_Water",
+      "usage_zh": "不透明独立水面；顶面0、底面-0.035，位置跟随水位",
+      "fbx": "Staging/Hex_Water.fbx",
+      "bytes": 16460,
+      "vertices_source": 12,
+      "triangles": 20,
+      "dimensions_blender_xyz": [
+        1.7320507764816284,
+        2.0,
+        0.03500000014901161
+      ],
+      "dimensions_unity_xyz_expected": [
+        1.7320507764816284,
+        0.03500000014901161,
+        2.0
+      ],
+      "bounds_blender_min": [
+        -0.8660253882408142,
+        -1.0,
+        -0.03500000014901161
+      ],
+      "bounds_blender_max": [
+        0.8660253882408142,
+        1.0,
+        0.0
+      ],
+      "bounds_unity_min_expected": [
+        -0.8660253882408142,
+        -0.03500000014901161,
+        -1.0
+      ],
+      "bounds_unity_max_expected": [
+        0.8660253882408142,
+        0.0,
+        1.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "flat_normals": true,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        {
+          "name": "M_MapLP_WaterDeep",
+          "hex_srgb": "#246384",
+          "rgba_srgb": [
+            0.1411764705882353,
+            0.38823529411764707,
+            0.5176470588235295,
+            1.0
+          ],
+          "rgba_linear": [
+            0.017641954123973846,
+            0.12477181851863861,
+            0.23074005544185638,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Water",
+          "hex_srgb": "#4da5b2",
+          "rgba_srgb": [
+            0.30196078431372547,
+            0.6470588235294118,
+            0.6980392156862745,
+            1.0
+          ],
+          "rgba_linear": [
+            0.07421357184648514,
+            0.3762621283531189,
+            0.44520118832588196,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        }
+      ]
+    },
+    {
+      "name": "Mountain_Cluster",
+      "usage_zh": "单格内的可拆分山峰装饰；硬边切面",
+      "fbx": "Staging/Mountain_Cluster.fbx",
+      "bytes": 17580,
+      "vertices_source": 9,
+      "triangles": 14,
+      "dimensions_blender_xyz": [
+        1.309999942779541,
+        1.350000023841858,
+        1.3200000524520874
+      ],
+      "dimensions_unity_xyz_expected": [
+        1.309999942779541,
+        1.3200000524520874,
+        1.350000023841858
+      ],
+      "bounds_blender_min": [
+        -0.6499999761581421,
+        -0.6800000071525574,
+        0.0
+      ],
+      "bounds_blender_max": [
+        0.6600000262260437,
+        0.6700000166893005,
+        1.3200000524520874
+      ],
+      "bounds_unity_min_expected": [
+        -0.6600000262260437,
+        0.0,
+        -0.6700000166893005
+      ],
+      "bounds_unity_max_expected": [
+        0.6499999761581421,
+        1.3200000524520874,
+        0.6800000071525574
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "flat_normals": true,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        {
+          "name": "M_MapLP_RockDark",
+          "hex_srgb": "#898379",
+          "rgba_srgb": [
+            0.5372549019607843,
+            0.5137254901960784,
+            0.4745098039215686,
+            1.0
+          ],
+          "rgba_linear": [
+            0.25015828013420105,
+            0.22696587443351746,
+            0.19120168685913086,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Rock",
+          "hex_srgb": "#9e9685",
+          "rgba_srgb": [
+            0.6196078431372549,
+            0.5882352941176471,
+            0.5215686274509804,
+            1.0
+          ],
+          "rgba_linear": [
+            0.34191441535949707,
+            0.3049873113632202,
+            0.2345505803823471,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_RockLight",
+          "hex_srgb": "#b1a895",
+          "rgba_srgb": [
+            0.6941176470588235,
+            0.6588235294117647,
+            0.5843137254901961,
+            1.0
+          ],
+          "rgba_linear": [
+            0.43965718150138855,
+            0.3915724754333496,
+            0.30054378509521484,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        }
+      ]
+    },
+    {
+      "name": "Building_Castle",
+      "usage_zh": "中世纪城堡；七格占地，连续基座、四座角塔、垛口城墙、拱门及中央主堡；尚未绑定城市等级或玩法配置",
+      "source_blend": "Source/Castle.blend",
+      "source_scene": "MapLP_CastleStudio",
+      "suggested_footprint_radius": 1,
+      "fbx": "Staging/Building_Castle.fbx",
+      "bytes": 63084,
+      "vertices_source": 1094,
+      "triangles": 1712,
+      "dimensions_blender_xyz": [
+        3.3499999046325684,
+        3.4149999618530273,
+        3.700000047683716
+      ],
+      "dimensions_unity_xyz_expected": [
+        3.3499999046325684,
+        3.700000047683716,
+        3.4149999618530273
+      ],
+      "bounds_blender_min": [
+        -1.6749999523162842,
+        -1.815000057220459,
+        0.0
+      ],
+      "bounds_blender_max": [
+        1.6749999523162842,
+        1.600000023841858,
+        3.700000047683716
+      ],
+      "bounds_unity_min_expected": [
+        -1.6749999523162842,
+        0.0,
+        -1.600000023841858
+      ],
+      "bounds_unity_max_expected": [
+        1.6749999523162842,
+        3.700000047683716,
+        1.815000057220459
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "flat_normals": true,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        {
+          "name": "M_MapLP_RockDark",
+          "hex_srgb": "#898379",
+          "rgba_srgb": [
+            0.5372549019607843,
+            0.5137254901960784,
+            0.4745098039215686,
+            1.0
+          ],
+          "rgba_linear": [
+            0.25015828013420105,
+            0.22696587443351746,
+            0.19120168685913086,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Stone",
+          "hex_srgb": "#aea18b",
+          "rgba_srgb": [
+            0.6823529411764706,
+            0.6313725490196078,
+            0.5450980392156862,
+            1.0
+          ],
+          "rgba_linear": [
+            0.423267662525177,
+            0.35640013217926025,
+            0.2581828534603119,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_City",
+          "hex_srgb": "#bca27b",
+          "rgba_srgb": [
+            0.7372549019607844,
+            0.6352941176470588,
+            0.4823529411764706,
+            1.0
+          ],
+          "rgba_linear": [
+            0.5028864741325378,
+            0.3613067865371704,
+            0.19806931912899017,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_RockLight",
+          "hex_srgb": "#b1a895",
+          "rgba_srgb": [
+            0.6941176470588235,
+            0.6588235294117647,
+            0.5843137254901961,
+            1.0
+          ],
+          "rgba_linear": [
+            0.43965718150138855,
+            0.3915724754333496,
+            0.30054378509521484,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Window",
+          "hex_srgb": "#536a68",
+          "rgba_srgb": [
+            0.3254901960784314,
+            0.41568627450980394,
+            0.40784313725490196,
+            1.0
+          ],
+          "rgba_linear": [
+            0.08650045841932297,
+            0.1441284716129303,
+            0.1384316086769104,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_PlasterShade",
+          "hex_srgb": "#c9b994",
+          "rgba_srgb": [
+            0.788235294117647,
+            0.7254901960784313,
+            0.5803921568627451,
+            1.0
+          ],
+          "rgba_linear": [
+            0.5840784311294556,
+            0.48514994978904724,
+            0.2961382567882538,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Gable",
+          "hex_srgb": "#e4d3ad",
+          "rgba_srgb": [
+            0.8941176470588236,
+            0.8274509803921568,
+            0.6784313725490196,
+            1.0
+          ],
+          "rgba_linear": [
+            0.7758222222328186,
+            0.6514056324958801,
+            0.41788506507873535,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_RoofShade",
+          "hex_srgb": "#875241",
+          "rgba_srgb": [
+            0.5294117647058824,
+            0.3215686274509804,
+            0.2549019607843137,
+            1.0
+          ],
+          "rgba_linear": [
+            0.24228112399578094,
+            0.08437620848417282,
+            0.052860647439956665,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Roof",
+          "hex_srgb": "#a8694e",
+          "rgba_srgb": [
+            0.6588235294117647,
+            0.4117647058823529,
+            0.3058823529411765,
+            1.0
+          ],
+          "rgba_linear": [
+            0.3915724754333496,
+            0.14126329123973846,
+            0.07618538290262222,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Timber",
+          "hex_srgb": "#66594a",
+          "rgba_srgb": [
+            0.4,
+            0.34901960784313724,
+            0.2901960784313726,
+            1.0
+          ],
+          "rgba_linear": [
+            0.13286831974983215,
+            0.09989872574806213,
+            0.06847816705703735,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_TimberLight",
+          "hex_srgb": "#8c7558",
+          "rgba_srgb": [
+            0.5490196078431373,
+            0.4588235294117647,
+            0.34509803921568627,
+            1.0
+          ],
+          "rgba_linear": [
+            0.2622506618499756,
+            0.177888423204422,
+            0.09758734703063965,
+            1.0
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        }
+      ],
+      "checks": {
+        "nonzero_polygon_areas": true,
+        "flat_normals_and_uv": true,
+        "seven_hex_footprint_verified": true,
+        "external_textures_required": false,
+        "unity_import_verified": true,
+        "unity_visual_review": "已实际查看 Unity 单体与全套截图：城堡正面、四角塔、垛口及连续城市基座清晰，材质与原有模型协调，无粉红缺材质。"
+      },
+      "unity_verification": "Integration/castle-unity-verification.json"
+    },
+    {
+      "name": "Hex_Forest",
+      "fbx": "Staging/Hex_Forest.fbx",
+      "source_blend": "Source/Ecosystem.blend",
+      "bytes": 16444,
+      "triangles": 20,
+      "dimensions_blender_xyz": [
+        1.7320507764816284,
+        2.0,
+        1.0
+      ],
+      "dimensions_unity_xyz_expected": [
+        1.7320507764816284,
+        1.0,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "flat_normals": true,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        {
+          "name": "M_MapLP_ForestSide",
+          "hex_srgb": "#425b3b",
+          "rgba_srgb": [
+            0.25882352941176473,
+            0.3568627450980392,
+            0.23137254901960785,
+            1
+          ],
+          "rgba_linear": [
+            0.05448027644244237,
+            0.10461648409110419,
+            0.043735029256973465,
+            1
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Forest",
+          "hex_srgb": "#567747",
+          "rgba_srgb": [
+            0.33725490196078434,
+            0.4666666666666667,
+            0.2784313725490196,
+            1
+          ],
+          "rgba_linear": [
+            0.09305896284668745,
+            0.184474994500441,
+            0.06301001765316767,
+            1
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        }
+      ],
+      "checks": {
+        "unity_import_verified": true,
+        "source_transforms_identity": true,
+        "nonzero_polygon_areas": true,
+        "flat_normals_and_uv": true
+      },
+      "unity_verification": "Integration/ecosystem-unity-import.json"
+    },
+    {
+      "name": "Hex_Snow",
+      "fbx": "Staging/Hex_Snow.fbx",
+      "source_blend": "Source/Ecosystem.blend",
+      "bytes": 16444,
+      "triangles": 20,
+      "dimensions_blender_xyz": [
+        1.7320507764816284,
+        2.0,
+        1.0
+      ],
+      "dimensions_unity_xyz_expected": [
+        1.7320507764816284,
+        1.0,
+        2.0
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "flat_normals": true,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        {
+          "name": "M_MapLP_SnowSide",
+          "hex_srgb": "#a2b7ba",
+          "rgba_srgb": [
+            0.6352941176470588,
+            0.7176470588235294,
+            0.7294117647058823,
+            1
+          ],
+          "rgba_linear": [
+            0.3613067797835095,
+            0.47353149614800955,
+            0.4910208498478356,
+            1
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Snow",
+          "hex_srgb": "#d7e4e6",
+          "rgba_srgb": [
+            0.8431372549019608,
+            0.8941176470588236,
+            0.9019607843137255,
+            1
+          ],
+          "rgba_linear": [
+            0.6795424696330938,
+            0.7758222183174236,
+            0.7912979403326302,
+            1
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        }
+      ],
+      "checks": {
+        "unity_import_verified": true,
+        "source_transforms_identity": true,
+        "nonzero_polygon_areas": true,
+        "flat_normals_and_uv": true
+      },
+      "unity_verification": "Integration/ecosystem-unity-import.json"
+    },
+    {
+      "name": "Tree_Broadleaf",
+      "fbx": "Staging/Tree_Broadleaf.fbx",
+      "source_blend": "Source/Ecosystem.blend",
+      "bytes": 19612,
+      "triangles": 68,
+      "dimensions_blender_xyz": [
+        1.247536301612854,
+        1.2230327129364014,
+        2.0
+      ],
+      "dimensions_unity_xyz_expected": [
+        1.247536301612854,
+        2.0,
+        1.2230327129364014
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "flat_normals": true,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        {
+          "name": "M_MapLP_Timber",
+          "hex_srgb": "#66594a",
+          "rgba_srgb": [
+            0.4,
+            0.34901960784313724,
+            0.2901960784313726,
+            1
+          ],
+          "rgba_linear": [
+            0.13286832155381798,
+            0.09989872824711389,
+            0.06847816984440017,
+            1
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Leaf",
+          "hex_srgb": "#557c43",
+          "rgba_srgb": [
+            0.3333333333333333,
+            0.48627450980392156,
+            0.2627450980392157,
+            1
+          ],
+          "rgba_linear": [
+            0.09084171118340768,
+            0.20155625379439707,
+            0.05612849004960009,
+            1
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_LeafLight",
+          "hex_srgb": "#709454",
+          "rgba_srgb": [
+            0.4392156862745098,
+            0.5803921568627451,
+            0.32941176470588235,
+            1
+          ],
+          "rgba_linear": [
+            0.162029375639111,
+            0.2961382707983211,
+            0.08865558628577294,
+            1
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        }
+      ],
+      "checks": {
+        "unity_import_verified": true,
+        "source_transforms_identity": true,
+        "nonzero_polygon_areas": true,
+        "flat_normals_and_uv": true
+      },
+      "unity_verification": "Integration/ecosystem-unity-import.json"
+    },
+    {
+      "name": "Tree_Conifer",
+      "fbx": "Staging/Tree_Conifer.fbx",
+      "source_blend": "Source/Ecosystem.blend",
+      "bytes": 21820,
+      "triangles": 130,
+      "dimensions_blender_xyz": [
+        1.2546395063400269,
+        1.2869048118591309,
+        2.5
+      ],
+      "dimensions_unity_xyz_expected": [
+        1.2546395063400269,
+        2.5,
+        1.2869048118591309
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "flat_normals": true,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        {
+          "name": "M_MapLP_Timber",
+          "hex_srgb": "#66594a",
+          "rgba_srgb": [
+            0.4,
+            0.34901960784313724,
+            0.2901960784313726,
+            1
+          ],
+          "rgba_linear": [
+            0.13286832155381798,
+            0.09989872824711389,
+            0.06847816984440017,
+            1
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Pine",
+          "hex_srgb": "#3f6b57",
+          "rgba_srgb": [
+            0.24705882352941178,
+            0.4196078431372549,
+            0.3411764705882353,
+            1
+          ],
+          "rgba_linear": [
+            0.04970656598412723,
+            0.14702726649759498,
+            0.0953074666309647,
+            1
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_PineLight",
+          "hex_srgb": "#557c66",
+          "rgba_srgb": [
+            0.3333333333333333,
+            0.48627450980392156,
+            0.4,
+            1
+          ],
+          "rgba_linear": [
+            0.09084171118340768,
+            0.20155625379439707,
+            0.13286832155381798,
+            1
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        }
+      ],
+      "checks": {
+        "unity_import_verified": true,
+        "source_transforms_identity": true,
+        "nonzero_polygon_areas": true,
+        "flat_normals_and_uv": true
+      },
+      "unity_verification": "Integration/ecosystem-unity-import.json"
+    },
+    {
+      "name": "Tree_SnowPine",
+      "fbx": "Staging/Tree_SnowPine.fbx",
+      "source_blend": "Source/Ecosystem.blend",
+      "bytes": 26796,
+      "triangles": 202,
+      "dimensions_blender_xyz": [
+        1.2546395063400269,
+        1.2869048118591309,
+        2.5
+      ],
+      "dimensions_unity_xyz_expected": [
+        1.2546395063400269,
+        2.5,
+        1.2869048118591309
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "flat_normals": true,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        {
+          "name": "M_MapLP_Timber",
+          "hex_srgb": "#66594a",
+          "rgba_srgb": [
+            0.4,
+            0.34901960784313724,
+            0.2901960784313726,
+            1
+          ],
+          "rgba_linear": [
+            0.13286832155381798,
+            0.09989872824711389,
+            0.06847816984440017,
+            1
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Pine",
+          "hex_srgb": "#3f6b57",
+          "rgba_srgb": [
+            0.24705882352941178,
+            0.4196078431372549,
+            0.3411764705882353,
+            1
+          ],
+          "rgba_linear": [
+            0.04970656598412723,
+            0.14702726649759498,
+            0.0953074666309647,
+            1
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_PineLight",
+          "hex_srgb": "#557c66",
+          "rgba_srgb": [
+            0.3333333333333333,
+            0.48627450980392156,
+            0.4,
+            1
+          ],
+          "rgba_linear": [
+            0.09084171118340768,
+            0.20155625379439707,
+            0.13286832155381798,
+            1
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Snow",
+          "hex_srgb": "#d7e4e6",
+          "rgba_srgb": [
+            0.8431372549019608,
+            0.8941176470588236,
+            0.9019607843137255,
+            1
+          ],
+          "rgba_linear": [
+            0.6795424696330938,
+            0.7758222183174236,
+            0.7912979403326302,
+            1
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_SnowCap",
+          "hex_srgb": "#e8efea",
+          "rgba_srgb": [
+            0.9098039215686274,
+            0.9372549019607843,
+            0.9176470588235294,
+            1
+          ],
+          "rgba_linear": [
+            0.8069522576692516,
+            0.8631572134541023,
+            0.8227857543962835,
+            1
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        }
+      ],
+      "checks": {
+        "unity_import_verified": true,
+        "source_transforms_identity": true,
+        "nonzero_polygon_areas": true,
+        "flat_normals_and_uv": true
+      },
+      "unity_verification": "Integration/ecosystem-unity-import.json"
+    },
+    {
+      "name": "Building_Dungeon",
+      "fbx": "Staging/Building_Dungeon.fbx",
+      "source_blend": "Source/Ecosystem.blend",
+      "bytes": 23900,
+      "triangles": 260,
+      "dimensions_blender_xyz": [
+        1.1835665702819824,
+        1.4335665702819824,
+        1.600000023841858
+      ],
+      "dimensions_unity_xyz_expected": [
+        1.1835665702819824,
+        1.600000023841858,
+        1.4335665702819824
+      ],
+      "pivot": [
+        0,
+        0,
+        0
+      ],
+      "flat_normals": true,
+      "uv_layers": [
+        "UVMap"
+      ],
+      "materials": [
+        {
+          "name": "M_MapLP_RockDark",
+          "hex_srgb": "#898379",
+          "rgba_srgb": [
+            0.5372549019607843,
+            0.5137254901960784,
+            0.4745098039215686,
+            1
+          ],
+          "rgba_linear": [
+            0.25015828472995344,
+            0.22696587351009836,
+            0.19120168274079138,
+            1
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Rock",
+          "hex_srgb": "#9e9685",
+          "rgba_srgb": [
+            0.6196078431372549,
+            0.5882352941176471,
+            0.5215686274509804,
+            1
+          ],
+          "rgba_linear": [
+            0.3419144249086609,
+            0.3049873140698863,
+            0.23455058216100522,
+            1
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_RockLight",
+          "hex_srgb": "#b1a895",
+          "rgba_srgb": [
+            0.6941176470588235,
+            0.6588235294117647,
+            0.5843137254901961,
+            1
+          ],
+          "rgba_linear": [
+            0.4396571738409188,
+            0.39157247774972326,
+            0.3005437944157765,
+            1
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        },
+        {
+          "name": "M_MapLP_Timber",
+          "hex_srgb": "#66594a",
+          "rgba_srgb": [
+            0.4,
+            0.34901960784313724,
+            0.2901960784313726,
+            1
+          ],
+          "rgba_linear": [
+            0.13286832155381798,
+            0.09989872824711389,
+            0.06847816984440017,
+            1
+          ],
+          "roughness": 0.88,
+          "metallic": 0,
+          "opaque": true
+        }
+      ],
+      "checks": {
+        "unity_import_verified": true,
+        "source_transforms_identity": true,
+        "nonzero_polygon_areas": true,
+        "flat_normals_and_uv": true
+      },
+      "unity_verification": "Integration/ecosystem-unity-import.json"
+    }
+  ],
+  "verification_report": "verification.json",
+  "export_script": "Scripts/export_map_static_fbx.py",
+  "axis_probe_evidence": {
+    "probe": "Probe/Building_House.fbx",
+    "confirmed_by": "Unity importer check performed by root agent",
+    "root_rotation": [
+      0,
+      0,
+      0
+    ],
+    "root_scale": [
+      1,
+      1,
+      1
+    ],
+    "house_bounds_center_z": 0.01932776,
+    "house_dimensions_xyz": [
+      1.04,
+      1.75,
+      0.676
+    ],
+    "front": "+Z",
+    "bakeAxisConversion": true
+  },
+  "unity": {
+    "asset_root": "Assets/DynamicAsset/MapLowPoly",
+    "preview_scene": "Assets/DynamicAsset/MapLowPoly/MapLowPolyPreview.unity",
+    "verification": "Integration/unity-verification.json",
+    "shader": "Standard",
+    "materials": 29,
+    "renderer": "Built-in",
+    "root_rotation": [
+      0,
+      0,
+      0
+    ],
+    "root_scale": [
+      1,
+      1,
+      1
+    ],
+    "castle_verification": "Integration/castle-unity-verification.json",
+    "model_count": 18,
+    "ecosystem_verification": "Integration/ecosystem-unity-import.json"
+  },
+  "source_blends": [
+    "Source/MapLowPoly.blend",
+    "Source/Castle.blend",
+    "Source/Ecosystem.blend"
+  ]
+}

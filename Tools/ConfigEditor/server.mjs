@@ -120,8 +120,7 @@ export function createEditorServer({ root = projectRoot } = {}) {
   });
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
-  const port = Number(process.env.PORT || 4173);
-  const server = createEditorServer();
-  server.listen(port, '127.0.0.1', () => console.log('Config editor: http://127.0.0.1:' + server.address().port));
-  server.on('error', error => { console.error(error.message); process.exitCode = 1; });
+  // 直接从命令行启动也登记到统一管理器，Editor 随后可以识别并停止。
+  import('../WebServices/host.mjs').then(({ startServiceHost }) => startServiceHost('config-editor'))
+    .catch(error => { console.error(error.message); process.exitCode = 1; });
 }

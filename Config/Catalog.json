@@ -11,17 +11,128 @@
           "type": "int",
           "description": "可复用的品质枚举示例，数值保持稳定",
           "members": [
-            { "name": "Common", "value": 0, "description": "普通" },
-            { "name": "Rare", "value": 1, "description": "稀有" },
-            { "name": "Epic", "value": 2, "description": "史诗" }
+            {
+              "name": "Common",
+              "value": 0,
+              "description": "普通"
+            },
+            {
+              "name": "Rare",
+              "value": 1,
+              "description": "稀有"
+            },
+            {
+              "name": "Epic",
+              "value": 2,
+              "description": "史诗"
+            }
           ]
         }
       ],
       "constants": [
-        { "name": "PreviewLimit", "type": "int", "value": 100, "description": "示例常量，尚未接入玩法" },
-        { "name": "DefaultRarity", "type": "enum", "enumRef": "Demo.Rarity", "value": 0, "description": "引用模块枚举的常量示例" }
+        {
+          "name": "PreviewLimit",
+          "type": "int",
+          "value": 100,
+          "description": "示例常量，尚未接入玩法"
+        },
+        {
+          "name": "DefaultRarity",
+          "type": "enum",
+          "enumRef": "Demo.Rarity",
+          "value": 0,
+          "description": "引用模块枚举的常量示例"
+        }
       ]
     },
-    { "id": "Localization", "folder": "Localization", "description": "默认语言文本，预留 i18n 汇总", "enums": [], "constants": [] }
+    {
+      "id": "Localization",
+      "folder": "Localization",
+      "description": "默认语言文本，预留 i18n 汇总",
+      "enums": [],
+      "constants": []
+    },
+    {
+      "id": "Map",
+      "folder": "Map",
+      "description": "六边形地图生成、地貌策略与区域查询",
+      "enums": [
+        {
+          "name": "E_MapRegion",
+          "type": "int",
+          "description": "地貌类型，新增类型需注册对应生成器与实例类",
+          "members": [
+            {
+              "name": "Grassland",
+              "value": 1,
+              "description": "起伏草原"
+            },
+            {
+              "name": "Mountain",
+              "value": 2,
+              "description": "山脊高地"
+            },
+            {
+              "name": "Lake",
+              "value": 3,
+              "description": "湖泊盆地"
+            },
+            {
+              "name": "River",
+              "value": 4,
+              "description": "曲流河谷"
+            },
+            {
+              "name": "Forest",
+              "value": 5,
+              "description": "林地与丘陵"
+            },
+            {
+              "name": "Snow",
+              "value": 6,
+              "description": "冰雪高地"
+            }
+          ]
+        }
+      ],
+      "constants": [
+        {
+          "name": "HexRadius",
+          "type": "float",
+          "value": 1,
+          "description": "六边形外接圆半径，Unity 世界单位"
+        },
+        {
+          "name": "HeightNoiseScale",
+          "type": "float",
+          "value": 12,
+          "description": "基础高度噪声跨度，格子单位；与区域 noiseScale 相乘"
+        },
+        {
+          "name": "BorderBlendWidth",
+          "type": "int",
+          "value": 4,
+          "description": "区域边界过渡宽度，六邻接格数，0 表示关闭，最大 12"
+        },
+        {
+          "name": "RoadMaxStep",
+          "type": "float",
+          "value": 1.2,
+          "description": "预览道路允许的相邻格地面高差上限，不决定玩法通行"
+        },
+        {
+          "name": "RoadSlopeCost",
+          "type": "float",
+          "value": 4,
+          "description": "预览道路搜索的坡度代价，越大越倾向平缓路线"
+        },
+        {
+          "name": "MaxCells",
+          "type": "int",
+          "value": 65536,
+          "description": "单次生成的格子数上限，超出时直接报错"
+        }
+      ]
+    }
   ]
 }

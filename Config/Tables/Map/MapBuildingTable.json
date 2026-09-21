@@ -1,0 +1,145 @@
+{
+  "version": 1,
+  "name": "MapBuildingTable",
+  "description": "建筑地貌候选与预览占地；城镇表引用的建筑才参与城镇生成，不创建玩法实体。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "建筑配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "建筑名称"
+    },
+    {
+      "name": "regions",
+      "type": "enum[]",
+      "enumRef": "Map.E_MapRegion",
+      "description": "允许出现的地貌类型，空数组表示无适用区域"
+    },
+    {
+      "name": "footprintRadius",
+      "type": "int",
+      "min": 0,
+      "max": 2,
+      "default": 0,
+      "description": "占地六边形半径；0 为单格，1 为七格"
+    },
+    {
+      "name": "height",
+      "type": "float",
+      "min": 0.1,
+      "max": 20,
+      "default": 1.2,
+      "description": "预览墙体高度，世界单位"
+    },
+    {
+      "name": "roofHeight",
+      "type": "float",
+      "min": 0,
+      "max": 10,
+      "default": 0.65,
+      "description": "预览屋顶高度，世界单位"
+    },
+    {
+      "name": "assetId",
+      "type": "int",
+      "description": "建筑模型资源",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "platformAssetId",
+      "type": "int",
+      "description": "完整占地平台资源",
+      "ref": "MapAssetTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "地牢入口",
+      "regions": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "assetId": 18,
+      "platformAssetId": 5,
+      "height": 1.2,
+      "roofHeight": 0.4
+    },
+    {
+      "id": 2,
+      "name": "民居",
+      "regions": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "height": 1.1,
+      "roofHeight": 0.65,
+      "assetId": 8,
+      "platformAssetId": 5
+    },
+    {
+      "id": 3,
+      "name": "工坊",
+      "regions": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "height": 1.5,
+      "roofHeight": 0.4,
+      "assetId": 9,
+      "platformAssetId": 5
+    },
+    {
+      "id": 4,
+      "name": "集会厅",
+      "regions": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "footprintRadius": 1,
+      "height": 1.8,
+      "roofHeight": 1,
+      "assetId": 10,
+      "platformAssetId": 12
+    },
+    {
+      "id": 5,
+      "name": "城堡",
+      "regions": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "footprintRadius": 1,
+      "height": 2.7,
+      "roofHeight": 1,
+      "assetId": 11,
+      "platformAssetId": 12
+    }
+  ]
+}

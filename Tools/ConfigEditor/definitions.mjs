@@ -1,5 +1,5 @@
-// Shared by the editor and exporter. Module identity is independent of its optional folder root.
-export const fieldTypes = ['int', 'float', 'bool', 'string', 'text', 'enum', 'formula', 'int[]', 'float[]', 'bool[]', 'string[]'];
+// 编辑器与导出器共用类型定义；模块标识独立于可选的目录根路径。
+export const fieldTypes = ['int', 'float', 'bool', 'string', 'text', 'enum', 'formula', 'int[]', 'float[]', 'bool[]', 'string[]', 'enum[]'];
 export const identifier = /^[A-Za-z_][A-Za-z0-9_]*$/;
 const reserved = new Set(['__proto__', 'constructor', 'prototype']);
 const assert = (condition, message) => { if (!condition) throw new Error(message); };
@@ -18,7 +18,8 @@ export function enumDefinition(catalog, reference) {
   return catalog.modules.find(module => module.id === moduleId)?.enums.find(item => item.name === name);
 }
 export function resolveEnum(field, catalog) {
-  if (field.type !== 'enum' || !field.enumRef) return field;
+  // 枚举数组与单值枚举共用成员定义；数组逐项校验由调用方负责。
+  if (!['enum', 'enum[]'].includes(field.type) || !field.enumRef) return field;
   const definition = enumDefinition(catalog, field.enumRef);
   assert(definition, `Unknown enum: ${field.enumRef}`);
   return { ...field, enumType: definition.type, values: definition.members.map(member => member.value) };

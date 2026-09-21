@@ -1,0 +1,484 @@
+[
+  {
+    "action": {
+      "arguments": {
+        "path": "Assets/DynamicAsset/MapLowPoly/Models/Building_Castle.fbx",
+        "action": "import"
+      },
+      "tool": "manage_asset"
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"success\":true,\"message\":\"Asset 'Assets/DynamicAsset/MapLowPoly/Models/Building_Castle.fbx' reimported.\",\"data\":{\"path\":\"Assets/DynamicAsset/MapLowPoly/Models/Building_Castle.fbx\",\"guid\":\"19ff873c12772464eb5e78092037560f\",\"assetType\":\"UnityEngine.GameObject\",\"name\":\"Building_Castle\",\"fileName\":\"Building_Castle.fbx\",\"isFolder\":false,\"instanceID\":34288,\"lastWriteTimeUtc\":\"2026-09-21T14:51:45.8778937Z\",\"previewBase64\":null,\"previewWidth\":0,\"previewHeight\":0}}"
+        }
+      ],
+      "structuredContent": {
+        "success": true,
+        "message": "Asset 'Assets/DynamicAsset/MapLowPoly/Models/Building_Castle.fbx' reimported.",
+        "data": {
+          "path": "Assets/DynamicAsset/MapLowPoly/Models/Building_Castle.fbx",
+          "guid": "19ff873c12772464eb5e78092037560f",
+          "assetType": "UnityEngine.GameObject",
+          "name": "Building_Castle",
+          "fileName": "Building_Castle.fbx",
+          "isFolder": false,
+          "instanceID": 34288,
+          "lastWriteTimeUtc": "2026-09-21T14:51:45.8778937Z",
+          "previewBase64": null,
+          "previewWidth": 0,
+          "previewHeight": 0
+        }
+      },
+      "isError": false
+    }
+  },
+  {
+    "action": {
+      "arguments": {
+        "action": "get_loaded_scenes"
+      },
+      "tool": "manage_scene"
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"success\":true,\"message\":\"2 scene(s) loaded.\",\"data\":{\"scenes\":[{\"name\":\"FrameworkDemo\",\"path\":\"Assets/GameFramework/Samples/FrameworkDemo.unity\",\"buildIndex\":-1,\"isLoaded\":true,\"isDirty\":false,\"isActive\":false,\"rootCount\":1},{\"name\":\"MapLowPolyPreview\",\"path\":\"Assets/DynamicAsset/MapLowPoly/MapLowPolyPreview.unity\",\"buildIndex\":-1,\"isLoaded\":true,\"isDirty\":false,\"isActive\":true,\"rootCount\":3}]}}"
+        }
+      ],
+      "structuredContent": {
+        "success": true,
+        "message": "2 scene(s) loaded.",
+        "data": {
+          "scenes": [
+            {
+              "name": "FrameworkDemo",
+              "path": "Assets/GameFramework/Samples/FrameworkDemo.unity",
+              "buildIndex": -1,
+              "isLoaded": true,
+              "isDirty": false,
+              "isActive": false,
+              "rootCount": 1
+            },
+            {
+              "name": "MapLowPolyPreview",
+              "path": "Assets/DynamicAsset/MapLowPoly/MapLowPolyPreview.unity",
+              "buildIndex": -1,
+              "isLoaded": true,
+              "isDirty": false,
+              "isActive": true,
+              "rootCount": 3
+            }
+          ]
+        }
+      },
+      "isError": false
+    }
+  },
+  {
+    "action": {
+      "schema": "execute_custom_tool"
+    },
+    "result": {
+      "name": "execute_custom_tool",
+      "title": "Execute Custom Tool",
+      "description": "Execute a project-scoped custom tool registered by Unity.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "tool_name": {
+            "type": "string"
+          },
+          "parameters": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "tool_name"
+        ],
+        "type": "object"
+      },
+      "outputSchema": {
+        "properties": {
+          "success": {
+            "type": "boolean"
+          },
+          "message": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "error": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "data": {
+            "anyOf": [
+              {},
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          },
+          "hint": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null
+          }
+        },
+        "required": [
+          "success"
+        ],
+        "type": "object"
+      },
+      "annotations": {
+        "title": "Execute Custom Tool",
+        "destructiveHint": true
+      },
+      "meta": {
+        "fastmcp": {
+          "tags": []
+        }
+      }
+    }
+  },
+  {
+    "action": {
+      "schema": "manage_camera"
+    },
+    "result": {
+      "name": "manage_camera",
+      "title": "Manage Camera",
+      "description": "Manage cameras (Unity Camera + Cinemachine). Works without Cinemachine using basic Camera; unlocks presets, pipelines, and blending when Cinemachine is installed. Use ping to check Cinemachine availability.\n\nSETUP:\n- ping: Check if Cinemachine is available\n- ensure_brain: Ensure CinemachineBrain exists on main camera\n- get_brain_status: Get Brain state (active camera, blend, etc.)\n\nCAMERA CREATION:\n- create_camera: Create camera with preset (third_person, freelook, follow, dolly, static, top_down, side_scroller). Falls back to basic Camera without Cinemachine.\n\nCAMERA CONFIGURATION:\n- set_target: Set Follow and/or LookAt targets on a camera\n- set_priority: Set camera priority for Brain selection\n- set_lens: Configure lens (fieldOfView, nearClipPlane, farClipPlane, orthographicSize, dutch)\n- set_body: Configure Body component (bodyType to swap, plus component properties)\n- set_aim: Configure Aim component (aimType to swap, plus component properties)\n- set_noise: Configure Noise component (amplitudeGain, frequencyGain)\n\nEXTENSIONS:\n- add_extension: Add extension (extensionType: CinemachineConfiner2D, CinemachineDeoccluder, CinemachineImpulseListener, CinemachineFollowZoom, CinemachineRecomposer, etc.)\n- remove_extension: Remove extension by type\n\nCAMERA CONTROL:\n- set_blend: Configure default blend (style: Cut/EaseInOut/Linear/etc., duration)\n- force_camera: Override Brain to use specific camera\n- release_override: Release camera override\n- list_cameras: List all cameras with status\n\nCAPTURE:\n- screenshot: Capture a screenshot. By default (no camera specified) uses ScreenCapture API, which captures all render layers including Screen Space - Overlay UI canvases. Specifying a camera uses direct camera rendering, which EXCLUDES Screen Space - Overlay canvases (use only when you need a specific viewpoint without UI). Supports include_image=true for inline base64 PNG, batch='surround' for 6-angle contact sheet, batch='orbit' for configurable grid, view_target/view_position for positioned capture, and capture_source='scene_view' to capture the active Unity Scene View viewport.\n- screenshot_multiview: Shorthand for screenshot with batch='surround' and include_image=true.",
+      "inputSchema": {
+        "additionalProperties": false,
+        "properties": {
+          "action": {
+            "description": "The camera action to perform.",
+            "type": "string"
+          },
+          "target": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Target camera (name, path, or instance ID)."
+          },
+          "search_method": {
+            "anyOf": [
+              {
+                "enum": [
+                  "by_id",
+                  "by_name",
+                  "by_path"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "How to find target."
+          },
+          "properties": {
+            "anyOf": [
+              {
+                "additionalProperties": true,
+                "type": "object"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "description": "Action-specific parameters (dict or JSON string).",
+            "default": null
+          },
+          "screenshot_file_name": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Screenshot file name (optional). Defaults to timestamp."
+          },
+          "screenshot_super_size": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Screenshot supersize multiplier (integer >= 1)."
+          },
+          "camera": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Camera to capture from (name, path, or instance ID). Omit to use ScreenCapture API (captures all layers including Screen Space Overlay UI). Specify only when you need a particular camera viewpoint; note that Screen Space - Overlay canvases will NOT appear in camera-rendered captures."
+          },
+          "include_image": {
+            "anyOf": [
+              {
+                "type": "boolean"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "If true, return screenshot as inline base64 PNG. Default false."
+          },
+          "max_resolution": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Max resolution (longest edge px) for inline image. Default 640."
+          },
+          "capture_source": {
+            "anyOf": [
+              {
+                "enum": [
+                  "game_view",
+                  "scene_view"
+                ],
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Screenshot source. 'game_view' (default) captures the game/camera path; 'scene_view' captures the active Unity Scene View viewport."
+          },
+          "batch": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Batch capture mode: 'surround' (6 angles) or 'orbit' (configurable grid)."
+          },
+          "view_target": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "integer"
+              },
+              {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Target to focus on. GameObject name/path/ID or [x,y,z]. For game_view: aims camera at target. For scene_view: frames the Scene View on the target."
+          },
+          "view_position": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "World position [x,y,z] to place camera for positioned capture."
+          },
+          "view_rotation": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Euler rotation [x,y,z] for camera. Overrides view_target if both provided."
+          },
+          "orbit_angles": {
+            "anyOf": [
+              {
+                "type": "integer"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Number of azimuth samples for batch='orbit' (default 8, max 36)."
+          },
+          "orbit_elevations": {
+            "anyOf": [
+              {
+                "items": {
+                  "type": "number"
+                },
+                "type": "array"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Elevation angles in degrees for batch='orbit' (default [0, 30, -15])."
+          },
+          "orbit_distance": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Camera distance from target for batch='orbit' (default auto)."
+          },
+          "orbit_fov": {
+            "anyOf": [
+              {
+                "type": "number"
+              },
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Camera FOV in degrees for batch='orbit' (default 60)."
+          },
+          "output_folder": {
+            "anyOf": [
+              {
+                "type": "string"
+              },
+              {
+                "type": "null"
+              }
+            ],
+            "default": null,
+            "description": "Optional folder for screenshot output. Project-relative (e.g. 'Assets/Screenshots' or 'Captures') or absolute path inside the project. Overrides the user's Editor preference. If omitted, falls back to the Editor preference, then to the built-in default (Assets/Screenshots)."
+          }
+        },
+        "required": [
+          "action"
+        ],
+        "type": "object"
+      },
+      "annotations": {
+        "title": "Manage Camera",
+        "destructiveHint": true
+      },
+      "meta": {
+        "fastmcp": {
+          "tags": [
+            "group:core"
+          ]
+        }
+      }
+    }
+  }
+]

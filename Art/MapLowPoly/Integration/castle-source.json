@@ -1,0 +1,267 @@
+{
+  "name": "Building_Castle",
+  "usage_zh": "中世纪城堡；七格占地，连续基座、四座角塔、垛口城墙、拱门及中央主堡；尚未绑定城市等级或玩法配置",
+  "source_blend": "Source/Castle.blend",
+  "source_scene": "MapLP_CastleStudio",
+  "suggested_footprint_radius": 1,
+  "fbx": "Staging/Building_Castle.fbx",
+  "bytes": 63084,
+  "vertices_source": 1094,
+  "triangles": 1712,
+  "dimensions_blender_xyz": [
+    3.3499999046325684,
+    3.4149999618530273,
+    3.700000047683716
+  ],
+  "dimensions_unity_xyz_expected": [
+    3.3499999046325684,
+    3.700000047683716,
+    3.4149999618530273
+  ],
+  "bounds_blender_min": [
+    -1.6749999523162842,
+    -1.815000057220459,
+    0.0
+  ],
+  "bounds_blender_max": [
+    1.6749999523162842,
+    1.600000023841858,
+    3.700000047683716
+  ],
+  "bounds_unity_min_expected": [
+    -1.6749999523162842,
+    0.0,
+    -1.600000023841858
+  ],
+  "bounds_unity_max_expected": [
+    1.6749999523162842,
+    3.700000047683716,
+    1.815000057220459
+  ],
+  "pivot": [
+    0,
+    0,
+    0
+  ],
+  "flat_normals": true,
+  "uv_layers": [
+    "UVMap"
+  ],
+  "materials": [
+    {
+      "name": "M_MapLP_RockDark",
+      "hex_srgb": "#898379",
+      "rgba_srgb": [
+        0.5372549019607843,
+        0.5137254901960784,
+        0.4745098039215686,
+        1.0
+      ],
+      "rgba_linear": [
+        0.25015828013420105,
+        0.22696587443351746,
+        0.19120168685913086,
+        1.0
+      ],
+      "roughness": 0.88,
+      "metallic": 0,
+      "opaque": true
+    },
+    {
+      "name": "M_MapLP_Stone",
+      "hex_srgb": "#aea18b",
+      "rgba_srgb": [
+        0.6823529411764706,
+        0.6313725490196078,
+        0.5450980392156862,
+        1.0
+      ],
+      "rgba_linear": [
+        0.423267662525177,
+        0.35640013217926025,
+        0.2581828534603119,
+        1.0
+      ],
+      "roughness": 0.88,
+      "metallic": 0,
+      "opaque": true
+    },
+    {
+      "name": "M_MapLP_City",
+      "hex_srgb": "#bca27b",
+      "rgba_srgb": [
+        0.7372549019607844,
+        0.6352941176470588,
+        0.4823529411764706,
+        1.0
+      ],
+      "rgba_linear": [
+        0.5028864741325378,
+        0.3613067865371704,
+        0.19806931912899017,
+        1.0
+      ],
+      "roughness": 0.88,
+      "metallic": 0,
+      "opaque": true
+    },
+    {
+      "name": "M_MapLP_RockLight",
+      "hex_srgb": "#b1a895",
+      "rgba_srgb": [
+        0.6941176470588235,
+        0.6588235294117647,
+        0.5843137254901961,
+        1.0
+      ],
+      "rgba_linear": [
+        0.43965718150138855,
+        0.3915724754333496,
+        0.30054378509521484,
+        1.0
+      ],
+      "roughness": 0.88,
+      "metallic": 0,
+      "opaque": true
+    },
+    {
+      "name": "M_MapLP_Window",
+      "hex_srgb": "#536a68",
+      "rgba_srgb": [
+        0.3254901960784314,
+        0.41568627450980394,
+        0.40784313725490196,
+        1.0
+      ],
+      "rgba_linear": [
+        0.08650045841932297,
+        0.1441284716129303,
+        0.1384316086769104,
+        1.0
+      ],
+      "roughness": 0.88,
+      "metallic": 0,
+      "opaque": true
+    },
+    {
+      "name": "M_MapLP_PlasterShade",
+      "hex_srgb": "#c9b994",
+      "rgba_srgb": [
+        0.788235294117647,
+        0.7254901960784313,
+        0.5803921568627451,
+        1.0
+      ],
+      "rgba_linear": [
+        0.5840784311294556,
+        0.48514994978904724,
+        0.2961382567882538,
+        1.0
+      ],
+      "roughness": 0.88,
+      "metallic": 0,
+      "opaque": true
+    },
+    {
+      "name": "M_MapLP_Gable",
+      "hex_srgb": "#e4d3ad",
+      "rgba_srgb": [
+        0.8941176470588236,
+        0.8274509803921568,
+        0.6784313725490196,
+        1.0
+      ],
+      "rgba_linear": [
+        0.7758222222328186,
+        0.6514056324958801,
+        0.41788506507873535,
+        1.0
+      ],
+      "roughness": 0.88,
+      "metallic": 0,
+      "opaque": true
+    },
+    {
+      "name": "M_MapLP_RoofShade",
+      "hex_srgb": "#875241",
+      "rgba_srgb": [
+        0.5294117647058824,
+        0.3215686274509804,
+        0.2549019607843137,
+        1.0
+      ],
+      "rgba_linear": [
+        0.24228112399578094,
+        0.08437620848417282,
+        0.052860647439956665,
+        1.0
+      ],
+      "roughness": 0.88,
+      "metallic": 0,
+      "opaque": true
+    },
+    {
+      "name": "M_MapLP_Roof",
+      "hex_srgb": "#a8694e",
+      "rgba_srgb": [
+        0.6588235294117647,
+        0.4117647058823529,
+        0.3058823529411765,
+        1.0
+      ],
+      "rgba_linear": [
+        0.3915724754333496,
+        0.14126329123973846,
+        0.07618538290262222,
+        1.0
+      ],
+      "roughness": 0.88,
+      "metallic": 0,
+      "opaque": true
+    },
+    {
+      "name": "M_MapLP_Timber",
+      "hex_srgb": "#66594a",
+      "rgba_srgb": [
+        0.4,
+        0.34901960784313724,
+        0.2901960784313726,
+        1.0
+      ],
+      "rgba_linear": [
+        0.13286831974983215,
+        0.09989872574806213,
+        0.06847816705703735,
+        1.0
+      ],
+      "roughness": 0.88,
+      "metallic": 0,
+      "opaque": true
+    },
+    {
+      "name": "M_MapLP_TimberLight",
+      "hex_srgb": "#8c7558",
+      "rgba_srgb": [
+        0.5490196078431373,
+        0.4588235294117647,
+        0.34509803921568627,
+        1.0
+      ],
+      "rgba_linear": [
+        0.2622506618499756,
+        0.177888423204422,
+        0.09758734703063965,
+        1.0
+      ],
+      "roughness": 0.88,
+      "metallic": 0,
+      "opaque": true
+    }
+  ],
+  "checks": {
+    "nonzero_polygon_areas": true,
+    "flat_normals_and_uv": true,
+    "seven_hex_footprint_verified": true,
+    "external_textures_required": false
+  }
+}

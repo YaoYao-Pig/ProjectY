@@ -1,0 +1,12 @@
+{
+  "version": 1,
+  "name": "MapEnemyTable",
+  "description": "敌人可出现区域配置；尚未定义具体敌人，当前只支持候选查询，不自动刷新实体。",
+  "key": "id",
+  "fields": [
+    { "name": "id", "type": "int", "description": "敌人配置 ID", "min": 1 },
+    { "name": "name", "type": "text", "description": "敌人名称" },
+    { "name": "regions", "type": "enum[]", "enumRef": "Map.E_MapRegion", "description": "允许出现的地貌类型，空数组表示无适用区域" }
+  ],
+  "rows": []
+}

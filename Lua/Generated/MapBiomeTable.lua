@@ -1,0 +1,12 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapBiomeTableRow
+---@field id number 地貌策略数值，对应 E_MapRegion
+---@field terrainAssetId number 地表模型
+---@field waterAssetId number 水面模型
+---@field groundColor string 地表基色 #RRGGBB
+---@field decorationAssetIds number[] 可散布的装饰模型，空数组关闭
+---@field decorationDensity number 候选格散布概率，按地貌权重与位置噪声控制
+---@field decorationMaxSlope number 装饰格与六邻格的最大高度差
+---@field minScale number 装饰最小等比缩放
+---@field maxScale number 装饰最大等比缩放
+return {["name"]="MapBiomeTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\229\156\176\232\178\140\231\173\150\231\149\165\230\149\176\229\128\188\239\188\140\229\175\185\229\186\148 E_MapRegion",["min"]=1},{["name"]="terrainAssetId",["type"]="int",["description"]="\229\156\176\232\161\168\230\168\161\229\158\139",["ref"]="MapAssetTable"},{["name"]="waterAssetId",["type"]="int",["description"]="\230\176\180\233\157\162\230\168\161\229\158\139",["ref"]="MapAssetTable"},{["name"]="groundColor",["type"]="string",["description"]="\229\156\176\232\161\168\229\159\186\232\137\178 #RRGGBB"},{["name"]="decorationAssetIds",["type"]="int[]",["description"]="\229\143\175\230\149\163\229\184\131\231\154\132\232\163\133\233\165\176\230\168\161\229\158\139\239\188\140\231\169\186\230\149\176\231\187\132\229\133\179\233\151\173",["ref"]="MapAssetTable"},{["name"]="decorationDensity",["type"]="float",["description"]="\229\128\153\233\128\137\230\160\188\230\149\163\229\184\131\230\166\130\231\142\135\239\188\140\230\140\137\229\156\176\232\178\140\230\157\131\233\135\141\228\184\142\228\189\141\231\189\174\229\153\170\229\163\176\230\142\167\229\136\182",["min"]=0,["max"]=1},{["name"]="decorationMaxSlope",["type"]="float",["description"]="\232\163\133\233\165\176\230\160\188\228\184\142\229\133\173\233\130\187\230\160\188\231\154\132\230\156\128\229\164\167\233\171\152\229\186\166\229\183\174",["min"]=0,["max"]=20},{["name"]="minScale",["type"]="float",["description"]="\232\163\133\233\165\176\230\156\128\229\176\143\231\173\137\230\175\148\231\188\169\230\148\190",["min"]=0.1,["max"]=3},{["name"]="maxScale",["type"]="float",["description"]="\232\163\133\233\165\176\230\156\128\229\164\167\231\173\137\230\175\148\231\188\169\230\148\190",["min"]=0.1,["max"]=3}},["fingerprint"]="80e1d20fafeadd9efd10100d7a0311b022cc0e3f01714dde86cb617acab6f4d0"}

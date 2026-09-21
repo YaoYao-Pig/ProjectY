@@ -1,0 +1,138 @@
+/* 全局配色与输入控件；界面颜色只影响工具展示。 */
+:root{font-family:"Segoe UI","Microsoft YaHei",sans-serif;color:#263a32;background:#f5f6f2;font-synthesis:none;font-size:13px;--accent:#27654e;--muted:#7a867e;--line:#dfe5dc}
+*{box-sizing:border-box}
+body{margin:0}
+button,input,select,textarea{font:inherit;color:inherit}
+button,a,input,textarea,select{-webkit-tap-highlight-color:transparent}
+button{cursor:pointer;border:1px solid var(--line);border-radius:7px;background:#fff;padding:8px 12px;transition:background .15s,border .15s}
+button:hover{background:#eaf0e8;border-color:#b1c3b2}
+button:disabled{opacity:.45;cursor:default}
+button:focus-visible,a:focus-visible{outline:3px solid #9ec6ab;outline-offset:2px}
+a{color:var(--accent);text-decoration:none}
+input,select,textarea{border:1px solid #d5ddd2;border-radius:7px;background:#fff;padding:9px 10px;width:100%;outline:none}
+input:focus,select:focus,textarea:focus{border-color:var(--accent);box-shadow:0 0 0 2px #27654e18}
+input[type=checkbox]{accent-color:var(--accent);width:auto}
+input[type=range]{accent-color:var(--accent);padding:0;box-shadow:none;height:18px}
+textarea{resize:vertical;min-height:66px;font-family:Consolas,monospace;line-height:1.7}
+.header{height:76px;border-bottom:1px solid var(--line);display:flex;align-items:center;gap:36px;padding:0 24px;background:#fff}
+.brand{display:flex;align-items:center;gap:12px}
+.brand-mark{background:#274f3f;color:#fff;font-size:24px;font-weight:700;width:42px;height:42px;display:grid;place-items:center;border-radius:10px}
+.brand strong{font-size:18px;display:block;letter-spacing:1px}
+.brand span:not(.brand-mark){font-size:9px;letter-spacing:2px;color:var(--muted);display:block;margin-top:4px}
+.header-note{font-size:12px;color:#718277;display:flex;align-items:center;gap:8px}
+.live-dot{width:6px;height:6px;border-radius:50%;background:#5d9168}
+.header nav{margin-left:auto;display:flex;align-items:center;gap:10px}
+.header nav a{margin-right:12px;font-size:12px}
+/* 三栏占满可用高度；侧栏内部滚动，避免整页滚动挤压画布。 */
+main{display:grid;grid-template-columns:280px minmax(300px,1fr) 260px;height:calc(100dvh - 108px);min-height:0}
+.controls,.inspector{overflow:auto;padding:25px 22px;background:#fbfcf8}
+.controls{border-right:1px solid var(--line)}
+.inspector{border-left:1px solid var(--line)}
+.eyebrow{color:#778a7a;font-size:10px;font-weight:650;letter-spacing:1.6px}
+.section-heading{display:flex;align-items:center;justify-content:space-between;gap:5px}
+.text-button{padding:0;background:transparent;border:0;color:#587961;font-size:11px}
+.text-button:hover{background:transparent;color:#1b4934}
+h1{font-size:21px;letter-spacing:-.5px;font-weight:600;margin:17px 0 8px}
+h2{font-size:16px;font-weight:600;margin:10px 0 17px}
+.intro{font-size:12px;color:var(--muted);line-height:1.8;margin:0 0 22px}
+label{display:block;font-weight:550;font-size:12px;margin:18px 0 8px}
+label span{float:right;font-size:10px;font-weight:400;color:var(--muted)}
+.input-action{display:flex;gap:7px}
+.input-action input{min-width:0;font-family:Consolas,monospace;font-size:16px}
+.input-action button{flex-shrink:0;padding:8px;font-size:11px}
+.append-row{display:grid;grid-template-columns:1fr 44px 30px;gap:6px;margin-top:8px}
+.append-row select,.append-row input,.append-row button{font-size:11px;padding:6px;min-width:0}
+.append-row input{appearance:textfield}
+.hint{color:var(--muted);font-size:10px;line-height:1.7;margin:8px 0 13px}
+.primary{display:flex;justify-content:space-between;align-items:center;width:100%;background:var(--accent);color:white;border-color:var(--accent);padding:12px 15px;font-size:13px;font-weight:600;margin:15px 0 12px}
+.primary:hover{background:#1b513c;color:#fff;border-color:#1b513c}
+.primary span{font-size:18px}
+#status{color:#667c6b;font-size:11px;line-height:1.65;word-break:break-word;white-space:pre-wrap;max-height:130px;overflow:auto}
+#status.error{color:#a44936;border-left:2px solid #d99a83;padding-left:8px}
+.config-detail{margin-top:15px;font-size:11px;color:#63756a}
+.config-detail summary{cursor:pointer}
+.config-detail dl{margin-bottom:3px}
+.separator{height:1px;background:var(--line);margin:24px 0}
+.toggle-row{display:flex;flex-wrap:wrap;column-gap:12px;row-gap:0}
+.toggle-row label{display:flex;align-items:center;gap:5px;font-size:11px;font-weight:400;white-space:nowrap}
+.view-buttons{display:flex;border:1px solid var(--line);padding:3px;border-radius:8px;background:#eef2eb;gap:3px;margin-top:8px}
+.view-buttons button{width:50%;background:transparent;border:0;font-size:11px}
+.view-buttons .active{background:#fff;box-shadow:0 1px 4px #24412716}
+output{float:right;color:#77917c;font-weight:400;font-variant-numeric:tabular-nums}
+/* 地图画布、悬浮工具栏、图例与生成遮罩。 */
+.viewport{position:relative;overflow:hidden;background:#e9eee6;min-width:0}
+.viewport-toolbar{position:absolute;left:20px;right:20px;top:20px;display:flex;justify-content:space-between;align-items:center;gap:15px;z-index:2;pointer-events:none}
+.viewport-toolbar>*{pointer-events:auto}
+.viewport-toolbar button{background:#ffffffc9;font-size:11px;border-color:#d5ddd3}
+.viewport-tag{background:#ffffffba;border:1px solid #d3decf;padding:6px 10px;border-radius:5px;font-size:11px;color:#5a735e}
+#map-label{font-family:Consolas,monospace;font-size:11px;color:#7c8c7b;margin-left:10px}
+canvas{width:100%;height:100%;display:block;touch-action:none;cursor:grab}
+canvas.dragging{cursor:grabbing}
+#empty-state{position:absolute;inset:0;display:flex;flex-direction:column;justify-content:center;align-items:center;color:#81967f;pointer-events:none}
+#empty-state[hidden]{display:none}
+#empty-state>span{font-size:64px;color:#97ad94}
+#empty-state h2{font-size:20px;margin:12px 0}
+#empty-state p{font-size:12px}
+.viewport-bottom{position:absolute;bottom:20px;left:22px;right:22px;display:flex;justify-content:space-between;align-items:flex-end;gap:15px;pointer-events:none}
+.legend{padding:10px 13px;border-radius:8px;background:#ffffffe0;border:1px solid #dae3d5;box-shadow:0 2px 8px #30453305;max-width:240px}
+.legend>span{font-size:9px;font-weight:650;letter-spacing:1.5px;color:#7c8c77}
+#legend-content{margin-top:6px;font-size:10px;line-height:1.8;display:flex;flex-wrap:wrap;gap:3px 8px}
+.swatch{display:inline-block;width:8px;height:8px;border-radius:2px;margin-right:4px}
+.legend-chip{white-space:nowrap}
+.height-ramp{height:7px;width:100%;border-radius:3px;background:linear-gradient(90deg,#366b8a,#55a394,#bac779,#d8b373,#bc7964)}
+.gestures{font-size:10px;color:#6e806b;background:#eef2ebcc;border-radius:5px;padding:6px 8px;white-space:nowrap}
+.gestures i{font-style:normal;color:#a8b8a1;padding:0 4px}
+#busy-overlay{position:absolute;inset:0;z-index:4;background:#edf2e7bd;backdrop-filter:blur(3px);display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;color:#547150}
+#busy-overlay[hidden]{display:none}
+#busy-overlay strong{font-size:16px;font-weight:550}
+#busy-overlay>span:last-child{font-size:12px}
+.spinner{border:2px solid #b3c8ae;border-top-color:#467442;border-radius:50%;width:30px;height:30px;animation:spin 1s linear infinite}
+@keyframes spin{to{transform:rotate(360deg)}
+}
+/* 右侧统计、格子检查与区域列表。 */
+.stats{display:grid;grid-template-columns:1fr 1fr;gap:18px 10px;margin:20px 0}
+.stats strong{display:block;font-size:25px;letter-spacing:-1px;font-weight:500;font-variant-numeric:tabular-nums}
+.stats span{display:block;color:var(--muted);font-size:10px;margin-top:4px}
+.stats>div:last-child strong{font-size:17px;padding:6px 0 3px}
+.metadata{color:#8b978a;font-size:10px;line-height:1.8;font-family:Consolas,"Microsoft YaHei",monospace}
+dl{display:grid;grid-template-columns:1fr auto;gap:9px 8px;margin:15px 0;font-size:11px}
+dt{color:#849181}
+dd{margin:0;text-align:right;color:#385140;font-variant-numeric:tabular-nums}
+.detail-heading{display:flex;align-items:center;gap:8px;margin:13px 0;font-size:17px;font-family:Consolas,monospace}
+.detail-heading .swatch{width:12px;height:12px}
+.candidates{font-size:11px;color:#72836d;line-height:1.8}
+.candidates strong{font-size:10px;color:#929e8d;font-weight:400;display:block;margin:13px 0 4px}
+.candidate{background:#eaf0e4;display:inline-block;border-radius:4px;padding:3px 6px;margin:0 4px 4px 0;color:#527149}
+#region-count{font-size:11px;color:var(--muted)}
+#region-list{margin-top:12px;display:flex;flex-direction:column;gap:5px}
+.region-item{display:flex;text-align:left;align-items:center;padding:9px 8px;gap:7px;background:transparent;border:1px solid transparent;border-radius:6px}
+.region-item:hover,.region-item.selected{background:#eaf0e4;border-color:#d9e4d1}
+.region-item .region-name{flex:1;font-size:11px}
+.region-item .region-size{font-size:10px;color:#8a9984}
+.region-item .swatch{flex-shrink:0}
+.inspector .intro{font-size:11px}
+footer{height:32px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid var(--line);padding:0 22px;font-size:10px;color:#899582;background:#f7f9f3}
+/* 窄屏压缩侧栏；优先保留配方输入与地图画布。 */
+@media(max-width:1150px){main{grid-template-columns:245px minmax(260px,1fr) 220px}
+.controls,.inspector{padding:22px 16px}
+.header{gap:15px}
+.header-note{display:none}
+.gestures{display:none}
+}
+@media(max-width:800px){main{grid-template-columns:230px minmax(260px,1fr);height:calc(100dvh - 108px)}
+.inspector{grid-column:1 / -1;max-height:420px;border-top:1px solid var(--line)}
+main{overflow:auto;grid-template-rows:minmax(600px,calc(100dvh - 108px)) auto}
+.header{padding:0 16px}
+.header nav a{display:none}
+.header nav{gap:5px}
+.header nav button{font-size:10px;padding:7px}
+.brand strong{font-size:15px}
+.brand span:not(.brand-mark){font-size:8px}
+footer span:last-child{display:none}
+}
+/* 城镇索引提供快速定位；具体建筑与道路信息仍由格子检查器展示。 */
+#town-list{display:flex;flex-wrap:wrap;gap:5px;margin-top:10px}
+.town-item{font-size:10px;padding:5px 7px;border-color:#d4dfd1;background:#f7f8f3}
+#town-stats,#water-stats{white-space:pre-line}
+@media(prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}
+}

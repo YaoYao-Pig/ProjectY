@@ -1,0 +1,234 @@
+{
+  "version": 1,
+  "name": "MapAssetTable",
+  "description": "地图表现资源；地貌、装饰、建筑统一引用 ID，Unity 绑定路径，Web 使用预览轮廓。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "资源 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "资源名称"
+    },
+    {
+      "name": "prefabPath",
+      "type": "string",
+      "description": "Unity GameObject 资源路径，须位于 Assets/"
+    },
+    {
+      "name": "previewShape",
+      "type": "string",
+      "description": "Web 轮廓：terrain/platform/water/mountain/house/workshop/hall/castle/dungeon/tree/conifer/snowpine"
+    },
+    {
+      "name": "previewColor",
+      "type": "string",
+      "description": "Web 装饰与建筑基色，#RRGGBB"
+    },
+    {
+      "name": "referenceHeight",
+      "type": "float",
+      "description": "模型基准高度；建筑实际缩放为配表总高除以此值",
+      "min": 0.01
+    },
+    {
+      "name": "footprintRadius",
+      "type": "int",
+      "description": "资源适配占地：0 单格，1 七格",
+      "min": 0,
+      "max": 1
+    },
+    {
+      "name": "tintMaterial",
+      "type": "string",
+      "description": "地表/平台顶面或水面材质名；装饰及建筑留空保留模型颜色"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "Hex_Grass",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Hex_Grass.fbx",
+      "previewShape": "terrain",
+      "previewColor": "#759754",
+      "referenceHeight": 1,
+      "footprintRadius": 0,
+      "tintMaterial": "M_MapLP_Grass"
+    },
+    {
+      "id": 2,
+      "name": "Hex_Rock",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Hex_Rock.fbx",
+      "previewShape": "terrain",
+      "previewColor": "#9e9685",
+      "referenceHeight": 1,
+      "footprintRadius": 0,
+      "tintMaterial": "M_MapLP_Rock"
+    },
+    {
+      "id": 3,
+      "name": "Hex_Shore",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Hex_Shore.fbx",
+      "previewShape": "terrain",
+      "previewColor": "#849c66",
+      "referenceHeight": 1,
+      "footprintRadius": 0,
+      "tintMaterial": "M_MapLP_Shore"
+    },
+    {
+      "id": 4,
+      "name": "Hex_Riverbed",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Hex_Riverbed.fbx",
+      "previewShape": "terrain",
+      "previewColor": "#7d9671",
+      "referenceHeight": 1,
+      "footprintRadius": 0,
+      "tintMaterial": "M_MapLP_Riverbed"
+    },
+    {
+      "id": 5,
+      "name": "Hex_City",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Hex_City.fbx",
+      "previewShape": "platform",
+      "previewColor": "#bca27b",
+      "referenceHeight": 1,
+      "footprintRadius": 0,
+      "tintMaterial": "M_MapLP_City"
+    },
+    {
+      "id": 6,
+      "name": "Hex_Water",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Hex_Water.fbx",
+      "previewShape": "water",
+      "previewColor": "#4da5b2",
+      "referenceHeight": 1,
+      "footprintRadius": 0,
+      "tintMaterial": "M_MapLP_Water"
+    },
+    {
+      "id": 7,
+      "name": "Mountain_Cluster",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Mountain_Cluster.fbx",
+      "previewShape": "mountain",
+      "previewColor": "#9e9685",
+      "referenceHeight": 1,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 8,
+      "name": "Building_House",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Building_House.fbx",
+      "previewShape": "house",
+      "previewColor": "#ded0ad",
+      "referenceHeight": 1.75,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 9,
+      "name": "Building_Workshop",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Building_Workshop.fbx",
+      "previewShape": "workshop",
+      "previewColor": "#c9b994",
+      "referenceHeight": 1.9,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 10,
+      "name": "Building_TownHall",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Building_TownHall.fbx",
+      "previewShape": "hall",
+      "previewColor": "#ded0ad",
+      "referenceHeight": 2.8,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 11,
+      "name": "Building_Castle",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Building_Castle.fbx",
+      "previewShape": "castle",
+      "previewColor": "#aea18b",
+      "referenceHeight": 3.7,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 12,
+      "name": "CityPlot7",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/CityPlot7.fbx",
+      "previewShape": "platform",
+      "previewColor": "#bca27b",
+      "referenceHeight": 1,
+      "footprintRadius": 1,
+      "tintMaterial": "M_MapLP_City"
+    },
+    {
+      "id": 13,
+      "name": "Tree_Broadleaf",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Tree_Broadleaf.fbx",
+      "previewShape": "tree",
+      "previewColor": "#557c43",
+      "referenceHeight": 2.0,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 14,
+      "name": "Tree_Conifer",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Tree_Conifer.fbx",
+      "previewShape": "conifer",
+      "previewColor": "#3f6b57",
+      "referenceHeight": 2.5,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 15,
+      "name": "Tree_SnowPine",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Tree_SnowPine.fbx",
+      "previewShape": "snowpine",
+      "previewColor": "#dce9e8",
+      "referenceHeight": 2.5,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 16,
+      "name": "Hex_Forest",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Hex_Forest.fbx",
+      "previewShape": "terrain",
+      "previewColor": "#567747",
+      "referenceHeight": 1,
+      "footprintRadius": 0,
+      "tintMaterial": "M_MapLP_Forest"
+    },
+    {
+      "id": 17,
+      "name": "Hex_Snow",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Hex_Snow.fbx",
+      "previewShape": "terrain",
+      "previewColor": "#d7e4e6",
+      "referenceHeight": 1,
+      "footprintRadius": 0,
+      "tintMaterial": "M_MapLP_Snow"
+    },
+    {
+      "id": 18,
+      "name": "Building_Dungeon",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Building_Dungeon.fbx",
+      "previewShape": "dungeon",
+      "previewColor": "#898379",
+      "referenceHeight": 1.6,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    }
+  ]
+}

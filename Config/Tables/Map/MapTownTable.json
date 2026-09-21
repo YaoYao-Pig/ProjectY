@@ -1,0 +1,225 @@
+{
+  "version": 1,
+  "name": "MapTownTable",
+  "description": "城镇生成预览的技术样例；选址和占地不改变原有地形，不涉及经济或玩法实体。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "min": 1,
+      "description": "城镇样式 ID"
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "城镇样式名称"
+    },
+    {
+      "name": "groundColor",
+      "type": "string",
+      "default": "#bca27b",
+      "description": "大地图城镇建筑占地的统一底色，使用 #RRGGBB；可按城镇样式区分表现"
+    },
+    {
+      "name": "regions",
+      "type": "enum[]",
+      "enumRef": "Map.E_MapRegion",
+      "description": "允许城镇中心出现的地貌类型"
+    },
+    {
+      "name": "buildingIds",
+      "type": "int[]",
+      "ref": "MapBuildingTable",
+      "description": "可用于城镇的建筑；按顺序轮换尝试并遵守建筑地貌限制"
+    },
+    {
+      "name": "maxCount",
+      "type": "int",
+      "min": 0,
+      "max": 16,
+      "description": "全图该样式最多城镇数；所有样式上限之和不能超过 16"
+    },
+    {
+      "name": "maxPerRegion",
+      "type": "int",
+      "min": 1,
+      "max": 16,
+      "description": "每个 Region 实例的该样式数量上限"
+    },
+    {
+      "name": "minSpacing",
+      "type": "int",
+      "min": 1,
+      "max": 256,
+      "description": "城镇中心最小六边形距离，同时保证各城镇范围不相交"
+    },
+    {
+      "name": "radius",
+      "type": "int",
+      "min": 2,
+      "max": 12,
+      "description": "建筑和内部街道的搜索半径，格子单位"
+    },
+    {
+      "name": "siteAttempts",
+      "type": "int",
+      "min": 1,
+      "max": 128,
+      "default": 24,
+      "description": "每个 Region 最多试排的平缓候选数，限制生成耗时"
+    },
+    {
+      "name": "minBuildings",
+      "type": "int",
+      "min": 1,
+      "max": 48,
+      "description": "少于该建筑数时放弃选址"
+    },
+    {
+      "name": "maxBuildings",
+      "type": "int",
+      "min": 1,
+      "max": 48,
+      "description": "每个城镇的建筑数量上限"
+    },
+    {
+      "name": "maxGroundDelta",
+      "type": "float",
+      "min": 0,
+      "max": 4,
+      "description": "中心及单个建筑占地内允许的最大高差"
+    },
+    {
+      "name": "priority",
+      "type": "int",
+      "description": "优先摆放较大或稀少的聚落样式",
+      "min": 0,
+      "max": 100,
+      "default": 0
+    },
+    {
+      "name": "requiredBuildingIds",
+      "type": "int[]",
+      "description": "必须成功摆放的地标；缺失则放弃整次选址",
+      "ref": "MapBuildingTable",
+      "default": []
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "小村庄",
+      "groundColor": "#bca27b",
+      "regions": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "buildingIds": [
+        2,
+        2,
+        3
+      ],
+      "requiredBuildingIds": [
+        2
+      ],
+      "priority": 30,
+      "maxCount": 4,
+      "maxPerRegion": 1,
+      "minSpacing": 12,
+      "radius": 4,
+      "minBuildings": 3,
+      "maxBuildings": 6,
+      "maxGroundDelta": 0.95
+    },
+    {
+      "id": 2,
+      "name": "大城市",
+      "groundColor": "#c0b096",
+      "regions": [
+        1,
+        3,
+        4,
+        5
+      ],
+      "buildingIds": [
+        4,
+        2,
+        3,
+        2,
+        3,
+        2
+      ],
+      "requiredBuildingIds": [
+        4
+      ],
+      "priority": 100,
+      "maxCount": 3,
+      "maxPerRegion": 1,
+      "minSpacing": 19,
+      "radius": 8,
+      "minBuildings": 8,
+      "maxBuildings": 18,
+      "maxGroundDelta": 1.1
+    },
+    {
+      "id": 3,
+      "name": "城堡领地",
+      "groundColor": "#b0a28a",
+      "regions": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "buildingIds": [
+        5,
+        2,
+        3,
+        2
+      ],
+      "requiredBuildingIds": [
+        5
+      ],
+      "priority": 80,
+      "maxCount": 2,
+      "maxPerRegion": 1,
+      "minSpacing": 15,
+      "radius": 5,
+      "minBuildings": 3,
+      "maxBuildings": 6,
+      "maxGroundDelta": 1.35
+    },
+    {
+      "id": 4,
+      "name": "地牢遗址",
+      "groundColor": "#9b9280",
+      "regions": [
+        1,
+        2,
+        5,
+        6
+      ],
+      "buildingIds": [
+        1
+      ],
+      "requiredBuildingIds": [
+        1
+      ],
+      "priority": 10,
+      "maxCount": 4,
+      "maxPerRegion": 1,
+      "minSpacing": 10,
+      "radius": 3,
+      "minBuildings": 1,
+      "maxBuildings": 1,
+      "maxGroundDelta": 1.6
+    }
+  ]
+}

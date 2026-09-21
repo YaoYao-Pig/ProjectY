@@ -1,0 +1,26 @@
+2026-09-21 22:47:31,148 - BlenderMCPServer - INFO - BlenderMCP server starting up
+2026-09-21 22:47:31,151 - BlenderMCPServer - INFO - Blender addon on disk is current (protocol 7).
+2026-09-21 22:47:31,152 - blender-mcp-telemetry - WARNING - Telemetry disabled via environment variable
+2026-09-21 22:47:31,154 - BlenderMCPServer - INFO - Connected to Blender at 127.0.0.1:9876
+2026-09-21 22:47:31,154 - BlenderMCPServer - INFO - Created new persistent connection to Blender
+2026-09-21 22:47:31,154 - BlenderMCPServer - INFO - Sending command: get_addon_info with params: None
+2026-09-21 22:47:31,154 - BlenderMCPServer - INFO - Command sent, waiting for response...
+2026-09-21 22:47:31,196 - BlenderMCPServer - INFO - Received complete response (398 bytes)
+2026-09-21 22:47:31,196 - BlenderMCPServer - INFO - Received 398 bytes of data
+2026-09-21 22:47:31,196 - BlenderMCPServer - INFO - Response parsed, status: success
+2026-09-21 22:47:31,196 - BlenderMCPServer - INFO - Blender addon up to date (protocol 7, addon [1, 7], Blender 5.2.2 LTS)
+2026-09-21 22:47:31,196 - BlenderMCPServer - INFO - Successfully connected to Blender on startup
+2026-09-21 22:47:31,200 - mcp.server.lowlevel.server - INFO - Processing request of type CallToolRequest
+2026-09-21 22:47:31,202 - BlenderMCPServer - INFO - Sending command: execute_code with params: {'code': '"""单独渲染城堡；超时后先查输出，不重复建模。"""\nimport bpy\nimport json\n\nassert bpy.context.scene.name == "MapLP_CastleStudio"\nresult = bpy.ops.render.render(write_still=True)\nprint(json.dumps({"result": sorted(result), "image": bpy.context.scene.render.filepath}))\n'}
+2026-09-21 22:47:31,202 - BlenderMCPServer - INFO - Command sent, waiting for response...
+2026-09-21 22:47:31,634 - BlenderMCPServer - INFO - Received complete response (202 bytes)
+2026-09-21 22:47:31,634 - BlenderMCPServer - INFO - Received 202 bytes of data
+2026-09-21 22:47:31,634 - BlenderMCPServer - INFO - Response parsed, status: success
+2026-09-21 22:47:31,634 - BlenderMCPServer - INFO - Sending command: get_telemetry_consent with params: None
+2026-09-21 22:47:31,634 - BlenderMCPServer - INFO - Command sent, waiting for response...
+2026-09-21 22:47:31,641 - BlenderMCPServer - INFO - Received complete response (51 bytes)
+2026-09-21 22:47:31,641 - BlenderMCPServer - INFO - Received 51 bytes of data
+2026-09-21 22:47:31,641 - BlenderMCPServer - INFO - Response parsed, status: success
+2026-09-21 22:47:31,644 - mcp.server.lowlevel.server - INFO - Processing request of type ListToolsRequest
+2026-09-21 22:47:31,647 - BlenderMCPServer - INFO - Disconnecting from Blender on shutdown
+2026-09-21 22:47:31,647 - BlenderMCPServer - INFO - BlenderMCP server shut down

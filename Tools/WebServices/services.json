@@ -1,0 +1,7 @@
+{
+  "version": 1,
+  "services": [
+    { "id": "config-editor", "name": "配置工作台", "module": "Tools/ConfigEditor/server.mjs", "factory": "createEditorServer", "port": 4173, "portEnvironment": "PORT" },
+    { "id": "map-preview", "name": "地图实验室", "module": "Tools/MapPreview/server.mjs", "factory": "createPreviewServer", "port": 4175, "portEnvironment": "MAP_PREVIEW_PORT", "legacyHealth": { "path": "/api/health", "tool": "project-y-map-preview", "protocol": 1 } }
+  ]
+}

@@ -188,12 +188,13 @@ function editColumn(original) {
     const min = control('最小值（可留空）', original?.min ?? ''), max = control('最大值（可留空）', original?.max ?? '');
     const ref = control('引用表（可留空）', original?.ref ?? '', [{ value: '', label: '无' }, ...ws.tables.map(table => ({ value: table.name }))]);
     const variables = control('公式变量（逗号分隔）', original?.variables?.join(', ') || '');
-    const refresh = () => { enumRef.parentElement.hidden = type.value !== 'enum'; values.parentElement.hidden = type.value !== 'enum' || !!enumRef.value; variables.parentElement.hidden = type.value !== 'formula'; };
+    // 单值与数组枚举共用成员来源设置；数组单元格仍以 JSON 数组编辑。
+    const refresh = () => { const isEnum = ['enum', 'enum[]'].includes(type.value); enumRef.parentElement.hidden = !isEnum; values.parentElement.hidden = !isEnum || !!enumRef.value; variables.parentElement.hidden = type.value !== 'formula'; };
     type.onchange = refresh; enumRef.onchange = refresh; refresh();
     return { name, description, type, enumRef, values, defaultInput, min, max, ref, variables };
   }, data => {
     const field = { name: data.name.value.trim(), type: data.type.value, description: data.description.value };
-    if (field.type === 'enum') { if (data.enumRef.value) field.enumRef = data.enumRef.value; else field.values = JSON.parse(data.values.value); }
+    if (['enum', 'enum[]'].includes(field.type)) { if (data.enumRef.value) field.enumRef = data.enumRef.value; else field.values = JSON.parse(data.values.value); }
     if (data.defaultInput.value.trim()) field.default = JSON.parse(data.defaultInput.value);
     for (const name of ['min', 'max']) if (data[name].value.trim()) { field[name] = Number(data[name].value); if (!Number.isFinite(field[name])) throw new Error('范围必须是数值'); }
     if (data.ref.value) field.ref = data.ref.value;
@@ -255,7 +256,8 @@ function editDefinition(original) {
     const options = catalogDraft.modules.flatMap(item => item.enums.map(value => ({ value: item.id + '.' + value.name })));
     const enumRef = control('共享枚举', original?.enumRef || '', [{ value: '', label: '选择枚举' }, ...options]);
     const value = control('常量值（string/text 直接填；其他用 JSON）', original ? ['string', 'text'].includes(original.type) ? original.value : JSON.stringify(original.value) : '');
-    const refresh = () => { enumRef.parentElement.hidden = type.value !== 'enum'; }; type.onchange = refresh; refresh();
+    // Catalog 的枚举数组常量同样绑定共享枚举，保存时逐项校验。
+    const refresh = () => { enumRef.parentElement.hidden = !['enum', 'enum[]'].includes(type.value); }; type.onchange = refresh; refresh();
     return { name, description, type, enumRef, value };
   }, data => {
     const item = { name: data.name.value.trim(), description: data.description.value, type: data.type.value };
@@ -263,7 +265,7 @@ function editDefinition(original) {
       if (item.type === 'int' && !fields[1].value.trim()) throw new Error('整数枚举值不能为空');
       return { name: fields[0].value.trim(), value: item.type === 'int' ? Number(fields[1].value) : fields[1].value, description: fields[2].value };
     });
-    else { item.value = ['string', 'text'].includes(item.type) ? data.value.value : JSON.parse(data.value.value); if (item.type === 'enum') item.enumRef = data.enumRef.value; }
+    else { item.value = ['string', 'text'].includes(item.type) ? data.value.value : JSON.parse(data.value.value); if (['enum', 'enum[]'].includes(item.type)) item.enumRef = data.enumRef.value; }
     const next = structuredClone(catalogDraft), collection = next.modules.find(entry => entry.id === module.id)[catalogTab], index = collection.findIndex(entry => entry.name === original?.name);
     if (index < 0) collection.push(item); else collection[index] = item;
     validateCatalog(next); catalogDraft = next; markDirty(); renderCatalog();

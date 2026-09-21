@@ -1,0 +1,64 @@
+[
+  {
+    "action": {
+      "tool": "execute_custom_tool",
+      "arguments": {
+        "tool_name": "execute_code",
+        "parameters": {
+          "code": "// 沿用已验证的静态 FBX 轴向和共享材质，仅操作模型展示场景。\nif (EditorApplication.isPlaying) throw new System.InvalidOperationException(\"请先退出 Play。\");\nvar scene = UnityEngine.SceneManagement.SceneManager.GetActiveScene();\nif (scene.path != \"Assets/DynamicAsset/MapLowPoly/MapLowPolyPreview.unity\" || scene.isDirty) throw new System.InvalidOperationException(\"展示场景不符合预期或存在未保存修改。\");\nvar root = scene.GetRootGameObjects().Single(x => x.name == \"MapLowPoly_展示\");\nif (root.transform.Find(\"Building_Castle\") != null) throw new System.InvalidOperationException(\"城堡展示已存在。\");\nvar modelPath = \"Assets/DynamicAsset/MapLowPoly/Models/Building_Castle.fbx\";\nvar importer = AssetImporter.GetAtPath(modelPath) as ModelImporter;\nif (importer == null) throw new System.InvalidOperationException(\"缺少城堡导入器。\");\nvar names = new[] {\"RockDark\", \"Stone\", \"City\", \"RockLight\", \"Window\", \"PlasterShade\", \"Gable\", \"RoofShade\", \"Roof\", \"Timber\", \"TimberLight\"};\nvar materials = names.Select(x => AssetDatabase.LoadAssetAtPath<Material>(\"Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_\" + x + \".mat\")).ToArray();\nif (materials.Any(x => x == null)) throw new System.InvalidOperationException(\"缺少共享材质。\");\nimporter.globalScale = 1f;\nimporter.useFileScale = true;\nimporter.bakeAxisConversion = true;\nimporter.importNormals = ModelImporterNormals.Import;\nimporter.importTangents = ModelImporterTangents.None;\nimporter.importAnimation = false;\nimporter.animationType = ModelImporterAnimationType.None;\nimporter.isReadable = false;\nimporter.materialImportMode = ModelImporterMaterialImportMode.ImportStandard;\nimporter.materialLocation = ModelImporterMaterialLocation.InPrefab;\nforeach (var material in materials) importer.AddRemap(new AssetImporter.SourceAssetIdentifier(typeof(Material), material.name), material);\nimporter.SaveAndReimport();\nvar asset = AssetDatabase.LoadAssetAtPath<GameObject>(modelPath);\nvar castle = (GameObject)PrefabUtility.InstantiatePrefab(asset, scene);\ncastle.name = \"Building_Castle\";\ncastle.transform.SetParent(root.transform, false);\ncastle.transform.localPosition = new Vector3(9f, 0f, -.7f);\ncastle.transform.localRotation = Quaternion.identity;\ncastle.transform.localScale = Vector3.one;\nforeach (var item in castle.GetComponentsInChildren<Transform>(true)) item.gameObject.layer = 31;\nvar plotAsset = AssetDatabase.LoadAssetAtPath<GameObject>(\"Assets/DynamicAsset/MapLowPoly/Models/CityPlot7.fbx\");\nvar plot = (GameObject)PrefabUtility.InstantiatePrefab(plotAsset, scene);\nplot.name = \"CityPlot7_Castle\";\nplot.transform.SetParent(root.transform, false);\nplot.transform.localPosition = castle.transform.localPosition;\nplot.transform.localRotation = Quaternion.identity;\nplot.transform.localScale = new Vector3(1f, .22f, 1f);\nforeach (var item in plot.GetComponentsInChildren<Transform>(true)) item.gameObject.layer = 31;\n// 单独保存城堡机位，默认关闭，方便后续查看单体；主机位展示全套资源。\nvar cameraObject = new GameObject(\"Castle_PreviewCamera\");\nUnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(cameraObject, scene);\nvar camera = cameraObject.AddComponent<Camera>();\ncamera.enabled = false;\ncamera.orthographic = true;\ncamera.orthographicSize = 3.35f;\ncamera.nearClipPlane = .1f;\ncamera.farClipPlane = 100f;\ncamera.cullingMask = 1 << 31;\ncamera.clearFlags = CameraClearFlags.SolidColor;\ncamera.backgroundColor = new Color(.78f, .8f, .78f, 1f);\ncamera.transform.position = new Vector3(15f, 7.5f, 9.3f);\ncamera.transform.LookAt(new Vector3(9f, 1.35f, -.7f));\nvar overview = scene.GetRootGameObjects().Single(x => x.name == \"MapLowPoly_PreviewCamera\").GetComponent<Camera>();\noverview.orthographicSize = 6.9f;\noverview.transform.position = new Vector3(10.8f, 14f, 15.4f);\noverview.transform.LookAt(new Vector3(2.3f, .5f, .9f));\nEditorUtility.SetDirty(overview);\nUnityEditor.SceneManagement.EditorSceneManager.MarkSceneDirty(scene);\nif (!UnityEditor.SceneManagement.EditorSceneManager.SaveScene(scene)) throw new System.InvalidOperationException(\"展示场景保存失败。\");\nSelection.activeGameObject = castle;\nif (SceneView.lastActiveSceneView != null) SceneView.lastActiveSceneView.FrameSelected();\nvar mesh = asset.GetComponent<MeshFilter>().sharedMesh;\nvar bounds = asset.GetComponent<MeshRenderer>().bounds;\nreturn new { model = modelPath, scene = scene.path, castleInstanceId = castle.GetInstanceID(), plotInstanceId = plot.GetInstanceID(), cameraInstanceId = cameraObject.GetInstanceID(), triangles = Enumerable.Range(0, mesh.subMeshCount).Sum(i => (long)mesh.GetIndexCount(i) / 3), size = new [] {bounds.size.x, bounds.size.y, bounds.size.z}, rotation = new [] {asset.transform.localEulerAngles.x, asset.transform.localEulerAngles.y, asset.transform.localEulerAngles.z}, materialPaths = asset.GetComponent<MeshRenderer>().sharedMaterials.Select(x => AssetDatabase.GetAssetPath(x)).ToArray() };",
+          "action": "execute",
+          "safety_checks": true
+        }
+      }
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"success\":true,\"message\":\"Code executed successfully.\",\"error\":null,\"data\":{\"result\":{\"model\":\"Assets/DynamicAsset/MapLowPoly/Models/Building_Castle.fbx\",\"scene\":\"Assets/DynamicAsset/MapLowPoly/MapLowPolyPreview.unity\",\"castleInstanceId\":-72560,\"plotInstanceId\":-72570,\"cameraInstanceId\":-72578,\"triangles\":1712,\"size\":[3.35,3.7,3.415],\"rotation\":[0.0,0.0,0.0],\"materialPaths\":[\"Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_RockDark.mat\",\"Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_Stone.mat\",\"Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_City.mat\",\"Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_RockLight.mat\",\"Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_Window.mat\",\"Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_PlasterShade.mat\",\"Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_Gable.mat\",\"Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_RoofShade.mat\",\"Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_Roof.mat\",\"Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_Timber.mat\",\"Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_TimberLight.mat\"]},\"compiler\":\"codedom\"},\"hint\":null}"
+        }
+      ],
+      "structuredContent": {
+        "success": true,
+        "message": "Code executed successfully.",
+        "error": null,
+        "data": {
+          "result": {
+            "model": "Assets/DynamicAsset/MapLowPoly/Models/Building_Castle.fbx",
+            "scene": "Assets/DynamicAsset/MapLowPoly/MapLowPolyPreview.unity",
+            "castleInstanceId": -72560,
+            "plotInstanceId": -72570,
+            "cameraInstanceId": -72578,
+            "triangles": 1712,
+            "size": [
+              3.35,
+              3.7,
+              3.415
+            ],
+            "rotation": [
+              0.0,
+              0.0,
+              0.0
+            ],
+            "materialPaths": [
+              "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_RockDark.mat",
+              "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_Stone.mat",
+              "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_City.mat",
+              "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_RockLight.mat",
+              "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_Window.mat",
+              "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_PlasterShade.mat",
+              "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_Gable.mat",
+              "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_RoofShade.mat",
+              "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_Roof.mat",
+              "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_Timber.mat",
+              "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_TimberLight.mat"
+            ]
+          },
+          "compiler": "codedom"
+        },
+        "hint": null
+      },
+      "isError": false
+    }
+  }
+]

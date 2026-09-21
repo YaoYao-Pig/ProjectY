@@ -8,8 +8,8 @@
 
 ## 正文
 
-- 表源为 `Config/Tables/**/*.json`：`version/name/description/key/fields/rows`。字段含可读 description；类型为 int（int32）、float（float64）、bool、string、text、enum、formula，以及 int/float/bool/string 数组；支持默认值、约束和跨表 ref，不接受 null。目录变化不改变表名，表名全局唯一。
-- 共享枚举/常量源为 `Config/Catalog.json`。模块 ID 稳定，folder 可为 null；绑定目录只管理归属。枚举成员显式填写 name/value/description，值为 int 或 string；字段通过 `enumRef: "Demo.Rarity"` 引用，旧 values 内联枚举仍兼容。删改定义必须校验所有表与常量的引用。
+- 表源为 `Config/Tables/**/*.json`：`version/name/description/key/fields/rows`。字段含可读 description；类型为 int（int32）、float（float64）、bool、string、text、enum、formula，以及 int/float/bool/string/enum 数组；支持默认值、约束和跨表 ref，不接受 null。目录变化不改变表名，表名全局唯一。
+- 共享枚举/常量源为 `Config/Catalog.json`。模块 ID 稳定，folder 可为 null；绑定目录只管理归属。枚举成员显式填写 name/value/description，值为 int 或 string；enum/enum[] 字段及常量通过 `enumRef: "Demo.Rarity"` 引用，字段的旧 values 内联枚举仍兼容。枚举数组逐项校验成员，允许空数组；删改定义必须校验所有表与常量的引用。
 - Catalog 导出 `Lua/Generated/Catalog.lua`，由 `Config.Catalog` 提供递归只读代理；`ConfigSystem:GetEnum(module,name)` / `GetConstant(module,name)` 访问。示例 Demo 常量尚未接入玩法。
 - 导出全量校验主键、类型、引用和公式，生成 `Lua/Generated/*.lua`（schema、LuaLS 注释、Manifest）及 `Assets/GameFramework/Resources/Config/*.bytes`；`Config/export-manifest.json` 管理产物清理。以上产物不手改。
 - 二进制头为 `YCFG` + uint16 版本 1 + schema 指纹字符串 + uint32 行数，再按字段顺序编码。修改格式必须同时改 exporter 与 Lua reader；详细布局按需读 [完整架构](../../Docs/Architecture.md)。文件逐个原子替换，不保证整批输出原子事务。
@@ -19,6 +19,8 @@
 - C# 经 `GameBootstrap.GetConfigRow(name, id)` 访问同一份 Lua 数据，id 仅 int/string；启动后在 Unity 主线程调用，返回 LuaTable 由调用方及时 Dispose，不能跨越 LuaEnv 生命周期。
 
 修改与验证：改表后运行 `node Tools/ConfigEditor/exporter.mjs`；改 schema/格式/公式时运行 `node --test Tools/ConfigEditor/tests/config.test.mjs` 与 `python Tools/Tests/run_lua.py`。涉及桥接读取再跑 Unity 集成检查。编辑网页行为另读 [配置编辑器](../Tools/ConfigEditor.md)。
+
+枚举数组最小检查：`node --test Tools/ConfigEditor/tests/enum-array.test.mjs`，覆盖校验、默认值、常量和 Node 导出 → 项目 xLua 只读数组往返；使用现有 Windows x64 插件，不启动 Unity。
 
 ## 关键入口
 

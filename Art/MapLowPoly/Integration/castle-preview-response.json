@@ -1,0 +1,68 @@
+[
+  {
+    "action": {
+      "arguments": {
+        "include_image": false,
+        "action": "screenshot",
+        "camera": "Castle_PreviewCamera",
+        "output_folder": "Art/MapLowPoly/Previews",
+        "screenshot_file_name": "Castle_Unity"
+      },
+      "tool": "manage_camera"
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"success\":true,\"message\":\"Screenshot captured to 'Art/MapLowPoly/Previews/Castle_Unity.png' (camera: Castle_PreviewCamera).\",\"data\":{\"path\":\"Art/MapLowPoly/Previews/Castle_Unity.png\",\"fullPath\":\"D:/Program/Unity/Project Y/Art/MapLowPoly/Previews/Castle_Unity.png\",\"superSize\":1,\"isAsync\":false,\"camera\":\"Castle_PreviewCamera\",\"captureSource\":\"game_view\"}}"
+        }
+      ],
+      "structuredContent": {
+        "success": true,
+        "message": "Screenshot captured to 'Art/MapLowPoly/Previews/Castle_Unity.png' (camera: Castle_PreviewCamera).",
+        "data": {
+          "path": "Art/MapLowPoly/Previews/Castle_Unity.png",
+          "fullPath": "D:/Program/Unity/Project Y/Art/MapLowPoly/Previews/Castle_Unity.png",
+          "superSize": 1,
+          "isAsync": false,
+          "camera": "Castle_PreviewCamera",
+          "captureSource": "game_view"
+        }
+      },
+      "isError": false
+    }
+  },
+  {
+    "action": {
+      "arguments": {
+        "include_image": false,
+        "action": "screenshot",
+        "camera": "MapLowPoly_PreviewCamera",
+        "output_folder": "Art/MapLowPoly/Previews",
+        "screenshot_file_name": "MapLowPoly_Unity_WithCastle"
+      },
+      "tool": "manage_camera"
+    },
+    "result": {
+      "content": [
+        {
+          "type": "text",
+          "text": "{\"success\":true,\"message\":\"Screenshot captured to 'Art/MapLowPoly/Previews/MapLowPoly_Unity_WithCastle.png' (camera: MapLowPoly_PreviewCamera).\",\"data\":{\"path\":\"Art/MapLowPoly/Previews/MapLowPoly_Unity_WithCastle.png\",\"fullPath\":\"D:/Program/Unity/Project Y/Art/MapLowPoly/Previews/MapLowPoly_Unity_WithCastle.png\",\"superSize\":1,\"isAsync\":false,\"camera\":\"MapLowPoly_PreviewCamera\",\"captureSource\":\"game_view\"}}"
+        }
+      ],
+      "structuredContent": {
+        "success": true,
+        "message": "Screenshot captured to 'Art/MapLowPoly/Previews/MapLowPoly_Unity_WithCastle.png' (camera: MapLowPoly_PreviewCamera).",
+        "data": {
+          "path": "Art/MapLowPoly/Previews/MapLowPoly_Unity_WithCastle.png",
+          "fullPath": "D:/Program/Unity/Project Y/Art/MapLowPoly/Previews/MapLowPoly_Unity_WithCastle.png",
+          "superSize": 1,
+          "isAsync": false,
+          "camera": "MapLowPoly_PreviewCamera",
+          "captureSource": "game_view"
+        }
+      },
+      "isError": false
+    }
+  }
+]

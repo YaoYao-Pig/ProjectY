@@ -1,0 +1,147 @@
+{
+  "version": 1,
+  "name": "MapBiomeTable",
+  "description": "地貌表现与散布规则；边界颜色按生成器的 biomeWeights 混合。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "地貌策略数值，对应 E_MapRegion",
+      "min": 1
+    },
+    {
+      "name": "terrainAssetId",
+      "type": "int",
+      "description": "地表模型",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "waterAssetId",
+      "type": "int",
+      "description": "水面模型",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "groundColor",
+      "type": "string",
+      "description": "地表基色 #RRGGBB"
+    },
+    {
+      "name": "decorationAssetIds",
+      "type": "int[]",
+      "description": "可散布的装饰模型，空数组关闭",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "decorationDensity",
+      "type": "float",
+      "description": "候选格散布概率，按地貌权重与位置噪声控制",
+      "min": 0,
+      "max": 1
+    },
+    {
+      "name": "decorationMaxSlope",
+      "type": "float",
+      "description": "装饰格与六邻格的最大高度差",
+      "min": 0,
+      "max": 20
+    },
+    {
+      "name": "minScale",
+      "type": "float",
+      "description": "装饰最小等比缩放",
+      "min": 0.1,
+      "max": 3
+    },
+    {
+      "name": "maxScale",
+      "type": "float",
+      "description": "装饰最大等比缩放",
+      "min": 0.1,
+      "max": 3
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "terrainAssetId": 1,
+      "waterAssetId": 6,
+      "groundColor": "#759754",
+      "decorationAssetIds": [
+        13
+      ],
+      "decorationDensity": 0.04,
+      "decorationMaxSlope": 1.2,
+      "minScale": 0.65,
+      "maxScale": 1.1
+    },
+    {
+      "id": 2,
+      "terrainAssetId": 2,
+      "waterAssetId": 6,
+      "groundColor": "#9e9685",
+      "decorationAssetIds": [
+        7
+      ],
+      "decorationDensity": 0.18,
+      "decorationMaxSlope": 2.8,
+      "minScale": 0.65,
+      "maxScale": 1.1
+    },
+    {
+      "id": 3,
+      "terrainAssetId": 3,
+      "waterAssetId": 6,
+      "groundColor": "#849c66",
+      "decorationAssetIds": [
+        13
+      ],
+      "decorationDensity": 0.06,
+      "decorationMaxSlope": 1.2,
+      "minScale": 0.65,
+      "maxScale": 1.1
+    },
+    {
+      "id": 4,
+      "terrainAssetId": 4,
+      "waterAssetId": 6,
+      "groundColor": "#7d9671",
+      "decorationAssetIds": [
+        13
+      ],
+      "decorationDensity": 0.06,
+      "decorationMaxSlope": 1.2,
+      "minScale": 0.65,
+      "maxScale": 1.1
+    },
+    {
+      "id": 5,
+      "terrainAssetId": 16,
+      "waterAssetId": 6,
+      "groundColor": "#567747",
+      "decorationAssetIds": [
+        13,
+        14
+      ],
+      "decorationDensity": 0.64,
+      "decorationMaxSlope": 1.6,
+      "minScale": 0.65,
+      "maxScale": 1.1
+    },
+    {
+      "id": 6,
+      "terrainAssetId": 17,
+      "waterAssetId": 6,
+      "groundColor": "#d7e4e6",
+      "decorationAssetIds": [
+        15,
+        7
+      ],
+      "decorationDensity": 0.15,
+      "decorationMaxSlope": 2.3,
+      "minScale": 0.65,
+      "maxScale": 1.1
+    }
+  ]
+}

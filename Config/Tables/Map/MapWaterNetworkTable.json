@@ -1,0 +1,138 @@
+{
+  "version": 1,
+  "name": "MapWaterNetworkTable",
+  "description": "静态跨区河网、支流、概率瀑布及下游湖泊；不定义角色通行或水流模拟。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "水系方案，当前只支持一行；空表关闭跨区水系",
+      "min": 1
+    },
+    {
+      "name": "maxRivers",
+      "type": "int",
+      "description": "全图主河流上限",
+      "min": 0
+    },
+    {
+      "name": "maxTributaries",
+      "type": "int",
+      "description": "每条主河流的支流上限",
+      "min": 0
+    },
+    {
+      "name": "minLength",
+      "type": "int",
+      "description": "主河流最少格数",
+      "min": 0.01
+    },
+    {
+      "name": "minBranchLength",
+      "type": "int",
+      "description": "支流新开河段最少格数",
+      "min": 0.01
+    },
+    {
+      "name": "minCrossRegions",
+      "type": "int",
+      "description": "主河流至少经过的 Region 实例数",
+      "min": 0.01
+    },
+    {
+      "name": "sourceSpacing",
+      "type": "int",
+      "description": "源头之间最小六边形距离",
+      "min": 0.01
+    },
+    {
+      "name": "sourceAttempts",
+      "type": "int",
+      "description": "源头候选尝试上限",
+      "min": 0.01
+    },
+    {
+      "name": "outletCount",
+      "type": "int",
+      "description": "低洼外沿出水口数量",
+      "min": 0.01
+    },
+    {
+      "name": "outletSpacing",
+      "type": "int",
+      "description": "出水口间最小距离",
+      "min": 0.01
+    },
+    {
+      "name": "minSourceHeight",
+      "type": "int",
+      "description": "源头原始地面最低高度",
+      "min": 0.01
+    },
+    {
+      "name": "depth",
+      "type": "float",
+      "description": "河道最小挖深",
+      "min": 0.01
+    },
+    {
+      "name": "maxCarveDepth",
+      "type": "float",
+      "description": "河道最大挖深，无法满足则放弃候选",
+      "min": 0.01
+    },
+    {
+      "name": "waterfallMinDrop",
+      "type": "float",
+      "description": "直连跨区水边的瀑布最小水位落差",
+      "min": 0.01
+    },
+    {
+      "name": "waterfallChance",
+      "type": "float",
+      "description": "满足条件且可形成下方湖泊时的瀑布概率",
+      "min": 0
+    },
+    {
+      "name": "poolRadius",
+      "type": "int",
+      "description": "瀑布下方湖泊搜索半径",
+      "min": 0.01
+    },
+    {
+      "name": "poolDepth",
+      "type": "float",
+      "description": "下方湖泊挖深",
+      "min": 0.01
+    },
+    {
+      "name": "maxPoolCarve",
+      "type": "float",
+      "description": "湖泊最大开挖高度差",
+      "min": 0.01
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "maxRivers": 3,
+      "maxTributaries": 3,
+      "minLength": 14,
+      "minBranchLength": 6,
+      "minCrossRegions": 2,
+      "sourceSpacing": 8,
+      "sourceAttempts": 192,
+      "outletCount": 2,
+      "outletSpacing": 28,
+      "minSourceHeight": 2,
+      "depth": 0.55,
+      "maxCarveDepth": 4.5,
+      "waterfallMinDrop": 0.8,
+      "waterfallChance": 0.75,
+      "poolRadius": 2,
+      "poolDepth": 0.8,
+      "maxPoolCarve": 2.5
+    }
+  ]
+}

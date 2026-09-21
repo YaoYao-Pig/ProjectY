@@ -1,2 +1,2 @@
--- Generated. Module folder roots do not affect these identities.
-return {["Enums"]={["Demo"]={["Rarity"]={["Common"]=0,["Rare"]=1,["Epic"]=2}},["Localization"]={}},["Constants"]={["Demo"]={["PreviewLimit"]=100,["DefaultRarity"]=0},["Localization"]={}}}
+-- 自动生成的枚举与常量；模块目录不会改变标识，请勿手动修改。
+return {["Enums"]={["Demo"]={["Rarity"]={["Common"]=0,["Rare"]=1,["Epic"]=2}},["Localization"]={},["Map"]={["E_MapRegion"]={["Grassland"]=1,["Mountain"]=2,["Lake"]=3,["River"]=4,["Forest"]=5,["Snow"]=6}}},["Constants"]={["Demo"]={["PreviewLimit"]=100,["DefaultRarity"]=0},["Localization"]={},["Map"]={["HexRadius"]=1,["HeightNoiseScale"]=12,["BorderBlendWidth"]=4,["RoadMaxStep"]=1.2,["RoadSlopeCost"]=4,["MaxCells"]=65536}}}
