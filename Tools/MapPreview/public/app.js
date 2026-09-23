@@ -3,6 +3,9 @@ import { MapRenderer, regionColor } from './renderer.js';
 const $ = id => document.getElementById(id);
 const number = value => new Intl.NumberFormat('zh-CN', { maximumFractionDigits: 2 }).format(value);
 let config, map, busy = false;
+// 名称只用于显示，计算与阈值始终来自 Lua 和工程配表。
+const metricNames = {height:'海拔',slope:'邻格最大高差',roughness:'周围起伏',relativeHeight:'相对周围高度',buildableCells:'周围可建格数',waterClearance:'距水域',waterAccessDistance:'接近岸边代价',riverJunctionDistance:'距汇流点',settlementDistance:'距聚落占地',roadDistance:'距道路'};
+const rejectionNames = {...metricNames,water:'水域不可建',region:'地貌不适用',minScore:'总分不足'};
 const renderer = new MapRenderer($('map'), selectCell);
 function element(tag, text, className) { const node = document.createElement(tag); if (text !== undefined) node.textContent = text; if (className) node.className = className; return node; }
 function swatch(id) { const canvas = element('canvas', undefined, 'swatch'); canvas.width = canvas.height = 12; const ctx = canvas.getContext('2d'); ctx.fillStyle = regionColor(id); ctx.fillRect(0, 0, 12, 12); return canvas; }
@@ -15,7 +18,10 @@ async function request(url, options) {
 }
 // 刷新选择器和摘要；生成接口仍会独立捕获最新已保存的配表与源码。
 async function reloadConfig() {
+  const firstLoad = !config;
   config = await request('/api/config');
+  $('target-cells').max = config.constants.MaxCells;
+  if (firstLoad) $('target-cells').value = config.constants.DefaultTargetCells;
   $('region-config').replaceChildren(...config.regions.map(row => {
     const type = config.regionTypes.find(item => item.value === row.MapRegion), option = element('option', `${row.id} · ${type.description || type.name}`); option.value = row.id; return option;
   }));
@@ -41,14 +47,27 @@ function fillMixedRecipe() {
 }
 async function generate() {
   if (busy) return;
+  let progress;
   try {
     const seed = Number($('seed').value), regionIds = recipe();
+    const targetCells = $('target-cells').value.trim() ? Number($('target-cells').value) : undefined;
+    if (targetCells !== undefined && (!Number.isInteger(targetCells) || targetCells < 1 || targetCells > config.constants.MaxCells))
+      throw new Error(`目标格数须为 1–${config.constants.MaxCells} 的整数`);
     if (!$('seed').value.trim() || !Number.isInteger(seed) || seed < 0 || seed > 0xffffffff) throw new Error('请输入有效的 uint32 种子');
     busy = true; $('generate').disabled = true; $('random').disabled = true; $('busy-overlay').hidden = false;
     status('正在捕获工程配置与源码并运行 xLua…');
-    const result = await request('/api/generate', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Preview-Token': config.token }, body: JSON.stringify({ seed, regionIds }) });
+    const started = performance.now();
+    $('generation-progress').textContent = '读取最新配表与 Lua 源码';
+    progress = setInterval(() => { $('generation-progress').textContent = `${targetCells ? number(targetCells) + ' 格 · ' : ''}已用时 ${Math.floor((performance.now() - started) / 1000)} 秒`; }, 1000);
+    const result = await request('/api/generate', { method: 'POST', headers: { 'Content-Type': 'application/json', 'X-Preview-Token': config.token }, body: JSON.stringify({ seed, regionIds, targetCells }) });
     // 仅成功时替换画布数据；失败时保留上一张地图并在状态区明确提示。
     map = result; renderer.setData(map);
+    const previousProfile = Number($('site-profile').value);
+    $('site-profile').replaceChildren(...map.siteProfiles.map(profile => {
+      const option=element('option',`${profile.id} · ${profile.name}`);option.value=profile.id;return option;
+    }));
+    if (map.siteProfiles.some(p=>p.id===previousProfile)) $('site-profile').value=previousProfile;
+    renderer.setOptions({siteProfileId:Number($('site-profile').value)});
     $('empty-state').hidden = true; $('download').disabled = false; $('screenshot').disabled = false;
     $('map-label').textContent = `SEED ${map.seed}`;
     $('stat-cells').textContent = number(map.stats.cellCount); $('stat-regions').textContent = map.stats.regionCount;
@@ -57,20 +76,23 @@ async function generate() {
     $('water-stats').textContent = `${number(map.stats.waterCellCount)} 个水域格 · ${map.stats.waterBodyCount} 片等高水面\n${mainRivers} 条主河 · ${map.rivers.length-mainRivers} 条支流 · ${map.waterfalls.length} 处瀑布\n${map.decorations.length} 个树木/地貌装饰`;
     $('waterfall-list').replaceChildren(...map.waterfalls.map(fall=>{
       const button=element('button',`瀑布 #${fall.id} · 落差 ${number(fall.drop)} · 湖泊 ${fall.poolCells.length} 格`,'town-item');
-      button.addEventListener('click',()=>{selectCell(fall.to-1);renderer.focus(fall.to-1);});return button;
+        button.addEventListener('click',()=>{selectCell(fall.to-1);renderer.focus(fall.to-1);$('map').scrollIntoView({block:'nearest'});});return button;
     }));
-    $('town-stats').textContent = `${map.stats.townCount} 座城镇 · ${map.stats.buildingCount} 栋建筑\n${map.stats.roadCount} 条城镇道路 · ${map.stats.streetCount} 条内部街道` +
-      (map.stats.roadNetworkCount > 1 ? `\n分为 ${map.stats.roadNetworkCount} 个道路网络（水域或坡度阻隔）` : map.stats.townCount ? '\n城镇道路全部连通' : '\n当前地形没有找到满足配表的城镇选址');
+    $('town-stats').textContent = `${map.stats.settlementCount} 座聚落 · ${map.stats.remoteCount} 处偏远地点 · ${map.stats.buildingCount} 栋建筑\n${map.stats.roadCount} 条城镇道路 · ${map.stats.streetCount} 条内部街道` +
+      (map.stats.roadNetworkCount > 1 ? `\n分为 ${map.stats.roadNetworkCount} 个道路网络（水域或坡度阻隔）` : map.stats.settlementCount ? '\n参与连接的聚落道路全部连通' : '\n当前地形没有找到满足配表的聚落选址');
     $('town-list').replaceChildren(...map.towns.map(town => {
-      const button = element('button', `${town.name} #${town.id} · ${town.buildings.length} 栋`, 'town-item');
-      button.addEventListener('click', () => { selectCell(town.center - 1); renderer.focus(town.center - 1); });
+      const button = element('button', `${town.name} #${town.id} · ${town.role==='remote'?'荒野':town.buildings.length+' 栋'} · ${number(town.siteScore*100)} 分`, 'town-item');
+        button.addEventListener('click', () => { selectCell(town.center - 1); renderer.focus(town.center - 1); $('map').scrollIntoView({block:'nearest'}); });
       return button;
     }));
+    $('site-diagnostics').replaceChildren(...map.siteDiagnostics.map(item=>element('p',
+      `${item.name}：${item.placed}/${item.requested}。合格候选 ${item.eligible}，硬限制/分数淘汰 ${item.hardRejected}，间距淘汰 ${item.spacingRejected}，占地或入口失败 ${item.layoutRejected}，区域数量/尝试上限 ${item.budgetRejected}。`)));
+    $('site-diagnostics').append(element('p','候选按方案分别计数；数量为上限，不会为凑数放宽规则。距离显示到方案上限时，表示超出范围或没有可达来源。','hint'));
     $('metadata').textContent = `${number(map.stats.sharedEdges)} 条共享边 · ${map.elapsedMs} ms\n算法版本 v${map.generationVersion} · ${map.sourceRevision.slice(0, 10)}`;
     $('source-label').textContent = `工程快照 ${map.sourceRevision.slice(0, 12)}`;
     renderRegions(); selectCell(null); renderLegend(); status(`已生成 ${number(map.stats.cellCount)} 个格子；本次使用已保存的最新工程文件。`);
   } catch (error) { status(error.message + (map ? '\n画布保留上一次成功生成的结果。' : ''), true); }
-  finally { busy = false; $('generate').disabled = !config?.regions.length; $('random').disabled = !config?.regions.length; $('busy-overlay').hidden = true; }
+  finally { clearInterval(progress); busy = false; $('generate').disabled = !config?.regions.length; $('random').disabled = !config?.regions.length; $('busy-overlay').hidden = true; }
 }
 function renderRegions() {
   $('region-count').textContent = map.regions.length;
@@ -94,15 +116,20 @@ function selectCell(index) {
     ['Region 实例', '#' + region.instanceId], ['区域配置 ID', region.configId], ['地貌类型', region.typeName], ['区域尺寸', `${region.sizeX} × ${region.sizeY}`],
     ['相邻格子', cell.neighbors.filter(Boolean).length], ['相邻区域', region.neighborIds.map(id => '#' + id).join(', ') || '无']]));
   if (cell.waterLevel !== undefined) details.append(pairs([['水体', (cell.waterKind === 'river' ? '河流' : '湖泊') + ' #' + cell.waterBodyId], ['水面高度', number(cell.waterLevel)], ['水深', number(cell.waterDepth)]]));
+  if (cell.flowAccumulation !== undefined) details.append(pairs([['累计汇水权重',number(cell.flowAccumulation)],['河道扩宽半径',cell.channelRadius===undefined?(cell.channelBank?'扩宽岸格':'—'):number(cell.channelRadius)],['湖盆溢出高度',cell.basinSpill===undefined?'—':number(cell.basinSpill)]]));
   if (cell.riverId) {
     const river=map.rivers[cell.riverId-1];
-    details.append(pairs([['河段',`${river.kind==='main'?'主河':'支流'} #${river.id}`],['经过 Region',river.regionIds.join(', ')],['汇入河段',river.parentRiverId || '地图出口']]));
+    details.append(pairs([['河段',`${river.kind==='main'?'主河':'支流'} #${river.id}`],['经过 Region',river.regionIds.join(', ')],['汇入河段',river.parentRiverId || '既有水域或地图边缘']]));
   }
   if (cell.decorationId) { const item=map.decorations[cell.decorationId-1], asset=map.assets.find(asset=>asset.id===item.assetId); details.append(pairs([['装饰资源',asset.name],['资源配置',asset.id]])); }
   if (cell.townId) {
     const town = map.towns[cell.townId - 1];
-    details.append(pairs([['城镇', `${town.name} #${town.id}`], ['城镇样式配置', town.configId], ['建筑数量', town.buildings.length], ['道路网络', '#' + town.roadNetworkId]]));
+    const profile=map.siteProfiles.find(p=>p.id===town.siteProfileId);
+    details.append(pairs([['地点', `${town.name} #${town.id}`], ['样式配置', town.configId], ['建筑数量', town.buildings.length], ['道路网络', town.roadNetworkId?'#'+town.roadNetworkId:'独立地点，不接道路'],['选址方案',profile.name],['最终选址分',number(town.siteScore*100)]]));
+    details.append(element('strong','生成时中心指标'),pairs(Object.entries(town.siteMetrics).map(([key,value])=>[metricNames[key],number(value)])));
   }
+  const siteSample=cell.siteScores.find(item=>item.profileId===Number($('site-profile').value));
+  if (siteSample) details.append(pairs([['当前方案格子评分',siteSample.score===undefined?'淘汰 · '+rejectionNames[siteSample.reason]:number(siteSample.score*100)+' 分']]));
   if (cell.buildingId) {
     const building = map.buildings[cell.buildingId - 1];
     details.append(pairs([['生成建筑', `${building.name} #${building.id}`], ['建筑配置', building.configId], ['实际占地', `${building.cells.length} 格`], ['地基高度', number(building.baseHeight)], ['墙高 / 屋顶', `${number(building.height)} / ${number(building.roofHeight)}`]]));
@@ -117,9 +144,11 @@ function selectCell(index) {
   candidates.append(element('p', '候选来自区域配置；生成的建筑为静态占地预览，尚未接入玩法实体。', 'hint')); details.append(candidates);
 }
 function renderLegend() {
-  const mode = $('color-mode').value; $('legend-title').textContent = { natural: '自然地表', region: 'REGION INSTANCES', height: 'WORLD HEIGHT', terrain: 'TERRAIN TYPE', transition: '边界混合强度' }[mode];
+  const mode = $('color-mode').value; $('legend-title').textContent = { natural: '自然地表', region: 'REGION INSTANCES', height: 'WORLD HEIGHT', terrain: 'TERRAIN TYPE', transition: '边界混合强度',site:'选址评分',flow:'累计汇水' }[mode];
   const content = $('legend-content'); content.replaceChildren(); if (!map) return;
-  if (mode === 'natural') {
+  if (mode === 'site') content.append(element('span',`${$('site-profile').selectedOptions[0]?.textContent || '无方案'} · 灰色淘汰 → 绿：低分 → 金：高分`));
+  else if (mode === 'flow') content.append(element('span','浅色：少量汇水 → 深蓝：集中排水 · 高亮水面为实际河湖'));
+  else if (mode === 'natural') {
     content.append(element('span', '草坡 · 岩脊 · 湖岸 · 河谷 · 森林 · 冰雪'));
     if (renderer.options.townPlots) {
       const styles = new Map(map.towns.map(town => [town.configId, town]));
@@ -168,6 +197,10 @@ for (const id of ['borders', 'grid', 'water', 'townPlots', 'buildings', 'roads',
   renderer.setOptions({ [id]: $(id).checked }); if (id === 'townPlots') renderLegend();
 });
 $('color-mode').addEventListener('change', () => { renderer.setOptions({ colorMode: $('color-mode').value }); renderLegend(); });
+$('site-profile').addEventListener('change',()=>{
+  $('color-mode').value='site';renderer.setOptions({siteProfileId:Number($('site-profile').value),colorMode:'site'});
+  renderLegend();selectCell(renderer.selected);
+});
 // 导出当前成功结果；延后释放 Blob URL，确保浏览器完成下载接管。
 function download(blob, name) { const url = URL.createObjectURL(blob), link = element('a'); link.href = url; link.download = name; link.click(); setTimeout(() => URL.revokeObjectURL(url), 1000); }
 $('download').addEventListener('click', () => download(new Blob([JSON.stringify(map, null, 2)], { type: 'application/json' }), `map-${map.seed}-${map.sourceRevision.slice(0, 8)}.json`));

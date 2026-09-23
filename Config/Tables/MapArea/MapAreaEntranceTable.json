@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "name": "MapAreaEntranceTable",
+  "description": "一个大地图聚落实例对应一个入口；建筑与聚落分散占地仍归同一 MapArea。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "townId",
+      "type": "int",
+      "description": "大地图聚落样式",
+      "ref": "MapTownTable"
+    },
+    {
+      "name": "areaId",
+      "type": "int",
+      "description": "进入的 MapArea 定义",
+      "ref": "MapAreaTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "townId": 4,
+      "areaId": 1
+    },
+    {
+      "id": 2,
+      "townId": 1,
+      "areaId": 3
+    },
+    {
+      "id": 3,
+      "townId": 2,
+      "areaId": 2
+    },
+    {
+      "id": 4,
+      "townId": 3,
+      "areaId": 4
+    },
+    {
+      "id": 5,
+      "townId": 5,
+      "areaId": 5
+    }
+  ]
+}

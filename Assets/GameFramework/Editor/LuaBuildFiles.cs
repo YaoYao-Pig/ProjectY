@@ -28,7 +28,7 @@ namespace ProjectY.Editor
                 if (!modules.Add(stem)) throw new BuildFailedException("Case-colliding Lua module: " + relative);
             }
             if (!File.Exists(Path.Combine(root, "Main.lua"))) throw new BuildFailedException("Lua/Main.lua is required.");
-            if (!File.Exists(Path.Combine(root, "Generated", "Manifest.lua"))) throw new BuildFailedException("Export config before building Lua scripts.");
+            if (!File.Exists(Path.Combine(root, "_Gen", "Manifest.lua"))) throw new BuildFailedException("Export config before building Lua scripts.");
             return files;
         }
     }

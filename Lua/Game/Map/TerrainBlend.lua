@@ -52,7 +52,12 @@ function Blend.Apply(map, sources, random, noiseScale, width)
         cell.waterLevel = waterWeight > 0 and waterSum / waterWeight or nil
         cell.waterKind = waterKind
         local sortedTypes = {}; for id in pairs(types) do sortedTypes[#sortedTypes + 1] = id end
-        table.sort(sortedTypes); cell.biomeWeights = {}
+        table.sort(sortedTypes); cell.biomeWeights = {}; cell.regionWeights = {}
+        -- 水文配置绑定实例配置 ID；同地貌的两个区域也可以采用不同的局部参数。
+        for _, id in ipairs(ids) do
+            cell.regionWeights[#cell.regionWeights + 1] = { regionId=id,
+                weight=(1-Terrain.Smooth(0, width+1, distances[cell][id])) / sum }
+        end
         for _, id in ipairs(sortedTypes) do
             cell.biomeWeights[#cell.biomeWeights + 1] = { regionType = id, weight = types[id] / sum }
         end

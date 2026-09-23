@@ -1,0 +1,112 @@
+{
+  "version": 1,
+  "name": "MapAreaTownFacilityTable",
+  "description": "城镇功能设施；首版为门口信息入口，后续业务按稳定 kind 接入。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "显示名称"
+    },
+    {
+      "name": "kind",
+      "type": "enum",
+      "description": "功能标识",
+      "values": [
+        "tavern",
+        "smithy",
+        "shop",
+        "guild",
+        "square"
+      ]
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "靠近交互时的说明"
+    },
+    {
+      "name": "lotIds",
+      "type": "int[]",
+      "description": "可选外观预设",
+      "ref": "MapAreaTownLotTable"
+    },
+    {
+      "name": "npcTemplateId",
+      "type": "int",
+      "description": "门前服务 NPC",
+      "ref": "MapAreaTownNpcTable"
+    },
+    {
+      "name": "interactionRadius",
+      "type": "int",
+      "description": "门前交互半径，单位为格",
+      "min": 1,
+      "max": 3
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "酒馆",
+      "kind": "tavern",
+      "description": "炉火、麦酒与旅人的消息在这里汇聚。住宿与招募业务待接入。",
+      "lotIds": [
+        1
+      ],
+      "npcTemplateId": 1,
+      "interactionRadius": 1
+    },
+    {
+      "id": 2,
+      "name": "铁匠铺",
+      "kind": "smithy",
+      "description": "炉膛正热，门前陈列着新打的工具。锻造与修理业务待接入。",
+      "lotIds": [
+        2
+      ],
+      "npcTemplateId": 2,
+      "interactionRadius": 1
+    },
+    {
+      "id": 3,
+      "name": "商店",
+      "kind": "shop",
+      "description": "货架与摊位供应旅途中需要的物资。买卖业务待接入。",
+      "lotIds": [
+        3
+      ],
+      "npcTemplateId": 2,
+      "interactionRadius": 1
+    },
+    {
+      "id": 4,
+      "name": "冒险公会",
+      "kind": "guild",
+      "description": "布告栏记录来自各地的委托。任务与登记业务待接入。",
+      "lotIds": [
+        4
+      ],
+      "npcTemplateId": 1,
+      "interactionRadius": 1
+    },
+    {
+      "id": 5,
+      "name": "城镇广场",
+      "kind": "square",
+      "description": "街道在喷泉周围交汇，居民在这里相遇与休息。",
+      "lotIds": [
+        5
+      ],
+      "npcTemplateId": 1,
+      "interactionRadius": 1
+    }
+  ]
+}

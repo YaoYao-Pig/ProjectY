@@ -1,0 +1,77 @@
+{
+  "version": 1,
+  "name": "CombatEncounterTable",
+  "description": "小地图遭遇配置；速度降序行动，同速按实例 ID，超过轮数上限按撤退结算。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "遭遇名称"
+    },
+    {
+      "name": "radius",
+      "type": "int",
+      "description": "六边形战场半径",
+      "min": 3,
+      "max": 7
+    },
+    {
+      "name": "obstacleChance",
+      "type": "float",
+      "description": "障碍候选概率；保留连通与出生格",
+      "min": 0,
+      "max": 0.4
+    },
+    {
+      "name": "enemyIds",
+      "type": "int[]",
+      "description": "敌方角色模板",
+      "ref": "CombatUnitTable"
+    },
+    {
+      "name": "maxRounds",
+      "type": "int",
+      "description": "最大轮数",
+      "min": 1,
+      "max": 100
+    },
+    {
+      "name": "rewardCoins",
+      "type": "int",
+      "description": "胜利金币",
+      "min": 0,
+      "max": 10000
+    },
+    {
+      "name": "rewardTraitIds",
+      "type": "int[]",
+      "description": "胜利后授予首名存活角色的特质",
+      "ref": "CombatTraitTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "废墟守卫",
+      "radius": 4,
+      "obstacleChance": 0.12,
+      "enemyIds": [
+        4,
+        5,
+        4
+      ],
+      "maxRounds": 30,
+      "rewardCoins": 35,
+      "rewardTraitIds": [
+        1
+      ]
+    }
+  ]
+}

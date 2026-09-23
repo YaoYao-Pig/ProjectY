@@ -9,6 +9,26 @@ import { languageSource, mergeLanguage } from './language.mjs';
 
 export const projectRoot = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..');
 export const sourceDirectory = path.join(projectRoot, 'Config/Tables');
+// 配表产物按运行时加载位置分别归入 _Gen，源表和手写代码不放进生成目录。
+export const generatedPaths = Object.freeze({
+  lua: 'Lua/_Gen', binary: 'Assets/GameFramework/Resources/_Gen/Config', manifest: 'Config/_Gen/export-manifest.json',
+});
+const legacyPaths = { lua: 'Lua/Generated', binary: 'Assets/GameFramework/Resources/Config', manifest: 'Config/export-manifest.json' };
+function currentOutputPath(relative) {
+  for (const kind of ['lua', 'binary']) {
+    if (relative.startsWith(legacyPaths[kind] + '/')) return generatedPaths[kind] + relative.slice(legacyPaths[kind].length);
+  }
+  return relative;
+}
+// 清理只允许清单登记的表产物，必须在写入或迁移前校验整份清单。
+function readOutputManifest(filename) {
+  if (!fs.existsSync(filename)) return [];
+  const entries = JSON.parse(fs.readFileSync(filename, 'utf8'));
+  assert(Array.isArray(entries), 'Generated manifest must be an array');
+  for (const relative of entries) assert(typeof relative === 'string' &&
+    /^(?:Assets\/GameFramework\/Resources\/(?:_Gen\/)?Config\/[A-Za-z][A-Za-z0-9_]*\.bytes|Lua\/(?:Generated|_Gen)\/[A-Za-z][A-Za-z0-9_]*\.lua)$/.test(relative), 'Unsafe generated manifest path');
+  return entries;
+}
 const identifier = /^[A-Za-z][A-Za-z0-9_]*$/;
 const fieldIdentifier = /^[A-Za-z_][A-Za-z0-9_]*$/;
 const reserved = new Set(['__proto__', 'constructor', 'prototype']);
@@ -159,17 +179,25 @@ export function exportTables({ root = projectRoot, inputs = readSources(path.joi
   const outputs = new Map();
   for (const table of tables) {
     const encoded = encodeTable(table);
-    outputs.set(`Assets/GameFramework/Resources/Config/${table.name}.bytes`, encoded.binary);
-    outputs.set(`Lua/Generated/${table.name}.lua`, encoded.lua);
+    outputs.set(`${generatedPaths.binary}/${table.name}.bytes`, encoded.binary);
+    outputs.set(`${generatedPaths.lua}/${table.name}.lua`, encoded.lua);
   }
-  outputs.set('Lua/Generated/Manifest.lua', `-- 自动生成的配表清单，请勿手动修改。\nreturn ${luaLiteral(tables.map(x => x.name))}\n`);
+  outputs.set(`${generatedPaths.lua}/Manifest.lua`, `-- 自动生成的配表清单，请勿手动修改。\nreturn ${luaLiteral(tables.map(x => x.name))}\n`);
   {
     const Enums = {}, Constants = {};
     for (const module of catalog.modules) {
       Enums[module.id] = Object.fromEntries(module.enums.map(item => [item.name, Object.fromEntries(item.members.map(member => [member.name, member.value]))]));
       Constants[module.id] = Object.fromEntries(module.constants.map(item => [item.name, item.value]));
     }
-    outputs.set('Lua/Generated/Catalog.lua', `-- 自动生成的枚举与常量；模块目录不会改变标识，请勿手动修改。\nreturn ${luaLiteral({ Enums, Constants })}\n`);
+    outputs.set(`${generatedPaths.lua}/Catalog.lua`, `-- 自动生成的枚举与常量；模块目录不会改变标识，请勿手动修改。\nreturn ${luaLiteral({ Enums, Constants })}\n`);
+  }
+  const manifestPath = path.join(root, generatedPaths.manifest), legacyManifestPath = path.join(root, legacyPaths.manifest);
+  const previous = [...new Set([...readOutputManifest(manifestPath), ...readOutputManifest(legacyManifestPath)])];
+  const migrations = previous.filter(relative => currentOutputPath(relative) !== relative && outputs.has(currentOutputPath(relative)));
+  // 升级旧工程时保留 Unity 资源 GUID；新旧位置已有不同身份时明确报错，不覆盖已有引用。
+  for (const relative of migrations) {
+    const from = path.join(root, relative + '.meta'), to = path.join(root, currentOutputPath(relative) + '.meta');
+    assert(!fs.existsSync(from) || !fs.existsSync(to) || fs.readFileSync(from).equals(fs.readFileSync(to)), 'Conflicting generated asset metadata: ' + relative);
   }
   // 先完成全部校验和编码，再只替换发生变化的文件。
   // Editor 打包前会重新导出，避免进程中断留下混合版本的 schema 后仍被静默打包。
@@ -178,6 +206,12 @@ export function exportTables({ root = projectRoot, inputs = readSources(path.joi
     atomicJson(existing?.filename || path.join(root, 'Config/Tables/Localization/LuaTxt.json'), language.table);
   }
   const written = [];
+  for (const relative of migrations) {
+    const from = path.join(root, relative), to = path.join(root, currentOutputPath(relative));
+    fs.mkdirSync(path.dirname(to), { recursive: true });
+    if (fs.existsSync(from) && !fs.existsSync(to)) { fs.renameSync(from, to); written.push(currentOutputPath(relative)); }
+    if (fs.existsSync(from + '.meta') && !fs.existsSync(to + '.meta')) fs.renameSync(from + '.meta', to + '.meta');
+  }
   for (const [relative, content] of outputs) {
     const destination = path.join(root, relative); const bytes = Buffer.from(content);
     if (fs.existsSync(destination) && fs.readFileSync(destination).equals(bytes)) continue;
@@ -186,16 +220,23 @@ export function exportTables({ root = projectRoot, inputs = readSources(path.joi
     written.push(relative);
   }
   // 只删除上一次清单记录的过期产物，不触碰其他资源。
-  const manifestPath = path.join(root, 'Config/export-manifest.json');
-  const previous = fs.existsSync(manifestPath) ? JSON.parse(fs.readFileSync(manifestPath, 'utf8')) : [];
   for (const relative of previous) {
     if (outputs.has(relative)) continue;
-    assert(/^(?:Assets\/GameFramework\/Resources\/Config\/[A-Za-z][A-Za-z0-9_]*\.bytes|Lua\/Generated\/[A-Za-z][A-Za-z0-9_]*\.lua)$/.test(relative), 'Unsafe generated manifest path');
     fs.rmSync(path.join(root, relative), { force: true }); fs.rmSync(path.join(root, relative + '.meta'), { force: true });
   }
-  fs.mkdirSync(path.dirname(manifestPath), { recursive: true });
-  fs.writeFileSync(manifestPath, JSON.stringify([...outputs.keys()], null, 2) + '\n');
-  return { tables: tables.length, rows: tables.reduce((sum, table) => sum + table.rows.length, 0), written };
+  atomicJson(manifestPath, [...outputs.keys()]);
+  fs.rmSync(legacyManifestPath, { force: true });
+  // 只移除本次迁移后已经为空的旧目录；未知文件留在原处，不递归清理。
+  for (const kind of ['lua', 'binary']) {
+    const oldDirectory = path.join(root, legacyPaths[kind]), newDirectory = path.join(root, generatedPaths[kind]);
+    if (!previous.some(relative => relative.startsWith(legacyPaths[kind] + '/')) || !fs.existsSync(oldDirectory) || fs.readdirSync(oldDirectory).length) continue;
+    if (fs.existsSync(oldDirectory + '.meta')) {
+      if (fs.existsSync(newDirectory + '.meta')) continue;
+      fs.renameSync(oldDirectory + '.meta', newDirectory + '.meta');
+    }
+    fs.rmdirSync(oldDirectory);
+  }
+  return { tables: tables.length, rows: tables.reduce((sum, table) => sum + table.rows.length, 0), written: [...new Set(written)] };
 }
 if (process.argv[1] && path.resolve(process.argv[1]) === fileURLToPath(import.meta.url)) {
   try { console.log(JSON.stringify(exportTables(), null, 2)); }

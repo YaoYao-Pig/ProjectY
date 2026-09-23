@@ -13,8 +13,8 @@ function MapSystem:OnInit(context)
         self.generator:RegisterRegion(types[name], strategy.Convert, strategy.Instance)
     end
 end
-function MapSystem:Generate(seed, regionIds)
-    return self.generator:Generate(seed, regionIds)
+function MapSystem:Generate(seed, regionIds, targetCells)
+    return self.generator:Generate(seed, regionIds, targetCells)
 end
 function MapSystem:OnShutdown() self.generator = nil end
 return MapSystem

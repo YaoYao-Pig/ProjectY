@@ -10,7 +10,7 @@ import { buildingFootprint } from '../public/renderer.js';
 
 // 相同种子与源码应重现布局，且不改写 Unity 工程的导表产物。
 test('preview uses real config binaries and project Lua with deterministic output', async () => {
-  const output = path.join(projectRoot, 'Assets/GameFramework/Resources/Config/MapRegionTable.bytes');
+  const output = path.join(projectRoot, 'Assets/GameFramework/Resources/_Gen/Config/MapRegionTable.bytes');
   const before = fs.readFileSync(output);
   const input = { seed: 20260921, regionIds: [1, 2, 3, 4] };
   const first = await generatePreview(input), second = await generatePreview(input);
@@ -40,7 +40,7 @@ test('preview uses real config binaries and project Lua with deterministic outpu
   assert.ok(first.waterBodies.length > 0); assert.ok(first.stats.waterCellCount > 0);
   assert.deepEqual(first.regions[0].enemies, []);
   assert.equal(first.regions[0].buildings[0].name, '地牢入口');
-  assert.equal(first.assets.length, 18);
+  assert.equal(first.assets.length, 19);
   assert.deepEqual(first.rivers, second.rivers); assert.deepEqual(first.decorations, second.decorations);
   for (const decoration of first.decorations) {
     assert.ok(first.cells[decoration.cell - 1]); assert.ok(first.assets.some(asset => asset.id === decoration.assetId));

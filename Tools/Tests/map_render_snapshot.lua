@@ -1,7 +1,7 @@
 -- 只验证新增的 Unity 渲染适配层：真实配表、索引身份、水位及快照所有权。
 package.path = 'Lua/?.lua;' .. package.path
 local registry = require('Core.SystemRegistry')({ ReadConfig = function(_, name)
-    local file = assert(io.open('Assets/GameFramework/Resources/Config/' .. name .. '.bytes', 'rb'))
+    local file = assert(io.open('Assets/GameFramework/Resources/_Gen/Config/' .. name .. '.bytes', 'rb'))
     local bytes = file:read('*a'); file:close(); return bytes
 end, LogError = error })
 registry:Register('Config', require('Config.ConfigSystem'))
@@ -10,6 +10,22 @@ registry:Start()
 local map = registry:Get('Map'):Generate(20260921, {1, 2, 3, 4, 1, 2, 3, 4})
 local build = require('Game.Map.MapRenderSnapshot')
 local snapshot = build(map)
+-- 真实共享资源表含地牢室内陈设；快照应覆盖全部实际引用，且不能要求绑定未用资源。
+local required = {}
+for _, cell in ipairs(snapshot.cells) do
+    required[cell.terrainAssetId] = true
+    if cell.hasWater then required[cell.waterAssetId] = true end
+end
+for _, building in ipairs(snapshot.buildings) do
+    required[building.assetId], required[building.platformAssetId] = true, true
+end
+for _, decoration in ipairs(snapshot.decorations) do required[decoration.assetId] = true end
+for _, asset in ipairs(snapshot.assets) do
+    assert(required[asset.id], 'Snapshot includes an unused or duplicate asset: ' .. asset.id)
+    required[asset.id] = nil
+end
+assert(next(required) == nil, 'Snapshot omitted a referenced asset')
+assert(#snapshot.assets < #map.assets, 'Fixture must contain unused shared assets')
 assert(snapshot.hexRadius == map.hexRadius and snapshot.regionCount == #map:GetRegions())
 assert(#snapshot.cells == #map:GetCells() and #snapshot.buildings == #map:GetBuildings())
 local wet = 0

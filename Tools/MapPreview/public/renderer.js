@@ -79,6 +79,7 @@ export class MapRenderer {
           const face = this.faces[i];
           if (point.x >= face.bounds.minX && point.x <= face.bounds.maxX && point.y >= face.bounds.minY && point.y <= face.bounds.maxY && inside(point, face.points)) { selected = face.index; break; }
         }
+        if (this.overviewActive) selected = this.pickOverview(point);
         this.select(selected); this.onSelect(selected);
       }
       this.drag = null; canvas.classList.remove('dragging');
@@ -95,6 +96,7 @@ export class MapRenderer {
   // 双向记录真实 Border 关系；柱底仅用于展示厚度，不属于算法高度数据。
   setData(data) {
     this.data = data; this.selected = null;
+    this.overviewCache = null;
     this.assets = new Map(data.assets.map(asset => [asset.id, asset]));
     // 同一占地的边界与配置颜色只计算一次，相机重绘时复用。
     this.buildingPlots = new Map(data.buildings.map(building => [building.id, buildingFootprint(building, data)]));
@@ -105,6 +107,27 @@ export class MapRenderer {
       this.boundaries.add(edge.a + ':' + edge.b); this.boundaries.add(edge.b + ':' + edge.a);
     }
     this.base = data.stats.minHeight - data.hexRadius * 1.2;
+    // 按轴坐标分块；放大查看局部时先剔除整块，不为全图逐格创建多边形。
+    const chunks = new Map();
+    data.cells.forEach((cell, index) => {
+      const key = `${Math.floor(cell.q / 32)}:${Math.floor(cell.r / 32)}`;
+      if (!chunks.has(key)) chunks.set(key, { indices: [], minX: Infinity, maxX: -Infinity, minZ: Infinity, maxZ: -Infinity });
+      const chunk = chunks.get(key); chunk.indices.push(index);
+      chunk.minX = Math.min(chunk.minX, cell.x); chunk.maxX = Math.max(chunk.maxX, cell.x);
+      chunk.minZ = Math.min(chunk.minZ, cell.z); chunk.maxZ = Math.max(chunk.maxZ, cell.z);
+    });
+    this.chunks = [...chunks.values()];
+    this.maxSurface = data.stats.maxHeight;
+    for (const cell of data.cells) this.maxSurface = Math.max(this.maxSurface, cell.waterLevel ?? cell.height);
+    this.geometryMargin = data.hexRadius * 2;
+    for (const item of data.decorations) {
+      this.maxSurface = Math.max(this.maxSurface, data.cells[item.cell - 1].height + this.assets.get(item.assetId).referenceHeight * item.scale);
+      this.geometryMargin = Math.max(this.geometryMargin, data.hexRadius * item.scale);
+    }
+    for (const building of data.buildings) {
+      this.maxSurface = Math.max(this.maxSurface, building.baseHeight + building.height * 1.12 + building.roofHeight + .05);
+      this.geometryMargin = Math.max(this.geometryMargin, data.hexRadius * (building.footprintRadius + 1) * 2);
+    }
     this.corners = Array.from({ length: 6 }, (_, index) => ({ x: Math.cos(radians(30 + index * 60)) * data.hexRadius, z: Math.sin(radians(30 + index * 60)) * data.hexRadius }));
     this.fit();
   }
@@ -122,9 +145,30 @@ export class MapRenderer {
   }
   // 在 XZ 地面旋转后做正交投影；depth 用于画家算法的远近排序。
   project(x, y, z) {
-    const yaw = radians(this.options.rotation), elevation = radians(this.options.tilt);
-    const horizontal = x * Math.cos(yaw) - z * Math.sin(yaw), depth = x * Math.sin(yaw) + z * Math.cos(yaw);
-    return { x: horizontal, y: depth * Math.sin(elevation) - y * Math.cos(elevation), depth: depth * Math.cos(elevation) + y * Math.sin(elevation) };
+    // 相机角度不变时复用三角函数，平移和缩放只更新屏幕变换。
+    if (this.projection?.rotation !== this.options.rotation || this.projection?.tilt !== this.options.tilt) {
+      const yaw = radians(this.options.rotation), elevation = radians(this.options.tilt);
+      this.projection = { rotation: this.options.rotation, tilt: this.options.tilt,
+        sinYaw: Math.sin(yaw), cosYaw: Math.cos(yaw), sinTilt: Math.sin(elevation), cosTilt: Math.cos(elevation) };
+    }
+    const p = this.projection, horizontal = x * p.cosYaw - z * p.sinYaw, depth = x * p.sinYaw + z * p.cosYaw;
+    return { x: horizontal, y: depth * p.sinTilt - y * p.cosTilt, depth: depth * p.cosTilt + y * p.sinTilt };
+  }
+  visibleCells(screen) {
+    const visible = new Set(), margin = this.geometryMargin;
+    for (const chunk of this.chunks) {
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      for (const x of [chunk.minX - margin, chunk.maxX + margin])
+        for (const z of [chunk.minZ - margin, chunk.maxZ + margin])
+          for (const y of [this.base, this.maxSurface]) {
+            const point = screen(x, y, z);
+            minX = Math.min(minX, point.x); maxX = Math.max(maxX, point.x);
+            minY = Math.min(minY, point.y); maxY = Math.max(maxY, point.y);
+          }
+      if (maxX < -2 || minX > this.width + 2 || maxY < -2 || minY > this.height + 2) continue;
+      for (const index of chunk.indices) visible.add(index);
+    }
+    return visible;
   }
   // 同时纳入顶面与柱底，保证立体视角下整张地图位于画布可视范围。
   fit() {
@@ -147,6 +191,12 @@ export class MapRenderer {
   // 多个输入事件合并到同一帧重绘，拖动和滑杆不会重复提交整图绘制。
   schedule() { if (!this.scheduled) this.scheduled = requestAnimationFrame(() => { this.scheduled = null; this.draw(); }); }
   color(cell, shade = 1, water = false) {
+    // 评分和汇水数据来自工程 Lua；仅将标量映射为可审阅颜色。
+    if (this.options.colorMode === 'site') {
+      const sample=cell.siteScores.find(item=>item.profileId===this.options.siteProfileId);
+      return rgb(sample?.score===undefined?[139,145,142]:mix([51,107,78],[249,206,94],sample.score),shade);
+    }
+    if (this.options.colorMode === 'flow' && !water) return rgb(mix([220,227,209],[30,75,116],Math.min(1,Math.log1p(cell.flowAccumulation || 0)/8)),shade);
     // 水面使用真实水深着色；关闭水面时可以直接观察湖床和河床。
     if (water) return rgb(mix([77, 165, 178], [36, 99, 132], Math.min(1, cell.waterDepth / 4)), shade);
     const range = this.data.stats.maxHeight - this.data.stats.minHeight;
@@ -165,19 +215,77 @@ export class MapRenderer {
     const hue = this.options.colorMode === 'region' ? (cell.regionId * 137.508 + 32) % 360 : (type * 43 + 62) % 360;
     return `hsl(${hue} ${this.options.colorMode === 'region' ? 29 : 28}% ${(53 + t * 15) * shade}%)`;
   }
+  // 大地图远景按真实几何缓存为离屏图；平移缩放只合成图片，放大后恢复模型细节。
+  // 缓存随地形显示参数失效，不改生成结果，也不丢弃检查所需的格子数据。
+  drawOverview() {
+    const options = { ...this.options, buildings: false, decorations: false };
+    const key = JSON.stringify(options);
+    if (this.overviewCache?.key !== key) {
+      let minX = Infinity, maxX = -Infinity, minY = Infinity, maxY = -Infinity;
+      for (const cell of this.data.cells) for (const height of [this.base, this.maxSurface]) {
+        const point = this.project(cell.x, height * options.heightScale, cell.z);
+        minX = Math.min(minX, point.x); maxX = Math.max(maxX, point.x);
+        minY = Math.min(minY, point.y); maxY = Math.max(maxY, point.y);
+      }
+      const margin = this.geometryMargin * 2;
+      minX -= margin; minY -= margin; maxX += margin; maxY += margin;
+      const scale = Math.min(3 / this.data.hexRadius, 4096 / (maxX - minX), 4096 / (maxY - minY));
+      const canvas = document.createElement('canvas');
+      canvas.width = Math.ceil((maxX - minX) * scale); canvas.height = Math.ceil((maxY - minY) * scale);
+      const painter = Object.assign(Object.create(MapRenderer.prototype), this, {
+        canvas, context: canvas.getContext('2d'), width: canvas.width, height: canvas.height, ratio: 1,
+        scale, pan: { x: -minX * scale, y: -minY * scale }, options, selected: null, isOverviewPass: true,
+      });
+      painter.draw();
+      // 不保留离屏多边形，远景点击时仅检查鼠标附近的实际格子顶面。
+      this.overviewCache = { key, canvas, scale, minX, minY };
+    }
+    const cache = this.overviewCache, factor = this.scale / cache.scale, ctx = this.context;
+    ctx.drawImage(cache.canvas, this.pan.x + cache.minX * this.scale, this.pan.y + cache.minY * this.scale,
+      cache.canvas.width * factor, cache.canvas.height * factor);
+    if (this.selected !== null) {
+      const cell = this.data.cells[this.selected];
+      const points = this.corners.map(corner => this.project(cell.x + corner.x,
+        Math.max(cell.height, this.options.water ? cell.waterLevel ?? cell.height : cell.height) * this.options.heightScale, cell.z + corner.z));
+      ctx.beginPath(); points.forEach((p, i) => ctx[i ? 'lineTo' : 'moveTo'](p.x * this.scale + this.pan.x, p.y * this.scale + this.pan.y));
+      ctx.closePath(); ctx.strokeStyle = '#ffda74'; ctx.lineWidth = 2; ctx.stroke();
+    }
+    ctx.fillStyle = '#344b40'; ctx.font = '12px sans-serif';
+    ctx.fillText('大地图总览 · 放大查看建筑与树木', 18, this.height - 55);
+  }
+  pickOverview(point) {
+    let selected = null, depth = -Infinity;
+    const x = (point.x - this.pan.x) / this.scale, y = (point.y - this.pan.y) / this.scale;
+    this.data.cells.forEach((cell, index) => {
+      const height = Math.max(cell.height, this.options.water ? cell.waterLevel ?? cell.height : cell.height) * this.options.heightScale;
+      const center = this.project(cell.x, height, cell.z);
+      if (Math.abs(center.x - x) > this.data.hexRadius * 1.1 || Math.abs(center.y - y) > this.data.hexRadius * 1.1 || center.depth < depth) return;
+      const polygon = this.corners.map(c => this.project(cell.x + c.x, height, cell.z + c.z));
+      if (inside({ x, y }, polygon)) { selected = index; depth = center.depth; }
+    });
+    const building = selected !== null && this.options.townPlots && this.data.cells[selected].buildingId;
+    return building ? this.data.buildings[building - 1].cell - 1 : selected;
+  }
   draw() {
     const ctx = this.context; ctx.setTransform(this.ratio, 0, 0, this.ratio, 0, 0);
+    this.overviewActive = !this.isOverviewPass && this.data?.cells.length >= 10000 && this.scale * this.data.hexRadius < 4;
+    if (this.isOverviewPass) ctx.clearRect(0, 0, this.width, this.height);
+    else {
     ctx.fillStyle = '#e9eee6'; ctx.fillRect(0, 0, this.width, this.height);
     ctx.fillStyle = '#ccd7c666';
     for (let x = 16; x < this.width; x += 28) for (let y = 16; y < this.height; y += 28) ctx.fillRect(x, y, 1, 1);
+    }
     this.faces = []; if (!this.data) return;
+    if (this.overviewActive) { this.drawOverview(); return; }
     const screen = (x, y, z) => { const point = this.project(x, y * this.options.heightScale, z); return { x: point.x * this.scale + this.pan.x, y: point.y * this.scale + this.pan.y, depth: point.depth }; };
+    const visible = this.visibleCells(screen);
     const face = (points, index, top, shade, water = false, fill = null, plotId = null) => {
       const bounds = { minX: Math.min(...points.map(p => p.x)), maxX: Math.max(...points.map(p => p.x)), minY: Math.min(...points.map(p => p.y)), maxY: Math.max(...points.map(p => p.y)) };
       if (bounds.maxX < -2 || bounds.minX > this.width + 2 || bounds.maxY < -2 || bounds.minY > this.height + 2) return;
       this.faces.push({ points, index, top, bounds, shade, water, fill, plotId, depth: points.reduce((sum, point) => sum + point.depth, 0) / points.length });
     };
-    this.data.cells.forEach((cell, index) => {
+    visible.forEach(index => {
+      const cell = this.data.cells[index];
       // 城市地块模式下由整块平台替代各小格的顶面和内侧壁，关闭后恢复原始地形。
       if (this.options.townPlots && cell.buildingId) return;
       const points = this.corners.map(corner => screen(cell.x + corner.x, cell.height, cell.z + corner.z));
@@ -209,6 +317,7 @@ export class MapRenderer {
       }
     });
     if (this.options.townPlots) for (const building of this.data.buildings) {
+      if (!visible.has(building.cell - 1)) continue;
       const plot = this.buildingPlots.get(building.id), cell = this.data.cells[building.cell - 1], height = building.baseHeight + .025;
       const fill = this.options.colorMode === 'natural' ? rgb(this.townColors.get(building.townId), 1) : this.color({ ...cell, height: building.baseHeight });
       // 一栋建筑只有一个连续顶面。格子线、底色和选择高亮都不会再把它切成独立小块。
@@ -236,6 +345,7 @@ export class MapRenderer {
         if (!segments.has(key) || road.kind === 'road') segments.set(key, { a, b, main: road.kind === 'road' });
       }
       for (const segment of segments.values()) {
+        if (!visible.has(segment.a - 1) && !visible.has(segment.b - 1)) continue;
         const a = this.data.cells[segment.a - 1], b = this.data.cells[segment.b - 1];
         const dx = b.x - a.x, dz = b.z - a.z, length = Math.hypot(dx, dz), width = this.data.hexRadius * (segment.main ? .27 : .19);
         const px = -dz / length * width, pz = dx / length * width, mx = (a.x + b.x) / 2, mz = (a.z + b.z) / 2;
@@ -247,12 +357,15 @@ export class MapRenderer {
         if (a.height !== b.height) face([screen(mx + px, a.height + .025, mz + pz), screen(mx - px, a.height + .025, mz - pz), screen(mx - px, b.height + .025, mz - pz), screen(mx + px, b.height + .025, mz + pz)], segment.a - 1, false, 1, false, '#a28e6d');
       }
       for (const town of this.data.towns) {
+        if (!visible.has(town.center - 1)) continue;
+        if (town.role==='remote') continue;
         const cell = this.data.cells[town.center - 1];
         addOverlay(town.center - 1, this.corners.map(c => screen(cell.x + c.x * .65, cell.height + .03, cell.z + c.z * .65)), '#d7c5a1');
       }
     }
     // 装饰只按 Lua 给出的格子、模型类型和缩放绘制，不在浏览器重新撒树。
     if (this.options.decorations) for (const item of this.data.decorations) {
+      if (!visible.has(item.cell - 1)) continue;
       const cell = this.data.cells[item.cell - 1], asset = this.assets.get(item.assetId);
       const height = asset.referenceHeight * item.scale, radius = this.data.hexRadius * item.scale * .42;
       const cone = (base, peak, width, fill) => {
@@ -271,15 +384,45 @@ export class MapRenderer {
       }
     }
     if (this.options.water) for (const fall of this.data.waterfalls) {
+      if (!visible.has(fall.to - 1)) continue;
       const cell=this.data.cells[fall.to-1];
       face(this.corners.map(c=>screen(cell.x+c.x*.5,cell.waterLevel+.018,cell.z+c.z*.5)),fall.to-1,true,1,true,'#e4f4f1');
     }
     if (this.options.buildings) for (const building of this.data.buildings) {
+      if (!visible.has(building.cell - 1)) continue;
       const asset = this.assets.get(building.assetId);
       const cell = this.data.cells[building.cell - 1], entrance = this.data.cells[building.entrance - 1];
       const yaw = Math.atan2(entrance.z - cell.z, entrance.x - cell.x), size = this.data.hexRadius * (building.footprintRadius + .52);
       const point = (x, y, z) => screen(cell.x + x * Math.cos(yaw) - z * Math.sin(yaw), y, cell.z + x * Math.sin(yaw) + z * Math.cos(yaw));
       const base = building.baseHeight + .025, eave = base + building.height, ridge = eave + building.roofHeight;
+      // 地牢按资源轮廓画成石拱遗址，不再复用民居的墙体和坡屋顶。
+      if (asset.previewShape === 'dungeon') {
+        const unit = (building.height + building.roofHeight) / asset.referenceHeight;
+        const local = (x, y, z) => point(x * unit, base + y * unit, z * unit);
+        const solid = (vertices, sides, fill) => {
+          for (const side of sides) face(side.map(i => local(...vertices[i])), building.cell - 1, false, 1, false, fill);
+        };
+        const box = (x, y, z, dx, dy, dz, fill) => {
+          const vertices = [[-1,-1,-1],[1,-1,-1],[1,-1,1],[-1,-1,1],[-1,1,-1],[1,1,-1],[1,1,1],[-1,1,1]]
+            .map(([a,b,c]) => [x+a*dx/2,y+b*dy/2,z+c*dz/2]);
+          solid(vertices, [[0,1,5,4],[1,2,6,5],[2,3,7,6],[3,0,4,7],[4,5,6,7]], fill);
+        };
+        for (const z of [-.49,.49]) {
+          box(-.03,.37,z,.58,.74,.27,asset.previewColor);
+          box(.05,.10,z,.69,.20,.31,'#77736c');
+        }
+        for (let i=0;i<7;i++) {
+          const a=i*Math.PI/7,b=(i+1)*Math.PI/7;
+          const vertices=[.28,-.33].flatMap(x=>[[.36,a],[.65,a],[.65,b],[.36,b]].map(([r,t])=>[x,.72+r*Math.sin(t),r*Math.cos(t)]));
+          solid(vertices,[[0,1,2,3],[4,7,6,5],[0,4,5,1],[1,5,6,2],[2,6,7,3],[3,7,4,0]],i%2?'#b1a895':asset.previewColor);
+        }
+        const opening=[[-.36,.02],[.36,.02],...Array.from({length:8},(_,i)=>[.36*Math.cos(i*Math.PI/7),.72+.36*Math.sin(i*Math.PI/7)])];
+        face(opening.map(([z,y])=>local(-.34,y,z)),building.cell-1,false,1,false,'#45423a');
+        for (let i=0;i<3;i++) box(.68-i*.19,.025*(3-i),0,.22,.05*(3-i),.68,i%2?'#77736c':asset.previewColor);
+        box(-.35,.71,-.51,.29,1.42,.24,'#77736c');box(-.36,1.48,-.51,.31,.24,.29,asset.previewColor);
+        box(-.39,.25,.51,.27,.5,.27,'#77736c');box(.30,.11,.62,.21,.22,.21,'#77736c');
+        continue;
+      }
       // 墙体放在整块地基之上；建筑细节可独立关闭，城市地块继续保留。
       const corners = [[-size, -size * .65], [size, -size * .65], [size, size * .65], [-size, size * .65]];
       const floor = corners.map(([x, z]) => point(x, Math.min(...building.cells.map(id => this.data.cells[id - 1].height)), z));
@@ -290,9 +433,9 @@ export class MapRenderer {
         face([bottoms[side], bottoms[next], tops[next], tops[side]], building.cell - 1, false, 1, false, asset.previewColor);
       }
       const left = point(-size, ridge, 0), right = point(size, ridge, 0);
-      const roofColor = asset.previewShape === 'dungeon' ? '#6f726e' : '#a8694e';
+      const roofColor = asset.previewShape === 'cottage' ? '#8c7558' : '#a8694e';
       face([tops[0], tops[1], right, left], building.cell - 1, true, 1, false, roofColor);
-      face([left, right, tops[2], tops[3]], building.cell - 1, true, 1, false, asset.previewShape === 'dungeon' ? '#777c76' : '#875241');
+      face([left, right, tops[2], tops[3]], building.cell - 1, true, 1, false, asset.previewShape === 'cottage' ? '#66594a' : '#875241');
       face([tops[0], left, tops[3]], building.cell - 1, false, 1, false, '#e4d3ad');
       face([tops[1], tops[2], right], building.cell - 1, false, 1, false, '#d9c69e');
       // 面向 Lua 选定入口的门，仅为占位模型的朝向提示。
@@ -336,6 +479,6 @@ export class MapRenderer {
         ctx.fillStyle = '#fff8c36b'; ctx.fill(); ctx.strokeStyle = '#fff5c1'; ctx.lineWidth = 2.5; ctx.stroke();
       }
     }
-    ctx.fillStyle = '#6b8064'; ctx.font = '10px Segoe UI'; ctx.fillText('XZ · 1 格半径 = ' + this.data.hexRadius, 22, this.height - 80);
+    if (!this.isOverviewPass) { ctx.fillStyle = '#6b8064'; ctx.font = '10px Segoe UI'; ctx.fillText('XZ · 1 格半径 = ' + this.data.hexRadius, 22, this.height - 80); }
   }
 }

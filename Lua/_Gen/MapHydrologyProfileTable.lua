@@ -1,0 +1,12 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapHydrologyProfileTableRow
+---@field id number 配置 ID
+---@field name string 水文方案名称
+---@field runoff number 单位格径流权重
+---@field carveResistance number 开挖阻力，越大越避免切入高地
+---@field meander number 平缓地带的空间曲流偏好
+---@field widthScale number 河宽倍率
+---@field slopeNarrowing number 陡坡收窄系数
+---@field lakeChance number 真实盆地蓄水概率
+---@field lakeFill number 盆地最低点至溢出口的蓄水比例
+return {["name"]="MapHydrologyProfileTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\233\133\141\231\189\174 ID",["min"]=1},{["name"]="name",["type"]="text",["description"]="\230\176\180\230\150\135\230\150\185\230\161\136\229\144\141\231\167\176"},{["name"]="runoff",["type"]="float",["description"]="\229\141\149\228\189\141\230\160\188\229\190\132\230\181\129\230\157\131\233\135\141",["min"]=0.01,["max"]=10},{["name"]="carveResistance",["type"]="float",["description"]="\229\188\128\230\140\150\233\152\187\229\138\155\239\188\140\232\182\138\229\164\167\232\182\138\233\129\191\229\133\141\229\136\135\229\133\165\233\171\152\229\156\176",["min"]=0.1,["max"]=10},{["name"]="meander",["type"]="float",["description"]="\229\185\179\231\188\147\229\156\176\229\184\166\231\154\132\231\169\186\233\151\180\230\155\178\230\181\129\229\129\143\229\165\189",["min"]=0,["max"]=5},{["name"]="widthScale",["type"]="float",["description"]="\230\178\179\229\174\189\229\128\141\231\142\135",["min"]=0.1,["max"]=3},{["name"]="slopeNarrowing",["type"]="float",["description"]="\233\153\161\229\157\161\230\148\182\231\170\132\231\179\187\230\149\176",["min"]=0,["max"]=8},{["name"]="lakeChance",["type"]="float",["description"]="\231\156\159\229\174\158\231\155\134\229\156\176\232\147\132\230\176\180\230\166\130\231\142\135",["min"]=0,["max"]=1},{["name"]="lakeFill",["type"]="float",["description"]="\231\155\134\229\156\176\230\156\128\228\189\142\231\130\185\232\135\179\230\186\162\229\135\186\229\143\163\231\154\132\232\147\132\230\176\180\230\175\148\228\190\139",["min"]=0.1,["max"]=1}},["fingerprint"]="5fdc84cd3bce76834a084e8bf858713753d218efafbfc9151e1a9ffdcc21a7fb"}

@@ -17,6 +17,7 @@ function Convert:Generate(map1, config, random, instanceType)
     assert(sizeX * sizeY <= map1.cellLimit * 2, 'Map region sampling area exceeds MaxCells budget')
     local footprint = Footprint.Create(sizeX, sizeY, random, (#map1.map.regions + 1) * 3571, config.shapeIrregularity)
     local q, r, placed = map1:FindPlacement(footprint, random)
+    placed = map1:FitBudget(q, r, placed)
     map1:CheckCapacity(#placed.cells)
     map1:AddRegion(config, q, r, sizeX, sizeY, instanceType, placed, self)
     return map1

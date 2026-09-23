@@ -9,11 +9,6 @@ return function(map)
         local ids = {}; for i, cell in ipairs(cells) do ids[i] = assert(indices[cell]) end
         return ids
     end
-    -- 跨语言数组必须复制为普通表，避免只读代理的长度及所有权泄漏到 C#。
-    for i, asset in ipairs(map.assets) do
-        result.assets[i] = { id = asset.id, prefabPath = asset.prefabPath, referenceHeight = asset.referenceHeight,
-            tintMaterial = asset.tintMaterial }
-    end
     for i, cell in ipairs(map:GetCells()) do
         local x, y, z = map:GetCellWorldPosition(cell.q, cell.r)
         local weights = {}
@@ -44,5 +39,24 @@ return function(map)
         result.waterfalls[i] = { from = indices[item.from], to = indices[item.to], drop = item.drop }
     end
     for i, river in ipairs(map:GetRivers()) do result.rivers[i] = { kind = river.kind, cells = cellIds(river.cells) } end
+    -- 共用资源表还包含小地图陈设；大地图仅携带实际渲染引用，避免要求场景绑定无关模型。
+    local required = {}
+    for _, cell in ipairs(result.cells) do
+        required[cell.terrainAssetId] = true
+        if cell.hasWater then required[cell.waterAssetId] = true end
+    end
+    for _, building in ipairs(result.buildings) do
+        required[building.assetId], required[building.platformAssetId] = true, true
+    end
+    for _, item in ipairs(result.decorations) do required[item.assetId] = true end
+    -- 保留资源表顺序并复制为连续普通数组，避免只读代理及空洞数组跨越 Lua/C# 边界。
+    for _, asset in ipairs(map.assets) do
+        if required[asset.id] then
+            result.assets[#result.assets + 1] = { id = asset.id, prefabPath = asset.prefabPath,
+                referenceHeight = asset.referenceHeight, tintMaterial = asset.tintMaterial }
+            required[asset.id] = nil
+        end
+    end
+    assert(next(required) == nil, '大地图渲染引用了资源表中不存在的模型：' .. tostring(next(required)))
     return result
 end

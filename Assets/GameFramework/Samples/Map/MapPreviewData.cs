@@ -73,11 +73,27 @@ namespace ProjectY.Samples
                 Neighbors = ReadIndices(row, "neighbors") };
         }
 
-        public static MapPreviewData Generate(GameBootstrap bootstrap, uint seed, string recipe)
+        // 旧调用不传尺寸时保持一遍配方；测试面板可显式指定精确格数。
+        public static MapPreviewData Generate(GameBootstrap bootstrap, uint seed, string recipe, int? targetCells = null)
         {
-            var values = bootstrap.CallModule("Game.Map.GenerateRenderMap", (double)seed, recipe);
+            var values = bootstrap.CallModule("Game.Map.GenerateRenderMap", (double)seed, recipe, targetCells.HasValue ? (object)(double)targetCells.Value : null);
             using (var root = (LuaTable)values[0])
-                return new MapPreviewData {
+                return Read(root);
+        }
+
+        public static void ReadSizeSettings(GameBootstrap bootstrap, out int defaultCells, out int maxCells)
+        {
+            var values = bootstrap.CallModule("Game.Map.MapPreviewSettings");
+            using (var root = (LuaTable)values[0])
+            {
+                defaultCells = root.Get<int>("defaultCells"); maxCells = root.Get<int>("maxCells");
+            }
+        }
+
+        // 允许其他演示读取自己持有的真实地图快照，避免重复生成或持有 LuaTable。
+        public static MapPreviewData Read(LuaTable root)
+        {
+            return new MapPreviewData {
                     Seed = root.Get<uint>("seed"), Radius = root.Get<float>("hexRadius"),
                     GenerationVersion = root.Get<int>("generationVersion"), RegionCount = root.Get<int>("regionCount"),
                     RiverCount = ReadArray(root, "rivers", row => row.Get<string>("kind")).Length,

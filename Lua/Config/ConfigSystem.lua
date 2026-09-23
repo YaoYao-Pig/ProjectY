@@ -4,12 +4,12 @@ local Table = require('Config.ConfigTable')
 local Config = Class('ConfigSystem', System)
 function Config:OnInit(context)
     System.OnInit(self, context); self.tables = {}; self.manifest = {}
-    for _, name in ipairs(require('Generated.Manifest')) do self.manifest[name] = true end
+    for _, name in ipairs(require('_Gen.Manifest')) do self.manifest[name] = true end
 end
 function Config:GetTable(name)
     assert(self.manifest[name], 'Unknown config table: ' .. tostring(name))
     if not self.tables[name] then
-        self.tables[name] = Table.Load(require('Generated.' .. name), self.context.services:ReadConfig(name))
+        self.tables[name] = Table.Load(require('_Gen.' .. name), self.context.services:ReadConfig(name))
     end
     return self.tables[name]
 end

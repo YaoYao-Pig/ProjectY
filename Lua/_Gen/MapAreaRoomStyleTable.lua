@@ -1,0 +1,11 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaRoomStyleTableRow
+---@field id number 稳定配置 ID
+---@field name string 房间策略名称
+---@field shape string 注册形状：cavern / hall / lobed
+---@field roughness number 边缘起伏幅度
+---@field propIds number[] 外围陈设池
+---@field propCount number 目标陈设数量，受净宽和连通性约束可减少
+---@field districtId number 所属功能分区
+---@field propCoverage number 目标物件占用地面比例；受净空与连通约束
+return {["name"]="MapAreaRoomStyleTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="name",["type"]="string",["description"]="\230\136\191\233\151\180\231\173\150\231\149\165\229\144\141\231\167\176"},{["name"]="shape",["type"]="string",["description"]="\230\179\168\229\134\140\229\189\162\231\138\182\239\188\154cavern / hall / lobed"},{["name"]="roughness",["type"]="float",["description"]="\232\190\185\231\188\152\232\181\183\228\188\143\229\185\133\229\186\166",["min"]=0,["max"]=3},{["name"]="propIds",["type"]="int[]",["description"]="\229\164\150\229\155\180\233\153\136\232\174\190\230\177\160",["ref"]="MapAreaPropTable"},{["name"]="propCount",["type"]="int",["description"]="\231\155\174\230\160\135\233\153\136\232\174\190\230\149\176\233\135\143\239\188\140\229\143\151\229\135\128\229\174\189\229\146\140\232\191\158\233\128\154\230\128\167\231\186\166\230\157\159\229\143\175\229\135\143\229\176\145",["min"]=0,["max"]=25},{["name"]="districtId",["type"]="int",["description"]="\230\137\128\229\177\158\229\138\159\232\131\189\229\136\134\229\140\186",["ref"]="MapAreaDistrictTable"},{["name"]="propCoverage",["type"]="float",["description"]="\231\155\174\230\160\135\231\137\169\228\187\182\229\141\160\231\148\168\229\156\176\233\157\162\230\175\148\228\190\139\239\188\155\229\143\151\229\135\128\231\169\186\228\184\142\232\191\158\233\128\154\231\186\166\230\157\159",["min"]=0.05,["max"]=0.4}},["fingerprint"]="692cd114f57c47ace6ee2729627da7cf0868d6e5876a381d5322c012b95efdfd"}

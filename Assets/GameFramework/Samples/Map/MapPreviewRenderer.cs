@@ -256,6 +256,9 @@ namespace ProjectY.Samples
             waterEdges.GetComponent<MeshRenderer>().sharedMaterials = waterMaterials.ToArray();
         }
 
+        // 同一个观察器切换到局部地图时，连同独立 Mesh 一起隐藏大地图。
+        public void SetVisible(bool visible) { roadObject.SetActive(visible); waterEdges.SetActive(visible); }
+
         public void Draw(Camera camera, bool water, bool buildings, bool roads, bool decorations)
         {
             roadObject.SetActive(roads);

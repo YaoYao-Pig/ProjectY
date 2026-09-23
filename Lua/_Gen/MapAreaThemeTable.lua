@@ -1,0 +1,13 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaThemeTableRow
+---@field id number 稳定配置 ID
+---@field regionType 1|2|3|4|5|6 适用大地图地貌
+---@field name string 环境主题
+---@field floorColor string 地面纯色 #RRGGBB
+---@field wallColor string 墙体纯色 #RRGGBB
+---@field wallHeight number 墙体高度
+---@field roomRadiusScale number 房间尺寸倍率
+---@field windingScale number 走廊曲折倍率
+---@field heightNoise number 地面小幅起伏，不改变可通行性
+---@field assetId number 地面与墙体柱模型
+return {["name"]="MapAreaThemeTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="regionType",["type"]="enum",["description"]="\233\128\130\231\148\168\229\164\167\229\156\176\229\155\190\229\156\176\232\178\140",["enumRef"]="Map.E_MapRegion",["enumType"]="int",["values"]={1,2,3,4,5,6}},{["name"]="name",["type"]="string",["description"]="\231\142\175\229\162\131\228\184\187\233\162\152"},{["name"]="floorColor",["type"]="string",["description"]="\229\156\176\233\157\162\231\186\175\232\137\178 #RRGGBB"},{["name"]="wallColor",["type"]="string",["description"]="\229\162\153\228\189\147\231\186\175\232\137\178 #RRGGBB"},{["name"]="wallHeight",["type"]="float",["description"]="\229\162\153\228\189\147\233\171\152\229\186\166",["min"]=0.5,["max"]=5},{["name"]="roomRadiusScale",["type"]="float",["description"]="\230\136\191\233\151\180\229\176\186\229\175\184\229\128\141\231\142\135",["min"]=0.6,["max"]=1.4},{["name"]="windingScale",["type"]="float",["description"]="\232\181\176\229\187\138\230\155\178\230\138\152\229\128\141\231\142\135",["min"]=0,["max"]=2},{["name"]="heightNoise",["type"]="float",["description"]="\229\156\176\233\157\162\229\176\143\229\185\133\232\181\183\228\188\143\239\188\140\228\184\141\230\148\185\229\143\152\229\143\175\233\128\154\232\161\140\230\128\167",["min"]=0,["max"]=0.25},{["name"]="assetId",["type"]="int",["description"]="\229\156\176\233\157\162\228\184\142\229\162\153\228\189\147\230\159\177\230\168\161\229\158\139",["ref"]="MapAssetTable"}},["fingerprint"]="0298791913ba09f6143b17e82b42103500f07d3e2510211c1ff312fe775aa68c"}

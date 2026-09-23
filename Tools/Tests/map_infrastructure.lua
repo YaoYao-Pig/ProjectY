@@ -6,7 +6,7 @@ local Map = require('Game.Map.Map')
 local Infrastructure = require('Game.Map.MapInfrastructure')
 local Pathfinder = require('Game.Map.MapPathfinder')
 local registry = Registry({ ReadConfig = function(_, name)
-    local file = assert(io.open('Assets/GameFramework/Resources/Config/' .. name .. '.bytes', 'rb'))
+    local file = assert(io.open('Assets/GameFramework/Resources/_Gen/Config/' .. name .. '.bytes', 'rb'))
     local bytes = file:read('*a'); file:close(); return bytes
 end, LogError = error })
 registry:Register('Config', require('Config.ConfigSystem'))
@@ -20,9 +20,11 @@ for _, seed in ipairs({20260921, 73}) do
     for _, town in ipairs(map:GetTowns()) do
         local row = config:GetTable('MapTownTable'):Get(town.configId)
         assert(#town.buildings >= row.minBuildings and #town.buildings <= row.maxBuildings)
-        assert(not town.center.waterLevel and not town.center.buildingId)
+        assert(not town.center.waterLevel)
+        if town.role=='settlement' then assert(not town.center.buildingId) end
         assert(has(map:GetRegion(town.regionId):GetTowns(), town))
-        assert(has(map.roadNetworks[town.roadNetworkId].townIds, town.id))
+        if town.connectRoad then assert(has(map.roadNetworks[town.roadNetworkId].townIds,town.id))
+        else assert(not town.roadNetworkId and #town.roadIds==0) end
         for _, other in ipairs(map.towns) do
             if other.id ~= town.id then assert(Hex.Distance(town.center.q, town.center.r, other.center.q, other.center.r) >= math.max(town.minSpacing, other.minSpacing, town.radius + other.radius + 1)) end
         end
@@ -41,7 +43,8 @@ for _, seed in ipairs({20260921, 73}) do
             occupied[cell] = true; minimum = math.min(minimum, cell.height); maximum = math.max(maximum, cell.height)
         end
         assert(building.baseHeight == maximum and maximum - minimum <= townRow.maxGroundDelta)
-        assert(not building.entrance.buildingId and #building.entrance.roadIds > 0)
+        assert(not building.entrance.buildingId and not building.entrance.waterLevel)
+        if townRow.generateStreets then assert(#building.entrance.roadIds>0) else assert(#building.entrance.roadIds==0) end
         assert(math.abs(building.entrance.height - building.baseHeight) <= config:GetConstant('Map', 'RoadMaxStep'))
     end
     for _, road in ipairs(map:GetRoads()) do
@@ -60,7 +63,8 @@ for _, seed in ipairs({20260921, 73}) do
             end
         end
     end
-    assert(mainRoads == #map.towns - #map.roadNetworks)
+    local connected=0;for _,town in ipairs(map.towns) do if town.connectRoad then connected=connected+1 end end
+    assert(mainRoads == connected - #map.roadNetworks)
     assert(not pcall(function() map.buildings[1].baseHeight = 0 end))
     assert(not pcall(function() map.towns[1].buildings[1].cells[1].height = 0 end))
 end
@@ -80,7 +84,7 @@ for _, barrier in ipairs({'water', 'cliff', 'building'}) do
         map.cells[#map.cells + 1] = cell; map.cellsByKey[Hex.Key(q, r)] = cell
     end end
     for i, point in ipairs({{1, 0}, {2, 1}, {7, 0}}) do
-        map.towns[i] = { id = i, center = map:GetCell(point[1], point[2]), roadIds = {} }
+        map.towns[i] = { id = i, center = map:GetCell(point[1], point[2]), roadIds = {}, connectRoad=true }
     end
     infrastructure:ConnectTowns(map, Pathfinder(map))
     assert(#map.roadNetworks == 2 and #map.roads == 1)

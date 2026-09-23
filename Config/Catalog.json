@@ -46,6 +46,13 @@
       ]
     },
     {
+      "id": "Adventure",
+      "folder": "Adventure",
+      "description": "战斗、探索事件与远征演示的基础配置",
+      "enums": [],
+      "constants": []
+    },
+    {
       "id": "Localization",
       "folder": "Localization",
       "description": "默认语言文本，预留 i18n 汇总",
@@ -93,6 +100,80 @@
               "description": "冰雪高地"
             }
           ]
+        },
+        {
+          "name": "SiteMetric",
+          "type": "string",
+          "description": "选址指标",
+          "members": [
+            {
+              "name": "height",
+              "value": "height",
+              "description": "绝对海拔"
+            },
+            {
+              "name": "slope",
+              "value": "slope",
+              "description": "最大邻格高差"
+            },
+            {
+              "name": "roughness",
+              "value": "roughness",
+              "description": "采样范围高度标准差"
+            },
+            {
+              "name": "relativeHeight",
+              "value": "relativeHeight",
+              "description": "高于周围的高度"
+            },
+            {
+              "name": "buildableCells",
+              "value": "buildableCells",
+              "description": "周围干燥缓坡格数"
+            },
+            {
+              "name": "waterClearance",
+              "value": "waterClearance",
+              "description": "距水域的格数"
+            },
+            {
+              "name": "waterAccessDistance",
+              "value": "waterAccessDistance",
+              "description": "到可接近岸边的地形代价"
+            },
+            {
+              "name": "riverJunctionDistance",
+              "value": "riverJunctionDistance",
+              "description": "距河流汇合点的格数"
+            },
+            {
+              "name": "settlementDistance",
+              "value": "settlementDistance",
+              "description": "距普通聚落实际占地及街道的格数"
+            },
+            {
+              "name": "roadDistance",
+              "value": "roadDistance",
+              "description": "距任意道路或街道的格数"
+            }
+          ]
+        },
+        {
+          "name": "PlacementStage",
+          "type": "string",
+          "description": "聚落生成阶段",
+          "members": [
+            {
+              "name": "BeforeRoads",
+              "value": "BeforeRoads",
+              "description": "道路前生成聚落"
+            },
+            {
+              "name": "AfterRoads",
+              "value": "AfterRoads",
+              "description": "道路后生成偏远地点"
+            }
+          ]
         }
       ],
       "constants": [
@@ -129,10 +210,41 @@
         {
           "name": "MaxCells",
           "type": "int",
-          "value": 65536,
+          "value": 100000,
           "description": "单次生成的格子数上限，超出时直接报错"
+        },
+        {
+          "name": "DefaultTargetCells",
+          "type": "int",
+          "value": 10000,
+          "description": "Web 与 Unity 地图测试的默认目标格数；重复地貌配方直到达到该值"
         }
       ]
+    },
+    {
+      "id": "MapArea",
+      "folder": "MapArea",
+      "description": "大地图交互点进入的局部探索地图",
+      "enums": [
+        {
+          "name": "E_MapAreaType",
+          "type": "int",
+          "description": "局部地图的生成策略类型",
+          "members": [
+            {
+              "name": "Dungeon",
+              "value": 1,
+              "description": "房间与迷宫地牢"
+            },
+            {
+              "name": "Town",
+              "value": 2,
+              "description": "聚落街区（策略待实现）"
+            }
+          ]
+        }
+      ],
+      "constants": []
     }
   ]
 }

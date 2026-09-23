@@ -62,15 +62,15 @@ test('Lua string literal preserves non-ASCII and control bytes', () => {
 test('export validates whole set before writes, is reproducible, and removes stale generated outputs', t => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'project-y-config-test-')); t.after(() => fs.rmSync(root, { recursive: true, force: true }));
   const inputs = original(); const first = exportTables({ root, inputs }); assert.equal(first.written.length, 6);
-  assert.ok(fs.existsSync(path.join(root, 'Lua/Generated/Rewards.lua')));
-  assert.ok(fs.existsSync(path.join(root, 'Lua/Generated/Manifest.lua')));
+  assert.ok(fs.existsSync(path.join(root, 'Lua/_Gen/Rewards.lua')));
+  assert.ok(fs.existsSync(path.join(root, 'Lua/_Gen/Manifest.lua')));
   assert.equal(fs.existsSync(path.join(root, 'Assets/GameFramework/Resources/Lua')), false);
   assert.equal(exportTables({ root, inputs }).written.length, 0);
-  const file = path.join(root, 'Assets/GameFramework/Resources/Config/Rewards.bytes'); const bytes = fs.readFileSync(file);
+  const file = path.join(root, 'Assets/GameFramework/Resources/_Gen/Config/Rewards.bytes'); const bytes = fs.readFileSync(file);
   const invalid = structuredClone(inputs); invalid[1].rows[0].base = -100;
   assert.throws(() => exportTables({ root, inputs: invalid })); assert.deepEqual(fs.readFileSync(file), bytes);
-  exportTables({ root, inputs: [inputs[1]] }); assert.equal(fs.existsSync(path.join(root, 'Assets/GameFramework/Resources/Config/RewardGroups.bytes')), false);
-  assert.equal(fs.existsSync(path.join(root, 'Lua/Generated/RewardGroups.lua')), false);
+  exportTables({ root, inputs: [inputs[1]] }); assert.equal(fs.existsSync(path.join(root, 'Assets/GameFramework/Resources/_Gen/Config/RewardGroups.bytes')), false);
+  assert.equal(fs.existsSync(path.join(root, 'Lua/_Gen/RewardGroups.lua')), false);
 });
 test('HTTP editor requires local origin/token and detects save conflicts', async t => {
   const root = fs.mkdtempSync(path.join(os.tmpdir(), 'project-y-editor-test-')); const directory = path.join(root, 'Config/Tables'); fs.mkdirSync(directory, { recursive: true });
@@ -158,10 +158,10 @@ test('export syncs Language comments, preserves text overrides and rejects inval
   table.rows.find(row => row.id === 'Confirm').txt = 'Override'; atomicJson(filename, table);
   exportTables({ root, inputs: original().concat(table) });
   assert.equal(JSON.parse(fs.readFileSync(filename)).rows.find(row => row.id === 'Confirm').txt, 'Override');
-  const before = fs.readFileSync(path.join(root, 'Lua/Generated/LuaTxt.lua'));
+  const before = fs.readFileSync(path.join(root, 'Lua/_Gen/LuaTxt.lua'));
   fs.writeFileSync(source, luaSource.replace('"确认"', 'someFunction()'));
   assert.throws(() => exportTables({ root, inputs: original().concat(table) }));
-  assert.deepEqual(fs.readFileSync(path.join(root, 'Lua/Generated/LuaTxt.lua')), before);
+  assert.deepEqual(fs.readFileSync(path.join(root, 'Lua/_Gen/LuaTxt.lua')), before);
 });
 test('workspace HTTP supports modules, folders, table moves, enum reference protection and global revisions', async t => {
   const root = temporary(t); atomicJson(path.join(root, 'Config/Tables/Items/Items.json'), enumTable());
@@ -191,7 +191,7 @@ test('workspace HTTP supports modules, folders, table moves, enum reference prot
   await send('/api/folders', 'POST', { folder: 'content/Other' }, 400);
   await send('/api/folders', 'DELETE', { folder: 'Content/Inventory' }, 400);
   await send('/api/export', 'POST');
-  assert.match(fs.readFileSync(path.join(root, 'Lua/Generated/Catalog.lua'), 'utf8'), /DefaultRarity/);
+  assert.match(fs.readFileSync(path.join(root, 'Lua/_Gen/Catalog.lua'), 'utf8'), /DefaultRarity/);
   fs.mkdirSync(path.join(root, 'Lua'), { recursive: true }); fs.writeFileSync(path.join(root, 'Lua/Language.lua'), luaSource);
   await send('/api/language/sync', 'POST', {}, 409);
   session = await (await fetch(base + '/api/tables')).json();

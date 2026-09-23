@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "name": "MapAreaRoomStyleTable",
+  "description": "二级房间的形状、边缘变化与外围陈设组合。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "房间策略名称"
+    },
+    {
+      "name": "shape",
+      "type": "string",
+      "description": "注册形状：cavern / hall / lobed"
+    },
+    {
+      "name": "roughness",
+      "type": "float",
+      "description": "边缘起伏幅度",
+      "min": 0,
+      "max": 3
+    },
+    {
+      "name": "propIds",
+      "type": "int[]",
+      "description": "外围陈设池",
+      "ref": "MapAreaPropTable"
+    },
+    {
+      "name": "propCount",
+      "type": "int",
+      "description": "目标陈设数量，受净宽和连通性约束可减少",
+      "min": 0,
+      "max": 25
+    },
+    {
+      "name": "districtId",
+      "type": "int",
+      "description": "所属功能分区",
+      "ref": "MapAreaDistrictTable"
+    },
+    {
+      "name": "propCoverage",
+      "type": "float",
+      "description": "目标物件占用地面比例；受净空与连通约束",
+      "min": 0.05,
+      "max": 0.4
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "后勤库房",
+      "shape": "hall",
+      "roughness": 0.2,
+      "propIds": [
+        10,
+        15,
+        5,
+        6
+      ],
+      "propCount": 12,
+      "districtId": 1,
+      "propCoverage": 0.22
+    },
+    {
+      "id": 2,
+      "name": "守卫休息厅",
+      "shape": "hall",
+      "roughness": 0.2,
+      "propIds": [
+        15,
+        14,
+        8,
+        5,
+        6
+      ],
+      "propCount": 12,
+      "districtId": 1,
+      "propCoverage": 0.2
+    },
+    {
+      "id": 3,
+      "name": "祭祀侧厅",
+      "shape": "apse",
+      "roughness": 0.4,
+      "propIds": [
+        11,
+        16,
+        1,
+        6
+      ],
+      "propCount": 12,
+      "districtId": 2,
+      "propCoverage": 0.19
+    },
+    {
+      "id": 4,
+      "name": "安葬侧室",
+      "shape": "hall",
+      "roughness": 0.4,
+      "propIds": [
+        12,
+        14,
+        4,
+        6
+      ],
+      "propCount": 12,
+      "districtId": 3,
+      "propCoverage": 0.22
+    },
+    {
+      "id": 5,
+      "name": "根系侵蚀石窟",
+      "shape": "lobed",
+      "roughness": 1.6,
+      "propIds": [
+        13,
+        9,
+        2,
+        6
+      ],
+      "propCount": 12,
+      "districtId": 3,
+      "propCoverage": 0.2
+    }
+  ]
+}

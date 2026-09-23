@@ -8,7 +8,7 @@
 
 ## 正文
 
-- 当前业务仅为框架演示，无存档。C# `PlayerData` 持有 Coins（初始 0）与 Level（初始 1）；`AddCoins / TrySpendCoins / AdvanceLevel` 修改状态并通知，Lua 不维护副本。
+- 玩家示例无存档。C# `PlayerData` 持有 Coins（初始 0）与 Level（初始 1）；`AddCoins / TrySpendCoins / AdvanceLevel` 修改状态并通知，Lua 不维护副本。[远征事件](Adventure.md)与战斗结算共用这一金币账户；角色与战斗状态独立归 AdventureData。
 - `PlayerModelSystem` 引用 `services.Player`；把 C# Changed 转成 Lua Signal，转发命令。Shutdown 移除 C# 监听并清空 Signal。
 - 奖励按钮 → `GrantReward` → `Rewards:Get(1)` → amount 公式读取当前 level 与该行 base → 检查结果为非负 int32 整数 → `PlayerData.AddCoins` → Changed → StatsWidget 在 OnShow 注册的 `refresh` 回调。
 - 升级按钮调用 `AdvanceLevel`；StatsWidget 在 OnShow 立即刷新并订阅 Changed，订阅归 visibleScope。窗口标题/描述则在 DemoPanel 的 Bind 读取一次。

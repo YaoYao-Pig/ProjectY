@@ -1,0 +1,56 @@
+{
+  "models": [
+    {
+      "path": "Assets/DynamicAsset/MapLowPoly/Models/Building_DungeonEntrance.fbx",
+      "guid": "a90cd8d1ff4033f4d8d149d60ca791a5",
+      "triangles": 264,
+      "size": [
+        1.38,
+        1.6,
+        1.315
+      ],
+      "rootRotationIdentity": true,
+      "rootScaleOne": true,
+      "bakeAxisConversion": true,
+      "materials": [
+        "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_Rock.mat",
+        "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_RockDark.mat",
+        "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_RockLight.mat",
+        "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_Timber.mat"
+      ]
+    },
+    {
+      "path": "Assets/DynamicAsset/MapLowPoly/Models/Building_SecludedCottage.fbx",
+      "guid": "82ebe1de804eb3e47afe69b21794607e",
+      "triangles": 116,
+      "size": [
+        1.24,
+        1.05,
+        1.19499993
+      ],
+      "rootRotationIdentity": true,
+      "rootScaleOne": true,
+      "bakeAxisConversion": true,
+      "materials": [
+        "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_RockDark.mat",
+        "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_PlasterShade.mat",
+        "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_Timber.mat",
+        "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_TimberLight.mat",
+        "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_Window.mat",
+        "Assets/DynamicAsset/MapLowPoly/Materials/M_MapLP_Rock.mat"
+      ]
+    }
+  ],
+  "playMode": false,
+  "activeScene": "Assets/GameFramework/Samples/Adventure/AdventureDemo.unity",
+  "preview": "Previews/remote-sites-unity.png",
+  "source": "Source/RemoteSites.blend",
+  "bindings": {
+    "updated": [
+      "Assets/GameFramework/Samples/Map/MapRuntimePreview.unity",
+      "Assets/GameFramework/Samples/Adventure/AdventureDemo.unity"
+    ],
+    "activeScene": "Assets/GameFramework/Samples/Adventure/AdventureDemo.unity"
+  },
+  "visualReview": "实际查看最终 Unity 渲染：独立石拱暗门完整，隐居矮屋明显低于民居；共享哑光材质，无粉红或错误轴向。未进入 Play。"
+}

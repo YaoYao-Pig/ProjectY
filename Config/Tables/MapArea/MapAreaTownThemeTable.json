@@ -1,0 +1,161 @@
+{
+  "version": 1,
+  "name": "MapAreaTownThemeTable",
+  "description": "大地图 Region 对城镇的地面、铺装和植被影响；街区仍保持平整。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "显示名称"
+    },
+    {
+      "name": "regionType",
+      "type": "enum",
+      "description": "来源 Region",
+      "enumRef": "Map.E_MapRegion"
+    },
+    {
+      "name": "floorColor",
+      "type": "string",
+      "description": "庭院地面颜色"
+    },
+    {
+      "name": "wallColor",
+      "type": "string",
+      "description": "边界颜色"
+    },
+    {
+      "name": "wallHeight",
+      "type": "float",
+      "description": "边界高度",
+      "min": 0
+    },
+    {
+      "name": "heightNoise",
+      "type": "float",
+      "description": "地面噪声幅度",
+      "min": 0
+    },
+    {
+      "name": "assetId",
+      "type": "int",
+      "description": "地面资源",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "roadColor",
+      "type": "string",
+      "description": "街道铺装颜色"
+    },
+    {
+      "name": "plazaColor",
+      "type": "string",
+      "description": "广场铺装颜色"
+    },
+    {
+      "name": "treeAssetId",
+      "type": "int",
+      "description": "景观树资源",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "treeScale",
+      "type": "float",
+      "description": "景观树相对比例",
+      "min": 0.1
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "平原城镇",
+      "regionType": 1,
+      "floorColor": "#82926d",
+      "wallColor": "#82926d",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 1,
+      "roadColor": "#aa977b",
+      "plazaColor": "#c5b89d",
+      "treeAssetId": 13,
+      "treeScale": 1.5
+    },
+    {
+      "id": 2,
+      "name": "山地城镇",
+      "regionType": 2,
+      "floorColor": "#969382",
+      "wallColor": "#969382",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 1,
+      "roadColor": "#aa977b",
+      "plazaColor": "#c5b89d",
+      "treeAssetId": 14,
+      "treeScale": 1.5
+    },
+    {
+      "id": 3,
+      "name": "湖畔城镇",
+      "regionType": 3,
+      "floorColor": "#7c9b87",
+      "wallColor": "#7c9b87",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 1,
+      "roadColor": "#aa977b",
+      "plazaColor": "#c5b89d",
+      "treeAssetId": 13,
+      "treeScale": 1.5
+    },
+    {
+      "id": 4,
+      "name": "河畔城镇",
+      "regionType": 4,
+      "floorColor": "#88976d",
+      "wallColor": "#88976d",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 1,
+      "roadColor": "#aa977b",
+      "plazaColor": "#c5b89d",
+      "treeAssetId": 13,
+      "treeScale": 1.5
+    },
+    {
+      "id": 5,
+      "name": "林间城镇",
+      "regionType": 5,
+      "floorColor": "#627c56",
+      "wallColor": "#627c56",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 1,
+      "roadColor": "#aa977b",
+      "plazaColor": "#c5b89d",
+      "treeAssetId": 13,
+      "treeScale": 1.5
+    },
+    {
+      "id": 6,
+      "name": "雪地城镇",
+      "regionType": 6,
+      "floorColor": "#d7e4e6",
+      "wallColor": "#d7e4e6",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 1,
+      "roadColor": "#aa977b",
+      "plazaColor": "#c5b89d",
+      "treeAssetId": 15,
+      "treeScale": 1.5
+    }
+  ]
+}

@@ -1,0 +1,58 @@
+{
+  "scope": "森林、冰雪、聚落与跨区水系增量验证",
+  "generationVersion": 4,
+  "seed": 20260921,
+  "regionIds": [
+    1,
+    2,
+    3,
+    4,
+    5,
+    6,
+    1,
+    4,
+    5,
+    6
+  ],
+  "observed": {
+    "cells": 3434,
+    "towns": 12,
+    "buildings": 71,
+    "mainRivers": 3,
+    "tributaries": 9,
+    "waterfalls": 2,
+    "decorations": 454
+  },
+  "lua_tests": [
+    "map.lua",
+    "map_terrain.lua",
+    "map_infrastructure.lua",
+    "map_render_snapshot.lua",
+    "map_ecosystem.lua"
+  ],
+  "web_tests": {
+    "file": "Tools/MapPreview/tests/preview.test.mjs",
+    "passed": 3
+  },
+  "unity": {
+    "compiled": true,
+    "proactive_compile_count": 2,
+    "second_compile_user_authorized": true,
+    "console_errors_warnings_after_generation": 0,
+    "assetBindings": 18,
+    "newModelImports": 6,
+    "waterMeshFix": {
+      "zeroNormalsBefore": 472,
+      "zeroNormalsAfter": 0
+    },
+    "overview": "Previews/ecosystem-unity-final.png",
+    "waterfall_mesh_review": "Previews/ecosystem-unity-waterfall-1.png",
+    "waterfall_mesh_review_note": "最终水幕代码的近景验收；河口逻辑完善前的相同测试配方。最终河口布局以 overview 为准。",
+    "editor_end_state": "用户正在 Play 中更换种子查看，保留其状态。"
+  },
+  "limitations": [
+    "静态地形水面预览，无流量模拟或队伍通行规则",
+    "Web 使用配置指定的占位轮廓，实际 FBX 外观以 Unity 为准",
+    "未运行完整构建或全项目测试"
+  ]
+}

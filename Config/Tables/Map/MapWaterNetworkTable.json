@@ -111,6 +111,86 @@
       "type": "float",
       "description": "湖泊最大开挖高度差",
       "min": 0.01
+    },
+    {
+      "name": "meanderScale",
+      "type": "float",
+      "description": "河道空间噪声跨度；大值形成更长的弯曲",
+      "min": 1,
+      "max": 32
+    },
+    {
+      "name": "runoffNoise",
+      "type": "float",
+      "description": "径流位置噪声幅度",
+      "min": 0,
+      "max": 0.9
+    },
+    {
+      "name": "minSourceRunoff",
+      "type": "float",
+      "description": "源头最少汇水权重",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "maxChannelRadius",
+      "type": "int",
+      "description": "中心线以外最大扩宽格数",
+      "min": 0,
+      "max": 3
+    },
+    {
+      "name": "bankCarveDepth",
+      "type": "float",
+      "description": "岸线最大扩宽开挖量",
+      "min": 0,
+      "max": 4
+    },
+    {
+      "name": "bankNoise",
+      "type": "float",
+      "description": "空间相关岸线宽窄变化幅度",
+      "min": 0,
+      "max": 0.9
+    },
+    {
+      "name": "maxLakes",
+      "type": "int",
+      "description": "自然盆地湖数量上限",
+      "min": 0,
+      "max": 32
+    },
+    {
+      "name": "minLakeCells",
+      "type": "int",
+      "description": "自然湖最少格数",
+      "min": 1,
+      "max": 128
+    },
+    {
+      "name": "maxLakeCells",
+      "type": "int",
+      "description": "单片自然湖格数上限，超出则降低水位",
+      "min": 4,
+      "max": 2048
+    },
+    {
+      "name": "minLakeDepth",
+      "type": "float",
+      "description": "盆地至少多深才生成自然湖",
+      "min": 0.01,
+      "max": 8
+    },
+    {
+      "name": "widthFlowXs",
+      "type": "float[]",
+      "description": "河宽曲线：上游累计径流节点"
+    },
+    {
+      "name": "widthRadiusYs",
+      "type": "float[]",
+      "description": "河宽曲线：基础扩宽半径"
     }
   ],
   "rows": [
@@ -132,7 +212,31 @@
       "waterfallChance": 0.75,
       "poolRadius": 2,
       "poolDepth": 0.8,
-      "maxPoolCarve": 2.5
+      "maxPoolCarve": 2.5,
+      "meanderScale": 5,
+      "runoffNoise": 0.35,
+      "minSourceRunoff": 4,
+      "maxChannelRadius": 2,
+      "bankCarveDepth": 1.1,
+      "bankNoise": 0.45,
+      "maxLakes": 10,
+      "minLakeCells": 4,
+      "maxLakeCells": 512,
+      "minLakeDepth": 0.25,
+      "widthFlowXs": [
+        0,
+        12,
+        60,
+        180,
+        600
+      ],
+      "widthRadiusYs": [
+        0,
+        0.3,
+        0.8,
+        1.5,
+        2
+      ]
     }
   ]
 }

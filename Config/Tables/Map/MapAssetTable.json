@@ -23,7 +23,7 @@
     {
       "name": "previewShape",
       "type": "string",
-      "description": "Web 轮廓：terrain/platform/water/mountain/house/workshop/hall/castle/dungeon/tree/conifer/snowpine"
+      "description": "Web 轮廓：terrain/platform/water/mountain/house/workshop/hall/castle/dungeon/tree/conifer/snowpine/cottage（矮小隐居房屋）"
     },
     {
       "name": "previewColor",
@@ -176,7 +176,7 @@
       "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Tree_Broadleaf.fbx",
       "previewShape": "tree",
       "previewColor": "#557c43",
-      "referenceHeight": 2.0,
+      "referenceHeight": 2,
       "footprintRadius": 0,
       "tintMaterial": ""
     },
@@ -222,12 +222,322 @@
     },
     {
       "id": 18,
-      "name": "Building_Dungeon",
-      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Building_Dungeon.fbx",
+      "name": "Building_DungeonEntrance",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Building_DungeonEntrance.fbx",
       "previewShape": "dungeon",
       "previewColor": "#898379",
       "referenceHeight": 1.6,
       "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 19,
+      "name": "Building_SecludedCottage",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Building_SecludedCottage.fbx",
+      "previewShape": "cottage",
+      "previewColor": "#c9b994",
+      "referenceHeight": 1.05,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 20,
+      "name": "Dungeon_Pillar",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Dungeon_Pillar.fbx",
+      "previewShape": "dungeon",
+      "previewColor": "#9e9685",
+      "referenceHeight": 2.8,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 21,
+      "name": "Dungeon_BrokenPillar",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Dungeon_BrokenPillar.fbx",
+      "previewShape": "dungeon",
+      "previewColor": "#9e9685",
+      "referenceHeight": 1.25,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 22,
+      "name": "Dungeon_Altar",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Dungeon_Altar.fbx",
+      "previewShape": "dungeon",
+      "previewColor": "#9e9685",
+      "referenceHeight": 1.2,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 23,
+      "name": "Dungeon_Sarcophagus",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Dungeon_Sarcophagus.fbx",
+      "previewShape": "dungeon",
+      "previewColor": "#9e9685",
+      "referenceHeight": 1.15,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 24,
+      "name": "Dungeon_CrateStack",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Dungeon_CrateStack.fbx",
+      "previewShape": "dungeon",
+      "previewColor": "#9e9685",
+      "referenceHeight": 1.24,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 25,
+      "name": "Dungeon_Brazier",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Dungeon_Brazier.fbx",
+      "previewShape": "dungeon",
+      "previewColor": "#9e9685",
+      "referenceHeight": 1.85,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 26,
+      "name": "Dungeon_RuinedArch",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Dungeon_RuinedArch.fbx",
+      "previewShape": "dungeon",
+      "previewColor": "#9e9685",
+      "referenceHeight": 3.2619,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 27,
+      "name": "Dungeon_Bench",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Dungeon_Bench.fbx",
+      "previewShape": "dungeon",
+      "previewColor": "#9e9685",
+      "referenceHeight": 0.85,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 28,
+      "name": "坍塌巨石堆",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Dungeon_RubbleMound.fbx",
+      "previewShape": "dungeon",
+      "previewColor": "#9e9685",
+      "referenceHeight": 3.309999942779541,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 29,
+      "name": "成组仓储货垛",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Dungeon_SupplyCache.fbx",
+      "previewShape": "dungeon",
+      "previewColor": "#9e9685",
+      "referenceHeight": 2.799999952316284,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 30,
+      "name": "阶梯祭祀台",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Dungeon_RitualDais.fbx",
+      "previewShape": "dungeon",
+      "previewColor": "#9e9685",
+      "referenceHeight": 1.899999976158142,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 31,
+      "name": "家族石棺群",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Dungeon_TombCluster.fbx",
+      "previewShape": "dungeon",
+      "previewColor": "#9e9685",
+      "referenceHeight": 2.069999933242798,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 32,
+      "name": "盘根岩丛",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Dungeon_RootThicket.fbx",
+      "previewShape": "dungeon",
+      "previewColor": "#9e9685",
+      "referenceHeight": 3.700000047683716,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 33,
+      "name": "遗迹书架组",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Dungeon_BookArchive.fbx",
+      "previewShape": "dungeon",
+      "previewColor": "#9e9685",
+      "referenceHeight": 2.9000000953674316,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 34,
+      "name": "长桌与长凳组",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Dungeon_DiningSet.fbx",
+      "previewShape": "dungeon",
+      "previewColor": "#9e9685",
+      "referenceHeight": 1.4199999570846558,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 35,
+      "name": "残破连柱廊",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Dungeon_BrokenColonnade.fbx",
+      "previewShape": "dungeon",
+      "previewColor": "#9e9685",
+      "referenceHeight": 3.6600000858306885,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 36,
+      "name": "Town_Tavern",
+      "prefabPath": "Assets/DynamicAsset/TownLowPoly/Models/Town_Tavern.fbx",
+      "previewShape": "house",
+      "previewColor": "#c9b994",
+      "referenceHeight": 1,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 37,
+      "name": "Town_Smithy",
+      "prefabPath": "Assets/DynamicAsset/TownLowPoly/Models/Town_Smithy.fbx",
+      "previewShape": "house",
+      "previewColor": "#c9b994",
+      "referenceHeight": 1,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 38,
+      "name": "Town_Shop",
+      "prefabPath": "Assets/DynamicAsset/TownLowPoly/Models/Town_Shop.fbx",
+      "previewShape": "house",
+      "previewColor": "#c9b994",
+      "referenceHeight": 1,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 39,
+      "name": "Town_Guild",
+      "prefabPath": "Assets/DynamicAsset/TownLowPoly/Models/Town_Guild.fbx",
+      "previewShape": "house",
+      "previewColor": "#c9b994",
+      "referenceHeight": 1,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 40,
+      "name": "Town_Fountain",
+      "prefabPath": "Assets/DynamicAsset/TownLowPoly/Models/Town_Fountain.fbx",
+      "previewShape": "house",
+      "previewColor": "#c9b994",
+      "referenceHeight": 1,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 41,
+      "name": "Town_HouseA",
+      "prefabPath": "Assets/DynamicAsset/TownLowPoly/Models/Town_HouseA.fbx",
+      "previewShape": "house",
+      "previewColor": "#c9b994",
+      "referenceHeight": 1,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 42,
+      "name": "Town_HouseB",
+      "prefabPath": "Assets/DynamicAsset/TownLowPoly/Models/Town_HouseB.fbx",
+      "previewShape": "house",
+      "previewColor": "#c9b994",
+      "referenceHeight": 1,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 43,
+      "name": "Town_MarketStall",
+      "prefabPath": "Assets/DynamicAsset/TownLowPoly/Models/Town_MarketStall.fbx",
+      "previewShape": "house",
+      "previewColor": "#c9b994",
+      "referenceHeight": 1,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 44,
+      "name": "Town_Handcart",
+      "prefabPath": "Assets/DynamicAsset/TownLowPoly/Models/Town_Handcart.fbx",
+      "previewShape": "house",
+      "previewColor": "#c9b994",
+      "referenceHeight": 1,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 45,
+      "name": "Town_LanternBench",
+      "prefabPath": "Assets/DynamicAsset/TownLowPoly/Models/Town_LanternBench.fbx",
+      "previewShape": "house",
+      "previewColor": "#c9b994",
+      "referenceHeight": 1,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 46,
+      "name": "奇幻铁匠铺",
+      "prefabPath": "Assets/DynamicAsset/TownLowPoly/Models/Town_ArcaneSmithy.fbx",
+      "previewShape": "house",
+      "previewColor": "#c9b994",
+      "referenceHeight": 1,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 47,
+      "name": "布匹摊",
+      "prefabPath": "Assets/DynamicAsset/TownLowPoly/Models/Town_StallCloth.fbx",
+      "previewShape": "house",
+      "previewColor": "#c9b994",
+      "referenceHeight": 1,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 48,
+      "name": "药草摊",
+      "prefabPath": "Assets/DynamicAsset/TownLowPoly/Models/Town_StallHerbs.fbx",
+      "previewShape": "house",
+      "previewColor": "#c9b994",
+      "referenceHeight": 1,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 49,
+      "name": "武器摊",
+      "prefabPath": "Assets/DynamicAsset/TownLowPoly/Models/Town_StallArms.fbx",
+      "previewShape": "house",
+      "previewColor": "#c9b994",
+      "referenceHeight": 1,
+      "footprintRadius": 1,
       "tintMaterial": ""
     }
   ]

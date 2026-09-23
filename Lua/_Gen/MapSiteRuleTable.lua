@@ -1,0 +1,10 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapSiteRuleTableRow
+---@field id number 配置 ID
+---@field profileId number 所属选址方案
+---@field metric "height"|"slope"|"roughness"|"relativeHeight"|"buildableCells"|"waterClearance"|"waterAccessDistance"|"riverJunctionDistance"|"settlementDistance"|"roadDistance" 参与评分的实际地形/距离指标
+---@field hardRange number[] 硬区间 [下限,上限]；空数组关闭
+---@field scoreXs number[] 严格递增的指标节点
+---@field scoreYs number[] 节点分值 0–1；与 X 等长
+---@field weight number 综合评分权重
+return {["name"]="MapSiteRuleTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\233\133\141\231\189\174 ID",["min"]=1},{["name"]="profileId",["type"]="int",["description"]="\230\137\128\229\177\158\233\128\137\229\157\128\230\150\185\230\161\136",["ref"]="MapSiteProfileTable"},{["name"]="metric",["type"]="enum",["description"]="\229\143\130\228\184\142\232\175\132\229\136\134\231\154\132\229\174\158\233\153\133\229\156\176\229\189\162/\232\183\157\231\166\187\230\140\135\230\160\135",["enumRef"]="Map.SiteMetric",["enumType"]="string",["values"]={"height","slope","roughness","relativeHeight","buildableCells","waterClearance","waterAccessDistance","riverJunctionDistance","settlementDistance","roadDistance"}},{["name"]="hardRange",["type"]="float[]",["description"]="\231\161\172\229\140\186\233\151\180 [\228\184\139\233\153\144,\228\184\138\233\153\144]\239\188\155\231\169\186\230\149\176\231\187\132\229\133\179\233\151\173"},{["name"]="scoreXs",["type"]="float[]",["description"]="\228\184\165\230\160\188\233\128\146\229\162\158\231\154\132\230\140\135\230\160\135\232\138\130\231\130\185"},{["name"]="scoreYs",["type"]="float[]",["description"]="\232\138\130\231\130\185\229\136\134\229\128\188 0\226\128\1471\239\188\155\228\184\142 X \231\173\137\233\149\191"},{["name"]="weight",["type"]="float",["description"]="\231\187\188\229\144\136\232\175\132\229\136\134\230\157\131\233\135\141",["min"]=0}},["fingerprint"]="d725eab5920e984689f3a5fb1035b6b6585bcf92f7b2d02647d3b3e4d0849668"}

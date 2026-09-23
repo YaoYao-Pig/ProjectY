@@ -4,7 +4,6 @@ local HexGrid = require('Game.Map.HexGrid')
 local Random = require('Game.Map.SeededRandom')
 local Map = require('Game.Map.Map')
 local TerrainBlend = require('Game.Map.TerrainBlend')
-local Water = require('Game.Map.MapWater')
 local Infrastructure = require('Game.Map.MapInfrastructure')
 local Hydrology = require('Game.Map.MapHydrology')
 local Visuals = require('Game.Map.MapVisuals')
@@ -55,6 +54,37 @@ function Draft:ctor(generator, random)
 end
 function Draft:CheckCapacity(amount)
     assert(amount <= self.cellLimit - #self.map.cells, 'Map generation exceeds MaxCells')
+end
+-- 目标格数模式只裁剪最后一块。以接壤格为起点扩张，保留区域与全图的连通性。
+function Draft:FitBudget(q, r, footprint)
+    if not self.map.targetCells then return footprint end
+    local remaining = self.map.targetCells - #self.map.cells
+    if #footprint.cells <= remaining then return footprint end
+    local available, start, best = {}, nil, math.huge
+    for _, point in ipairs(footprint.cells) do
+        available[HexGrid.Key(point.q, point.r)] = point
+        local touches = #self.map.cells == 0
+        for direction = 1, 6 do
+            local nq, nr = HexGrid.Neighbor(q + point.q, r + point.r, direction)
+            if self.map.cellsByKey[HexGrid.Key(nq, nr)] then touches = true end
+        end
+        local distance = HexGrid.Distance(point.q, point.r, footprint.centerQ, footprint.centerR)
+        if touches and distance < best then start, best = point, distance end
+    end
+    assert(start and remaining > 0, 'Final region requires an adjoining cell and positive budget')
+    local cells, seen, head = { start }, { [HexGrid.Key(start.q, start.r)] = true }, 1
+    while #cells < remaining do
+        local point = assert(cells[head], 'Final region footprint is disconnected'); head = head + 1
+        for direction = 1, 6 do
+            local nq, nr = HexGrid.Neighbor(point.q, point.r, direction)
+            local key = HexGrid.Key(nq, nr)
+            if available[key] and not seen[key] and #cells < remaining then
+                seen[key] = true; cells[#cells + 1] = available[key]
+            end
+        end
+    end
+    table.sort(cells, function(a, b) return a.r < b.r or (a.r == b.r and a.q < b.q) end)
+    return { cells = cells, centerQ = start.q, centerR = start.r }
 end
 function Draft:CanPlace(q, r, footprint)
     for _, offset in ipairs(footprint.cells) do
@@ -155,7 +185,6 @@ function Draft:Build()
     local map = self.map
     -- 先混合地貌再整理水位；Border 保存最终高差，避免查询看到过渡前的旧值。
     TerrainBlend.Apply(map, self.terrain, self.random, self.noiseScale, self.blendWidth)
-    Water.Build(map)
     self.hydrology:Build(map)
     self.infrastructure:Build(map)
     self.visuals:Build(map)
@@ -240,8 +269,12 @@ function Generator:RegisterRegion(regionType, convertType, instanceType)
     self.registrations[regionType] = { convert = convertType(), instance = instanceType }
 end
 -- regionIds 为有序、连续的配置 ID 数组；重复 ID 表示生成多个独立实例。
-function Generator:Generate(seed, regionIds)
+function Generator:Generate(seed, regionIds, targetCells)
     local random = Random(seed)
+    if targetCells ~= nil then
+        positiveInteger(targetCells, 'Target cells')
+        assert(targetCells <= self.cellLimit, 'Target cells exceeds MaxCells')
+    end
     assert(type(regionIds) == 'table' and #regionIds > 0 and #regionIds <= self.cellLimit, 'Supply a nonempty region config ID array')
     local count = 0
     for key in pairs(regionIds) do
@@ -258,10 +291,15 @@ function Generator:Generate(seed, regionIds)
         rows[i] = row
     end
     local draft = Draft(self, random)
-    for _, row in ipairs(rows) do
+    draft.map.targetCells = targetCells
+    local index = 1
+    -- 未指定目标时仍只生成一遍配方；指定后循环配方，数量由实际占地决定。
+    while targetCells and #draft.map.cells < targetCells or not targetCells and index <= #rows do
+        local row = rows[(index - 1) % #rows + 1]
         local registration = self.registrations[row.MapRegion]
         local map2 = registration.convert:Generate(draft, row, random, registration.instance)
         assert(map2 == draft, 'Region converters must return the accumulated map draft')
+        index = index + 1
     end
     return draft:Build()
 end

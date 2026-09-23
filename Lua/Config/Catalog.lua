@@ -8,4 +8,4 @@ local function readonly(value)
         __metatable = false,
     })
 end
-return readonly(require('Generated.Catalog'))
+return readonly(require('_Gen.Catalog'))

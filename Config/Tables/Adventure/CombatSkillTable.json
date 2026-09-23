@@ -1,0 +1,135 @@
+{
+  "version": 1,
+  "name": "CombatSkillTable",
+  "description": "技能由行动类型、目标规则、消耗和效果序列组成。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "技能名称"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "技能说明"
+    },
+    {
+      "name": "action",
+      "type": "enum",
+      "description": "行动类型",
+      "values": [
+        "main",
+        "secondary"
+      ]
+    },
+    {
+      "name": "cost",
+      "type": "int",
+      "description": "行动点消耗",
+      "min": 0,
+      "max": 20
+    },
+    {
+      "name": "range",
+      "type": "int",
+      "description": "六边形射程；首版不计算视线",
+      "min": 0,
+      "max": 12
+    },
+    {
+      "name": "target",
+      "type": "enum",
+      "description": "目标规则",
+      "values": [
+        "enemy",
+        "ally",
+        "self"
+      ]
+    },
+    {
+      "name": "proficiency",
+      "type": "string",
+      "description": "使用的二级属性名"
+    },
+    {
+      "name": "effectIds",
+      "type": "int[]",
+      "description": "顺序执行的效果",
+      "ref": "CombatEffectTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "斩击",
+      "description": "近身攻击一名敌人。",
+      "action": "main",
+      "cost": 2,
+      "range": 1,
+      "target": "enemy",
+      "proficiency": "sword",
+      "effectIds": [
+        1
+      ]
+    },
+    {
+      "id": 2,
+      "name": "射击",
+      "description": "攻击 3 格内的一名敌人。",
+      "action": "main",
+      "cost": 2,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "bow",
+      "effectIds": [
+        2
+      ]
+    },
+    {
+      "id": 3,
+      "name": "火花",
+      "description": "法术攻击 3 格内的敌人。",
+      "action": "main",
+      "cost": 2,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "staff",
+      "effectIds": [
+        3
+      ]
+    },
+    {
+      "id": 4,
+      "name": "防御",
+      "description": "减免 3 点伤害，持续到自身下回合开始；不叠加。",
+      "action": "secondary",
+      "cost": 1,
+      "range": 0,
+      "target": "self",
+      "proficiency": "sword",
+      "effectIds": [
+        4
+      ]
+    },
+    {
+      "id": 5,
+      "name": "治疗",
+      "description": "恢复 3 格内一名友军的生命。",
+      "action": "main",
+      "cost": 2,
+      "range": 3,
+      "target": "ally",
+      "proficiency": "staff",
+      "effectIds": [
+        5
+      ]
+    }
+  ]
+}

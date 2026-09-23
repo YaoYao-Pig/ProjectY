@@ -10,22 +10,22 @@ local function throws(callback, pattern)
     if pattern then assert(tostring(err):find(pattern), tostring(err)) end
 end
 local function read(name)
-    local file = assert(io.open('Assets/GameFramework/Resources/Config/' .. name .. '.bytes', 'rb'))
+    local file = assert(io.open('Assets/GameFramework/Resources/_Gen/Config/' .. name .. '.bytes', 'rb'))
     local bytes = file:read('*a'); file:close(); return bytes
 end
 local Table = require('Config.ConfigTable')
 test('generated binaries round trip Unicode, arrays, booleans, floats and formulas', function()
-    local table = Table.Load(require('Generated.Rewards'), read('Rewards'))
+    local table = Table.Load(require('_Gen.Rewards'), read('Rewards'))
     assert(table.Count == 2 and table:Get(1).tags[2] == '基础奖励')
     assert(table:Get(1).enabled == true)
     assert(table:Get(1).amount:Evaluate({base=10, level=2}) == 20)
     assert(table:Get(2).amount:Evaluate({base=25, level=10}) == 1000)
-    assert(Table.Load(require('Generated.RewardGroups'), read('RewardGroups')):Get('starter').multiplier == 1.5)
+    assert(Table.Load(require('_Gen.RewardGroups'), read('RewardGroups')):Get('starter').multiplier == 1.5)
     assert(table:Find(999) == nil); throws(function() table:Get(999) end, 'missing row')
     assert(#table:All() == 2)
 end)
 test('configuration records, arrays, tables and formulas are read-only', function()
-    local table = Table.Load(require('Generated.Rewards'), read('Rewards'))
+    local table = Table.Load(require('_Gen.Rewards'), read('Rewards'))
     throws(function() table:Get(1).base = 999 end, 'read%-only')
     throws(function() table:Get(1).tags[1] = 'changed' end)
     throws(function() table:Get(1).amount.Evaluate = function() end end)
@@ -33,14 +33,14 @@ test('configuration records, arrays, tables and formulas are read-only', functio
     local count = 0; for _ in pairs(table:Get(1)) do count = count + 1 end; assert(count == 8)
 end)
 test('reject malformed, truncated, trailing and mismatched binary data', function()
-    local schema = require('Generated.Rewards'); local bytes = read('Rewards')
+    local schema = require('_Gen.Rewards'); local bytes = read('Rewards')
     for _, value in ipairs({ '', bytes:sub(1, -2), bytes .. 'extra', 'BAD!' .. bytes:sub(5), bytes:sub(1, 4) .. '\2' .. bytes:sub(6), bytes:sub(1,10) .. 'x' .. bytes:sub(12) }) do
         throws(function() Table.Load(schema, value) end)
     end
-    throws(function() Table.Load(require('Generated.RewardGroups'), bytes) end, 'schema mismatch')
+    throws(function() Table.Load(require('_Gen.RewardGroups'), bytes) end, 'schema mismatch')
 end)
 test('formula runtime rejects missing variables and numerical faults', function()
-    local formula = Table.Load(require('Generated.Rewards'), read('Rewards')):Get(1).amount
+    local formula = Table.Load(require('_Gen.Rewards'), read('Rewards')):Get(1).amount
     throws(function() formula:Evaluate({base=1}) end, 'Missing')
     throws(function() formula:Evaluate({base=1,level=math.huge}) end)
 end)
@@ -164,7 +164,7 @@ test('Language prioritizes exported rows, supports empty overrides and falls bac
     proxy.Bind(nil); assert(language.Confirm == '确认')
 end)
 test('text schemas and module catalogs preserve types and immutable constants', function()
-    local texts = Table.Load(require('Generated.LuaTxt'), read('LuaTxt'))
+    local texts = Table.Load(require('_Gen.LuaTxt'), read('LuaTxt'))
     assert(texts:Get('Confirm').desc == '通用确认按钮')
     local Config = require('Config.ConfigSystem'); local config = Config()
     config:OnInit({services={ReadConfig=function(_, name) return read(name) end}})

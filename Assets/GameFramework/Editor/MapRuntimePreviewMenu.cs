@@ -39,7 +39,7 @@ namespace ProjectY.Editor
             if (OpenInternal()) EditorApplication.isPlaying = true;
         }
 
-        private static void BindAssets(SerializedObject fields)
+        internal static void BindAssets(SerializedObject fields)
         {
             var path = Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Config/Tables/Map/MapAssetTable.json");
             var table = JsonUtility.FromJson<AssetTable>(File.ReadAllText(path));

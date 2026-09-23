@@ -1,0 +1,12 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class AdventureChoiceTableRow
+---@field id number 稳定配置 ID
+---@field label string 选项文案
+---@field result string 结果说明
+---@field minScouting number 队伍最高侦察需求
+---@field costCoins number 选择消耗金币
+---@field rewardCoins number 即时金币奖励
+---@field healParty boolean 恢复队伍至满生命，含倒地角色
+---@field traitIds number[] 授予首名存活角色的特质
+---@field encounterIds number[] 空为普通结果；有值时必须仅一个遭遇
+return {["name"]="AdventureChoiceTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="label",["type"]="text",["description"]="\233\128\137\233\161\185\230\150\135\230\161\136"},{["name"]="result",["type"]="text",["description"]="\231\187\147\230\158\156\232\175\180\230\152\142"},{["name"]="minScouting",["type"]="int",["description"]="\233\152\159\228\188\141\230\156\128\233\171\152\228\190\166\229\175\159\233\156\128\230\177\130",["min"]=0,["max"]=1000},{["name"]="costCoins",["type"]="int",["description"]="\233\128\137\230\139\169\230\182\136\232\128\151\233\135\145\229\184\129",["min"]=0,["max"]=10000},{["name"]="rewardCoins",["type"]="int",["description"]="\229\141\179\230\151\182\233\135\145\229\184\129\229\165\150\229\138\177",["min"]=0,["max"]=10000},{["name"]="healParty",["type"]="bool",["description"]="\230\129\162\229\164\141\233\152\159\228\188\141\232\135\179\230\187\161\231\148\159\229\145\189\239\188\140\229\144\171\229\128\146\229\156\176\232\167\146\232\137\178"},{["name"]="traitIds",["type"]="int[]",["description"]="\230\142\136\228\186\136\233\166\150\229\144\141\229\173\152\230\180\187\232\167\146\232\137\178\231\154\132\231\137\185\232\180\168",["ref"]="CombatTraitTable"},{["name"]="encounterIds",["type"]="int[]",["description"]="\231\169\186\228\184\186\230\153\174\233\128\154\231\187\147\230\158\156\239\188\155\230\156\137\229\128\188\230\151\182\229\191\133\233\161\187\228\187\133\228\184\128\228\184\170\233\129\173\233\129\135",["ref"]="CombatEncounterTable"}},["fingerprint"]="df7b7d93755bcfe3e8a55f01966a41b4670fa211e31d72302d116ed820e11a2e"}

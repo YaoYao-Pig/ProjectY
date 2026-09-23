@@ -1,0 +1,107 @@
+{
+  "version": 1,
+  "name": "AdventureDemoTable",
+  "description": "演示配方；不改变大地图生成规则。野外地点取真实干燥格，建筑地点取真实实例。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "seed",
+      "type": "int",
+      "description": "默认种子",
+      "min": 0
+    },
+    {
+      "name": "regionIds",
+      "type": "int[]",
+      "description": "大地图配方",
+      "ref": "MapRegionTable"
+    },
+    {
+      "name": "partyIds",
+      "type": "int[]",
+      "description": "初始角色模板",
+      "ref": "CombatUnitTable"
+    },
+    {
+      "name": "maxPartySize",
+      "type": "int",
+      "description": "队伍人数上限",
+      "min": 1,
+      "max": 4
+    },
+    {
+      "name": "campEventId",
+      "type": "int",
+      "description": "营地事件",
+      "ref": "AdventureEventTable"
+    },
+    {
+      "name": "wildEventIds",
+      "type": "int[]",
+      "description": "野外事件",
+      "ref": "AdventureEventTable"
+    },
+    {
+      "name": "buildingIds",
+      "type": "int[]",
+      "description": "可访问建筑配置，与事件一一对应",
+      "ref": "MapBuildingTable"
+    },
+    {
+      "name": "buildingEventIds",
+      "type": "int[]",
+      "description": "建筑对应事件",
+      "ref": "AdventureEventTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "seed": 20260921,
+      "regionIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        1,
+        4,
+        5,
+        6,
+        1,
+        5,
+        2,
+        6
+      ],
+      "partyIds": [
+        1,
+        2,
+        3,
+        6
+      ],
+      "maxPartySize": 4,
+      "campEventId": 2,
+      "wildEventIds": [
+        1,
+        3
+      ],
+      "buildingIds": [
+        1,
+        4,
+        5
+      ],
+      "buildingEventIds": [
+        1,
+        4,
+        1
+      ]
+    }
+  ]
+}

@@ -90,7 +90,7 @@ namespace ProjectY.Editor
                 using (var env = new LuaEnv())
                 {
                     env.AddLoader(playerLoader.Load);
-                    env.DoString("assert(require('Bom') == 42); assert(type(require('Game.Systems')) == 'function'); assert(require('Generated.Rewards').name == 'Rewards')", "LuaFileLoaderTest");
+                    env.DoString("assert(require('Bom') == 42); assert(type(require('Game.Systems')) == 'function'); assert(require('_Gen.Rewards').name == 'Rewards')", "LuaFileLoaderTest");
                 }
                 File.WriteAllText(Path.Combine(playerRoot, "Bad.Name.lua"), "return true");
                 try { LuaBuildFiles.Collect(playerRoot); throw new Exception("Expected invalid build path rejection"); }

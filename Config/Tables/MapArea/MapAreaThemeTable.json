@@ -1,0 +1,143 @@
+{
+  "version": 1,
+  "name": "MapAreaThemeTable",
+  "description": "根据入口所在 Region 选择地牢形态与材质；不按地貌 ID 在渲染器中硬编码。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "regionType",
+      "type": "enum",
+      "description": "适用大地图地貌",
+      "enumRef": "Map.E_MapRegion"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "环境主题"
+    },
+    {
+      "name": "floorColor",
+      "type": "string",
+      "description": "地面纯色 #RRGGBB"
+    },
+    {
+      "name": "wallColor",
+      "type": "string",
+      "description": "墙体纯色 #RRGGBB"
+    },
+    {
+      "name": "wallHeight",
+      "type": "float",
+      "description": "墙体高度",
+      "min": 0.5,
+      "max": 5
+    },
+    {
+      "name": "roomRadiusScale",
+      "type": "float",
+      "description": "房间尺寸倍率",
+      "min": 0.6,
+      "max": 1.4
+    },
+    {
+      "name": "windingScale",
+      "type": "float",
+      "description": "走廊曲折倍率",
+      "min": 0,
+      "max": 2
+    },
+    {
+      "name": "heightNoise",
+      "type": "float",
+      "description": "地面小幅起伏，不改变可通行性",
+      "min": 0,
+      "max": 0.25
+    },
+    {
+      "name": "assetId",
+      "type": "int",
+      "description": "地面与墙体柱模型",
+      "ref": "MapAssetTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "regionType": 1,
+      "name": "风化石窟",
+      "floorColor": "#9b947e",
+      "wallColor": "#655f52",
+      "wallHeight": 1.9,
+      "roomRadiusScale": 1,
+      "windingScale": 1,
+      "heightNoise": 0.07,
+      "assetId": 2
+    },
+    {
+      "id": 2,
+      "regionType": 2,
+      "name": "山腹岩牢",
+      "floorColor": "#8b8275",
+      "wallColor": "#514c47",
+      "wallHeight": 2.6,
+      "roomRadiusScale": 0.8,
+      "windingScale": 1.3,
+      "heightNoise": 0.12,
+      "assetId": 2
+    },
+    {
+      "id": 3,
+      "regionType": 3,
+      "name": "潮湿湖底遗迹",
+      "floorColor": "#778d84",
+      "wallColor": "#405b58",
+      "wallHeight": 1.8,
+      "roomRadiusScale": 1.1,
+      "windingScale": 1.1,
+      "heightNoise": 0.04,
+      "assetId": 2
+    },
+    {
+      "id": 4,
+      "regionType": 4,
+      "name": "河岸旧墓道",
+      "floorColor": "#9c9776",
+      "wallColor": "#656349",
+      "wallHeight": 1.9,
+      "roomRadiusScale": 1,
+      "windingScale": 1.25,
+      "heightNoise": 0.06,
+      "assetId": 2
+    },
+    {
+      "id": 5,
+      "regionType": 5,
+      "name": "林下苔石遗迹",
+      "floorColor": "#839271",
+      "wallColor": "#495b43",
+      "wallHeight": 2,
+      "roomRadiusScale": 0.95,
+      "windingScale": 1.15,
+      "heightNoise": 0.09,
+      "assetId": 2
+    },
+    {
+      "id": 6,
+      "regionType": 6,
+      "name": "冰封地窟",
+      "floorColor": "#c3d7d9",
+      "wallColor": "#78989f",
+      "wallHeight": 2.2,
+      "roomRadiusScale": 0.9,
+      "windingScale": 0.85,
+      "heightNoise": 0.06,
+      "assetId": 2
+    }
+  ]
+}

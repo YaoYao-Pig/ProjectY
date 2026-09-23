@@ -1,0 +1,262 @@
+{
+  "version": 1,
+  "name": "CombatUnitTable",
+  "description": "敌我共用角色模板；首版数值为可调整的 demo 样例。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "角色显示名"
+    },
+    {
+      "name": "vitality",
+      "type": "int",
+      "description": "一级属性 vitality",
+      "min": 0,
+      "max": 1000
+    },
+    {
+      "name": "endurance",
+      "type": "int",
+      "description": "一级属性 endurance",
+      "min": 0,
+      "max": 1000
+    },
+    {
+      "name": "intellect",
+      "type": "int",
+      "description": "一级属性 intellect",
+      "min": 0,
+      "max": 1000
+    },
+    {
+      "name": "strength",
+      "type": "int",
+      "description": "一级属性 strength",
+      "min": 0,
+      "max": 1000
+    },
+    {
+      "name": "speed",
+      "type": "int",
+      "description": "一级属性 speed",
+      "min": 0,
+      "max": 1000
+    },
+    {
+      "name": "defense",
+      "type": "int",
+      "description": "一级属性 defense",
+      "min": 0,
+      "max": 1000
+    },
+    {
+      "name": "attributeNames",
+      "type": "string[]",
+      "description": "二级属性名称，与数值一一对应"
+    },
+    {
+      "name": "attributeValues",
+      "type": "int[]",
+      "description": "二级属性值"
+    },
+    {
+      "name": "maxHealth",
+      "type": "formula",
+      "description": "最大生命公式",
+      "variables": [
+        "vitality",
+        "endurance"
+      ]
+    },
+    {
+      "name": "actionPoints",
+      "type": "int",
+      "description": "每回合行动点",
+      "min": 1,
+      "max": 20
+    },
+    {
+      "name": "moveRange",
+      "type": "int",
+      "description": "单次移动步数",
+      "min": 1,
+      "max": 12
+    },
+    {
+      "name": "moveCost",
+      "type": "int",
+      "description": "移动消耗行动点",
+      "min": 0,
+      "max": 20
+    },
+    {
+      "name": "skillIds",
+      "type": "int[]",
+      "description": "角色拥有的技能",
+      "ref": "CombatSkillTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "艾岚 · 剑士",
+      "vitality": 7,
+      "endurance": 5,
+      "intellect": 2,
+      "strength": 7,
+      "speed": 6,
+      "defense": 3,
+      "attributeNames": [
+        "sword",
+        "scouting"
+      ],
+      "attributeValues": [
+        6,
+        2
+      ],
+      "maxHealth": "18 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 3,
+      "moveCost": 1,
+      "skillIds": [
+        1,
+        4
+      ]
+    },
+    {
+      "id": 2,
+      "name": "诺拉 · 游侠",
+      "vitality": 5,
+      "endurance": 5,
+      "intellect": 3,
+      "strength": 5,
+      "speed": 9,
+      "defense": 2,
+      "attributeNames": [
+        "bow",
+        "scouting"
+      ],
+      "attributeValues": [
+        7,
+        5
+      ],
+      "maxHealth": "18 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 4,
+      "moveCost": 1,
+      "skillIds": [
+        2,
+        4
+      ]
+    },
+    {
+      "id": 3,
+      "name": "伊文 · 法师",
+      "vitality": 4,
+      "endurance": 4,
+      "intellect": 8,
+      "strength": 2,
+      "speed": 5,
+      "defense": 1,
+      "attributeNames": [
+        "staff",
+        "scouting"
+      ],
+      "attributeValues": [
+        6,
+        1
+      ],
+      "maxHealth": "18 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 3,
+      "moveCost": 1,
+      "skillIds": [
+        3,
+        5,
+        4
+      ]
+    },
+    {
+      "id": 4,
+      "name": "废墟掠夺者",
+      "vitality": 4,
+      "endurance": 3,
+      "intellect": 1,
+      "strength": 5,
+      "speed": 4,
+      "defense": 2,
+      "attributeNames": [
+        "sword"
+      ],
+      "attributeValues": [
+        3
+      ],
+      "maxHealth": "18 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 3,
+      "moveCost": 1,
+      "skillIds": [
+        1,
+        4
+      ]
+    },
+    {
+      "id": 5,
+      "name": "哨塔弓手",
+      "vitality": 3,
+      "endurance": 3,
+      "intellect": 2,
+      "strength": 4,
+      "speed": 7,
+      "defense": 1,
+      "attributeNames": [
+        "bow"
+      ],
+      "attributeValues": [
+        4
+      ],
+      "maxHealth": "18 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 3,
+      "moveCost": 1,
+      "skillIds": [
+        2,
+        4
+      ]
+    },
+    {
+      "id": 6,
+      "name": "布兰 · 双手战士",
+      "vitality": 8,
+      "endurance": 5,
+      "intellect": 2,
+      "strength": 8,
+      "speed": 4,
+      "defense": 2,
+      "attributeNames": [
+        "sword",
+        "scouting"
+      ],
+      "attributeValues": [
+        6,
+        2
+      ],
+      "maxHealth": "18 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 3,
+      "moveCost": 1,
+      "skillIds": [
+        1,
+        4
+      ]
+    }
+  ]
+}

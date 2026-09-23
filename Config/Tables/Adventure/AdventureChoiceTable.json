@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "name": "AdventureChoiceTable",
+  "description": "事件选择；校验条件后一次性消费，再应用结果。遭遇奖励只在获胜后发放。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "label",
+      "type": "text",
+      "description": "选项文案"
+    },
+    {
+      "name": "result",
+      "type": "text",
+      "description": "结果说明"
+    },
+    {
+      "name": "minScouting",
+      "type": "int",
+      "description": "队伍最高侦察需求",
+      "min": 0,
+      "max": 1000
+    },
+    {
+      "name": "costCoins",
+      "type": "int",
+      "description": "选择消耗金币",
+      "min": 0,
+      "max": 10000
+    },
+    {
+      "name": "rewardCoins",
+      "type": "int",
+      "description": "即时金币奖励",
+      "min": 0,
+      "max": 10000
+    },
+    {
+      "name": "healParty",
+      "type": "bool",
+      "description": "恢复队伍至满生命，含倒地角色"
+    },
+    {
+      "name": "traitIds",
+      "type": "int[]",
+      "description": "授予首名存活角色的特质",
+      "ref": "CombatTraitTable"
+    },
+    {
+      "name": "encounterIds",
+      "type": "int[]",
+      "description": "空为普通结果；有值时必须仅一个遭遇",
+      "ref": "CombatEncounterTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "label": "迎战守卫",
+      "result": "战斗结束。",
+      "minScouting": 0,
+      "costCoins": 0,
+      "rewardCoins": 0,
+      "healParty": false,
+      "traitIds": [],
+      "encounterIds": [
+        1
+      ]
+    },
+    {
+      "id": 2,
+      "label": "侦察后取走补给（侦察 4）",
+      "result": "游侠找到隐蔽小路。带回 12 金币，领队获得「老练」。",
+      "minScouting": 4,
+      "costCoins": 0,
+      "rewardCoins": 12,
+      "healParty": false,
+      "traitIds": [
+        1
+      ],
+      "encounterIds": []
+    },
+    {
+      "id": 3,
+      "label": "离开此地",
+      "result": "队伍记下此处的见闻，继续前行。",
+      "minScouting": 0,
+      "costCoins": 0,
+      "rewardCoins": 0,
+      "healParty": false,
+      "traitIds": [],
+      "encounterIds": []
+    },
+    {
+      "id": 4,
+      "label": "扎营休整",
+      "result": "所有队员恢复生命，领队获得「坚韧」。",
+      "minScouting": 0,
+      "costCoins": 0,
+      "rewardCoins": 0,
+      "healParty": true,
+      "traitIds": [
+        2
+      ],
+      "encounterIds": []
+    },
+    {
+      "id": 5,
+      "label": "购买补给（10 金币）",
+      "result": "补给充足，全队恢复生命。",
+      "minScouting": 0,
+      "costCoins": 10,
+      "rewardCoins": 0,
+      "healParty": true,
+      "traitIds": [],
+      "encounterIds": []
+    }
+  ]
+}

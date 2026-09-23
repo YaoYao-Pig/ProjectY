@@ -1,0 +1,12 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaTownLotTableRow
+---@field id number 稳定配置 ID
+---@field name string 显示名称
+---@field assetId number 模型资源
+---@field scale number 相对地格模型比例
+---@field footprintQ number[] 局部占地 q，与 r 一一对应
+---@field footprintR number[] 局部占地 r
+---@field entryQ number 门前交互格局部 q
+---@field entryR number 门前交互格局部 r
+---@field kind "building"|"street" 建筑或街道陈设
+return {["name"]="MapAreaTownLotTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="name",["type"]="string",["description"]="\230\152\190\231\164\186\229\144\141\231\167\176"},{["name"]="assetId",["type"]="int",["description"]="\230\168\161\229\158\139\232\181\132\230\186\144",["ref"]="MapAssetTable"},{["name"]="scale",["type"]="float",["description"]="\231\155\184\229\175\185\229\156\176\230\160\188\230\168\161\229\158\139\230\175\148\228\190\139",["min"]=0.1,["max"]=5},{["name"]="footprintQ",["type"]="int[]",["description"]="\229\177\128\233\131\168\229\141\160\229\156\176 q\239\188\140\228\184\142 r \228\184\128\228\184\128\229\175\185\229\186\148"},{["name"]="footprintR",["type"]="int[]",["description"]="\229\177\128\233\131\168\229\141\160\229\156\176 r"},{["name"]="entryQ",["type"]="int",["description"]="\233\151\168\229\137\141\228\186\164\228\186\146\230\160\188\229\177\128\233\131\168 q"},{["name"]="entryR",["type"]="int",["description"]="\233\151\168\229\137\141\228\186\164\228\186\146\230\160\188\229\177\128\233\131\168 r"},{["name"]="kind",["type"]="enum",["description"]="\229\187\186\231\173\145\230\136\150\232\161\151\233\129\147\233\153\136\232\174\190",["values"]={"building","street"}}},["fingerprint"]="1b1e2e46d6fb6bbba1f412ed89290f4da1d69d27f7fc20da644948cab0c082ac"}

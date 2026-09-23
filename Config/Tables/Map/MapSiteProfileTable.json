@@ -1,0 +1,187 @@
+{
+  "version": 1,
+  "name": "MapSiteProfileTable",
+  "description": "聚落选址方案；先选可用方案，再按分数加权抽选；不保证各类数量。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "方案名称"
+    },
+    {
+      "name": "pickWeight",
+      "type": "float",
+      "description": "方案抽选权重",
+      "min": 0.01
+    },
+    {
+      "name": "sampleRadius",
+      "type": "int",
+      "description": "地形统计半径（格）",
+      "min": 1,
+      "max": 8
+    },
+    {
+      "name": "distanceCap",
+      "type": "int",
+      "description": "距离搜索截断；没有来源或不可达记为此值",
+      "min": 1,
+      "max": 128
+    },
+    {
+      "name": "minScore",
+      "type": "float",
+      "description": "最低综合分",
+      "min": 0,
+      "max": 1
+    },
+    {
+      "name": "scoreExponent",
+      "type": "float",
+      "description": "候选得分抽选指数，越大越偏好高分",
+      "min": 1,
+      "max": 12
+    },
+    {
+      "name": "candidateBudget",
+      "type": "int",
+      "description": "每个方案最多进入试排的候选数量",
+      "min": 1,
+      "max": 1024
+    },
+    {
+      "name": "accessMaxStep",
+      "type": "float",
+      "description": "接近岸边路径允许的邻格高差，仅用于选址",
+      "min": 0.01,
+      "max": 8
+    },
+    {
+      "name": "accessSlopeCost",
+      "type": "float",
+      "description": "接近岸边的上/下坡代价",
+      "min": 0,
+      "max": 16
+    },
+    {
+      "name": "shoreAccessMaxDrop",
+      "type": "float",
+      "description": "可接近的岸边离水面最大高差",
+      "min": 0,
+      "max": 8
+    }
+  ],
+  "rows": [
+    {
+      "id": 101,
+      "name": "村庄·近水缓坡",
+      "pickWeight": 80,
+      "sampleRadius": 3,
+      "distanceCap": 48,
+      "minScore": 0.35,
+      "scoreExponent": 4,
+      "candidateBudget": 256,
+      "accessMaxStep": 1.5,
+      "accessSlopeCost": 2,
+      "shoreAccessMaxDrop": 1.2
+    },
+    {
+      "id": 102,
+      "name": "村庄·高原台地",
+      "pickWeight": 20,
+      "sampleRadius": 3,
+      "distanceCap": 48,
+      "minScore": 0.32,
+      "scoreExponent": 4,
+      "candidateBudget": 256,
+      "accessMaxStep": 1.5,
+      "accessSlopeCost": 2,
+      "shoreAccessMaxDrop": 1.2
+    },
+    {
+      "id": 201,
+      "name": "城市·河谷平地",
+      "pickWeight": 90,
+      "sampleRadius": 3,
+      "distanceCap": 48,
+      "minScore": 0.4,
+      "scoreExponent": 5,
+      "candidateBudget": 256,
+      "accessMaxStep": 1.5,
+      "accessSlopeCost": 2,
+      "shoreAccessMaxDrop": 1.2
+    },
+    {
+      "id": 202,
+      "name": "城市·高山盆地",
+      "pickWeight": 10,
+      "sampleRadius": 3,
+      "distanceCap": 48,
+      "minScore": 0.35,
+      "scoreExponent": 5,
+      "candidateBudget": 256,
+      "accessMaxStep": 1.5,
+      "accessSlopeCost": 2,
+      "shoreAccessMaxDrop": 1.2
+    },
+    {
+      "id": 301,
+      "name": "城堡·河岸平原",
+      "pickWeight": 40,
+      "sampleRadius": 3,
+      "distanceCap": 48,
+      "minScore": 0.32,
+      "scoreExponent": 4,
+      "candidateBudget": 256,
+      "accessMaxStep": 1.5,
+      "accessSlopeCost": 2,
+      "shoreAccessMaxDrop": 1.2
+    },
+    {
+      "id": 302,
+      "name": "城堡·高地据点",
+      "pickWeight": 60,
+      "sampleRadius": 3,
+      "distanceCap": 48,
+      "minScore": 0.32,
+      "scoreExponent": 4,
+      "candidateBudget": 256,
+      "accessMaxStep": 1.5,
+      "accessSlopeCost": 2,
+      "shoreAccessMaxDrop": 1.2
+    },
+    {
+      "id": 401,
+      "name": "地牢·荒野遗址",
+      "pickWeight": 100,
+      "sampleRadius": 3,
+      "distanceCap": 48,
+      "minScore": 0.25,
+      "scoreExponent": 3,
+      "candidateBudget": 256,
+      "accessMaxStep": 1.5,
+      "accessSlopeCost": 2,
+      "shoreAccessMaxDrop": 1.2
+    },
+    {
+      "id": 501,
+      "name": "群落·与世隔绝",
+      "pickWeight": 100,
+      "sampleRadius": 3,
+      "distanceCap": 48,
+      "minScore": 0.25,
+      "scoreExponent": 3,
+      "candidateBudget": 384,
+      "accessMaxStep": 1.5,
+      "accessSlopeCost": 2,
+      "shoreAccessMaxDrop": 1.2
+    }
+  ]
+}

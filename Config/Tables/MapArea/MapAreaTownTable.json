@@ -1,0 +1,242 @@
+{
+  "version": 1,
+  "name": "MapAreaTownTable",
+  "description": "每种聚落的设施清单、街区组合、民居和居民规模。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "显示名称"
+    },
+    {
+      "name": "facilityIds",
+      "type": "int[]",
+      "description": "本城拥有的设施，必须包含中心广场",
+      "ref": "MapAreaTownFacilityTable"
+    },
+    {
+      "name": "blockIds",
+      "type": "int[]",
+      "description": "随机拼接的街区预设池",
+      "ref": "MapAreaTownBlockTable"
+    },
+    {
+      "name": "houseLotIds",
+      "type": "int[]",
+      "description": "填充民居预设池",
+      "ref": "MapAreaTownLotTable"
+    },
+    {
+      "name": "streetLotIds",
+      "type": "int[]",
+      "description": "街旁装饰预设池",
+      "ref": "MapAreaTownLotTable"
+    },
+    {
+      "name": "houseCount",
+      "type": "int",
+      "description": "民居数量",
+      "min": 0,
+      "max": 14
+    },
+    {
+      "name": "residentCount",
+      "type": "int",
+      "description": "额外巡游居民数量",
+      "min": 0,
+      "max": 24
+    },
+    {
+      "name": "residentTemplateIds",
+      "type": "int[]",
+      "description": "巡游居民模板池",
+      "ref": "MapAreaTownNpcTable"
+    },
+    {
+      "name": "blockDistance",
+      "type": "int",
+      "description": "街区中心距广场的轴向半径",
+      "min": 10,
+      "max": 16
+    },
+    {
+      "name": "plazaRadius",
+      "type": "int",
+      "description": "广场半径",
+      "min": 3,
+      "max": 6
+    },
+    {
+      "name": "streetRadius",
+      "type": "int",
+      "description": "道路半宽，至少为 1",
+      "min": 1,
+      "max": 3
+    },
+    {
+      "name": "treeCount",
+      "type": "int",
+      "description": "外围景观树数量",
+      "min": 0,
+      "max": 80
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "集市城镇",
+      "facilityIds": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "blockIds": [
+        1,
+        2,
+        3
+      ],
+      "houseLotIds": [
+        6,
+        7
+      ],
+      "streetLotIds": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "houseCount": 10,
+      "residentCount": 10,
+      "residentTemplateIds": [
+        1,
+        2
+      ],
+      "blockDistance": 12,
+      "plazaRadius": 4,
+      "streetRadius": 1,
+      "treeCount": 28
+    },
+    {
+      "id": 2,
+      "name": "小村庄",
+      "facilityIds": [
+        1,
+        2,
+        3,
+        5
+      ],
+      "blockIds": [
+        1,
+        2,
+        3
+      ],
+      "houseLotIds": [
+        6,
+        7
+      ],
+      "streetLotIds": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "houseCount": 6,
+      "residentCount": 5,
+      "residentTemplateIds": [
+        1,
+        2
+      ],
+      "blockDistance": 12,
+      "plazaRadius": 4,
+      "streetRadius": 1,
+      "treeCount": 28
+    },
+    {
+      "id": 3,
+      "name": "城堡镇区",
+      "facilityIds": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "blockIds": [
+        1,
+        2,
+        3
+      ],
+      "houseLotIds": [
+        6,
+        7
+      ],
+      "streetLotIds": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "houseCount": 12,
+      "residentCount": 8,
+      "residentTemplateIds": [
+        1,
+        2
+      ],
+      "blockDistance": 12,
+      "plazaRadius": 4,
+      "streetRadius": 1,
+      "treeCount": 28
+    },
+    {
+      "id": 4,
+      "name": "隐居小聚落",
+      "facilityIds": [
+        1,
+        3,
+        5
+      ],
+      "blockIds": [
+        1,
+        2,
+        3
+      ],
+      "houseLotIds": [
+        6,
+        7
+      ],
+      "streetLotIds": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "houseCount": 3,
+      "residentCount": 3,
+      "residentTemplateIds": [
+        1,
+        2
+      ],
+      "blockDistance": 12,
+      "plazaRadius": 4,
+      "streetRadius": 1,
+      "treeCount": 28
+    }
+  ]
+}

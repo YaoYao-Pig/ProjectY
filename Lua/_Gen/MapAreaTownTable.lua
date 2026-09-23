@@ -1,0 +1,16 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaTownTableRow
+---@field id number 稳定配置 ID
+---@field name string 显示名称
+---@field facilityIds number[] 本城拥有的设施，必须包含中心广场
+---@field blockIds number[] 随机拼接的街区预设池
+---@field houseLotIds number[] 填充民居预设池
+---@field streetLotIds number[] 街旁装饰预设池
+---@field houseCount number 民居数量
+---@field residentCount number 额外巡游居民数量
+---@field residentTemplateIds number[] 巡游居民模板池
+---@field blockDistance number 街区中心距广场的轴向半径
+---@field plazaRadius number 广场半径
+---@field streetRadius number 道路半宽，至少为 1
+---@field treeCount number 外围景观树数量
+return {["name"]="MapAreaTownTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="name",["type"]="string",["description"]="\230\152\190\231\164\186\229\144\141\231\167\176"},{["name"]="facilityIds",["type"]="int[]",["description"]="\230\156\172\229\159\142\230\139\165\230\156\137\231\154\132\232\174\190\230\150\189\239\188\140\229\191\133\233\161\187\229\140\133\229\144\171\228\184\173\229\191\131\229\185\191\229\156\186",["ref"]="MapAreaTownFacilityTable"},{["name"]="blockIds",["type"]="int[]",["description"]="\233\154\143\230\156\186\230\139\188\230\142\165\231\154\132\232\161\151\229\140\186\233\162\132\232\174\190\230\177\160",["ref"]="MapAreaTownBlockTable"},{["name"]="houseLotIds",["type"]="int[]",["description"]="\229\161\171\229\133\133\230\176\145\229\177\133\233\162\132\232\174\190\230\177\160",["ref"]="MapAreaTownLotTable"},{["name"]="streetLotIds",["type"]="int[]",["description"]="\232\161\151\230\151\129\232\163\133\233\165\176\233\162\132\232\174\190\230\177\160",["ref"]="MapAreaTownLotTable"},{["name"]="houseCount",["type"]="int",["description"]="\230\176\145\229\177\133\230\149\176\233\135\143",["min"]=0,["max"]=14},{["name"]="residentCount",["type"]="int",["description"]="\233\162\157\229\164\150\229\183\161\230\184\184\229\177\133\230\176\145\230\149\176\233\135\143",["min"]=0,["max"]=24},{["name"]="residentTemplateIds",["type"]="int[]",["description"]="\229\183\161\230\184\184\229\177\133\230\176\145\230\168\161\230\157\191\230\177\160",["ref"]="MapAreaTownNpcTable"},{["name"]="blockDistance",["type"]="int",["description"]="\232\161\151\229\140\186\228\184\173\229\191\131\232\183\157\229\185\191\229\156\186\231\154\132\232\189\180\229\144\145\229\141\138\229\190\132",["min"]=10,["max"]=16},{["name"]="plazaRadius",["type"]="int",["description"]="\229\185\191\229\156\186\229\141\138\229\190\132",["min"]=3,["max"]=6},{["name"]="streetRadius",["type"]="int",["description"]="\233\129\147\232\183\175\229\141\138\229\174\189\239\188\140\232\135\179\229\176\145\228\184\186 1",["min"]=1,["max"]=3},{["name"]="treeCount",["type"]="int",["description"]="\229\164\150\229\155\180\230\153\175\232\167\130\230\160\145\230\149\176\233\135\143",["min"]=0,["max"]=80}},["fingerprint"]="11272394f4ccf41ce2c1ad635bec4d7b8b2d0a39ad2fab9d2395882241e87f99"}

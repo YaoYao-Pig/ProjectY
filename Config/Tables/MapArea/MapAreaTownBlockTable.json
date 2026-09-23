@@ -1,0 +1,127 @@
+{
+  "version": 1,
+  "name": "MapAreaTownBlockTable",
+  "description": "围绕中心旋转拼接的街区预设；第一槽为功能设施，其余为民居。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "显示名称"
+    },
+    {
+      "name": "slotQ",
+      "type": "int[]",
+      "description": "街区内建筑槽 q"
+    },
+    {
+      "name": "slotR",
+      "type": "int[]",
+      "description": "街区内建筑槽 r"
+    },
+    {
+      "name": "slotRotation",
+      "type": "int[]",
+      "description": "各槽的六十度旋转次数"
+    },
+    {
+      "name": "decorQ",
+      "type": "int[]",
+      "description": "街旁陈设槽 q"
+    },
+    {
+      "name": "decorR",
+      "type": "int[]",
+      "description": "街旁陈设槽 r"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "对称门前街",
+      "slotQ": [
+        0,
+        -3,
+        6
+      ],
+      "slotR": [
+        0,
+        -3,
+        -3
+      ],
+      "slotRotation": [
+        0,
+        0,
+        0
+      ],
+      "decorQ": [
+        -3,
+        3
+      ],
+      "decorR": [
+        2,
+        2
+      ]
+    },
+    {
+      "id": 2,
+      "name": "错落庭院街",
+      "slotQ": [
+        0,
+        -4,
+        7
+      ],
+      "slotR": [
+        0,
+        -2,
+        -4
+      ],
+      "slotRotation": [
+        0,
+        0,
+        0
+      ],
+      "decorQ": [
+        -3,
+        3
+      ],
+      "decorR": [
+        2,
+        2
+      ]
+    },
+    {
+      "id": 3,
+      "name": "临街小院",
+      "slotQ": [
+        0,
+        -4,
+        6
+      ],
+      "slotR": [
+        0,
+        -3,
+        -2
+      ],
+      "slotRotation": [
+        0,
+        0,
+        0
+      ],
+      "decorQ": [
+        -3,
+        3
+      ],
+      "decorR": [
+        2,
+        2
+      ]
+    }
+  ]
+}

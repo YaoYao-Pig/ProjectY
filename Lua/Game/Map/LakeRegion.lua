@@ -8,7 +8,9 @@ function Convert:GetHeight(config, q, r, random, noiseScale, region)
     local x = (q - region.centerQ) / math.max(1, region.sizeX / 2)
     local y = (r - region.centerR) / math.max(1, region.sizeY / 2)
     x, y = random:Warp(x, y, 1.2, config.warpStrength * 0.55, region.instanceId * 65537 + 19)
-    local distance = math.sqrt(x * x + y * y + x * y * 0.65)
+    -- 岸线起伏写入真实湖盆高度，随后由全图盆地分析选择能蓄水的连通范围。
+    local irregularity = random:Fractal(q,r,noiseScale*config.noiseScale*.65,.6,region.instanceId*65537+29)
+    local distance = math.sqrt(x * x + y * y + x * y * 0.65) + (irregularity-.5)*.42
     local shore = Terrain.Smooth(config.lakeSize * 0.55, config.lakeSize * 1.5, distance)
     local noise = Terrain.Rolling(config, q, r, random, noiseScale)
     local land = config.waterLevel + (config.maxHeight - config.waterLevel) * (0.35 + noise * 0.65)

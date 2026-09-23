@@ -1,0 +1,12 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class CombatSkillTableRow
+---@field id number 稳定配置 ID
+---@field name string 技能名称
+---@field description string 技能说明
+---@field action "main"|"secondary" 行动类型
+---@field cost number 行动点消耗
+---@field range number 六边形射程；首版不计算视线
+---@field target "enemy"|"ally"|"self" 目标规则
+---@field proficiency string 使用的二级属性名
+---@field effectIds number[] 顺序执行的效果
+return {["name"]="CombatSkillTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="name",["type"]="text",["description"]="\230\138\128\232\131\189\229\144\141\231\167\176"},{["name"]="description",["type"]="text",["description"]="\230\138\128\232\131\189\232\175\180\230\152\142"},{["name"]="action",["type"]="enum",["description"]="\232\161\140\229\138\168\231\177\187\229\158\139",["values"]={"main","secondary"}},{["name"]="cost",["type"]="int",["description"]="\232\161\140\229\138\168\231\130\185\230\182\136\232\128\151",["min"]=0,["max"]=20},{["name"]="range",["type"]="int",["description"]="\229\133\173\232\190\185\229\189\162\229\176\132\231\168\139\239\188\155\233\166\150\231\137\136\228\184\141\232\174\161\231\174\151\232\167\134\231\186\191",["min"]=0,["max"]=12},{["name"]="target",["type"]="enum",["description"]="\231\155\174\230\160\135\232\167\132\229\136\153",["values"]={"enemy","ally","self"}},{["name"]="proficiency",["type"]="string",["description"]="\228\189\191\231\148\168\231\154\132\228\186\140\231\186\167\229\177\158\230\128\167\229\144\141"},{["name"]="effectIds",["type"]="int[]",["description"]="\233\161\186\229\186\143\230\137\167\232\161\140\231\154\132\230\149\136\230\158\156",["ref"]="CombatEffectTable"}},["fingerprint"]="b7f150e143b51750eaf97325c37cf8bae059abf8711f4ba7509d3d4b9232858b"}

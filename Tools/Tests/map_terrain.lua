@@ -10,7 +10,7 @@ local function test(name, callback)
     assert(ok, name .. '\n' .. tostring(err)); tests = tests + 1; print('PASS ' .. name)
 end
 local registry = Registry({ ReadConfig = function(_, name)
-    local file = assert(io.open('Assets/GameFramework/Resources/Config/' .. name .. '.bytes', 'rb'))
+    local file = assert(io.open('Assets/GameFramework/Resources/_Gen/Config/' .. name .. '.bytes', 'rb'))
     local bytes = file:read('*a'); file:close(); return bytes
 end, LogError = error })
 registry:Register('Config', require('Config.ConfigSystem'))
@@ -50,7 +50,7 @@ test('organic footprints contain connected cells and leave corners outside their
     end
 end)
 
-test('mountains have more relief and lake and river strategies produce real wet cells', function()
+test('mountains have more relief and water terrain supports the global basin and drainage solver', function()
     local function range(map)
         local minimum, maximum = math.huge, -math.huge
         for _, cell in ipairs(map.cells) do minimum = math.min(minimum, cell.height); maximum = math.max(maximum, cell.height) end
@@ -61,7 +61,8 @@ test('mountains have more relief and lake and river strategies produce real wet 
         for _, entry in ipairs({ {3, 'lake'}, {4, 'river'} }) do
             local map = system:Generate(seed, {entry[1]})
             assert(#map.waterBodies > 0)
-            for _, body in ipairs(map.waterBodies) do assert(body.kind == entry[2]) end
+            -- 湖区也可有入湖河，河谷也可有盆地湖；最终水形由全图地形决定。
+            for _, body in ipairs(map.waterBodies) do assert(body.kind=='lake' or body.kind=='river') end
         end
     end
 end)

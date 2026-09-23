@@ -1,0 +1,11 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class CombatEncounterTableRow
+---@field id number 稳定配置 ID
+---@field name string 遭遇名称
+---@field radius number 六边形战场半径
+---@field obstacleChance number 障碍候选概率；保留连通与出生格
+---@field enemyIds number[] 敌方角色模板
+---@field maxRounds number 最大轮数
+---@field rewardCoins number 胜利金币
+---@field rewardTraitIds number[] 胜利后授予首名存活角色的特质
+return {["name"]="CombatEncounterTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="name",["type"]="text",["description"]="\233\129\173\233\129\135\229\144\141\231\167\176"},{["name"]="radius",["type"]="int",["description"]="\229\133\173\232\190\185\229\189\162\230\136\152\229\156\186\229\141\138\229\190\132",["min"]=3,["max"]=7},{["name"]="obstacleChance",["type"]="float",["description"]="\233\154\156\231\162\141\229\128\153\233\128\137\230\166\130\231\142\135\239\188\155\228\191\157\231\149\153\232\191\158\233\128\154\228\184\142\229\135\186\231\148\159\230\160\188",["min"]=0,["max"]=0.4},{["name"]="enemyIds",["type"]="int[]",["description"]="\230\149\140\230\150\185\232\167\146\232\137\178\230\168\161\230\157\191",["ref"]="CombatUnitTable"},{["name"]="maxRounds",["type"]="int",["description"]="\230\156\128\229\164\167\232\189\174\230\149\176",["min"]=1,["max"]=100},{["name"]="rewardCoins",["type"]="int",["description"]="\232\131\156\229\136\169\233\135\145\229\184\129",["min"]=0,["max"]=10000},{["name"]="rewardTraitIds",["type"]="int[]",["description"]="\232\131\156\229\136\169\229\144\142\230\142\136\228\186\136\233\166\150\229\144\141\229\173\152\230\180\187\232\167\146\232\137\178\231\154\132\231\137\185\232\180\168",["ref"]="CombatTraitTable"}},["fingerprint"]="01d981c3aa26f03c36d6d4b5f4c5406564f55ca5e82b94b5a65a689f921ff3c4"}

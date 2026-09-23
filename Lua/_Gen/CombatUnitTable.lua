@@ -1,0 +1,18 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class CombatUnitTableRow
+---@field id number 稳定配置 ID
+---@field name string 角色显示名
+---@field vitality number 一级属性 vitality
+---@field endurance number 一级属性 endurance
+---@field intellect number 一级属性 intellect
+---@field strength number 一级属性 strength
+---@field speed number 一级属性 speed
+---@field defense number 一级属性 defense
+---@field attributeNames string[] 二级属性名称，与数值一一对应
+---@field attributeValues number[] 二级属性值
+---@field maxHealth ConfigFormula 最大生命公式
+---@field actionPoints number 每回合行动点
+---@field moveRange number 单次移动步数
+---@field moveCost number 移动消耗行动点
+---@field skillIds number[] 角色拥有的技能
+return {["name"]="CombatUnitTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="name",["type"]="text",["description"]="\232\167\146\232\137\178\230\152\190\231\164\186\229\144\141"},{["name"]="vitality",["type"]="int",["description"]="\228\184\128\231\186\167\229\177\158\230\128\167 vitality",["min"]=0,["max"]=1000},{["name"]="endurance",["type"]="int",["description"]="\228\184\128\231\186\167\229\177\158\230\128\167 endurance",["min"]=0,["max"]=1000},{["name"]="intellect",["type"]="int",["description"]="\228\184\128\231\186\167\229\177\158\230\128\167 intellect",["min"]=0,["max"]=1000},{["name"]="strength",["type"]="int",["description"]="\228\184\128\231\186\167\229\177\158\230\128\167 strength",["min"]=0,["max"]=1000},{["name"]="speed",["type"]="int",["description"]="\228\184\128\231\186\167\229\177\158\230\128\167 speed",["min"]=0,["max"]=1000},{["name"]="defense",["type"]="int",["description"]="\228\184\128\231\186\167\229\177\158\230\128\167 defense",["min"]=0,["max"]=1000},{["name"]="attributeNames",["type"]="string[]",["description"]="\228\186\140\231\186\167\229\177\158\230\128\167\229\144\141\231\167\176\239\188\140\228\184\142\230\149\176\229\128\188\228\184\128\228\184\128\229\175\185\229\186\148"},{["name"]="attributeValues",["type"]="int[]",["description"]="\228\186\140\231\186\167\229\177\158\230\128\167\229\128\188"},{["name"]="maxHealth",["type"]="formula",["description"]="\230\156\128\229\164\167\231\148\159\229\145\189\229\133\172\229\188\143",["variables"]={"vitality","endurance"}},{["name"]="actionPoints",["type"]="int",["description"]="\230\175\143\229\155\158\229\144\136\232\161\140\229\138\168\231\130\185",["min"]=1,["max"]=20},{["name"]="moveRange",["type"]="int",["description"]="\229\141\149\230\172\161\231\167\187\229\138\168\230\173\165\230\149\176",["min"]=1,["max"]=12},{["name"]="moveCost",["type"]="int",["description"]="\231\167\187\229\138\168\230\182\136\232\128\151\232\161\140\229\138\168\231\130\185",["min"]=0,["max"]=20},{["name"]="skillIds",["type"]="int[]",["description"]="\232\167\146\232\137\178\230\139\165\230\156\137\231\154\132\230\138\128\232\131\189",["ref"]="CombatSkillTable"}},["fingerprint"]="0dbfac33d465cc3a23579a399bd10dab130579fb7b260cf4555a5d314cb1c6ce"}

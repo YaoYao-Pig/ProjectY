@@ -1,5 +1,5 @@
 -- 预览适配器只启动工程系统并序列化查询结果，不实现另一套读表或地图算法。
-local snapshotRoot, seed, regionIds = ...
+local snapshotRoot, seed, regionIds, targetCells = ...
 -- 限定本次快照的搜索路径，避免混入请求期间保存的新源码或旧 Generated 文件。
 package.path = snapshotRoot .. '/Lua/?.lua'
 local json = assert(loadfile('Tools/MapPreview/json.lua'))()
@@ -7,7 +7,7 @@ local HexGrid = require('Game.Map.HexGrid')
 local registry = require('Core.SystemRegistry')({
     -- 与 Unity 的 ReadConfig 契约一致，读取真实导出器生成的二进制。
     ReadConfig = function(_, name)
-        local file = assert(io.open(snapshotRoot .. '/Assets/GameFramework/Resources/Config/' .. name .. '.bytes', 'rb'))
+        local file = assert(io.open(snapshotRoot .. '/Assets/GameFramework/Resources/_Gen/Config/' .. name .. '.bytes', 'rb'))
         local bytes = file:read('*a'); file:close(); return bytes
     end,
     LogError = function(_, message) error(message) end,
@@ -17,11 +17,21 @@ registry:Register('Map', require('Game.Map.MapSystem'), {'Config'})
 local ok, result = xpcall(function()
     registry:Start()
     local config = registry:Get('Config')
-    local map = registry:Get('Map'):Generate(seed, regionIds)
-    local output = { seed = map.seed, generationVersion = map.generationVersion, hexRadius = map.hexRadius,
+    local map = registry:Get('Map'):Generate(seed, regionIds, targetCells)
+    local output = { seed = map.seed, generationVersion = map.generationVersion, hexRadius = map.hexRadius, targetCells = map.targetCells,
         cells = json.array(), regions = json.array(), borders = json.array(), waterBodies = json.array(), recipe = json.array(regionIds),
         towns = json.array(), buildings = json.array(), roads = json.array(), roadNetworks = json.array(),
-        rivers = json.array(), waterfalls = json.array(), decorations = json.array(), assets = json.array() }
+        rivers = json.array(), waterfalls = json.array(), decorations = json.array(), assets = json.array(),
+        siteProfiles=json.array(),siteDiagnostics=json.array() }
+    local profileIds={};for id in pairs(map.siteProfiles) do profileIds[#profileIds+1]=id end;table.sort(profileIds)
+    for _, id in ipairs(profileIds) do
+        local profile=map.siteProfiles[id]
+        output.siteProfiles[#output.siteProfiles+1]={id=id,name=profile.name,minScore=profile.minScore,pickWeight=profile.pickWeight,distanceCap=profile.distanceCap}
+    end
+    for _, diagnostic in ipairs(map.siteDiagnostics) do
+        local item={};for k,v in pairs(diagnostic) do item[k]=v end
+        output.siteDiagnostics[#output.siteDiagnostics+1]=item
+    end
     for _, asset in ipairs(map.assets) do
         output.assets[#output.assets+1] = { id=asset.id, name=asset.name, prefabPath=asset.prefabPath,
             previewShape=asset.previewShape, previewColor=asset.previewColor, referenceHeight=asset.referenceHeight }
@@ -46,6 +56,11 @@ local ok, result = xpcall(function()
             neighbors[direction] = neighbor and indices[neighbor] or 0
         end
         local weights = json.array()
+        local scores=json.array()
+        for _, id in ipairs(profileIds) do
+            local sample=assert(cell.siteScores[id], 'Missing site review sample')
+            scores[#scores+1]={profileId=id,score=sample.score,reason=sample.reason}
+        end
         for _, weight in ipairs(cell.biomeWeights) do weights[#weights + 1] = { regionType = weight.regionType, weight = weight.weight } end
         output.cells[index] = { q = cell.q, r = cell.r, height = y, baseHeight = cell.baseHeight, x = x, z = z,
             regionId = cell.regionId, neighbors = neighbors, blendAmount = cell.blendAmount, biomeWeights = weights,
@@ -53,7 +68,8 @@ local ok, result = xpcall(function()
             townId = cell.townId, buildingId = cell.buildingId, roadIds = idsArray(cell.roadIds),
             groundColor = idsArray(cell.groundColor), terrainAssetId = cell.terrainAssetId, waterAssetId = cell.waterAssetId,
             decorationId = cell.decorationId, riverId = cell.riverId, flowTo = cell.flowTo and indices[cell.flowTo],
-            waterfallId = cell.waterfallId, hydrologyCarved = cell.hydrologyCarved or false }
+            waterfallId = cell.waterfallId, hydrologyCarved = cell.hydrologyCarved or false,siteScores=scores,
+            flowAccumulation=cell.flowAccumulation,channelRadius=cell.channelRadius,channelBank=cell.channelBank,basinSpill=cell.basinSpill }
         if cell.waterLevel then waterCells = waterCells + 1 end
         minimum = math.min(minimum, y); maximum = math.max(maximum, y)
     end
@@ -70,8 +86,10 @@ local ok, result = xpcall(function()
     end
     for _, town in ipairs(map:GetTowns()) do
         local buildings = json.array(); for _, building in ipairs(town.buildings) do buildings[#buildings + 1] = building.id end
+        local metrics={};for k,v in pairs(town.siteMetrics) do metrics[k]=v end
         output.towns[#output.towns + 1] = { id = town.id, configId = town.configId, name = town.name, regionId = town.regionId, groundColor = town.groundColor,
-            center = indices[town.center], radius = town.radius, buildings = buildings, roadIds = idsArray(town.roadIds), roadNetworkId = town.roadNetworkId }
+            center = indices[town.center], radius = town.radius, buildings = buildings, roadIds = idsArray(town.roadIds), roadNetworkId = town.roadNetworkId,
+            role=town.role,siteProfileId=town.siteProfileId,siteScore=town.siteScore,siteMetrics=metrics }
     end
     for _, building in ipairs(map:GetBuildings()) do
         output.buildings[#output.buildings + 1] = { id = building.id, configId = building.configId, name = building.name,
@@ -129,6 +147,8 @@ local ok, result = xpcall(function()
         townCount = #output.towns, buildingCount = #output.buildings, roadCount = roadCount,
         streetCount = #output.roads - roadCount, roadNetworkCount = #output.roadNetworks,
         riverCount = #output.rivers, waterfallCount = #output.waterfalls, decorationCount = #output.decorations }
+    local remoteCount=0;for _, town in ipairs(map.towns) do if town.role=='remote' then remoteCount=remoteCount+1 end end
+    output.stats.remoteCount=remoteCount;output.stats.settlementCount=#map.towns-remoteCount
     return json.encode(output)
 end, debug.traceback)
 -- 无论生成成功与否，都按工程系统生命周期执行关闭。

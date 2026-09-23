@@ -1,0 +1,590 @@
+{
+  "version": 1,
+  "name": "MapAreaPropTable",
+  "description": "地牢建筑与陈设；模型占地阻挡移动，视线阻挡独立配置。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "陈设名称"
+    },
+    {
+      "name": "assetId",
+      "type": "int",
+      "description": "复用地图资源表中的模型",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "blocksSight",
+      "type": "bool",
+      "description": "是否遮挡视线"
+    },
+    {
+      "name": "scale",
+      "type": "float",
+      "description": "模型等比缩放，须留在所配置占地内",
+      "min": 0.1,
+      "max": 1
+    },
+    {
+      "name": "footprintQ",
+      "type": "int[]",
+      "description": "占地格局部 q，与 footprintR 一一对应，随模型旋转"
+    },
+    {
+      "name": "footprintR",
+      "type": "int[]",
+      "description": "占地格局部 r"
+    },
+    {
+      "name": "placement",
+      "type": "string",
+      "description": "随机摆放方式：wall 沿墙、island 成片、aligned 与房间轴对齐"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "完整石柱",
+      "assetId": 20,
+      "blocksSight": true,
+      "scale": 1,
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "placement": "wall"
+    },
+    {
+      "id": 2,
+      "name": "断裂石柱",
+      "assetId": 21,
+      "blocksSight": false,
+      "scale": 1,
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "placement": "wall"
+    },
+    {
+      "id": 3,
+      "name": "阶梯祭台",
+      "assetId": 22,
+      "blocksSight": false,
+      "scale": 1,
+      "footprintQ": [
+        0,
+        1,
+        -1,
+        0,
+        1,
+        -1,
+        0
+      ],
+      "footprintR": [
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "placement": "wall"
+    },
+    {
+      "id": 4,
+      "name": "封闭石棺",
+      "assetId": 23,
+      "blocksSight": false,
+      "scale": 1,
+      "footprintQ": [
+        0,
+        1,
+        -1,
+        0,
+        1,
+        -1,
+        0
+      ],
+      "footprintR": [
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "placement": "wall"
+    },
+    {
+      "id": 5,
+      "name": "木箱堆",
+      "assetId": 24,
+      "blocksSight": false,
+      "scale": 1,
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "placement": "wall"
+    },
+    {
+      "id": 6,
+      "name": "石座火盆",
+      "assetId": 25,
+      "blocksSight": false,
+      "scale": 1,
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "placement": "wall"
+    },
+    {
+      "id": 7,
+      "name": "残破石拱",
+      "assetId": 26,
+      "blocksSight": true,
+      "scale": 1,
+      "footprintQ": [
+        0,
+        1,
+        -1,
+        0,
+        1,
+        -1,
+        0
+      ],
+      "footprintR": [
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "placement": "wall"
+    },
+    {
+      "id": 8,
+      "name": "木制长凳",
+      "assetId": 27,
+      "blocksSight": false,
+      "scale": 1,
+      "footprintQ": [
+        0,
+        1,
+        -1,
+        0,
+        1,
+        -1,
+        0
+      ],
+      "footprintR": [
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "placement": "wall"
+    },
+    {
+      "id": 9,
+      "name": "坍塌巨石堆",
+      "assetId": 28,
+      "blocksSight": true,
+      "scale": 1,
+      "footprintQ": [
+        0,
+        1,
+        2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1,
+        -2,
+        -1,
+        0
+      ],
+      "footprintR": [
+        -2,
+        -2,
+        -2,
+        -1,
+        -1,
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2
+      ],
+      "placement": "island"
+    },
+    {
+      "id": 10,
+      "name": "成组仓储货垛",
+      "assetId": 29,
+      "blocksSight": true,
+      "scale": 1,
+      "footprintQ": [
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1
+      ],
+      "footprintR": [
+        -1,
+        -1,
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "placement": "aligned"
+    },
+    {
+      "id": 11,
+      "name": "阶梯祭祀台",
+      "assetId": 30,
+      "blocksSight": false,
+      "scale": 1,
+      "footprintQ": [
+        0,
+        1,
+        2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1,
+        -2,
+        -1,
+        0
+      ],
+      "footprintR": [
+        -2,
+        -2,
+        -2,
+        -1,
+        -1,
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2
+      ],
+      "placement": "island"
+    },
+    {
+      "id": 12,
+      "name": "家族石棺群",
+      "assetId": 31,
+      "blocksSight": false,
+      "scale": 1,
+      "footprintQ": [
+        0,
+        1,
+        2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1,
+        -2,
+        -1,
+        0
+      ],
+      "footprintR": [
+        -2,
+        -2,
+        -2,
+        -1,
+        -1,
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2
+      ],
+      "placement": "aligned"
+    },
+    {
+      "id": 13,
+      "name": "盘根岩丛",
+      "assetId": 32,
+      "blocksSight": true,
+      "scale": 1,
+      "footprintQ": [
+        0,
+        1,
+        2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1,
+        -2,
+        -1,
+        0
+      ],
+      "footprintR": [
+        -2,
+        -2,
+        -2,
+        -1,
+        -1,
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2
+      ],
+      "placement": "island"
+    },
+    {
+      "id": 14,
+      "name": "遗迹书架组",
+      "assetId": 33,
+      "blocksSight": true,
+      "scale": 1,
+      "footprintQ": [
+        0,
+        1,
+        2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1,
+        -2,
+        -1,
+        0
+      ],
+      "footprintR": [
+        -2,
+        -2,
+        -2,
+        -1,
+        -1,
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2
+      ],
+      "placement": "aligned"
+    },
+    {
+      "id": 15,
+      "name": "长桌与长凳组",
+      "assetId": 34,
+      "blocksSight": false,
+      "scale": 1,
+      "footprintQ": [
+        0,
+        1,
+        2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1,
+        -2,
+        -1,
+        0
+      ],
+      "footprintR": [
+        -2,
+        -2,
+        -2,
+        -1,
+        -1,
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1,
+        2,
+        2,
+        2
+      ],
+      "placement": "aligned"
+    },
+    {
+      "id": 16,
+      "name": "残破连柱廊",
+      "assetId": 35,
+      "blocksSight": true,
+      "scale": 1,
+      "footprintQ": [
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1
+      ],
+      "footprintR": [
+        -1,
+        -1,
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "placement": "aligned"
+    }
+  ]
+}

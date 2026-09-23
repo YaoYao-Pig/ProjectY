@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.FrameworkServices);
-			Utils.BeginObjectRegister(type, L, translator, 0, 3, 3, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 3, 4, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "ReadConfig", _m_ReadConfig);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "LogError", _m_LogError);
@@ -29,6 +29,7 @@ namespace XLua.CSObjectWrap
 			
 			
 			Utils.RegisterFunc(L, Utils.GETTER_IDX, "Player", _g_get_Player);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "Adventure", _g_get_Adventure);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Localization", _g_get_Localization);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "UI", _g_get_UI);
             
@@ -174,6 +175,20 @@ namespace XLua.CSObjectWrap
 			
                 ProjectY.FrameworkServices gen_to_be_invoked = (ProjectY.FrameworkServices)translator.FastGetCSObj(L, 1);
                 translator.Push(L, gen_to_be_invoked.Player);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_Adventure(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.FrameworkServices gen_to_be_invoked = (ProjectY.FrameworkServices)translator.FastGetCSObj(L, 1);
+                translator.Push(L, gen_to_be_invoked.Adventure);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }

@@ -1,0 +1,10 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaTownBlockTableRow
+---@field id number 稳定配置 ID
+---@field name string 显示名称
+---@field slotQ number[] 街区内建筑槽 q
+---@field slotR number[] 街区内建筑槽 r
+---@field slotRotation number[] 各槽的六十度旋转次数
+---@field decorQ number[] 街旁陈设槽 q
+---@field decorR number[] 街旁陈设槽 r
+return {["name"]="MapAreaTownBlockTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="name",["type"]="string",["description"]="\230\152\190\231\164\186\229\144\141\231\167\176"},{["name"]="slotQ",["type"]="int[]",["description"]="\232\161\151\229\140\186\229\134\133\229\187\186\231\173\145\230\167\189 q"},{["name"]="slotR",["type"]="int[]",["description"]="\232\161\151\229\140\186\229\134\133\229\187\186\231\173\145\230\167\189 r"},{["name"]="slotRotation",["type"]="int[]",["description"]="\229\144\132\230\167\189\231\154\132\229\133\173\229\141\129\229\186\166\230\151\139\232\189\172\230\172\161\230\149\176"},{["name"]="decorQ",["type"]="int[]",["description"]="\232\161\151\230\151\129\233\153\136\232\174\190\230\167\189 q"},{["name"]="decorR",["type"]="int[]",["description"]="\232\161\151\230\151\129\233\153\136\232\174\190\230\167\189 r"}},["fingerprint"]="f1853b43201252b514cb5d7cf1ca17b096c1695e8d1be55ea294e54af06749c3"}

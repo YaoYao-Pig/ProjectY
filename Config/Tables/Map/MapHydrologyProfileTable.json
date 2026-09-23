@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "name": "MapHydrologyProfileTable",
+  "description": "按 Region 实例权重混合的局部水文系数；汇水是预览指标而非物理流量。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "水文方案名称"
+    },
+    {
+      "name": "runoff",
+      "type": "float",
+      "description": "单位格径流权重",
+      "min": 0.01,
+      "max": 10
+    },
+    {
+      "name": "carveResistance",
+      "type": "float",
+      "description": "开挖阻力，越大越避免切入高地",
+      "min": 0.1,
+      "max": 10
+    },
+    {
+      "name": "meander",
+      "type": "float",
+      "description": "平缓地带的空间曲流偏好",
+      "min": 0,
+      "max": 5
+    },
+    {
+      "name": "widthScale",
+      "type": "float",
+      "description": "河宽倍率",
+      "min": 0.1,
+      "max": 3
+    },
+    {
+      "name": "slopeNarrowing",
+      "type": "float",
+      "description": "陡坡收窄系数",
+      "min": 0,
+      "max": 8
+    },
+    {
+      "name": "lakeChance",
+      "type": "float",
+      "description": "真实盆地蓄水概率",
+      "min": 0,
+      "max": 1
+    },
+    {
+      "name": "lakeFill",
+      "type": "float",
+      "description": "盆地最低点至溢出口的蓄水比例",
+      "min": 0.1,
+      "max": 1
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "草原缓流",
+      "runoff": 1,
+      "carveResistance": 1,
+      "meander": 1.4,
+      "widthScale": 1,
+      "slopeNarrowing": 1.4,
+      "lakeChance": 0.2,
+      "lakeFill": 0.72
+    },
+    {
+      "id": 2,
+      "name": "岩山峡流",
+      "runoff": 0.8,
+      "carveResistance": 1.8,
+      "meander": 0.35,
+      "widthScale": 0.65,
+      "slopeNarrowing": 2.8,
+      "lakeChance": 0.1,
+      "lakeFill": 0.6
+    },
+    {
+      "id": 3,
+      "name": "湖盆湿地",
+      "runoff": 1.3,
+      "carveResistance": 0.8,
+      "meander": 1.6,
+      "widthScale": 1.25,
+      "slopeNarrowing": 1,
+      "lakeChance": 1,
+      "lakeFill": 0.85
+    },
+    {
+      "id": 4,
+      "name": "冲积河谷",
+      "runoff": 1.6,
+      "carveResistance": 0.8,
+      "meander": 1.8,
+      "widthScale": 1.4,
+      "slopeNarrowing": 0.8,
+      "lakeChance": 0.4,
+      "lakeFill": 0.8
+    },
+    {
+      "id": 5,
+      "name": "林地溪流",
+      "runoff": 1.2,
+      "carveResistance": 1.2,
+      "meander": 1.3,
+      "widthScale": 0.85,
+      "slopeNarrowing": 1.6,
+      "lakeChance": 0.3,
+      "lakeFill": 0.72
+    },
+    {
+      "id": 6,
+      "name": "雪山融水",
+      "runoff": 1.1,
+      "carveResistance": 1.6,
+      "meander": 0.4,
+      "widthScale": 0.7,
+      "slopeNarrowing": 2.5,
+      "lakeChance": 0.15,
+      "lakeFill": 0.65
+    }
+  ]
+}

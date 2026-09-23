@@ -1,0 +1,204 @@
+{
+  "version": 1,
+  "name": "MapAreaDungeonTable",
+  "description": "按功能分区聚合房间，形成主路线与有意义的回路；通道宽度连续变化。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "basicRoomCount",
+      "type": "int",
+      "description": "一级小洞穴数量",
+      "min": 0,
+      "max": 20
+    },
+    {
+      "name": "detailedRoomCount",
+      "type": "int",
+      "description": "二级精细随机房间数量",
+      "min": 1,
+      "max": 30
+    },
+    {
+      "name": "presetIds",
+      "type": "int[]",
+      "description": "三级大房间清单，每张地图各放置一次",
+      "ref": "MapAreaRoomPresetTable"
+    },
+    {
+      "name": "styleIds",
+      "type": "int[]",
+      "description": "二级房间策略池，按顺序轮换并随机尺寸朝向",
+      "ref": "MapAreaRoomStyleTable"
+    },
+    {
+      "name": "basicRadiusMin",
+      "type": "int",
+      "description": "小洞穴最小半径",
+      "min": 4,
+      "max": 12
+    },
+    {
+      "name": "basicRadiusMax",
+      "type": "int",
+      "description": "小洞穴最大半径",
+      "min": 4,
+      "max": 12
+    },
+    {
+      "name": "roomRadiusMin",
+      "type": "int",
+      "description": "主要随机房间最小半径",
+      "min": 8,
+      "max": 16
+    },
+    {
+      "name": "roomRadiusMax",
+      "type": "int",
+      "description": "主要随机房间最大半径",
+      "min": 8,
+      "max": 16
+    },
+    {
+      "name": "roomGap",
+      "type": "int",
+      "description": "房间包围圈之间净墙宽",
+      "min": 2,
+      "max": 10
+    },
+    {
+      "name": "placementAttempts",
+      "type": "int",
+      "description": "房间有限放置尝试次数",
+      "min": 100,
+      "max": 10000
+    },
+    {
+      "name": "loopConnections",
+      "type": "int",
+      "description": "连通树之外的额外短连接数",
+      "min": 0,
+      "max": 10
+    },
+    {
+      "name": "corridorRadius",
+      "type": "int",
+      "description": "通道半宽；2 表示至少 5 格净宽",
+      "min": 2,
+      "max": 4
+    },
+    {
+      "name": "combatRadius",
+      "type": "int",
+      "description": "每个主要房间中心无障碍战斗区半径",
+      "min": 3,
+      "max": 6
+    },
+    {
+      "name": "corridorWinding",
+      "type": "float",
+      "description": "连接通道轻微曲折噪声",
+      "min": 0,
+      "max": 3
+    },
+    {
+      "name": "borderWidth",
+      "type": "int",
+      "description": "外圈墙宽",
+      "min": 1,
+      "max": 8
+    },
+    {
+      "name": "districtIds",
+      "type": "int[]",
+      "description": "功能分区清单",
+      "ref": "MapAreaDistrictTable"
+    },
+    {
+      "name": "entryPresetId",
+      "type": "int",
+      "description": "入口前厅模板",
+      "ref": "MapAreaRoomPresetTable"
+    },
+    {
+      "name": "goalPresetId",
+      "type": "int",
+      "description": "深处目标模板",
+      "ref": "MapAreaRoomPresetTable"
+    },
+    {
+      "name": "corridorMaxRadius",
+      "type": "int",
+      "description": "通道局部最宽半径；2/3/4 对应 5/7/9 格",
+      "min": 2,
+      "max": 5
+    },
+    {
+      "name": "corridorWidthScale",
+      "type": "float",
+      "description": "宽度噪声波长，避免逐格忽宽忽窄",
+      "min": 4,
+      "max": 40
+    },
+    {
+      "name": "chamberChance",
+      "type": "float",
+      "description": "通道中段生成宽敞休息厅的概率",
+      "min": 0,
+      "max": 1
+    },
+    {
+      "name": "loopMinHops",
+      "type": "int",
+      "description": "额外回路至少绕过的已有房间连接数",
+      "min": 2,
+      "max": 8
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "basicRoomCount": 2,
+      "detailedRoomCount": 5,
+      "presetIds": [
+        1,
+        2,
+        3
+      ],
+      "styleIds": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "basicRadiusMin": 5,
+      "basicRadiusMax": 7,
+      "roomRadiusMin": 8,
+      "roomRadiusMax": 11,
+      "roomGap": 3,
+      "placementAttempts": 3000,
+      "loopConnections": 2,
+      "corridorRadius": 2,
+      "combatRadius": 4,
+      "corridorWinding": 0.65,
+      "borderWidth": 2,
+      "districtIds": [
+        1,
+        2,
+        3
+      ],
+      "entryPresetId": 1,
+      "goalPresetId": 3,
+      "corridorMaxRadius": 4,
+      "corridorWidthScale": 13,
+      "chamberChance": 0.65,
+      "loopMinHops": 3
+    }
+  ]
+}

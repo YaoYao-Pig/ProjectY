@@ -30,8 +30,9 @@ node Tools/ConfigEditor/exporter.mjs
 也可以从 Unity 菜单 **Project Y → Config → Export Tables** 导出。Unity 找不到 Node 时，设置环境变量 `PROJECT_Y_NODE` 为 `node.exe` 的绝对路径并重启编辑器。
 
 - 配置源：`Config/Tables/**/*.json`；共享模块/枚举/常量源：`Config/Catalog.json`。
-- 二进制：`Assets/GameFramework/Resources/Config/*.bytes`。
-- Lua 结构：`Lua/Generated/*.lua`，附 LuaLS 行类型注释。
+- 二进制：`Assets/GameFramework/Resources/_Gen/Config/*.bytes`。
+- Lua 结构：`Lua/_Gen/*.lua`，附 LuaLS 行类型注释。
+- 导出清单：`Config/_Gen/export-manifest.json`；源表继续维护于 `Config/Tables/`。
 - Lua 源码：工程根目录 `Lua/`，使用原生 `.lua` 文件，由自定义 `LuaFileLoader` 直接读取，不经过 Resources/TextAsset。
 
 枚举/常量使用 `ConfigSystem:GetEnum("Demo", "Rarity")` / `GetConstant("Demo", "PreviewLimit")`，运行时为只读值。目录移动不改变表名或模块 ID。
@@ -54,7 +55,7 @@ Lua/
   UI/                   # UISystem、UIPanelCtrl、UIWidgetCtrl；Panel/、Widget/、Types/
   Game/                 # 业务 System
   Config/               # 二进制读表与公式解释器
-  Generated/            # 导表生成的 Lua 结构
+  _Gen/                 # 导表生成的 Lua 结构、清单及 Catalog
 ```
 
 `require('Game.Systems')` 映射到 `Lua/Game/Systems.lua`。编辑器直接读工程源码，改完后重新进入 Play 即可，无需等待 Unity 导入 Lua 文件。加载器保留真实文件路径供报错/调试使用，并处理 UTF-8 BOM。

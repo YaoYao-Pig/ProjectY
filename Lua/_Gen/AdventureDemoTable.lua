@@ -1,0 +1,12 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class AdventureDemoTableRow
+---@field id number 稳定配置 ID
+---@field seed number 默认种子
+---@field regionIds number[] 大地图配方
+---@field partyIds number[] 初始角色模板
+---@field maxPartySize number 队伍人数上限
+---@field campEventId number 营地事件
+---@field wildEventIds number[] 野外事件
+---@field buildingIds number[] 可访问建筑配置，与事件一一对应
+---@field buildingEventIds number[] 建筑对应事件
+return {["name"]="AdventureDemoTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="seed",["type"]="int",["description"]="\233\187\152\232\174\164\231\167\141\229\173\144",["min"]=0},{["name"]="regionIds",["type"]="int[]",["description"]="\229\164\167\229\156\176\229\155\190\233\133\141\230\150\185",["ref"]="MapRegionTable"},{["name"]="partyIds",["type"]="int[]",["description"]="\229\136\157\229\167\139\232\167\146\232\137\178\230\168\161\230\157\191",["ref"]="CombatUnitTable"},{["name"]="maxPartySize",["type"]="int",["description"]="\233\152\159\228\188\141\228\186\186\230\149\176\228\184\138\233\153\144",["min"]=1,["max"]=4},{["name"]="campEventId",["type"]="int",["description"]="\232\144\165\229\156\176\228\186\139\228\187\182",["ref"]="AdventureEventTable"},{["name"]="wildEventIds",["type"]="int[]",["description"]="\233\135\142\229\164\150\228\186\139\228\187\182",["ref"]="AdventureEventTable"},{["name"]="buildingIds",["type"]="int[]",["description"]="\229\143\175\232\174\191\233\151\174\229\187\186\231\173\145\233\133\141\231\189\174\239\188\140\228\184\142\228\186\139\228\187\182\228\184\128\228\184\128\229\175\185\229\186\148",["ref"]="MapBuildingTable"},{["name"]="buildingEventIds",["type"]="int[]",["description"]="\229\187\186\231\173\145\229\175\185\229\186\148\228\186\139\228\187\182",["ref"]="AdventureEventTable"}},["fingerprint"]="6d1b70e75f07ffb173d476524b3db259d33913ee2ba9606b46990814f2093eed"}

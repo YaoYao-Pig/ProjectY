@@ -1,0 +1,52 @@
+{
+  "version": 1,
+  "name": "CombatTraitTable",
+  "description": "事件获得的角色特质，属性修正参与敌我统一计算。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "特质名称"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "特质说明"
+    },
+    {
+      "name": "attribute",
+      "type": "string",
+      "description": "修正的属性名"
+    },
+    {
+      "name": "amount",
+      "type": "int",
+      "description": "加算属性修正",
+      "min": -100,
+      "max": 100
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "老练",
+      "description": "力量 +2；来自探索或战斗经历。",
+      "attribute": "strength",
+      "amount": 2
+    },
+    {
+      "id": 2,
+      "name": "坚韧",
+      "description": "防御 +2；来自营地休整。",
+      "attribute": "defense",
+      "amount": 2
+    }
+  ]
+}

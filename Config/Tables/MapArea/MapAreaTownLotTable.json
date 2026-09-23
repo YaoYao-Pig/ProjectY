@@ -1,0 +1,498 @@
+{
+  "version": 1,
+  "name": "MapAreaTownLotTable",
+  "description": "街区摆件预设；地格足迹与模型同向旋转，建筑门前格不占用。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "显示名称"
+    },
+    {
+      "name": "assetId",
+      "type": "int",
+      "description": "模型资源",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "scale",
+      "type": "float",
+      "description": "相对地格模型比例",
+      "min": 0.1,
+      "max": 5
+    },
+    {
+      "name": "footprintQ",
+      "type": "int[]",
+      "description": "局部占地 q，与 r 一一对应"
+    },
+    {
+      "name": "footprintR",
+      "type": "int[]",
+      "description": "局部占地 r"
+    },
+    {
+      "name": "entryQ",
+      "type": "int",
+      "description": "门前交互格局部 q"
+    },
+    {
+      "name": "entryR",
+      "type": "int",
+      "description": "门前交互格局部 r"
+    },
+    {
+      "name": "kind",
+      "type": "enum",
+      "description": "建筑或街道陈设",
+      "values": [
+        "building",
+        "street"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "暖炉酒馆",
+      "assetId": 36,
+      "scale": 1,
+      "footprintQ": [
+        0,
+        1,
+        2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1
+      ],
+      "footprintR": [
+        -2,
+        -2,
+        -2,
+        -1,
+        -1,
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "entryQ": -1,
+      "entryR": 2,
+      "kind": "building"
+    },
+    {
+      "id": 2,
+      "name": "铁匠铺",
+      "assetId": 46,
+      "scale": 1,
+      "footprintQ": [
+        0,
+        1,
+        2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1
+      ],
+      "footprintR": [
+        -2,
+        -2,
+        -2,
+        -1,
+        -1,
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "entryQ": -1,
+      "entryR": 2,
+      "kind": "building"
+    },
+    {
+      "id": 3,
+      "name": "杂货商店",
+      "assetId": 38,
+      "scale": 1,
+      "footprintQ": [
+        0,
+        1,
+        2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1
+      ],
+      "footprintR": [
+        -2,
+        -2,
+        -2,
+        -1,
+        -1,
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "entryQ": -1,
+      "entryR": 2,
+      "kind": "building"
+    },
+    {
+      "id": 4,
+      "name": "冒险公会",
+      "assetId": 39,
+      "scale": 1,
+      "footprintQ": [
+        0,
+        1,
+        2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1
+      ],
+      "footprintR": [
+        -2,
+        -2,
+        -2,
+        -1,
+        -1,
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "entryQ": -1,
+      "entryR": 2,
+      "kind": "building"
+    },
+    {
+      "id": 5,
+      "name": "广场喷泉",
+      "assetId": 40,
+      "scale": 1,
+      "footprintQ": [
+        0,
+        1,
+        -1,
+        0,
+        1,
+        -1,
+        0
+      ],
+      "footprintR": [
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "entryQ": 0,
+      "entryR": 2,
+      "kind": "street"
+    },
+    {
+      "id": 6,
+      "name": "木架民居",
+      "assetId": 41,
+      "scale": 1,
+      "footprintQ": [
+        0,
+        1,
+        2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1
+      ],
+      "footprintR": [
+        -2,
+        -2,
+        -2,
+        -1,
+        -1,
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "entryQ": -1,
+      "entryR": 2,
+      "kind": "building"
+    },
+    {
+      "id": 7,
+      "name": "石基民居",
+      "assetId": 42,
+      "scale": 1,
+      "footprintQ": [
+        0,
+        1,
+        2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1,
+        2,
+        -2,
+        -1,
+        0,
+        1
+      ],
+      "footprintR": [
+        -2,
+        -2,
+        -2,
+        -1,
+        -1,
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "entryQ": -1,
+      "entryR": 2,
+      "kind": "building"
+    },
+    {
+      "id": 8,
+      "name": "市集摊位",
+      "assetId": 43,
+      "scale": 1,
+      "footprintQ": [
+        0,
+        1,
+        -1,
+        0,
+        1,
+        -1,
+        0
+      ],
+      "footprintR": [
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "entryQ": 0,
+      "entryR": 2,
+      "kind": "street"
+    },
+    {
+      "id": 9,
+      "name": "货运手车",
+      "assetId": 44,
+      "scale": 1,
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "entryQ": 0,
+      "entryR": 2,
+      "kind": "street"
+    },
+    {
+      "id": 10,
+      "name": "路灯与长椅",
+      "assetId": 45,
+      "scale": 1,
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "entryQ": 0,
+      "entryR": 2,
+      "kind": "street"
+    },
+    {
+      "id": 11,
+      "name": "布匹摊",
+      "assetId": 47,
+      "scale": 1,
+      "footprintQ": [
+        0,
+        1,
+        -1,
+        0,
+        1,
+        -1,
+        0
+      ],
+      "footprintR": [
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "entryQ": 0,
+      "entryR": 2,
+      "kind": "street"
+    },
+    {
+      "id": 12,
+      "name": "药草摊",
+      "assetId": 48,
+      "scale": 1,
+      "footprintQ": [
+        0,
+        1,
+        -1,
+        0,
+        1,
+        -1,
+        0
+      ],
+      "footprintR": [
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "entryQ": 0,
+      "entryR": 2,
+      "kind": "street"
+    },
+    {
+      "id": 13,
+      "name": "武器摊",
+      "assetId": 49,
+      "scale": 1,
+      "footprintQ": [
+        0,
+        1,
+        -1,
+        0,
+        1,
+        -1,
+        0
+      ],
+      "footprintR": [
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        1,
+        1
+      ],
+      "entryQ": 0,
+      "entryR": 2,
+      "kind": "street"
+    }
+  ]
+}

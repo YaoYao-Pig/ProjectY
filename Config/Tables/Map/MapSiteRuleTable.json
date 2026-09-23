@@ -1,0 +1,1702 @@
+{
+  "version": 1,
+  "name": "MapSiteRuleTable",
+  "description": "选址硬限制与分段线性评分曲线；空 hardRange 表示无硬限制。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "配置 ID",
+      "min": 1
+    },
+    {
+      "name": "profileId",
+      "type": "int",
+      "description": "所属选址方案",
+      "ref": "MapSiteProfileTable"
+    },
+    {
+      "name": "metric",
+      "type": "enum",
+      "description": "参与评分的实际地形/距离指标",
+      "enumRef": "Map.SiteMetric"
+    },
+    {
+      "name": "hardRange",
+      "type": "float[]",
+      "description": "硬区间 [下限,上限]；空数组关闭"
+    },
+    {
+      "name": "scoreXs",
+      "type": "float[]",
+      "description": "严格递增的指标节点"
+    },
+    {
+      "name": "scoreYs",
+      "type": "float[]",
+      "description": "节点分值 0–1；与 X 等长"
+    },
+    {
+      "name": "weight",
+      "type": "float",
+      "description": "综合评分权重",
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "profileId": 101,
+      "metric": "height",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        4,
+        7,
+        11,
+        18
+      ],
+      "scoreYs": [
+        0.8,
+        1,
+        0.7,
+        0.3,
+        0.1
+      ],
+      "weight": 0.7
+    },
+    {
+      "id": 2,
+      "profileId": 101,
+      "metric": "slope",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        0.5,
+        1.5,
+        4
+      ],
+      "scoreYs": [
+        1,
+        0.9,
+        0.4,
+        0
+      ],
+      "weight": 2
+    },
+    {
+      "id": 3,
+      "profileId": 101,
+      "metric": "roughness",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        0.5,
+        1.5,
+        4
+      ],
+      "scoreYs": [
+        1,
+        0.9,
+        0.4,
+        0
+      ],
+      "weight": 1
+    },
+    {
+      "id": 4,
+      "profileId": 101,
+      "metric": "relativeHeight",
+      "hardRange": [],
+      "scoreXs": [
+        -4,
+        -1,
+        0,
+        2,
+        6
+      ],
+      "scoreYs": [
+        0.3,
+        0.8,
+        1,
+        0.6,
+        0
+      ],
+      "weight": 0.5
+    },
+    {
+      "id": 5,
+      "profileId": 101,
+      "metric": "buildableCells",
+      "hardRange": [
+        2,
+        37
+      ],
+      "scoreXs": [
+        0,
+        8,
+        20,
+        37
+      ],
+      "scoreYs": [
+        0,
+        0.2,
+        0.8,
+        1
+      ],
+      "weight": 1
+    },
+    {
+      "id": 6,
+      "profileId": 101,
+      "metric": "waterClearance",
+      "hardRange": [
+        1,
+        48
+      ],
+      "scoreXs": [
+        0,
+        2,
+        5,
+        12,
+        48
+      ],
+      "scoreYs": [
+        0,
+        1,
+        1,
+        0.5,
+        0.2
+      ],
+      "weight": 0.5
+    },
+    {
+      "id": 7,
+      "profileId": 101,
+      "metric": "waterAccessDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        3,
+        8,
+        20,
+        48
+      ],
+      "scoreYs": [
+        0.5,
+        1,
+        1,
+        0.3,
+        0.05
+      ],
+      "weight": 2.5
+    },
+    {
+      "id": 8,
+      "profileId": 101,
+      "metric": "riverJunctionDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        4,
+        10,
+        48
+      ],
+      "scoreYs": [
+        0.5,
+        1,
+        0.7,
+        0.1
+      ],
+      "weight": 0.6
+    },
+    {
+      "id": 9,
+      "profileId": 101,
+      "metric": "settlementDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        12,
+        24,
+        48
+      ],
+      "scoreYs": [
+        0,
+        1,
+        0.8,
+        0.4
+      ],
+      "weight": 0.4
+    },
+    {
+      "id": 10,
+      "profileId": 101,
+      "metric": "roadDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        8,
+        16,
+        48
+      ],
+      "scoreYs": [
+        1,
+        1,
+        0.7,
+        0.3
+      ],
+      "weight": 0.1
+    },
+    {
+      "id": 11,
+      "profileId": 102,
+      "metric": "height",
+      "hardRange": [
+        6,
+        40
+      ],
+      "scoreXs": [
+        0,
+        4,
+        7,
+        11,
+        18
+      ],
+      "scoreYs": [
+        0,
+        0.15,
+        0.8,
+        1,
+        0.6
+      ],
+      "weight": 2
+    },
+    {
+      "id": 12,
+      "profileId": 102,
+      "metric": "slope",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        0.5,
+        1.5,
+        4
+      ],
+      "scoreYs": [
+        1,
+        0.9,
+        0.4,
+        0
+      ],
+      "weight": 2
+    },
+    {
+      "id": 13,
+      "profileId": 102,
+      "metric": "roughness",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        0.5,
+        1.5,
+        4
+      ],
+      "scoreYs": [
+        1,
+        0.9,
+        0.4,
+        0
+      ],
+      "weight": 1
+    },
+    {
+      "id": 14,
+      "profileId": 102,
+      "metric": "relativeHeight",
+      "hardRange": [],
+      "scoreXs": [
+        -4,
+        -1,
+        0,
+        2,
+        6
+      ],
+      "scoreYs": [
+        0.3,
+        0.8,
+        1,
+        0.6,
+        0
+      ],
+      "weight": 0.5
+    },
+    {
+      "id": 15,
+      "profileId": 102,
+      "metric": "buildableCells",
+      "hardRange": [
+        2,
+        37
+      ],
+      "scoreXs": [
+        0,
+        8,
+        20,
+        37
+      ],
+      "scoreYs": [
+        0,
+        0.2,
+        0.8,
+        1
+      ],
+      "weight": 1
+    },
+    {
+      "id": 16,
+      "profileId": 102,
+      "metric": "waterClearance",
+      "hardRange": [
+        1,
+        48
+      ],
+      "scoreXs": [
+        0,
+        2,
+        5,
+        12,
+        48
+      ],
+      "scoreYs": [
+        0,
+        1,
+        1,
+        0.5,
+        0.2
+      ],
+      "weight": 0.5
+    },
+    {
+      "id": 17,
+      "profileId": 102,
+      "metric": "waterAccessDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        3,
+        8,
+        20,
+        48
+      ],
+      "scoreYs": [
+        0.5,
+        1,
+        1,
+        0.3,
+        0.05
+      ],
+      "weight": 1
+    },
+    {
+      "id": 18,
+      "profileId": 102,
+      "metric": "riverJunctionDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        4,
+        10,
+        48
+      ],
+      "scoreYs": [
+        0.5,
+        1,
+        0.7,
+        0.1
+      ],
+      "weight": 0.6
+    },
+    {
+      "id": 19,
+      "profileId": 102,
+      "metric": "settlementDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        12,
+        24,
+        48
+      ],
+      "scoreYs": [
+        0,
+        1,
+        0.8,
+        0.4
+      ],
+      "weight": 0.4
+    },
+    {
+      "id": 20,
+      "profileId": 102,
+      "metric": "roadDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        8,
+        16,
+        48
+      ],
+      "scoreYs": [
+        1,
+        1,
+        0.7,
+        0.3
+      ],
+      "weight": 0.1
+    },
+    {
+      "id": 21,
+      "profileId": 201,
+      "metric": "height",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        4,
+        7,
+        11,
+        18
+      ],
+      "scoreYs": [
+        0.8,
+        1,
+        0.7,
+        0.3,
+        0.1
+      ],
+      "weight": 0.7
+    },
+    {
+      "id": 22,
+      "profileId": 201,
+      "metric": "slope",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        0.5,
+        1.5,
+        4
+      ],
+      "scoreYs": [
+        1,
+        0.9,
+        0.4,
+        0
+      ],
+      "weight": 2
+    },
+    {
+      "id": 23,
+      "profileId": 201,
+      "metric": "roughness",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        0.5,
+        1.5,
+        4
+      ],
+      "scoreYs": [
+        1,
+        0.9,
+        0.4,
+        0
+      ],
+      "weight": 1
+    },
+    {
+      "id": 24,
+      "profileId": 201,
+      "metric": "relativeHeight",
+      "hardRange": [],
+      "scoreXs": [
+        -4,
+        -1,
+        0,
+        2,
+        6
+      ],
+      "scoreYs": [
+        0.3,
+        0.8,
+        1,
+        0.6,
+        0
+      ],
+      "weight": 0.5
+    },
+    {
+      "id": 25,
+      "profileId": 201,
+      "metric": "buildableCells",
+      "hardRange": [
+        8,
+        37
+      ],
+      "scoreXs": [
+        0,
+        8,
+        20,
+        37
+      ],
+      "scoreYs": [
+        0,
+        0.2,
+        0.8,
+        1
+      ],
+      "weight": 2
+    },
+    {
+      "id": 26,
+      "profileId": 201,
+      "metric": "waterClearance",
+      "hardRange": [
+        1,
+        48
+      ],
+      "scoreXs": [
+        0,
+        2,
+        5,
+        12,
+        48
+      ],
+      "scoreYs": [
+        0,
+        1,
+        1,
+        0.5,
+        0.2
+      ],
+      "weight": 0.5
+    },
+    {
+      "id": 27,
+      "profileId": 201,
+      "metric": "waterAccessDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        3,
+        8,
+        20,
+        48
+      ],
+      "scoreYs": [
+        0.5,
+        1,
+        1,
+        0.3,
+        0.05
+      ],
+      "weight": 2.5
+    },
+    {
+      "id": 28,
+      "profileId": 201,
+      "metric": "riverJunctionDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        4,
+        10,
+        48
+      ],
+      "scoreYs": [
+        0.5,
+        1,
+        0.7,
+        0.1
+      ],
+      "weight": 0.6
+    },
+    {
+      "id": 29,
+      "profileId": 201,
+      "metric": "settlementDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        12,
+        24,
+        48
+      ],
+      "scoreYs": [
+        0,
+        1,
+        0.8,
+        0.4
+      ],
+      "weight": 0.4
+    },
+    {
+      "id": 30,
+      "profileId": 201,
+      "metric": "roadDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        8,
+        16,
+        48
+      ],
+      "scoreYs": [
+        1,
+        1,
+        0.7,
+        0.3
+      ],
+      "weight": 0.1
+    },
+    {
+      "id": 31,
+      "profileId": 202,
+      "metric": "height",
+      "hardRange": [
+        6,
+        40
+      ],
+      "scoreXs": [
+        0,
+        4,
+        7,
+        11,
+        18
+      ],
+      "scoreYs": [
+        0,
+        0.15,
+        0.8,
+        1,
+        0.6
+      ],
+      "weight": 2
+    },
+    {
+      "id": 32,
+      "profileId": 202,
+      "metric": "slope",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        0.5,
+        1.5,
+        4
+      ],
+      "scoreYs": [
+        1,
+        0.9,
+        0.4,
+        0
+      ],
+      "weight": 2
+    },
+    {
+      "id": 33,
+      "profileId": 202,
+      "metric": "roughness",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        0.5,
+        1.5,
+        4
+      ],
+      "scoreYs": [
+        1,
+        0.9,
+        0.4,
+        0
+      ],
+      "weight": 1
+    },
+    {
+      "id": 34,
+      "profileId": 202,
+      "metric": "relativeHeight",
+      "hardRange": [],
+      "scoreXs": [
+        -4,
+        -1,
+        0,
+        2,
+        6
+      ],
+      "scoreYs": [
+        0.3,
+        0.8,
+        1,
+        0.6,
+        0
+      ],
+      "weight": 0.5
+    },
+    {
+      "id": 35,
+      "profileId": 202,
+      "metric": "buildableCells",
+      "hardRange": [
+        8,
+        37
+      ],
+      "scoreXs": [
+        0,
+        8,
+        20,
+        37
+      ],
+      "scoreYs": [
+        0,
+        0.2,
+        0.8,
+        1
+      ],
+      "weight": 2
+    },
+    {
+      "id": 36,
+      "profileId": 202,
+      "metric": "waterClearance",
+      "hardRange": [
+        1,
+        48
+      ],
+      "scoreXs": [
+        0,
+        2,
+        5,
+        12,
+        48
+      ],
+      "scoreYs": [
+        0,
+        1,
+        1,
+        0.5,
+        0.2
+      ],
+      "weight": 0.5
+    },
+    {
+      "id": 37,
+      "profileId": 202,
+      "metric": "waterAccessDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        3,
+        8,
+        20,
+        48
+      ],
+      "scoreYs": [
+        0.5,
+        1,
+        1,
+        0.3,
+        0.05
+      ],
+      "weight": 1
+    },
+    {
+      "id": 38,
+      "profileId": 202,
+      "metric": "riverJunctionDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        4,
+        10,
+        48
+      ],
+      "scoreYs": [
+        0.5,
+        1,
+        0.7,
+        0.1
+      ],
+      "weight": 0.6
+    },
+    {
+      "id": 39,
+      "profileId": 202,
+      "metric": "settlementDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        12,
+        24,
+        48
+      ],
+      "scoreYs": [
+        0,
+        1,
+        0.8,
+        0.4
+      ],
+      "weight": 0.4
+    },
+    {
+      "id": 40,
+      "profileId": 202,
+      "metric": "roadDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        8,
+        16,
+        48
+      ],
+      "scoreYs": [
+        1,
+        1,
+        0.7,
+        0.3
+      ],
+      "weight": 0.1
+    },
+    {
+      "id": 41,
+      "profileId": 301,
+      "metric": "height",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        4,
+        7,
+        11,
+        18
+      ],
+      "scoreYs": [
+        0.8,
+        1,
+        0.7,
+        0.3,
+        0.1
+      ],
+      "weight": 0.7
+    },
+    {
+      "id": 42,
+      "profileId": 301,
+      "metric": "slope",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        0.5,
+        1.5,
+        4
+      ],
+      "scoreYs": [
+        1,
+        0.9,
+        0.4,
+        0
+      ],
+      "weight": 2
+    },
+    {
+      "id": 43,
+      "profileId": 301,
+      "metric": "roughness",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        0.5,
+        1.5,
+        4
+      ],
+      "scoreYs": [
+        1,
+        0.9,
+        0.4,
+        0
+      ],
+      "weight": 1
+    },
+    {
+      "id": 44,
+      "profileId": 301,
+      "metric": "relativeHeight",
+      "hardRange": [],
+      "scoreXs": [
+        -4,
+        -1,
+        0,
+        2,
+        6
+      ],
+      "scoreYs": [
+        0.3,
+        0.8,
+        1,
+        0.6,
+        0
+      ],
+      "weight": 0.5
+    },
+    {
+      "id": 45,
+      "profileId": 301,
+      "metric": "buildableCells",
+      "hardRange": [
+        2,
+        37
+      ],
+      "scoreXs": [
+        0,
+        8,
+        20,
+        37
+      ],
+      "scoreYs": [
+        0,
+        0.2,
+        0.8,
+        1
+      ],
+      "weight": 1
+    },
+    {
+      "id": 46,
+      "profileId": 301,
+      "metric": "waterClearance",
+      "hardRange": [
+        1,
+        48
+      ],
+      "scoreXs": [
+        0,
+        2,
+        5,
+        12,
+        48
+      ],
+      "scoreYs": [
+        0,
+        1,
+        1,
+        0.5,
+        0.2
+      ],
+      "weight": 0.5
+    },
+    {
+      "id": 47,
+      "profileId": 301,
+      "metric": "waterAccessDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        3,
+        8,
+        20,
+        48
+      ],
+      "scoreYs": [
+        0.5,
+        1,
+        1,
+        0.3,
+        0.05
+      ],
+      "weight": 2.5
+    },
+    {
+      "id": 48,
+      "profileId": 301,
+      "metric": "riverJunctionDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        4,
+        10,
+        48
+      ],
+      "scoreYs": [
+        0.5,
+        1,
+        0.7,
+        0.1
+      ],
+      "weight": 0.6
+    },
+    {
+      "id": 49,
+      "profileId": 301,
+      "metric": "settlementDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        12,
+        24,
+        48
+      ],
+      "scoreYs": [
+        0,
+        1,
+        0.8,
+        0.4
+      ],
+      "weight": 0.4
+    },
+    {
+      "id": 50,
+      "profileId": 301,
+      "metric": "roadDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        8,
+        16,
+        48
+      ],
+      "scoreYs": [
+        1,
+        1,
+        0.7,
+        0.3
+      ],
+      "weight": 0.1
+    },
+    {
+      "id": 51,
+      "profileId": 302,
+      "metric": "height",
+      "hardRange": [
+        6,
+        40
+      ],
+      "scoreXs": [
+        0,
+        4,
+        7,
+        11,
+        18
+      ],
+      "scoreYs": [
+        0,
+        0.15,
+        0.8,
+        1,
+        0.6
+      ],
+      "weight": 2
+    },
+    {
+      "id": 52,
+      "profileId": 302,
+      "metric": "slope",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        0.5,
+        1.5,
+        4
+      ],
+      "scoreYs": [
+        1,
+        0.9,
+        0.4,
+        0
+      ],
+      "weight": 2
+    },
+    {
+      "id": 53,
+      "profileId": 302,
+      "metric": "roughness",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        0.5,
+        1.5,
+        4
+      ],
+      "scoreYs": [
+        1,
+        0.9,
+        0.4,
+        0
+      ],
+      "weight": 1
+    },
+    {
+      "id": 54,
+      "profileId": 302,
+      "metric": "relativeHeight",
+      "hardRange": [],
+      "scoreXs": [
+        -4,
+        -1,
+        0,
+        2,
+        6
+      ],
+      "scoreYs": [
+        0.1,
+        0.4,
+        0.7,
+        1,
+        0.5
+      ],
+      "weight": 1
+    },
+    {
+      "id": 55,
+      "profileId": 302,
+      "metric": "buildableCells",
+      "hardRange": [
+        2,
+        37
+      ],
+      "scoreXs": [
+        0,
+        8,
+        20,
+        37
+      ],
+      "scoreYs": [
+        0,
+        0.2,
+        0.8,
+        1
+      ],
+      "weight": 1
+    },
+    {
+      "id": 56,
+      "profileId": 302,
+      "metric": "waterClearance",
+      "hardRange": [
+        1,
+        48
+      ],
+      "scoreXs": [
+        0,
+        2,
+        5,
+        12,
+        48
+      ],
+      "scoreYs": [
+        0,
+        1,
+        1,
+        0.5,
+        0.2
+      ],
+      "weight": 0.5
+    },
+    {
+      "id": 57,
+      "profileId": 302,
+      "metric": "waterAccessDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        3,
+        8,
+        20,
+        48
+      ],
+      "scoreYs": [
+        0.5,
+        1,
+        1,
+        0.3,
+        0.05
+      ],
+      "weight": 1
+    },
+    {
+      "id": 58,
+      "profileId": 302,
+      "metric": "riverJunctionDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        4,
+        10,
+        48
+      ],
+      "scoreYs": [
+        0.5,
+        1,
+        0.7,
+        0.1
+      ],
+      "weight": 0.6
+    },
+    {
+      "id": 59,
+      "profileId": 302,
+      "metric": "settlementDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        12,
+        24,
+        48
+      ],
+      "scoreYs": [
+        0,
+        1,
+        0.8,
+        0.4
+      ],
+      "weight": 0.4
+    },
+    {
+      "id": 60,
+      "profileId": 302,
+      "metric": "roadDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        8,
+        16,
+        48
+      ],
+      "scoreYs": [
+        1,
+        1,
+        0.7,
+        0.3
+      ],
+      "weight": 0.1
+    },
+    {
+      "id": 61,
+      "profileId": 401,
+      "metric": "height",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        4,
+        7,
+        11,
+        18
+      ],
+      "scoreYs": [
+        0.8,
+        1,
+        0.7,
+        0.3,
+        0.1
+      ],
+      "weight": 0.7
+    },
+    {
+      "id": 62,
+      "profileId": 401,
+      "metric": "slope",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        0.5,
+        1.5,
+        4
+      ],
+      "scoreYs": [
+        1,
+        0.9,
+        0.4,
+        0
+      ],
+      "weight": 2
+    },
+    {
+      "id": 63,
+      "profileId": 401,
+      "metric": "roughness",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        0.5,
+        1.5,
+        4
+      ],
+      "scoreYs": [
+        1,
+        0.9,
+        0.4,
+        0
+      ],
+      "weight": 1
+    },
+    {
+      "id": 64,
+      "profileId": 401,
+      "metric": "relativeHeight",
+      "hardRange": [],
+      "scoreXs": [
+        -4,
+        -1,
+        0,
+        2,
+        6
+      ],
+      "scoreYs": [
+        0.1,
+        0.4,
+        0.7,
+        1,
+        0.5
+      ],
+      "weight": 1
+    },
+    {
+      "id": 65,
+      "profileId": 401,
+      "metric": "buildableCells",
+      "hardRange": [
+        2,
+        37
+      ],
+      "scoreXs": [
+        0,
+        8,
+        20,
+        37
+      ],
+      "scoreYs": [
+        0,
+        0.2,
+        0.8,
+        1
+      ],
+      "weight": 1
+    },
+    {
+      "id": 66,
+      "profileId": 401,
+      "metric": "waterClearance",
+      "hardRange": [
+        1,
+        48
+      ],
+      "scoreXs": [
+        0,
+        2,
+        5,
+        12,
+        48
+      ],
+      "scoreYs": [
+        0,
+        1,
+        1,
+        0.5,
+        0.2
+      ],
+      "weight": 0.5
+    },
+    {
+      "id": 67,
+      "profileId": 401,
+      "metric": "waterAccessDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        3,
+        8,
+        20,
+        48
+      ],
+      "scoreYs": [
+        0.5,
+        1,
+        1,
+        0.3,
+        0.05
+      ],
+      "weight": 0.4
+    },
+    {
+      "id": 68,
+      "profileId": 401,
+      "metric": "riverJunctionDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        4,
+        10,
+        48
+      ],
+      "scoreYs": [
+        0.5,
+        1,
+        0.7,
+        0.1
+      ],
+      "weight": 0.1
+    },
+    {
+      "id": 69,
+      "profileId": 401,
+      "metric": "settlementDistance",
+      "hardRange": [
+        12,
+        48
+      ],
+      "scoreXs": [
+        0,
+        12,
+        24,
+        48
+      ],
+      "scoreYs": [
+        0,
+        0.7,
+        1,
+        1
+      ],
+      "weight": 3
+    },
+    {
+      "id": 70,
+      "profileId": 401,
+      "metric": "roadDistance",
+      "hardRange": [
+        8,
+        48
+      ],
+      "scoreXs": [
+        0,
+        8,
+        16,
+        48
+      ],
+      "scoreYs": [
+        0,
+        0.5,
+        1,
+        1
+      ],
+      "weight": 4
+    },
+    {
+      "id": 71,
+      "profileId": 501,
+      "metric": "height",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        4,
+        7,
+        11,
+        18
+      ],
+      "scoreYs": [
+        0.8,
+        1,
+        0.7,
+        0.3,
+        0.1
+      ],
+      "weight": 0.7
+    },
+    {
+      "id": 72,
+      "profileId": 501,
+      "metric": "slope",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        0.5,
+        1.5,
+        4
+      ],
+      "scoreYs": [
+        1,
+        0.9,
+        0.4,
+        0
+      ],
+      "weight": 2
+    },
+    {
+      "id": 73,
+      "profileId": 501,
+      "metric": "roughness",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        0.5,
+        1.5,
+        4
+      ],
+      "scoreYs": [
+        1,
+        0.9,
+        0.4,
+        0
+      ],
+      "weight": 1
+    },
+    {
+      "id": 74,
+      "profileId": 501,
+      "metric": "relativeHeight",
+      "hardRange": [],
+      "scoreXs": [
+        -4,
+        -1,
+        0,
+        2,
+        6
+      ],
+      "scoreYs": [
+        0.1,
+        0.4,
+        0.7,
+        1,
+        0.5
+      ],
+      "weight": 1
+    },
+    {
+      "id": 75,
+      "profileId": 501,
+      "metric": "buildableCells",
+      "hardRange": [
+        2,
+        37
+      ],
+      "scoreXs": [
+        0,
+        8,
+        20,
+        37
+      ],
+      "scoreYs": [
+        0,
+        0.2,
+        0.8,
+        1
+      ],
+      "weight": 1
+    },
+    {
+      "id": 76,
+      "profileId": 501,
+      "metric": "waterClearance",
+      "hardRange": [
+        1,
+        48
+      ],
+      "scoreXs": [
+        0,
+        2,
+        5,
+        12,
+        48
+      ],
+      "scoreYs": [
+        0,
+        1,
+        1,
+        0.5,
+        0.2
+      ],
+      "weight": 0.5
+    },
+    {
+      "id": 77,
+      "profileId": 501,
+      "metric": "waterAccessDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        3,
+        8,
+        20,
+        48
+      ],
+      "scoreYs": [
+        0.5,
+        1,
+        1,
+        0.3,
+        0.05
+      ],
+      "weight": 0.4
+    },
+    {
+      "id": 78,
+      "profileId": 501,
+      "metric": "riverJunctionDistance",
+      "hardRange": [],
+      "scoreXs": [
+        0,
+        4,
+        10,
+        48
+      ],
+      "scoreYs": [
+        0.5,
+        1,
+        0.7,
+        0.1
+      ],
+      "weight": 0.1
+    },
+    {
+      "id": 79,
+      "profileId": 501,
+      "metric": "settlementDistance",
+      "hardRange": [
+        12,
+        48
+      ],
+      "scoreXs": [
+        0,
+        12,
+        24,
+        48
+      ],
+      "scoreYs": [
+        0,
+        0.7,
+        1,
+        1
+      ],
+      "weight": 3
+    },
+    {
+      "id": 80,
+      "profileId": 501,
+      "metric": "roadDistance",
+      "hardRange": [
+        8,
+        48
+      ],
+      "scoreXs": [
+        0,
+        8,
+        16,
+        48
+      ],
+      "scoreYs": [
+        0,
+        0.5,
+        1,
+        1
+      ],
+      "weight": 4
+    }
+  ]
+}

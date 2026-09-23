@@ -1,0 +1,53 @@
+{
+  "version": 1,
+  "name": "MapAreaDistrictTable",
+  "description": "房间组团的功能与相对锚点；整体镜像、交换轴和轻微扰动提供布局差异。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "分区 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "分区名称"
+    },
+    {
+      "name": "anchorQ",
+      "type": "float",
+      "description": "相对 q 坐标",
+      "min": 0.1,
+      "max": 0.9
+    },
+    {
+      "name": "anchorR",
+      "type": "float",
+      "description": "相对 r 坐标",
+      "min": 0.1,
+      "max": 0.9
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "前厅与后勤",
+      "anchorQ": 0.24,
+      "anchorR": 0.24
+    },
+    {
+      "id": 2,
+      "name": "祭祀院落",
+      "anchorQ": 0.73,
+      "anchorR": 0.27
+    },
+    {
+      "id": 3,
+      "name": "墓葬与侵蚀洞窟",
+      "anchorQ": 0.48,
+      "anchorR": 0.74
+    }
+  ]
+}

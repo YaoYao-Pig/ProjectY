@@ -3,11 +3,12 @@ local Class = require('Core.Class')
 local HexGrid = require('Game.Map.HexGrid')
 local Map = Class('Map')
 function Map:ctor(seed, radius)
-    self.seed = seed; self.hexRadius = radius; self.generationVersion = 4
+    self.seed = seed; self.hexRadius = radius; self.generationVersion = 5
     self.cells = {}; self.cellsByKey = {}; self.regions = {}; self.regionsByType = {}
     self.borders = {}; self.bordersByPair = {}; self.waterBodies = {}
     self.towns = {}; self.buildings = {}; self.roads = {}; self.roadNetworks = {}
     self.rivers = {}; self.waterfalls = {}; self.decorations = {}; self.assets = {}; self.biomes = {}
+    self.siteProfiles = {}; self.siteDiagnostics = {}
 end
 function Map:GetCells() return self.cells end
 function Map:GetRegions() return self.regions end

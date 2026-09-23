@@ -1,0 +1,15 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaTownThemeTableRow
+---@field id number 稳定配置 ID
+---@field name string 显示名称
+---@field regionType 1|2|3|4|5|6 来源 Region
+---@field floorColor string 庭院地面颜色
+---@field wallColor string 边界颜色
+---@field wallHeight number 边界高度
+---@field heightNoise number 地面噪声幅度
+---@field assetId number 地面资源
+---@field roadColor string 街道铺装颜色
+---@field plazaColor string 广场铺装颜色
+---@field treeAssetId number 景观树资源
+---@field treeScale number 景观树相对比例
+return {["name"]="MapAreaTownThemeTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="name",["type"]="string",["description"]="\230\152\190\231\164\186\229\144\141\231\167\176"},{["name"]="regionType",["type"]="enum",["description"]="\230\157\165\230\186\144 Region",["enumRef"]="Map.E_MapRegion",["enumType"]="int",["values"]={1,2,3,4,5,6}},{["name"]="floorColor",["type"]="string",["description"]="\229\186\173\233\153\162\229\156\176\233\157\162\233\162\156\232\137\178"},{["name"]="wallColor",["type"]="string",["description"]="\232\190\185\231\149\140\233\162\156\232\137\178"},{["name"]="wallHeight",["type"]="float",["description"]="\232\190\185\231\149\140\233\171\152\229\186\166",["min"]=0},{["name"]="heightNoise",["type"]="float",["description"]="\229\156\176\233\157\162\229\153\170\229\163\176\229\185\133\229\186\166",["min"]=0},{["name"]="assetId",["type"]="int",["description"]="\229\156\176\233\157\162\232\181\132\230\186\144",["ref"]="MapAssetTable"},{["name"]="roadColor",["type"]="string",["description"]="\232\161\151\233\129\147\233\147\186\232\163\133\233\162\156\232\137\178"},{["name"]="plazaColor",["type"]="string",["description"]="\229\185\191\229\156\186\233\147\186\232\163\133\233\162\156\232\137\178"},{["name"]="treeAssetId",["type"]="int",["description"]="\230\153\175\232\167\130\230\160\145\232\181\132\230\186\144",["ref"]="MapAssetTable"},{["name"]="treeScale",["type"]="float",["description"]="\230\153\175\232\167\130\230\160\145\231\155\184\229\175\185\230\175\148\228\190\139",["min"]=0.1}},["fingerprint"]="3aa6bc176fc66c2f3a4524c8827eafea007c304016d6ec743b856d127b7cbfef"}

@@ -1,0 +1,253 @@
+{
+  "version": 1,
+  "name": "MapAreaRoomPlacementTable",
+  "description": "预设房间内的固定建筑和装饰；坐标相对房间中心，随房间整体旋转。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "presetId",
+      "type": "int",
+      "description": "所属预设房间",
+      "ref": "MapAreaRoomPresetTable"
+    },
+    {
+      "name": "propId",
+      "type": "int",
+      "description": "摆件配置",
+      "ref": "MapAreaPropTable"
+    },
+    {
+      "name": "q",
+      "type": "int",
+      "description": "本地轴向 q"
+    },
+    {
+      "name": "r",
+      "type": "int",
+      "description": "本地轴向 r"
+    },
+    {
+      "name": "rotation",
+      "type": "int",
+      "description": "绕竖轴的 60 度旋转次数",
+      "min": 0,
+      "max": 5
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "presetId": 1,
+      "propId": 1,
+      "q": 6,
+      "r": 2,
+      "rotation": 0
+    },
+    {
+      "id": 2,
+      "presetId": 1,
+      "propId": 1,
+      "q": 2,
+      "r": 6,
+      "rotation": 0
+    },
+    {
+      "id": 3,
+      "presetId": 1,
+      "propId": 1,
+      "q": -6,
+      "r": -2,
+      "rotation": 0
+    },
+    {
+      "id": 4,
+      "presetId": 1,
+      "propId": 1,
+      "q": -2,
+      "r": -6,
+      "rotation": 0
+    },
+    {
+      "id": 5,
+      "presetId": 1,
+      "propId": 1,
+      "q": -7,
+      "r": 4,
+      "rotation": 0
+    },
+    {
+      "id": 6,
+      "presetId": 1,
+      "propId": 1,
+      "q": 7,
+      "r": -4,
+      "rotation": 0
+    },
+    {
+      "id": 7,
+      "presetId": 1,
+      "propId": 11,
+      "q": 5,
+      "r": 5,
+      "rotation": 0
+    },
+    {
+      "id": 8,
+      "presetId": 1,
+      "propId": 6,
+      "q": -5,
+      "r": 8,
+      "rotation": 0
+    },
+    {
+      "id": 9,
+      "presetId": 1,
+      "propId": 6,
+      "q": 5,
+      "r": -8,
+      "rotation": 0
+    },
+    {
+      "id": 10,
+      "presetId": 1,
+      "propId": 16,
+      "q": -8,
+      "r": 1,
+      "rotation": 2
+    },
+    {
+      "id": 11,
+      "presetId": 2,
+      "propId": 11,
+      "q": 4,
+      "r": 5,
+      "rotation": 1
+    },
+    {
+      "id": 12,
+      "presetId": 2,
+      "propId": 2,
+      "q": 7,
+      "r": -3,
+      "rotation": 0
+    },
+    {
+      "id": 13,
+      "presetId": 2,
+      "propId": 2,
+      "q": -7,
+      "r": 3,
+      "rotation": 0
+    },
+    {
+      "id": 14,
+      "presetId": 2,
+      "propId": 9,
+      "q": -4,
+      "r": -4,
+      "rotation": 0
+    },
+    {
+      "id": 15,
+      "presetId": 2,
+      "propId": 1,
+      "q": -3,
+      "r": 7,
+      "rotation": 0
+    },
+    {
+      "id": 16,
+      "presetId": 2,
+      "propId": 1,
+      "q": 3,
+      "r": -7,
+      "rotation": 0
+    },
+    {
+      "id": 17,
+      "presetId": 2,
+      "propId": 6,
+      "q": 8,
+      "r": -6,
+      "rotation": 0
+    },
+    {
+      "id": 18,
+      "presetId": 2,
+      "propId": 6,
+      "q": -8,
+      "r": 6,
+      "rotation": 0
+    },
+    {
+      "id": 20,
+      "presetId": 3,
+      "propId": 12,
+      "q": 6,
+      "r": 2,
+      "rotation": 0
+    },
+    {
+      "id": 21,
+      "presetId": 3,
+      "propId": 4,
+      "q": 2,
+      "r": 6,
+      "rotation": 0
+    },
+    {
+      "id": 22,
+      "presetId": 3,
+      "propId": 14,
+      "q": -6,
+      "r": -2,
+      "rotation": 0
+    },
+    {
+      "id": 23,
+      "presetId": 3,
+      "propId": 4,
+      "q": -2,
+      "r": -6,
+      "rotation": 0
+    },
+    {
+      "id": 24,
+      "presetId": 3,
+      "propId": 4,
+      "q": -8,
+      "r": 4,
+      "rotation": 0
+    },
+    {
+      "id": 25,
+      "presetId": 3,
+      "propId": 4,
+      "q": 8,
+      "r": -4,
+      "rotation": 0
+    },
+    {
+      "id": 26,
+      "presetId": 3,
+      "propId": 6,
+      "q": 10,
+      "r": -6,
+      "rotation": 0
+    },
+    {
+      "id": 27,
+      "presetId": 3,
+      "propId": 6,
+      "q": -10,
+      "r": 6,
+      "rotation": 0
+    }
+  ]
+}

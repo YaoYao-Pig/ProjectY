@@ -115,7 +115,7 @@ end
 
 源表最大 100000 行、128 字段、单个数组 65535 项、单个 UTF-8 字符串 1 MiB；网页单次提交上限 2 MiB。较大的源表可直接编辑 JSON 后 CLI 导出。表名区分大小写，但不允许 Windows 下大小写冲突；`Manifest`、`Catalog`、Windows 设备名和原型保留字段名不可使用。
 
-导出先校验全部源表、再编码全部结果；校验失败不会更新已有产物。主键排序保证相同行数据顺序不影响二进制。逐文件通过临时文件替换，未变化的产物不触发重新导入。通过 `Config/export-manifest.json` 清理已删除表的旧生成文件。**这不是跨文件事务**：进程异常中断后重新导出；构建前自动导出，schema 指纹不匹配也会在运行时明确报错。
+导出先校验全部源表、再编码全部结果；校验失败不会更新已有产物。主键排序保证相同行数据顺序不影响二进制。逐文件通过临时文件替换，未变化的产物不触发重新导入。通过 `Config/_Gen/export-manifest.json` 清理已删除表的旧生成文件。**这不是跨文件事务**：进程异常中断后重新导出；构建前自动导出，schema 指纹不匹配也会在运行时明确报错。
 
 编辑器使用表源、路径、Catalog 与 Language.lua 的 revision 做乐观并发校验；另一个页面/程序改动源文件后，旧页面保存或导出会收到冲突。没有后台自动保存，未保存修改离开页面会提示。导出会先同步 Language.lua 新键及注释到 LuaTxt；此同步也受全表校验保护。
 
@@ -152,13 +152,13 @@ ConfigSystem 按表懒加载，结果缓存到退出；API 为 `Get(id)`（缺�
 
 ## Lua 文件加载与构建
 
-业务 Lua 文件只在工程根目录 `Lua/` 维护，使用原生 `.lua` 扩展名，不是 Unity 资源，不需要 `.meta`。导表生成的 `Lua/Generated/*.lua` 使用相同加载流程。
+业务 Lua 文件只在工程根目录 `Lua/` 维护，使用原生 `.lua` 扩展名，不是 Unity 资源，不需要 `.meta`。导表生成的 `Lua/_Gen/*.lua` 使用相同加载流程。
 
 `GameBootstrap` 创建 `LuaFileLoader(LuaScriptPaths.RuntimeRoot)` 并将 `Load` 注册到 `LuaEnv.AddLoader`。模块名 `UI.Panel.DemoCtr` 映射到根目录下的 `UI/Panel/DemoCtr.lua`。加载器用 `File.ReadAllBytes` 读取，清理可选 UTF-8 BOM，并把绝对文件路径返回给 xLua，确保 Lua 堆栈定位到真实源码。仅接受由点分隔的标识符；缺失/无效模块返回 null，让 require 输出加载失败。
 
 编辑器的根目录为 `<工程>/Lua`；桌面 Player 的根目录为 `<Application.streamingAssetsPath>/Lua`。每次创建 LuaEnv 都重新读取源码；同一 LuaEnv 内遵循 require 的 `package.loaded` 缓存，不做自动热重载。
 
-`FrameworkBuildGate.PrepareForBuild` 先导表、检查桥接文件，再由 `LuaBuildFiles.Collect` 校验并收集 `.lua` 文件，通过 [Unity 2022.3 的 AddAdditionalPathToStreamingAssets API](https://docs.unity3d.com/2022.3/Documentation/ScriptReference/Build.BuildPlayerContext.AddAdditionalPathToStreamingAssets.html) 加入成品。没有中间的 Assets 副本；构建只打包 Lua 源码，排除其他扩展名。非法模块路径、大小写冲突、缺失 Main/Generated.Manifest 都阻止构建。
+`FrameworkBuildGate.PrepareForBuild` 先导表、检查桥接文件，再由 `LuaBuildFiles.Collect` 校验并收集 `.lua` 文件，通过 [Unity 2022.3 的 AddAdditionalPathToStreamingAssets API](https://docs.unity3d.com/2022.3/Documentation/ScriptReference/Build.BuildPlayerContext.AddAdditionalPathToStreamingAssets.html) 加入成品。没有中间的 Assets 副本；构建只打包 Lua 源码，排除其他扩展名。非法模块路径、大小写冲突、缺失 Main/_Gen.Manifest 都阻止构建。
 
 当前使用本地文件路径读取，覆盖已接入的 Windows x64 平台。Android APK/WebGL 的 StreamingAssets 为 URI，需先异步预加载到内存或本地缓存后向同步 require 提供字节，当前加载器会明确拒绝 URI 根目录。
 

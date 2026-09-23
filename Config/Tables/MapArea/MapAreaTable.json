@@ -1,0 +1,148 @@
+{
+  "version": 1,
+  "name": "MapAreaTable",
+  "description": "MapArea 定义；类型选择生成策略，参数表由对应策略负责校验。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "区域名称"
+    },
+    {
+      "name": "areaType",
+      "type": "enum",
+      "description": "生成类型",
+      "enumRef": "MapArea.E_MapAreaType"
+    },
+    {
+      "name": "profileId",
+      "type": "int",
+      "description": "对应策略参数 ID；未实现类型可为 0",
+      "min": 0
+    },
+    {
+      "name": "width",
+      "type": "int",
+      "description": "q 轴采样格数，含墙壁",
+      "min": 32,
+      "max": 192
+    },
+    {
+      "name": "height",
+      "type": "int",
+      "description": "r 轴采样格数，含墙壁",
+      "min": 32,
+      "max": 192
+    },
+    {
+      "name": "hexRadius",
+      "type": "float",
+      "description": "地格半径",
+      "min": 0.25,
+      "max": 3
+    },
+    {
+      "name": "visionRadius",
+      "type": "int",
+      "description": "队伍探索视野半径；墙壁遮挡",
+      "min": 2,
+      "max": 16
+    },
+    {
+      "name": "moveStepSeconds",
+      "type": "float",
+      "description": "探索阶段每格移动间隔",
+      "min": 0.05,
+      "max": 1
+    },
+    {
+      "name": "seedSalt",
+      "type": "int",
+      "description": "不同配置的独立随机通道",
+      "min": 0
+    },
+    {
+      "name": "discovery",
+      "type": "enum",
+      "description": "探索方式：城镇全图已知，地牢逐步探索",
+      "values": [
+        "explore",
+        "open"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "古代地下迷宫",
+      "areaType": 1,
+      "profileId": 1,
+      "width": 96,
+      "height": 96,
+      "hexRadius": 1.5,
+      "visionRadius": 9,
+      "moveStepSeconds": 0.13,
+      "seedSalt": 38171,
+      "discovery": "explore"
+    },
+    {
+      "id": 2,
+      "name": "集市城镇",
+      "areaType": 2,
+      "profileId": 1,
+      "width": 64,
+      "height": 64,
+      "hexRadius": 1.5,
+      "visionRadius": 9,
+      "moveStepSeconds": 0.5,
+      "seedSalt": 7159,
+      "discovery": "open"
+    },
+    {
+      "id": 3,
+      "name": "小村庄",
+      "areaType": 2,
+      "profileId": 2,
+      "width": 64,
+      "height": 64,
+      "hexRadius": 1.5,
+      "visionRadius": 9,
+      "moveStepSeconds": 0.5,
+      "seedSalt": 7570,
+      "discovery": "open"
+    },
+    {
+      "id": 4,
+      "name": "城堡镇区",
+      "areaType": 2,
+      "profileId": 3,
+      "width": 64,
+      "height": 64,
+      "hexRadius": 1.5,
+      "visionRadius": 9,
+      "moveStepSeconds": 0.5,
+      "seedSalt": 7707,
+      "discovery": "open"
+    },
+    {
+      "id": 5,
+      "name": "隐居小聚落",
+      "areaType": 2,
+      "profileId": 4,
+      "width": 64,
+      "height": 64,
+      "hexRadius": 1.5,
+      "visionRadius": 9,
+      "moveStepSeconds": 0.5,
+      "seedSalt": 7844,
+      "discovery": "open"
+    }
+  ]
+}

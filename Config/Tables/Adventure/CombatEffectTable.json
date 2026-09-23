@@ -1,0 +1,66 @@
+{
+  "version": 1,
+  "name": "CombatEffectTable",
+  "description": "技能效果指令；数值复用现有受限公式，不执行任意源码。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "kind",
+      "type": "enum",
+      "description": "效果处理器",
+      "values": [
+        "damage",
+        "heal",
+        "guard"
+      ]
+    },
+    {
+      "name": "amount",
+      "type": "formula",
+      "description": "效果数值；defense/guard 来自目标，其余来自施法者",
+      "variables": [
+        "vitality",
+        "endurance",
+        "intellect",
+        "strength",
+        "speed",
+        "defense",
+        "proficiency",
+        "guard"
+      ]
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "kind": "damage",
+      "amount": "max(1, floor(7 + strength + proficiency / 2 - defense - guard))"
+    },
+    {
+      "id": 2,
+      "kind": "damage",
+      "amount": "max(1, floor(5 + strength + proficiency / 2 - defense - guard))"
+    },
+    {
+      "id": 3,
+      "kind": "damage",
+      "amount": "max(1, floor(6 + intellect + proficiency / 2 - defense / 2 - guard))"
+    },
+    {
+      "id": 4,
+      "kind": "guard",
+      "amount": "3"
+    },
+    {
+      "id": 5,
+      "kind": "heal",
+      "amount": "6 + intellect"
+    }
+  ]
+}

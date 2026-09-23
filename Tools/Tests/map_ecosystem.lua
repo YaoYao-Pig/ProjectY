@@ -4,7 +4,7 @@ local Registry = require('Core.SystemRegistry')
 local Generator = require('Game.Map.MapGenerator')
 local Hex = require('Game.Map.HexGrid')
 local registry = Registry({ ReadConfig = function(_, name)
-    local file = assert(io.open('Assets/GameFramework/Resources/Config/' .. name .. '.bytes', 'rb'))
+    local file = assert(io.open('Assets/GameFramework/Resources/_Gen/Config/' .. name .. '.bytes', 'rb'))
     local bytes = file:read('*a'); file:close(); return bytes
 end, LogError = error })
 registry:Register('Config', require('Config.ConfigSystem'))
@@ -113,7 +113,7 @@ for i,cell in ipairs(map.cells) do
     assert(cell.terrainAssetId == other.terrainAssetId and cell.decorationId == other.decorationId)
 end
 local snapshot = require('Game.Map.MapRenderSnapshot')(map)
-assert(#snapshot.assets == 18 and #snapshot.decorations == #map.decorations)
+assert(#snapshot.assets == 19 and #snapshot.decorations == #map.decorations)
 snapshot.cells[1].groundColor[1] = -1; snapshot.assets[1].prefabPath = 'changed'
 assert(map.cells[1].groundColor[1] >= 0 and map.assets[1].prefabPath ~= 'changed')
 print('PASS flow acyclicity, downhill stages, banks, connected pools, probability extremes, determinism and detached render data')

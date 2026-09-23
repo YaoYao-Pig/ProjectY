@@ -20,6 +20,9 @@ namespace ProjectY.Samples
         private readonly Dictionary<int, AssetBinding> assets = new Dictionary<int, AssetBinding>();
         [SerializeField] private string seedText = "20260921";
         [SerializeField] private string recipeText = "1,2,3,4,5,6,1,4,5,6";
+        // 初次启动从配表读取；面板留空可回到原来的一遍配方模式。
+        [SerializeField] private string targetCellsText = "";
+        private int maxCells;
         private MapPreviewData map;
         private MapPreviewRenderer mapRenderer;
         private Vector3 focus;
@@ -42,6 +45,8 @@ namespace ProjectY.Samples
             foreach (var binding in assetBindings) assets.Add(binding.id, binding);
             font = Font.CreateDynamicFontFromOSFont(new[] { "Microsoft YaHei", "Noto Sans CJK SC", "Arial" }, 16);
             mapRenderer = new MapPreviewRenderer(previewShader, transform);
+            MapPreviewData.ReadSizeSettings(bootstrap, out var defaultCells, out maxCells);
+            if (string.IsNullOrWhiteSpace(targetCellsText)) targetCellsText = defaultCells.ToString(CultureInfo.InvariantCulture);
             Generate();
         }
 
@@ -55,8 +60,15 @@ namespace ProjectY.Samples
                 var parts = recipeText.Split(',');
                 foreach (var part in parts)
                     if (!int.TryParse(part.Trim(), out var id) || id <= 0) throw new ArgumentException("Region 配方请填写逗号分隔的正整数 ID。");
+                int? targetCells = null;
+                if (!string.IsNullOrWhiteSpace(targetCellsText))
+                {
+                    if (!int.TryParse(targetCellsText, NumberStyles.None, CultureInfo.InvariantCulture, out var count) || count < 1 || count > maxCells)
+                        throw new ArgumentException("目标格数必须为 1～" + maxCells + " 的整数。");
+                    targetCells = count;
+                }
                 var watch = Stopwatch.StartNew();
-                var next = MapPreviewData.Generate(bootstrap, seed, recipeText);
+                var next = MapPreviewData.Generate(bootstrap, seed, recipeText, targetCells);
                 var generatedMs = watch.ElapsedMilliseconds;
                 Build(next);
                 map = next;
@@ -155,6 +167,12 @@ namespace ProjectY.Samples
             GUILayout.Label("工程 Lua 生成器 / 已导出的工程配表", labelStyle);
             GUILayout.Space(12);
             GUILayout.Label("种子", labelStyle); seedText = GUILayout.TextField(seedText, fieldStyle);
+            GUILayout.Label("目标格数（上限 " + maxCells + "，留空按配方）", labelStyle);
+            targetCellsText = GUILayout.TextField(targetCellsText, fieldStyle);
+            GUILayout.BeginHorizontal();
+            foreach (var count in new[] { 10000, 50000, 100000 })
+                if (count <= maxCells && GUILayout.Button(count / 10000 + " 万", buttonStyle)) targetCellsText = count.ToString(CultureInfo.InvariantCulture);
+            GUILayout.EndHorizontal();
             GUILayout.Label("Region 配方（配置 ID）", labelStyle); recipeText = GUILayout.TextField(recipeText, fieldStyle);
             GUILayout.BeginHorizontal();
             if (GUILayout.Button("生成地图", buttonStyle)) Generate();

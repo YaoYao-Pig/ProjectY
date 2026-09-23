@@ -103,6 +103,12 @@
       "min": 0.15,
       "max": 0.75,
       "description": "湖泊盆地占区域半径的比例；仅湖泊策略使用"
+    },
+    {
+      "name": "hydrologyProfileId",
+      "type": "int",
+      "description": "水文局部参数；接缝按 Region 实例权重混合",
+      "ref": "MapHydrologyProfileTable"
     }
   ],
   "rows": [
@@ -116,7 +122,8 @@
       "minHeight": 0,
       "maxHeight": 4,
       "roughness": 0.4,
-      "noiseScale": 1.25
+      "noiseScale": 1.25,
+      "hydrologyProfileId": 1
     },
     {
       "id": 2,
@@ -129,7 +136,8 @@
       "maxHeight": 19,
       "roughness": 0.6,
       "noiseScale": 1.2,
-      "warpStrength": 1.1
+      "warpStrength": 1.1,
+      "hydrologyProfileId": 2
     },
     {
       "id": 3,
@@ -141,7 +149,8 @@
       "minHeight": -3,
       "maxHeight": 4,
       "waterLevel": 0.8,
-      "lakeSize": 0.52
+      "lakeSize": 0.52,
+      "hydrologyProfileId": 3
     },
     {
       "id": 4,
@@ -154,7 +163,8 @@
       "maxHeight": 4,
       "waterLevel": 0.6,
       "riverWidth": 1.65,
-      "roughness": 0.4
+      "roughness": 0.4,
+      "hydrologyProfileId": 4
     },
     {
       "id": 5,
@@ -167,7 +177,8 @@
       "maxHeight": 7,
       "roughness": 0.48,
       "noiseScale": 1.1,
-      "warpStrength": 0.85
+      "warpStrength": 0.85,
+      "hydrologyProfileId": 5
     },
     {
       "id": 6,
@@ -180,7 +191,8 @@
       "maxHeight": 16,
       "roughness": 0.36,
       "noiseScale": 1.35,
-      "warpStrength": 0.6
+      "warpStrength": 0.6,
+      "hydrologyProfileId": 6
     }
   ]
 }

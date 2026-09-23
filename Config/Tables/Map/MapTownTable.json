@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "MapTownTable",
-  "description": "城镇生成预览的技术样例；选址和占地不改变原有地形，不涉及经济或玩法实体。",
+  "description": "数据驱动的普通聚落与偏远地点；地形和水体评分后试排完整建筑。",
   "key": "id",
   "fields": [
     {
@@ -104,6 +104,28 @@
       "description": "必须成功摆放的地标；缺失则放弃整次选址",
       "ref": "MapBuildingTable",
       "default": []
+    },
+    {
+      "name": "placementStage",
+      "type": "enum",
+      "description": "道路前普通聚落 / 道路后偏远地点",
+      "enumRef": "Map.PlacementStage"
+    },
+    {
+      "name": "connectRoad",
+      "type": "bool",
+      "description": "是否参与城镇间道路网络"
+    },
+    {
+      "name": "generateStreets",
+      "type": "bool",
+      "description": "是否生成内部街道；关闭时仅保留干燥入口"
+    },
+    {
+      "name": "siteProfileIds",
+      "type": "int[]",
+      "description": "可抽选的选址方案；权重与曲线由选址表控制",
+      "ref": "MapSiteProfileTable"
     }
   ],
   "rows": [
@@ -134,7 +156,14 @@
       "radius": 4,
       "minBuildings": 3,
       "maxBuildings": 6,
-      "maxGroundDelta": 0.95
+      "maxGroundDelta": 0.95,
+      "placementStage": "BeforeRoads",
+      "connectRoad": true,
+      "generateStreets": true,
+      "siteProfileIds": [
+        101,
+        102
+      ]
     },
     {
       "id": 2,
@@ -142,9 +171,11 @@
       "groundColor": "#c0b096",
       "regions": [
         1,
+        2,
         3,
         4,
-        5
+        5,
+        6
       ],
       "buildingIds": [
         4,
@@ -164,7 +195,14 @@
       "radius": 8,
       "minBuildings": 8,
       "maxBuildings": 18,
-      "maxGroundDelta": 1.1
+      "maxGroundDelta": 1.1,
+      "placementStage": "BeforeRoads",
+      "connectRoad": true,
+      "generateStreets": true,
+      "siteProfileIds": [
+        201,
+        202
+      ]
     },
     {
       "id": 3,
@@ -194,7 +232,14 @@
       "radius": 5,
       "minBuildings": 3,
       "maxBuildings": 6,
-      "maxGroundDelta": 1.35
+      "maxGroundDelta": 1.35,
+      "placementStage": "BeforeRoads",
+      "connectRoad": true,
+      "generateStreets": true,
+      "siteProfileIds": [
+        301,
+        302
+      ]
     },
     {
       "id": 4,
@@ -219,7 +264,45 @@
       "radius": 3,
       "minBuildings": 1,
       "maxBuildings": 1,
-      "maxGroundDelta": 1.6
+      "maxGroundDelta": 1.6,
+      "placementStage": "AfterRoads",
+      "connectRoad": false,
+      "generateStreets": false,
+      "siteProfileIds": [
+        401
+      ]
+    },
+    {
+      "id": 5,
+      "name": "隐居群落",
+      "groundColor": "#a89d7a",
+      "regions": [
+        1,
+        2,
+        5,
+        6
+      ],
+      "buildingIds": [
+        6
+      ],
+      "requiredBuildingIds": [
+        6
+      ],
+      "priority": 20,
+      "maxCount": 3,
+      "maxPerRegion": 1,
+      "minSpacing": 12,
+      "radius": 4,
+      "siteAttempts": 32,
+      "minBuildings": 3,
+      "maxBuildings": 5,
+      "maxGroundDelta": 1.25,
+      "placementStage": "AfterRoads",
+      "connectRoad": false,
+      "generateStreets": false,
+      "siteProfileIds": [
+        501
+      ]
     }
   ]
 }

@@ -14,6 +14,10 @@
       <div class="section-heading"><span class="eyebrow">01 / GENERATE</span><button class="text-button" id="reload">刷新配置</button></div>
       <h1>从一个种子开始</h1><p class="intro">查看每次生成的地貌、起伏与区域连接。</p>
       <label for="seed">世界种子</label><div class="input-action"><input id="seed" type="number" min="0" max="4294967295" step="1" value="20260921"><button id="random" title="随机种子并生成">随机 ↻</button></div>
+      <label for="target-cells">目标格数 <span>1 万～10 万格</span></label>
+      <input id="target-cells" type="number" min="1" step="1" list="map-sizes" placeholder="留空：只生成一遍配方">
+      <datalist id="map-sizes"><option value="10000"></option><option value="25000"></option><option value="50000"></option><option value="100000"></option></datalist>
+      <p class="hint">循环下方配方，生成精确格数。留空保留原来的小地图模式。</p>
       <label for="recipe">Region 配方 <span>按顺序填写配置 ID</span></label><textarea id="recipe" rows="3" spellcheck="false" placeholder="1, 1, 1, 1"></textarea>
       <div class="append-row"><select id="region-config" aria-label="区域配置"></select><input id="repeat" type="number" min="1" max="65536" value="1" aria-label="追加次数"><button id="append" title="追加到配方">＋</button></div>
       <p class="hint">重复 ID 会生成多个独立区域。<button class="text-button" id="mixed">填入混合地貌配方</button></p>
@@ -22,7 +26,9 @@
       <details class="config-detail"><summary>当前生成参数</summary><div id="config-details"></div></details>
       <div class="separator"></div>
       <span class="eyebrow">02 / INSPECT</span><h2>显示与视角</h2>
-      <label for="color-mode">颜色含义</label><select id="color-mode"><option value="natural">自然地表</option><option value="region">Region 实例</option><option value="height">地形高度</option><option value="terrain">地貌类型</option><option value="transition">边界过渡强度</option></select>
+      <label for="color-mode">颜色含义</label><select id="color-mode"><option value="natural">自然地表</option><option value="region">Region 实例</option><option value="height">地形高度</option><option value="terrain">地貌类型</option><option value="transition">边界过渡强度</option><option value="site">选址评分热力图</option><option value="flow">汇水与河道</option></select>
+      <label for="site-profile">选址方案</label><select id="site-profile" aria-label="选址方案"></select>
+      <p class="hint">热力图为该样式开始选址时的评分。灰色未过硬限制；点击格子看原因。占地、间距与数量上限另行试排。</p>
       <div class="toggle-row"><label><input id="borders" type="checkbox"> Region 边界</label><label><input id="grid" type="checkbox"> 格子线</label><label><input id="water" type="checkbox" checked> 水面</label><label><input id="townPlots" type="checkbox" checked> 城市地块</label><label><input id="buildings" type="checkbox" checked> 建筑细节</label><label><input id="roads" type="checkbox" checked> 道路</label><label><input id="decorations" type="checkbox" checked> 森林与地貌装饰</label></div>
       <div class="view-buttons"><button class="active" id="oblique">立体视角</button><button id="top">俯视平面</button></div>
       <label for="rotation">旋转 <output id="rotation-value">−25°</output></label><input id="rotation" type="range" min="-180" max="180" value="-25">
@@ -35,7 +41,7 @@
       <canvas id="map" aria-label="可拖动、缩放及点击查询的六边形地图"></canvas>
       <div id="empty-state"><span>⬡</span><h2>地形即将展开</h2><p>选择配方，然后生成第一张地图。</p></div>
       <div class="viewport-bottom"><div class="legend"><span id="legend-title">REGION</span><div id="legend-content">区域实例着色</div></div><div class="gestures">拖动平移 <i>·</i> 滚轮缩放 <i>·</i> 点击格子查询</div></div>
-      <div id="busy-overlay" hidden><span class="spinner"></span><strong>正在运行工程算法</strong><span>读取最新配表与 Lua 源码</span></div>
+      <div id="busy-overlay" hidden><span class="spinner"></span><strong>正在运行工程算法</strong><span id="generation-progress">读取最新配表与 Lua 源码</span></div>
     </section>
     <!-- 右侧检查区：真实统计、选中格子详情与区域索引。 -->
     <aside class="inspector">
@@ -45,6 +51,7 @@
       <div id="waterfall-list" aria-label="瀑布列表"></div>
       <div class="metadata" id="town-stats">生成后显示城镇与道路</div>
       <div id="town-list" aria-label="生成城镇列表"></div>
+      <details class="config-detail"><summary>选址结果与未生成原因</summary><div id="site-diagnostics"></div></details>
       <div class="metadata" id="metadata">生成后显示版本与耗时</div>
       <div class="separator"></div><div class="section-heading"><span class="eyebrow">CELL INSPECTOR</span><button class="text-button" id="clear-selection">清除</button></div>
       <div id="cell-details"><h2>选中一个格子</h2><p class="intro">在地图上点击顶面，查看坐标、高度和所在区域。</p></div>

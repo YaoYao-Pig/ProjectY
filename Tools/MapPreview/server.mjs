@@ -16,12 +16,12 @@ export function previewIdentity(root) {
   return { tool: 'project-y-map-preview', protocol: 1,
     projectId: crypto.createHash('sha256').update(process.platform === 'win32' ? resolved.toLowerCase() : resolved).digest('hex') };
 }
-// 排除旧 Generated 文件；本次所有 require 使用同一批源文件和重新导出的 schema。
+// 排除导表的 _Gen 与迁移前的 Generated 文件；本次所有 require 使用同一批源文件和重新导出的 schema。
 function capture(root) {
   const inputs = readSources(path.join(root, 'Config/Tables')), catalog = readCatalog(root), lua = new Map();
   function visit(relative) {
     for (const entry of fs.readdirSync(path.join(root, relative), { withFileTypes: true }).sort((a, b) => a.name.localeCompare(b.name, 'en'))) {
-      if (relative === 'Lua' && entry.name === 'Generated') continue;
+      if (relative === 'Lua' && ['_Gen', 'Generated'].includes(entry.name)) continue;
       const name = relative + '/' + entry.name;
       if (entry.isDirectory()) visit(name);
       else if (entry.isFile() && entry.name.endsWith('.lua')) lua.set(name, fs.readFileSync(path.join(root, name)));
@@ -46,7 +46,9 @@ export function validateRequest(input) {
   if (!Number.isInteger(input?.seed) || input.seed < 0 || input.seed > 0xffffffff) throw new Error('种子必须为 0–4294967295 的整数');
   if (!Array.isArray(input.regionIds) || !input.regionIds.length || input.regionIds.length > 65536 || input.regionIds.some(id => !Number.isInteger(id) || id < 1 || id > 2147483647))
     throw new Error('配方需要 1–65536 个有效的正整数配置 ID');
-  return { seed: input.seed, regionIds: input.regionIds };
+  if (input.targetCells !== undefined && (!Number.isInteger(input.targetCells) || input.targetCells < 1 || input.targetCells > 100000))
+    throw new Error('目标格数必须为 1–100000 的整数，且不能超过配表 MaxCells');
+  return { seed: input.seed, regionIds: input.regionIds, ...(input.targetCells === undefined ? {} : { targetCells: input.targetCells }) };
 }
 // 一次生成独占一个 Lua 状态，限制耗时和输出体积，失败时保留真实错误。
 function runWorker(snapshotDirectory, input, root, python, timeoutMs) {
@@ -55,11 +57,11 @@ function runWorker(snapshotDirectory, input, root, python, timeoutMs) {
       cwd: root, windowsHide: true, stdio: ['pipe', 'pipe', 'pipe'], env: { ...process.env, PYTHONIOENCODING: 'utf-8' },
     });
     const stdout = [], stderr = []; let size = 0, failure;
-    const timer = setTimeout(() => { failure = new Error('地图生成超过 30 秒，已终止本次任务'); child.kill(); }, timeoutMs);
+    const timer = setTimeout(() => { failure = new Error(`地图生成超过 ${timeoutMs / 1000} 秒，已终止本次任务`); child.kill(); }, timeoutMs);
     child.on('error', error => { clearTimeout(timer); reject(new Error('无法运行 Python/xLua：' + error.message)); });
     child.stdout.on('data', chunk => {
       size += chunk.length;
-      if (size > 64 * 1024 * 1024) { failure = new Error('预览数据超过 64 MiB'); child.kill(); }
+      if (size > 256 * 1024 * 1024) { failure = new Error('预览数据超过 256 MiB'); child.kill(); }
       else stdout.push(chunk);
     });
     child.stderr.on('data', chunk => { if (stderr.reduce((sum, item) => sum + item.length, 0) < 65536) stderr.push(chunk); });
@@ -73,7 +75,7 @@ function runWorker(snapshotDirectory, input, root, python, timeoutMs) {
     child.stdin.end(JSON.stringify(input));
   });
 }
-export async function generatePreview(input, { root = projectRoot, python = process.env.PROJECT_Y_PYTHON || 'python', timeoutMs = 30000 } = {}) {
+export async function generatePreview(input, { root = projectRoot, python = process.env.PROJECT_Y_PYTHON || 'python', timeoutMs = 180000 } = {}) {
   input = validateRequest(input);
   const started = performance.now(), snapshot = capture(root);
   const tempRoot = path.resolve(os.tmpdir()), temporary = fs.mkdtempSync(path.join(tempRoot, 'project-y-map-preview-'));

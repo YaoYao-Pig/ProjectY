@@ -1,0 +1,79 @@
+{
+  "version": 1,
+  "name": "AdventureEventTable",
+  "description": "大地图地点触发的探索事件；可重复由事件配置决定。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "事件标题"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "事件正文"
+    },
+    {
+      "name": "repeatable",
+      "type": "bool",
+      "description": "返回后能否再次触发"
+    },
+    {
+      "name": "choiceIds",
+      "type": "int[]",
+      "description": "选项顺序",
+      "ref": "AdventureChoiceTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "废墟前的脚印",
+      "description": "石门半掩，里面传来金属碰撞声。队伍可以迎战，也可以凭侦察寻找遗留补给。",
+      "repeatable": false,
+      "choiceIds": [
+        1,
+        2,
+        3
+      ]
+    },
+    {
+      "id": 2,
+      "name": "移动营地",
+      "description": "火堆仍然温暖。在这里整理装备、照料伤员，为下一次出发做准备。",
+      "repeatable": true,
+      "choiceIds": [
+        4,
+        3
+      ]
+    },
+    {
+      "id": 3,
+      "name": "林间岔路",
+      "description": "草丛里有一只破损的补给箱。树后有人影闪过，继续搜索需要一名熟悉野外的队员。",
+      "repeatable": false,
+      "choiceIds": [
+        2,
+        1,
+        3
+      ]
+    },
+    {
+      "id": 4,
+      "name": "城镇补给站",
+      "description": "商人愿意为队伍补充药品和食物。",
+      "repeatable": true,
+      "choiceIds": [
+        5,
+        3
+      ]
+    }
+  ]
+}
