@@ -17,7 +17,8 @@
       "values": [
         "damage",
         "heal",
-        "guard"
+        "guard",
+        "reload"
       ]
     },
     {
@@ -61,6 +62,21 @@
       "id": 5,
       "kind": "heal",
       "amount": "6 + intellect"
+    },
+    {
+      "id": 6,
+      "kind": "reload",
+      "amount": "0"
+    },
+    {
+      "id": 7,
+      "kind": "damage",
+      "amount": "max(1, floor(6 + strength + proficiency / 2 - defense - guard))"
+    },
+    {
+      "id": 8,
+      "kind": "damage",
+      "amount": "max(1, floor(8 + intellect + proficiency / 2 - defense / 2 - guard))"
     }
   ]
 }

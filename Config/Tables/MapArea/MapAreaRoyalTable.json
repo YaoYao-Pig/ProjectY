@@ -1,0 +1,421 @@
+{
+  "version": 1,
+  "name": "MapAreaRoyalTable",
+  "description": "王城的地形约束、分区生长、道路评分与景观参数",
+  "key": "id",
+  "fields": [
+    {
+      "name": "stairBoundaryMargin",
+      "type": "float",
+      "description": "坡道侧缘与城市外轮廓之间至少保留的公共地带宽度",
+      "min": 2,
+      "max": 6
+    },
+    {
+      "name": "minimumDoorNeighbors",
+      "type": "int",
+      "description": "门前至少保留的可通行邻格，供小队与居民错身",
+      "min": 2,
+      "max": 4
+    },
+    {
+      "name": "id",
+      "type": "int",
+      "description": "王城配方 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "配方名称"
+    },
+    {
+      "name": "halfWidth",
+      "type": "int",
+      "description": "可走台地半宽"
+    },
+    {
+      "name": "minR",
+      "type": "int",
+      "description": "宫殿背后边界"
+    },
+    {
+      "name": "maxR",
+      "type": "int",
+      "description": "城门外边界"
+    },
+    {
+      "name": "bridgeR",
+      "type": "int",
+      "description": "高架桥局部 r"
+    },
+    {
+      "name": "valleyMinR",
+      "type": "int",
+      "description": "下层小径北端"
+    },
+    {
+      "name": "boundaryR",
+      "type": "int[]",
+      "description": "由低到高的三道台地边界"
+    },
+    {
+      "name": "terraceHeight",
+      "type": "float",
+      "description": "台地高度（米），仍受来源 Region 影响",
+      "min": 3.5,
+      "max": 5
+    },
+    {
+      "name": "rampLength",
+      "type": "int",
+      "description": "宽阶梯水平跨度",
+      "min": 8,
+      "max": 12
+    },
+    {
+      "name": "bridgeAssetId",
+      "type": "int",
+      "description": "石桥护栏模型",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "railingAssetId",
+      "type": "int",
+      "description": "台地边缘石栏模型",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "retainingAssetId",
+      "type": "int",
+      "description": "台地拱券挡墙模型",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "placementIds",
+      "type": "int[]",
+      "description": "王宫、街区与花园预设组合",
+      "ref": "MapAreaRoyalPlacementTable"
+    },
+    {
+      "name": "pavingColor",
+      "type": "string",
+      "description": "王城铺装主色"
+    },
+    {
+      "name": "districtIds",
+      "type": "int[]",
+      "description": "独立城市片区；围绕功能中心选址",
+      "ref": "MapAreaRoyalDistrictTable"
+    },
+    {
+      "name": "boundaryAmplitude",
+      "type": "float[]",
+      "description": "三层台地边缘起伏幅度，单位为格"
+    },
+    {
+      "name": "contourScale",
+      "type": "float",
+      "description": "等高线变化尺度，控制城市级地形"
+    },
+    {
+      "name": "outlineInset",
+      "type": "float",
+      "description": "左右城界独立向内收进的最大距离"
+    },
+    {
+      "name": "stairBand",
+      "type": "int[]",
+      "description": "每处坡道对应的台地边界序号"
+    },
+    {
+      "name": "stairU",
+      "type": "int[]",
+      "description": "错位坡道的基础横坐标，不贯穿全城"
+    },
+    {
+      "name": "stairJitter",
+      "type": "int",
+      "description": "坡道沿等高线的选址变化"
+    },
+    {
+      "name": "valleyURange",
+      "type": "int[]",
+      "description": "低径与桥的横向位置范围"
+    },
+    {
+      "name": "entryOffsetR",
+      "type": "int",
+      "description": "入口在城门外沿正面的距离"
+    },
+    {
+      "name": "roadNoise",
+      "type": "float",
+      "description": "平地道路对低频通行代价的响应"
+    },
+    {
+      "name": "roadNoiseScale",
+      "type": "float",
+      "description": "道路弯曲的空间尺度"
+    },
+    {
+      "name": "roadSlopeCost",
+      "type": "float",
+      "description": "道路单位爬升代价"
+    },
+    {
+      "name": "roadReuse",
+      "type": "float",
+      "description": "已有街道代价倍率，鼓励连接和共用"
+    },
+    {
+      "name": "roadLoopCount",
+      "type": "int",
+      "description": "骨干连通后补充的跨区回路数量"
+    },
+    {
+      "name": "mainRoadRadius",
+      "type": "int",
+      "description": "主街扩宽半径；2 表示通常五格宽"
+    },
+    {
+      "name": "laneRadius",
+      "type": "int",
+      "description": "住宅支巷半径"
+    },
+    {
+      "name": "frontageDistance",
+      "type": "int",
+      "description": "住宅门口允许离既有街网的最大距离"
+    },
+    {
+      "name": "frontageWeight",
+      "type": "float",
+      "description": "临街距离在地块评分中的权重"
+    },
+    {
+      "name": "anchorWeight",
+      "type": "float",
+      "description": "靠近本片区目标位置的权重"
+    },
+    {
+      "name": "clusterWeight",
+      "type": "float",
+      "description": "住宅优先靠近已有住宅的权重"
+    },
+    {
+      "name": "plotNoiseWeight",
+      "type": "float",
+      "description": "候选地块评分的种子变化"
+    },
+    {
+      "name": "candidateLimit",
+      "type": "int",
+      "description": "按评分排序后最多验证的完整地块数量"
+    },
+    {
+      "name": "railingSpan",
+      "type": "int",
+      "description": "台地石栏每段占地宽度"
+    },
+    {
+      "name": "outlineR",
+      "type": "int[]",
+      "description": "城市外轮廓纵向控制点"
+    },
+    {
+      "name": "outlineLeft",
+      "type": "float[]",
+      "description": "各控制点左侧城界"
+    },
+    {
+      "name": "outlineRight",
+      "type": "float[]",
+      "description": "各控制点右侧城界"
+    },
+    {
+      "name": "boundarySlope",
+      "type": "float[]",
+      "description": "各层台地等高线的主方向斜率"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "stairBoundaryMargin": 3,
+      "minimumDoorNeighbors": 3,
+      "name": "地形引导的王城街区",
+      "halfWidth": 34,
+      "minR": -34,
+      "maxR": 34,
+      "bridgeR": 12,
+      "valleyMinR": 7,
+      "boundaryR": [
+        17,
+        3,
+        -9
+      ],
+      "terraceHeight": 4.5,
+      "rampLength": 8,
+      "bridgeAssetId": 61,
+      "railingAssetId": 62,
+      "retainingAssetId": 63,
+      "placementIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13,
+        14,
+        15,
+        16,
+        17,
+        18,
+        19,
+        20,
+        21,
+        22,
+        23,
+        24,
+        25,
+        26,
+        27,
+        28,
+        29,
+        30,
+        31,
+        32,
+        33,
+        34,
+        35,
+        36,
+        37,
+        38,
+        39,
+        40,
+        41,
+        42,
+        43,
+        44,
+        45,
+        46,
+        47,
+        48,
+        49,
+        50,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57,
+        58,
+        59,
+        60,
+        61,
+        62,
+        63,
+        64,
+        65,
+        66,
+        67,
+        68,
+        69,
+        70,
+        71,
+        72
+      ],
+      "pavingColor": "#c6b48f",
+      "districtIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "boundaryAmplitude": [
+        3,
+        4,
+        4
+      ],
+      "contourScale": 19,
+      "outlineInset": 2.5,
+      "stairBand": [
+        1,
+        1,
+        2,
+        2,
+        3,
+        3
+      ],
+      "stairU": [
+        -20,
+        21,
+        -15,
+        18,
+        -11,
+        13
+      ],
+      "stairJitter": 2,
+      "valleyURange": [
+        6,
+        10
+      ],
+      "entryOffsetR": 6,
+      "roadNoise": 2.4,
+      "roadNoiseScale": 12,
+      "roadSlopeCost": 2.5,
+      "roadReuse": 0.35,
+      "roadLoopCount": 2,
+      "mainRoadRadius": 1,
+      "laneRadius": 0,
+      "frontageDistance": 5,
+      "frontageWeight": 6,
+      "anchorWeight": 0.6,
+      "clusterWeight": 1.3,
+      "plotNoiseWeight": 1.1,
+      "candidateLimit": 48,
+      "railingSpan": 3,
+      "outlineR": [
+        -34,
+        -24,
+        -10,
+        8,
+        24,
+        34
+      ],
+      "outlineLeft": [
+        -27,
+        -31,
+        -26,
+        -32,
+        -26,
+        -22
+      ],
+      "outlineRight": [
+        28,
+        31,
+        28,
+        29,
+        23,
+        18
+      ],
+      "boundarySlope": [
+        0.18,
+        -0.1,
+        0.24
+      ]
+    }
+  ]
+}

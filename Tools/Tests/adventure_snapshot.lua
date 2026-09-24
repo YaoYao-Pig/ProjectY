@@ -30,7 +30,7 @@ local function fixture()
     local battleData = {UnitCount = 2, Round = 1, EncounterId = 1, ActiveId = 1, Winner = '', LogCount = 1,
         GetUnitAt = function(_, index) return assert(units[index + 1]) end,
         GetLogAt = function(_, index) assert(index == 0); return '战斗开始' end}
-    local data = {Phase = 'battle', PartyCount = 1, ResultText = '', EventId = 1, Battle = battleData,
+    local data = {Phase = 'battle', PartyCount = 1, ResultText = '', EventId = 1, AreaEncounterId = 0, Battle = battleData,
         GetPartyAt = function(_, index) assert(index == 0); return hero end,
         HasVisited = function() return false end}
     local battle = Battle()
@@ -38,6 +38,7 @@ local function fixture()
     battle.board = require('Game.Battle.BattleBoard').Create(4, 20260922, .2)
     battle.stats = {Template = function(_, actor) return templates:Get(actor.TemplateId) end,
         Get = function(_, actor, name) assert(name == 'scouting'); return 2 end}
+    battle.stats.equipment=require('Game.Equipment.EquipmentRules').New(config)
     battle.skills = skills
     battle.encounters = rows({[1] = {name = '废墟守卫'}})
     local events = Events()

@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "name": "EquipmentAssetTable",
+  "description": "装备模型直接引用目录；导入并同步后绑定到资源目录资产。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "资源备注"
+    },
+    {
+      "name": "modelPath",
+      "type": "string",
+      "description": "源 FBX 路径"
+    },
+    {
+      "name": "prefabPath",
+      "type": "string",
+      "description": "运行时模型或挂点 Prefab 路径"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "Staff",
+      "modelPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_Staff.fbx",
+      "prefabPath": "Assets/DynamicAsset/EquipmentDemo/Weapons/Staff.prefab"
+    },
+    {
+      "id": 2,
+      "name": "RuneScatter",
+      "modelPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_RuneScatter.fbx",
+      "prefabPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_RuneScatter.fbx"
+    },
+    {
+      "id": 3,
+      "name": "RunePrecision",
+      "modelPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_RunePrecision.fbx",
+      "prefabPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_RunePrecision.fbx"
+    },
+    {
+      "id": 4,
+      "name": "Rifle",
+      "modelPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_Rifle.fbx",
+      "prefabPath": "Assets/DynamicAsset/EquipmentDemo/Weapons/Rifle.prefab"
+    },
+    {
+      "id": 5,
+      "name": "Magazine",
+      "modelPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_Magazine.fbx",
+      "prefabPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_Magazine.fbx"
+    },
+    {
+      "id": 6,
+      "name": "Ammunition",
+      "modelPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_Ammunition.fbx",
+      "prefabPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_Ammunition.fbx"
+    },
+    {
+      "id": 7,
+      "name": "Chest",
+      "modelPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_Chest.fbx",
+      "prefabPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_Chest.fbx"
+    },
+    {
+      "id": 8,
+      "name": "ChestOpen",
+      "modelPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_ChestOpen.fbx",
+      "prefabPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_ChestOpen.fbx"
+    },
+    {
+      "id": 9,
+      "name": "PawnCore",
+      "modelPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_PawnCore.fbx",
+      "prefabPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_PawnCore.fbx"
+    },
+    {
+      "id": 10,
+      "name": "UpperArm",
+      "modelPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_UpperArm.fbx",
+      "prefabPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_UpperArm.fbx"
+    },
+    {
+      "id": 11,
+      "name": "Forearm",
+      "modelPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_Forearm.fbx",
+      "prefabPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_Forearm.fbx"
+    },
+    {
+      "id": 12,
+      "name": "Hand",
+      "modelPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_Hand.fbx",
+      "prefabPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_Hand.fbx"
+    }
+  ]
+}

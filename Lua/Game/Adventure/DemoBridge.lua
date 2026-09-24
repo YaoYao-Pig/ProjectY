@@ -3,6 +3,7 @@ return function(command, a, b)
     local adventure = require('Main'):Get('Adventure')
     if command == 'start' then adventure:Start(a); return adventure:MapSnapshot(), adventure:Snapshot() end
     if command == 'area_layout' then return require('Main'):Get('MapArea'):LayoutSnapshot() end
+    if command == 'presentation' then return require('Game.Rendering.MapPresentation').Snapshot(require('Main'):Get('Config')) end
     local ok, reason
     if command == 'visit' then ok, reason = adventure:Visit(a)
     elseif command == 'choose' then ok, reason = adventure:Choose(a)

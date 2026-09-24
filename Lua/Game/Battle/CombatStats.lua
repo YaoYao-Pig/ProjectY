@@ -1,7 +1,8 @@
 local Class = require('Core.Class')
 local Stats = Class('CombatStats')
 local primary = { 'vitality', 'endurance', 'intellect', 'strength', 'speed', 'defense' }
-function Stats:ctor(config)
+function Stats:ctor(config, equipmentData)
+    self.equipment = require('Game.Equipment.EquipmentRules').New(config,equipmentData)
     self.units = config:GetTable('CombatUnitTable')
     self.traits = config:GetTable('CombatTraitTable')
     self.attributes = {}

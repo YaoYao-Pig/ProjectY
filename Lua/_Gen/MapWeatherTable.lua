@@ -1,0 +1,11 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapWeatherTableRow
+---@field id number 编号
+---@field name string 名称
+---@field sunMultiplier number 主光倍率
+---@field ambientMultiplier number 环境光倍率
+---@field fogStart number 从焦点起的雾起始距离，米
+---@field fogEnd number 从焦点起的雾完全覆盖距离，米
+---@field tint string 天气偏色
+---@field shadowStrength number 阴影强度
+return {["name"]="MapWeatherTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\188\150\229\143\183"},{["name"]="name",["type"]="string",["description"]="\229\144\141\231\167\176"},{["name"]="sunMultiplier",["type"]="float",["description"]="\228\184\187\229\133\137\229\128\141\231\142\135",["min"]=0},{["name"]="ambientMultiplier",["type"]="float",["description"]="\231\142\175\229\162\131\229\133\137\229\128\141\231\142\135",["min"]=0},{["name"]="fogStart",["type"]="float",["description"]="\228\187\142\231\132\166\231\130\185\232\181\183\231\154\132\233\155\190\232\181\183\229\167\139\232\183\157\231\166\187\239\188\140\231\177\179",["min"]=0},{["name"]="fogEnd",["type"]="float",["description"]="\228\187\142\231\132\166\231\130\185\232\181\183\231\154\132\233\155\190\229\174\140\229\133\168\232\166\134\231\155\150\232\183\157\231\166\187\239\188\140\231\177\179",["min"]=1},{["name"]="tint",["type"]="string",["description"]="\229\164\169\230\176\148\229\129\143\232\137\178"},{["name"]="shadowStrength",["type"]="float",["description"]="\233\152\180\229\189\177\229\188\186\229\186\166",["min"]=0,["max"]=1}},["fingerprint"]="aa8e52a6c7f19e3289e65119d68a12ed31d41151d314b759d9fda16e06a21798"}

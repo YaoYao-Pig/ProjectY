@@ -11,11 +11,12 @@
 - 棋子延续[地图模型](MapArt.md)的硬边、纯色和低饱和调色板，以圆形底座、略大的头手和武器剪影体现桌面战棋。身体高约 1.78 米，底座直径 1.38 米；固定人物尺度，不随 MapArea 地格半径缩放。
 - 源文件、脚本、暂存和预览位于 `Art/PawnLowPoly/`；Unity FBX 在 `Assets/DynamicAsset/PawnLowPoly/Models/`。16 个部件共用已有地图材质，四套装配 Prefab 为剑盾卫士、游侠弓手、法师、双手战士。战士用独立握持身体与双手剑；身体不合并装备，装备网格保留挂点局部原点，不能统一移到底部。当前均为固定棋子姿势，没有骨骼步行动画。
 - Unity +Y 向上、+Z 为正面。身体/底座挂点为零；mainHand=(-0.5,0.98,0.28)、offHand=(0.5,0.98,0.28)、head=(0,1.59,0)、chest=(0,1.05,0)、back=(0,1.13,-0.2)。部件在挂点下使用零位移、零旋转和单位缩放；导出沿用经过验证的静态地图 FBX 预设与 bakeAxisConversion。
-- `PawnPartTable` 配置部件路径和插槽；`PawnTemplateTable.unitId → CombatUnitTable` 关联角色，partIds 组合外观。`PawnAppearance` 校验角色映射唯一、插槽互斥、必需身体/底座及资源引用；空装备插槽合法。这是初始外观配置，不是已实现的背包或装备玩法。
+- `PawnPartTable` 配置部件路径和插槽；`PawnTemplateTable.unitId → CombatUnitTable` 关联角色，partIds 组合初始外观。`PawnAppearance` 校验角色映射唯一、插槽互斥、必需身体/底座及资源引用；空装备插槽合法。装备新武器时替换原身体和双手部件，追加独立手臂及武器快照；规则和可配置持握/短动作见[装备 Demo](Equipment.md)。
+- 模板包含四名主角及近战/弓手两类敌人；敌人复用已有部件，地牢按可见性生成显示棋子，以红色地格和血条区分阵营。地牢战斗显示与生命周期见[MapArea](MapArea.md)。
 - `PawnRig.prefab` 绑定七个实际 Transform；`PawnView.ApplyAppearance` 按插槽替换发生变化的部件，不在运行时搜索挂点，不携带装备玩法状态。`AdventureRuntimeDemo` 序列化 Rig 和全部部件引用，Lua 导出的部件 ID/路径必须与绑定一致。四人占格和移动状态见[局部地图](MapArea.md)。
-- Edit Mode 菜单 `Project Y/远征/同步棋子资源引用` 按表生成 Rig、四个装配样例并保存当前 AdventureDemo 引用；模型/路径变更后执行。装配样例是可查看的美术 Prefab，运行时用空 Rig 按外观快照组装，避免把预装装备复制两遍。
+- Edit Mode 菜单 `Project Y/远征/同步棋子资源引用` 按表生成 Rig、四个主角装配样例、两套[城镇 NPC](TownArea.md)样例并保存当前 AdventureDemo 引用；模型/路径变更后执行。装配样例是可查看的美术 Prefab，运行时用空 Rig 按外观快照组装，避免把预装装备复制两遍。
 - 最小检查 `python -B Tools/Tests/run_lua.py Tools/Tests/pawn_appearance.lua` 使用真实导表结果，覆盖四套模板、资源存在、插槽冲突与空装备。实际角色实例和部件资源需再用 Unity Edit Mode 检查；不自动进入 Play。
-- 已用真实远征快照在 Unity Edit Mode 装配四人、执行移动并静态渲染；AdventureDemo 保存 16 项部件引用和七挂点 Rig。`PawnView` 实测卸下剑盾再装回，网格数量恢复且不重复。配置/快照/编队定向检查、6 项 MapArea 集成及 7 项事件战斗回归通过；人工 Play 交互未代为执行。
+- AdventureDemo 当前保存 19 项部件引用和七挂点 Rig：原有小队部件 16 项、居民/工匠身体两项、装备系统无手臂身体一项；NPC 资源归 TownLowPoly。`PawnRig` 显式绑定 PawnEquipmentView 与装备目录；同步棋子 Rig 时必须保留该绑定。
 
 ## 关键入口
 

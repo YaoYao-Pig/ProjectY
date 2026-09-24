@@ -7,11 +7,13 @@ namespace ProjectY.Samples
     /// <summary>居民与工匠复用棋子挂点；仅平滑显示真实 NPC 占格，不持有巡游规则。</summary>
     public sealed class TownNpcRenderer : IDisposable
     {
-        private sealed class Item { public PawnView View; public Vector3 Target; public float Speed; }
+        private sealed class Item { public PawnView View; public Vector3 Target; public float Speed; public int Cell = -1, FromCell = -1; }
         private readonly GameObject root;
         private readonly Dictionary<int, Item> items = new Dictionary<int, Item>();
+        private readonly MapAreaViewData terrain;
         public TownNpcRenderer(Transform parent, PawnView rig, MapAreaViewData layout, Func<PawnAppearanceData.Part, GameObject> resolve)
         {
+            terrain = layout;
             root = new GameObject("TownResidents"); root.transform.SetParent(parent, false);
             foreach (var npc in layout.Npcs)
             {
@@ -24,7 +26,13 @@ namespace ProjectY.Samples
         {
             foreach (var npc in state.Npcs)
             {
-                var item = items[npc.Id]; item.Target = layout.Cells[npc.CellIndex].Position + Vector3.up * .015f;
+                var item = items[npc.Id];
+                if (item.Cell != npc.CellIndex)
+                {
+                    if (item.Cell >= 0) item.View.transform.position = TownSurfaceRenderer.Ground(layout, item.Cell, item.Cell, item.Target);
+                    item.FromCell = item.Cell < 0 ? npc.CellIndex : item.Cell; item.Cell = npc.CellIndex;
+                }
+                item.Target = layout.Cells[npc.CellIndex].Position + Vector3.up * .015f;
                 if (!item.View.gameObject.activeSelf) { item.View.transform.position = item.Target; item.View.gameObject.SetActive(true); }
             }
         }
@@ -34,7 +42,8 @@ namespace ProjectY.Samples
             {
                 var target = item.View.transform; var delta = item.Target - target.position; delta.y = 0;
                 if (delta.sqrMagnitude > .01f) target.rotation = Quaternion.Slerp(target.rotation, Quaternion.LookRotation(delta), 1 - Mathf.Exp(-dt * 10));
-                target.position = Vector3.MoveTowards(target.position, item.Target, item.Speed * dt);
+                var from = target.position; var to = item.Target; from.y = to.y = 0;
+                target.position = TownSurfaceRenderer.Ground(terrain, item.FromCell, item.Cell, Vector3.MoveTowards(from, to, item.Speed * dt));
             }
         }
         public Vector3 Position(int id) => items[id].View.transform.position;

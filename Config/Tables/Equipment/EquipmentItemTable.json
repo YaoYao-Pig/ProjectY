@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "name": "EquipmentItemTable",
+  "description": "共享背包中的物品定义；武器和弹匣为独立实例，符文与散弹药按数量堆叠。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "显示名称"
+    },
+    {
+      "name": "kind",
+      "type": "enum",
+      "description": "物品类别",
+      "values": [
+        "weapon",
+        "rune",
+        "magazine",
+        "ammo"
+      ]
+    },
+    {
+      "name": "assetId",
+      "type": "int",
+      "description": "三维展示资源",
+      "ref": "EquipmentAssetTable"
+    },
+    {
+      "name": "iconPath",
+      "type": "string",
+      "description": "UI Sprite 路径；空字符串显示留白图标"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "旅法者法杖",
+      "kind": "weapon",
+      "assetId": 1,
+      "iconPath": ""
+    },
+    {
+      "id": 2,
+      "name": "黄铜巡猎步枪",
+      "kind": "weapon",
+      "assetId": 4,
+      "iconPath": ""
+    },
+    {
+      "id": 11,
+      "name": "散射符文石",
+      "kind": "rune",
+      "assetId": 2,
+      "iconPath": ""
+    },
+    {
+      "id": 12,
+      "name": "精准符文石",
+      "kind": "rune",
+      "assetId": 3,
+      "iconPath": ""
+    },
+    {
+      "id": 21,
+      "name": "巡猎弹匣 · 12 发",
+      "kind": "magazine",
+      "assetId": 5,
+      "iconPath": ""
+    },
+    {
+      "id": 31,
+      "name": "巡猎弹药",
+      "kind": "ammo",
+      "assetId": 6,
+      "iconPath": ""
+    }
+  ]
+}

@@ -39,6 +39,16 @@
       "name": "decorR",
       "type": "int[]",
       "description": "街旁陈设槽 r"
+    },
+    {
+      "name": "facilityQ",
+      "type": "int",
+      "description": "功能建筑局部 q"
+    },
+    {
+      "name": "facilityR",
+      "type": "int",
+      "description": "功能建筑局部 r"
     }
   ],
   "rows": [
@@ -67,7 +77,9 @@
       "decorR": [
         2,
         2
-      ]
+      ],
+      "facilityQ": 0,
+      "facilityR": 0
     },
     {
       "id": 2,
@@ -94,7 +106,9 @@
       "decorR": [
         2,
         2
-      ]
+      ],
+      "facilityQ": 0,
+      "facilityR": 0
     },
     {
       "id": 3,
@@ -121,7 +135,87 @@
       "decorR": [
         2,
         2
-      ]
+      ],
+      "facilityQ": 0,
+      "facilityR": 0
+    },
+    {
+      "id": 4,
+      "name": "连续街面",
+      "slotQ": [
+        2,
+        -1
+      ],
+      "slotR": [
+        -4,
+        3
+      ],
+      "slotRotation": [
+        0,
+        3
+      ],
+      "decorQ": [
+        5,
+        -5
+      ],
+      "decorR": [
+        0,
+        1
+      ],
+      "facilityQ": 2,
+      "facilityR": -2
+    },
+    {
+      "id": 5,
+      "name": "错落檐廊",
+      "slotQ": [
+        3,
+        -1
+      ],
+      "slotR": [
+        -4,
+        3
+      ],
+      "slotRotation": [
+        0,
+        3
+      ],
+      "decorQ": [
+        5,
+        -5
+      ],
+      "decorR": [
+        0,
+        1
+      ],
+      "facilityQ": 3,
+      "facilityR": -2
+    },
+    {
+      "id": 6,
+      "name": "阶巷街面",
+      "slotQ": [
+        1,
+        -1
+      ],
+      "slotR": [
+        -4,
+        3
+      ],
+      "slotRotation": [
+        0,
+        3
+      ],
+      "decorQ": [
+        5,
+        -5
+      ],
+      "decorR": [
+        0,
+        1
+      ],
+      "facilityQ": 1,
+      "facilityR": -2
     }
   ]
 }

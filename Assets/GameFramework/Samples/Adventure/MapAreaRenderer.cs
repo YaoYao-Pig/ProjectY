@@ -29,14 +29,30 @@ namespace ProjectY.Samples
         }
         private readonly List<Batch> batches = new List<Batch>();
         private readonly List<PropBatch> propBatches = new List<PropBatch>();
+        private sealed class CameraObstacle
+        {
+            public Bounds Bounds;
+            public int InteriorId;
+            public bool Cutaway;
+        }
+        private readonly List<CameraObstacle> cameraObstacles = new List<CameraObstacle>();
+        private readonly HashSet<int> openInteriors = new HashSet<int>();
         private readonly Material material;
         private readonly Mesh mesh;
+        private readonly TownSurfaceRenderer townSurface;
         private readonly MapAreaViewData map;
         private readonly bool[] known, visible;
         private int revision = -1;
         private bool reveal;
         public Bounds Bounds { get; }
         public readonly List<Bounds> CameraObstacles = new List<Bounds>();
+        // 从权威队员占格推导；同伴还在房内时保持剖切，最后一人离开后恢复。
+        public bool IsInteriorOpen(int id) => id > 0 && openInteriors.Contains(id);
+        private void AddCameraObstacle(Bounds bounds, MapAreaViewData.Prop prop)
+        {
+            cameraObstacles.Add(new CameraObstacle { Bounds = bounds, InteriorId = prop.InteriorId, Cutaway = prop.Cutaway });
+            CameraObstacles.Add(bounds);
+        }
         public MapAreaRenderer(Shader shader, GameObject prefab, MapAreaViewData map, Func<MapAreaViewData.Asset, GameObject> resolve)
         {
             if (shader == null || prefab == null || !SystemInfo.supportsInstancing) throw new InvalidOperationException("MapArea 缺少实例渲染资源。");
@@ -45,11 +61,12 @@ namespace ProjectY.Samples
             if (filter == null || source == null || filter.sharedMesh == null) throw new InvalidOperationException("MapArea 柱模型缺少 Mesh。");
             if (!Array.Exists(source.sharedMaterials, value => value.name == map.TintMaterial)) throw new InvalidOperationException("MapArea 模型材质与配置不一致。");
             mesh = filter.sharedMesh; material = new Material(shader) { name = "MapArea_探索实例", enableInstancing = true };
+            if (map.IsTown) townSurface = new TownSurfaceRenderer(shader, map);
             known = new bool[map.Cells.Length]; visible = new bool[map.Cells.Length];
             var bounds = new Bounds(map.Cells[0].Position, Vector3.zero);
             for (var i = 0; i < map.Cells.Length; i++)
             {
-                if (i % 1023 == 0) batches.Add(new Batch { Start = i, Count = Math.Min(1023, map.Cells.Length - i) });
+                if (!map.IsTown && i % 1023 == 0) batches.Add(new Batch { Start = i, Count = Math.Min(1023, map.Cells.Length - i) });
                 bounds.Encapsulate(map.Cells[i].Position + Vector3.up * map.Cells[i].WallHeight);
             }
             bounds.Expand(map.Radius * 2); Bounds = bounds;
@@ -62,16 +79,27 @@ namespace ProjectY.Samples
                     model.transform.localRotation != Quaternion.identity || model.transform.localScale != Vector3.one)
                     throw new InvalidOperationException("MapArea 陈设模型不符合根网格与单位变换约定：" + asset.Id);
                 var materials = propRenderer.sharedMaterials;
-                // GPU 实例没有 Collider；把模型真实包围盒变换为世界包围盒，供第三人称相机避障。
+                // GPU 实例没有 Collider；用实际阻挡占地裁切高度包围盒，保留中庭、门洞与桥下空间。
                 foreach (var prop in map.Props)
                 {
                     if (prop.AssetId != asset.Id) continue;
                     var local = propFilter.sharedMesh.bounds;
-                    var matrix = Matrix4x4.TRS(prop.Position, Quaternion.Euler(0, prop.Rotation, 0), Vector3.one * prop.Scale);
+                    var matrix = Matrix4x4.TRS(prop.Position, Quaternion.Euler(0, prop.Rotation, 0), prop.Scale3);
                     var obstacle = new Bounds(matrix.MultiplyPoint3x4(local.center), Vector3.zero);
                     for (var x = -1; x <= 1; x += 2) for (var y = -1; y <= 1; y += 2) for (var z = -1; z <= 1; z += 2)
                         obstacle.Encapsulate(matrix.MultiplyPoint3x4(local.center + Vector3.Scale(local.extents, new Vector3(x, y, z))));
-                    obstacle.Expand(.35f); CameraObstacles.Add(obstacle);
+                    if (!map.IsTown) { obstacle.Expand(.35f); AddCameraObstacle(obstacle, prop); continue; }
+                    foreach (var index in prop.Cells)
+                    {
+                        var cell = map.Cells[index];
+                        if (!cell.Blocked) continue;
+                        var half = new Vector3(map.Radius * .8660254f, 0, map.Radius);
+                        var minimum = Vector3.Max(obstacle.min, cell.Position - half);
+                        var maximum = Vector3.Min(obstacle.max, cell.Position + half + Vector3.up * (obstacle.max.y - cell.Position.y));
+                        if (maximum.x <= minimum.x || maximum.z <= minimum.z || maximum.y <= minimum.y) continue;
+                        var column = new Bounds(); column.SetMinMax(minimum, maximum); column.Expand(.2f);
+                        AddCameraObstacle(column, prop);
+                    }
                 }
                 if (materials.Length != propFilter.sharedMesh.subMeshCount) throw new InvalidOperationException("陈设材质槽不一致：" + asset.Id);
                 for (var slot = 0; slot < materials.Length; slot++)
@@ -96,6 +124,16 @@ namespace ProjectY.Samples
         {
             if (state.Revision == revision && revealAll == reveal) return;
             revision = state.Revision; reveal = revealAll;
+            openInteriors.Clear();
+            foreach (var member in state.Members)
+            {
+                var id = map.Cells[member.CellIndex].InteriorId;
+                if (id > 0) openInteriors.Add(id);
+            }
+            // 镜头持有同一列表引用。隐藏的上盖必须同时退出镜头避障，不能留下看不见的墙。
+            CameraObstacles.Clear();
+            foreach (var obstacle in cameraObstacles)
+                if (!obstacle.Cutaway || !IsInteriorOpen(obstacle.InteriorId)) CameraObstacles.Add(obstacle.Bounds);
             Array.Clear(known, 0, known.Length); Array.Clear(visible, 0, visible.Length);
             foreach (var index in state.Known) known[index] = true;
             foreach (var index in state.Visible) visible[index] = true;
@@ -121,12 +159,13 @@ namespace ProjectY.Samples
                 batch.Count = 0;
                 foreach (var prop in batch.Instances)
                 {
+                    if (prop.Cutaway && IsInteriorOpen(prop.InteriorId)) continue;
                     var discovered = reveal; var lit = reveal;
                     foreach (var index in prop.Cells) { discovered |= known[index]; lit |= visible[index]; }
                     if (!discovered) continue;
                     var color = batch.Color * (lit ? 1 : .3f); color.a = 1;
                     batch.Colors[batch.Count] = QualitySettings.activeColorSpace == ColorSpace.Linear ? color.linear : color;
-                    batch.Matrices[batch.Count++] = Matrix4x4.TRS(prop.Position, Quaternion.Euler(0, prop.Rotation, 0), Vector3.one * prop.Scale);
+                    batch.Matrices[batch.Count++] = Matrix4x4.TRS(prop.Position, Quaternion.Euler(0, prop.Rotation, 0), prop.Scale3);
                 }
                 batch.Properties.SetVectorArray("_Color", batch.Colors);
                 batch.Properties.SetColor("_EmissionColor", batch.Emission);
@@ -134,6 +173,7 @@ namespace ProjectY.Samples
         }
         public void Draw(Camera camera)
         {
+            townSurface?.Draw(camera);
             foreach (var batch in batches) for (var slot = 0; slot < mesh.subMeshCount; slot++)
                 Graphics.DrawMeshInstanced(mesh, slot, material, batch.Matrices, batch.Count, batch.Properties,
                     ShadowCastingMode.On, true, 0, camera, LightProbeUsage.Off);
@@ -152,6 +192,7 @@ namespace ProjectY.Samples
         }
         public int Pick(Ray ray)
         {
+            if (townSurface != null) { townSurface.Raycast(ray, float.PositiveInfinity, out var index); return index; }
             var best = float.PositiveInfinity; var result = -1;
             for (var i = 0; i < map.Cells.Length; i++)
             {
@@ -171,6 +212,16 @@ namespace ProjectY.Samples
             }
             return result;
         }
-        public void Dispose() { Object.Destroy(material); batches.Clear(); propBatches.Clear(); }
+        public float TerrainDistance(Ray ray, float distance)
+        {
+            if (townSurface == null) return distance;
+            return townSurface.Raycast(ray, distance, out _);
+        }
+        public void Dispose()
+        {
+            townSurface?.Dispose();
+            if (Application.isPlaying) Object.Destroy(material); else Object.DestroyImmediate(material);
+            batches.Clear(); propBatches.Clear();
+        }
     }
 }

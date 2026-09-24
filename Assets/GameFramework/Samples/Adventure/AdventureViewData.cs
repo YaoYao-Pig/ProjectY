@@ -9,14 +9,14 @@ namespace ProjectY.Samples
     {
         public sealed class Actor
         {
-            public int Id, Team, HP, MaxHP, AP, Q, R, Guard;
+            public int Id, Team, HP, MaxHP, AP, Q, R, Guard, CellIndex;
             public string Name, Traits;
             public bool Moved, MainUsed;
             public PawnAppearanceData Appearance;
         }
         public sealed class Site { public int Id, AreaConfigId; public string Name, Reason; public Vector3 Position; public bool Available, Visited; }
         public sealed class Choice { public int Id; public string Label, Reason; public bool Available; }
-        public sealed class Cell { public int Q, R; public bool Blocked; }
+        public sealed class Cell { public int Q, R, CellIndex; public bool Blocked; }
         public sealed class Skill { public int Id, Cost; public string Name, Description, Action; public int[] Targets; }
         public string Phase, Result, Error, EventTitle, EventText, Encounter;
         public int Coins, Round, ActiveId, Radius;
@@ -47,24 +47,23 @@ namespace ProjectY.Samples
                 return result;
             }
         }
-        private static Actor ReadActor(LuaTable row) => new Actor {
+        public static Actor ReadActor(LuaTable row)
+        {
+            var actor = new Actor {
             Id = row.Get<int>("id"), Team = row.Get<int>("team"), Name = row.Get<string>("name"),
             Traits = row.Get<string>("traits"), HP = row.Get<int>("hp"), MaxHP = row.Get<int>("maxHP"),
             AP = row.Get<int>("ap"), Q = row.Get<int>("q"), R = row.Get<int>("r"), Guard = row.Get<int>("guard"),
-            Moved = row.Get<bool>("moved"), MainUsed = row.Get<bool>("mainUsed") };
-        private static Cell ReadCell(LuaTable row) => new Cell { Q = row.Get<int>("q"), R = row.Get<int>("r"), Blocked = row.Get<bool>("blocked") };
-        private static Actor ReadPartyActor(LuaTable row)
-        {
-            var actor = ReadActor(row);
+            Moved = row.Get<bool>("moved"), MainUsed = row.Get<bool>("mainUsed"), CellIndex = row.Get<int>("cellIndex") - 1 };
             using (var appearance = row.Get<LuaTable>("appearance")) actor.Appearance = PawnAppearanceData.Read(appearance);
             return actor;
         }
+        private static Cell ReadCell(LuaTable row) => new Cell { Q = row.Get<int>("q"), R = row.Get<int>("r"), Blocked = row.Get<bool>("blocked"), CellIndex = row.Get<int>("cellIndex") - 1 };
         public static AdventureViewData Read(LuaTable root) => new AdventureViewData {
             Area = MapAreaViewData.ReadState(root),
             Phase = root.Get<string>("phase"), Result = root.Get<string>("result"), Error = root.Get<string>("error"),
             EventTitle = root.Get<string>("eventTitle"), EventText = root.Get<string>("eventText"), Encounter = root.Get<string>("encounter"),
             Coins = root.Get<int>("coins"), Round = root.Get<int>("round"), ActiveId = root.Get<int>("activeId"), Radius = root.Get<int>("radius"),
-            Party = Rows(root, "party", ReadPartyActor), Units = Rows(root, "units", ReadActor), Cells = Rows(root, "cells", ReadCell),
+            Party = Rows(root, "party", ReadActor), Units = Rows(root, "units", ReadActor), Cells = Rows(root, "cells", ReadCell),
             Reachable = Rows(root, "reachable", ReadCell), Logs = Values<string>(root, "logs"),
             Sites = Rows(root, "sites", row => new Site { Id = row.Get<int>("id"), Name = row.Get<string>("name"),
                 AreaConfigId = row.Get<int>("areaConfigId"), Reason = row.Get<string>("reason"),

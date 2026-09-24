@@ -21,6 +21,13 @@
       "description": "技能说明"
     },
     {
+      "name": "iconId",
+      "type": "int",
+      "description": "战斗 HUD 图标配置；图片路径可留空",
+      "ref": "BattleIconTable",
+      "min": 1
+    },
+    {
       "name": "action",
       "type": "enum",
       "description": "行动类型",
@@ -39,7 +46,7 @@
     {
       "name": "range",
       "type": "int",
-      "description": "六边形射程；首版不计算视线",
+      "description": "六边形射程；地牢原地战斗额外检查地形视线",
       "min": 0,
       "max": 12
     },
@@ -63,6 +70,57 @@
       "type": "int[]",
       "description": "顺序执行的效果",
       "ref": "CombatEffectTable"
+    },
+    {
+      "name": "skillGroup",
+      "type": "enum",
+      "description": "装备与符文作用的技能标签",
+      "values": [
+        "weapon",
+        "spell",
+        "support"
+      ]
+    },
+    {
+      "name": "cooldownTurns",
+      "type": "int",
+      "description": "施放后写入冷却；自身回合开始减 1",
+      "min": 0,
+      "max": 20
+    },
+    {
+      "name": "hitChance",
+      "type": "int",
+      "description": "每次伤害的命中百分比",
+      "min": 1,
+      "max": 100
+    },
+    {
+      "name": "shots",
+      "type": "int",
+      "description": "独立命中/伤害次数",
+      "min": 1,
+      "max": 12
+    },
+    {
+      "name": "ammoPerShot",
+      "type": "int",
+      "description": "每次射击消耗弹药数；0 不用弹药",
+      "min": 0,
+      "max": 10
+    },
+    {
+      "name": "damageScale",
+      "type": "float",
+      "description": "技能伤害倍率",
+      "min": 0.01,
+      "max": 10
+    },
+    {
+      "name": "actionTemplate",
+      "type": "int",
+      "description": "短动作模板",
+      "ref": "EquipmentActionTable"
     }
   ],
   "rows": [
@@ -77,7 +135,15 @@
       "proficiency": "sword",
       "effectIds": [
         1
-      ]
+      ],
+      "iconId": 1,
+      "skillGroup": "weapon",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0
     },
     {
       "id": 2,
@@ -90,7 +156,15 @@
       "proficiency": "bow",
       "effectIds": [
         2
-      ]
+      ],
+      "iconId": 2,
+      "skillGroup": "weapon",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0
     },
     {
       "id": 3,
@@ -103,7 +177,15 @@
       "proficiency": "staff",
       "effectIds": [
         3
-      ]
+      ],
+      "iconId": 3,
+      "skillGroup": "spell",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0
     },
     {
       "id": 4,
@@ -116,7 +198,15 @@
       "proficiency": "sword",
       "effectIds": [
         4
-      ]
+      ],
+      "iconId": 4,
+      "skillGroup": "support",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0
     },
     {
       "id": 5,
@@ -129,7 +219,99 @@
       "proficiency": "staff",
       "effectIds": [
         5
-      ]
+      ],
+      "iconId": 5,
+      "skillGroup": "spell",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0
+    },
+    {
+      "id": 6,
+      "name": "奥术飞矢",
+      "description": "释放奥术能量攻击敌人，可由法杖符文改变。",
+      "iconId": 10,
+      "action": "main",
+      "cost": 2,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "staff",
+      "effectIds": [
+        8
+      ],
+      "skillGroup": "spell",
+      "cooldownTurns": 1,
+      "hitChance": 75,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 1
+    },
+    {
+      "id": 7,
+      "name": "点射",
+      "description": "精准射击一次，消耗 1 发弹药。",
+      "iconId": 11,
+      "action": "main",
+      "cost": 2,
+      "range": 5,
+      "target": "enemy",
+      "proficiency": "firearms",
+      "effectIds": [
+        7
+      ],
+      "skillGroup": "weapon",
+      "cooldownTurns": 0,
+      "hitChance": 85,
+      "shots": 1,
+      "ammoPerShot": 1,
+      "damageScale": 1,
+      "actionTemplate": 2
+    },
+    {
+      "id": 8,
+      "name": "连射",
+      "description": "对同一目标连续射击 3 次，每发独立判定命中并造成 65% 伤害。",
+      "iconId": 12,
+      "action": "main",
+      "cost": 3,
+      "range": 5,
+      "target": "enemy",
+      "proficiency": "firearms",
+      "effectIds": [
+        7
+      ],
+      "skillGroup": "weapon",
+      "cooldownTurns": 0,
+      "hitChance": 65,
+      "shots": 3,
+      "ammoPerShot": 1,
+      "damageScale": 0.65,
+      "actionTemplate": 2
+    },
+    {
+      "id": 9,
+      "name": "换弹",
+      "description": "将背包中子弹最多的兼容弹匣装入武器，保留旧弹匣剩余弹药。",
+      "iconId": 13,
+      "action": "secondary",
+      "cost": 2,
+      "range": 0,
+      "target": "self",
+      "proficiency": "firearms",
+      "effectIds": [
+        6
+      ],
+      "skillGroup": "support",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 3
     }
   ]
 }

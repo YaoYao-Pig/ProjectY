@@ -9,6 +9,12 @@ namespace ProjectY.Data
     public sealed class CombatActorData
     {
         private readonly List<int> traits = new List<int>();
+        private readonly Dictionary<int, int> cooldowns = new Dictionary<int, int>();
+        public int ActionSequence { get; private set; }
+        public int ActionTemplateId { get; private set; }
+        public int ActionShots { get; private set; }
+        public int ActionTargetQ { get; private set; }
+        public int ActionTargetR { get; private set; }
         public int Id { get; }
         public int TemplateId { get; }
         public int Team { get; private set; } = 1;
@@ -28,6 +34,17 @@ namespace ProjectY.Data
             Id = id; TemplateId = templateId;
         }
         public int GetTraitAt(int index) => traits[index];
+        public int GetCooldown(int skillId) => cooldowns.TryGetValue(skillId, out var value) ? value : 0;
+        public void SetCooldown(int skillId, int turns)
+        {
+            if (skillId < 1 || turns < 0) throw new ArgumentOutOfRangeException(nameof(turns));
+            if (turns == 0) cooldowns.Remove(skillId); else cooldowns[skillId] = turns;
+        }
+        public void RecordAction(int templateId, int shots, int q, int r)
+        {
+            if (templateId < 0 || shots < 1) throw new ArgumentOutOfRangeException(nameof(shots));
+            ActionTemplateId = templateId; ActionShots = shots; ActionTargetQ = q; ActionTargetR = r; ActionSequence++;
+        }
         public void AddTrait(int id)
         {
             if (id <= 0) throw new ArgumentOutOfRangeException(nameof(id));
@@ -44,11 +61,13 @@ namespace ProjectY.Data
         {
             if (team != 1 && team != 2) throw new ArgumentOutOfRangeException(nameof(team));
             Team = team; Q = q; R = r; AP = 0; Guard = 0; Moved = false; MainUsed = false;
+            cooldowns.Clear(); ActionTemplateId = 0;
         }
         public void BeginTurn(int points)
         {
             if (HP == 0 || points < 1) throw new InvalidOperationException("Invalid actor turn.");
             AP = points; Moved = false; MainUsed = false; Guard = 0;
+            foreach (var id in new List<int>(cooldowns.Keys)) SetCooldown(id, Math.Max(0, cooldowns[id] - 1));
         }
         public void Move(int q, int r, int cost)
         {

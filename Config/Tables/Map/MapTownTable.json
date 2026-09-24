@@ -188,8 +188,8 @@
       "requiredBuildingIds": [
         4
       ],
-      "priority": 100,
-      "maxCount": 3,
+      "priority": 95,
+      "maxCount": 2,
       "maxPerRegion": 1,
       "minSpacing": 19,
       "radius": 8,
@@ -302,6 +302,44 @@
       "generateStreets": false,
       "siteProfileIds": [
         501
+      ]
+    },
+    {
+      "id": 6,
+      "name": "王城",
+      "groundColor": "#c4ae7d",
+      "regions": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "buildingIds": [
+        5,
+        4,
+        2,
+        3,
+        2
+      ],
+      "requiredBuildingIds": [
+        5
+      ],
+      "priority": 100,
+      "maxCount": 1,
+      "maxPerRegion": 1,
+      "minSpacing": 19,
+      "radius": 8,
+      "minBuildings": 5,
+      "maxBuildings": 14,
+      "maxGroundDelta": 1.1,
+      "placementStage": "BeforeRoads",
+      "connectRoad": true,
+      "generateStreets": true,
+      "siteProfileIds": [
+        201,
+        202
       ]
     }
   ]

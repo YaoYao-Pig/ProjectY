@@ -13,6 +13,8 @@ namespace ProjectY.Editor
         public static void Run() => RunFile("Tools/Tests/adventure_integration.lua");
         [MenuItem("Project Y/地图/验证 MapArea 地牢")]
         public static void RunArea() => RunFile("Tools/Tests/maparea_integration.lua");
+        [MenuItem("Project Y/远征/验证地牢原地战斗")]
+        public static void RunAreaBattle() => RunFile("Tools/Tests/area_battle_integration.lua");
         [MenuItem("Project Y/地图/验证城镇漫游")]
         public static void RunTown() => RunFile("Tools/Tests/town_integration.lua");
         private static void RunFile(string relativePath)

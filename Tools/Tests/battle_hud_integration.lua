@@ -1,0 +1,37 @@
+local setup = assert(loadfile('Tools/Tests/battle_hud_fixture.lua'))()
+local fixture = setup(Services)
+local messages = {}
+local function test(name, run) run(); messages[#messages+1]='PASS '..name end
+local ok, err = xpcall(function()
+    local hud,battle,ui,adapter=fixture.hud,fixture.battle,fixture.ui,fixture.adapter
+    test('configured framework prefabs show real resources and blank icons',function()
+        assert(hud.view.HealthText.text:find(tostring(battle:Active().HP),1,true))
+        assert(hud.model.ap==battle:Active().AP and #hud.model.party==4 and #hud.model.turns==7)
+        assert(not hud.actions[1].view.Icon.enabled and not hud.items[1].view.Icon.enabled)
+        for _,item in ipairs(hud.items) do assert(not item.view.Button.interactable) end
+        assert(not pcall(function() hud.view.HUD:SetIcon(hud.actions[1].view.Icon,1,'Assets/Unbound.png') end))
+    end)
+    test('button selection, resource refresh and cached reopen release their listeners',function()
+        hud.actions[2].view.Button.onClick:Invoke();assert(adapter.SelectedBattleSkill==4 and adapter.selections==1)
+        assert(battle:TrySkill(4,battle.data.ActiveId));ui:Tick(0,0)
+        assert(hud.model.guard==3 and hud.model.ap==3 and hud.view.Resources.text:find('3'))
+        assert(#battle.Changed.listeners==1)
+        ui:Close('BattleHUD');assert(#battle.Changed.listeners==0)
+        hud=ui:Open('BattleHUD',{demo=adapter});assert(#battle.Changed.listeners==1)
+        hud.actions[2].view.Button.onClick:Invoke();assert(adapter.selections==2)
+    end)
+    test('end-turn and automatic/manual AI controls use real turn ownership',function()
+        hud.view.EndTurn.onClick:Invoke();ui:Tick(0,0)
+        assert(not hud.model.player and not hud.view.EndTurn.interactable and not hud.view.Move.interactable)
+        for _,action in ipairs(hud.actions) do assert(not action.view.Button.interactable) end
+        hud.view.Auto.onClick:Invoke();ui:Tick(0,0);assert(hud.view.EndTurn.interactable and not adapter.BattleAutoAI)
+        hud.view.EndTurn.onClick:Invoke();ui:Tick(0,0);assert(hud.model.player)
+    end)
+    test('hide closes hover state and returns all battle subscriptions',function()
+        hud.view.Tooltip.gameObject:SetActive(true);ui:Close('BattleHUD')
+        assert(not hud.view.Tooltip.gameObject.activeSelf and #battle.Changed.listeners==0)
+    end)
+end,debug.traceback)
+fixture.registry:Shutdown()
+if not ok then error(err,0) end
+return table.concat(messages,'\n')

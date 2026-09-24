@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "name": "EquipmentLootTable",
+  "description": "每个搜刮点只领取一次；物品与数量按顺序对应。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "显示名称"
+    },
+    {
+      "name": "kind",
+      "type": "enum",
+      "description": "展示形态",
+      "values": [
+        "chest",
+        "ground"
+      ]
+    },
+    {
+      "name": "assetId",
+      "type": "int",
+      "description": "未搜刮模型",
+      "ref": "EquipmentAssetTable"
+    },
+    {
+      "name": "openedAssetId",
+      "type": "int",
+      "description": "宝箱开启后的模型；地面物品领取后隐藏",
+      "ref": "EquipmentAssetTable"
+    },
+    {
+      "name": "itemIds",
+      "type": "int[]",
+      "description": "掉落物品",
+      "ref": "EquipmentItemTable"
+    },
+    {
+      "name": "counts",
+      "type": "int[]",
+      "description": "对应数量，必须为正"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "遗留补给箱",
+      "kind": "chest",
+      "assetId": 7,
+      "openedAssetId": 8,
+      "itemIds": [
+        11,
+        21,
+        31
+      ],
+      "counts": [
+        1,
+        1,
+        24
+      ]
+    },
+    {
+      "id": 2,
+      "name": "遗落的精准符文",
+      "kind": "ground",
+      "assetId": 3,
+      "openedAssetId": 3,
+      "itemIds": [
+        12
+      ],
+      "counts": [
+        1
+      ]
+    },
+    {
+      "id": 3,
+      "name": "散落弹药",
+      "kind": "ground",
+      "assetId": 6,
+      "openedAssetId": 6,
+      "itemIds": [
+        31
+      ],
+      "counts": [
+        24
+      ]
+    }
+  ]
+}

@@ -1,0 +1,146 @@
+{
+  "version": 1,
+  "name": "MapAreaRoyalDistrictTable",
+  "description": "宫苑、市集、工匠街与住宅各自生长；不镜像复制左右片区",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "片区 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "功能片区"
+    },
+    {
+      "name": "centerQ",
+      "type": "int",
+      "description": "局部中心 q"
+    },
+    {
+      "name": "centerR",
+      "type": "int",
+      "description": "局部中心 r"
+    },
+    {
+      "name": "shiftQ",
+      "type": "int",
+      "description": "片区中心独立变化范围 q",
+      "min": 0
+    },
+    {
+      "name": "shiftR",
+      "type": "int",
+      "description": "片区中心独立变化范围 r",
+      "min": 0
+    },
+    {
+      "name": "searchRadius",
+      "type": "int",
+      "description": "本片区地块候选范围",
+      "min": 0
+    },
+    {
+      "name": "role",
+      "type": "enum",
+      "values": [
+        "palace",
+        "gate",
+        "market",
+        "craft",
+        "residential",
+        "garden"
+      ],
+      "description": "分区职责"
+    },
+    {
+      "name": "roadRadius",
+      "type": "int",
+      "min": 1,
+      "max": 3,
+      "description": "片区公共场地与道路半径"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "高地宫苑",
+      "centerQ": 7,
+      "centerR": -26,
+      "shiftQ": 2,
+      "shiftR": 0,
+      "searchRadius": 0,
+      "role": "palace",
+      "roadRadius": 2
+    },
+    {
+      "id": 2,
+      "name": "旧南门",
+      "centerQ": -24,
+      "centerR": 24,
+      "shiftQ": 2,
+      "shiftR": 0,
+      "searchRadius": 0,
+      "role": "gate",
+      "roadRadius": 2
+    },
+    {
+      "id": 3,
+      "name": "山腰市场",
+      "centerQ": -19,
+      "centerR": 10,
+      "shiftQ": 2,
+      "shiftR": 1,
+      "searchRadius": 16,
+      "role": "market",
+      "roadRadius": 2
+    },
+    {
+      "id": 4,
+      "name": "门外工匠街",
+      "centerQ": 5,
+      "centerR": 27,
+      "shiftQ": 2,
+      "shiftR": 2,
+      "searchRadius": 16,
+      "role": "craft",
+      "roadRadius": 2
+    },
+    {
+      "id": 5,
+      "name": "东坡住宅",
+      "centerQ": 31,
+      "centerR": -18,
+      "shiftQ": 2,
+      "shiftR": 2,
+      "searchRadius": 17,
+      "role": "residential",
+      "roadRadius": 2
+    },
+    {
+      "id": 6,
+      "name": "西侧御苑",
+      "centerQ": -16,
+      "centerR": -6,
+      "shiftQ": 2,
+      "shiftR": 1,
+      "searchRadius": 18,
+      "role": "garden",
+      "roadRadius": 2
+    },
+    {
+      "id": 7,
+      "name": "坡心旧街",
+      "centerQ": 1,
+      "centerR": -2,
+      "shiftQ": 3,
+      "shiftR": 1,
+      "searchRadius": 16,
+      "role": "residential",
+      "roadRadius": 1
+    }
+  ]
+}

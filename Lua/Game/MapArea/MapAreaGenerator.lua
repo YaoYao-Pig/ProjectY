@@ -35,6 +35,7 @@ function Generator:Generate(areaId,worldSeed,pointId,source)
     local random=Random(seed)
     local area=Layout.New(definition,seed,source,theme)
     implementation.strategy.Generate(area,implementation.profiles:Get(definition.profileId),random,self.config)
+    if area.areaType==2 then require('Game.MapArea.TownSurfaces').Apply(area,implementation.profiles:Get(definition.profileId),self.config) end
     local floor,wall,total={0,0,0},{0,0,0},0
     for _,weight in ipairs(source.biomeWeights) do
         local blend=assert(implementation.themes[weight.regionType],'Missing boundary MapArea theme')
@@ -45,7 +46,7 @@ function Generator:Generate(areaId,worldSeed,pointId,source)
     assert(math.abs(total-1)<0.00001,'MapArea source biome weights must sum to one')
     for _,cell in ipairs(area.cells) do
         local noise=random:Noise(cell.q,cell.r,4,2897)
-        cell.height=(noise-0.5)*theme.heightNoise
+        if cell.height==nil then cell.height=(noise-0.5)*theme.heightNoise end
         cell.wallHeight=theme.wallHeight*(0.94+noise*0.12)
         cell.color={}
         local base=cell.kind=='wall' and wall or floor

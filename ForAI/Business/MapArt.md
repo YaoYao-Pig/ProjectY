@@ -14,7 +14,7 @@
 - `Hex_Water` 是独立不透明薄水面；放置高度来自 `cell.waterLevel`，并只在实际水格显示。`Mountain_Cluster` 是可选山石装饰，不属于拼接边界或碰撞/通行规则。
 - `CityPlot7` 按中心与六邻格合并外轮廓制作，平坦连续顶面，不以放大单六边形代替。单格建筑地块用 `Hex_City`；平台放到 `building.baseHeight`，厚度根据实际地面落差配置，避免悬空或穿底。
 - `House/Workshop/TownHall` 分别对应当前 `MapBuildingTable` 的 ID 2/3/4；建筑模型是一栋完整建筑，集会厅使用七格占地。资源路径与基准高度统一由 MapAssetTable 配置，建筑表通过 assetId/platformAssetId 引用；Editor 同步真实场景引用。
-- `Building_Castle` 是额外的中世纪城堡模型：四座角塔、垛口城墙、拱门和中央主堡共用完整基座，位于七格城市平台内。Unity 实测尺寸为 X=3.35、Y=3.7、Z=3.415；已作为建筑 ID 5 参与城堡领地生成；尚未实现城市等级或进入城市的玩法。
+- `Building_Castle` 是额外的中世纪城堡模型：四座角塔、垛口城墙、拱门和中央主堡共用完整基座，位于七格城市平台内。Unity 实测尺寸为 X=3.35、Y=3.7、Z=3.415；已作为建筑 ID 5 参与城堡领地生成；城堡模型没有室内；对应聚落可通过 [MapArea](MapArea.md) 进入独立城镇。最高档宫殿与御苑资源另见[王城](RoyalTown.md)。
 - `Tree_Broadleaf/Tree_Conifer/Tree_SnowPine` 分别高 2/2.5/2.5，68/130/202 三角形；旧 `Building_Dungeon` 高 1.6、260 三角形，石塔遗址保留但不再绑定地牢资源 ID 18。森林、雪地底块各 20 三角形。生态源场景独立保存在 Ecosystem.blend；分布与模型关联由地貌表配置，模型不自行撒树。
 - `Building_DungeonEntrance` 为独立石拱地牢入口，高 1.6、264 三角形，资源 ID 18 → 建筑 ID 1；`Building_SecludedCottage` 为低墙木顶矮屋，高 1.05、116 三角形，资源 ID 19 → 建筑 ID 6 → 隐居群落样式 5。两者均单格、共享原有材质，源为 RemoteSites.blend；原民居高 1.75。暗洞背板有厚度，避免单面剔除；生成规则归 [地图](Map.md)。
 - 建筑与地形均采用米制；Unity +Y 上，建筑 +Z 为正面，落地原点位于建筑底部中心。未来接入入口方向时需按 `building.entrance` 旋转，不能直接照搬 Web 占位建筑的局部正面轴。

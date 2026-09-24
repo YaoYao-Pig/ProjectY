@@ -6,21 +6,18 @@ namespace ProjectY.Samples
     /// <summary>城镇第三人称镜头与键盘方向投影；只发方向命令，不修改玩法位置。</summary>
     public sealed class TownWalkCamera
     {
-        private static readonly int[] Dq = { 1, 1, 0, -1, -1, 0 }, Dr = { 0, -1, -1, 0, 1, 1 };
-        private readonly Dictionary<long, int> cells = new Dictionary<long, int>();
         private readonly IList<Bounds> obstacles;
+        private readonly System.Func<Ray, float, float> terrainDistance;
         private float yaw, pitch = 25, distance = 8;
         private Vector3 desired, lastInput;
         private bool steering;
         public bool Walking { get; private set; }
-        public TownWalkCamera(MapAreaViewData layout, MapAreaViewData.State state, IList<Bounds> obstacles)
+        public TownWalkCamera(MapAreaViewData layout, MapAreaViewData.State state, IList<Bounds> obstacles, System.Func<Ray, float, float> terrainDistance = null)
         {
-            this.obstacles = obstacles;
-            for (var i = 0; i < layout.Cells.Length; i++) cells.Add(Key(layout.Cells[i].Q, layout.Cells[i].R), i);
+            this.obstacles = obstacles; this.terrainDistance = terrainDistance;
             var forward = layout.Cells[state.GoalIndex].Position - layout.Cells[state.CellIndex].Position;
             yaw = Mathf.Atan2(forward.x, forward.z) * Mathf.Rad2Deg;
         }
-        private static long Key(int q, int r) => ((long)q << 32) | (uint)r;
         public void ResetSteering() { steering = false; Walking = false; }
         public void Orbit()
         {
@@ -42,7 +39,8 @@ namespace ProjectY.Samples
             var best = float.PositiveInfinity; var direction = 0;
             for (var d = 0; d < 6; d++)
             {
-                if (!cells.TryGetValue(Key(origin.Q + Dq[d], origin.R + Dr[d]), out var index)) continue;
+                if ((origin.WalkMask & (1 << d)) == 0) continue;
+                var index = origin.Neighbors[d]; if (index < 0) continue;
                 var target = layout.Cells[index];
                 if (target.Blocked || Vector3.Dot((target.Position - origin.Position).normalized, input) < .2f) continue;
                 var occupied = false; foreach (var npc in state.Npcs) if (npc.CellIndex == index) { occupied = true; break; }
@@ -60,6 +58,7 @@ namespace ProjectY.Samples
             var ray = new Ray(focus, backward);
             foreach (var obstacle in obstacles)
                 if (obstacle.IntersectRay(ray, out var hit) && hit >= 0 && hit < actualDistance) actualDistance = Mathf.Max(.35f, hit - .2f);
+            if (terrainDistance != null) actualDistance = Mathf.Max(.35f, terrainDistance(ray, actualDistance) - .15f);
             var position = focus + backward * actualDistance; position.y = Mathf.Max(leader.y + .35f, position.y);
             camera.orthographic = false; camera.rect = new Rect(0, 0, 1, 1); camera.fieldOfView = 58;
             camera.nearClipPlane = .08f; camera.farClipPlane = 400;

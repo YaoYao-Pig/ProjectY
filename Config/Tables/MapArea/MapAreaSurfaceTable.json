@@ -1,0 +1,189 @@
+{
+  "version": 1,
+  "name": "MapAreaSurfaceTable",
+  "description": "城内外地表材质：世界米制图案与哑光反射",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "材质编号"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "显示名称"
+    },
+    {
+      "name": "pattern",
+      "type": "int",
+      "description": "0纯色 1石板 2卵石 3泥土 4草地 5木板 6岩石 7积雪",
+      "min": 0,
+      "max": 7
+    },
+    {
+      "name": "baseColor",
+      "type": "string",
+      "description": "低饱和基础色"
+    },
+    {
+      "name": "tileMeters",
+      "type": "float",
+      "description": "图案世界尺寸，米",
+      "min": 0.1
+    },
+    {
+      "name": "contrast",
+      "type": "float",
+      "description": "图案明暗幅度",
+      "min": 0,
+      "max": 0.5
+    },
+    {
+      "name": "jointWidth",
+      "type": "float",
+      "description": "缝隙占图案宽度",
+      "min": 0,
+      "max": 0.2
+    },
+    {
+      "name": "smoothness",
+      "type": "float",
+      "description": "材质平滑度",
+      "min": 0,
+      "max": 1
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "城外草地",
+      "pattern": 4,
+      "baseColor": "#74805a",
+      "tileMeters": 1.4,
+      "contrast": 0.15,
+      "jointWidth": 0.04,
+      "smoothness": 0.03
+    },
+    {
+      "id": 2,
+      "name": "裸露岩地",
+      "pattern": 6,
+      "baseColor": "#858075",
+      "tileMeters": 1.8,
+      "contrast": 0.16,
+      "jointWidth": 0.08,
+      "smoothness": 0.05
+    },
+    {
+      "id": 3,
+      "name": "夯土小径",
+      "pattern": 3,
+      "baseColor": "#998568",
+      "tileMeters": 0.8,
+      "contrast": 0.13,
+      "jointWidth": 0.02,
+      "smoothness": 0.02
+    },
+    {
+      "id": 4,
+      "name": "旧城卵石",
+      "pattern": 2,
+      "baseColor": "#8b897d",
+      "tileMeters": 0.62,
+      "contrast": 0.2,
+      "jointWidth": 0.055,
+      "smoothness": 0.12
+    },
+    {
+      "id": 5,
+      "name": "整齐石板",
+      "pattern": 1,
+      "baseColor": "#a89d88",
+      "tileMeters": 1.15,
+      "contrast": 0.15,
+      "jointWidth": 0.038,
+      "smoothness": 0.12
+    },
+    {
+      "id": 6,
+      "name": "广场拼石",
+      "pattern": 1,
+      "baseColor": "#b7a68b",
+      "tileMeters": 1.8,
+      "contrast": 0.16,
+      "jointWidth": 0.035,
+      "smoothness": 0.15
+    },
+    {
+      "id": 7,
+      "name": "院落泥地",
+      "pattern": 3,
+      "baseColor": "#8b775c",
+      "tileMeters": 0.9,
+      "contrast": 0.12,
+      "jointWidth": 0.02,
+      "smoothness": 0.02
+    },
+    {
+      "id": 8,
+      "name": "园圃草地",
+      "pattern": 4,
+      "baseColor": "#66805a",
+      "tileMeters": 1.0,
+      "contrast": 0.15,
+      "jointWidth": 0.025,
+      "smoothness": 0.03
+    },
+    {
+      "id": 9,
+      "name": "室内木板",
+      "pattern": 5,
+      "baseColor": "#95795b",
+      "tileMeters": 0.36,
+      "contrast": 0.16,
+      "jointWidth": 0.04,
+      "smoothness": 0.13
+    },
+    {
+      "id": 10,
+      "name": "室内旧石",
+      "pattern": 1,
+      "baseColor": "#a29987",
+      "tileMeters": 0.95,
+      "contrast": 0.14,
+      "jointWidth": 0.035,
+      "smoothness": 0.1
+    },
+    {
+      "id": 11,
+      "name": "宫殿地砖",
+      "pattern": 1,
+      "baseColor": "#bcb09a",
+      "tileMeters": 1.5,
+      "contrast": 0.14,
+      "jointWidth": 0.027,
+      "smoothness": 0.18
+    },
+    {
+      "id": 12,
+      "name": "城外积雪",
+      "pattern": 7,
+      "baseColor": "#c7d4d5",
+      "tileMeters": 2.0,
+      "contrast": 0.09,
+      "jointWidth": 0.02,
+      "smoothness": 0.04
+    },
+    {
+      "id": 13,
+      "name": "台地岩壁",
+      "pattern": 6,
+      "baseColor": "#817c71",
+      "tileMeters": 2.0,
+      "contrast": 0.19,
+      "jointWidth": 0.06,
+      "smoothness": 0.03
+    }
+  ]
+}

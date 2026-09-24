@@ -1,0 +1,21 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapEnvironmentTableRow
+---@field id number 配方编号
+---@field name string 名称
+---@field keyIds number[] 按小时递增的关键帧
+---@field weatherIds number[] 允许的天气
+---@field defaultWeatherId number 初始天气
+---@field cycleSeconds number 一个完整视觉日的真实秒数
+---@field startHour number 初始小时
+---@field autoCycle boolean 自动推进视觉时间
+---@field transitionSeconds number 天气和室内外混合时间
+---@field sunAzimuth number 日照方位角
+---@field indoorSunMultiplier number 室内直射光倍率
+---@field indoorAmbientColor string 室内环境色
+---@field lampColor string 室内灯色
+---@field lampIntensity number 灯光强度
+---@field lampRange number 灯光范围，米
+---@field lampHeight number 离地高度，米
+---@field maxLocalLights number 同时启用的局部灯上限
+---@field shadowDistance number 实时阴影距离，米
+return {["name"]="MapEnvironmentTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\233\133\141\230\150\185\231\188\150\229\143\183"},{["name"]="name",["type"]="string",["description"]="\229\144\141\231\167\176"},{["name"]="keyIds",["type"]="int[]",["description"]="\230\140\137\229\176\143\230\151\182\233\128\146\229\162\158\231\154\132\229\133\179\233\148\174\229\184\167",["ref"]="MapLightKeyTable"},{["name"]="weatherIds",["type"]="int[]",["description"]="\229\133\129\232\174\184\231\154\132\229\164\169\230\176\148",["ref"]="MapWeatherTable"},{["name"]="defaultWeatherId",["type"]="int",["description"]="\229\136\157\229\167\139\229\164\169\230\176\148",["ref"]="MapWeatherTable"},{["name"]="cycleSeconds",["type"]="float",["description"]="\228\184\128\228\184\170\229\174\140\230\149\180\232\167\134\232\167\137\230\151\165\231\154\132\231\156\159\229\174\158\231\167\146\230\149\176",["min"]=60},{["name"]="startHour",["type"]="float",["description"]="\229\136\157\229\167\139\229\176\143\230\151\182",["min"]=0,["max"]=24},{["name"]="autoCycle",["type"]="bool",["description"]="\232\135\170\229\138\168\230\142\168\232\191\155\232\167\134\232\167\137\230\151\182\233\151\180"},{["name"]="transitionSeconds",["type"]="float",["description"]="\229\164\169\230\176\148\229\146\140\229\174\164\229\134\133\229\164\150\230\183\183\229\144\136\230\151\182\233\151\180",["min"]=0.1},{["name"]="sunAzimuth",["type"]="float",["description"]="\230\151\165\231\133\167\230\150\185\228\189\141\232\167\146"},{["name"]="indoorSunMultiplier",["type"]="float",["description"]="\229\174\164\229\134\133\231\155\180\229\176\132\229\133\137\229\128\141\231\142\135",["min"]=0,["max"]=1},{["name"]="indoorAmbientColor",["type"]="string",["description"]="\229\174\164\229\134\133\231\142\175\229\162\131\232\137\178"},{["name"]="lampColor",["type"]="string",["description"]="\229\174\164\229\134\133\231\129\175\232\137\178"},{["name"]="lampIntensity",["type"]="float",["description"]="\231\129\175\229\133\137\229\188\186\229\186\166",["min"]=0},{["name"]="lampRange",["type"]="float",["description"]="\231\129\175\229\133\137\232\140\131\229\155\180\239\188\140\231\177\179",["min"]=1},{["name"]="lampHeight",["type"]="float",["description"]="\231\166\187\229\156\176\233\171\152\229\186\166\239\188\140\231\177\179",["min"]=1},{["name"]="maxLocalLights",["type"]="int",["description"]="\229\144\140\230\151\182\229\144\175\231\148\168\231\154\132\229\177\128\233\131\168\231\129\175\228\184\138\233\153\144",["min"]=1,["max"]=8},{["name"]="shadowDistance",["type"]="float",["description"]="\229\174\158\230\151\182\233\152\180\229\189\177\232\183\157\231\166\187\239\188\140\231\177\179",["min"]=10}},["fingerprint"]="fbdcf9a06638185ec7b7bc726d21c1245df59d85c8d6cc6de88f949026320a1f"}

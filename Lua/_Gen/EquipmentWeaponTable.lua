@@ -1,0 +1,12 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class EquipmentWeaponTableRow
+---@field id number 武器物品 ID
+---@field kind "staff"|"gun" 武器规则类别
+---@field socketIds number[] 按顺序显示的挂点
+---@field skillIds number[] 装备赋予的技能
+---@field replacesSkillIds number[] 装备时替换的基础攻击
+---@field poseId number 人物持握姿态
+---@field magazineItemId number 兼容弹匣物品，0 表示不使用弹匣
+---@field previewRotation number[] 工坊默认预览角度 XYZ
+---@field previewZoom number 工坊默认正交半高
+return {["name"]="EquipmentWeaponTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\230\173\166\229\153\168\231\137\169\229\147\129 ID",["ref"]="EquipmentItemTable"},{["name"]="kind",["type"]="enum",["description"]="\230\173\166\229\153\168\232\167\132\229\136\153\231\177\187\229\136\171",["values"]={"staff","gun"}},{["name"]="socketIds",["type"]="int[]",["description"]="\230\140\137\233\161\186\229\186\143\230\152\190\231\164\186\231\154\132\230\140\130\231\130\185",["ref"]="EquipmentSocketTable"},{["name"]="skillIds",["type"]="int[]",["description"]="\232\163\133\229\164\135\232\181\139\228\186\136\231\154\132\230\138\128\232\131\189",["ref"]="CombatSkillTable"},{["name"]="replacesSkillIds",["type"]="int[]",["description"]="\232\163\133\229\164\135\230\151\182\230\155\191\230\141\162\231\154\132\229\159\186\231\161\128\230\148\187\229\135\187",["ref"]="CombatSkillTable"},{["name"]="poseId",["type"]="int",["description"]="\228\186\186\231\137\169\230\140\129\230\143\161\229\167\191\230\128\129",["ref"]="EquipmentPoseTable"},{["name"]="magazineItemId",["type"]="int",["description"]="\229\133\188\229\174\185\229\188\185\229\140\163\231\137\169\229\147\129\239\188\1400 \232\161\168\231\164\186\228\184\141\228\189\191\231\148\168\229\188\185\229\140\163",["min"]=0},{["name"]="previewRotation",["type"]="float[]",["description"]="\229\183\165\229\157\138\233\187\152\232\174\164\233\162\132\232\167\136\232\167\146\229\186\166 XYZ"},{["name"]="previewZoom",["type"]="float",["description"]="\229\183\165\229\157\138\233\187\152\232\174\164\230\173\163\228\186\164\229\141\138\233\171\152",["min"]=0.7,["max"]=2.6}},["fingerprint"]="46e1e80f86bc2b91148feaaf4e644404a67b66f96b7623689272936db63056c2"}

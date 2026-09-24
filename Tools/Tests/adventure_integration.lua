@@ -7,7 +7,8 @@ registry:Register('Map', require('Game.Map.MapSystem'), {'Config'})
 registry:Register('MapArea', require('Game.MapArea.MapAreaSystem'), {'Config'})
 registry:Register('Battle', require('Game.Battle.BattleSystem'), {'Config'})
 registry:Register('AdventureEvents', require('Game.Adventure.EventSystem'), {'Battle', 'PlayerModel'})
-registry:Register('Adventure', require('Game.Adventure.AdventureSystem'), {'Map', 'MapArea', 'AdventureEvents'})
+registry:Register('Equipment',require('Game.Equipment.EquipmentSystem'),{'Config'})
+registry:Register('Adventure', require('Game.Adventure.AdventureSystem'), {'Map', 'MapArea', 'AdventureEvents', 'Equipment'})
 local count, messages = 0, {}
 local function test(name, run)
     run(); count = count + 1; messages[#messages + 1] = 'PASS ' .. name

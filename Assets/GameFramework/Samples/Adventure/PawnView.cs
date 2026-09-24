@@ -11,11 +11,13 @@ namespace ProjectY.Samples
         public sealed class Part { public int Id; public string Slot, Path; }
         public int TemplateId;
         public Part[] Parts;
+        public EquipmentVisualData Equipment;
         public static PawnAppearanceData Read(LuaTable root)
         {
             using (var parts = root.Get<LuaTable>("parts"))
             {
                 var result = new PawnAppearanceData { TemplateId = root.Get<int>("templateId"), Parts = new Part[parts.Length] };
+                using(var equipment=root.Get<LuaTable>("equipment")) if(equipment!=null) result.Equipment=EquipmentVisualData.Read(equipment);
                 for (var i = 0; i < result.Parts.Length; i++) using (var row = parts.Get<int, LuaTable>(i + 1))
                     result.Parts[i] = new Part { Id = row.Get<int>("id"), Slot = row.Get<string>("slot"), Path = row.Get<string>("path") };
                 return result;
@@ -28,6 +30,7 @@ namespace ProjectY.Samples
     {
         [Serializable] public sealed class Mount { public string slot; public Transform anchor; }
         [SerializeField] private Mount[] mounts;
+        [SerializeField] private PawnEquipmentView equipmentView;
         private readonly Dictionary<string, Transform> anchors = new Dictionary<string, Transform>();
         private readonly Dictionary<string, GameObject> objects = new Dictionary<string, GameObject>();
         private readonly Dictionary<string, int> partIds = new Dictionary<string, int>();
@@ -72,6 +75,8 @@ namespace ProjectY.Samples
                 next.transform.localScale = Vector3.one;
                 objects.Add(mount.slot, next); partIds.Add(mount.slot, part.Id);
             }
+            if(equipmentView!=null) equipmentView.Apply(appearance.Equipment);
+            else if(appearance.Equipment!=null) throw new InvalidOperationException("棋子未绑定装备显示组件。");
         }
     }
 }

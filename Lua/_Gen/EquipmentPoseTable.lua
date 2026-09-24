@@ -1,0 +1,16 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class EquipmentPoseTableRow
+---@field id number 稳定配置 ID
+---@field name string 显示名称
+---@field corePartId number 无手臂身体部件
+---@field upperAssetId number 单位长度上臂模型
+---@field forearmAssetId number 单位长度前臂模型
+---@field handAssetId number 手掌模型
+---@field mainShoulder number[] 人物局部 xyz
+---@field mainElbow number[] 人物局部 xyz
+---@field mainHand number[] 人物局部 xyz
+---@field offShoulder number[] 人物局部 xyz
+---@field offElbow number[] 人物局部 xyz
+---@field offHand number[] 人物局部 xyz
+---@field weaponRotation number[] 人物局部 xyz
+return {["name"]="EquipmentPoseTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="name",["type"]="text",["description"]="\230\152\190\231\164\186\229\144\141\231\167\176"},{["name"]="corePartId",["type"]="int",["description"]="\230\151\160\230\137\139\232\135\130\232\186\171\228\189\147\233\131\168\228\187\182",["ref"]="PawnPartTable"},{["name"]="upperAssetId",["type"]="int",["description"]="\229\141\149\228\189\141\233\149\191\229\186\166\228\184\138\232\135\130\230\168\161\229\158\139",["ref"]="EquipmentAssetTable"},{["name"]="forearmAssetId",["type"]="int",["description"]="\229\141\149\228\189\141\233\149\191\229\186\166\229\137\141\232\135\130\230\168\161\229\158\139",["ref"]="EquipmentAssetTable"},{["name"]="handAssetId",["type"]="int",["description"]="\230\137\139\230\142\140\230\168\161\229\158\139",["ref"]="EquipmentAssetTable"},{["name"]="mainShoulder",["type"]="float[]",["description"]="\228\186\186\231\137\169\229\177\128\233\131\168 xyz"},{["name"]="mainElbow",["type"]="float[]",["description"]="\228\186\186\231\137\169\229\177\128\233\131\168 xyz"},{["name"]="mainHand",["type"]="float[]",["description"]="\228\186\186\231\137\169\229\177\128\233\131\168 xyz"},{["name"]="offShoulder",["type"]="float[]",["description"]="\228\186\186\231\137\169\229\177\128\233\131\168 xyz"},{["name"]="offElbow",["type"]="float[]",["description"]="\228\186\186\231\137\169\229\177\128\233\131\168 xyz"},{["name"]="offHand",["type"]="float[]",["description"]="\228\186\186\231\137\169\229\177\128\233\131\168 xyz"},{["name"]="weaponRotation",["type"]="float[]",["description"]="\228\186\186\231\137\169\229\177\128\233\131\168 xyz"}},["fingerprint"]="bb63b1649ff175def90da26f17e8a260266878afee299da365528378c4a71781"}

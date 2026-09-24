@@ -1,0 +1,101 @@
+{
+  "version": 1,
+  "name": "EquipmentRuneTable",
+  "description": "符文按技能标签修改参数；多个符文伤害倍率相乘，其余加算，目标上限取最大。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "符文物品 ID",
+      "ref": "EquipmentItemTable"
+    },
+    {
+      "name": "slotKind",
+      "type": "enum",
+      "description": "插槽兼容性",
+      "values": [
+        "head",
+        "shaft"
+      ]
+    },
+    {
+      "name": "skillGroup",
+      "type": "enum",
+      "description": "受影响技能组",
+      "values": [
+        "spell"
+      ]
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "效果说明"
+    },
+    {
+      "name": "damageMultiplier",
+      "type": "float",
+      "description": "伤害倍率",
+      "min": 0.01,
+      "max": 10
+    },
+    {
+      "name": "rangeBonus",
+      "type": "int",
+      "description": "额外射程",
+      "min": 0
+    },
+    {
+      "name": "hitBonus",
+      "type": "int",
+      "description": "额外命中百分点",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "cooldownBonus",
+      "type": "int",
+      "description": "额外自身回合冷却",
+      "min": 0
+    },
+    {
+      "name": "maxTargets",
+      "type": "int",
+      "description": "最多合法目标数",
+      "min": 1,
+      "max": 8
+    },
+    {
+      "name": "splashRadius",
+      "type": "int",
+      "description": "主目标附近追加目标的六边形半径",
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 11,
+      "slotKind": "head",
+      "skillGroup": "spell",
+      "description": "以所选敌人为中心，额外命中 2 格内最多两名可见敌人；每个目标造成 70% 伤害。",
+      "damageMultiplier": 0.7,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 3,
+      "splashRadius": 2
+    },
+    {
+      "id": 12,
+      "slotKind": "shaft",
+      "skillGroup": "spell",
+      "description": "射程 +2，命中 +20 个百分点，伤害 +25%，法术冷却 +1。",
+      "damageMultiplier": 1.25,
+      "rangeBonus": 2,
+      "hitBonus": 20,
+      "cooldownBonus": 1,
+      "maxTargets": 1,
+      "splashRadius": 0
+    }
+  ]
+}

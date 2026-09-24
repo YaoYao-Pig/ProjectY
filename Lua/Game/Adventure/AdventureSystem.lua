@@ -12,6 +12,7 @@ function Adventure:OnInit(context)
     self.events = context.systems:Get('AdventureEvents')
     self.data, self.player = context.services.Adventure, context.services.Player
     self.areas = context.systems:Get('MapArea')
+    self.equipment = context.systems:Get('Equipment')
     assert(self.recipe.maxPartySize<=4 and #self.recipe.partyIds > 0 and #self.recipe.partyIds <= self.recipe.maxPartySize, 'Invalid demo party size')
     assert(#self.recipe.buildingIds == #self.recipe.buildingEventIds, 'Building event mapping differs')
 end
@@ -60,15 +61,22 @@ function Adventure:Start(seed)
         local actor = self.data:AddPartyActor(i, id)
         actor:SetMaxHP(self.battle.stats:MaximumHP(actor)); actor:Restore()
     end
+    self.equipment:Start()
 end
 function Adventure:Visit(siteId)
     local site = self.sites[siteId]
     if not site then return false, '未知地点' end
-    if site.areaConfigId then return self.areas:Enter(site,self.data.Seed) end
+    if site.areaConfigId then
+        local ok,reason=self.areas:Enter(site,self.data.Seed)
+        if ok then self.equipment:InitializeLoot(self.areas) end
+        return ok,reason
+    end
     return self.events:Begin(site)
 end
 function Adventure:AreaCommand(command,a,b)
+    if command=='area_loot' then return self.equipment:Loot(self.areas,a) end
     if command=='area_move' then return self.areas:MoveTo(a,b) end
+    if command=='area_move_cell' then return self.areas:MoveToIndex(a) end
     if command=='area_walk' then return self.areas:Walk(a) end
     if command=='area_interact' then return self.areas:Interact(a,b) end
     if command=='area_close' then return self.areas:CloseInteraction() end
@@ -93,6 +101,18 @@ function Adventure:SettleBattle()
     if result == '' then return end
     assert(self.data.Phase == 'battle', 'Battle result already consumed')
     self.data:BeginSettlement()
+    if self.data.AreaEncounterId>0 then
+        local message
+        if result=='victory' then
+            local encounter=self.battle.encounters:Get(self.data.Battle.EncounterId)
+            self.player:AddCoins(encounter.rewardCoins);self.events:AwardTraits(encounter.rewardTraitIds)
+            message='敌群已击败，获得 '..encounter.rewardCoins..' 金币。可以继续探索。'
+        elseif result=='defeat' then message='小队全员倒地，已撤回大地图，请到营地休整。'
+        else message='战斗时间耗尽，已撤回大地图。敌人的伤势保留。' end
+        self.areas:RestoreAfterBattle(self.battle)
+        self.data:FinishAreaBattle(message);self.battle.board=nil
+        return
+    end
     if result == 'victory' then
         local encounter = self.battle.encounters:Get(self.data.Battle.EncounterId)
         self.player:AddCoins(encounter.rewardCoins)
@@ -110,12 +130,26 @@ function Adventure:BattleCommand(command, a, b)
     if command ~= 'ai' and actor.Team ~= 1 then return false, '等待敌方行动' end
     local ok, reason
     if command == 'move' then ok, reason = self.battle:TryMove(a, b)
+    elseif command == 'move_cell' then
+        if self.data.AreaEncounterId==0 then return false,'当前不是地牢战斗' end
+        local cell=self.areas:ActiveLayout().cells[a]
+        if not cell then return false,'无效地格' end
+        ok,reason=self.battle:TryMove(cell.q,cell.r)
     elseif command == 'skill' then ok, reason = self.battle:TrySkill(a, b)
     elseif command == 'end_turn' then ok, reason = self.battle:EndTurn()
     elseif command == 'ai' then ok, reason = self.battle:StepAI()
     else error('Unknown battle command: ' .. tostring(command)) end
-    if ok then self:SettleBattle() end
+    if ok then
+        if self.data.AreaEncounterId>0 then self.areas:RevealBattle(self.battle) end
+        self:SettleBattle()
+    end
     return ok, reason
+end
+function Adventure:Tick()
+    if self.data.Phase~='area' then return end
+    if self.context.services.UI.IsWorldPaused then return end
+    local group=self.areas:FindEncounter()
+    if group then self.areas:StartBattle(self.battle,group) end
 end
 function Adventure:ReturnToMap()
     if self.data.Phase ~= 'result' then return false, '请先完成事件或战斗' end
@@ -128,17 +162,12 @@ function Adventure:Snapshot()
         sites = {}, party = {}, units = {}, cells = {}, reachable = {}, skills = {}, logs = {}, choices = {},
         eventTitle = '', eventText = '', encounter = '', round = 0, activeId = 0, radius = 0}
     -- cells 和 reachable 都由 C# ReadCell 读取，必须包含相同的值类型字段。
-    local function cellView(cell) return {q = cell.q, r = cell.r, blocked = cell.blocked} end
+    local function cellView(cell) return {q = cell.q, r = cell.r, blocked = cell.blocked,cellIndex=cell.index or 0} end
     local function actorView(actor)
-        local traits = {}
-        for i = 0, actor.TraitCount - 1 do traits[#traits + 1] = self.battle.stats.traits:Get(actor:GetTraitAt(i)).name end
-        return {id = actor.Id, name = self.battle.stats:Template(actor).name, team = actor.Team, hp = actor.HP,
-            maxHP = actor.MaxHP, ap = actor.AP, q = actor.Q, r = actor.R, guard = actor.Guard,
-            moved = actor.Moved, mainUsed = actor.MainUsed, traits = table.concat(traits, ' · ')}
+        return require('Game.Battle.CombatSnapshot')(actor,self.battle.stats,self.appearances)
     end
     for i = 0, self.data.PartyCount - 1 do
         local actor=self.data:GetPartyAt(i);local row=actorView(actor)
-        row.appearance=self.appearances:Template(actor.TemplateId)
         result.party[#result.party + 1]=row
     end
     for _, site in ipairs(assert(self.sites, 'Start an adventure first')) do
@@ -148,7 +177,10 @@ function Adventure:Snapshot()
         result.sites[#result.sites + 1] = {id = site.id, name = site.name, x = site.x, y = site.y, z = site.z,
             available = available, visited = self.data:HasVisited(site.id),areaConfigId=site.areaConfigId or 0,reason=reason or ''}
     end
-    if self.data.Phase=='area' then result.area=self.areas:Snapshot() end
+    if self.data.Phase=='area' or self.data.AreaEncounterId>0 then
+        result.area=self.areas:Snapshot(self.data.Phase=='battle' and self.battle or nil)
+        result.area.loot=self.equipment:LootSnapshot(self.areas)
+    end
     if self.data.Phase == 'event' then
         local event = self.events.events:Get(self.data.EventId)
         result.eventTitle, result.eventText = event.name, event.description
@@ -160,12 +192,16 @@ function Adventure:Snapshot()
     if self.data.Battle.UnitCount > 0 then
         result.encounter = self.battle.encounters:Get(self.data.Battle.EncounterId).name
         result.round, result.activeId, result.radius = self.data.Battle.Round, self.data.Battle.ActiveId, self.battle.board.radius
-        for _, actor in ipairs(self.battle:Units()) do result.units[#result.units + 1] = actorView(actor) end
+        for _, actor in ipairs(self.battle:Units()) do
+            local row=actorView(actor)
+            if self.battle.board.area then row.cellIndex=assert(self.battle.board:Find(actor.Q,actor.R)).index end
+            result.units[#result.units + 1] = row
+        end
         for _, cell in ipairs(self.battle.board.cells) do result.cells[#result.cells + 1] = cellView(cell) end
         for _, cell in ipairs(self.battle:Reachable()) do result.reachable[#result.reachable + 1] = cellView(cell) end
         if self.data.Phase == 'battle' then
-            for _, id in ipairs(self.battle.stats:Template(self.battle:Active()).skillIds) do
-                local skill, targets = self.battle.skills:Get(id), {}
+            for _, id in ipairs(self.battle:SkillIds(self.battle:Active())) do
+                local skill, targets = self.battle:Skill(self.battle:Active(),id), {}
                 for _, actor in ipairs(self.battle:Units()) do if self.battle:CanUseSkill(id, actor.Id) then targets[#targets + 1] = actor.Id end end
                 result.skills[#result.skills + 1] = {id = id, name = skill.name, description = skill.description,
                     cost = skill.cost, action = skill.action, targets = targets}

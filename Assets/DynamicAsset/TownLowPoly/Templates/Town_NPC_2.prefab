@@ -274,6 +274,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3652165963558968837}
   - component: {fileID: 5644124114928892031}
+  - component: {fileID: 2169877081391248877}
   m_Layer: 0
   m_Name: Town_NPC_2
   m_TagString: Untagged
@@ -330,6 +331,20 @@ MonoBehaviour:
     anchor: {fileID: 571748550560618049}
   - slot: back
     anchor: {fileID: 7737571952265286402}
+  equipmentView: {fileID: 2169877081391248877}
+--- !u!114 &2169877081391248877
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6846286911609245504}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f39a3fc298daefb4b8e2cbf77f67806b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  catalog: {fileID: 11400000, guid: 4149716936f6c244684df8f013bdfb8d, type: 2}
 --- !u!1 &7911036845641399619
 GameObject:
   m_ObjectHideFlags: 0

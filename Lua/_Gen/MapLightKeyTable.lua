@@ -1,0 +1,12 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapLightKeyTableRow
+---@field id number 编号
+---@field hour number 小时
+---@field sunIntensity number 主光强度
+---@field sunColor string 主光颜色
+---@field skyColor string 天空环境光
+---@field equatorColor string 水平环境光
+---@field groundColor string 底部环境光
+---@field fogColor string 远景雾色
+---@field lampWeight number 室内暖灯权重
+return {["name"]="MapLightKeyTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\188\150\229\143\183"},{["name"]="hour",["type"]="float",["description"]="\229\176\143\230\151\182",["min"]=0,["max"]=23.99},{["name"]="sunIntensity",["type"]="float",["description"]="\228\184\187\229\133\137\229\188\186\229\186\166",["min"]=0},{["name"]="sunColor",["type"]="string",["description"]="\228\184\187\229\133\137\233\162\156\232\137\178"},{["name"]="skyColor",["type"]="string",["description"]="\229\164\169\231\169\186\231\142\175\229\162\131\229\133\137"},{["name"]="equatorColor",["type"]="string",["description"]="\230\176\180\229\185\179\231\142\175\229\162\131\229\133\137"},{["name"]="groundColor",["type"]="string",["description"]="\229\186\149\233\131\168\231\142\175\229\162\131\229\133\137"},{["name"]="fogColor",["type"]="string",["description"]="\232\191\156\230\153\175\233\155\190\232\137\178"},{["name"]="lampWeight",["type"]="float",["description"]="\229\174\164\229\134\133\230\154\150\231\129\175\230\157\131\233\135\141",["min"]=0,["max"]=1}},["fingerprint"]="e8def972da4929a5d331dabb6752c7cd3952cabf6aca691b8ff28f0372302577"}

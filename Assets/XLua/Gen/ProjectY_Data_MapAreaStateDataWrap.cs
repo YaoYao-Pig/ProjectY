@@ -21,8 +21,15 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.MapAreaStateData);
-			Utils.BeginObjectRegister(type, L, translator, 0, 18, 11, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 26, 15, 0);
 			
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetLootAt", _m_GetLootAt);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "AddLoot", _m_AddLoot);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "CompleteLootInitialization", _m_CompleteLootInitialization);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Loot", _m_Loot);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetEncounterAt", _m_GetEncounterAt);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "AddEncounter", _m_AddEncounter);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "CompleteEncounterInitialization", _m_CompleteEncounterInitialization);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetNpcAt", _m_GetNpcAt);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetMemberIdAt", _m_GetMemberIdAt);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetMemberCellAt", _m_GetMemberCellAt);
@@ -40,10 +47,15 @@ namespace XLua.CSObjectWrap
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "DeployMembers", _m_DeployMembers);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SetSquadRoute", _m_SetSquadRoute);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Stop", _m_Stop);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "RetreatToEntry", _m_RetreatToEntry);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Advance", _m_Advance);
 			
 			
-			Utils.RegisterFunc(L, Utils.GETTER_IDX, "NpcCount", _g_get_NpcCount);
+			Utils.RegisterFunc(L, Utils.GETTER_IDX, "LootInitialized", _g_get_LootInitialized);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "LootCount", _g_get_LootCount);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "EncountersInitialized", _g_get_EncountersInitialized);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "EncounterCount", _g_get_EncounterCount);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "NpcCount", _g_get_NpcCount);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "InteractionKind", _g_get_InteractionKind);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "InteractionId", _g_get_InteractionId);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "SiteId", _g_get_SiteId);
@@ -102,6 +114,205 @@ namespace XLua.CSObjectWrap
         
         
         
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_GetLootAt(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.MapAreaStateData gen_to_be_invoked = (ProjectY.Data.MapAreaStateData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _index = LuaAPI.xlua_tointeger(L, 2);
+                    
+                        var gen_ret = gen_to_be_invoked.GetLootAt( _index );
+                        translator.Push(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_AddLoot(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.MapAreaStateData gen_to_be_invoked = (ProjectY.Data.MapAreaStateData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _cellIndex = LuaAPI.xlua_tointeger(L, 2);
+                    int _tableId = LuaAPI.xlua_tointeger(L, 3);
+                    
+                    gen_to_be_invoked.AddLoot( _cellIndex, _tableId );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_CompleteLootInitialization(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.MapAreaStateData gen_to_be_invoked = (ProjectY.Data.MapAreaStateData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    
+                    gen_to_be_invoked.CompleteLootInitialization(  );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_Loot(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.MapAreaStateData gen_to_be_invoked = (ProjectY.Data.MapAreaStateData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _id = LuaAPI.xlua_tointeger(L, 2);
+                    
+                    gen_to_be_invoked.Loot( _id );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_GetEncounterAt(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.MapAreaStateData gen_to_be_invoked = (ProjectY.Data.MapAreaStateData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _index = LuaAPI.xlua_tointeger(L, 2);
+                    
+                        var gen_ret = gen_to_be_invoked.GetEncounterAt( _index );
+                        translator.Push(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_AddEncounter(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.MapAreaStateData gen_to_be_invoked = (ProjectY.Data.MapAreaStateData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _id = LuaAPI.xlua_tointeger(L, 2);
+                    int _encounterId = LuaAPI.xlua_tointeger(L, 3);
+                    
+                        var gen_ret = gen_to_be_invoked.AddEncounter( _id, _encounterId );
+                        translator.Push(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_CompleteEncounterInitialization(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.MapAreaStateData gen_to_be_invoked = (ProjectY.Data.MapAreaStateData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    
+                    gen_to_be_invoked.CompleteEncounterInitialization(  );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _m_GetNpcAt(RealStatePtr L)
@@ -594,6 +805,34 @@ namespace XLua.CSObjectWrap
         }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_RetreatToEntry(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.MapAreaStateData gen_to_be_invoked = (ProjectY.Data.MapAreaStateData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _entryIndex = LuaAPI.xlua_tointeger(L, 2);
+                    
+                    gen_to_be_invoked.RetreatToEntry( _entryIndex );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _m_Advance(RealStatePtr L)
         {
 		    try {
@@ -625,6 +864,62 @@ namespace XLua.CSObjectWrap
         
         
         
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_LootInitialized(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.MapAreaStateData gen_to_be_invoked = (ProjectY.Data.MapAreaStateData)translator.FastGetCSObj(L, 1);
+                LuaAPI.lua_pushboolean(L, gen_to_be_invoked.LootInitialized);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_LootCount(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.MapAreaStateData gen_to_be_invoked = (ProjectY.Data.MapAreaStateData)translator.FastGetCSObj(L, 1);
+                LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.LootCount);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_EncountersInitialized(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.MapAreaStateData gen_to_be_invoked = (ProjectY.Data.MapAreaStateData)translator.FastGetCSObj(L, 1);
+                LuaAPI.lua_pushboolean(L, gen_to_be_invoked.EncountersInitialized);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_EncounterCount(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.MapAreaStateData gen_to_be_invoked = (ProjectY.Data.MapAreaStateData)translator.FastGetCSObj(L, 1);
+                LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.EncounterCount);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _g_get_NpcCount(RealStatePtr L)

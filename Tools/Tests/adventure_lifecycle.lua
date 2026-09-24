@@ -41,7 +41,7 @@ test('missing Battle data is a clear startup error with safe rollback', function
 end)
 test('config failure after acquiring battle state clears acquired resources only once', function()
     local clears = 0
-    local services = {Adventure = {Battle = {Clear = function() clears = clears + 1 end}}}
+    local services = {Adventure = {Equipment={},Battle = {Clear = function() clears = clears + 1 end}}}
     local ok, err, registry, instance, errors = startBattle(services, configType(function() error('fixture config read failure') end))
     assertOriginalFailure(ok, err, registry, errors, 'fixture config read failure')
     assert(clears == 1)
@@ -49,7 +49,7 @@ test('config failure after acquiring battle state clears acquired resources only
 end)
 test('normal Battle shutdown releases listeners and state once', function()
     local clears, calls = 0, 0
-    local services = {Adventure = {Battle = {Clear = function() clears = clears + 1 end}}}
+    local services = {Adventure = {Equipment={},Battle = {Clear = function() clears = clears + 1 end}}}
     function services:ReadConfig(name)
         local file = assert(io.open('Assets/GameFramework/Resources/_Gen/Config/' .. name .. '.bytes', 'rb'))
         local bytes = file:read('*a'); file:close(); return bytes
@@ -77,10 +77,10 @@ test('Adventure rollback after acquiring state resets it only once', function()
     services.LogError = function(_, err) errors[#errors + 1] = err end
     local registry = Registry(services)
     registry:Register('Config', configType(function()
-        return {Get = function() return {partyIds = {}, maxPartySize = 4} end}
+        return {Get = function() return {partyIds = {}, maxPartySize = 4} end,All=function() return {} end}
     end))
-    for _, name in ipairs({'Map', 'MapArea', 'Battle', 'AdventureEvents'}) do registry:Register(name, System) end
-    registry:Register('Adventure', function() return instance end, {'Config', 'Map', 'MapArea', 'Battle', 'AdventureEvents'})
+    for _, name in ipairs({'Map', 'MapArea', 'Battle', 'AdventureEvents','Equipment'}) do registry:Register(name, System) end
+    registry:Register('Adventure', function() return instance end, {'Config', 'Map', 'MapArea', 'Battle', 'AdventureEvents','Equipment'})
     local ok, err = pcall(function() registry:Start() end)
     assertOriginalFailure(ok, err, registry, errors, 'Invalid demo party size')
     assert(resets == 1)

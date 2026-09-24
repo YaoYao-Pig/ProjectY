@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "name": "EquipmentActionTable",
+  "description": "技能使用的表现模板；不会改变命中、AP 或弹药结算。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "动作 ID；0 为不播放",
+      "min": 0
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "显示名称"
+    },
+    {
+      "name": "kind",
+      "type": "enum",
+      "description": "动作处理器",
+      "values": [
+        "none",
+        "cast",
+        "fire",
+        "reload"
+      ]
+    },
+    {
+      "name": "duration",
+      "type": "float",
+      "description": "动作时长秒",
+      "min": 0
+    },
+    {
+      "name": "recoil",
+      "type": "float",
+      "description": "武器后坐位移",
+      "min": 0
+    },
+    {
+      "name": "pitch",
+      "type": "float",
+      "description": "武器俯仰幅度（度）"
+    },
+    {
+      "name": "handLift",
+      "type": "float",
+      "description": "动作抬手高度（米）"
+    },
+    {
+      "name": "magazineDrop",
+      "type": "float",
+      "description": "换弹时弹匣位移（米）",
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 0,
+      "name": "无动作",
+      "kind": "none",
+      "duration": 0,
+      "recoil": 0,
+      "pitch": 0,
+      "handLift": 0,
+      "magazineDrop": 0
+    },
+    {
+      "id": 1,
+      "name": "单手施法",
+      "kind": "cast",
+      "duration": 0.6,
+      "recoil": 0,
+      "pitch": 14,
+      "handLift": 0.15,
+      "magazineDrop": 0
+    },
+    {
+      "id": 2,
+      "name": "双手射击",
+      "kind": "fire",
+      "duration": 0.55,
+      "recoil": 0.11,
+      "pitch": 5,
+      "handLift": 0,
+      "magazineDrop": 0
+    },
+    {
+      "id": 3,
+      "name": "弹匣换装",
+      "kind": "reload",
+      "duration": 0.9,
+      "recoil": 0,
+      "pitch": -22,
+      "handLift": -0.12,
+      "magazineDrop": 0.35
+    }
+  ]
+}

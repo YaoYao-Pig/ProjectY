@@ -1,0 +1,41 @@
+---@meta
+-- Generated from LuaReference. Do not edit; never require this file.
+---@class BattleHUDPanelView
+---@field Root CS.UnityEngine.RectTransform
+---@field Canvas CS.UnityEngine.Canvas
+---@field Panel CS.ProjectY.UI.LuaPanel
+---@field HUD CS.ProjectY.UI.BattleHUDView
+---@field Group CS.UnityEngine.CanvasGroup
+---@field Encounter CS.UnityEngine.UI.Text
+---@field Round CS.UnityEngine.UI.Text
+---@field PartySlots CS.UnityEngine.RectTransform
+---@field TurnSlots CS.UnityEngine.RectTransform
+---@field SkillSlots CS.UnityEngine.RectTransform
+---@field ItemSlots CS.UnityEngine.RectTransform
+---@field ActorName CS.UnityEngine.UI.Text
+---@field HealthText CS.UnityEngine.UI.Text
+---@field Health CS.UnityEngine.UI.Image
+---@field AP CS.UnityEngine.UI.Text
+---@field Resources CS.UnityEngine.UI.Text
+---@field SkillTitle CS.UnityEngine.UI.Text
+---@field ItemTitle CS.UnityEngine.UI.Text
+---@field Hint CS.UnityEngine.UI.Text
+---@field EndTurn CS.UnityEngine.UI.Button
+---@field EndTurnText CS.UnityEngine.UI.Text
+---@field Move CS.UnityEngine.UI.Button
+---@field MoveText CS.UnityEngine.UI.Text
+---@field Focus CS.UnityEngine.UI.Button
+---@field FocusText CS.UnityEngine.UI.Text
+---@field Auto CS.UnityEngine.UI.Button
+---@field AutoText CS.UnityEngine.UI.Text
+---@field LogToggle CS.UnityEngine.UI.Button
+---@field LogToggleText CS.UnityEngine.UI.Text
+---@field Previous CS.UnityEngine.UI.Button
+---@field Next CS.UnityEngine.UI.Button
+---@field Log CS.UnityEngine.RectTransform
+---@field Logs CS.UnityEngine.UI.Text
+---@field Tooltip CS.UnityEngine.RectTransform
+---@field TipTitle CS.UnityEngine.UI.Text
+---@field TipBody CS.UnityEngine.UI.Text
+local View = {}
+return View

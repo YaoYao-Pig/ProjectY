@@ -1,0 +1,12 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaRoyalDistrictTableRow
+---@field id number 片区 ID
+---@field name string 功能片区
+---@field centerQ number 局部中心 q
+---@field centerR number 局部中心 r
+---@field shiftQ number 片区中心独立变化范围 q
+---@field shiftR number 片区中心独立变化范围 r
+---@field searchRadius number 本片区地块候选范围
+---@field role "palace"|"gate"|"market"|"craft"|"residential"|"garden" 分区职责
+---@field roadRadius number 片区公共场地与道路半径
+return {["name"]="MapAreaRoyalDistrictTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\137\135\229\140\186 ID",["min"]=1},{["name"]="name",["type"]="string",["description"]="\229\138\159\232\131\189\231\137\135\229\140\186"},{["name"]="centerQ",["type"]="int",["description"]="\229\177\128\233\131\168\228\184\173\229\191\131 q"},{["name"]="centerR",["type"]="int",["description"]="\229\177\128\233\131\168\228\184\173\229\191\131 r"},{["name"]="shiftQ",["type"]="int",["description"]="\231\137\135\229\140\186\228\184\173\229\191\131\231\139\172\231\171\139\229\143\152\229\140\150\232\140\131\229\155\180 q",["min"]=0},{["name"]="shiftR",["type"]="int",["description"]="\231\137\135\229\140\186\228\184\173\229\191\131\231\139\172\231\171\139\229\143\152\229\140\150\232\140\131\229\155\180 r",["min"]=0},{["name"]="searchRadius",["type"]="int",["description"]="\230\156\172\231\137\135\229\140\186\229\156\176\229\157\151\229\128\153\233\128\137\232\140\131\229\155\180",["min"]=0},{["name"]="role",["type"]="enum",["values"]={"palace","gate","market","craft","residential","garden"},["description"]="\229\136\134\229\140\186\232\129\140\232\180\163"},{["name"]="roadRadius",["type"]="int",["min"]=1,["max"]=3,["description"]="\231\137\135\229\140\186\229\133\172\229\133\177\229\156\186\229\156\176\228\184\142\233\129\147\232\183\175\229\141\138\229\190\132"}},["fingerprint"]="59ee43056c1f0c987ebfe71b31af5f3bc85f83a9012a33c0b31edc73bd790a69"}

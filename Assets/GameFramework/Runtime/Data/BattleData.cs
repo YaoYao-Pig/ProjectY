@@ -10,6 +10,13 @@ namespace ProjectY.Data
         private readonly List<CombatActorData> units = new List<CombatActorData>();
         private readonly List<int> order = new List<int>();
         private readonly List<string> logs = new List<string>();
+        private uint hitState = 1;
+        public void SetRandomSeed(uint seed) { hitState = seed == 0 ? 1u : seed; }
+        public int RollPercent()
+        {
+            hitState ^= hitState << 13; hitState ^= hitState >> 17; hitState ^= hitState << 5;
+            return (int)(hitState % 100);
+        }
         public int EncounterId { get; private set; }
         public int MaxRounds { get; private set; }
         public int Round { get; private set; }

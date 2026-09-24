@@ -21,8 +21,10 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.BattleData);
-			Utils.BeginObjectRegister(type, L, translator, 0, 12, 9, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 14, 9, 0);
 			
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SetRandomSeed", _m_SetRandomSeed);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "RollPercent", _m_RollPercent);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetUnitAt", _m_GetUnitAt);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetTurnAt", _m_GetTurnAt);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetLogAt", _m_GetLogAt);
@@ -91,6 +93,62 @@ namespace XLua.CSObjectWrap
         
         
         
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_SetRandomSeed(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.BattleData gen_to_be_invoked = (ProjectY.Data.BattleData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    uint _seed = LuaAPI.xlua_touint(L, 2);
+                    
+                    gen_to_be_invoked.SetRandomSeed( _seed );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_RollPercent(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.BattleData gen_to_be_invoked = (ProjectY.Data.BattleData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    
+                        var gen_ret = gen_to_be_invoked.RollPercent(  );
+                        LuaAPI.xlua_pushinteger(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _m_GetUnitAt(RealStatePtr L)

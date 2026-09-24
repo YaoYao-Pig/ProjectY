@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "name": "MapAreaEncounterTable",
+  "description": "地牢房间敌群；独立种子布置，生命与清除状态保留到新远征。",
+  "key": "id",
+  "fields": [
+    {"name":"id","type":"int","description":"区域配置 ID；未配置区域不生成敌人","ref":"MapAreaTable","min":1},
+    {"name":"encounterId","type":"int","description":"复用敌人、轮数与奖励的遭遇配置","ref":"CombatEncounterTable","min":1},
+    {"name":"groupCount","type":"int","description":"不同非入口房间的敌群数","min":1,"max":20},
+    {"name":"alertRange","type":"int","description":"敌我有视线且六边形距离不超过此值时开战","min":1,"max":12},
+    {"name":"battleMargin","type":"int","description":"包围参战单位后追加的战场边缘格数","min":1,"max":8},
+    {"name":"seedSalt","type":"int","description":"敌群布置独立随机通道","min":0}
+  ],
+  "rows": [{"id":1,"encounterId":1,"groupCount":3,"alertRange":4,"battleMargin":3,"seedSalt":7193}]
+}

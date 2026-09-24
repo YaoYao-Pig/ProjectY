@@ -210,7 +210,7 @@ Transform:
   m_GameObject: {fileID: 684147750}
   serializedVersion: 2
   m_LocalRotation: {x: 0.38791165, y: -0.27470842, z: 0.12230807, w: 0.8712638}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.27, y: 0.13, z: -0.39}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -302,7 +302,7 @@ Transform:
   m_GameObject: {fileID: 826064761}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalPosition: {x: 0.27, y: 0.13, z: -0.39}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -385,6 +385,7 @@ MonoBehaviour:
   bootstrap: {fileID: 2111742819}
   mapCamera: {fileID: 826064762}
   previewShader: {fileID: 4800000, guid: e4d2b3885ddebd74ebb4e2f81948e93a, type: 3}
+  environmentSun: {fileID: 684147751}
   assetBindings:
   - id: 1
     path: Assets/DynamicAsset/MapLowPoly/Models/Hex_Grass.fbx
@@ -533,7 +534,125 @@ MonoBehaviour:
   - id: 49
     path: Assets/DynamicAsset/TownLowPoly/Models/Town_StallArms.fbx
     prefab: {fileID: 919132149155446097, guid: 52c04bf0f9cb7494b9bf21e51da7dcc1, type: 3}
+  - id: 50
+    path: Assets/DynamicAsset/TownLowPoly/Models/Town_RowHousesA.fbx
+    prefab: {fileID: 919132149155446097, guid: 396fbf0aec2c35b4181a1edada8a9988, type: 3}
+  - id: 51
+    path: Assets/DynamicAsset/TownLowPoly/Models/Town_RowHousesB.fbx
+    prefab: {fileID: 919132149155446097, guid: 9027da5534e30db4b8a35f7f03dd4286, type: 3}
+  - id: 52
+    path: Assets/DynamicAsset/TownLowPoly/Models/Town_RowHousesC.fbx
+    prefab: {fileID: 919132149155446097, guid: 0c8be4726aa74134699de09ace5ee64e, type: 3}
+  - id: 53
+    path: Assets/DynamicAsset/TownLowPoly/Models/Town_SkyBridge.fbx
+    prefab: {fileID: 919132149155446097, guid: 629eac597b495cd409e00352c69f6676, type: 3}
+  - id: 54
+    path: Assets/DynamicAsset/RoyalTownLowPoly/Models/Royal_Palace.fbx
+    prefab: {fileID: 919132149155446097, guid: c7981d25ae9b5d6458a34894bfccc1f4, type: 3}
+  - id: 55
+    path: Assets/DynamicAsset/RoyalTownLowPoly/Models/Royal_Gatehouse.fbx
+    prefab: {fileID: 919132149155446097, guid: 6c216d900bebaf642883bcc8e445fb51, type: 3}
+  - id: 56
+    path: Assets/DynamicAsset/RoyalTownLowPoly/Models/Royal_Pavilion.fbx
+    prefab: {fileID: 919132149155446097, guid: 9e364a9542a4eda4ea96a01f68f2906c, type: 3}
+  - id: 57
+    path: Assets/DynamicAsset/RoyalTownLowPoly/Models/Royal_Fountain.fbx
+    prefab: {fileID: 919132149155446097, guid: fbf4306ab82a8da408da7a370f7748b2, type: 3}
+  - id: 58
+    path: Assets/DynamicAsset/RoyalTownLowPoly/Models/Royal_Statue.fbx
+    prefab: {fileID: 919132149155446097, guid: de622b13fe7a39844a80499ae9405084, type: 3}
+  - id: 59
+    path: Assets/DynamicAsset/RoyalTownLowPoly/Models/Royal_Parterre.fbx
+    prefab: {fileID: 919132149155446097, guid: 96bdbc8140a89684d9627d3f61e2e564, type: 3}
+  - id: 60
+    path: Assets/DynamicAsset/RoyalTownLowPoly/Models/Royal_Cypress.fbx
+    prefab: {fileID: 919132149155446097, guid: 1ca08de79434e8b44920d413292e11e2, type: 3}
+  - id: 61
+    path: Assets/DynamicAsset/RoyalTownLowPoly/Models/Royal_Bridge.fbx
+    prefab: {fileID: 919132149155446097, guid: dccaaec9fd1caf84bbe5be7c235b2800, type: 3}
+  - id: 62
+    path: Assets/DynamicAsset/RoyalTownLowPoly/Models/Royal_Balustrade.fbx
+    prefab: {fileID: 919132149155446097, guid: ddcc39aea3412774cbe007cff7b36efb, type: 3}
+  - id: 63
+    path: Assets/DynamicAsset/RoyalTownLowPoly/Models/Royal_Retaining.fbx
+    prefab: {fileID: 919132149155446097, guid: 423c73fd389003445829ee5e0d896555, type: 3}
+  - id: 64
+    path: Assets/DynamicAsset/TownInteriorLowPoly/Models/WalkTown_Tavern_Structure.fbx
+    prefab: {fileID: 919132149155446097, guid: 1ca06a222b5383242a213b5142c5b465, type: 3}
+  - id: 65
+    path: Assets/DynamicAsset/TownInteriorLowPoly/Models/WalkTown_Tavern_Cover.fbx
+    prefab: {fileID: 919132149155446097, guid: 435e53c861f9e504b81e0c663f2f468c, type: 3}
+  - id: 66
+    path: Assets/DynamicAsset/TownInteriorLowPoly/Models/WalkTown_Forge_Structure.fbx
+    prefab: {fileID: 919132149155446097, guid: b20b62151a3b93f47981a625d42b2d65, type: 3}
+  - id: 67
+    path: Assets/DynamicAsset/TownInteriorLowPoly/Models/WalkTown_Forge_Cover.fbx
+    prefab: {fileID: 919132149155446097, guid: fd082b99c258d4040a3ad40e9bbfb8c9, type: 3}
+  - id: 68
+    path: Assets/DynamicAsset/TownInteriorLowPoly/Models/WalkTown_Shop_Structure.fbx
+    prefab: {fileID: 919132149155446097, guid: 6a4a9acc44607d74bba38fb8fd825ac0, type: 3}
+  - id: 69
+    path: Assets/DynamicAsset/TownInteriorLowPoly/Models/WalkTown_Shop_Cover.fbx
+    prefab: {fileID: 919132149155446097, guid: 454e702007514c5428765eaaab333dc3, type: 3}
+  - id: 70
+    path: Assets/DynamicAsset/TownInteriorLowPoly/Models/WalkTown_Guild_Structure.fbx
+    prefab: {fileID: 919132149155446097, guid: 912c47991265b894190dcb17c7db4460, type: 3}
+  - id: 71
+    path: Assets/DynamicAsset/TownInteriorLowPoly/Models/WalkTown_Guild_Cover.fbx
+    prefab: {fileID: 919132149155446097, guid: 4b27e13f71c11314182c97b05990c72b, type: 3}
+  - id: 72
+    path: Assets/DynamicAsset/TownInteriorLowPoly/Models/WalkTown_Palace_Structure.fbx
+    prefab: {fileID: 919132149155446097, guid: ada04556fe315744daeab767de7deea1, type: 3}
+  - id: 73
+    path: Assets/DynamicAsset/TownInteriorLowPoly/Models/WalkTown_Palace_Cover.fbx
+    prefab: {fileID: 919132149155446097, guid: e99cbb348a7ecd843bc627698b6424cc, type: 3}
+  - id: 74
+    path: Assets/DynamicAsset/TownInteriorLowPoly/Models/WalkTown_RowA.fbx
+    prefab: {fileID: 919132149155446097, guid: 66996d90a5d764949943ae19ea11c939, type: 3}
+  - id: 75
+    path: Assets/DynamicAsset/TownInteriorLowPoly/Models/WalkTown_RowB.fbx
+    prefab: {fileID: 919132149155446097, guid: 2d1bdb427cd8f9348853a391f16c2c1c, type: 3}
+  - id: 76
+    path: Assets/DynamicAsset/TownInteriorLowPoly/Models/WalkTown_RowC.fbx
+    prefab: {fileID: 919132149155446097, guid: 6b379744603dc8a45b2fb4b3bfb1cdaa, type: 3}
+  - id: 77
+    path: Assets/DynamicAsset/TownExpansionLowPoly/Models/TownEx_Bakery_Structure.fbx
+    prefab: {fileID: 919132149155446097, guid: 25338d84ece8a2742aaaf0f76f007c16, type: 3}
+  - id: 78
+    path: Assets/DynamicAsset/TownExpansionLowPoly/Models/TownEx_Bakery_Cover.fbx
+    prefab: {fileID: 919132149155446097, guid: 1b1731e4c6ae7f6419e7cdaab5c8cc6d, type: 3}
+  - id: 79
+    path: Assets/DynamicAsset/TownExpansionLowPoly/Models/TownEx_Herbalist_Structure.fbx
+    prefab: {fileID: 919132149155446097, guid: 126dff877b3f2784db67ced553a1b343, type: 3}
+  - id: 80
+    path: Assets/DynamicAsset/TownExpansionLowPoly/Models/TownEx_Herbalist_Cover.fbx
+    prefab: {fileID: 919132149155446097, guid: f3fac6ef8adbe8448a4ba8b15f53d761, type: 3}
+  - id: 81
+    path: Assets/DynamicAsset/TownExpansionLowPoly/Models/TownEx_Chapel_Structure.fbx
+    prefab: {fileID: 919132149155446097, guid: 6106a45b4f56b9045bfb659eda90c19b, type: 3}
+  - id: 82
+    path: Assets/DynamicAsset/TownExpansionLowPoly/Models/TownEx_Chapel_Cover.fbx
+    prefab: {fileID: 919132149155446097, guid: 972a786ee7c3f2d43be4d69ad16987f4, type: 3}
+  - id: 83
+    path: Assets/DynamicAsset/TownExpansionLowPoly/Models/TownEx_Warehouse_Structure.fbx
+    prefab: {fileID: 919132149155446097, guid: f042b7fb7b83ddd4180e720e8dd3ccc8, type: 3}
+  - id: 84
+    path: Assets/DynamicAsset/TownExpansionLowPoly/Models/TownEx_Warehouse_Cover.fbx
+    prefab: {fileID: 919132149155446097, guid: 98495d37f63836c469ff0a2fe653f2f8, type: 3}
+  - id: 85
+    path: Assets/DynamicAsset/TownExpansionLowPoly/Models/TownEx_Stable_Structure.fbx
+    prefab: {fileID: 919132149155446097, guid: 2ac3d6552796eaa41ba2cda539f97e4d, type: 3}
+  - id: 86
+    path: Assets/DynamicAsset/TownExpansionLowPoly/Models/TownEx_Stable_Cover.fbx
+    prefab: {fileID: 919132149155446097, guid: a851a4b42fc156342bcbeebb7be61672, type: 3}
+  - id: 87
+    path: Assets/DynamicAsset/TownExpansionLowPoly/Models/TownEx_Watchtower_Structure.fbx
+    prefab: {fileID: 919132149155446097, guid: 9e7bef241bdbbb34a979f69f822136b3, type: 3}
+  - id: 88
+    path: Assets/DynamicAsset/TownExpansionLowPoly/Models/TownEx_Watchtower_Cover.fbx
+    prefab: {fileID: 919132149155446097, guid: 5ca8803340e87b34c8a2f5b37c09e11e, type: 3}
   pawnPrefab: {fileID: 446114608961273774, guid: b1d0f10c0dc7b274385560aee4c0c91b, type: 3}
+  equipmentCatalog: {fileID: 11400000, guid: 4149716936f6c244684df8f013bdfb8d, type: 2}
   pawnBindings:
   - id: 1
     path: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Human.fbx
@@ -589,6 +708,9 @@ MonoBehaviour:
   - id: 18
     path: Assets/DynamicAsset/TownLowPoly/Models/NPC_Artisan.fbx
     prefab: {fileID: 919132149155446097, guid: e389ea66676f1b34e86f412b29348fbc, type: 3}
+  - id: 19
+    path: Assets/DynamicAsset/EquipmentDemo/Models/Equip_PawnCore.fbx
+    prefab: {fileID: 919132149155446097, guid: 403b710d2932762448e693909c44f118, type: 3}
 --- !u!4 &2134117555
 Transform:
   m_ObjectHideFlags: 0

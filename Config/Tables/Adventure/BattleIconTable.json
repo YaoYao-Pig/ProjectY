@@ -1,0 +1,91 @@
+{
+  "version": 1,
+  "name": "BattleIconTable",
+  "description": "战斗技能与物品槽图标。空路径显示留白；填 Sprite 资源路径后运行 Project Y/UI/同步战斗图标引用。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定图标 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "编辑器备注，不作为游戏物品定义"
+    },
+    {
+      "name": "spritePath",
+      "type": "string",
+      "description": "Assets 下导入为 Sprite 的资源路径；允许空串"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "斩击",
+      "spritePath": ""
+    },
+    {
+      "id": 2,
+      "name": "射击",
+      "spritePath": ""
+    },
+    {
+      "id": 3,
+      "name": "火花",
+      "spritePath": ""
+    },
+    {
+      "id": 4,
+      "name": "防御",
+      "spritePath": ""
+    },
+    {
+      "id": 5,
+      "name": "治疗",
+      "spritePath": ""
+    },
+    {
+      "id": 6,
+      "name": "物品槽 1",
+      "spritePath": ""
+    },
+    {
+      "id": 7,
+      "name": "物品槽 2",
+      "spritePath": ""
+    },
+    {
+      "id": 8,
+      "name": "物品槽 3",
+      "spritePath": ""
+    },
+    {
+      "id": 9,
+      "name": "物品槽 4",
+      "spritePath": ""
+    },
+    {
+      "id": 10,
+      "name": "奥术飞矢",
+      "spritePath": ""
+    },
+    {
+      "id": 11,
+      "name": "点射",
+      "spritePath": ""
+    },
+    {
+      "id": 12,
+      "name": "连射",
+      "spritePath": ""
+    },
+    {
+      "id": 13,
+      "name": "换弹",
+      "spritePath": ""
+    }
+  ]
+}

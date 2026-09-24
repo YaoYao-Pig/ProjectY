@@ -5,6 +5,13 @@
   "key": "id",
   "fields": [
     {
+      "name": "houseSearchRadius",
+      "type": "int",
+      "description": "围绕预设街区寻找完整联排空地的有限半径",
+      "min": 0,
+      "max": 8
+    },
+    {
       "name": "id",
       "type": "int",
       "description": "稳定配置 ID",
@@ -42,9 +49,9 @@
     {
       "name": "houseCount",
       "type": "int",
-      "description": "民居数量",
+      "description": "填充联排住宅的栋数；完整组合不能拆分",
       "min": 0,
-      "max": 14
+      "max": 60
     },
     {
       "name": "residentCount",
@@ -58,13 +65,6 @@
       "type": "int[]",
       "description": "巡游居民模板池",
       "ref": "MapAreaTownNpcTable"
-    },
-    {
-      "name": "blockDistance",
-      "type": "int",
-      "description": "街区中心距广场的轴向半径",
-      "min": 10,
-      "max": 16
     },
     {
       "name": "plazaRadius",
@@ -86,6 +86,120 @@
       "description": "外围景观树数量",
       "min": 0,
       "max": 80
+    },
+    {
+      "name": "streetRows",
+      "type": "int[]",
+      "description": "低到高四条等高街的局部 r 坐标"
+    },
+    {
+      "name": "halfWidth",
+      "type": "int",
+      "description": "街区半宽，以 q+r/2 衡量",
+      "min": 18,
+      "max": 22
+    },
+    {
+      "name": "terraceHeight",
+      "type": "float",
+      "description": "相邻台地高差（米），乘 Region reliefScale",
+      "min": 2.2,
+      "max": 3.2
+    },
+    {
+      "name": "valleyHalfWidth",
+      "type": "float",
+      "description": "穿城低街半宽，桥路从上方跨过",
+      "min": 3,
+      "max": 5
+    },
+    {
+      "name": "rampLength",
+      "type": "int",
+      "description": "每段台阶或坡道的水平跨度（格）",
+      "min": 4,
+      "max": 8
+    },
+    {
+      "name": "stairRise",
+      "type": "float",
+      "description": "显示台阶高度（米）",
+      "min": 0.1,
+      "max": 0.3
+    },
+    {
+      "name": "maxWalkRise",
+      "type": "float",
+      "description": "相邻地格中心允许的最大升降",
+      "min": 0.5,
+      "max": 1.2
+    },
+    {
+      "name": "maxEdgeRise",
+      "type": "float",
+      "description": "相邻地格接边允许的最大落差",
+      "min": 0.05,
+      "max": 0.6
+    },
+    {
+      "name": "bridgeWidth",
+      "type": "int",
+      "description": "上层桥路净宽（奇数格）",
+      "min": 3,
+      "max": 5
+    },
+    {
+      "name": "bridgeThickness",
+      "type": "float",
+      "description": "桥面厚度（米）",
+      "min": 0.2,
+      "max": 0.5
+    },
+    {
+      "name": "bridgeClearance",
+      "type": "float",
+      "description": "桥面底部距桥下道路的最低净空（米）",
+      "min": 3,
+      "max": 4
+    },
+    {
+      "name": "bridgeAssetId",
+      "type": "int",
+      "description": "桥栏与桥梁模型，由生成结果提供非等比尺寸",
+      "min": 1,
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "rampWidth",
+      "type": "int",
+      "description": "台阶与坡道的净宽（格）",
+      "min": 3,
+      "max": 5
+    },
+    {
+      "name": "lotSlideCells",
+      "type": "int",
+      "description": "联排沿等高线可外移的最大格数，保持坡道口连通",
+      "min": 0,
+      "max": 6
+    },
+    {
+      "name": "royalLayoutIds",
+      "type": "int[]",
+      "ref": "MapAreaRoyalTable",
+      "default": [],
+      "description": "王城轴线预设池；空数组使用普通山城策略"
+    },
+    {
+      "name": "facilitySlideRows",
+      "type": "int[]",
+      "description": "设施沿街区纵向的候选偏移，保持平坦占地和桥头净空"
+    },
+    {
+      "name": "surfaceProfileId",
+      "type": "int",
+      "description": "城镇地面配方",
+      "ref": "MapAreaTownSurfaceTable"
     }
   ],
   "rows": [
@@ -97,16 +211,20 @@
         2,
         3,
         4,
-        5
+        5,
+        8,
+        9,
+        11
       ],
       "blockIds": [
-        1,
-        2,
-        3
+        4,
+        5,
+        6
       ],
       "houseLotIds": [
-        6,
-        7
+        14,
+        15,
+        16
       ],
       "streetLotIds": [
         8,
@@ -116,16 +234,43 @@
         12,
         13
       ],
-      "houseCount": 10,
+      "houseCount": 24,
       "residentCount": 10,
       "residentTemplateIds": [
         1,
         2
       ],
-      "blockDistance": 12,
       "plazaRadius": 4,
-      "streetRadius": 1,
-      "treeCount": 28
+      "streetRadius": 2,
+      "treeCount": 12,
+      "streetRows": [
+        14,
+        4,
+        -6,
+        -16
+      ],
+      "halfWidth": 20,
+      "terraceHeight": 2.4,
+      "valleyHalfWidth": 4,
+      "rampLength": 4,
+      "stairRise": 0.2,
+      "maxWalkRise": 0.9,
+      "maxEdgeRise": 0.5,
+      "bridgeWidth": 3,
+      "bridgeThickness": 0.3,
+      "bridgeClearance": 3.2,
+      "bridgeAssetId": 53,
+      "rampWidth": 3,
+      "lotSlideCells": 5,
+      "royalLayoutIds": [],
+      "facilitySlideRows": [
+        0,
+        1,
+        2,
+        -1
+      ],
+      "houseSearchRadius": 6,
+      "surfaceProfileId": 1
     },
     {
       "id": 2,
@@ -134,16 +279,19 @@
         1,
         2,
         3,
-        5
+        5,
+        8,
+        12
       ],
       "blockIds": [
-        1,
-        2,
-        3
+        4,
+        5,
+        6
       ],
       "houseLotIds": [
-        6,
-        7
+        14,
+        15,
+        16
       ],
       "streetLotIds": [
         8,
@@ -153,16 +301,43 @@
         12,
         13
       ],
-      "houseCount": 6,
+      "houseCount": 27,
       "residentCount": 5,
       "residentTemplateIds": [
         1,
         2
       ],
-      "blockDistance": 12,
       "plazaRadius": 4,
-      "streetRadius": 1,
-      "treeCount": 28
+      "streetRadius": 2,
+      "treeCount": 12,
+      "streetRows": [
+        14,
+        4,
+        -6,
+        -16
+      ],
+      "halfWidth": 20,
+      "terraceHeight": 2.4,
+      "valleyHalfWidth": 4,
+      "rampLength": 4,
+      "stairRise": 0.2,
+      "maxWalkRise": 0.9,
+      "maxEdgeRise": 0.5,
+      "bridgeWidth": 3,
+      "bridgeThickness": 0.3,
+      "bridgeClearance": 3.2,
+      "bridgeAssetId": 53,
+      "rampWidth": 3,
+      "lotSlideCells": 5,
+      "royalLayoutIds": [],
+      "facilitySlideRows": [
+        0,
+        1,
+        2,
+        -1
+      ],
+      "houseSearchRadius": 6,
+      "surfaceProfileId": 2
     },
     {
       "id": 3,
@@ -172,16 +347,20 @@
         2,
         3,
         4,
-        5
+        5,
+        10,
+        11,
+        13
       ],
       "blockIds": [
-        1,
-        2,
-        3
+        4,
+        5,
+        6
       ],
       "houseLotIds": [
-        6,
-        7
+        14,
+        15,
+        16
       ],
       "streetLotIds": [
         8,
@@ -191,16 +370,43 @@
         12,
         13
       ],
-      "houseCount": 12,
+      "houseCount": 24,
       "residentCount": 8,
       "residentTemplateIds": [
         1,
         2
       ],
-      "blockDistance": 12,
       "plazaRadius": 4,
-      "streetRadius": 1,
-      "treeCount": 28
+      "streetRadius": 2,
+      "treeCount": 12,
+      "streetRows": [
+        14,
+        4,
+        -6,
+        -16
+      ],
+      "halfWidth": 20,
+      "terraceHeight": 2.4,
+      "valleyHalfWidth": 4,
+      "rampLength": 4,
+      "stairRise": 0.2,
+      "maxWalkRise": 0.9,
+      "maxEdgeRise": 0.5,
+      "bridgeWidth": 3,
+      "bridgeThickness": 0.3,
+      "bridgeClearance": 3.2,
+      "bridgeAssetId": 53,
+      "rampWidth": 3,
+      "lotSlideCells": 5,
+      "royalLayoutIds": [],
+      "facilitySlideRows": [
+        0,
+        1,
+        2,
+        -1
+      ],
+      "houseSearchRadius": 6,
+      "surfaceProfileId": 1
     },
     {
       "id": 4,
@@ -208,16 +414,18 @@
       "facilityIds": [
         1,
         3,
-        5
+        5,
+        9
       ],
       "blockIds": [
-        1,
-        2,
-        3
+        4,
+        5,
+        6
       ],
       "houseLotIds": [
-        6,
-        7
+        14,
+        15,
+        16
       ],
       "streetLotIds": [
         8,
@@ -227,16 +435,118 @@
         12,
         13
       ],
-      "houseCount": 3,
+      "houseCount": 18,
       "residentCount": 3,
       "residentTemplateIds": [
         1,
         2
       ],
-      "blockDistance": 12,
       "plazaRadius": 4,
-      "streetRadius": 1,
-      "treeCount": 28
+      "streetRadius": 2,
+      "treeCount": 12,
+      "streetRows": [
+        14,
+        4,
+        -6,
+        -16
+      ],
+      "halfWidth": 20,
+      "terraceHeight": 2.4,
+      "valleyHalfWidth": 4,
+      "rampLength": 4,
+      "stairRise": 0.2,
+      "maxWalkRise": 0.9,
+      "maxEdgeRise": 0.5,
+      "bridgeWidth": 3,
+      "bridgeThickness": 0.3,
+      "bridgeClearance": 3.2,
+      "bridgeAssetId": 53,
+      "rampWidth": 3,
+      "lotSlideCells": 5,
+      "royalLayoutIds": [],
+      "facilitySlideRows": [
+        0,
+        1,
+        2,
+        -1
+      ],
+      "houseSearchRadius": 6,
+      "surfaceProfileId": 2
+    },
+    {
+      "id": 5,
+      "name": "高台王城",
+      "facilityIds": [
+        1,
+        2,
+        3,
+        4,
+        6,
+        7,
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "blockIds": [
+        4,
+        5,
+        6
+      ],
+      "houseLotIds": [
+        14,
+        15,
+        16
+      ],
+      "streetLotIds": [
+        8,
+        9,
+        10,
+        11,
+        12,
+        13
+      ],
+      "houseCount": 42,
+      "residentCount": 16,
+      "residentTemplateIds": [
+        1,
+        2
+      ],
+      "plazaRadius": 4,
+      "streetRadius": 2,
+      "treeCount": 12,
+      "streetRows": [
+        14,
+        4,
+        -6,
+        -16
+      ],
+      "halfWidth": 20,
+      "terraceHeight": 2.4,
+      "valleyHalfWidth": 4,
+      "rampLength": 4,
+      "stairRise": 0.2,
+      "maxWalkRise": 0.9,
+      "maxEdgeRise": 0.5,
+      "bridgeWidth": 5,
+      "bridgeThickness": 0.3,
+      "bridgeClearance": 3.2,
+      "bridgeAssetId": 53,
+      "rampWidth": 5,
+      "lotSlideCells": 2,
+      "royalLayoutIds": [
+        1
+      ],
+      "facilitySlideRows": [
+        0,
+        1,
+        2,
+        -1
+      ],
+      "houseSearchRadius": 6,
+      "surfaceProfileId": 3
     }
   ]
 }

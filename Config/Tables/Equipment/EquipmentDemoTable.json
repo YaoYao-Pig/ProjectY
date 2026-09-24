@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "name": "EquipmentDemoTable",
+  "description": "首版装备演示：初始携带两把未装备武器；组件通过地牢宝箱和地面搜刮获得。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "starterItemIds",
+      "type": "int[]",
+      "description": "初始共享背包",
+      "ref": "EquipmentItemTable"
+    },
+    {
+      "name": "starterCounts",
+      "type": "int[]",
+      "description": "对应数量"
+    },
+    {
+      "name": "areaId",
+      "type": "int",
+      "description": "放置搜刮点的局部地图",
+      "ref": "MapAreaTable"
+    },
+    {
+      "name": "lootTableIds",
+      "type": "int[]",
+      "description": "搜刮点配置",
+      "ref": "EquipmentLootTable"
+    },
+    {
+      "name": "lootDistances",
+      "type": "int[]",
+      "description": "相对入口的目标寻路距离"
+    },
+    {
+      "name": "interactionRadius",
+      "type": "int",
+      "description": "可搜刮距离",
+      "min": 1,
+      "max": 3
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "starterItemIds": [
+        1,
+        2,
+        21,
+        31
+      ],
+      "starterCounts": [
+        1,
+        1,
+        2,
+        24
+      ],
+      "areaId": 1,
+      "lootTableIds": [
+        1,
+        2,
+        3
+      ],
+      "lootDistances": [
+        2,
+        5,
+        9
+      ],
+      "interactionRadius": 1
+    }
+  ]
+}

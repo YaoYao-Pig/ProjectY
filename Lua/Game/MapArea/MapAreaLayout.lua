@@ -6,9 +6,9 @@ function Layout.New(definition, seed, source, theme)
         seed=seed,source=source,theme=theme,width=definition.width,height=definition.height,
         hexRadius=definition.hexRadius,visionRadius=definition.visionRadius,moveStepSeconds=definition.moveStepSeconds,
         discovery=definition.discovery or 'explore',facilities={},npcs={},
-        cells={},cellsByKey={},rooms={},generationVersion=1,walkableCount=0}, Layout)
+        cells={},cellsByKey={},cellsByLayer={},rooms={},generationVersion=1,walkableCount=0}, Layout)
     for r=0,area.height-1 do for q=0,area.width-1 do
-        local cell={index=#area.cells+1,q=q,r=r,blocked=true,blocksSight=true,kind='wall',roomId=0,
+        local cell={index=#area.cells+1,q=q,r=r,layer=0,walkMask=63,blocked=true,blocksSight=true,kind='wall',roomId=0,
             roomOwner=0,roomTier=0,obstacleId=0,reserved=false,neighbors={}}
         area.cells[cell.index]=cell;area.cellsByKey[Hex.Key(q,r)]=cell
     end end
@@ -18,12 +18,30 @@ function Layout.New(definition, seed, source, theme)
     end end
     return area
 end
-function Layout:Find(q,r) return self.cellsByKey[Hex.Key(q,r)] end
+function Layout:Find(q,r,layer)
+    if not layer or layer==0 then return self.cellsByKey[Hex.Key(q,r)] end
+    return self.cellsByLayer[Hex.Key(q,r)..':'..layer]
+end
+-- 上层道路使用独立地格身份；同一 q/r 的地面与桥面各有邻接边和占格。
+function Layout:AddLayerCell(q,r,layer,height)
+    assert(layer>0 and not self:Find(q,r,layer),'Duplicate layered MapArea cell')
+    local cell={index=#self.cells+1,q=q,r=r,layer=layer,height=height,walkMask=0,blocked=false,blocksSight=false,
+        kind='bridge',surface='deck',roomId=0,roomOwner=0,roomTier=0,obstacleId=0,reserved=true,neighbors={}}
+    self.cells[cell.index]=cell;self.cellsByLayer[Hex.Key(q,r)..':'..layer]=cell
+    self.walkableCount=self.walkableCount+1;return cell
+end
+function Layout:CanStep(from,to)
+    if not to or to.blocked then return false end
+    for direction,index in ipairs(from.neighbors) do
+        if index==to.index then return (from.walkMask & (1 << (direction-1)))~=0 end
+    end
+    return false
+end
 function Layout:Neighbors(cell)
     local result={}
     for _,index in ipairs(cell.neighbors) do
         local other=self.cells[index]
-        if other and not other.blocked then result[#result+1]=other end
+        if self:CanStep(cell,other) then result[#result+1]=other end
     end
     return result
 end
@@ -42,7 +60,7 @@ function Layout:FindPath(startIndex, goalIndex, allowed)
         end
         for _,otherIndex in ipairs(self.cells[index].neighbors) do
             local other=self.cells[otherIndex]
-            if other and not other.blocked and previous[otherIndex]==nil and (not allowed or allowed(other)) then
+            if self:CanStep(self.cells[index],other) and previous[otherIndex]==nil and (not allowed or allowed(other)) then
                 previous[otherIndex]=index;queue[#queue+1]=otherIndex
             end
         end

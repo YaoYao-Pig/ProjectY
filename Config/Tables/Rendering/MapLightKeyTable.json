@@ -1,0 +1,137 @@
+{
+  "version": 1,
+  "name": "MapLightKeyTable",
+  "description": "昼夜视觉关键帧，按小时循环插值，不推进玩法时间",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "编号"
+    },
+    {
+      "name": "hour",
+      "type": "float",
+      "description": "小时",
+      "min": 0,
+      "max": 23.99
+    },
+    {
+      "name": "sunIntensity",
+      "type": "float",
+      "description": "主光强度",
+      "min": 0
+    },
+    {
+      "name": "sunColor",
+      "type": "string",
+      "description": "主光颜色"
+    },
+    {
+      "name": "skyColor",
+      "type": "string",
+      "description": "天空环境光"
+    },
+    {
+      "name": "equatorColor",
+      "type": "string",
+      "description": "水平环境光"
+    },
+    {
+      "name": "groundColor",
+      "type": "string",
+      "description": "底部环境光"
+    },
+    {
+      "name": "fogColor",
+      "type": "string",
+      "description": "远景雾色"
+    },
+    {
+      "name": "lampWeight",
+      "type": "float",
+      "description": "室内暖灯权重",
+      "min": 0,
+      "max": 1
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "hour": 0,
+      "sunIntensity": 0.22,
+      "sunColor": "#91acdc",
+      "skyColor": "#526785",
+      "equatorColor": "#414e67",
+      "groundColor": "#293747",
+      "fogColor": "#293e58",
+      "lampWeight": 1
+    },
+    {
+      "id": 2,
+      "hour": 5,
+      "sunIntensity": 0.28,
+      "sunColor": "#a0afd2",
+      "skyColor": "#61748f",
+      "equatorColor": "#575c78",
+      "groundColor": "#393d50",
+      "fogColor": "#596d88",
+      "lampWeight": 1
+    },
+    {
+      "id": 3,
+      "hour": 7,
+      "sunIntensity": 0.85,
+      "sunColor": "#ffd4a0",
+      "skyColor": "#afc6d2",
+      "equatorColor": "#aaaca1",
+      "groundColor": "#777869",
+      "fogColor": "#a7bcc9",
+      "lampWeight": 0.25
+    },
+    {
+      "id": 4,
+      "hour": 12,
+      "sunIntensity": 1.1,
+      "sunColor": "#fff1d8",
+      "skyColor": "#becddd",
+      "equatorColor": "#b4b8ab",
+      "groundColor": "#888477",
+      "fogColor": "#c0d0d8",
+      "lampWeight": 0.05
+    },
+    {
+      "id": 5,
+      "hour": 17,
+      "sunIntensity": 1.0,
+      "sunColor": "#ffcc91",
+      "skyColor": "#b9becf",
+      "equatorColor": "#b3a79b",
+      "groundColor": "#7e7169",
+      "fogColor": "#b9b8c3",
+      "lampWeight": 0.3
+    },
+    {
+      "id": 6,
+      "hour": 19,
+      "sunIntensity": 0.55,
+      "sunColor": "#ed9562",
+      "skyColor": "#747f9e",
+      "equatorColor": "#8c7880",
+      "groundColor": "#554d5b",
+      "fogColor": "#808ba5",
+      "lampWeight": 0.85
+    },
+    {
+      "id": 7,
+      "hour": 21,
+      "sunIntensity": 0.22,
+      "sunColor": "#92abdb",
+      "skyColor": "#526785",
+      "equatorColor": "#414e67",
+      "groundColor": "#293747",
+      "fogColor": "#354963",
+      "lampWeight": 1
+    }
+  ]
+}

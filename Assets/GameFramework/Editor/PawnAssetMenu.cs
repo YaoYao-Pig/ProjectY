@@ -44,6 +44,7 @@ namespace ProjectY.Editor
             var rig = rigAsset == null ? null : rigAsset.GetComponent<PawnView>();
             if (rig == null) throw new InvalidOperationException("棋子 Rig 缺失，请先同步棋子资源引用。");
             fields.FindProperty("pawnPrefab").objectReferenceValue = rig;
+            fields.FindProperty("equipmentCatalog").objectReferenceValue = AssetDatabase.LoadAssetAtPath<EquipmentAssetCatalog>(EquipmentAssets.CatalogPath);
             var rows = JsonUtility.FromJson<PartTable>(Read("PawnPartTable")).rows;
             var bindings = fields.FindProperty("pawnBindings"); bindings.arraySize = rows.Length;
             for (var i = 0; i < rows.Length; i++)
@@ -63,6 +64,8 @@ namespace ProjectY.Editor
             {
                 var rig = new GameObject("PawnRig").AddComponent<PawnView>(); SceneManager.MoveGameObjectToScene(rig.gameObject, preview);
                 var fields = new SerializedObject(rig); var mounts = fields.FindProperty("mounts"); mounts.arraySize = Slots.Length;
+                var equipment=rig.gameObject.AddComponent<PawnEquipmentView>();equipment.Bind(AssetDatabase.LoadAssetAtPath<EquipmentAssetCatalog>(EquipmentAssets.CatalogPath));
+                fields.FindProperty("equipmentView").objectReferenceValue=equipment;
                 for (var i = 0; i < Slots.Length; i++)
                 {
                     var anchor = new GameObject(Slots[i]).transform; anchor.SetParent(rig.transform, false); anchor.localPosition = Positions[i];

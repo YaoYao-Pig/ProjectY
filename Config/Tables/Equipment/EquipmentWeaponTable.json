@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "name": "EquipmentWeaponTable",
+  "description": "每把武器赋予技能；装备后替换角色原有基础武器攻击，保留防御和职业技能。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "武器物品 ID",
+      "ref": "EquipmentItemTable"
+    },
+    {
+      "name": "kind",
+      "type": "enum",
+      "description": "武器规则类别",
+      "values": [
+        "staff",
+        "gun"
+      ]
+    },
+    {
+      "name": "socketIds",
+      "type": "int[]",
+      "description": "按顺序显示的挂点",
+      "ref": "EquipmentSocketTable"
+    },
+    {
+      "name": "skillIds",
+      "type": "int[]",
+      "description": "装备赋予的技能",
+      "ref": "CombatSkillTable"
+    },
+    {
+      "name": "replacesSkillIds",
+      "type": "int[]",
+      "description": "装备时替换的基础攻击",
+      "ref": "CombatSkillTable"
+    },
+    {
+      "name": "poseId",
+      "type": "int",
+      "description": "人物持握姿态",
+      "ref": "EquipmentPoseTable"
+    },
+    {
+      "name": "magazineItemId",
+      "type": "int",
+      "description": "兼容弹匣物品，0 表示不使用弹匣",
+      "min": 0
+    },
+    {
+      "name": "previewRotation",
+      "type": "float[]",
+      "description": "工坊默认预览角度 XYZ"
+    },
+    {
+      "name": "previewZoom",
+      "type": "float",
+      "description": "工坊默认正交半高",
+      "min": 0.7,
+      "max": 2.6
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "kind": "staff",
+      "socketIds": [
+        1,
+        2
+      ],
+      "skillIds": [
+        6
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "poseId": 1,
+      "magazineItemId": 0,
+      "previewRotation": [
+        8,
+        25,
+        0
+      ],
+      "previewZoom": 1.45
+    },
+    {
+      "id": 2,
+      "kind": "gun",
+      "socketIds": [
+        3
+      ],
+      "skillIds": [
+        7,
+        8,
+        9
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "poseId": 2,
+      "magazineItemId": 21,
+      "previewRotation": [
+        8,
+        -68,
+        0
+      ],
+      "previewZoom": 1.1
+    }
+  ]
+}

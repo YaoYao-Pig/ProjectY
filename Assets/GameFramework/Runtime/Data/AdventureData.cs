@@ -12,19 +12,21 @@ namespace ProjectY.Data
         private readonly HashSet<int> visited = new HashSet<int>();
         public BattleData Battle { get; } = new BattleData();
         public MapAreaData Areas { get; } = new MapAreaData();
+        public EquipmentData Equipment { get; } = new EquipmentData();
         public uint Seed { get; private set; }
         public string Phase { get; private set; } = "map";
         public int SiteId { get; private set; }
         public int EventId { get; private set; }
         public int ChoiceId { get; private set; }
+        public int AreaEncounterId { get; private set; }
         public string ResultText { get; private set; } = "";
         public int PartyCount => party.Count;
         public CombatActorData GetPartyAt(int index) => party[index];
         public bool HasVisited(int siteId) => visited.Contains(siteId);
         public void Reset(uint seed)
         {
-            Seed = seed; party.Clear(); visited.Clear(); Battle.Clear(); Areas.Clear();
-            Phase = "map"; SiteId = 0; EventId = 0; ChoiceId = 0; ResultText = "";
+            Seed = seed; party.Clear(); visited.Clear(); Battle.Clear(); Areas.Clear(); Equipment.Clear();
+            Phase = "map"; SiteId = 0; EventId = 0; ChoiceId = 0; AreaEncounterId = 0; ResultText = "";
         }
         private void RequirePhase(string phase)
         {
@@ -50,6 +52,13 @@ namespace ProjectY.Data
             ChoiceId = choiceId; visited.Add(SiteId); Phase = "resolving";
         }
         public void BeginBattle() { RequirePhase("resolving"); Phase = "battle"; }
+        public void BeginAreaBattle(int encounterId)
+        {
+            RequirePhase("area");
+            if (encounterId < 1 || encounterId > Areas.Active.EncounterCount || Areas.Active.GetEncounterAt(encounterId - 1).Defeated)
+                throw new InvalidOperationException("Dungeon encounter is unavailable.");
+            Areas.Active.Stop(); AreaEncounterId = encounterId; ResultText = ""; Phase = "battle";
+        }
         // 地点探索独立于旧事件的立即开战流程；重复进入保留同地点的探索记录。
         public void BeginArea(int siteId)
         {
@@ -62,6 +71,15 @@ namespace ProjectY.Data
             RequirePhase("area"); Areas.Leave(); SiteId = 0; Phase = "map";
         }
         public void BeginSettlement() { RequirePhase("battle"); Phase = "resolving"; }
+        public void FinishAreaBattle(string result)
+        {
+            RequirePhase("resolving");
+            if (AreaEncounterId == 0 || Areas.Active == null || string.IsNullOrEmpty(result) || Battle.Winner == "")
+                throw new InvalidOperationException("No dungeon battle to settle.");
+            var victory = Battle.Winner == "victory";
+            if (!victory) { Areas.Leave(); SiteId = 0; }
+            Battle.Clear(); AreaEncounterId = 0; ResultText = result; Phase = victory ? "area" : "map";
+        }
         public void Complete(string result)
         {
             RequirePhase("resolving");

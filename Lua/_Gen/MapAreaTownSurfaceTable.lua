@@ -1,0 +1,14 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaTownSurfaceTableRow
+---@field id number 地表配方编号
+---@field name string 配方名称
+---@field roadId number 街道
+---@field plazaId number 广场
+---@field yardId number 院落
+---@field gardenId number 园地
+---@field bridgeId number 石桥
+---@field cliffId number 台地侧壁
+---@field trailId number 城外路迹
+---@field transitionCells number 城界土色过渡宽度
+---@field yardDistance number 建筑周边院落宽度
+return {["name"]="MapAreaTownSurfaceTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\229\156\176\232\161\168\233\133\141\230\150\185\231\188\150\229\143\183"},{["name"]="name",["type"]="string",["description"]="\233\133\141\230\150\185\229\144\141\231\167\176"},{["name"]="roadId",["type"]="int",["description"]="\232\161\151\233\129\147",["ref"]="MapAreaSurfaceTable"},{["name"]="plazaId",["type"]="int",["description"]="\229\185\191\229\156\186",["ref"]="MapAreaSurfaceTable"},{["name"]="yardId",["type"]="int",["description"]="\233\153\162\232\144\189",["ref"]="MapAreaSurfaceTable"},{["name"]="gardenId",["type"]="int",["description"]="\229\155\173\229\156\176",["ref"]="MapAreaSurfaceTable"},{["name"]="bridgeId",["type"]="int",["description"]="\231\159\179\230\161\165",["ref"]="MapAreaSurfaceTable"},{["name"]="cliffId",["type"]="int",["description"]="\229\143\176\229\156\176\228\190\167\229\163\129",["ref"]="MapAreaSurfaceTable"},{["name"]="trailId",["type"]="int",["description"]="\229\159\142\229\164\150\232\183\175\232\191\185",["ref"]="MapAreaSurfaceTable"},{["name"]="transitionCells",["type"]="int",["description"]="\229\159\142\231\149\140\229\156\159\232\137\178\232\191\135\230\184\161\229\174\189\229\186\166",["min"]=1,["max"]=8},{["name"]="yardDistance",["type"]="int",["description"]="\229\187\186\231\173\145\229\145\168\232\190\185\233\153\162\232\144\189\229\174\189\229\186\166",["min"]=1,["max"]=4}},["fingerprint"]="1d506dd5268276fa5dd0195a212ec16da3515673b9a93ab1271b1c5a803669f8"}

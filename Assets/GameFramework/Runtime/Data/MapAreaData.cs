@@ -4,6 +4,34 @@ using XLua;
 
 namespace ProjectY.Data
 {
+    [LuaCallCSharp]
+    public sealed class MapAreaLootData
+    {
+        public int Id { get; }
+        public int CellIndex { get; }
+        public int TableId { get; }
+        public bool Looted { get; internal set; }
+        internal MapAreaLootData(int id, int cell, int table) { Id = id; CellIndex = cell; TableId = table; }
+    }
+    /// <summary>地牢敌群与战斗共享角色实例；离开地点不恢复生命或重新生成。</summary>
+    [LuaCallCSharp]
+    public sealed class MapAreaEncounterData
+    {
+        private readonly List<CombatActorData> enemies = new List<CombatActorData>();
+        public int Id { get; }
+        public int EncounterId { get; }
+        public int EnemyCount => enemies.Count;
+        public bool Defeated => enemies.Count > 0 && enemies.TrueForAll(actor => actor.HP == 0);
+        public CombatActorData GetEnemyAt(int index) => enemies[index];
+        internal MapAreaEncounterData(int id, int encounterId) { Id = id; EncounterId = encounterId; }
+        public CombatActorData AddEnemy(int id, int templateId, int q, int r)
+        {
+            if (enemies.Count >= 4 || enemies.Exists(actor => actor.Id == id || (actor.Q == q && actor.R == r)))
+                throw new InvalidOperationException("Invalid dungeon enemy deployment.");
+            var actor = new CombatActorData(id, templateId); actor.Deploy(2, q, r); enemies.Add(actor); return actor;
+        }
+    }
+
     /// <summary>城镇居民的权威占格、巡游游标和游戏时钟；外观与路线归静态布局。</summary>
     [LuaCallCSharp]
     public sealed class MapAreaNpcData
@@ -28,6 +56,22 @@ namespace ProjectY.Data
     [LuaCallCSharp]
     public sealed class MapAreaStateData
     {
+        private readonly List<MapAreaLootData> loot = new List<MapAreaLootData>();
+        public bool LootInitialized { get; private set; }
+        public int LootCount => loot.Count;
+        public MapAreaLootData GetLootAt(int index) => loot[index];
+        public void AddLoot(int cellIndex, int tableId)
+        {
+            CheckCell(cellIndex);
+            if (LootInitialized || tableId < 1 || loot.Exists(row => row.CellIndex == cellIndex)) throw new InvalidOperationException("Invalid loot placement.");
+            loot.Add(new MapAreaLootData(loot.Count + 1, cellIndex, tableId)); Revision++;
+        }
+        public void CompleteLootInitialization() { LootInitialized = true; }
+        public void Loot(int id)
+        {
+            if (id < 1 || id > loot.Count || loot[id - 1].Looted) throw new InvalidOperationException("Loot is unavailable.");
+            loot[id - 1].Looted = true; Revision++;
+        }
         private readonly bool[] known;
         private readonly List<int> discovered = new List<int>();
         private int[] visible = Array.Empty<int>();
@@ -37,6 +81,22 @@ namespace ProjectY.Data
         private int cursor;
         private float elapsed;
         private readonly List<MapAreaNpcData> npcs = new List<MapAreaNpcData>();
+        private readonly List<MapAreaEncounterData> encounters = new List<MapAreaEncounterData>();
+        public bool EncountersInitialized { get; private set; }
+        public int EncounterCount => encounters.Count;
+        public MapAreaEncounterData GetEncounterAt(int index) => encounters[index];
+        public MapAreaEncounterData AddEncounter(int id, int encounterId)
+        {
+            if (EncountersInitialized || id != encounters.Count + 1 || encounterId < 1)
+                throw new InvalidOperationException("Invalid dungeon encounter initialization.");
+            var encounter = new MapAreaEncounterData(id, encounterId); encounters.Add(encounter); return encounter;
+        }
+        public void CompleteEncounterInitialization()
+        {
+            if (EncountersInitialized || encounters.Exists(group => group.EnemyCount == 0))
+                throw new InvalidOperationException("Dungeon encounters must be initialized exactly once.");
+            EncountersInitialized = true;
+        }
         public int NpcCount => npcs.Count;
         public MapAreaNpcData GetNpcAt(int index) => npcs[index];
         public int InteractionKind { get; private set; }
@@ -142,6 +202,11 @@ namespace ProjectY.Data
             route = (int[])cells.Clone(); cursor = 0; elapsed = 0; Revision++;
         }
         public void Stop() { route = Array.Empty<int>(); cursor = 0; elapsed = 0; Revision++; }
+        public void RetreatToEntry(int entryIndex)
+        {
+            CheckCell(entryIndex); Stop(); memberIds = Array.Empty<int>(); memberCells = Array.Empty<int>();
+            CellIndex = entryIndex; Revision++;
+        }
         // Lua 使用游戏时间推进，暂停时不借用 UI 的非缩放时钟继续移动。
         public bool Advance(float deltaTime, float stepSeconds)
         {

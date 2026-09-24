@@ -1,0 +1,11 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class EquipmentActionTableRow
+---@field id number 动作 ID；0 为不播放
+---@field name string 显示名称
+---@field kind "none"|"cast"|"fire"|"reload" 动作处理器
+---@field duration number 动作时长秒
+---@field recoil number 武器后坐位移
+---@field pitch number 武器俯仰幅度（度）
+---@field handLift number 动作抬手高度（米）
+---@field magazineDrop number 换弹时弹匣位移（米）
+return {["name"]="EquipmentActionTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\229\138\168\228\189\156 ID\239\188\1550 \228\184\186\228\184\141\230\146\173\230\148\190",["min"]=0},{["name"]="name",["type"]="text",["description"]="\230\152\190\231\164\186\229\144\141\231\167\176"},{["name"]="kind",["type"]="enum",["description"]="\229\138\168\228\189\156\229\164\132\231\144\134\229\153\168",["values"]={"none","cast","fire","reload"}},{["name"]="duration",["type"]="float",["description"]="\229\138\168\228\189\156\230\151\182\233\149\191\231\167\146",["min"]=0},{["name"]="recoil",["type"]="float",["description"]="\230\173\166\229\153\168\229\144\142\229\157\144\228\189\141\231\167\187",["min"]=0},{["name"]="pitch",["type"]="float",["description"]="\230\173\166\229\153\168\228\191\175\228\187\176\229\185\133\229\186\166\239\188\136\229\186\166\239\188\137"},{["name"]="handLift",["type"]="float",["description"]="\229\138\168\228\189\156\230\138\172\230\137\139\233\171\152\229\186\166\239\188\136\231\177\179\239\188\137"},{["name"]="magazineDrop",["type"]="float",["description"]="\230\141\162\229\188\185\230\151\182\229\188\185\229\140\163\228\189\141\231\167\187\239\188\136\231\177\179\239\188\137",["min"]=0}},["fingerprint"]="01c5de0217ed1c2e8ceb485dac61752ec794224ab201cd1ee05cfa0b707a6310"}

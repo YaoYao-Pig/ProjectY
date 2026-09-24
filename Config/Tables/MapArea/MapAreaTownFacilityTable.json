@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "MapAreaTownFacilityTable",
-  "description": "城镇功能设施；首版为门口信息入口，后续业务按稳定 kind 接入。",
+  "description": "城镇功能设施：可步入首层并在服务点查看介绍，业务按稳定 kind 接入。",
   "key": "id",
   "fields": [
     {
@@ -24,7 +24,14 @@
         "smithy",
         "shop",
         "guild",
-        "square"
+        "square",
+        "palace",
+        "bakery",
+        "herbalist",
+        "chapel",
+        "warehouse",
+        "stable",
+        "watchtower"
       ]
     },
     {
@@ -57,7 +64,7 @@
       "id": 1,
       "name": "酒馆",
       "kind": "tavern",
-      "description": "炉火、麦酒与旅人的消息在这里汇聚。住宿与招募业务待接入。",
+      "description": "可直接走入室内参观，在服务台附近查看介绍。交易、锻造、任务和住宿业务暂未接入。",
       "lotIds": [
         1
       ],
@@ -68,7 +75,7 @@
       "id": 2,
       "name": "铁匠铺",
       "kind": "smithy",
-      "description": "炉膛正热，门前陈列着新打的工具。锻造与修理业务待接入。",
+      "description": "可直接走入室内参观，在服务台附近查看介绍。交易、锻造、任务和住宿业务暂未接入。",
       "lotIds": [
         2
       ],
@@ -79,7 +86,7 @@
       "id": 3,
       "name": "商店",
       "kind": "shop",
-      "description": "货架与摊位供应旅途中需要的物资。买卖业务待接入。",
+      "description": "可直接走入室内参观，在服务台附近查看介绍。交易、锻造、任务和住宿业务暂未接入。",
       "lotIds": [
         3
       ],
@@ -90,7 +97,7 @@
       "id": 4,
       "name": "冒险公会",
       "kind": "guild",
-      "description": "布告栏记录来自各地的委托。任务与登记业务待接入。",
+      "description": "可直接走入室内参观，在服务台附近查看介绍。交易、锻造、任务和住宿业务暂未接入。",
       "lotIds": [
         4
       ],
@@ -104,6 +111,94 @@
       "description": "街道在喷泉周围交汇，居民在这里相遇与休息。",
       "lotIds": [
         5
+      ],
+      "npcTemplateId": 1,
+      "interactionRadius": 1
+    },
+    {
+      "id": 6,
+      "name": "王宫接见厅",
+      "kind": "palace",
+      "description": "王宫外苑和底层接见门厅开放，可直接步行进入；双翼、上层与宫廷玩法暂未开放。",
+      "lotIds": [
+        17
+      ],
+      "npcTemplateId": 1,
+      "interactionRadius": 2
+    },
+    {
+      "id": 7,
+      "name": "王家喷泉广场",
+      "kind": "square",
+      "description": "大道通往高台王宫，石桥下的小径连接下层外苑。",
+      "lotIds": [
+        20
+      ],
+      "npcTemplateId": 1,
+      "interactionRadius": 2
+    },
+    {
+      "id": 8,
+      "name": "面包房",
+      "kind": "bakery",
+      "description": "可直接走入首层参观，在服务点附近查看介绍；上层和专属业务尚未开放。",
+      "lotIds": [
+        25
+      ],
+      "npcTemplateId": 1,
+      "interactionRadius": 1
+    },
+    {
+      "id": 9,
+      "name": "药草铺",
+      "kind": "herbalist",
+      "description": "可直接走入首层参观，在服务点附近查看介绍；上层和专属业务尚未开放。",
+      "lotIds": [
+        26
+      ],
+      "npcTemplateId": 2,
+      "interactionRadius": 1
+    },
+    {
+      "id": 10,
+      "name": "小礼拜堂",
+      "kind": "chapel",
+      "description": "可直接走入首层参观，在服务点附近查看介绍；上层和专属业务尚未开放。",
+      "lotIds": [
+        27
+      ],
+      "npcTemplateId": 1,
+      "interactionRadius": 1
+    },
+    {
+      "id": 11,
+      "name": "货运仓库",
+      "kind": "warehouse",
+      "description": "可直接走入首层参观，在服务点附近查看介绍；上层和专属业务尚未开放。",
+      "lotIds": [
+        28
+      ],
+      "npcTemplateId": 2,
+      "interactionRadius": 1
+    },
+    {
+      "id": 12,
+      "name": "马厩",
+      "kind": "stable",
+      "description": "可直接走入首层参观，在服务点附近查看介绍；上层和专属业务尚未开放。",
+      "lotIds": [
+        29
+      ],
+      "npcTemplateId": 1,
+      "interactionRadius": 1
+    },
+    {
+      "id": 13,
+      "name": "瞭望塔值守室",
+      "kind": "watchtower",
+      "description": "可直接走入首层参观，在服务点附近查看介绍；上层和专属业务尚未开放。",
+      "lotIds": [
+        30
       ],
       "npcTemplateId": 1,
       "interactionRadius": 1

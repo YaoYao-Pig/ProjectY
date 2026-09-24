@@ -1,0 +1,31 @@
+{
+  "version": 1,
+  "name": "BattleHUDTable",
+  "description": "战斗 HUD 表现配置；物品栏仅展示配置图标与空槽，不提供背包或使用规则。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "当前战斗 HUD 使用配置 1",
+      "min": 1
+    },
+    {
+      "name": "itemIconIds",
+      "type": "int[]",
+      "description": "从左到右的四个物品展示槽；图片可留空",
+      "ref": "BattleIconTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "itemIconIds": [
+        6,
+        7,
+        8,
+        9
+      ]
+    }
+  ]
+}

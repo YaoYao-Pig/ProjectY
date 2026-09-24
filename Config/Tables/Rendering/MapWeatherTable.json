@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "name": "MapWeatherTable",
+  "description": "天气只控制显示，不修改地图水位或通行",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "编号"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "名称"
+    },
+    {
+      "name": "sunMultiplier",
+      "type": "float",
+      "description": "主光倍率",
+      "min": 0
+    },
+    {
+      "name": "ambientMultiplier",
+      "type": "float",
+      "description": "环境光倍率",
+      "min": 0
+    },
+    {
+      "name": "fogStart",
+      "type": "float",
+      "description": "从焦点起的雾起始距离，米",
+      "min": 0
+    },
+    {
+      "name": "fogEnd",
+      "type": "float",
+      "description": "从焦点起的雾完全覆盖距离，米",
+      "min": 1
+    },
+    {
+      "name": "tint",
+      "type": "string",
+      "description": "天气偏色"
+    },
+    {
+      "name": "shadowStrength",
+      "type": "float",
+      "description": "阴影强度",
+      "min": 0,
+      "max": 1
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "晴天",
+      "sunMultiplier": 1,
+      "ambientMultiplier": 1,
+      "fogStart": 120,
+      "fogEnd": 550,
+      "tint": "#ffffff",
+      "shadowStrength": 0.75
+    },
+    {
+      "id": 2,
+      "name": "阴天",
+      "sunMultiplier": 0.42,
+      "ambientMultiplier": 0.88,
+      "fogStart": 55,
+      "fogEnd": 320,
+      "tint": "#d8e1e7",
+      "shadowStrength": 0.36
+    }
+  ]
+}

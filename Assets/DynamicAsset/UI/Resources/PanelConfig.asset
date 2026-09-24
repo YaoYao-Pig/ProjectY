@@ -49,3 +49,75 @@ MonoBehaviour:
     PauseWorldOnOpen: 0
     CloseOnSceneChange: 1
     Prefab: {fileID: 9089853493612520214, guid: d2877ae3aa07e3a4ba852d8c4d1da4ff, type: 3}
+  - Name: BattleAction
+    Module: Battle
+    Kind: 1
+    Layer: Main
+    Modal: 0
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 3138978816229986126, guid: 1365089ef3e657e438c70a94d49209bb, type: 3}
+  - Name: BattleParty
+    Module: Battle
+    Kind: 1
+    Layer: Main
+    Modal: 0
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 9122639885997435780, guid: 105bb5db4e25148478e58e0936e774c9, type: 3}
+  - Name: BattleTurn
+    Module: Battle
+    Kind: 1
+    Layer: Main
+    Modal: 0
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 2568956474082500741, guid: 79e80a923989c9043a9f83adcba64daf, type: 3}
+  - Name: BattleHUD
+    Module: Battle
+    Kind: 0
+    Layer: Main
+    Modal: 0
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 1174290354692441211, guid: 83fe188db50ac5140bdb2f8b64f02b28, type: 3}
+  - Name: EquipmentRow
+    Module: Equipment
+    Kind: 1
+    Layer: Popup
+    Modal: 0
+    Cache: 1
+    CloseOnBack: 1
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 8862738764839738483, guid: 21e923e25915a484c88b2eeb72db2fa6, type: 3}
+  - Name: EquipmentWorkbench
+    Module: Equipment
+    Kind: 0
+    Layer: Popup
+    Modal: 1
+    Cache: 1
+    CloseOnBack: 1
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 1
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 6579765545182051106, guid: 016d47c93f29f9e4b91aa89a7314dc1e, type: 3}

@@ -4,15 +4,25 @@
 
 	<assembly fullname="Assembly-CSharp">
 	    <type fullname="ProjectY.FrameworkServices" preserve="all"/>
+		<type fullname="ProjectY.Samples.AdventureRuntimeDemo" preserve="all"/>
+		<type fullname="ProjectY.UI.BattleHUDView" preserve="all"/>
+		<type fullname="ProjectY.UI.EquipmentWorkbenchView" preserve="all"/>
 		<type fullname="ProjectY.UI.LuaPanel" preserve="all"/>
 		<type fullname="ProjectY.UI.LuaReference" preserve="all"/>
 		<type fullname="ProjectY.UI.PanelDefinition" preserve="all"/>
 		<type fullname="ProjectY.UI.UIHost" preserve="all"/>
+		<type fullname="ProjectY.UI.UIPointerState" preserve="all"/>
 		<type fullname="ProjectY.UI.UITxt" preserve="all"/>
 		<type fullname="ProjectY.Data.AdventureData" preserve="all"/>
 		<type fullname="ProjectY.Data.BattleData" preserve="all"/>
 		<type fullname="ProjectY.Data.CombatActorData" preserve="all"/>
+		<type fullname="ProjectY.Data.InventoryStackData" preserve="all"/>
+		<type fullname="ProjectY.Data.EquipmentWeaponData" preserve="all"/>
+		<type fullname="ProjectY.Data.EquipmentMagazineData" preserve="all"/>
+		<type fullname="ProjectY.Data.EquipmentData" preserve="all"/>
 		<type fullname="ProjectY.Data.LocalizationService" preserve="all"/>
+		<type fullname="ProjectY.Data.MapAreaLootData" preserve="all"/>
+		<type fullname="ProjectY.Data.MapAreaEncounterData" preserve="all"/>
 		<type fullname="ProjectY.Data.MapAreaNpcData" preserve="all"/>
 		<type fullname="ProjectY.Data.MapAreaStateData" preserve="all"/>
 		<type fullname="ProjectY.Data.MapAreaData" preserve="all"/>

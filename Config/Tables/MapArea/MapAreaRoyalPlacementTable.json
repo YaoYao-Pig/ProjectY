@@ -1,0 +1,1445 @@
+{
+  "version": 1,
+  "name": "MapAreaRoyalPlacementTable",
+  "description": "片区内的地块意图：先设施和主路，再临街住宅，最后绿地陈设",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "min": 1,
+      "description": "摆放 ID"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "预设名称"
+    },
+    {
+      "name": "localQ",
+      "type": "int",
+      "description": "局部 q"
+    },
+    {
+      "name": "localR",
+      "type": "int",
+      "description": "局部 r"
+    },
+    {
+      "name": "lotIds",
+      "type": "int[]",
+      "ref": "MapAreaTownLotTable",
+      "description": "随机外观池，设施项可为空"
+    },
+    {
+      "name": "facilityId",
+      "type": "int",
+      "min": 0,
+      "description": "设施 ID，0 表示陈设/住宅"
+    },
+    {
+      "name": "districtId",
+      "type": "int",
+      "description": "所属功能片区",
+      "ref": "MapAreaRoyalDistrictTable"
+    },
+    {
+      "name": "role",
+      "type": "enum",
+      "description": "生成阶段",
+      "values": [
+        "landmark",
+        "facility",
+        "house",
+        "garden",
+        "detail"
+      ]
+    },
+    {
+      "name": "searchRadius",
+      "type": "int",
+      "description": "相对目标锚点的有限搜索半径",
+      "min": 0,
+      "max": 20
+    },
+    {
+      "name": "rotations",
+      "type": "int[]",
+      "description": "允许的六方向朝向；住宅按临街评分选择"
+    },
+    {
+      "name": "required",
+      "type": "bool",
+      "description": "必需地块找不到合法位置时明确报错；可选景观记录未摆放原因"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "王宫",
+      "districtId": 1,
+      "localQ": 0,
+      "localR": 0,
+      "lotIds": [],
+      "facilityId": 6,
+      "role": "landmark",
+      "searchRadius": 0,
+      "rotations": [
+        0
+      ],
+      "required": true
+    },
+    {
+      "id": 2,
+      "name": "城门",
+      "districtId": 2,
+      "localQ": 0,
+      "localR": 0,
+      "lotIds": [
+        18
+      ],
+      "facilityId": 0,
+      "role": "landmark",
+      "searchRadius": 0,
+      "rotations": [
+        0
+      ],
+      "required": true
+    },
+    {
+      "id": 3,
+      "name": "市集喷泉",
+      "districtId": 3,
+      "localQ": 2,
+      "localR": 0,
+      "lotIds": [],
+      "facilityId": 7,
+      "role": "facility",
+      "searchRadius": 9,
+      "rotations": [
+        0,
+        3
+      ],
+      "required": true
+    },
+    {
+      "id": 4,
+      "name": "旅人酒馆",
+      "districtId": 3,
+      "localQ": -6,
+      "localR": 4,
+      "lotIds": [],
+      "facilityId": 1,
+      "role": "facility",
+      "searchRadius": 9,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    },
+    {
+      "id": 5,
+      "name": "工匠铁铺",
+      "districtId": 4,
+      "localQ": 0,
+      "localR": 0,
+      "lotIds": [],
+      "facilityId": 2,
+      "role": "facility",
+      "searchRadius": 9,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    },
+    {
+      "id": 6,
+      "name": "街角商店",
+      "districtId": 3,
+      "localQ": 7,
+      "localR": -4,
+      "lotIds": [],
+      "facilityId": 3,
+      "role": "facility",
+      "searchRadius": 9,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    },
+    {
+      "id": 7,
+      "name": "坡顶公会",
+      "districtId": 5,
+      "localQ": -3,
+      "localR": 6,
+      "lotIds": [],
+      "facilityId": 4,
+      "role": "facility",
+      "searchRadius": 9,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    },
+    {
+      "id": 8,
+      "name": "沿街联排",
+      "districtId": 5,
+      "localQ": 0,
+      "localR": 0,
+      "lotIds": [
+        14,
+        15,
+        16
+      ],
+      "facilityId": 0,
+      "role": "house",
+      "searchRadius": 14,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    },
+    {
+      "id": 9,
+      "name": "沿街联排",
+      "districtId": 5,
+      "localQ": 6,
+      "localR": -8,
+      "lotIds": [
+        14,
+        15,
+        16
+      ],
+      "facilityId": 0,
+      "role": "house",
+      "searchRadius": 14,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    },
+    {
+      "id": 10,
+      "name": "沿街联排",
+      "districtId": 5,
+      "localQ": -8,
+      "localR": 8,
+      "lotIds": [
+        14,
+        15,
+        16
+      ],
+      "facilityId": 0,
+      "role": "house",
+      "searchRadius": 14,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    },
+    {
+      "id": 11,
+      "name": "沿街联排",
+      "districtId": 5,
+      "localQ": -2,
+      "localR": 12,
+      "lotIds": [
+        14,
+        15,
+        16
+      ],
+      "facilityId": 0,
+      "role": "house",
+      "searchRadius": 14,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    },
+    {
+      "id": 12,
+      "name": "沿街联排",
+      "districtId": 3,
+      "localQ": -1,
+      "localR": -6,
+      "lotIds": [
+        14,
+        15,
+        16
+      ],
+      "facilityId": 0,
+      "role": "house",
+      "searchRadius": 14,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    },
+    {
+      "id": 13,
+      "name": "沿街联排",
+      "districtId": 3,
+      "localQ": 1,
+      "localR": 8,
+      "lotIds": [
+        14,
+        15,
+        16
+      ],
+      "facilityId": 0,
+      "role": "house",
+      "searchRadius": 14,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    },
+    {
+      "id": 14,
+      "name": "沿街联排",
+      "districtId": 4,
+      "localQ": -7,
+      "localR": 4,
+      "lotIds": [
+        14,
+        15,
+        16
+      ],
+      "facilityId": 0,
+      "role": "house",
+      "searchRadius": 14,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    },
+    {
+      "id": 15,
+      "name": "沿街联排",
+      "districtId": 4,
+      "localQ": 7,
+      "localR": -4,
+      "lotIds": [
+        14,
+        15,
+        16
+      ],
+      "facilityId": 0,
+      "role": "house",
+      "searchRadius": 14,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    },
+    {
+      "id": 16,
+      "name": "宫殿中庭喷泉",
+      "districtId": 1,
+      "localQ": -2,
+      "localR": 4,
+      "lotIds": [
+        20
+      ],
+      "facilityId": 0,
+      "role": "garden",
+      "searchRadius": 0,
+      "rotations": [
+        0
+      ],
+      "required": true
+    },
+    {
+      "id": 17,
+      "name": "御苑凉亭",
+      "districtId": 6,
+      "localQ": 2,
+      "localR": -12,
+      "lotIds": [
+        19
+      ],
+      "facilityId": 0,
+      "role": "garden",
+      "searchRadius": 9,
+      "rotations": [
+        0,
+        3
+      ],
+      "required": false
+    },
+    {
+      "id": 18,
+      "name": "东坡观景亭",
+      "districtId": 5,
+      "localQ": 8,
+      "localR": -12,
+      "lotIds": [
+        19
+      ],
+      "facilityId": 0,
+      "role": "garden",
+      "searchRadius": 8,
+      "rotations": [
+        0,
+        3
+      ],
+      "required": false
+    },
+    {
+      "id": 19,
+      "name": "刺绣花坛",
+      "districtId": 6,
+      "localQ": 1,
+      "localR": -6,
+      "lotIds": [
+        22
+      ],
+      "facilityId": 0,
+      "role": "garden",
+      "searchRadius": 11,
+      "rotations": [
+        0,
+        3
+      ],
+      "required": false
+    },
+    {
+      "id": 20,
+      "name": "刺绣花坛",
+      "districtId": 6,
+      "localQ": 2,
+      "localR": 2,
+      "lotIds": [
+        22
+      ],
+      "facilityId": 0,
+      "role": "garden",
+      "searchRadius": 11,
+      "rotations": [
+        0,
+        3
+      ],
+      "required": false
+    },
+    {
+      "id": 21,
+      "name": "刺绣花坛",
+      "districtId": 6,
+      "localQ": 0,
+      "localR": 10,
+      "lotIds": [
+        22
+      ],
+      "facilityId": 0,
+      "role": "garden",
+      "searchRadius": 11,
+      "rotations": [
+        0,
+        3
+      ],
+      "required": false
+    },
+    {
+      "id": 22,
+      "name": "刺绣花坛",
+      "districtId": 6,
+      "localQ": -9,
+      "localR": 8,
+      "lotIds": [
+        24
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 11,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 23,
+      "name": "刺绣花坛",
+      "districtId": 6,
+      "localQ": 5,
+      "localR": -14,
+      "lotIds": [
+        24
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 11,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 24,
+      "name": "刺绣花坛",
+      "districtId": 4,
+      "localQ": -9,
+      "localR": 8,
+      "lotIds": [
+        24
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 11,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 25,
+      "name": "刺绣花坛",
+      "districtId": 1,
+      "localQ": -18,
+      "localR": 0,
+      "lotIds": [
+        24
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 11,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 26,
+      "name": "刺绣花坛",
+      "districtId": 5,
+      "localQ": 10,
+      "localR": -12,
+      "lotIds": [
+        24
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 11,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 27,
+      "name": "街角雕像",
+      "districtId": 1,
+      "localQ": -10,
+      "localR": 10,
+      "lotIds": [
+        21
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 6,
+      "rotations": [
+        0,
+        3
+      ],
+      "required": false
+    },
+    {
+      "id": 28,
+      "name": "街角雕像",
+      "districtId": 1,
+      "localQ": 1,
+      "localR": 10,
+      "lotIds": [
+        21
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 6,
+      "rotations": [
+        0,
+        3
+      ],
+      "required": false
+    },
+    {
+      "id": 29,
+      "name": "街角雕像",
+      "districtId": 3,
+      "localQ": -4,
+      "localR": 4,
+      "lotIds": [
+        21
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 6,
+      "rotations": [
+        0,
+        3
+      ],
+      "required": false
+    },
+    {
+      "id": 30,
+      "name": "街角雕像",
+      "districtId": 5,
+      "localQ": 1,
+      "localR": 2,
+      "lotIds": [
+        21
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 6,
+      "rotations": [
+        0,
+        3
+      ],
+      "required": false
+    },
+    {
+      "id": 31,
+      "name": "庭园柏树",
+      "districtId": 1,
+      "localQ": -6,
+      "localR": -4,
+      "lotIds": [
+        23
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 32,
+      "name": "庭园柏树",
+      "districtId": 1,
+      "localQ": 6,
+      "localR": 4,
+      "lotIds": [
+        23
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 33,
+      "name": "庭园柏树",
+      "districtId": 1,
+      "localQ": 10,
+      "localR": -12,
+      "lotIds": [
+        23
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 34,
+      "name": "庭园柏树",
+      "districtId": 1,
+      "localQ": -12,
+      "localR": 12,
+      "lotIds": [
+        23
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 35,
+      "name": "庭园柏树",
+      "districtId": 1,
+      "localQ": -14,
+      "localR": 8,
+      "lotIds": [
+        23
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 36,
+      "name": "庭园柏树",
+      "districtId": 1,
+      "localQ": 13,
+      "localR": -8,
+      "lotIds": [
+        23
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 37,
+      "name": "庭园柏树",
+      "districtId": 5,
+      "localQ": -6,
+      "localR": -4,
+      "lotIds": [
+        23
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 38,
+      "name": "庭园柏树",
+      "districtId": 5,
+      "localQ": 6,
+      "localR": 4,
+      "lotIds": [
+        23
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 39,
+      "name": "庭园柏树",
+      "districtId": 5,
+      "localQ": 10,
+      "localR": -12,
+      "lotIds": [
+        23
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 40,
+      "name": "庭园柏树",
+      "districtId": 5,
+      "localQ": -12,
+      "localR": 12,
+      "lotIds": [
+        23
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 41,
+      "name": "庭园柏树",
+      "districtId": 5,
+      "localQ": -14,
+      "localR": 8,
+      "lotIds": [
+        23
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 42,
+      "name": "庭园柏树",
+      "districtId": 5,
+      "localQ": 13,
+      "localR": -8,
+      "lotIds": [
+        23
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 43,
+      "name": "庭园柏树",
+      "districtId": 6,
+      "localQ": -6,
+      "localR": -4,
+      "lotIds": [
+        23
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 44,
+      "name": "庭园柏树",
+      "districtId": 6,
+      "localQ": 6,
+      "localR": 4,
+      "lotIds": [
+        23
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 45,
+      "name": "庭园柏树",
+      "districtId": 6,
+      "localQ": 10,
+      "localR": -12,
+      "lotIds": [
+        23
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 46,
+      "name": "庭园柏树",
+      "districtId": 6,
+      "localQ": -12,
+      "localR": 12,
+      "lotIds": [
+        23
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 47,
+      "name": "庭园柏树",
+      "districtId": 6,
+      "localQ": -14,
+      "localR": 8,
+      "lotIds": [
+        23
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 48,
+      "name": "庭园柏树",
+      "districtId": 6,
+      "localQ": 13,
+      "localR": -8,
+      "lotIds": [
+        23
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 49,
+      "name": "街头摊亭",
+      "districtId": 3,
+      "localQ": -4,
+      "localR": 3,
+      "lotIds": [
+        11,
+        12,
+        13
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 6,
+      "rotations": [
+        0,
+        3
+      ],
+      "required": false
+    },
+    {
+      "id": 50,
+      "name": "街头摊亭",
+      "districtId": 3,
+      "localQ": 5,
+      "localR": -3,
+      "lotIds": [
+        11,
+        12,
+        13
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 6,
+      "rotations": [
+        0,
+        3
+      ],
+      "required": false
+    },
+    {
+      "id": 51,
+      "name": "街头摊亭",
+      "districtId": 3,
+      "localQ": 4,
+      "localR": 4,
+      "lotIds": [
+        11,
+        12,
+        13
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 6,
+      "rotations": [
+        0,
+        3
+      ],
+      "required": false
+    },
+    {
+      "id": 52,
+      "name": "旧街连续联排",
+      "districtId": 7,
+      "localQ": -3,
+      "localR": 0,
+      "lotIds": [
+        14,
+        15,
+        16
+      ],
+      "facilityId": 0,
+      "role": "house",
+      "searchRadius": 14,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    },
+    {
+      "id": 53,
+      "name": "旧街连续联排",
+      "districtId": 7,
+      "localQ": 3,
+      "localR": 0,
+      "lotIds": [
+        14,
+        15,
+        16
+      ],
+      "facilityId": 0,
+      "role": "house",
+      "searchRadius": 14,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    },
+    {
+      "id": 54,
+      "name": "旧街连续联排",
+      "districtId": 7,
+      "localQ": 3,
+      "localR": -6,
+      "lotIds": [
+        14,
+        15,
+        16
+      ],
+      "facilityId": 0,
+      "role": "house",
+      "searchRadius": 14,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    },
+    {
+      "id": 55,
+      "name": "旧街连续联排",
+      "districtId": 7,
+      "localQ": -2,
+      "localR": 6,
+      "lotIds": [
+        14,
+        15,
+        16
+      ],
+      "facilityId": 0,
+      "role": "house",
+      "searchRadius": 14,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    },
+    {
+      "id": 56,
+      "name": "旧街连续联排",
+      "districtId": 3,
+      "localQ": -7,
+      "localR": 4,
+      "lotIds": [
+        14,
+        15,
+        16
+      ],
+      "facilityId": 0,
+      "role": "house",
+      "searchRadius": 14,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    },
+    {
+      "id": 57,
+      "name": "旧街连续联排",
+      "districtId": 4,
+      "localQ": -4,
+      "localR": 2,
+      "lotIds": [
+        14,
+        15,
+        16
+      ],
+      "facilityId": 0,
+      "role": "house",
+      "searchRadius": 14,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    },
+    {
+      "id": 58,
+      "name": "院落绿荫",
+      "districtId": 3,
+      "localQ": -4,
+      "localR": -2,
+      "lotIds": [
+        24
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 59,
+      "name": "院落绿荫",
+      "districtId": 3,
+      "localQ": 2,
+      "localR": 4,
+      "lotIds": [
+        24
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 60,
+      "name": "院落绿荫",
+      "districtId": 3,
+      "localQ": -5,
+      "localR": 6,
+      "lotIds": [
+        24
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 61,
+      "name": "院落绿荫",
+      "districtId": 4,
+      "localQ": -4,
+      "localR": -2,
+      "lotIds": [
+        24
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 62,
+      "name": "院落绿荫",
+      "districtId": 4,
+      "localQ": 2,
+      "localR": 4,
+      "lotIds": [
+        24
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 63,
+      "name": "院落绿荫",
+      "districtId": 4,
+      "localQ": -5,
+      "localR": 6,
+      "lotIds": [
+        24
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 64,
+      "name": "院落绿荫",
+      "districtId": 7,
+      "localQ": -4,
+      "localR": -2,
+      "lotIds": [
+        24
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 65,
+      "name": "院落绿荫",
+      "districtId": 7,
+      "localQ": 2,
+      "localR": 4,
+      "lotIds": [
+        24
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 66,
+      "name": "院落绿荫",
+      "districtId": 7,
+      "localQ": -5,
+      "localR": 6,
+      "lotIds": [
+        24
+      ],
+      "facilityId": 0,
+      "role": "detail",
+      "searchRadius": 8,
+      "rotations": [
+        0
+      ],
+      "required": false
+    },
+    {
+      "id": 67,
+      "name": "面包房",
+      "districtId": 3,
+      "localQ": 2,
+      "localR": -2,
+      "lotIds": [],
+      "facilityId": 8,
+      "role": "facility",
+      "searchRadius": 16,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    },
+    {
+      "id": 68,
+      "name": "药草铺",
+      "districtId": 7,
+      "localQ": -4,
+      "localR": 0,
+      "lotIds": [],
+      "facilityId": 9,
+      "role": "facility",
+      "searchRadius": 16,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    },
+    {
+      "id": 69,
+      "name": "小礼拜堂",
+      "districtId": 5,
+      "localQ": -6,
+      "localR": 2,
+      "lotIds": [],
+      "facilityId": 10,
+      "role": "facility",
+      "searchRadius": 16,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    },
+    {
+      "id": 70,
+      "name": "货运仓库",
+      "districtId": 4,
+      "localQ": 0,
+      "localR": -5,
+      "lotIds": [],
+      "facilityId": 11,
+      "role": "facility",
+      "searchRadius": 16,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    },
+    {
+      "id": 71,
+      "name": "马厩",
+      "districtId": 2,
+      "localQ": 8,
+      "localR": -3,
+      "lotIds": [],
+      "facilityId": 12,
+      "role": "facility",
+      "searchRadius": 16,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    },
+    {
+      "id": 72,
+      "name": "瞭望塔值守室",
+      "districtId": 6,
+      "localQ": 4,
+      "localR": -4,
+      "lotIds": [],
+      "facilityId": 13,
+      "role": "facility",
+      "searchRadius": 16,
+      "rotations": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "required": true
+    }
+  ]
+}

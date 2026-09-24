@@ -1,0 +1,16 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaTownInteriorTableRow
+---@field id number 对应完整建筑地块 ID
+---@field name string 室内类型
+---@field coverAssetId number 进入后剖切隐藏的上墙和屋顶
+---@field navRadius number 模型与导航制作时的地格半径，改变时需要同步重制占地
+---@field interiorQ number[] 可走室内地格 q，不含墙和家具
+---@field interiorR number[] 可走室内地格 r
+---@field serviceQ number 室内介绍/服务点 q
+---@field serviceR number 室内介绍/服务点 r
+---@field floorColor string 室内地面纯色
+---@field doorWidth number 门洞净宽，米
+---@field doorHeight number 门洞净高，米
+---@field storeyHeight number 首层层高，米
+---@field surfaceId number 室内地面材质
+return {["name"]="MapAreaTownInteriorTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["ref"]="MapAreaTownLotTable",["description"]="\229\175\185\229\186\148\229\174\140\230\149\180\229\187\186\231\173\145\229\156\176\229\157\151 ID"},{["name"]="name",["type"]="string",["description"]="\229\174\164\229\134\133\231\177\187\229\158\139"},{["name"]="coverAssetId",["type"]="int",["ref"]="MapAssetTable",["description"]="\232\191\155\229\133\165\229\144\142\229\137\150\229\136\135\233\154\144\232\151\143\231\154\132\228\184\138\229\162\153\229\146\140\229\177\139\233\161\182"},{["name"]="navRadius",["type"]="float",["description"]="\230\168\161\229\158\139\228\184\142\229\175\188\232\136\170\229\136\182\228\189\156\230\151\182\231\154\132\229\156\176\230\160\188\229\141\138\229\190\132\239\188\140\230\148\185\229\143\152\230\151\182\233\156\128\232\166\129\229\144\140\230\173\165\233\135\141\229\136\182\229\141\160\229\156\176"},{["name"]="interiorQ",["type"]="int[]",["description"]="\229\143\175\232\181\176\229\174\164\229\134\133\229\156\176\230\160\188 q\239\188\140\228\184\141\229\144\171\229\162\153\229\146\140\229\174\182\229\133\183"},{["name"]="interiorR",["type"]="int[]",["description"]="\229\143\175\232\181\176\229\174\164\229\134\133\229\156\176\230\160\188 r"},{["name"]="serviceQ",["type"]="int",["description"]="\229\174\164\229\134\133\228\187\139\231\187\141/\230\156\141\229\138\161\231\130\185 q"},{["name"]="serviceR",["type"]="int",["description"]="\229\174\164\229\134\133\228\187\139\231\187\141/\230\156\141\229\138\161\231\130\185 r"},{["name"]="floorColor",["type"]="string",["description"]="\229\174\164\229\134\133\229\156\176\233\157\162\231\186\175\232\137\178"},{["name"]="doorWidth",["type"]="float",["description"]="\233\151\168\230\180\158\229\135\128\229\174\189\239\188\140\231\177\179"},{["name"]="doorHeight",["type"]="float",["description"]="\233\151\168\230\180\158\229\135\128\233\171\152\239\188\140\231\177\179"},{["name"]="storeyHeight",["type"]="float",["description"]="\233\166\150\229\177\130\229\177\130\233\171\152\239\188\140\231\177\179"},{["name"]="surfaceId",["type"]="int",["description"]="\229\174\164\229\134\133\229\156\176\233\157\162\230\157\144\232\180\168",["ref"]="MapAreaSurfaceTable"}},["fingerprint"]="342da97c87c6e32e0e7fbcf65416d7b01913901991f175cb1d13857bac38234e"}

@@ -22,8 +22,16 @@ function Appearance:Resolve(partIds)
     assert(slots.body and slots.base,'Pawn appearance requires body and base')
     return result
 end
-function Appearance:Template(unitId)
+function Appearance:Template(unitId,equipment)
     local row=assert(self.templates[unitId],'Missing pawn template for unit: '..unitId)
+    if equipment then
+        local ids={equipment.pose.corePartId}
+        for _,id in ipairs(row.partIds) do
+            local slot=self.parts:Get(id).slot
+            if slot~='body' and slot~='mainHand' and slot~='offHand' then ids[#ids+1]=id end
+        end
+        return {templateId=row.id,parts=self:Resolve(ids),equipment=equipment}
+    end
     return {templateId=row.id,parts=self:Resolve(row.partIds)}
 end
 return Appearance

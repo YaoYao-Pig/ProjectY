@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "name": "EquipmentPoseTable",
+  "description": "参数化刚体持握姿态；独立手臂关节和手掌复用同一模型，不使用完整骨骼行走动画。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "显示名称"
+    },
+    {
+      "name": "corePartId",
+      "type": "int",
+      "description": "无手臂身体部件",
+      "ref": "PawnPartTable"
+    },
+    {
+      "name": "upperAssetId",
+      "type": "int",
+      "description": "单位长度上臂模型",
+      "ref": "EquipmentAssetTable"
+    },
+    {
+      "name": "forearmAssetId",
+      "type": "int",
+      "description": "单位长度前臂模型",
+      "ref": "EquipmentAssetTable"
+    },
+    {
+      "name": "handAssetId",
+      "type": "int",
+      "description": "手掌模型",
+      "ref": "EquipmentAssetTable"
+    },
+    {
+      "name": "mainShoulder",
+      "type": "float[]",
+      "description": "人物局部 xyz"
+    },
+    {
+      "name": "mainElbow",
+      "type": "float[]",
+      "description": "人物局部 xyz"
+    },
+    {
+      "name": "mainHand",
+      "type": "float[]",
+      "description": "人物局部 xyz"
+    },
+    {
+      "name": "offShoulder",
+      "type": "float[]",
+      "description": "人物局部 xyz"
+    },
+    {
+      "name": "offElbow",
+      "type": "float[]",
+      "description": "人物局部 xyz"
+    },
+    {
+      "name": "offHand",
+      "type": "float[]",
+      "description": "人物局部 xyz"
+    },
+    {
+      "name": "weaponRotation",
+      "type": "float[]",
+      "description": "人物局部 xyz"
+    }
+  ],
+  "rows": [
+    {
+      "corePartId": 19,
+      "upperAssetId": 10,
+      "forearmAssetId": 11,
+      "handAssetId": 12,
+      "mainShoulder": [
+        -0.29,
+        1.25,
+        0
+      ],
+      "offShoulder": [
+        0.29,
+        1.25,
+        0
+      ],
+      "weaponRotation": [
+        0,
+        0,
+        0
+      ],
+      "id": 1,
+      "name": "单手持 · 施法",
+      "mainElbow": [
+        -0.44,
+        1.07,
+        0.06
+      ],
+      "mainHand": [
+        -0.5,
+        0.98,
+        0.28
+      ],
+      "offElbow": [
+        0.44,
+        1.07,
+        0.06
+      ],
+      "offHand": [
+        0.5,
+        0.98,
+        0.28
+      ]
+    },
+    {
+      "corePartId": 19,
+      "upperAssetId": 10,
+      "forearmAssetId": 11,
+      "handAssetId": 12,
+      "mainShoulder": [
+        -0.29,
+        1.25,
+        0
+      ],
+      "offShoulder": [
+        0.29,
+        1.25,
+        0
+      ],
+      "weaponRotation": [
+        0,
+        0,
+        0
+      ],
+      "id": 2,
+      "name": "双手持 · 远程",
+      "mainElbow": [
+        -0.4,
+        1.0,
+        0.05
+      ],
+      "mainHand": [
+        -0.18,
+        1.1,
+        0.3
+      ],
+      "offElbow": [
+        0.42,
+        1.05,
+        0.32
+      ],
+      "offHand": [
+        -0.18,
+        1.1,
+        0.76
+      ]
+    }
+  ]
+}

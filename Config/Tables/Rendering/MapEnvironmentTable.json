@@ -1,0 +1,146 @@
+{
+  "version": 1,
+  "name": "MapEnvironmentTable",
+  "description": "地图表现层生命周期、视觉时钟与室内局部灯",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "配方编号"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "名称"
+    },
+    {
+      "name": "keyIds",
+      "type": "int[]",
+      "description": "按小时递增的关键帧",
+      "ref": "MapLightKeyTable"
+    },
+    {
+      "name": "weatherIds",
+      "type": "int[]",
+      "description": "允许的天气",
+      "ref": "MapWeatherTable"
+    },
+    {
+      "name": "defaultWeatherId",
+      "type": "int",
+      "description": "初始天气",
+      "ref": "MapWeatherTable"
+    },
+    {
+      "name": "cycleSeconds",
+      "type": "float",
+      "description": "一个完整视觉日的真实秒数",
+      "min": 60
+    },
+    {
+      "name": "startHour",
+      "type": "float",
+      "description": "初始小时",
+      "min": 0,
+      "max": 24
+    },
+    {
+      "name": "autoCycle",
+      "type": "bool",
+      "description": "自动推进视觉时间"
+    },
+    {
+      "name": "transitionSeconds",
+      "type": "float",
+      "description": "天气和室内外混合时间",
+      "min": 0.1
+    },
+    {
+      "name": "sunAzimuth",
+      "type": "float",
+      "description": "日照方位角"
+    },
+    {
+      "name": "indoorSunMultiplier",
+      "type": "float",
+      "description": "室内直射光倍率",
+      "min": 0,
+      "max": 1
+    },
+    {
+      "name": "indoorAmbientColor",
+      "type": "string",
+      "description": "室内环境色"
+    },
+    {
+      "name": "lampColor",
+      "type": "string",
+      "description": "室内灯色"
+    },
+    {
+      "name": "lampIntensity",
+      "type": "float",
+      "description": "灯光强度",
+      "min": 0
+    },
+    {
+      "name": "lampRange",
+      "type": "float",
+      "description": "灯光范围，米",
+      "min": 1
+    },
+    {
+      "name": "lampHeight",
+      "type": "float",
+      "description": "离地高度，米",
+      "min": 1
+    },
+    {
+      "name": "maxLocalLights",
+      "type": "int",
+      "description": "同时启用的局部灯上限",
+      "min": 1,
+      "max": 8
+    },
+    {
+      "name": "shadowDistance",
+      "type": "float",
+      "description": "实时阴影距离，米",
+      "min": 10
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "低多边形城镇",
+      "keyIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7
+      ],
+      "weatherIds": [
+        1,
+        2
+      ],
+      "defaultWeatherId": 1,
+      "cycleSeconds": 600,
+      "startHour": 10,
+      "autoCycle": true,
+      "transitionSeconds": 0.7,
+      "sunAzimuth": -35,
+      "indoorSunMultiplier": 0.45,
+      "indoorAmbientColor": "#aaa090",
+      "lampColor": "#ffc589",
+      "lampIntensity": 2.1,
+      "lampRange": 11,
+      "lampHeight": 2.6,
+      "maxLocalLights": 4,
+      "shadowDistance": 180
+    }
+  ]
+}

@@ -1,0 +1,14 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaRoyalPlacementTableRow
+---@field id number 摆放 ID
+---@field name string 预设名称
+---@field localQ number 局部 q
+---@field localR number 局部 r
+---@field lotIds number[] 随机外观池，设施项可为空
+---@field facilityId number 设施 ID，0 表示陈设/住宅
+---@field districtId number 所属功能片区
+---@field role "landmark"|"facility"|"house"|"garden"|"detail" 生成阶段
+---@field searchRadius number 相对目标锚点的有限搜索半径
+---@field rotations number[] 允许的六方向朝向；住宅按临街评分选择
+---@field required boolean 必需地块找不到合法位置时明确报错；可选景观记录未摆放原因
+return {["name"]="MapAreaRoyalPlacementTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["min"]=1,["description"]="\230\145\134\230\148\190 ID"},{["name"]="name",["type"]="string",["description"]="\233\162\132\232\174\190\229\144\141\231\167\176"},{["name"]="localQ",["type"]="int",["description"]="\229\177\128\233\131\168 q"},{["name"]="localR",["type"]="int",["description"]="\229\177\128\233\131\168 r"},{["name"]="lotIds",["type"]="int[]",["ref"]="MapAreaTownLotTable",["description"]="\233\154\143\230\156\186\229\164\150\232\167\130\230\177\160\239\188\140\232\174\190\230\150\189\233\161\185\229\143\175\228\184\186\231\169\186"},{["name"]="facilityId",["type"]="int",["min"]=0,["description"]="\232\174\190\230\150\189 ID\239\188\1400 \232\161\168\231\164\186\233\153\136\232\174\190/\228\189\143\229\174\133"},{["name"]="districtId",["type"]="int",["description"]="\230\137\128\229\177\158\229\138\159\232\131\189\231\137\135\229\140\186",["ref"]="MapAreaRoyalDistrictTable"},{["name"]="role",["type"]="enum",["description"]="\231\148\159\230\136\144\233\152\182\230\174\181",["values"]={"landmark","facility","house","garden","detail"}},{["name"]="searchRadius",["type"]="int",["description"]="\231\155\184\229\175\185\231\155\174\230\160\135\233\148\154\231\130\185\231\154\132\230\156\137\233\153\144\230\144\156\231\180\162\229\141\138\229\190\132",["min"]=0,["max"]=20},{["name"]="rotations",["type"]="int[]",["description"]="\229\133\129\232\174\184\231\154\132\229\133\173\230\150\185\229\144\145\230\156\157\229\144\145\239\188\155\228\189\143\229\174\133\230\140\137\228\184\180\232\161\151\232\175\132\229\136\134\233\128\137\230\139\169"},{["name"]="required",["type"]="bool",["description"]="\229\191\133\233\156\128\229\156\176\229\157\151\230\137\190\228\184\141\229\136\176\229\144\136\230\179\149\228\189\141\231\189\174\230\151\182\230\152\142\231\161\174\230\138\165\233\148\153\239\188\155\229\143\175\233\128\137\230\153\175\232\167\130\232\174\176\229\189\149\230\156\170\230\145\134\230\148\190\229\142\159\229\155\160"}},["fingerprint"]="b745d123ddff901f155dbc0df3e733c820b80eb234579ab817afd7cf9f50d7e5"}

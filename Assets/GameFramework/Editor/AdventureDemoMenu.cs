@@ -14,6 +14,7 @@ namespace ProjectY.Editor
         // MapArea 复用远征的真实大地图交互点与队伍，不创建另一份玩法会话。
         [MenuItem("Project Y/地图/打开 MapArea 地牢测试")]
         [MenuItem("Project Y/地图/打开城镇漫游测试")]
+        [MenuItem("Project Y/地图/打开王城漫游测试")]
         public static void OpenArea() => Open();
         [MenuItem("Project Y/远征/打开战斗与事件 Demo")]
         public static void Open()
@@ -62,6 +63,7 @@ namespace ProjectY.Editor
                 var fields = new SerializedObject(demo);
                 fields.FindProperty("bootstrap").objectReferenceValue = bootstrap;
                 fields.FindProperty("mapCamera").objectReferenceValue = camera;
+                fields.FindProperty("environmentSun").objectReferenceValue = light;
                 var shader = AssetDatabase.LoadAssetAtPath<Shader>("Assets/GameFramework/Samples/Map/MapPreviewInstanced.shader");
                 if (shader == null) throw new InvalidOperationException("地图预览 Shader 缺失。");
                 fields.FindProperty("previewShader").objectReferenceValue = shader;

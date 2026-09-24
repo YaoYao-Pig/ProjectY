@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "name": "EquipmentSocketTable",
+  "description": "真实模型上的改装挂点；更改坐标后重新同步武器 Prefab。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "显示名称"
+    },
+    {
+      "name": "weaponItemId",
+      "type": "int",
+      "description": "所属武器",
+      "ref": "EquipmentItemTable"
+    },
+    {
+      "name": "kind",
+      "type": "enum",
+      "description": "可安装组件类型",
+      "values": [
+        "head",
+        "shaft",
+        "magazine"
+      ]
+    },
+    {
+      "name": "position",
+      "type": "float[]",
+      "description": "Unity 局部 xyz"
+    },
+    {
+      "name": "rotation",
+      "type": "float[]",
+      "description": "Unity 局部欧拉角 xyz"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "杖头 · 散射",
+      "weaponItemId": 1,
+      "kind": "head",
+      "position": [
+        0,
+        1.05,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 2,
+      "name": "杆身 · 精准",
+      "weaponItemId": 1,
+      "kind": "shaft",
+      "position": [
+        0,
+        0.43,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 3,
+      "name": "弹匣仓",
+      "weaponItemId": 2,
+      "kind": "magazine",
+      "position": [
+        0,
+        0.04,
+        0.22
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}

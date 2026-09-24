@@ -1,0 +1,42 @@
+{
+  "version": 1,
+  "name": "EquipmentMagazineTable",
+  "description": "独立弹匣保留剩余子弹；战斗外使用散弹药装填，战斗中换上背包内的兼容弹匣。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "弹匣物品 ID",
+      "ref": "EquipmentItemTable"
+    },
+    {
+      "name": "ammoItemId",
+      "type": "int",
+      "description": "兼容散弹药",
+      "ref": "EquipmentItemTable"
+    },
+    {
+      "name": "capacity",
+      "type": "int",
+      "description": "弹容量",
+      "min": 1,
+      "max": 100
+    },
+    {
+      "name": "spawnRounds",
+      "type": "int",
+      "description": "搜刮或初始生成时的装弹数",
+      "min": 0,
+      "max": 100
+    }
+  ],
+  "rows": [
+    {
+      "id": 21,
+      "ammoItemId": 31,
+      "capacity": 12,
+      "spawnRounds": 12
+    }
+  ]
+}

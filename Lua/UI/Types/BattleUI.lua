@@ -1,0 +1,28 @@
+---@meta
+-- Authored native-component hints. Panel/Widget view bindings are generated from prefabs.
+---@class CS.UnityEngine.Font : CS.UnityEngine.Object
+---@class CS.UnityEngine.UI.Text
+---@field font CS.UnityEngine.Font
+---@class CS.UnityEngine.UI.Image
+---@field enabled boolean
+---@class CS.ProjectY.UI.UIPointerState : CS.UnityEngine.Component
+---@field Hovered boolean
+---@class CS.ProjectY.UI.BattleHUDView : CS.UnityEngine.Component
+---@field Font CS.UnityEngine.Font
+---@field Compact boolean
+---@field Prepare fun(self: CS.ProjectY.UI.BattleHUDView)
+---@field SetIcon fun(self: CS.ProjectY.UI.BattleHUDView, image: CS.UnityEngine.UI.Image, id: integer, path: string)
+---@field SetHealth fun(self: CS.ProjectY.UI.BattleHUDView, image: CS.UnityEngine.UI.Image, value: number)
+---@field ReadShortcut fun(self: CS.ProjectY.UI.BattleHUDView): integer
+---@class CS.ProjectY.Samples.AdventureRuntimeDemo : CS.UnityEngine.Component
+---@field SelectedBattleSkill integer
+---@field IsBattleMoveSelected boolean
+---@field BattleAutoAI boolean
+---@field BattleHUDRevision integer
+---@field LastError string
+---@field SelectBattleSkill fun(self: CS.ProjectY.Samples.AdventureRuntimeDemo, id: integer)
+---@field SelectBattleMove fun(self: CS.ProjectY.Samples.AdventureRuntimeDemo)
+---@field SetBattleAutoAI fun(self: CS.ProjectY.Samples.AdventureRuntimeDemo, value: boolean)
+---@field FocusBattleActor fun(self: CS.ProjectY.Samples.AdventureRuntimeDemo, id: integer)
+---@field FitMap fun(self: CS.ProjectY.Samples.AdventureRuntimeDemo)
+---@field SendCommand fun(self: CS.ProjectY.Samples.AdventureRuntimeDemo, command: string, a: integer, b: integer)

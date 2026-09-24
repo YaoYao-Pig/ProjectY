@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "MapAreaTownThemeTable",
-  "description": "大地图 Region 对城镇的地面、铺装和植被影响；街区仍保持平整。",
+  "description": "大地图 Region 对城镇的地面、铺装、植被与台地高差影响。",
   "key": "id",
   "fields": [
     {
@@ -70,6 +70,19 @@
       "type": "float",
       "description": "景观树相对比例",
       "min": 0.1
+    },
+    {
+      "name": "reliefScale",
+      "type": "float",
+      "description": "Region 对山城台地高差的影响",
+      "min": 1,
+      "max": 1.3
+    },
+    {
+      "name": "outsideSurfaceId",
+      "type": "int",
+      "description": "城外 Region 地表",
+      "ref": "MapAreaSurfaceTable"
     }
   ],
   "rows": [
@@ -85,7 +98,9 @@
       "roadColor": "#aa977b",
       "plazaColor": "#c5b89d",
       "treeAssetId": 13,
-      "treeScale": 1.5
+      "treeScale": 1.5,
+      "reliefScale": 1,
+      "outsideSurfaceId": 1
     },
     {
       "id": 2,
@@ -99,7 +114,9 @@
       "roadColor": "#aa977b",
       "plazaColor": "#c5b89d",
       "treeAssetId": 14,
-      "treeScale": 1.5
+      "treeScale": 1.5,
+      "reliefScale": 1.15,
+      "outsideSurfaceId": 2
     },
     {
       "id": 3,
@@ -113,7 +130,9 @@
       "roadColor": "#aa977b",
       "plazaColor": "#c5b89d",
       "treeAssetId": 13,
-      "treeScale": 1.5
+      "treeScale": 1.5,
+      "reliefScale": 1,
+      "outsideSurfaceId": 1
     },
     {
       "id": 4,
@@ -127,7 +146,9 @@
       "roadColor": "#aa977b",
       "plazaColor": "#c5b89d",
       "treeAssetId": 13,
-      "treeScale": 1.5
+      "treeScale": 1.5,
+      "reliefScale": 1,
+      "outsideSurfaceId": 1
     },
     {
       "id": 5,
@@ -141,7 +162,9 @@
       "roadColor": "#aa977b",
       "plazaColor": "#c5b89d",
       "treeAssetId": 13,
-      "treeScale": 1.5
+      "treeScale": 1.5,
+      "reliefScale": 1,
+      "outsideSurfaceId": 1
     },
     {
       "id": 6,
@@ -155,7 +178,9 @@
       "roadColor": "#aa977b",
       "plazaColor": "#c5b89d",
       "treeAssetId": 15,
-      "treeScale": 1.5
+      "treeScale": 1.5,
+      "reliefScale": 1,
+      "outsideSurfaceId": 12
     }
   ]
 }

@@ -1,0 +1,36 @@
+---@meta
+-- Generated from LuaReference. Do not edit; never require this file.
+---@class EquipmentWorkbenchPanelView
+---@field Root CS.UnityEngine.RectTransform
+---@field Canvas CS.UnityEngine.Canvas
+---@field Panel CS.ProjectY.UI.LuaPanel
+---@field Close CS.UnityEngine.UI.Button
+---@field Actor1 CS.UnityEngine.UI.Button
+---@field ActorText1 CS.UnityEngine.UI.Text
+---@field Actor2 CS.UnityEngine.UI.Button
+---@field ActorText2 CS.UnityEngine.UI.Text
+---@field Actor3 CS.UnityEngine.UI.Button
+---@field ActorText3 CS.UnityEngine.UI.Text
+---@field Actor4 CS.UnityEngine.UI.Button
+---@field ActorText4 CS.UnityEngine.UI.Text
+---@field InventorySlots CS.UnityEngine.RectTransform
+---@field Title CS.UnityEngine.UI.Text
+---@field Subtitle CS.UnityEngine.UI.Text
+---@field Socket1 CS.UnityEngine.UI.Button
+---@field SocketText1 CS.UnityEngine.UI.Text
+---@field Socket2 CS.UnityEngine.UI.Button
+---@field SocketText2 CS.UnityEngine.UI.Text
+---@field Socket3 CS.UnityEngine.UI.Button
+---@field SocketText3 CS.UnityEngine.UI.Text
+---@field SocketTitle CS.UnityEngine.UI.Text
+---@field OptionSlots CS.UnityEngine.RectTransform
+---@field Remove CS.UnityEngine.UI.Button
+---@field Fill CS.UnityEngine.UI.Button
+---@field Stats CS.UnityEngine.UI.Text
+---@field Equip CS.UnityEngine.UI.Button
+---@field EquipText CS.UnityEngine.UI.Text
+---@field Unequip CS.UnityEngine.UI.Button
+---@field Status CS.UnityEngine.UI.Text
+---@field Workbench CS.ProjectY.UI.EquipmentWorkbenchView
+local View = {}
+return View

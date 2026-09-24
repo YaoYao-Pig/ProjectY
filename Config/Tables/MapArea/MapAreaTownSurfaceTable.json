@@ -1,0 +1,115 @@
+{
+  "version": 1,
+  "name": "MapAreaTownSurfaceTable",
+  "description": "不同规模城镇的地面组合",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "地表配方编号"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "配方名称"
+    },
+    {
+      "name": "roadId",
+      "type": "int",
+      "description": "街道",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "plazaId",
+      "type": "int",
+      "description": "广场",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "yardId",
+      "type": "int",
+      "description": "院落",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "gardenId",
+      "type": "int",
+      "description": "园地",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "bridgeId",
+      "type": "int",
+      "description": "石桥",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "cliffId",
+      "type": "int",
+      "description": "台地侧壁",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "trailId",
+      "type": "int",
+      "description": "城外路迹",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "transitionCells",
+      "type": "int",
+      "description": "城界土色过渡宽度",
+      "min": 1,
+      "max": 8
+    },
+    {
+      "name": "yardDistance",
+      "type": "int",
+      "description": "建筑周边院落宽度",
+      "min": 1,
+      "max": 4
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "石铺街区",
+      "roadId": 4,
+      "plazaId": 5,
+      "yardId": 7,
+      "gardenId": 8,
+      "bridgeId": 5,
+      "cliffId": 13,
+      "trailId": 3,
+      "transitionCells": 3,
+      "yardDistance": 2
+    },
+    {
+      "id": 2,
+      "name": "乡村土路",
+      "roadId": 3,
+      "plazaId": 4,
+      "yardId": 7,
+      "gardenId": 8,
+      "bridgeId": 5,
+      "cliffId": 13,
+      "trailId": 3,
+      "transitionCells": 3,
+      "yardDistance": 2
+    },
+    {
+      "id": 3,
+      "name": "王城街道",
+      "roadId": 5,
+      "plazaId": 6,
+      "yardId": 7,
+      "gardenId": 8,
+      "bridgeId": 5,
+      "cliffId": 13,
+      "trailId": 3,
+      "transitionCells": 3,
+      "yardDistance": 2
+    }
+  ]
+}
