@@ -143,7 +143,7 @@ function Battle:TryMove(q, r)
     return false, '无法移动到这里：检查距离、占格、行动点和本回合移动次数'
 end
 function Battle:SkillIds(actor) return self.stats.equipment:SkillIds(actor,self.stats:Template(actor)) end
-function Battle:Skill(actor,skillId) return self.stats.equipment:Skill(actor,skillId) end
+function Battle:Skill(actor,skillId) return self.stats.equipment:Skill(actor,skillId,self.stats) end
 function Battle:SkillBudget(skillId)
     if self.data.Winner ~= '' then return false, '战斗已经结束' end
     local source=self:Active();local skill=self:Skill(source,skillId)

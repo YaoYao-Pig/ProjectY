@@ -295,10 +295,10 @@ function AreaSystem:LayoutSnapshot()
     local result={name=area.name,areaType=area.areaType,moveStepSeconds=area.moveStepSeconds,hexRadius=area.hexRadius,cells={},assetId=asset.id,assetPath=asset.prefabPath,tintMaterial=asset.tintMaterial,
         rooms={},props={},propAssets={},corridorWidth=area.corridorRadius*2+1}
     result.facilities={};result.npcs={};result.surfaces={}
-    if area.areaType==2 then for _,row in ipairs(self.config:GetTable('MapAreaSurfaceTable'):All()) do
+    for _,row in ipairs(self.config:GetTable('MapAreaSurfaceTable'):All()) do
         result.surfaces[#result.surfaces+1]={id=row.id,pattern=row.pattern,color=row.baseColor,tileMeters=row.tileMeters,
-            contrast=row.contrast,jointWidth=row.jointWidth,smoothness=row.smoothness}
-    end end
+            contrast=row.contrast,jointWidth=row.jointWidth,smoothness=row.smoothness,detailColor=row.detailColor}
+    end
     for i,site in ipairs(area.facilities) do result.facilities[i]={id=site.id,name=site.name,description=site.description,
         entryIndex=site.entryIndex,interactionRadius=site.interactionRadius} end
     for i,npc in ipairs(area.npcs) do

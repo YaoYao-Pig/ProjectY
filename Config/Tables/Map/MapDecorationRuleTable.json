@@ -1,0 +1,224 @@
+{
+  "version": 1,
+  "name": "MapDecorationRuleTable",
+  "description": "大地图环境装饰：地貌、水岸和道路关联，保持建筑与道路净空",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "规则编号"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "规则名称"
+    },
+    {
+      "name": "assetId",
+      "type": "int",
+      "description": "装饰资源",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "regions",
+      "type": "int[]",
+      "description": "可用地貌类型"
+    },
+    {
+      "name": "density",
+      "type": "float",
+      "description": "候选格概率",
+      "min": 0,
+      "max": 1
+    },
+    {
+      "name": "maxSlope",
+      "type": "float",
+      "description": "最大邻格高差",
+      "min": 0
+    },
+    {
+      "name": "minScale",
+      "type": "float",
+      "description": "最小缩放",
+      "min": 0.01
+    },
+    {
+      "name": "maxScale",
+      "type": "float",
+      "description": "最大缩放",
+      "min": 0.01
+    },
+    {
+      "name": "nearWater",
+      "type": "bool",
+      "description": "要求两格内有水"
+    },
+    {
+      "name": "nearRoad",
+      "type": "bool",
+      "description": "要求两格内有路"
+    },
+    {
+      "name": "clearance",
+      "type": "int",
+      "description": "避开建筑和已有装饰的格数",
+      "min": 0,
+      "max": 3
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "倒木",
+      "assetId": 89,
+      "regions": [
+        1,
+        5
+      ],
+      "density": 0.026,
+      "maxSlope": 1.1,
+      "minScale": 0.3,
+      "maxScale": 0.4,
+      "nearWater": false,
+      "nearRoad": false,
+      "clearance": 1
+    },
+    {
+      "id": 2,
+      "name": "老树桩",
+      "assetId": 90,
+      "regions": [
+        1,
+        5
+      ],
+      "density": 0.026,
+      "maxSlope": 1.5,
+      "minScale": 0.65,
+      "maxScale": 0.85,
+      "nearWater": false,
+      "nearRoad": false,
+      "clearance": 1
+    },
+    {
+      "id": 3,
+      "name": "蕨类丛",
+      "assetId": 91,
+      "regions": [
+        1,
+        3,
+        4,
+        5
+      ],
+      "density": 0.04,
+      "maxSlope": 1.3,
+      "minScale": 0.8,
+      "maxScale": 1.1,
+      "nearWater": false,
+      "nearRoad": false,
+      "clearance": 1
+    },
+    {
+      "id": 4,
+      "name": "蘑菇簇",
+      "assetId": 92,
+      "regions": [
+        3,
+        5
+      ],
+      "density": 0.03,
+      "maxSlope": 1.1,
+      "minScale": 0.9,
+      "maxScale": 1.15,
+      "nearWater": false,
+      "nearRoad": false,
+      "clearance": 1
+    },
+    {
+      "id": 5,
+      "name": "芦苇簇",
+      "assetId": 93,
+      "regions": [
+        3,
+        4,
+        5
+      ],
+      "density": 0.12,
+      "maxSlope": 1,
+      "minScale": 0.8,
+      "maxScale": 1.05,
+      "nearWater": true,
+      "nearRoad": false,
+      "clearance": 1
+    },
+    {
+      "id": 6,
+      "name": "野花丛",
+      "assetId": 94,
+      "regions": [
+        1,
+        3,
+        4
+      ],
+      "density": 0.05,
+      "maxSlope": 0.9,
+      "minScale": 0.8,
+      "maxScale": 1.1,
+      "nearWater": false,
+      "nearRoad": false,
+      "clearance": 1
+    },
+    {
+      "id": 7,
+      "name": "路边石堆",
+      "assetId": 95,
+      "regions": [
+        1,
+        2,
+        6
+      ],
+      "density": 0.026,
+      "maxSlope": 2,
+      "minScale": 0.6,
+      "maxScale": 0.9,
+      "nearWater": false,
+      "nearRoad": false,
+      "clearance": 1
+    },
+    {
+      "id": 8,
+      "name": "古代立石",
+      "assetId": 96,
+      "regions": [
+        2,
+        5,
+        6
+      ],
+      "density": 0.015,
+      "maxSlope": 1.4,
+      "minScale": 0.25,
+      "maxScale": 0.35,
+      "nearWater": false,
+      "nearRoad": false,
+      "clearance": 1
+    },
+    {
+      "id": 9,
+      "name": "路旁废弃货车",
+      "assetId": 98,
+      "regions": [
+        1,
+        2,
+        5
+      ],
+      "density": 0.025,
+      "maxSlope": 0.8,
+      "minScale": 0.3,
+      "maxScale": 0.4,
+      "nearWater": false,
+      "nearRoad": true,
+      "clearance": 1
+    }
+  ]
+}

@@ -104,6 +104,12 @@ namespace ProjectY.Editor
             try
             {
                 if(root.transform.childCount==0) build(root);
+                if(name=="EquipmentWorkbench") UpgradeWorkbench(root);
+                if(name=="EquipmentRow")
+                {
+                    var reference=root.GetComponent<LuaReference>();
+                    if(!Array.Exists(reference.GetEditorBindings(),e=>e.Key=="Layout")) Bind(root,new List<LuaReference.Entry>{Ref("Layout",root.GetComponent<LayoutElement>())});
+                }
                 root.GetComponent<LuaReference>().ValidateBindings();PrefabUtility.SaveAsPrefabAsset(root,entry.PrefabPath);
                 LuaViewHints.Export(root.GetComponent<LuaReference>(),entry.ViewType);
             }
@@ -144,6 +150,43 @@ namespace ProjectY.Editor
         private static void Bind(GameObject root,List<LuaReference.Entry> entries)
         {var r=root.GetComponent<LuaReference>();var all=new List<LuaReference.Entry>(r.GetEditorBindings());all.AddRange(entries);r.SetEditorBindings(all.ToArray());}
         private static LuaReference.Entry Ref(string key,Component c)=>new LuaReference.Entry(key,c);
+        private static void UpgradeWorkbench(GameObject root)
+        {
+            var reference=root.GetComponent<LuaReference>();var view=root.GetComponent<EquipmentWorkbenchView>();var layout=view.EditorLayout;
+            var refs=new List<LuaReference.Entry>();
+            if(layout.SocketDots==null||layout.SocketDots.Length==0)
+            {
+                layout.SocketDots=new RectTransform[layout.Sockets.Length];layout.SocketLeads=new RectTransform[layout.Sockets.Length];layout.SocketTails=new RectTransform[layout.Sockets.Length];
+                for(int i=0;i<layout.Sockets.Length;i++)
+                {
+                    var dot=Node("SocketPoint"+i,layout.Preview);dot.sizeDelta=new Vector2(7,7);dot.localRotation=Quaternion.Euler(0,0,45);Paint(dot,Gold);
+                    var lead=Node("SocketLeader"+i,layout.Preview);Paint(lead,new Color(Gold.r,Gold.g,Gold.b,.8f));
+                    var tail=Node("SocketLeaderTail"+i,layout.Preview);Paint(tail,Gold);
+                    layout.SocketDots[i]=dot;layout.SocketLeads[i]=lead;layout.SocketTails[i]=tail;
+                    lead.SetSiblingIndex(0);tail.SetSiblingIndex(0);dot.SetAsLastSibling();
+                    reference.GetText("SocketText"+(i+1)).fontSize=12;
+                }
+            }
+            if(!Array.Exists(reference.GetEditorBindings(),e=>e.Key=="CategoryText"))
+            {
+                var filter=Node("WeaponCategory",layout.Inventory);filter.anchorMin=new Vector2(0,1);filter.anchorMax=Vector2.one;filter.pivot=new Vector2(.5f,1);filter.anchoredPosition=new Vector2(0,-48);filter.sizeDelta=new Vector2(-24,30);
+                Text label;var prev=Button("Previous",filter,"‹",out label);Box((RectTransform)prev.transform,0,0,26,30);
+                var next=Button("Next",filter,"›",out label);var nextRect=(RectTransform)next.transform;nextRect.anchorMin=nextRect.anchorMax=new Vector2(1,1);nextRect.pivot=Vector2.one;nextRect.anchoredPosition=Vector2.zero;nextRect.sizeDelta=new Vector2(26,30);
+                var title=Text("Category",filter,"全部武器",13);title.alignment=TextAnchor.MiddleCenter;Stretch(title.rectTransform,28,0,28,0);
+                refs.Add(Ref("CategoryPrevious",prev));refs.Add(Ref("CategoryNext",next));refs.Add(Ref("CategoryText",title));
+                var content=reference.GetTransform("InventorySlots");var scroll=content.GetComponentInParent<ScrollRect>();
+                Stretch((RectTransform)scroll.transform,12,12,12,88);
+            }
+            if(!Array.Exists(reference.GetEditorBindings(),e=>e.Key=="Requirements"))
+            {
+                var content=reference.GetText("SocketTitle").transform.parent;
+                var requirements=Text("Requirements",content,"",13);requirements.transform.SetAsFirstSibling();requirements.color=new Color(.91f,.75f,.47f);requirements.verticalOverflow=VerticalWrapMode.Overflow;
+                refs.Add(Ref("Requirements",requirements));
+            }
+            var subtitle=reference.GetText("Subtitle");subtitle.rectTransform.sizeDelta=new Vector2(340,48);subtitle.fontSize=12;
+            var heading=layout.Heading.GetComponent<Text>();heading.resizeTextForBestFit=true;heading.resizeTextMinSize=14;heading.resizeTextMaxSize=22;
+            Bind(root,refs);layout.Labels=root.GetComponentsInChildren<Text>(true);EditorUtility.SetDirty(view);
+        }
         private static void BuildRow(GameObject root)
         {
             var r=(RectTransform)root.transform;r.sizeDelta=new Vector2(220,68);Height(r,68);

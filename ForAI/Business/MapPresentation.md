@@ -8,9 +8,10 @@
 
 ## 正文
 
-- 城镇地表只影响画面，不推导通行、高度、水位或玩法时间。`MapAreaTownTable.surfaceProfileId → MapAreaTownSurfaceTable` 选择道路、广场、院落、园地、桥和岩壁材质；`MapAreaTownThemeTable.outsideSurfaceId` 选择来源 Region 的城外地面。`MapAreaSurfaceTable` 提供颜色、米制图案尺寸、对比度、缝宽与平滑度，现有 13 种配方、7 种图案。
+- 地表材质只影响画面，不推导通行、高度、水位或玩法时间。`MapAreaTownTable.surfaceProfileId → MapAreaTownSurfaceTable` 选择道路、广场、院落、园地、桥和岩壁材质；`MapAreaTownThemeTable.outsideSurfaceId` 选择来源 Region 的城外地面。`MapAreaSurfaceTable` 提供底色、覆盖色 detailColor、米制图案尺寸、对比度、缝宽与平滑度，现有 26 种配方、9 种图案（另有 0 纯色）。
+- 地牢新增 13 种墙地配方：旧石板、苔石、木板、泥土、湿石、霜冻岩、祭庭石板，以及粗岩墙、苔墙、木板墙、砌砖墙、渗水墙、霜冻墙。`MapAreaThemeTable.surfaceProfileId → MapAreaDungeonSurfaceTable` 提供 Region 材质池、走廊材质、覆盖功能房概率和墙面延伸宽度；样式/预设的 `floorSurfaceIds/wallSurfaceIds` 提供功能房材质池。`DungeonSurfaces.Apply` 每房选择一次，再按有限距离把墙材传播到周边实体墙，不逐格随机铺花。
 - `TownTerrain/RoyalTownTerrain` 在放模型前记录 `townInside`。`TownSurfaces.Apply` 在建筑和街网完成后按用途分类，并用有限距离传播给建筑周边铺院落、城界混色；只写外观字段。王城 `pavingRole=plaza` 保留广场铺装意图，不改变道路图。`MapAreaTownInteriorTable.surfaceId` 控制室内导航地格的底面；建筑模型自身的地板网格仍可覆盖底面并使用模型材质。
-- `MapAreaSystem.LayoutSnapshot` 复制 `surfaces` 实体数组，地格持有 `surfaceId/sideSurfaceId`。`TownSurfaceRenderer` 将材质参数写入网格 UV1/UV2，仍使用单网格与单材质；射线和人物贴地继续采样原来的台阶/坡面。共享地图 Shader 使用 Built-in Standard 哑光光照；只有城镇地表开启世界空间程序图案，远景淡化细缝，旧实例模型仍使用原有颜色。
+- `MapAreaSystem.LayoutSnapshot` 对地牢和城镇都复制 `surfaces` 实体数组，地格持有 `surfaceId/sideSurfaceId`。`TownSurfaceRenderer` 写入 UV1 图案参数、UV2 覆盖 RGB 与平滑度；`MapAreaRenderer` 地牢地形使用独立实例材质与 `_SurfaceData/_SurfaceFinish` 数组，陈设仍为原纯色材质。共享 Shader 的模式 0 为纯色模型，1 为城镇顶点参数，2 为地牢实例参数；世界坐标生成连续图案，远景淡化细缝。未知格关闭图案，苔藓覆盖色同样遵守探索迷雾。台阶/坡面、射线与人物贴地契约不变。
 - 光照源表为 `MapEnvironmentTable`（生命周期和视觉时钟）、`MapLightKeyTable`（24 小时循环关键帧）、`MapWeatherTable`（晴/阴倍率和雾距）。黄昏通过时间关键帧表达；默认视觉日 600 秒、初始 10:00。`MapPresentation.Snapshot` 校验顺序、天气引用与雾距后复制给 C#，不导出只读代理数组。
 - `MapEnvironmentController` 持有视觉时间，支持暂停、手动小时和天气选择。时间在大地图/小地图之间延续，但不存档、不影响 NPC 日程或战斗时间。方向光兼作夜间月光，插值天空/水平/地面环境光、雾色和阴影；按领队真实占格混合室内外环境，按进入室内的队员开启限量点光，默认最多 4 盏。
 - 局部灯在 `SetArea` 缓存建筑中心，Tick 不扫描全图、不新建灯。控制器要求显式绑定方向光、相机与宿主，`AdventureRuntimeDemo.environmentSun` 通过原生 Editor API 保存。销毁时释放灯并恢复原场景 RenderSettings、方向光、相机背景和受影响的 QualitySettings。雾距相对观察焦点计算，避免远处正交相机把整张大地图淹没。
@@ -19,6 +20,7 @@
 
 ## 关键入口
 
+- [地牢材质配方](../../Config/Tables/MapArea/MapAreaDungeonSurfaceTable.json) / [房间与墙面选择](../../Lua/Game/MapArea/DungeonSurfaces.lua) / [装饰与定向检查](MapDressing.md)。
 - [地表定义](../../Config/Tables/MapArea/MapAreaSurfaceTable.json) / [城镇地表组合](../../Config/Tables/MapArea/MapAreaTownSurfaceTable.json) / [地表选择](../../Lua/Game/MapArea/TownSurfaces.lua)。
 - [环境配方](../../Config/Tables/Rendering/MapEnvironmentTable.json) / [时间关键帧](../../Config/Tables/Rendering/MapLightKeyTable.json) / [天气](../../Config/Tables/Rendering/MapWeatherTable.json) / [配置快照](../../Lua/Game/Rendering/MapPresentation.lua)。
 - [显示数据](../../Assets/GameFramework/Samples/Adventure/MapEnvironmentData.cs) / [环境控制器](../../Assets/GameFramework/Samples/Adventure/MapEnvironmentController.cs) / [地表网格](../../Assets/GameFramework/Samples/Adventure/TownSurfaceRenderer.cs) / [共享 Shader](../../Assets/GameFramework/Samples/Map/MapPreviewInstanced.shader)。

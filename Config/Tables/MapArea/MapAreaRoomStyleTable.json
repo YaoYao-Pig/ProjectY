@@ -52,6 +52,31 @@
       "description": "目标物件占用地面比例；受净空与连通约束",
       "min": 0.05,
       "max": 0.4
+    },
+    {
+      "name": "dressingPropIds",
+      "type": "int[]",
+      "description": "追加环境陈设，不占战斗保留区",
+      "ref": "MapAreaPropTable"
+    },
+    {
+      "name": "dressingCount",
+      "type": "int",
+      "description": "追加陈设上限",
+      "min": 0,
+      "max": 16
+    },
+    {
+      "name": "floorSurfaceIds",
+      "type": "int[]",
+      "description": "房间地面材质池，空数组使用 Region 配方",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "wallSurfaceIds",
+      "type": "int[]",
+      "description": "房间墙材池",
+      "ref": "MapAreaSurfaceTable"
     }
   ],
   "rows": [
@@ -68,7 +93,24 @@
       ],
       "propCount": 12,
       "districtId": 1,
-      "propCoverage": 0.22
+      "propCoverage": 0.22,
+      "dressingPropIds": [
+        33,
+        35,
+        38,
+        28,
+        26,
+        34
+      ],
+      "dressingCount": 7,
+      "floorSurfaceIds": [
+        16,
+        14
+      ],
+      "wallSurfaceIds": [
+        23,
+        24
+      ]
     },
     {
       "id": 2,
@@ -84,7 +126,24 @@
       ],
       "propCount": 12,
       "districtId": 1,
-      "propCoverage": 0.2
+      "propCoverage": 0.2,
+      "dressingPropIds": [
+        35,
+        36,
+        37,
+        28,
+        30,
+        34
+      ],
+      "dressingCount": 7,
+      "floorSurfaceIds": [
+        16,
+        14
+      ],
+      "wallSurfaceIds": [
+        23,
+        24
+      ]
     },
     {
       "id": 3,
@@ -99,7 +158,22 @@
       ],
       "propCount": 12,
       "districtId": 2,
-      "propCoverage": 0.19
+      "propCoverage": 0.19,
+      "dressingPropIds": [
+        36,
+        37,
+        39,
+        40,
+        33
+      ],
+      "dressingCount": 7,
+      "floorSurfaceIds": [
+        14,
+        20
+      ],
+      "wallSurfaceIds": [
+        24
+      ]
     },
     {
       "id": 4,
@@ -114,7 +188,23 @@
       ],
       "propCount": 12,
       "districtId": 3,
-      "propCoverage": 0.22
+      "propCoverage": 0.22,
+      "dressingPropIds": [
+        34,
+        36,
+        37,
+        39,
+        33
+      ],
+      "dressingCount": 7,
+      "floorSurfaceIds": [
+        14,
+        20
+      ],
+      "wallSurfaceIds": [
+        24,
+        21
+      ]
     },
     {
       "id": 5,
@@ -129,7 +219,19 @@
       ],
       "propCount": 12,
       "districtId": 3,
-      "propCoverage": 0.2
+      "propCoverage": 0.2,
+      "dressingPropIds": [
+        17,
+        18,
+        19,
+        20,
+        33,
+        39,
+        40
+      ],
+      "dressingCount": 7,
+      "floorSurfaceIds": [],
+      "wallSurfaceIds": []
     }
   ]
 }

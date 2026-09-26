@@ -1,0 +1,14 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapDecorationRuleTableRow
+---@field id number 规则编号
+---@field name string 规则名称
+---@field assetId number 装饰资源
+---@field regions number[] 可用地貌类型
+---@field density number 候选格概率
+---@field maxSlope number 最大邻格高差
+---@field minScale number 最小缩放
+---@field maxScale number 最大缩放
+---@field nearWater boolean 要求两格内有水
+---@field nearRoad boolean 要求两格内有路
+---@field clearance number 避开建筑和已有装饰的格数
+return {["name"]="MapDecorationRuleTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\232\167\132\229\136\153\231\188\150\229\143\183"},{["name"]="name",["type"]="string",["description"]="\232\167\132\229\136\153\229\144\141\231\167\176"},{["name"]="assetId",["type"]="int",["description"]="\232\163\133\233\165\176\232\181\132\230\186\144",["ref"]="MapAssetTable"},{["name"]="regions",["type"]="int[]",["description"]="\229\143\175\231\148\168\229\156\176\232\178\140\231\177\187\229\158\139"},{["name"]="density",["type"]="float",["description"]="\229\128\153\233\128\137\230\160\188\230\166\130\231\142\135",["min"]=0,["max"]=1},{["name"]="maxSlope",["type"]="float",["description"]="\230\156\128\229\164\167\233\130\187\230\160\188\233\171\152\229\183\174",["min"]=0},{["name"]="minScale",["type"]="float",["description"]="\230\156\128\229\176\143\231\188\169\230\148\190",["min"]=0.01},{["name"]="maxScale",["type"]="float",["description"]="\230\156\128\229\164\167\231\188\169\230\148\190",["min"]=0.01},{["name"]="nearWater",["type"]="bool",["description"]="\232\166\129\230\177\130\228\184\164\230\160\188\229\134\133\230\156\137\230\176\180"},{["name"]="nearRoad",["type"]="bool",["description"]="\232\166\129\230\177\130\228\184\164\230\160\188\229\134\133\230\156\137\232\183\175"},{["name"]="clearance",["type"]="int",["description"]="\233\129\191\229\188\128\229\187\186\231\173\145\229\146\140\229\183\178\230\156\137\232\163\133\233\165\176\231\154\132\230\160\188\230\149\176",["min"]=0,["max"]=3}},["fingerprint"]="9e6600210528d0af6cd4030b1cece05a49d421b95c7a9320f5b0a5074178a1d3"}

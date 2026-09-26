@@ -77,6 +77,21 @@
       "id": 8,
       "kind": "damage",
       "amount": "max(1, floor(8 + intellect + proficiency / 2 - defense / 2 - guard))"
+    },
+    {
+      "id": 9,
+      "kind": "damage",
+      "amount": "max(1,floor(5+strength+proficiency/2-defense-guard))"
+    },
+    {
+      "id": 10,
+      "kind": "damage",
+      "amount": "max(1,floor(8+strength*1.2+proficiency/2-defense-guard))"
+    },
+    {
+      "id": 11,
+      "kind": "damage",
+      "amount": "max(1,floor(10+strength*1.5+proficiency/2-defense-guard))"
     }
   ]
 }

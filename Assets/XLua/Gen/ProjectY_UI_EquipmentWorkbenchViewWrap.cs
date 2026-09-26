@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.UI.EquipmentWorkbenchView);
-			Utils.BeginObjectRegister(type, L, translator, 0, 9, 1, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 8, 1, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Prepare", _m_Prepare);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "ShowWeapon", _m_ShowWeapon);
@@ -31,7 +31,6 @@ namespace XLua.CSObjectWrap
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "RenderPreview", _m_RenderPreview);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Arrange", _m_Arrange);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "ReleasePreview", _m_ReleasePreview);
-			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Bind", _m_Bind);
 			
 			
 			Utils.RegisterFunc(L, Utils.GETTER_IDX, "Font", _g_get_Font);
@@ -291,35 +290,6 @@ namespace XLua.CSObjectWrap
                 {
                     
                     gen_to_be_invoked.ReleasePreview(  );
-                    
-                    
-                    
-                    return 0;
-                }
-                
-            } catch(System.Exception gen_e) {
-                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
-            }
-            
-        }
-        
-        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
-        static int _m_Bind(RealStatePtr L)
-        {
-		    try {
-            
-                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
-            
-            
-                ProjectY.UI.EquipmentWorkbenchView gen_to_be_invoked = (ProjectY.UI.EquipmentWorkbenchView)translator.FastGetCSObj(L, 1);
-            
-            
-                
-                {
-                    ProjectY.UI.EquipmentWorkbenchView.Layout _value = (ProjectY.UI.EquipmentWorkbenchView.Layout)translator.GetObject(L, 2, typeof(ProjectY.UI.EquipmentWorkbenchView.Layout));
-                    ProjectY.Samples.EquipmentAssetCatalog _assets = (ProjectY.Samples.EquipmentAssetCatalog)translator.GetObject(L, 3, typeof(ProjectY.Samples.EquipmentAssetCatalog));
-                    
-                    gen_to_be_invoked.Bind( _value, _assets );
                     
                     
                     

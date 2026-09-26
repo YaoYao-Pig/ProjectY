@@ -200,6 +200,12 @@
       "type": "int",
       "description": "城镇地面配方",
       "ref": "MapAreaTownSurfaceTable"
+    },
+    {
+      "name": "dressingProfileId",
+      "type": "int",
+      "description": "环境陈设配方",
+      "ref": "MapAreaTownDressingTable"
     }
   ],
   "rows": [
@@ -270,7 +276,8 @@
         -1
       ],
       "houseSearchRadius": 6,
-      "surfaceProfileId": 1
+      "surfaceProfileId": 1,
+      "dressingProfileId": 1
     },
     {
       "id": 2,
@@ -337,7 +344,8 @@
         -1
       ],
       "houseSearchRadius": 6,
-      "surfaceProfileId": 2
+      "surfaceProfileId": 2,
+      "dressingProfileId": 2
     },
     {
       "id": 3,
@@ -406,7 +414,8 @@
         -1
       ],
       "houseSearchRadius": 6,
-      "surfaceProfileId": 1
+      "surfaceProfileId": 1,
+      "dressingProfileId": 1
     },
     {
       "id": 4,
@@ -471,7 +480,8 @@
         -1
       ],
       "houseSearchRadius": 6,
-      "surfaceProfileId": 2
+      "surfaceProfileId": 2,
+      "dressingProfileId": 2
     },
     {
       "id": 5,
@@ -546,7 +556,8 @@
         -1
       ],
       "houseSearchRadius": 6,
-      "surfaceProfileId": 3
+      "surfaceProfileId": 3,
+      "dressingProfileId": 3
     }
   ]
 }

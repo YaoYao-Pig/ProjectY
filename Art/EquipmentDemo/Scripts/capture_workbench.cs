@@ -29,5 +29,5 @@ for(int i=0;i<dimensions.GetLength(0);i++){
  }finally{camera.targetTexture=null;RenderTexture.active=prior;if(picture!=null)UnityEngine.Object.DestroyImmediate(picture);target.Release();UnityEngine.Object.DestroyImmediate(target);}
 }
 return paths;
-}finally{lua.DoString("EquipmentPreviewRegistry:Shutdown();EquipmentPreviewRegistry=nil;EquipmentPreviewPanel=nil;EquipmentPreviewAppearance=nil;EquipmentPreviewModify=nil;EquipmentPreviewGun=nil;Services=nil;collectgarbage('collect')");services.Player.ClearListeners();host.Shutdown();UnityEditor.SceneManagement.EditorSceneManager.ClosePreviewScene(scene);}
+}finally{lua.DoString("EquipmentPreviewRegistry:Shutdown();EquipmentPreviewRegistry=nil;EquipmentPreviewPanel=nil;EquipmentPreviewAppearance=nil;EquipmentPreviewModify=nil;EquipmentPreviewGun=nil;EquipmentPreviewMelee=nil;Services=nil;collectgarbage('collect')");services.Player.ClearListeners();host.Shutdown();UnityEditor.SceneManagement.EditorSceneManager.ClosePreviewScene(scene);}
 }

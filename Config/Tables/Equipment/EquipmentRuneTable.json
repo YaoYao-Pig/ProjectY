@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "EquipmentRuneTable",
-  "description": "符文按技能标签修改参数；多个符文伤害倍率相乘，其余加算，目标上限取最大。",
+  "description": "可拆改装组件：符文与机械组件通过挂点和技能组限定效果。",
   "key": "id",
   "fields": [
     {
@@ -16,7 +16,8 @@
       "description": "插槽兼容性",
       "values": [
         "head",
-        "shaft"
+        "shaft",
+        "thruster"
       ]
     },
     {
@@ -24,7 +25,8 @@
       "type": "enum",
       "description": "受影响技能组",
       "values": [
-        "spell"
+        "spell",
+        "slash"
       ]
     },
     {
@@ -94,6 +96,18 @@
       "rangeBonus": 2,
       "hitBonus": 20,
       "cooldownBonus": 1,
+      "maxTargets": 1,
+      "splashRadius": 0
+    },
+    {
+      "id": 13,
+      "slotKind": "thruster",
+      "skillGroup": "slash",
+      "description": "双手巨剑专用机械组件：劈砍伤害提高 35%，不额外消耗 AP；属性不足惩罚仍然生效。",
+      "damageMultiplier": 1.35,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
       "maxTargets": 1,
       "splashRadius": 0
     }

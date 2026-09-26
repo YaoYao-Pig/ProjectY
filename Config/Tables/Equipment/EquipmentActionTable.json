@@ -23,7 +23,8 @@
         "none",
         "cast",
         "fire",
-        "reload"
+        "reload",
+        "slash"
       ]
     },
     {
@@ -53,6 +54,16 @@
       "type": "float",
       "description": "换弹时弹匣位移（米）",
       "min": 0
+    },
+    {
+      "name": "yaw",
+      "type": "float",
+      "description": "动作水平旋转幅度"
+    },
+    {
+      "name": "roll",
+      "type": "float",
+      "description": "动作侧倾幅度"
     }
   ],
   "rows": [
@@ -64,7 +75,9 @@
       "recoil": 0,
       "pitch": 0,
       "handLift": 0,
-      "magazineDrop": 0
+      "magazineDrop": 0,
+      "yaw": 0,
+      "roll": 0
     },
     {
       "id": 1,
@@ -74,7 +87,9 @@
       "recoil": 0,
       "pitch": 14,
       "handLift": 0.15,
-      "magazineDrop": 0
+      "magazineDrop": 0,
+      "yaw": 0,
+      "roll": 0
     },
     {
       "id": 2,
@@ -84,7 +99,9 @@
       "recoil": 0.11,
       "pitch": 5,
       "handLift": 0,
-      "magazineDrop": 0
+      "magazineDrop": 0,
+      "yaw": 0,
+      "roll": 0
     },
     {
       "id": 3,
@@ -94,7 +111,45 @@
       "recoil": 0,
       "pitch": -22,
       "handLift": -0.12,
-      "magazineDrop": 0.35
+      "magazineDrop": 0.35,
+      "yaw": 0,
+      "roll": 0
+    },
+    {
+      "id": 4,
+      "name": "单手斜斩",
+      "kind": "slash",
+      "duration": 0.5,
+      "recoil": 0,
+      "pitch": 85,
+      "handLift": 0.12,
+      "magazineDrop": 0,
+      "yaw": 18,
+      "roll": -30
+    },
+    {
+      "id": 5,
+      "name": "双手重劈",
+      "kind": "slash",
+      "duration": 0.75,
+      "recoil": 0,
+      "pitch": 105,
+      "handLift": 0.12,
+      "magazineDrop": 0,
+      "yaw": 0,
+      "roll": -8
+    },
+    {
+      "id": 6,
+      "name": "巨剑劈砍",
+      "kind": "slash",
+      "duration": 0.95,
+      "recoil": 0,
+      "pitch": 115,
+      "handLift": 0.12,
+      "magazineDrop": 0,
+      "yaw": -5,
+      "roll": -5
     }
   ]
 }

@@ -13,7 +13,7 @@ namespace ProjectY.Samples
         private readonly List<int> triangles = new List<int>();
         private readonly List<Color> colors = new List<Color>();
         private readonly List<Vector4> patterns = new List<Vector4>();
-        private readonly List<Vector2> finishes = new List<Vector2>();
+        private readonly List<Vector4> finishes = new List<Vector4>();
         private MapAreaViewData.Surface activeSurface;
         private readonly List<CellMesh> cells = new List<CellMesh>();
         private readonly Mesh mesh;
@@ -60,7 +60,8 @@ namespace ProjectY.Samples
             if (Vector3.Cross(b - a, c - a).sqrMagnitude < .00000001f) return;
             var index = vertices.Count; vertices.Add(a); vertices.Add(b); vertices.Add(c);
             colors.Add(color); colors.Add(color); colors.Add(color); triangles.Add(index); triangles.Add(index + 1); triangles.Add(index + 2);
-            for (var i = 0; i < 3; i++) { patterns.Add(activeSurface.Pattern); finishes.Add(new Vector2(activeSurface.Smoothness, 0)); }
+            var detail = QualitySettings.activeColorSpace == ColorSpace.Linear ? activeSurface.DetailColor.linear : activeSurface.DetailColor;
+            for (var i = 0; i < 3; i++) { patterns.Add(activeSurface.Pattern); finishes.Add(new Vector4(detail.r, detail.g, detail.b, activeSurface.Smoothness)); }
         }
         private static List<Vector3> Clip(List<Vector3> input, float height, bool above)
         {

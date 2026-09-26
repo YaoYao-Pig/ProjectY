@@ -37,6 +37,31 @@
       "type": "int",
       "description": "所属功能分区",
       "ref": "MapAreaDistrictTable"
+    },
+    {
+      "name": "dressingPropIds",
+      "type": "int[]",
+      "description": "追加环境陈设，不占战斗保留区",
+      "ref": "MapAreaPropTable"
+    },
+    {
+      "name": "dressingCount",
+      "type": "int",
+      "description": "追加陈设上限",
+      "min": 0,
+      "max": 16
+    },
+    {
+      "name": "floorSurfaceIds",
+      "type": "int[]",
+      "description": "房间地面材质池，空数组使用 Region 配方",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "wallSurfaceIds",
+      "type": "int[]",
+      "description": "房间墙材池",
+      "ref": "MapAreaSurfaceTable"
     }
   ],
   "rows": [
@@ -72,7 +97,24 @@
         "...#######...############"
       ],
       "floorAccent": "#ada28a",
-      "districtId": 1
+      "districtId": 1,
+      "dressingPropIds": [
+        35,
+        36,
+        37,
+        28,
+        30,
+        34
+      ],
+      "dressingCount": 5,
+      "floorSurfaceIds": [
+        16,
+        14
+      ],
+      "wallSurfaceIds": [
+        23,
+        24
+      ]
     },
     {
       "id": 2,
@@ -106,7 +148,22 @@
         "....#####....############"
       ],
       "floorAccent": "#9fa88e",
-      "districtId": 2
+      "districtId": 2,
+      "dressingPropIds": [
+        36,
+        37,
+        39,
+        40,
+        33
+      ],
+      "dressingCount": 5,
+      "floorSurfaceIds": [
+        14,
+        20
+      ],
+      "wallSurfaceIds": [
+        24
+      ]
     },
     {
       "id": 3,
@@ -140,7 +197,23 @@
         "...#######...############"
       ],
       "floorAccent": "#a39586",
-      "districtId": 3
+      "districtId": 3,
+      "dressingPropIds": [
+        34,
+        36,
+        37,
+        39,
+        33
+      ],
+      "dressingCount": 5,
+      "floorSurfaceIds": [
+        14,
+        20
+      ],
+      "wallSurfaceIds": [
+        24,
+        21
+      ]
     }
   ]
 }

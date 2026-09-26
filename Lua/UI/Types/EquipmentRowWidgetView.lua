@@ -8,5 +8,6 @@
 ---@field Detail CS.UnityEngine.UI.Text
 ---@field Selected CS.UnityEngine.RectTransform
 ---@field Group CS.UnityEngine.CanvasGroup
+---@field Layout CS.UnityEngine.Component
 local View = {}
 return View

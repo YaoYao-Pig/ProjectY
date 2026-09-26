@@ -45,8 +45,8 @@ function Equipment:Command(command,actorId,weaponId,socketId,value)
             self.data:AttachMagazine(weaponId,value)
         else
             local rune=value~=0 and self.rules.runes:Find(value) or nil
-            if value~=0 and (not rune or rune.slotKind~=socket.kind) then return false,'符文与挂点不兼容' end
-            if value~=0 and self.data:CountItem(value)<1 and weapon:GetRune(socketId)~=value then return false,'背包中没有这块符文' end
+            if value~=0 and (not rune or rune.slotKind~=socket.kind) then return false,'组件与挂点不兼容' end
+            if value~=0 and self.data:CountItem(value)<1 and weapon:GetRune(socketId)~=value then return false,'背包中没有这个组件' end
             self.data:SetRune(weaponId,socketId,value)
         end
         return true

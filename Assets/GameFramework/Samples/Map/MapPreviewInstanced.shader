@@ -10,16 +10,18 @@ Shader "ProjectY/Map Preview Instanced"
         #pragma surface surf Standard vertex:vert addshadow fullforwardshadows
         #pragma target 3.0
         #pragma multi_compile_instancing
-        struct Input { float3 worldPos; float3 worldNormal; fixed4 color : COLOR; float4 surfaceData; float finish; };
+        struct Input { float3 worldPos; float3 worldNormal; fixed4 color : COLOR; float4 surfaceData; float4 finish; };
         fixed4 _EmissionColor;
         float _UseVertexColor, _UseSurfacePattern;
         UNITY_INSTANCING_BUFFER_START(Props)
             UNITY_DEFINE_INSTANCED_PROP(fixed4, _Color)
+            UNITY_DEFINE_INSTANCED_PROP(float4, _SurfaceData)
+            UNITY_DEFINE_INSTANCED_PROP(float4, _SurfaceFinish)
         UNITY_INSTANCING_BUFFER_END(Props)
         void vert(inout appdata_full v, out Input o)
         {
             UNITY_INITIALIZE_OUTPUT(Input, o);
-            o.surfaceData = v.texcoord1; o.finish = v.texcoord2.x;
+            o.surfaceData = v.texcoord1; o.finish = v.texcoord2;
         }
         float hash(float2 p) { return frac(sin(dot(p, float2(127.1,311.7))) * 43758.5453); }
         float noise(float2 p)
@@ -32,9 +34,11 @@ Shader "ProjectY/Map Preview Instanced"
             float kind = data.x; p /= max(.1, data.y);
             float detail = 1-saturate(max(fwidth(p.x),fwidth(p.y))*1.5);
             float value = 1;
-            if (kind < 2.5 || (kind > 4.5 && kind < 5.5))
+            if (kind < .5) return 1;
+            if (kind < 2.5 || (kind > 4.5 && kind < 5.5) || kind > 8.5)
             {
                 if (kind > 4.5) p.y *= .16;
+                if (kind > 8.5) p.y *= 12;
                 p.x += fmod(floor(p.y),2)*.5;
                 float2 f=frac(p), fw=max(fwidth(p),.002);
                 float2 edge=min(f,1-f);
@@ -58,14 +62,23 @@ Shader "ProjectY/Map Preview Instanced"
             fixed4 color = UNITY_ACCESS_INSTANCED_PROP(Props, _Color);
             color = lerp(color, IN.color, _UseVertexColor);
             o.Albedo = color.rgb;
+            float4 data = _UseSurfacePattern > 1.5 ? UNITY_ACCESS_INSTANCED_PROP(Props, _SurfaceData) : IN.surfaceData;
+            float4 finish = _UseSurfacePattern > 1.5 ? UNITY_ACCESS_INSTANCED_PROP(Props, _SurfaceFinish) : IN.finish;
             if (_UseSurfacePattern > .5)
             {
                 float3 n=abs(IN.worldNormal);
                 float2 p=n.y>.6 ? IN.worldPos.xz : (n.x>n.z ? IN.worldPos.zy : IN.worldPos.xy);
-                o.Albedo *= pattern(p, IN.surfaceData);
+                o.Albedo *= pattern(p, data);
+                // 苔藓以连续的大块覆盖出现，世界坐标保证相邻格之间没有独立贴片边界。
+                if (data.x > 7.5 && data.x < 8.5)
+                {
+                    float damp = noise(p / max(.1,data.y) * .38) + noise(p*.9)*.18;
+                    float moss = smoothstep(.43,.72,damp);
+                    o.Albedo = lerp(o.Albedo, finish.rgb*(.8+.3*noise(p*.5)), moss*.85);
+                }
             }
             o.Metallic = 0;
-            o.Smoothness = lerp(.08, IN.finish, _UseSurfacePattern);
+            o.Smoothness = _UseSurfacePattern > .5 ? finish.w : .08;
             o.Emission = _EmissionColor.rgb;
             o.Alpha = 1;
         }

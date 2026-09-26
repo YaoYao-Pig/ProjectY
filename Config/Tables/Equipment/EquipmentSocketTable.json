@@ -28,7 +28,8 @@
       "values": [
         "head",
         "shaft",
-        "magazine"
+        "magazine",
+        "thruster"
       ]
     },
     {
@@ -40,6 +41,15 @@
       "name": "rotation",
       "type": "float[]",
       "description": "Unity 局部欧拉角 xyz"
+    },
+    {
+      "name": "calloutSide",
+      "type": "enum",
+      "description": "3D 工坊标签的外侧停靠列",
+      "values": [
+        "left",
+        "right"
+      ]
     }
   ],
   "rows": [
@@ -57,7 +67,8 @@
         0,
         0,
         0
-      ]
+      ],
+      "calloutSide": "right"
     },
     {
       "id": 2,
@@ -73,7 +84,8 @@
         0,
         0,
         0
-      ]
+      ],
+      "calloutSide": "left"
     },
     {
       "id": 3,
@@ -89,7 +101,42 @@
         0,
         0,
         0
-      ]
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 4,
+      "name": "剑脊 · 推进器",
+      "weaponItemId": 44,
+      "kind": "thruster",
+      "position": [
+        0,
+        0.5,
+        -0.09
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 5,
+      "name": "剑脊 · 推进器",
+      "weaponItemId": 45,
+      "kind": "thruster",
+      "position": [
+        0,
+        0.5,
+        -0.09
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
     }
   ]
 }

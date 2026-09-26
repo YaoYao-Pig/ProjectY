@@ -49,6 +49,7 @@ local buildings = region:GetBuildingConfigs()
 
 ## 关键入口
 
+- [环境装饰](MapDressing.md)：`MapDecorationRuleTable` 与 `MapDressing.Build` 增补自然景物和路边杂物，支持地貌、水岸、道路关联和净距。
 - [MapGenerator.lua](../../Lua/Game/Map/MapGenerator.lua)：参数校验、轮廓拼接、生成/冻结；[MapSystem.lua](../../Lua/Game/Map/MapSystem.lua)：生命周期与策略注册。
 - [MapRegionConvertBase.lua](../../Lua/Game/Map/MapRegionConvertBase.lua) / [MapRegionInstanceBase.lua](../../Lua/Game/Map/MapRegionInstanceBase.lua)：策略契约与区域查询；[RegionFootprint.lua](../../Lua/Game/Map/RegionFootprint.lua)：不规则连通轮廓。
 - [GrasslandRegion.lua](../../Lua/Game/Map/GrasslandRegion.lua)、[MountainRegion.lua](../../Lua/Game/Map/MountainRegion.lua)、[LakeRegion.lua](../../Lua/Game/Map/LakeRegion.lua)、[RiverRegion.lua](../../Lua/Game/Map/RiverRegion.lua)、[ForestRegion.lua](../../Lua/Game/Map/ForestRegion.lua)、[SnowRegion.lua](../../Lua/Game/Map/SnowRegion.lua)：六种策略；[TerrainNoise.lua](../../Lua/Game/Map/TerrainNoise.lua)：共用采样工具。

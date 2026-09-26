@@ -173,6 +173,7 @@ function Town.Generate(area,row,random,config)
         local q,r={},{ };Geometry.Disk(0,0,1,function(x,y)q[#q+1]=x;r[#r+1]=y end)
         if place({assetId=area.theme.treeAssetId,scale=area.theme.treeScale,scaleMode='grid',footprintQ=q,footprintR=r,entryQ=0,entryR=2},cell.q,cell.r,0) then trees=trees+1 end
     end
+    require('Game.MapArea.TownDressing').Apply(area,row,random,config,doors)
     local queue,distance=Geometry.Reachable(area,area.entryIndex)
     assert(#queue==area.walkableCount,'Town street layers must stay connected');area.goalDistance=distance[area.goalIndex]
     require('Game.MapArea.TownResidents').Populate(area,row,config,doors)

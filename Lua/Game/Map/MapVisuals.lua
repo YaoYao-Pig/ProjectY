@@ -7,6 +7,12 @@ local function color(text)
     return { tonumber(text:sub(2,3),16)/255, tonumber(text:sub(4,5),16)/255, tonumber(text:sub(6,7),16)/255 }
 end
 function Visuals:ctor(config, regionTypes)
+    self.dressing=config:GetTable('MapDecorationRuleTable'):All()
+    for _,row in ipairs(self.dressing) do
+        config:GetTable('MapAssetTable'):Get(row.assetId)
+        assert(row.minScale>0 and row.maxScale>=row.minScale,'Invalid world dressing scale')
+        for _,id in ipairs(row.regions) do assert(regionTypes[id],'Unknown dressing region') end
+    end
     self.assets = config:GetTable('MapAssetTable'); self.biomes = {}; self.rows = config:GetTable('MapBiomeTable'):All()
     for _, asset in ipairs(self.assets:All()) do
         assert(asset.prefabPath:match('^Assets/.*%.%w+$') and not asset.prefabPath:find('..',1,true), 'Invalid map asset path')
@@ -56,5 +62,6 @@ function Visuals:Build(map)
             end
         end
     end
+    require('Game.Map.MapDressing').Build(map,self.dressing)
 end
 return Visuals

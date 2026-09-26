@@ -78,7 +78,8 @@
       "values": [
         "weapon",
         "spell",
-        "support"
+        "support",
+        "slash"
       ]
     },
     {
@@ -312,6 +313,69 @@
       "ammoPerShot": 0,
       "damageScale": 1,
       "actionTemplate": 3
+    },
+    {
+      "id": 10,
+      "name": "单手斩击",
+      "description": "使用当前装备的近战武器劈砍相邻敌人；装备等级、属性需求和组件共同决定实际效果。",
+      "iconId": 14,
+      "action": "main",
+      "cost": 2,
+      "range": 1,
+      "target": "enemy",
+      "proficiency": "sword",
+      "effectIds": [
+        9
+      ],
+      "skillGroup": "slash",
+      "cooldownTurns": 0,
+      "hitChance": 95,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 4
+    },
+    {
+      "id": 11,
+      "name": "大剑重劈",
+      "description": "使用当前装备的近战武器劈砍相邻敌人；装备等级、属性需求和组件共同决定实际效果。",
+      "iconId": 15,
+      "action": "main",
+      "cost": 3,
+      "range": 1,
+      "target": "enemy",
+      "proficiency": "greatsword",
+      "effectIds": [
+        10
+      ],
+      "skillGroup": "slash",
+      "cooldownTurns": 0,
+      "hitChance": 90,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 5
+    },
+    {
+      "id": 12,
+      "name": "巨刃劈砍",
+      "description": "使用当前装备的近战武器劈砍相邻敌人；装备等级、属性需求和组件共同决定实际效果。",
+      "iconId": 16,
+      "action": "main",
+      "cost": 3,
+      "range": 1,
+      "target": "enemy",
+      "proficiency": "greatsword",
+      "effectIds": [
+        11
+      ],
+      "skillGroup": "slash",
+      "cooldownTurns": 1,
+      "hitChance": 85,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 6
     }
   ]
 }

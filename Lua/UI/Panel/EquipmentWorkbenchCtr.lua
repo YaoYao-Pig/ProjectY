@@ -5,6 +5,8 @@ function Workbench:Bind()
     self.system=self.context.systems:Get('Equipment');self.rules=self.system.rules
     self.stats=self.context.systems:Get('Battle').stats
     self.view.Workbench:Prepare();self.inventory={};self.options={}
+    self:Listen(self.view.CategoryPrevious,function() self:ChangeCategory(-1) end)
+    self:Listen(self.view.CategoryNext,function() self:ChangeCategory(1) end)
     for i=1,4 do local index=i
         self:Listen(self.view['Actor'..i],function()
             self.actorId=self.system.adventure:GetPartyAt(index-1).Id;self:Refresh()
@@ -27,8 +29,19 @@ end
 function Workbench:OnShow(args)
     self.demo=assert(args.demo);self.demo:SetEquipmentOpen(true)
     self.actorId=self.system.adventure:GetPartyAt(0).Id
-    self.weaponId=self.system.data:GetWeaponAt(0).Id;self.socketId=0;self.message='点击挂点选择组件；拖动旋转，滚轮缩放。'
+    self.weaponId=self.system.data:GetWeaponAt(0).Id;self.socketId=0;self.categoryIndex=0;self.message='点击外侧标签选择组件；拖动旋转，滚轮缩放。'
     self.view.Workbench:Prepare();self:Refresh()
+end
+function Workbench:ChangeCategory(step)
+    local categories=self.rules.categories:All()
+    self.categoryIndex=(self.categoryIndex+step)%(#categories+1)
+    local categoryId=self.categoryIndex>0 and categories[self.categoryIndex].id or 0
+    if categoryId~=0 then
+        for i=0,self.system.data.WeaponCount-1 do local weapon=self.system.data:GetWeaponAt(i)
+            if self.rules.weapons:Get(weapon.ItemId).categoryId==categoryId then self.weaponId=weapon.Id;self.socketId=0;break end
+        end
+    end
+    self:Refresh()
 end
 function Workbench:Command(command,value)
     local ok,reason=self.system:Command(command,self.actorId,self.weaponId,self.socketId,value)
@@ -50,7 +63,7 @@ function Workbench:Refresh()
     local item=self.rules.items:Get(weapon.ItemId)
     local socketFound=false
     for _,id in ipairs(definition.socketIds) do if id==self.socketId then socketFound=true end end
-    if not socketFound then self.socketId=definition.socketIds[1] end
+    if not socketFound then self.socketId=definition.socketIds[1] or 0 end
     for i=1,4 do
         local active=i<=self.system.adventure.PartyCount
         self.view['Actor'..i].gameObject:SetActive(active)
@@ -59,7 +72,7 @@ function Workbench:Refresh()
         end
     end
     self.view.Title.text=item.name
-    self.view.Subtitle.text=weapon.OwnerActorId==0 and '共享背包 · 未装备' or ('持有者：'..self.stats:Template(self.system:Actor(weapon.OwnerActorId)).name)
+    self.view.Subtitle.text=self.rules.categories:Get(definition.categoryId).name..' · Lv.'..definition.level..'\n'..(weapon.OwnerActorId==0 and '共享背包 · 未装备' or ('持有者：'..self.stats:Template(self.system:Actor(weapon.OwnerActorId)).name))
     self.view.EquipText.text='装备给 '..self.stats:Template(actor).name
     self.view.Equip.interactable=not equipped or equipped.Id~=weapon.Id
     self.view.Unequip.interactable=equipped~=nil
@@ -72,10 +85,20 @@ function Workbench:Refresh()
     local function row(itemId,title,detail)
         return {itemId=itemId,title=title,detail=detail,iconPath=self.rules.items:Get(itemId).iconPath}
     end
+    local category=self.categoryIndex>0 and self.rules.categories:All()[self.categoryIndex] or nil
+    self.view.CategoryText.text=category and category.name or '全部武器'
     local inventory={}
-    for i=0,data.WeaponCount-1 do local w=data:GetWeaponAt(i);local r=row(w.ItemId,self.rules.items:Get(w.ItemId).name,w.OwnerActorId==0 and '武器 · 在背包中' or '武器 · 已装备')
-        r.weaponId=w.Id;r.selected=w.Id==self.weaponId;inventory[#inventory+1]=r
+    for i=0,data.WeaponCount-1 do local w=data:GetWeaponAt(i);local d=self.rules.weapons:Get(w.ItemId)
+        if not category or category.id==d.categoryId then
+            local r=row(w.ItemId,self.rules.items:Get(w.ItemId).name,self.rules.categories:Get(d.categoryId).name..' · Lv.'..d.level..(w.OwnerActorId==0 and ' · 背包' or ' · 已装备'))
+            r.weaponId=w.Id;r.category=d.categoryId;r.level=d.level;r.selected=w.Id==self.weaponId;inventory[#inventory+1]=r
+        end
     end
+    table.sort(inventory,function(a,b)
+        if a.category~=b.category then return a.category<b.category end
+        if a.level~=b.level then return a.level<b.level end
+        return a.weaponId<b.weaponId
+    end)
     for i=0,data.MagazineCount-1 do local mag=data:GetMagazineAt(i);local r=row(mag.ItemId,'弹匣 #'..mag.Id,mag.Rounds..'/'..mag.Capacity..' 发 · '..(data:MagazineWeapon(mag.Id)==0 and '备用 · 点击装填' or '已装入武器'))
         r.magazineId=mag.Id;inventory[#inventory+1]=r
     end
@@ -86,16 +109,19 @@ function Workbench:Refresh()
         if r.weaponId then self.weaponId=r.weaponId;self.socketId=0;self:Refresh()
         elseif r.magazineId then self:Command('fill',r.magazineId) end
     end)
-    local slot=self.rules.sockets:Get(self.socketId);local options={};local current=0
-    self.view.SocketTitle.text=slot.name..' · 可安装组件'
-    if slot.kind=='magazine' then
+    local requirement=self.rules:Requirements(actor,weapon,self.stats);local requirements={}
+    for _,entry in ipairs(requirement.entries) do requirements[#requirements+1]=entry.name..' '..entry.current..' / '..entry.required end
+    self.view.Requirements.text='属性要求  ·  '..table.concat(requirements,'，')..'\n'..(requirement.met and '✓ 已满足要求' or string.format('▲ 可装备 · 伤害 -%d%% · 命中 -%d%%',math.floor((1-requirement.damageScale)*100+.5),requirement.hitLoss))
+    local slot=self.socketId~=0 and self.rules.sockets:Get(self.socketId) or nil;local options={};local current=0
+    self.view.SocketTitle.text=slot and slot.name..' · 可安装组件' or '此武器没有改装槽'
+    if slot and slot.kind=='magazine' then
         current=weapon.MagazineId
         for i=0,data.MagazineCount-1 do local mag=data:GetMagazineAt(i)
             if mag.ItemId==definition.magazineItemId and (data:MagazineWeapon(mag.Id)==0 or mag.Id==current) then
                 local r=row(mag.ItemId,'弹匣 #'..mag.Id,mag.Rounds..'/'..mag.Capacity..' 发');r.value=mag.Id;r.selected=current==mag.Id;options[#options+1]=r
             end
         end
-    else
+    elseif slot then
         current=weapon:GetRune(slot.id)
         for _,rune in ipairs(self.rules.runes:All()) do if rune.slotKind==slot.kind then
             local r=row(rune.id,self.rules.items:Get(rune.id).name,data:CountItem(rune.id)>0 and '点击安装' or (current==rune.id and '已安装' or '尚未获得 · 前往地牢搜刮'))
@@ -108,14 +134,14 @@ function Workbench:Refresh()
     self.view.Fill.gameObject:SetActive(definition.kind=='gun')
     self.view.Fill.interactable=loaded~=nil and loaded.Rounds<loaded.Capacity and data:CountItem(loaded.AmmoItemId)>0
     local lines={}
-    if slot.kind~='magazine' then
+    if slot and slot.kind~='magazine' then
         for _,rune in ipairs(self.rules.runes:All()) do if rune.slotKind==slot.kind then lines[#lines+1]=rune.description end end
     end
     if loaded then lines[#lines+1]='弹匣 '..loaded.Rounds..' / '..loaded.Capacity..' · 散装弹药 '..data:CountItem(loaded.AmmoItemId) end
     -- Preview a selected inventory weapon without mutating actor ownership.
     local previewRules=setmetatable({Weapon=function() return weapon end},{__index=self.rules})
     for _,id in ipairs(previewRules:SkillIds(actor,self.stats:Template(actor))) do
-        local skill=previewRules:Skill(actor,id)
+        local skill=previewRules:Skill(actor,id,self.stats)
         local effects={};local damage=false
         for _,effectId in ipairs(skill.effectIds) do
             if self.rules.effects:Get(effectId).kind=='damage' then damage=true end

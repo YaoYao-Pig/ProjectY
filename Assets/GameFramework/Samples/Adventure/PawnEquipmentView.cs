@@ -54,9 +54,12 @@ namespace ProjectY.Samples
             var recoil=t>=0&&t<1?Mathf.Sin(Mathf.Repeat(t*Mathf.Max(1,action.Shots),1)*Mathf.PI):0;
             var shift=new Vector3(0,pulse*action.HandLift,-recoil*action.Recoil);
             weapon.transform.localPosition=pose.MainHand+shift;
-            weapon.transform.localRotation=Quaternion.Euler(pose.WeaponRotation+Vector3.right*(pulse*action.Pitch));
+            var baseRotation=Quaternion.Euler(pose.WeaponRotation);
+            var rotation=Quaternion.Euler(new Vector3(action.Pitch,action.Yaw,action.Roll)*pulse);
+            weapon.transform.localRotation=rotation*baseRotation;
             var main=pose.MainHand+shift;
-            var off=pose.OffHand+shift;
+            var off=pose.OffHand;
+            if(pose.OffHandFollowsWeapon) off=main+rotation*(pose.OffHand-pose.MainHand);
             if(action.Kind=="reload" && pulse>0) off=Vector3.Lerp(off,main+new Vector3(.05f,-.3f,.2f),pulse);
             Segment(arms[0],pose.MainShoulder,pose.MainElbow,.105f);Segment(arms[1],pose.MainElbow,main,.088f);arms[2].localPosition=main;
             Segment(arms[3],pose.OffShoulder,pose.OffElbow,.105f);Segment(arms[4],pose.OffElbow,off,.088f);arms[5].localPosition=off;

@@ -4,9 +4,13 @@ function Rules.New(config, data)
     local self = setmetatable({data=data},Rules)
     for key,name in pairs({items='EquipmentItemTable',weapons='EquipmentWeaponTable',runes='EquipmentRuneTable',
         magazines='EquipmentMagazineTable',sockets='EquipmentSocketTable',assets='EquipmentAssetTable',
-        poses='EquipmentPoseTable',actions='EquipmentActionTable',skills='CombatSkillTable',effects='CombatEffectTable'}) do self[key]=config:GetTable(name) end
+        poses='EquipmentPoseTable',actions='EquipmentActionTable',skills='CombatSkillTable',effects='CombatEffectTable',
+        categories='EquipmentCategoryTable',requirements='EquipmentRequirementTable',attributes='EquipmentAttributeTable'}) do self[key]=config:GetTable(name) end
     for _,weapon in ipairs(self.weapons:All()) do
         assert(self.items:Get(weapon.id).kind=='weapon')
+        self.categories:Get(weapon.categoryId)
+        local requirement=self.requirements:Get(weapon.requirementId)
+        assert(#requirement.attributeIds==#requirement.values,'Weapon requirement arrays differ')
         for _,id in ipairs(weapon.socketIds) do assert(self.sockets:Get(id).weaponItemId==weapon.id,'Weapon/socket mismatch') end
         if weapon.kind=='gun' then self.magazines:Get(weapon.magazineItemId) end
     end
@@ -25,14 +29,34 @@ function Rules:SkillIds(actor, template)
     for _,id in ipairs(definition.skillIds) do if not seen[id] then result[#result+1]=id;seen[id]=true end end
     return result
 end
-function Rules:Skill(actor, id)
+function Rules:Requirements(actor,weapon,stats)
+    local definition=self.weapons:Get(weapon.ItemId)
+    local rule=self.requirements:Get(definition.requirementId)
+    local result={missing=0,entries={}}
+    for i,id in ipairs(rule.attributeIds) do
+        local attribute=self.attributes:Get(id);local current=stats:Get(actor,attribute.code);local required=rule.values[i]
+        result.missing=result.missing+math.max(0,required-current)
+        result.entries[#result.entries+1]={name=attribute.name,current=current,required=required}
+    end
+    result.met=result.missing==0
+    result.damageScale=math.max(rule.minimumDamageScale,1-result.missing*rule.damageLossPerPoint)
+    result.hitLoss=math.min(rule.maximumHitLoss,result.missing*rule.hitLossPerPoint)
+    return result
+end
+function Rules:Skill(actor, id, stats)
     local base=self.skills:Get(id);local result={}
     for _,key in ipairs({'id','name','description','iconId','action','cost','range','target','proficiency','effectIds',
         'skillGroup','cooldownTurns','hitChance','shots','ammoPerShot','damageScale','actionTemplate'}) do result[key]=base[key] end
     result.maxTargets=1;result.splashRadius=0
     local weapon=self:Weapon(actor)
     if weapon then
-        for _,socketId in ipairs(self.weapons:Get(weapon.ItemId).socketIds) do
+        local definition=self.weapons:Get(weapon.ItemId)
+        for _,skillId in ipairs(definition.skillIds) do if skillId==id then
+            local requirement=self:Requirements(actor,weapon,assert(stats,'Equipment skill resolution needs CombatStats'))
+            result.damageScale=result.damageScale*definition.damageMultiplier*requirement.damageScale
+            result.hitChance=math.max(0,result.hitChance-requirement.hitLoss)
+        end end
+        for _,socketId in ipairs(definition.socketIds) do
             local runeId=weapon:GetRune(socketId)
             if runeId~=0 then
                 local rune=self.runes:Get(runeId)
@@ -109,7 +133,7 @@ function Rules:WeaponVisual(weapon)
             local runeId=weapon:GetRune(id)
             if runeId~=0 then attachment=self:Asset(self.items:Get(runeId).assetId) end
         end
-        view.sockets[#view.sockets+1]={id=id,name=socket.name,kind=socket.kind,position=vector(socket.position),rotation=vector(socket.rotation),asset=attachment}
+        view.sockets[#view.sockets+1]={id=id,name=socket.name,kind=socket.kind,calloutSide=socket.calloutSide,position=vector(socket.position),rotation=vector(socket.rotation),asset=attachment}
     end
     return view
 end
@@ -117,12 +141,12 @@ function Rules:ActorVisual(actor)
     local weapon=self:Weapon(actor)
     if not weapon then return nil end
     local pose=self.poses:Get(self.weapons:Get(weapon.ItemId).poseId)
-    local result={weapon=self:WeaponVisual(weapon),pose={id=pose.id,corePartId=pose.corePartId,
+    local result={weapon=self:WeaponVisual(weapon),pose={id=pose.id,corePartId=pose.corePartId,offHandFollowsWeapon=pose.offHandFollowsWeapon,
         upper=self:Asset(pose.upperAssetId),forearm=self:Asset(pose.forearmAssetId),hand=self:Asset(pose.handAssetId)}}
     for _,key in ipairs({'mainShoulder','mainElbow','mainHand','offShoulder','offElbow','offHand','weaponRotation'}) do result.pose[key]=vector(pose[key]) end
     local action=self.actions:Get(actor.ActionTemplateId)
     result.action={sequence=actor.ActionSequence,kind=action.kind,duration=action.duration,recoil=action.recoil,
-        pitch=action.pitch,handLift=action.handLift,magazineDrop=action.magazineDrop,shots=actor.ActionShots,
+        pitch=action.pitch,yaw=action.yaw,roll=action.roll,handLift=action.handLift,magazineDrop=action.magazineDrop,shots=actor.ActionShots,
         targetQ=actor.ActionTargetQ,targetR=actor.ActionTargetR}
     return result
 end

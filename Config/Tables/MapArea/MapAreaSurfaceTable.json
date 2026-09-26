@@ -17,9 +17,9 @@
     {
       "name": "pattern",
       "type": "int",
-      "description": "0纯色 1石板 2卵石 3泥土 4草地 5木板 6岩石 7积雪",
+      "description": "0纯色 1石板 2卵石 3泥土 4草地 5木板 6岩石 7积雪 8苔藓 9砌砖",
       "min": 0,
-      "max": 7
+      "max": 9
     },
     {
       "name": "baseColor",
@@ -52,6 +52,11 @@
       "description": "材质平滑度",
       "min": 0,
       "max": 1
+    },
+    {
+      "name": "detailColor",
+      "type": "string",
+      "description": "苔藓等覆盖层颜色"
     }
   ],
   "rows": [
@@ -63,7 +68,8 @@
       "tileMeters": 1.4,
       "contrast": 0.15,
       "jointWidth": 0.04,
-      "smoothness": 0.03
+      "smoothness": 0.03,
+      "detailColor": "#74805a"
     },
     {
       "id": 2,
@@ -73,7 +79,8 @@
       "tileMeters": 1.8,
       "contrast": 0.16,
       "jointWidth": 0.08,
-      "smoothness": 0.05
+      "smoothness": 0.05,
+      "detailColor": "#858075"
     },
     {
       "id": 3,
@@ -83,7 +90,8 @@
       "tileMeters": 0.8,
       "contrast": 0.13,
       "jointWidth": 0.02,
-      "smoothness": 0.02
+      "smoothness": 0.02,
+      "detailColor": "#998568"
     },
     {
       "id": 4,
@@ -93,7 +101,8 @@
       "tileMeters": 0.62,
       "contrast": 0.2,
       "jointWidth": 0.055,
-      "smoothness": 0.12
+      "smoothness": 0.12,
+      "detailColor": "#8b897d"
     },
     {
       "id": 5,
@@ -103,7 +112,8 @@
       "tileMeters": 1.15,
       "contrast": 0.15,
       "jointWidth": 0.038,
-      "smoothness": 0.12
+      "smoothness": 0.12,
+      "detailColor": "#a89d88"
     },
     {
       "id": 6,
@@ -113,7 +123,8 @@
       "tileMeters": 1.8,
       "contrast": 0.16,
       "jointWidth": 0.035,
-      "smoothness": 0.15
+      "smoothness": 0.15,
+      "detailColor": "#b7a68b"
     },
     {
       "id": 7,
@@ -123,7 +134,8 @@
       "tileMeters": 0.9,
       "contrast": 0.12,
       "jointWidth": 0.02,
-      "smoothness": 0.02
+      "smoothness": 0.02,
+      "detailColor": "#8b775c"
     },
     {
       "id": 8,
@@ -133,7 +145,8 @@
       "tileMeters": 1.0,
       "contrast": 0.15,
       "jointWidth": 0.025,
-      "smoothness": 0.03
+      "smoothness": 0.03,
+      "detailColor": "#66805a"
     },
     {
       "id": 9,
@@ -143,7 +156,8 @@
       "tileMeters": 0.36,
       "contrast": 0.16,
       "jointWidth": 0.04,
-      "smoothness": 0.13
+      "smoothness": 0.13,
+      "detailColor": "#95795b"
     },
     {
       "id": 10,
@@ -153,7 +167,8 @@
       "tileMeters": 0.95,
       "contrast": 0.14,
       "jointWidth": 0.035,
-      "smoothness": 0.1
+      "smoothness": 0.1,
+      "detailColor": "#a29987"
     },
     {
       "id": 11,
@@ -163,7 +178,8 @@
       "tileMeters": 1.5,
       "contrast": 0.14,
       "jointWidth": 0.027,
-      "smoothness": 0.18
+      "smoothness": 0.18,
+      "detailColor": "#bcb09a"
     },
     {
       "id": 12,
@@ -173,7 +189,8 @@
       "tileMeters": 2.0,
       "contrast": 0.09,
       "jointWidth": 0.02,
-      "smoothness": 0.04
+      "smoothness": 0.04,
+      "detailColor": "#c7d4d5"
     },
     {
       "id": 13,
@@ -183,7 +200,151 @@
       "tileMeters": 2.0,
       "contrast": 0.19,
       "jointWidth": 0.06,
-      "smoothness": 0.03
+      "smoothness": 0.03,
+      "detailColor": "#817c71"
+    },
+    {
+      "id": 14,
+      "name": "地牢旧石地板",
+      "pattern": 1,
+      "baseColor": "#888579",
+      "tileMeters": 1.0,
+      "contrast": 0.22,
+      "jointWidth": 0.048,
+      "smoothness": 0.1,
+      "detailColor": "#888579"
+    },
+    {
+      "id": 15,
+      "name": "潮湿苔石地板",
+      "pattern": 8,
+      "baseColor": "#7b8071",
+      "tileMeters": 1.05,
+      "contrast": 0.35,
+      "jointWidth": 0.05,
+      "smoothness": 0.1,
+      "detailColor": "#465e3e"
+    },
+    {
+      "id": 16,
+      "name": "地下木板地面",
+      "pattern": 5,
+      "baseColor": "#887056",
+      "tileMeters": 0.3,
+      "contrast": 0.25,
+      "jointWidth": 0.035,
+      "smoothness": 0.08,
+      "detailColor": "#887056"
+    },
+    {
+      "id": 17,
+      "name": "洞穴泥土地面",
+      "pattern": 3,
+      "baseColor": "#76674f",
+      "tileMeters": 1.4,
+      "contrast": 0.23,
+      "jointWidth": 0.02,
+      "smoothness": 0.02,
+      "detailColor": "#76674f"
+    },
+    {
+      "id": 18,
+      "name": "湿润石板",
+      "pattern": 1,
+      "baseColor": "#627976",
+      "tileMeters": 0.9,
+      "contrast": 0.23,
+      "jointWidth": 0.05,
+      "smoothness": 0.28,
+      "detailColor": "#627976"
+    },
+    {
+      "id": 19,
+      "name": "霜冻岩面",
+      "pattern": 7,
+      "baseColor": "#b5c5c8",
+      "tileMeters": 1.3,
+      "contrast": 0.17,
+      "jointWidth": 0.03,
+      "smoothness": 0.1,
+      "detailColor": "#b5c5c8"
+    },
+    {
+      "id": 20,
+      "name": "暗灰祭庭石板",
+      "pattern": 1,
+      "baseColor": "#777582",
+      "tileMeters": 1.35,
+      "contrast": 0.25,
+      "jointWidth": 0.06,
+      "smoothness": 0.12,
+      "detailColor": "#777582"
+    },
+    {
+      "id": 21,
+      "name": "粗糙岩墙",
+      "pattern": 6,
+      "baseColor": "#888277",
+      "tileMeters": 1.4,
+      "contrast": 0.26,
+      "jointWidth": 0.06,
+      "smoothness": 0.03,
+      "detailColor": "#888277"
+    },
+    {
+      "id": 22,
+      "name": "苔藓石墙",
+      "pattern": 8,
+      "baseColor": "#838773",
+      "tileMeters": 1.1,
+      "contrast": 0.4,
+      "jointWidth": 0.065,
+      "smoothness": 0.07,
+      "detailColor": "#465e3e"
+    },
+    {
+      "id": 23,
+      "name": "木构板墙",
+      "pattern": 5,
+      "baseColor": "#7e624a",
+      "tileMeters": 0.32,
+      "contrast": 0.24,
+      "jointWidth": 0.045,
+      "smoothness": 0.06,
+      "detailColor": "#7e624a"
+    },
+    {
+      "id": 24,
+      "name": "古代砖石墙",
+      "pattern": 9,
+      "baseColor": "#9a8a73",
+      "tileMeters": 0.95,
+      "contrast": 0.27,
+      "jointWidth": 0.055,
+      "smoothness": 0.07,
+      "detailColor": "#9a8a73"
+    },
+    {
+      "id": 25,
+      "name": "渗水岩墙",
+      "pattern": 6,
+      "baseColor": "#627775",
+      "tileMeters": 1.2,
+      "contrast": 0.28,
+      "jointWidth": 0.04,
+      "smoothness": 0.23,
+      "detailColor": "#627775"
+    },
+    {
+      "id": 26,
+      "name": "霜冻岩墙",
+      "pattern": 7,
+      "baseColor": "#9cafb7",
+      "tileMeters": 1.2,
+      "contrast": 0.19,
+      "jointWidth": 0.035,
+      "smoothness": 0.12,
+      "detailColor": "#9cafb7"
     }
   ]
 }

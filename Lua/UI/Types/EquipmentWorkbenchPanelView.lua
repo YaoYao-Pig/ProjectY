@@ -32,5 +32,9 @@
 ---@field Unequip CS.UnityEngine.UI.Button
 ---@field Status CS.UnityEngine.UI.Text
 ---@field Workbench CS.ProjectY.UI.EquipmentWorkbenchView
+---@field CategoryPrevious CS.UnityEngine.UI.Button
+---@field CategoryNext CS.UnityEngine.UI.Button
+---@field CategoryText CS.UnityEngine.UI.Text
+---@field Requirements CS.UnityEngine.UI.Text
 local View = {}
 return View

@@ -90,6 +90,8 @@ function Dungeon.Generate(area,row,random,config)
     assert(entry and goal and entry~=goal,'Dungeon needs distinct configured entrance and goal halls')
     area.entryIndex=entry.center;area.cells[entry.center].kind='entry'
     Props.Scatter(area,random,config)
+    Props.Dress(area,row,random,config)
+    require('Game.MapArea.DungeonSurfaces').Apply(area,random,config)
     local queue,distance=G.Reachable(area,area.entryIndex)
     assert(#queue==area.walkableCount,'Dungeon props and rooms must preserve a single connected floor')
     -- 深处目标选在主要房间中央，避免把终点藏在狭窄边角里。

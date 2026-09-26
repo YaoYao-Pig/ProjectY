@@ -14,6 +14,7 @@ namespace ProjectY.Samples
             public int Start, Count;
             public readonly Matrix4x4[] Matrices = new Matrix4x4[1023];
             public readonly Vector4[] Colors = new Vector4[1023];
+            public readonly Vector4[] Patterns = new Vector4[1023], Finishes = new Vector4[1023];
             public readonly MaterialPropertyBlock Properties = new MaterialPropertyBlock();
         }
         private sealed class PropBatch
@@ -38,6 +39,7 @@ namespace ProjectY.Samples
         private readonly List<CameraObstacle> cameraObstacles = new List<CameraObstacle>();
         private readonly HashSet<int> openInteriors = new HashSet<int>();
         private readonly Material material;
+        private readonly Material groundMaterial;
         private readonly Mesh mesh;
         private readonly TownSurfaceRenderer townSurface;
         private readonly MapAreaViewData map;
@@ -61,6 +63,8 @@ namespace ProjectY.Samples
             if (filter == null || source == null || filter.sharedMesh == null) throw new InvalidOperationException("MapArea 柱模型缺少 Mesh。");
             if (!Array.Exists(source.sharedMaterials, value => value.name == map.TintMaterial)) throw new InvalidOperationException("MapArea 模型材质与配置不一致。");
             mesh = filter.sharedMesh; material = new Material(shader) { name = "MapArea_探索实例", enableInstancing = true };
+            groundMaterial = new Material(shader) { name = "MapArea_地牢材质", enableInstancing = true };
+            groundMaterial.SetFloat("_UseSurfacePattern", 2);
             if (map.IsTown) townSurface = new TownSurfaceRenderer(shader, map);
             known = new bool[map.Cells.Length]; visible = new bool[map.Cells.Length];
             var bounds = new Bounds(map.Cells[0].Position, Vector3.zero);
@@ -151,8 +155,16 @@ namespace ProjectY.Samples
                     if (discovered && !reveal && !visible[index]) color *= .3f;
                     color.a = 1;
                     batch.Colors[i] = QualitySettings.activeColorSpace == ColorSpace.Linear ? color.linear : color;
+                    // 未探索格不输出纹理；已探索但不可见的苔藓覆盖层也遵循迷雾明暗。
+                    var surface = map.Surfaces[cell.SurfaceId];
+                    var detail = surface.DetailColor * (discovered && (reveal || visible[index]) ? 1 : .3f);
+                    if (QualitySettings.activeColorSpace == ColorSpace.Linear) detail = detail.linear;
+                    batch.Patterns[i] = discovered ? surface.Pattern : Vector4.zero;
+                    batch.Finishes[i] = new Vector4(detail.r, detail.g, detail.b, surface.Smoothness);
                 }
                 batch.Properties.SetVectorArray("_Color", batch.Colors);
+                batch.Properties.SetVectorArray("_SurfaceData", batch.Patterns);
+                batch.Properties.SetVectorArray("_SurfaceFinish", batch.Finishes);
             }
             foreach (var batch in propBatches)
             {
@@ -175,7 +187,7 @@ namespace ProjectY.Samples
         {
             townSurface?.Draw(camera);
             foreach (var batch in batches) for (var slot = 0; slot < mesh.subMeshCount; slot++)
-                Graphics.DrawMeshInstanced(mesh, slot, material, batch.Matrices, batch.Count, batch.Properties,
+                Graphics.DrawMeshInstanced(mesh, slot, groundMaterial, batch.Matrices, batch.Count, batch.Properties,
                     ShadowCastingMode.On, true, 0, camera, LightProbeUsage.Off);
             foreach (var batch in propBatches)
                 if (batch.Count > 0) Graphics.DrawMeshInstanced(batch.Mesh, batch.Slot, material, batch.Matrices, batch.Count, batch.Properties,
@@ -221,6 +233,7 @@ namespace ProjectY.Samples
         {
             townSurface?.Dispose();
             if (Application.isPlaying) Object.Destroy(material); else Object.DestroyImmediate(material);
+            if (Application.isPlaying) Object.Destroy(groundMaterial); else Object.DestroyImmediate(groundMaterial);
             batches.Clear(); propBatches.Clear();
         }
     }

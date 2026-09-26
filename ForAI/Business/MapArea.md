@@ -16,7 +16,8 @@
 - `MapAreaDungeonTable` 控制数量、尺寸、间隔、分区、入口/目标和回路。通道最小半径 2、最大 4，连续噪声与扩厅产生 5/7/9 格断面，两向平滑限制逐段变化；扩宽不侵入房间。房门至少 5 格，房间中心保留半径 4 的 61 格战斗区。不连通则明确报错，不降低净宽兜底。`connections.radii` 与 `path` 一一对应，`radius` 保留最小净宽契约。
 - `MapAreaDistrictTable` 定义功能分区及归一化锚点；房间按 districtId 聚合，主厅先放，附属房间在合法候选中偏好同分区。整体镜像/换轴/扰动带来变化；人工房间共用分区建筑轴。`MapAreaRoomStyleTable` 配置 cavern / hall / lobed / apse、边缘起伏、设施池和覆盖率。`MapAreaRoomPresetTable.tiles` 是轴向固定格罩（`.` 地面，`#` 墙），`MapAreaRoomPlacementTable` 是固定局部坐标陈设；模板仅整体旋转/平移，连接不得挖坏模板墙体。
 - `MapAreaPropTable` 映射模型、缩放、视线和摆放方式。`footprintQ/footprintR` 成对定义可旋转占地，替代旧 footprintRadius；必须含原点且不重复，大型设施使用 13/19 格。固定陈设冲突直接报错；随机陈设先大后小，以覆盖率为目标，沿墙/建筑轴或天然成片摆放，避开保留区，切断地面连通则回滚。`cell.blocked` 决定移动，`blocksSight` 决定视线；物件格仍是地板，不按 blocked 挤出墙。资源见[地图模型](MapArt.md)。
-- `MapAreaThemeTable` 将 Region 类型映射到墙高、房间尺度、走廊曲折、细微高度、颜色及柱模型。几何使用入口主 Region，颜色按入口地块混合权重融合，预设铺地色再与地貌混色；固定模板不随 Region 缩放其格罩与摆件，保证设计结构。
+- `MapAreaThemeTable` 将 Region 类型映射到墙高、房间尺度、走廊曲折、细微高度、材质配方及柱模型。几何使用入口主 Region，基础颜色支持地貌权重融合；当前墙地配方覆盖基础色，按房间功能和 Region 选择连续材质，见[材质表现](MapPresentation.md)。固定模板不随 Region 缩放其格罩与摆件。
+- `DungeonProps.Dress` 在原功能设施后追加环境陈设，三级混合房间各自配置池与预算；`scaleMode=meters` 的新增小件保持真实米制，旧 `grid` 件沿用格子缩放。城镇追加陈设在居民路线前完成，细节见[环境装饰](MapDressing.md)。
 - `MapAreaSystem` 保存冻结后的静态布局；`AdventureData.Areas` 的 C# `MapAreaData/MapAreaStateData` 保存唯一可变状态：当前地点、成员 ID/占格、领队格、已发现格、可见格、同步路径帧、移动时钟，以及城镇 NPC/交互状态。`CellIndex` 保持首名存活队员的格子。重进保留每个人的位置；存活名单变化时在当前锚点附近避开 NPC 重新部署，开始新远征统一清空。当前无跨运行存档。
 - 探索仅部署 1–4 名存活队员，全员倒地时要求先回营地。点击已发现地面以六邻接 BFS 规划领队路径；`SquadMovement` 用局部距离场和同帧占位组合让同伴保持后方队形，侧格受阻时跟随前一人足迹。每步最多一格，不重格、不迎面交换，离领队的可行走距离不超过 4 格；领队可等待让位，抵达后同伴收拢。规划失败保留旧路线并说明原因，不传送或穿墙。
 - 路径所有成员都只能经过已发现且无 NPC 的格。`SetSquadRoute` 接收按帧展开的全员位置并在 C# 中一次验证/保存，`Advance` 按游戏 Tick 同时推进整队；停止与重新点目标都从当前真实位置开始。地牢墙体挡视线，面对的墙格可见，当前视野为全员视野并集；城镇 discovery=open 进场一次公开全部地格。Lua 规划临时表不作为第二份可变状态。

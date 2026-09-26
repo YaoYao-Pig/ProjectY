@@ -15,6 +15,7 @@ end
 local function place(area,room,row,q,r,rotation,cells)
     local prop={id=#area.props+1,configId=row.id,assetId=row.assetId,cellIndex=area:Find(q,r).index,
         q=q,r=r,rotation=rotation,scale=row.scale,roomId=room.id,cells={}}
+    if row.scaleMode=='meters' then prop.scaleX=row.scale;prop.scaleY=row.scale;prop.scaleZ=row.scale end
     for _,cell in ipairs(cells) do
         cell.blocked=true;cell.blocksSight=row.blocksSight;cell.obstacleId=prop.id
         prop.cells[#prop.cells+1]=cell.index;area.walkableCount=area.walkableCount-1
@@ -95,6 +96,42 @@ function Props.Scatter(area,random,config)
                             for _,covered in ipairs(cells) do covered.blocked=false;covered.blocksSight=false;covered.obstacleId=0;area.walkableCount=area.walkableCount+1 end
                         end
                     end
+                end
+            end
+        end
+    end
+end
+function Props.Dress(area,dungeon,random,config)
+    local definitions=config:GetTable('MapAreaPropTable')
+    for _,room in ipairs(area.rooms) do
+        local style=room.preset or room.style
+        local ids=style and style.dressingPropIds or dungeon.basicDressingIds
+        local count=style and style.dressingCount or dungeon.basicDressingCount
+        local candidates,scores={},{}
+        for _,cell in ipairs(area.cells) do
+            if cell.roomId==room.id and not cell.blocked and not cell.reserved then
+                local wall=3
+                G.Disk(cell.q,cell.r,3,function(q,r,dq,dr)
+                    local other=area:Find(q,r)
+                    if not other or other.kind=='wall' then wall=math.min(wall,math.max(math.abs(dq),math.abs(dr),math.abs(dq+dr))) end
+                end)
+                scores[cell.index]=wall+random:Noise(cell.q,cell.r,2,9311+room.id)*2
+                candidates[#candidates+1]=cell
+            end
+        end
+        table.sort(candidates,function(a,b)return scores[a.index]<scores[b.index] or scores[a.index]==scores[b.index] and a.index<b.index end)
+        -- 独立的追加预算让小型遗物与旧有大型功能设施并存，不挤占中央战斗区。
+        local offset=math.floor(random:Noise(room.q,room.r,1,9337)*#ids)
+        for attempt=1,count do
+            local row=definitions:Get(ids[(attempt+offset-1)%#ids+1])
+            local rotation=row.placement=='island' and (attempt+room.id)%6 or room.rotation
+            for _,cell in ipairs(candidates) do
+                local cells=footprint(area,room,row,cell.q,cell.r,rotation)
+                if cells then
+                    local prop=place(area,room,row,cell.q,cell.r,rotation,cells)
+                    if #G.Reachable(area,area.entryIndex)==area.walkableCount then break end
+                    area.props[prop.id]=nil
+                    for _,covered in ipairs(cells) do covered.blocked=false;covered.blocksSight=false;covered.obstacleId=0;area.walkableCount=area.walkableCount+1 end
                 end
             end
         end

@@ -1,0 +1,11 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaDungeonSurfaceTableRow
+---@field id number 编号
+---@field name string 名称
+---@field floorIds number[] 基础地面池
+---@field wallIds number[] 基础墙面池
+---@field corridorFloorId number 走廊地面
+---@field corridorWallId number 走廊与深墙材质
+---@field regionOverrideChance number Region 材质覆盖功能房的概率
+---@field wallBand number 房间墙面延伸格数
+return {["name"]="MapAreaDungeonSurfaceTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\188\150\229\143\183"},{["name"]="name",["type"]="string",["description"]="\229\144\141\231\167\176"},{["name"]="floorIds",["type"]="int[]",["description"]="\229\159\186\231\161\128\229\156\176\233\157\162\230\177\160",["ref"]="MapAreaSurfaceTable"},{["name"]="wallIds",["type"]="int[]",["description"]="\229\159\186\231\161\128\229\162\153\233\157\162\230\177\160",["ref"]="MapAreaSurfaceTable"},{["name"]="corridorFloorId",["type"]="int",["description"]="\232\181\176\229\187\138\229\156\176\233\157\162",["ref"]="MapAreaSurfaceTable"},{["name"]="corridorWallId",["type"]="int",["description"]="\232\181\176\229\187\138\228\184\142\230\183\177\229\162\153\230\157\144\232\180\168",["ref"]="MapAreaSurfaceTable"},{["name"]="regionOverrideChance",["type"]="float",["description"]="Region \230\157\144\232\180\168\232\166\134\231\155\150\229\138\159\232\131\189\230\136\191\231\154\132\230\166\130\231\142\135",["min"]=0,["max"]=1},{["name"]="wallBand",["type"]="int",["description"]="\230\136\191\233\151\180\229\162\153\233\157\162\229\187\182\228\188\184\230\160\188\230\149\176",["min"]=1,["max"]=5}},["fingerprint"]="033fa2a0de18daa8c91e1b4559944384ac1f29a1ede8f5e32f1e1e09cd99f994"}

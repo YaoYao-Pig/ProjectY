@@ -47,6 +47,15 @@
       "name": "placement",
       "type": "string",
       "description": "随机摆放方式：wall 沿墙、island 成片、aligned 与房间轴对齐"
+    },
+    {
+      "name": "scaleMode",
+      "type": "enum",
+      "description": "grid 随地格缩放；meters 保持模型真实米制",
+      "values": [
+        "grid",
+        "meters"
+      ]
     }
   ],
   "rows": [
@@ -62,7 +71,8 @@
       "footprintR": [
         0
       ],
-      "placement": "wall"
+      "placement": "wall",
+      "scaleMode": "grid"
     },
     {
       "id": 2,
@@ -76,7 +86,8 @@
       "footprintR": [
         0
       ],
-      "placement": "wall"
+      "placement": "wall",
+      "scaleMode": "grid"
     },
     {
       "id": 3,
@@ -102,7 +113,8 @@
         1,
         1
       ],
-      "placement": "wall"
+      "placement": "wall",
+      "scaleMode": "grid"
     },
     {
       "id": 4,
@@ -128,7 +140,8 @@
         1,
         1
       ],
-      "placement": "wall"
+      "placement": "wall",
+      "scaleMode": "grid"
     },
     {
       "id": 5,
@@ -142,7 +155,8 @@
       "footprintR": [
         0
       ],
-      "placement": "wall"
+      "placement": "wall",
+      "scaleMode": "grid"
     },
     {
       "id": 6,
@@ -156,7 +170,8 @@
       "footprintR": [
         0
       ],
-      "placement": "wall"
+      "placement": "wall",
+      "scaleMode": "grid"
     },
     {
       "id": 7,
@@ -182,7 +197,8 @@
         1,
         1
       ],
-      "placement": "wall"
+      "placement": "wall",
+      "scaleMode": "grid"
     },
     {
       "id": 8,
@@ -208,7 +224,8 @@
         1,
         1
       ],
-      "placement": "wall"
+      "placement": "wall",
+      "scaleMode": "grid"
     },
     {
       "id": 9,
@@ -258,7 +275,8 @@
         2,
         2
       ],
-      "placement": "island"
+      "placement": "island",
+      "scaleMode": "grid"
     },
     {
       "id": 10,
@@ -296,7 +314,8 @@
         1,
         1
       ],
-      "placement": "aligned"
+      "placement": "aligned",
+      "scaleMode": "grid"
     },
     {
       "id": 11,
@@ -346,7 +365,8 @@
         2,
         2
       ],
-      "placement": "island"
+      "placement": "island",
+      "scaleMode": "grid"
     },
     {
       "id": 12,
@@ -396,7 +416,8 @@
         2,
         2
       ],
-      "placement": "aligned"
+      "placement": "aligned",
+      "scaleMode": "grid"
     },
     {
       "id": 13,
@@ -446,7 +467,8 @@
         2,
         2
       ],
-      "placement": "island"
+      "placement": "island",
+      "scaleMode": "grid"
     },
     {
       "id": 14,
@@ -496,7 +518,8 @@
         2,
         2
       ],
-      "placement": "aligned"
+      "placement": "aligned",
+      "scaleMode": "grid"
     },
     {
       "id": 15,
@@ -546,7 +569,8 @@
         2,
         2
       ],
-      "placement": "aligned"
+      "placement": "aligned",
+      "scaleMode": "grid"
     },
     {
       "id": 16,
@@ -584,7 +608,408 @@
         1,
         1
       ],
-      "placement": "aligned"
+      "placement": "aligned",
+      "scaleMode": "grid"
+    },
+    {
+      "id": 17,
+      "name": "倒木",
+      "assetId": 89,
+      "blocksSight": false,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        -1,
+        0,
+        1
+      ],
+      "footprintR": [
+        0,
+        0,
+        0
+      ],
+      "placement": "island"
+    },
+    {
+      "id": 18,
+      "name": "老树桩",
+      "assetId": 90,
+      "blocksSight": false,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "placement": "island"
+    },
+    {
+      "id": 19,
+      "name": "蕨类丛",
+      "assetId": 91,
+      "blocksSight": false,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "placement": "island"
+    },
+    {
+      "id": 20,
+      "name": "蘑菇簇",
+      "assetId": 92,
+      "blocksSight": false,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "placement": "island"
+    },
+    {
+      "id": 21,
+      "name": "芦苇簇",
+      "assetId": 93,
+      "blocksSight": false,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "placement": "island"
+    },
+    {
+      "id": 22,
+      "name": "野花丛",
+      "assetId": 94,
+      "blocksSight": false,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "placement": "island"
+    },
+    {
+      "id": 23,
+      "name": "路边石堆",
+      "assetId": 95,
+      "blocksSight": false,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "placement": "island"
+    },
+    {
+      "id": 24,
+      "name": "古代立石",
+      "assetId": 96,
+      "blocksSight": true,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        -1,
+        0,
+        1
+      ],
+      "footprintR": [
+        0,
+        0,
+        0
+      ],
+      "placement": "island"
+    },
+    {
+      "id": 25,
+      "name": "石井",
+      "assetId": 97,
+      "blocksSight": false,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "placement": "wall"
+    },
+    {
+      "id": 26,
+      "name": "双轮货车",
+      "assetId": 98,
+      "blocksSight": false,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        -1,
+        0,
+        1
+      ],
+      "footprintR": [
+        0,
+        0,
+        0
+      ],
+      "placement": "wall"
+    },
+    {
+      "id": 27,
+      "name": "草垛",
+      "assetId": 99,
+      "blocksSight": true,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        -1,
+        0,
+        1
+      ],
+      "footprintR": [
+        0,
+        0,
+        0
+      ],
+      "placement": "wall"
+    },
+    {
+      "id": 28,
+      "name": "柴火垛",
+      "assetId": 100,
+      "blocksSight": false,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        -1,
+        0,
+        1
+      ],
+      "footprintR": [
+        0,
+        0,
+        0
+      ],
+      "placement": "wall"
+    },
+    {
+      "id": 29,
+      "name": "晾晒架",
+      "assetId": 101,
+      "blocksSight": false,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        -1,
+        0,
+        1
+      ],
+      "footprintR": [
+        0,
+        0,
+        0
+      ],
+      "placement": "wall"
+    },
+    {
+      "id": 30,
+      "name": "告示牌",
+      "assetId": 102,
+      "blocksSight": true,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "placement": "wall"
+    },
+    {
+      "id": 31,
+      "name": "饮水槽",
+      "assetId": 103,
+      "blocksSight": false,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        -1,
+        0,
+        1
+      ],
+      "footprintR": [
+        0,
+        0,
+        0
+      ],
+      "placement": "wall"
+    },
+    {
+      "id": 32,
+      "name": "街边灯柱",
+      "assetId": 104,
+      "blocksSight": false,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "placement": "wall"
+    },
+    {
+      "id": 33,
+      "name": "坍塌碎石",
+      "assetId": 105,
+      "blocksSight": false,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        -1,
+        0,
+        1
+      ],
+      "footprintR": [
+        0,
+        0,
+        0
+      ],
+      "placement": "wall"
+    },
+    {
+      "id": 34,
+      "name": "遗骨堆",
+      "assetId": 106,
+      "blocksSight": false,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "placement": "wall"
+    },
+    {
+      "id": 35,
+      "name": "破损矿车",
+      "assetId": 107,
+      "blocksSight": false,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        -1,
+        0,
+        1
+      ],
+      "footprintR": [
+        0,
+        0,
+        0
+      ],
+      "placement": "wall"
+    },
+    {
+      "id": 36,
+      "name": "祭祀烛台",
+      "assetId": 108,
+      "blocksSight": false,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "placement": "wall"
+    },
+    {
+      "id": 37,
+      "name": "锁链柱",
+      "assetId": 109,
+      "blocksSight": true,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "placement": "wall"
+    },
+    {
+      "id": 38,
+      "name": "矿道木支架",
+      "assetId": 110,
+      "blocksSight": true,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        -1,
+        0,
+        1
+      ],
+      "footprintR": [
+        0,
+        0,
+        0
+      ],
+      "placement": "wall"
+    },
+    {
+      "id": 39,
+      "name": "覆苔残像",
+      "assetId": 111,
+      "blocksSight": true,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "placement": "wall"
+    },
+    {
+      "id": 40,
+      "name": "晶簇",
+      "assetId": 112,
+      "blocksSight": false,
+      "scale": 1,
+      "scaleMode": "meters",
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "placement": "wall"
     }
   ]
 }

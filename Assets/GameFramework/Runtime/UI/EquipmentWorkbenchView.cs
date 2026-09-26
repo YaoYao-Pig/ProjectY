@@ -15,6 +15,7 @@ namespace ProjectY.UI
             public RectTransform Root,Safe,Inventory,Preview,Details,Actors,Footer;
             public RawImage Image;
             public RectTransform[] Sockets;
+            public RectTransform[] SocketDots,SocketLeads,SocketTails;
             public Text[] Labels;
             public GridLayoutGroup ActorGrid;
             public RectTransform Equip,Unequip,Status,Heading,Close;
@@ -34,6 +35,8 @@ namespace ProjectY.UI
         public Font Font => font??(font=Font.CreateDynamicFontFromOSFont(new[]{"Microsoft YaHei","Noto Sans CJK SC","Arial"},16));
         public void Prepare()
         {
+            if(layout.SocketDots==null||layout.SocketDots.Length!=layout.Sockets.Length||layout.SocketLeads==null||layout.SocketLeads.Length!=layout.Sockets.Length||layout.SocketTails==null||layout.SocketTails.Length!=layout.Sockets.Length)
+                throw new InvalidOperationException("工坊挂点引线未绑定，请同步装备界面。");
             foreach(var text in layout.Labels) text.font=Font;
             Arrange();
         }
@@ -103,13 +106,56 @@ namespace ProjectY.UI
             }
             cameraView.orthographicSize=zoom;cameraView.aspect=(float)width/height;
             pivot.localRotation=Quaternion.Euler(tilt,yaw,0);cameraView.Render();
+            LayoutCallouts();
+        }
+        private readonly Vector2[] socketPoints=new Vector2[3];
+        private readonly float[] labelHeights=new float[3];
+        private readonly int[] sortedSockets=new int[3];
+        private static void BottomPoint(RectTransform rect,Vector2 point)
+        {rect.anchorMin=rect.anchorMax=Vector2.zero;rect.anchoredPosition=point;}
+        private static void Line(RectTransform rect,Vector2 a,Vector2 b)
+        {
+            BottomPoint(rect,a);rect.pivot=new Vector2(0,.5f);var direction=b-a;
+            rect.sizeDelta=new Vector2(direction.magnitude,1.4f);rect.localRotation=Quaternion.Euler(0,0,Mathf.Atan2(direction.y,direction.x)*Mathf.Rad2Deg);
+        }
+        private void LayoutCallouts()
+        {
+            if(model.Sockets.Length>layout.Sockets.Length) throw new InvalidOperationException("武器挂点超过工坊已绑定的容量。");
+            var size=layout.Preview.rect.size;var width=Mathf.Min(144,size.x*.29f);
+            var minY=60f;var maxY=Mathf.Max(minY,size.y-110);
             for(int i=0;i<layout.Sockets.Length;i++)
             {
                 var active=i<model.Sockets.Length;layout.Sockets[i].gameObject.SetActive(active);
+                layout.SocketDots[i].gameObject.SetActive(active);layout.SocketLeads[i].gameObject.SetActive(active);layout.SocketTails[i].gameObject.SetActive(active);
                 if(!active) continue;
                 var point=cameraView.WorldToViewportPoint(weapon.Socket(model.Sockets[i].Id).position);
-                layout.Sockets[i].anchorMin=layout.Sockets[i].anchorMax=new Vector2(Mathf.Clamp(point.x,.14f,.86f),Mathf.Clamp(point.y,.12f,.88f));
-                layout.Sockets[i].anchoredPosition=Vector2.zero;
+                socketPoints[i]=new Vector2(Mathf.Clamp01(point.x)*size.x,Mathf.Clamp01(point.y)*size.y);
+                labelHeights[i]=Mathf.Clamp(socketPoints[i].y,minY,maxY);
+            }
+            // Sort each docking column by projected height, then separate labels before drawing leaders.
+            for(int sideIndex=0;sideIndex<2;sideIndex++)
+            {
+                var side=sideIndex==0?"left":"right";
+                int count=0;
+                for(int i=0;i<model.Sockets.Length;i++) if(model.Sockets[i].CalloutSide==side) sortedSockets[count++]=i;
+                for(int i=1;i<count;i++) for(int j=i;j>0&&labelHeights[sortedSockets[j]]<labelHeights[sortedSockets[j-1]];j--)
+                {var temp=sortedSockets[j];sortedSockets[j]=sortedSockets[j-1];sortedSockets[j-1]=temp;}
+                var gap=count>1?Mathf.Min(48,(maxY-minY)/(count-1)):48;
+                for(int i=0;i<count;i++) labelHeights[sortedSockets[i]]=Mathf.Max(labelHeights[sortedSockets[i]],minY+i*gap);
+                for(int i=count-1;i>=0;i--)
+                {
+                    var index=sortedSockets[i];var ceiling=i==count-1?maxY:labelHeights[sortedSockets[i+1]]-gap;
+                    labelHeights[index]=Mathf.Min(labelHeights[index],ceiling);
+                }
+            }
+            for(int i=0;i<model.Sockets.Length;i++)
+            {
+                var left=model.Sockets[i].CalloutSide=="left";var point=socketPoints[i];var y=labelHeights[i];
+                var label=layout.Sockets[i];label.pivot=new Vector2(.5f,.5f);label.sizeDelta=new Vector2(width,34);
+                var x=left?12+width*.5f:size.x-12-width*.5f;BottomPoint(label,new Vector2(x,y));
+                var end=new Vector2(left?12+width:size.x-12-width,y);
+                var elbow=new Vector2(end.x+(left?18:-18),y);
+                BottomPoint(layout.SocketDots[i],point);Line(layout.SocketLeads[i],point,elbow);Line(layout.SocketTails[i],elbow,end);
             }
         }
         private static void Place(RectTransform r,float x,float y,float w,float h)
@@ -141,7 +187,8 @@ namespace ProjectY.UI
         private void OnDisable() { ReleasePreview(); }
         private void OnDestroy(){ReleasePreview();if(font!=null) Destroy(font);}
 #if UNITY_EDITOR
-        public void Bind(Layout value,EquipmentAssetCatalog assets) {layout=value;catalog=assets;}
+        [BlackList] public void Bind(Layout value,EquipmentAssetCatalog assets) {layout=value;catalog=assets;}
+        [BlackList] public Layout EditorLayout => layout;
 #endif
     }
 }

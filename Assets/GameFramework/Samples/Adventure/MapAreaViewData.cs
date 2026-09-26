@@ -66,7 +66,7 @@ namespace ProjectY.Samples
         {
             public Vector4 Pattern;
             public float Smoothness;
-            public Color Color;
+            public Color Color, DetailColor;
         }
         public readonly System.Collections.Generic.Dictionary<int, Surface> Surfaces = new System.Collections.Generic.Dictionary<int, Surface>();
         public Cell[] Cells;
@@ -173,7 +173,8 @@ namespace ProjectY.Samples
                     for (var i = 1; i <= rows.Length; i++) using (var row = rows.Get<int, LuaTable>(i))
                     {
                         if (!ColorUtility.TryParseHtmlString(row.Get<string>("color"), out var color)) throw new InvalidOperationException("地表颜色无效");
-                        result.Surfaces.Add(row.Get<int>("id"), new Surface { Color = color, Smoothness = row.Get<float>("smoothness"),
+                        if (!ColorUtility.TryParseHtmlString(row.Get<string>("detailColor"), out var detail)) throw new InvalidOperationException("地表覆盖色无效");
+                        result.Surfaces.Add(row.Get<int>("id"), new Surface { Color = color, DetailColor = detail, Smoothness = row.Get<float>("smoothness"),
                             Pattern = new Vector4(row.Get<int>("pattern"), row.Get<float>("tileMeters"), row.Get<float>("contrast"), row.Get<float>("jointWidth")) });
                     }
                 using (var rows = root.Get<LuaTable>("facilities"))

@@ -24,3 +24,12 @@ function EquipmentPreviewAppearance(id)
     local actor=eq:Actor(id)
     return require('Game.Adventure.PawnAppearance').New(registry:Get('Config')):Template(actor.TemplateId,eq.rules:ActorVisual(actor))
 end
+function EquipmentPreviewMelee(itemId,boost,actorId)
+    local weapon
+    for i=0,eq.data.WeaponCount-1 do local w=eq.data:GetWeaponAt(i);if w.ItemId==itemId then weapon=w end end
+    assert(weapon);local id=actorId or 4
+    assert(eq:Command('equip',id,weapon.Id,0,0))
+    local definition=eq.rules.weapons:Get(itemId)
+    if boost then eq:Grant(13,1);assert(eq:Command('attach',id,weapon.Id,definition.socketIds[1],13)) end
+    EquipmentPreviewPanel.actorId=id;EquipmentPreviewPanel.weaponId=weapon.Id;EquipmentPreviewPanel.socketId=0;EquipmentPreviewPanel.categoryIndex=definition.categoryId;EquipmentPreviewPanel:Refresh()
+end

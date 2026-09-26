@@ -158,6 +158,19 @@
       "description": "额外回路至少绕过的已有房间连接数",
       "min": 2,
       "max": 8
+    },
+    {
+      "name": "basicDressingIds",
+      "type": "int[]",
+      "description": "小洞穴追加陈设",
+      "ref": "MapAreaPropTable"
+    },
+    {
+      "name": "basicDressingCount",
+      "type": "int",
+      "description": "小洞穴陈设上限",
+      "min": 0,
+      "max": 8
     }
   ],
   "rows": [
@@ -198,7 +211,16 @@
       "corridorMaxRadius": 4,
       "corridorWidthScale": 13,
       "chamberChance": 0.65,
-      "loopMinHops": 3
+      "loopMinHops": 3,
+      "basicDressingIds": [
+        17,
+        19,
+        20,
+        33,
+        34,
+        40
+      ],
+      "basicDressingCount": 3
     }
   ]
 }

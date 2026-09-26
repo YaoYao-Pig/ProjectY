@@ -73,6 +73,11 @@
       "name": "weaponRotation",
       "type": "float[]",
       "description": "人物局部 xyz"
+    },
+    {
+      "name": "offHandFollowsWeapon",
+      "type": "bool",
+      "description": "副手是否跟随武器旋转，适用于双手持握"
     }
   ],
   "rows": [
@@ -117,7 +122,8 @@
         0.5,
         0.98,
         0.28
-      ]
+      ],
+      "offHandFollowsWeapon": false
     },
     {
       "corePartId": 19,
@@ -160,7 +166,140 @@
         -0.18,
         1.1,
         0.76
-      ]
+      ],
+      "offHandFollowsWeapon": true
+    },
+    {
+      "corePartId": 19,
+      "upperAssetId": 10,
+      "forearmAssetId": 11,
+      "handAssetId": 12,
+      "mainShoulder": [
+        -0.29,
+        1.25,
+        0
+      ],
+      "offShoulder": [
+        0.29,
+        1.25,
+        0
+      ],
+      "weaponRotation": [
+        10,
+        0,
+        -18
+      ],
+      "id": 3,
+      "name": "单手持 · 剑",
+      "mainElbow": [
+        -0.48,
+        1.12,
+        0.12
+      ],
+      "mainHand": [
+        -0.46,
+        0.94,
+        0.3
+      ],
+      "offElbow": [
+        0.44,
+        1.09,
+        0.02
+      ],
+      "offHand": [
+        0.47,
+        0.98,
+        0.18
+      ],
+      "offHandFollowsWeapon": false
+    },
+    {
+      "corePartId": 19,
+      "upperAssetId": 10,
+      "forearmAssetId": 11,
+      "handAssetId": 12,
+      "mainShoulder": [
+        -0.29,
+        1.25,
+        0
+      ],
+      "offShoulder": [
+        0.29,
+        1.25,
+        0
+      ],
+      "weaponRotation": [
+        5,
+        0,
+        -6
+      ],
+      "id": 4,
+      "name": "双手持 · 大剑",
+      "mainElbow": [
+        -0.35,
+        1.08,
+        0.19
+      ],
+      "mainHand": [
+        -0.07,
+        1.07,
+        0.42
+      ],
+      "offElbow": [
+        0.34,
+        0.98,
+        0.19
+      ],
+      "offHand": [
+        0.01,
+        0.92,
+        0.43
+      ],
+      "offHandFollowsWeapon": true
+    },
+    {
+      "corePartId": 19,
+      "upperAssetId": 10,
+      "forearmAssetId": 11,
+      "handAssetId": 12,
+      "mainShoulder": [
+        -0.29,
+        1.25,
+        0
+      ],
+      "offShoulder": [
+        0.29,
+        1.25,
+        0
+      ],
+      "weaponRotation": [
+        9,
+        0,
+        -12
+      ],
+      "id": 5,
+      "name": "双手持 · 巨剑",
+      "mainElbow": [
+        -0.38,
+        1.09,
+        0.19
+      ],
+      "mainHand": [
+        -0.06,
+        1.03,
+        0.47
+      ],
+      "offElbow": [
+        0.37,
+        0.94,
+        0.23
+      ],
+      "offHand": [
+        0.015,
+        0.84,
+        0.49
+      ],
+      "offHandFollowsWeapon": true
     }
   ]
 }

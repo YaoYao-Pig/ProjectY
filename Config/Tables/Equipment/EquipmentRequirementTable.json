@@ -1,0 +1,168 @@
+{
+  "version": 1,
+  "name": "EquipmentRequirementTable",
+  "description": "软门槛：对该武器授予的技能生效，缺口加总；装备命令不拒绝不足属性。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "需求规则 ID",
+      "min": 1
+    },
+    {
+      "name": "attributeIds",
+      "type": "int[]",
+      "description": "需要的属性",
+      "ref": "EquipmentAttributeTable"
+    },
+    {
+      "name": "values",
+      "type": "int[]",
+      "description": "对应最低属性值"
+    },
+    {
+      "name": "damageLossPerPoint",
+      "type": "float",
+      "description": "每个不足点的伤害倍率扣减",
+      "min": 0,
+      "max": 1
+    },
+    {
+      "name": "minimumDamageScale",
+      "type": "float",
+      "description": "最低伤害比例",
+      "min": 0.01,
+      "max": 1
+    },
+    {
+      "name": "hitLossPerPoint",
+      "type": "int",
+      "description": "每个不足点扣减命中百分点",
+      "min": 0
+    },
+    {
+      "name": "maximumHitLoss",
+      "type": "int",
+      "description": "最高命中惩罚",
+      "min": 0,
+      "max": 100
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "attributeIds": [
+        3
+      ],
+      "values": [
+        2
+      ],
+      "damageLossPerPoint": 0.08,
+      "minimumDamageScale": 0.35,
+      "hitLossPerPoint": 3,
+      "maximumHitLoss": 40
+    },
+    {
+      "id": 2,
+      "attributeIds": [
+        1,
+        4
+      ],
+      "values": [
+        4,
+        4
+      ],
+      "damageLossPerPoint": 0.08,
+      "minimumDamageScale": 0.35,
+      "hitLossPerPoint": 3,
+      "maximumHitLoss": 40
+    },
+    {
+      "id": 40,
+      "attributeIds": [
+        1
+      ],
+      "values": [
+        4
+      ],
+      "damageLossPerPoint": 0.08,
+      "minimumDamageScale": 0.35,
+      "hitLossPerPoint": 3,
+      "maximumHitLoss": 40
+    },
+    {
+      "id": 41,
+      "attributeIds": [
+        1
+      ],
+      "values": [
+        6
+      ],
+      "damageLossPerPoint": 0.08,
+      "minimumDamageScale": 0.35,
+      "hitLossPerPoint": 3,
+      "maximumHitLoss": 40
+    },
+    {
+      "id": 42,
+      "attributeIds": [
+        1,
+        2
+      ],
+      "values": [
+        6,
+        4
+      ],
+      "damageLossPerPoint": 0.08,
+      "minimumDamageScale": 0.35,
+      "hitLossPerPoint": 3,
+      "maximumHitLoss": 40
+    },
+    {
+      "id": 43,
+      "attributeIds": [
+        1,
+        2
+      ],
+      "values": [
+        9,
+        6
+      ],
+      "damageLossPerPoint": 0.08,
+      "minimumDamageScale": 0.35,
+      "hitLossPerPoint": 3,
+      "maximumHitLoss": 40
+    },
+    {
+      "id": 44,
+      "attributeIds": [
+        1,
+        2
+      ],
+      "values": [
+        10,
+        6
+      ],
+      "damageLossPerPoint": 0.08,
+      "minimumDamageScale": 0.35,
+      "hitLossPerPoint": 3,
+      "maximumHitLoss": 40
+    },
+    {
+      "id": 45,
+      "attributeIds": [
+        1,
+        2
+      ],
+      "values": [
+        14,
+        8
+      ],
+      "damageLossPerPoint": 0.08,
+      "minimumDamageScale": 0.35,
+      "hitLossPerPoint": 3,
+      "maximumHitLoss": 40
+    }
+  ]
+}

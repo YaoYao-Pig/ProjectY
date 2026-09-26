@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "name": "EquipmentAttributeTable",
+  "description": "装备要求引用战斗真实属性；显示名在表中定义。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "属性 ID",
+      "min": 1
+    },
+    {
+      "name": "code",
+      "type": "string",
+      "description": "CombatStats 属性名"
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "属性名称"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "code": "strength",
+      "name": "力量"
+    },
+    {
+      "id": 2,
+      "code": "endurance",
+      "name": "耐力"
+    },
+    {
+      "id": 3,
+      "code": "intellect",
+      "name": "智力"
+    },
+    {
+      "id": 4,
+      "code": "speed",
+      "name": "速度"
+    }
+  ]
+}

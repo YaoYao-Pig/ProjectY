@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "name": "EquipmentCategoryTable",
+  "description": "武器种类；每类包含独立武器和装备等级。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "种类 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "种类名称"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "法杖"
+    },
+    {
+      "id": 2,
+      "name": "步枪"
+    },
+    {
+      "id": 3,
+      "name": "单手剑"
+    },
+    {
+      "id": 4,
+      "name": "双手大剑"
+    },
+    {
+      "id": 5,
+      "name": "双手巨剑"
+    }
+  ]
+}

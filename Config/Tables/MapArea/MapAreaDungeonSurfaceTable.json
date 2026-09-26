@@ -1,0 +1,155 @@
+{
+  "version": 1,
+  "name": "MapAreaDungeonSurfaceTable",
+  "description": "按房间功能与入口地貌选择成片材质，墙面跟随相邻房间",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "编号"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "名称"
+    },
+    {
+      "name": "floorIds",
+      "type": "int[]",
+      "description": "基础地面池",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "wallIds",
+      "type": "int[]",
+      "description": "基础墙面池",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "corridorFloorId",
+      "type": "int",
+      "description": "走廊地面",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "corridorWallId",
+      "type": "int",
+      "description": "走廊与深墙材质",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "regionOverrideChance",
+      "type": "float",
+      "description": "Region 材质覆盖功能房的概率",
+      "min": 0,
+      "max": 1
+    },
+    {
+      "name": "wallBand",
+      "type": "int",
+      "description": "房间墙面延伸格数",
+      "min": 1,
+      "max": 5
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "风化遗迹",
+      "floorIds": [
+        14,
+        17
+      ],
+      "wallIds": [
+        21,
+        24
+      ],
+      "corridorFloorId": 14,
+      "corridorWallId": 24,
+      "regionOverrideChance": 0.1,
+      "wallBand": 3
+    },
+    {
+      "id": 2,
+      "name": "山腹矿洞",
+      "floorIds": [
+        14,
+        17,
+        20
+      ],
+      "wallIds": [
+        21,
+        24
+      ],
+      "corridorFloorId": 17,
+      "corridorWallId": 21,
+      "regionOverrideChance": 0.2,
+      "wallBand": 3
+    },
+    {
+      "id": 3,
+      "name": "潮湿地下遗迹",
+      "floorIds": [
+        15,
+        18
+      ],
+      "wallIds": [
+        22,
+        25
+      ],
+      "corridorFloorId": 18,
+      "corridorWallId": 25,
+      "regionOverrideChance": 0.65,
+      "wallBand": 3
+    },
+    {
+      "id": 4,
+      "name": "河岸墓道",
+      "floorIds": [
+        15,
+        18
+      ],
+      "wallIds": [
+        22,
+        25
+      ],
+      "corridorFloorId": 15,
+      "corridorWallId": 22,
+      "regionOverrideChance": 0.45,
+      "wallBand": 3
+    },
+    {
+      "id": 5,
+      "name": "林下遗迹",
+      "floorIds": [
+        15,
+        17
+      ],
+      "wallIds": [
+        22,
+        21
+      ],
+      "corridorFloorId": 15,
+      "corridorWallId": 22,
+      "regionOverrideChance": 0.65,
+      "wallBand": 3
+    },
+    {
+      "id": 6,
+      "name": "冰封遗迹",
+      "floorIds": [
+        19,
+        14
+      ],
+      "wallIds": [
+        26,
+        21
+      ],
+      "corridorFloorId": 19,
+      "corridorWallId": 26,
+      "regionOverrideChance": 0.6,
+      "wallBand": 3
+    }
+  ]
+}

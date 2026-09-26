@@ -28,6 +28,7 @@
 
 ## 关键入口
 
+- [地图环境装饰](MapDressing.md)：新增 24 类自然、街区、地牢物件的独立源目录、资源 ID、真实米制占地与配置生成入口。
 - [制作目录](../../Art/MapLowPoly/)：可编辑来源、暂存导出与预览。
 - [源场景](../../Art/MapLowPoly/Source/MapLowPoly.blend) / [资源清单](../../Art/MapLowPoly/asset_manifest.json)：模型尺寸、三角形、材质与导出设置。
 - [城堡源场景](../../Art/MapLowPoly/Source/Castle.blend) / [城堡 FBX](../../Assets/DynamicAsset/MapLowPoly/Models/Building_Castle.fbx)：城堡独立保存源场景，复用现有调色板。

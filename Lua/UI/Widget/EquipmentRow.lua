@@ -10,6 +10,7 @@ function Row:Initialize(workbench,callback)
 end
 function Row:SetData(row)
     self.row=row;self.view.Group.alpha=row and 1 or 0
+    self.view.Layout.ignoreLayout=row==nil
     self.view.Group.blocksRaycasts=row~=nil;self.view.Group.interactable=row~=nil
     if not row then return end
     self.view.Title.text=row.title;self.view.Detail.text=row.detail
