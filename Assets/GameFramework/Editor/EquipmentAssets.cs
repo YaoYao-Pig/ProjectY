@@ -83,6 +83,17 @@ namespace ProjectY.Editor
             var entries=new List<EquipmentAssetCatalog.Entry>();
             foreach(var row in assets) entries.Add(new EquipmentAssetCatalog.Entry {Id=row.id,Path=row.prefabPath,Prefab=AssetDatabase.LoadAssetAtPath<GameObject>(row.prefabPath)});
             catalog.SetEntries(entries.ToArray());
+            SyncItemIcons();
+            Entry("EquipmentRow",UIKind.Widget,BuildRow);
+            Entry("EquipmentWorkbench",UIKind.Panel,root=>BuildPanel(root,catalog));
+            PawnAssetMenu.Sync();BattleHUDAssets.SyncIcons();AssetDatabase.SaveAssets();
+            Debug.Log("Equipment models, sockets, pawn bindings and workbench ready.");
+        }
+        public static void SyncItemIcons()
+        {
+            var catalog=AssetDatabase.LoadAssetAtPath<EquipmentAssetCatalog>(CatalogPath);
+            if(catalog==null) throw new InvalidOperationException("请先同步装备资源。");
+            var items=Read<ItemTable>("EquipmentItemTable").rows;
             var icons=new List<EquipmentAssetCatalog.Icon>();
             foreach(var item in items)
             {
@@ -91,10 +102,6 @@ namespace ProjectY.Editor
                 icons.Add(new EquipmentAssetCatalog.Icon {Id=item.id,Path=item.iconPath,Sprite=sprite});
             }
             catalog.SetIcons(icons.ToArray());EditorUtility.SetDirty(catalog);
-            Entry("EquipmentRow",UIKind.Widget,BuildRow);
-            Entry("EquipmentWorkbench",UIKind.Panel,root=>BuildPanel(root,catalog));
-            PawnAssetMenu.Sync();BattleHUDAssets.SyncIcons();AssetDatabase.SaveAssets();
-            Debug.Log("Equipment models, sockets, pawn bindings and workbench ready.");
         }
         private static void Entry(string name,UIKind kind,Action<GameObject> build)
         {

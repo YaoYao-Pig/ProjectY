@@ -28,7 +28,7 @@ function Appearance:Template(unitId,equipment)
         local ids={equipment.pose.corePartId}
         for _,id in ipairs(row.partIds) do
             local slot=self.parts:Get(id).slot
-            if slot~='body' and slot~='mainHand' and slot~='offHand' then ids[#ids+1]=id end
+            if slot~='body' and slot~='mainHand' and slot~='offHand' and slot~='head' and slot~='chest' then ids[#ids+1]=id end
         end
         return {templateId=row.id,parts=self:Resolve(ids),equipment=equipment}
     end

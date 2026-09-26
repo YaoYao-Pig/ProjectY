@@ -34,6 +34,7 @@ namespace ProjectY.Samples
         private readonly Dictionary<string, Transform> anchors = new Dictionary<string, Transform>();
         private readonly Dictionary<string, GameObject> objects = new Dictionary<string, GameObject>();
         private readonly Dictionary<string, int> partIds = new Dictionary<string, int>();
+        public Vector3 EquipmentSlotPosition(string slot) => equipmentView.SlotWorldPosition(slot);
 
         public void ApplyAppearance(PawnAppearanceData appearance, Func<PawnAppearanceData.Part, GameObject> resolve)
         {

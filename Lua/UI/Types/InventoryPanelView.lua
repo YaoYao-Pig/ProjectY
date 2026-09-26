@@ -1,0 +1,53 @@
+---@meta
+-- Generated from LuaReference. Do not edit; never require this file.
+---@class InventoryPanelView
+---@field Root CS.UnityEngine.RectTransform
+---@field Canvas CS.UnityEngine.Canvas
+---@field Panel CS.ProjectY.UI.LuaPanel
+---@field Close CS.UnityEngine.UI.Button
+---@field CloseText CS.UnityEngine.UI.Text
+---@field Actor1 CS.UnityEngine.UI.Button
+---@field Actor1Text CS.UnityEngine.UI.Text
+---@field ActorText1 CS.UnityEngine.UI.Text
+---@field Actor2 CS.UnityEngine.UI.Button
+---@field Actor2Text CS.UnityEngine.UI.Text
+---@field ActorText2 CS.UnityEngine.UI.Text
+---@field Actor3 CS.UnityEngine.UI.Button
+---@field Actor3Text CS.UnityEngine.UI.Text
+---@field ActorText3 CS.UnityEngine.UI.Text
+---@field Actor4 CS.UnityEngine.UI.Button
+---@field Actor4Text CS.UnityEngine.UI.Text
+---@field ActorText4 CS.UnityEngine.UI.Text
+---@field Slot_head CS.UnityEngine.UI.Button
+---@field Slot_headText CS.UnityEngine.UI.Text
+---@field Slot_body CS.UnityEngine.UI.Button
+---@field Slot_bodyText CS.UnityEngine.UI.Text
+---@field Slot_leftRing CS.UnityEngine.UI.Button
+---@field Slot_leftRingText CS.UnityEngine.UI.Text
+---@field Slot_rightRing CS.UnityEngine.UI.Button
+---@field Slot_rightRingText CS.UnityEngine.UI.Text
+---@field Slot_legs CS.UnityEngine.UI.Button
+---@field Slot_legsText CS.UnityEngine.UI.Text
+---@field Slot_feet CS.UnityEngine.UI.Button
+---@field Slot_feetText CS.UnityEngine.UI.Text
+---@field Slot_weapon CS.UnityEngine.UI.Button
+---@field Slot_weaponText CS.UnityEngine.UI.Text
+---@field ActorStats CS.UnityEngine.UI.Text
+---@field Capacity CS.UnityEngine.UI.Text
+---@field ItemName CS.UnityEngine.UI.Text
+---@field ItemDetail CS.UnityEngine.UI.Text
+---@field Equip CS.UnityEngine.UI.Button
+---@field EquipText CS.UnityEngine.UI.Text
+---@field Unequip CS.UnityEngine.UI.Button
+---@field UnequipText CS.UnityEngine.UI.Text
+---@field Rotate CS.UnityEngine.UI.Button
+---@field RotateText CS.UnityEngine.UI.Text
+---@field Workbench CS.UnityEngine.UI.Button
+---@field WorkbenchText CS.UnityEngine.UI.Text
+---@field Status CS.UnityEngine.UI.Text
+---@field Inventory CS.ProjectY.UI.InventoryPanelView
+---@field Slot_offhand CS.UnityEngine.UI.Button
+---@field Slot_offhandText CS.UnityEngine.UI.Text
+---@field Character CS.ProjectY.UI.InventoryCharacterView
+local View = {}
+return View

@@ -1,6 +1,6 @@
 # MapArea 局部探索地图
 
-关键词：MapArea、小地图、局部地图、地牢内部、三层生成、功能分区、组团、多格设施、变宽通道、预设房间、陈设、探索迷雾、墙壁遮挡、原地战斗、96×96。
+关键词：MapArea、小地图、局部地图、地牢内部、三层生成、功能分区、组团、多格设施、变宽通道、预设房间、陈设、探索迷雾、墙壁遮挡、探索格子高亮、距离渐隐、原地战斗、96×96。
 
 ## 文档目录
 
@@ -28,6 +28,8 @@
 - `MapAreaRenderer` 使用已绑定、配表指定的低模陈设做 GPU 实例渲染；地牢继续使用低模柱、未知格压平和探索明暗。城镇由 `TownSurfaceRenderer` 按 `corners/deckThickness/stairRise` 绘制台地、台阶、坡道和薄桥面，拾取使用实际三角形；桥下不填成实体。静态快照还包含层、邻接、通行掩码和物件 `scaleX/Y/Z`，进入时读取一次；动态快照按需更新。显示数据不持有 LuaTable，也不作为玩法状态。
 - `LayoutSnapshot` 的嵌套数值数组必须复制为普通 Lua 数组：冻结布局是带 `__index/__len` 的空代理，xLua `LuaTable.Length` 调用 `xlua_objlen`，不会使用代理的 `__len`。直接传 `corners/neighbors` 会让 C# 收到零长度数组；颜色也复制，确保显示快照不共享只读代理。最小边界回归为 `python -B Tools/Tests/run_lua.py Tools/Tests/maparea_snapshot.lua`。
 - `SquadPawnRenderer` 按 `members(actorId,cellIndex)` 显示独立棋子，平滑位置和朝向，不决定占格。模型高度固定，地格半径 1.5；进入区域创建，离开/销毁时释放，身体和装备通过显式 Prefab 挂点组合。资源与同步菜单见[棋子资源](PawnArt.md)。
+- `ExplorationGridRenderer` 在 `phase=area` 时显示小队附近当前可见、可行走且与成员同层的六边形半透明面片；进入战斗关闭。距离取全员平滑显示位置的最近水平距离，默认 3 格内清晰、3–6 格平滑渐隐（格单位为相邻格中心间距）。`AdventureRuntimeDemo.explorationGrid` 配置范围、格边留缝比例和颜色；面片沿 `TownSurfaceRenderer.AppendOverlay` 贴合斜坡/台阶，shader 经 Resources 加载，进入区域创建、离开/销毁时释放。它不决定移动范围或修改迷雾。
+- 悬停面片用 `HoverColor`（亮青）、成功点击移动后的选中目标用 `SelectedColor`（亮绿），选中优先；目标保留到下一次成功选择，停止、第三人称行走、进入战斗或离开地图会清除。交互高亮仅显示可见且可行走的被指向格，允许在基础渐隐半径外及被明确拾取的其他层显示；不扩大周围可见范围。鼠标经过背包、侧栏及第三人称面板时取消悬停。
 - 原地战斗期间保持同一 `MapAreaRenderer`，快照 `members` 取存活参战队员的真实位置；`AreaCombatRenderer` 只显示当前可见敌人，并显示移动/目标/当前行动格。静态棋子在战斗命令后直接落到目标格，尚无行走/攻击动画；调试全图不公开隐藏敌人。
 - 新 C# Data/API 先编译，再使用真正的 `XLua/Generate Code` 生成桥接并等待编译；不得手改 Gen。改表仍经现有 exporter，Lua schema、bytes、清单分别导出到现有 `_Gen` 目录。
 - 最小算法检查：`python -B Tools/Tests/run_lua.py Tools/Tests/maparea_core.lua`，覆盖六种 Region、代表性种子、连通、确定性、视线、共享坐标、通道净宽、战斗区与模板完整性。真实 C# 状态/显示快照检查：Edit Mode 菜单 `Project Y/地图/验证 MapArea 地牢`；不切场景、不进入 Play。修改建筑资源后在远征场景执行“同步地图资源引用”。
@@ -40,4 +42,5 @@
 - [MapAreaRenderer.cs](../../Assets/GameFramework/Samples/Adventure/MapAreaRenderer.cs) / [MapAreaViewData.cs](../../Assets/GameFramework/Samples/Adventure/MapAreaViewData.cs)：Unity 地形与探索显示；交互宿主见[远征 Demo](Adventure.md)。
 - [算法检查](../../Tools/Tests/maparea_core.lua) / [快照数组边界检查](../../Tools/Tests/maparea_snapshot.lua) / [集成检查](../../Tools/Tests/maparea_integration.lua)：最小验证入口。
 - [编队规划](../../Lua/Game/MapArea/SquadMovement.lua) / [编队检查](../../Tools/Tests/squad_movement.lua)：1–4 人、转角、窄口、真实地牢往返的逐帧占格/邻接约束；[棋子显示](../../Assets/GameFramework/Samples/Adventure/SquadPawnRenderer.cs)：只读显示副本。
+- [探索高亮](../../Assets/GameFramework/Samples/Adventure/ExplorationGridRenderer.cs) / [渐隐 Shader](../../Assets/GameFramework/Resources/Rendering/ExplorationGrid.shader) / [最小显示检查](../../Tools/Tests/exploration_grid.cs)：C# 编译后通过 Unity MCP `execute_code` 执行检查文件的方法体，验证可见格、障碍、队员并集、层隔离、战斗切换、坡道台阶贴合、格内填充和 GPU 距离渐隐，并输出独立预览图；不进入 Play、不保存场景。
 - [敌群部署](../../Lua/Game/MapArea/DungeonEncounters.lua) / [敌群配置](../../Config/Tables/MapArea/MapAreaEncounterTable.json) / [战斗显示](../../Assets/GameFramework/Samples/Adventure/AreaCombatRenderer.cs)；原地战斗验证入口见[战斗](Battle.md)。

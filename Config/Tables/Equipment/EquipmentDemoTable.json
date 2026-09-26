@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "EquipmentDemoTable",
-  "description": "首版装备演示：初始携带两把未装备武器；组件通过地牢宝箱和地面搜刮获得。",
+  "description": "装备与网格背包演示：初始装备未穿戴，地牢可搜刮组件。",
   "key": "id",
   "fields": [
     {
@@ -44,6 +44,20 @@
       "description": "可搜刮距离",
       "min": 1,
       "max": 3
+    },
+    {
+      "name": "bagWidth",
+      "type": "int",
+      "description": "共享背包列数",
+      "min": 1,
+      "max": 20
+    },
+    {
+      "name": "bagHeight",
+      "type": "int",
+      "description": "共享背包行数",
+      "min": 1,
+      "max": 20
     }
   ],
   "rows": [
@@ -59,13 +73,27 @@
         42,
         43,
         44,
-        45
+        45,
+        51,
+        52,
+        53,
+        54,
+        55,
+        56,
+        57
       ],
       "starterCounts": [
         1,
         1,
         2,
         24,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
+        1,
         1,
         1,
         1,
@@ -84,7 +112,9 @@
         5,
         9
       ],
-      "interactionRadius": 1
+      "interactionRadius": 1,
+      "bagWidth": 12,
+      "bagHeight": 10
     }
   ]
 }

@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.EquipmentWeaponData);
-			Utils.BeginObjectRegister(type, L, translator, 0, 1, 4, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 1, 5, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetRune", _m_GetRune);
 			
@@ -29,6 +29,7 @@ namespace XLua.CSObjectWrap
 			Utils.RegisterFunc(L, Utils.GETTER_IDX, "Id", _g_get_Id);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "ItemId", _g_get_ItemId);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "OwnerActorId", _g_get_OwnerActorId);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "Hand", _g_get_Hand);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "MagazineId", _g_get_MagazineId);
             
 			
@@ -127,6 +128,20 @@ namespace XLua.CSObjectWrap
 			
                 ProjectY.Data.EquipmentWeaponData gen_to_be_invoked = (ProjectY.Data.EquipmentWeaponData)translator.FastGetCSObj(L, 1);
                 LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.OwnerActorId);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_Hand(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.EquipmentWeaponData gen_to_be_invoked = (ProjectY.Data.EquipmentWeaponData)translator.FastGetCSObj(L, 1);
+                LuaAPI.lua_pushstring(L, gen_to_be_invoked.Hand);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }

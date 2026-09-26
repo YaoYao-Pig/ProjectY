@@ -5,7 +5,14 @@ function Rules.New(config, data)
     for key,name in pairs({items='EquipmentItemTable',weapons='EquipmentWeaponTable',runes='EquipmentRuneTable',
         magazines='EquipmentMagazineTable',sockets='EquipmentSocketTable',assets='EquipmentAssetTable',
         poses='EquipmentPoseTable',actions='EquipmentActionTable',skills='CombatSkillTable',effects='CombatEffectTable',
-        categories='EquipmentCategoryTable',requirements='EquipmentRequirementTable',attributes='EquipmentAttributeTable'}) do self[key]=config:GetTable(name) end
+        categories='EquipmentCategoryTable',requirements='EquipmentRequirementTable',attributes='EquipmentAttributeTable',wearables='EquipmentWearableTable'}) do self[key]=config:GetTable(name) end
+    for _,row in ipairs(self.wearables:All()) do
+        assert(self.items:Get(row.id).kind=='wearable' and #row.attributeNames==#row.attributeValues,'Invalid wearable definition')
+        for _,name in ipairs(row.attributeNames) do
+            local found=false;for _,attribute in ipairs(self.attributes:All()) do if attribute.code==name then found=true end end
+            assert(found,'Unknown wearable attribute: '..name)
+        end
+    end
     for _,weapon in ipairs(self.weapons:All()) do
         assert(self.items:Get(weapon.id).kind=='weapon')
         self.categories:Get(weapon.categoryId)
@@ -13,20 +20,36 @@ function Rules.New(config, data)
         assert(#requirement.attributeIds==#requirement.values,'Weapon requirement arrays differ')
         for _,id in ipairs(weapon.socketIds) do assert(self.sockets:Get(id).weaponItemId==weapon.id,'Weapon/socket mismatch') end
         if weapon.kind=='gun' then self.magazines:Get(weapon.magazineItemId) end
+        assert(weapon.hands==1 or weapon.hands==2,'Invalid weapon hand count')
+        if weapon.hands==1 then assert(self.skills:Get(weapon.offhandSkillId).action=='secondary','Offhand attack must use a secondary action')
+        else assert(weapon.offhandSkillId==0,'Two-handed weapon cannot grant an offhand attack') end
     end
     for _,magazine in ipairs(self.magazines:All()) do assert(magazine.spawnRounds<=magazine.capacity and self.items:Get(magazine.ammoItemId).kind=='ammo') end
     return self
 end
 -- No inventory is required for static config/attribute queries; battle supplies the expedition's real Data.
 function Rules:Weapon(actor) return self.data and actor.Team==1 and self.data:Equipped(actor.Id) or nil end
+function Rules:Offhand(actor) return self.data and actor.Team==1 and self.data:Offhand(actor.Id) or nil end
+function Rules:AttributeBonus(actor,name)
+    if not self.data or actor.Team~=1 then return 0 end
+    local bonus=0
+    for i=0,self.data.WearableCount-1 do local item=self.data:GetWearableAt(i)
+        if item.OwnerActorId==actor.Id then
+            local row=self.wearables:Get(item.ItemId)
+            for j,attribute in ipairs(row.attributeNames) do if attribute==name then bonus=bonus+row.attributeValues[j] end end
+        end
+    end
+    return bonus
+end
 function Rules:SkillIds(actor, template)
     local weapon = self:Weapon(actor)
-    if not weapon then return template.skillIds end
-    local definition = self.weapons:Get(weapon.ItemId)
+    local definition = weapon and self.weapons:Get(weapon.ItemId) or nil
     local removed,seen,result={},{},{}
-    for _,id in ipairs(definition.replacesSkillIds) do removed[id]=true end
+    if definition then for _,id in ipairs(definition.replacesSkillIds) do removed[id]=true end end
     for _,id in ipairs(template.skillIds) do if not removed[id] then result[#result+1]=id;seen[id]=true end end
-    for _,id in ipairs(definition.skillIds) do if not seen[id] then result[#result+1]=id;seen[id]=true end end
+    if definition then for _,id in ipairs(definition.skillIds) do if not seen[id] then result[#result+1]=id;seen[id]=true end end end
+    local off=self:Offhand(actor)
+    if off then local id=self.weapons:Get(off.ItemId).offhandSkillId;assert(id>0,'Offhand weapon has no attack');if not seen[id] then result[#result+1]=id end end
     return result
 end
 function Rules:Requirements(actor,weapon,stats)
@@ -49,9 +72,12 @@ function Rules:Skill(actor, id, stats)
         'skillGroup','cooldownTurns','hitChance','shots','ammoPerShot','damageScale','actionTemplate'}) do result[key]=base[key] end
     result.maxTargets=1;result.splashRadius=0
     local weapon=self:Weapon(actor)
+    local off=self:Offhand(actor);local offAttack=off and self.weapons:Get(off.ItemId).offhandSkillId==id
+    if offAttack then weapon=off end
     if weapon then
         local definition=self.weapons:Get(weapon.ItemId)
-        for _,skillId in ipairs(definition.skillIds) do if skillId==id then
+        local granted=offAttack and {definition.offhandSkillId} or definition.skillIds
+        for _,skillId in ipairs(granted) do if skillId==id then
             local requirement=self:Requirements(actor,weapon,assert(stats,'Equipment skill resolution needs CombatStats'))
             result.damageScale=result.damageScale*definition.damageMultiplier*requirement.damageScale
             result.hitChance=math.max(0,result.hitChance-requirement.hitLoss)
@@ -92,7 +118,7 @@ function Rules:NextMagazine(weapon)
     local selected
     for i=0,self.data.MagazineCount-1 do
         local magazine=self.data:GetMagazineAt(i)
-        if magazine.ItemId==definition.magazineItemId and self.data:MagazineWeapon(magazine.Id)==0 and magazine.Rounds>rounds then
+        if magazine.ItemId==definition.magazineItemId and self.data:MagazineWeapon(magazine.Id)==0 and magazine.Rounds>rounds and self.data:CanAttachMagazine(weapon.Id,magazine.Id) then
             if not selected or magazine.Rounds>selected.Rounds then selected=magazine end
         end
     end
@@ -114,7 +140,7 @@ function Rules:CheckAmmo(actor,skill)
 end
 function Rules:Consume(actor,skill)
     local weapon=self:Weapon(actor)
-    if self:IsReload(skill) then self.data:AttachMagazine(weapon.Id,assert(self:NextMagazine(weapon)).Id)
+    if self:IsReload(skill) then assert(self.data:AttachMagazine(weapon.Id,assert(self:NextMagazine(weapon)).Id),'Reload placement changed after validation')
     elseif skill.ammoPerShot>0 then self.data:SpendAmmo(weapon.Id,skill.shots*skill.ammoPerShot) end
 end
 local function vector(row) assert(#row==3,'Expected xyz');return {row[1],row[2],row[3]} end
@@ -138,12 +164,22 @@ function Rules:WeaponVisual(weapon)
     return view
 end
 function Rules:ActorVisual(actor)
+    if not self.data or actor.Team~=1 then return nil end
     local weapon=self:Weapon(actor)
-    if not weapon then return nil end
-    local pose=self.poses:Get(self.weapons:Get(weapon.ItemId).poseId)
-    local result={weapon=self:WeaponVisual(weapon),pose={id=pose.id,corePartId=pose.corePartId,offHandFollowsWeapon=pose.offHandFollowsWeapon,
+    local offhand=self:Offhand(actor)
+    local pose=self.poses:Get(weapon and self.weapons:Get(weapon.ItemId).poseId or 3)
+    local result={weapon=weapon and self:WeaponVisual(weapon),offhand=offhand and self:WeaponVisual(offhand),wearables={},pose={id=pose.id,corePartId=pose.corePartId,offHandFollowsWeapon=weapon~=nil and pose.offHandFollowsWeapon,
         upper=self:Asset(pose.upperAssetId),forearm=self:Asset(pose.forearmAssetId),hand=self:Asset(pose.handAssetId)}}
+    for i=0,self.data.WearableCount-1 do local worn=self.data:GetWearableAt(i)
+        if worn.OwnerActorId==actor.Id then
+            local definition=self.wearables:Get(worn.ItemId)
+            result.wearables[#result.wearables+1]={slot=worn.Slot,mount=definition.mount,
+                asset=self:Asset(self.items:Get(worn.ItemId).assetId),position=vector(definition.position),rotation=vector(definition.rotation)}
+        end
+    end
     for _,key in ipairs({'mainShoulder','mainElbow','mainHand','offShoulder','offElbow','offHand','weaponRotation'}) do result.pose[key]=vector(pose[key]) end
+    local offPose=offhand and self.poses:Get(self.weapons:Get(offhand.ItemId).poseId) or pose
+    result.pose.offWeaponRotation=vector(offPose.weaponRotation);result.pose.offWeaponRotation[3]=-result.pose.offWeaponRotation[3]
     local action=self.actions:Get(actor.ActionTemplateId)
     result.action={sequence=actor.ActionSequence,kind=action.kind,duration=action.duration,recoil=action.recoil,
         pitch=action.pitch,yaw=action.yaw,roll=action.roll,handLift=action.handLift,magazineDrop=action.magazineDrop,shots=actor.ActionShots,

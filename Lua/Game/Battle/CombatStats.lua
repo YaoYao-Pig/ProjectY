@@ -26,7 +26,7 @@ function Stats:Get(unit, name)
         local trait = self.traits:Get(unit:GetTraitAt(i))
         if trait.attribute == name then value = value + trait.amount end
     end
-    return math.max(0, value)
+    return math.max(0, value + self.equipment:AttributeBonus(unit,name))
 end
 function Stats:MaximumHP(unit)
     local hp = self:Template(unit).maxHealth:Evaluate({vitality = self:Get(unit, 'vitality'), endurance = self:Get(unit, 'endurance')})

@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "EquipmentItemTable",
-  "description": "共享背包中的物品定义；武器和弹匣为独立实例，符文与散弹药按数量堆叠。",
+  "description": "共享网格背包物品定义；实例装备按矩形占格，组件和散弹药按物品类型堆叠。",
   "key": "id",
   "fields": [
     {
@@ -24,7 +24,8 @@
         "rune",
         "magazine",
         "ammo",
-        "module"
+        "module",
+        "wearable"
       ]
     },
     {
@@ -37,6 +38,42 @@
       "name": "iconPath",
       "type": "string",
       "description": "UI Sprite 路径；空字符串显示留白图标"
+    },
+    {
+      "name": "width",
+      "type": "int",
+      "description": "未旋转时占用列数",
+      "min": 1,
+      "max": 12
+    },
+    {
+      "name": "height",
+      "type": "int",
+      "description": "未旋转时占用行数",
+      "min": 1,
+      "max": 10
+    },
+    {
+      "name": "iconMode",
+      "type": "enum",
+      "description": "model 按模型导出；file 使用人工 Sprite；none 无图标",
+      "values": [
+        "model",
+        "file",
+        "none"
+      ]
+    },
+    {
+      "name": "iconRotation",
+      "type": "float[]",
+      "description": "图标模型旋转 XYZ"
+    },
+    {
+      "name": "iconPadding",
+      "type": "float",
+      "description": "图标包围盒留白倍率",
+      "min": 1,
+      "max": 2
     }
   ],
   "rows": [
@@ -45,91 +82,320 @@
       "name": "旅法者法杖",
       "kind": "weapon",
       "assetId": 1,
-      "iconPath": ""
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_1.png",
+      "width": 1,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.15
     },
     {
       "id": 2,
       "name": "黄铜巡猎步枪",
       "kind": "weapon",
       "assetId": 4,
-      "iconPath": ""
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_2.png",
+      "width": 2,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        100,
+        65
+      ],
+      "iconPadding": 1.15
     },
     {
       "id": 11,
       "name": "散射符文石",
       "kind": "rune",
       "assetId": 2,
-      "iconPath": ""
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_11.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.15
     },
     {
       "id": 12,
       "name": "精准符文石",
       "kind": "rune",
       "assetId": 3,
-      "iconPath": ""
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_12.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.15
     },
     {
       "id": 21,
       "name": "巡猎弹匣 · 12 发",
       "kind": "magazine",
       "assetId": 5,
-      "iconPath": ""
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_21.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.15
     },
     {
       "id": 31,
       "name": "巡猎弹药",
       "kind": "ammo",
       "assetId": 6,
-      "iconPath": ""
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_31.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.15
     },
     {
       "id": 40,
       "name": "民兵铁剑",
       "kind": "weapon",
       "assetId": 13,
-      "iconPath": ""
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_40.png",
+      "width": 1,
+      "height": 3,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.15
     },
     {
       "id": 41,
       "name": "骑士精钢剑",
       "kind": "weapon",
       "assetId": 14,
-      "iconPath": ""
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_41.png",
+      "width": 1,
+      "height": 3,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.15
     },
     {
       "id": 42,
       "name": "佣兵大剑",
       "kind": "weapon",
       "assetId": 15,
-      "iconPath": ""
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_42.png",
+      "width": 2,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.15
     },
     {
       "id": 43,
       "name": "王卫大剑",
       "kind": "weapon",
       "assetId": 16,
-      "iconPath": ""
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_43.png",
+      "width": 2,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.15
     },
     {
       "id": 44,
       "name": "破城巨剑",
       "kind": "weapon",
       "assetId": 17,
-      "iconPath": ""
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_44.png",
+      "width": 2,
+      "height": 5,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.15
     },
     {
       "id": 45,
       "name": "黑曜重型巨剑",
       "kind": "weapon",
       "assetId": 18,
-      "iconPath": ""
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_45.png",
+      "width": 2,
+      "height": 5,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.15
     },
     {
       "id": 13,
       "name": "劈砍助推器",
       "kind": "module",
       "assetId": 19,
-      "iconPath": ""
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_13.png",
+      "width": 2,
+      "height": 1,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.15
+    },
+    {
+      "id": 51,
+      "name": "旅人皮帽",
+      "kind": "wearable",
+      "assetId": 20,
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_51.png",
+      "width": 2,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        0,
+        155,
+        0
+      ],
+      "iconPadding": 1.15
+    },
+    {
+      "id": 52,
+      "name": "缀铁皮甲",
+      "kind": "wearable",
+      "assetId": 21,
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_52.png",
+      "width": 2,
+      "height": 3,
+      "iconMode": "model",
+      "iconRotation": [
+        0,
+        155,
+        0
+      ],
+      "iconPadding": 1.15
+    },
+    {
+      "id": 53,
+      "name": "蛮力指环",
+      "kind": "wearable",
+      "assetId": 22,
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_53.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "model",
+      "iconRotation": [
+        0,
+        155,
+        0
+      ],
+      "iconPadding": 1.15
+    },
+    {
+      "id": 54,
+      "name": "学者指环",
+      "kind": "wearable",
+      "assetId": 23,
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_54.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "model",
+      "iconRotation": [
+        0,
+        155,
+        0
+      ],
+      "iconPadding": 1.15
+    },
+    {
+      "id": 55,
+      "name": "加固长裤",
+      "kind": "wearable",
+      "assetId": 24,
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_55.png",
+      "width": 2,
+      "height": 3,
+      "iconMode": "model",
+      "iconRotation": [
+        0,
+        155,
+        0
+      ],
+      "iconPadding": 1.15
+    },
+    {
+      "id": 56,
+      "name": "轻便皮靴",
+      "kind": "wearable",
+      "assetId": 25,
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_56.png",
+      "width": 2,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        0,
+        155,
+        0
+      ],
+      "iconPadding": 1.15
+    },
+    {
+      "id": 57,
+      "name": "铁箍圆盾",
+      "kind": "wearable",
+      "assetId": 26,
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_57.png",
+      "width": 2,
+      "height": 3,
+      "iconMode": "model",
+      "iconRotation": [
+        0,
+        155,
+        0
+      ],
+      "iconPadding": 1.15
     }
   ]
 }

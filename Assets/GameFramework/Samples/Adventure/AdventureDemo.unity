@@ -386,6 +386,13 @@ MonoBehaviour:
   mapCamera: {fileID: 826064762}
   previewShader: {fileID: 4800000, guid: e4d2b3885ddebd74ebb4e2f81948e93a, type: 3}
   environmentSun: {fileID: 684147751}
+  explorationGrid:
+    ClearRadius: 3
+    FadeRadius: 6
+    CellInset: 0.045
+    Color: {r: 1, g: 0.84, b: 0.2, a: 0.58}
+    HoverColor: {r: 0.12, g: 0.9, b: 1, a: 0.72}
+    SelectedColor: {r: 0.3, g: 1, b: 0.28, a: 0.8}
   assetBindings:
   - id: 1
     path: Assets/DynamicAsset/MapLowPoly/Models/Hex_Grass.fbx

@@ -116,6 +116,46 @@ namespace ProjectY.Samples
             }
         }
         private static float Step(float value, float rise) => rise > 0 ? Mathf.Floor(value / rise + .0001f) * rise : value;
+        // Filled overlays use the same fan interpolation and stair bands as the walkable surface.
+        public static void AppendOverlay(MapAreaViewData map, int index, float inset, List<Vector3> output, List<int> indices)
+        {
+            var cell = map.Cells[index]; var radius = 1 - inset;
+            for (var i = 0; i < 6; i++)
+            {
+                var j = (i + 1) % 6;
+                var a = OverlayPoint(map, cell, i, radius); var b = OverlayPoint(map, cell, j, radius);
+                OverlayTriangle(cell.Position, b, a, cell.StairRise, output, indices);
+            }
+        }
+        private static Vector3 OverlayPoint(MapAreaViewData map, MapAreaViewData.Cell cell, int corner, float radius)
+        {
+            var point = cell.Position + Corners[corner] * (map.Radius * radius);
+            point.y = Mathf.Lerp(cell.Position.y, cell.Corners[corner], radius); return point;
+        }
+        private static void OverlayTriangle(Vector3 a, Vector3 b, Vector3 c, float rise, List<Vector3> output, List<int> indices)
+        {
+            var min = Mathf.Min(a.y, Mathf.Min(b.y, c.y)); var max = Mathf.Max(a.y, Mathf.Max(b.y, c.y));
+            if (rise <= 0 || max - min < .0001f)
+            {
+                a.y = Step(a.y, rise); b.y = Step(b.y, rise); c.y = Step(c.y, rise);
+                AddOverlayTriangle(a, b, c, output, indices); return;
+            }
+            for (var band = Mathf.FloorToInt(min / rise + .0001f); band < Mathf.CeilToInt(max / rise - .0001f); band++)
+            {
+                var low = band * rise; var high = low + rise;
+                var polygon = Clip(Clip(new List<Vector3> { a, b, c }, low, true), high, false);
+                for (var i = 1; i + 1 < polygon.Count; i++)
+                    AddOverlayTriangle(new Vector3(polygon[0].x, low, polygon[0].z), new Vector3(polygon[i].x, low, polygon[i].z),
+                        new Vector3(polygon[i + 1].x, low, polygon[i + 1].z), output, indices);
+            }
+        }
+        private static void AddOverlayTriangle(Vector3 a, Vector3 b, Vector3 c, List<Vector3> output, List<int> indices)
+        {
+            if (Vector3.Cross(b - a, c - a).sqrMagnitude < .00000001f) return;
+            var index = output.Count; var offset = Vector3.up * .035f;
+            output.Add(a + offset); output.Add(b + offset); output.Add(c + offset);
+            indices.Add(index); indices.Add(index + 1); indices.Add(index + 2);
+        }
         private static bool Height(MapAreaViewData map, int index, Vector3 position, out float height)
         {
             var cell = map.Cells[index]; var x = (position.x - cell.Position.x) / map.Radius; var z = (position.z - cell.Position.z) / map.Radius;

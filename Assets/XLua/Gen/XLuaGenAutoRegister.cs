@@ -34,6 +34,12 @@ namespace XLua.CSObjectWrap
             translator.DelayWrapLoader(typeof(ProjectY.UI.EquipmentWorkbenchView), ProjectYUIEquipmentWorkbenchViewWrap.__Register);
         
         
+            translator.DelayWrapLoader(typeof(ProjectY.UI.InventoryCharacterView), ProjectYUIInventoryCharacterViewWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(ProjectY.UI.InventoryPanelView), ProjectYUIInventoryPanelViewWrap.__Register);
+        
+        
             translator.DelayWrapLoader(typeof(ProjectY.UI.LuaPanel), ProjectYUILuaPanelWrap.__Register);
         
         
@@ -64,6 +70,9 @@ namespace XLua.CSObjectWrap
             translator.DelayWrapLoader(typeof(ProjectY.Data.InventoryStackData), ProjectYDataInventoryStackDataWrap.__Register);
         
         
+            translator.DelayWrapLoader(typeof(ProjectY.Data.EquipmentWearableData), ProjectYDataEquipmentWearableDataWrap.__Register);
+        
+        
             translator.DelayWrapLoader(typeof(ProjectY.Data.EquipmentWeaponData), ProjectYDataEquipmentWeaponDataWrap.__Register);
         
         
@@ -71,6 +80,12 @@ namespace XLua.CSObjectWrap
         
         
             translator.DelayWrapLoader(typeof(ProjectY.Data.EquipmentData), ProjectYDataEquipmentDataWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(ProjectY.Data.InventoryPlacementData), ProjectYDataInventoryPlacementDataWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(ProjectY.Data.InventoryGridData), ProjectYDataInventoryGridDataWrap.__Register);
         
         
             translator.DelayWrapLoader(typeof(ProjectY.Data.LocalizationService), ProjectYDataLocalizationServiceWrap.__Register);
@@ -159,6 +174,10 @@ namespace XLua.CSObjectWrap
         
             translator.DelayWrapLoader(typeof(UnityEngine.UI.Slider.SliderEvent), UnityEngineUISliderSliderEventWrap.__Register);
         
+        }
+        
+        static void wrapInit1(LuaEnv luaenv, ObjectTranslator translator)
+        {
         
             translator.DelayWrapLoader(typeof(UnityEngine.UI.InputField), UnityEngineUIInputFieldWrap.__Register);
         
@@ -174,10 +193,6 @@ namespace XLua.CSObjectWrap
         
             translator.DelayWrapLoader(typeof(UnityEngine.UI.ScrollRect), UnityEngineUIScrollRectWrap.__Register);
         
-        }
-        
-        static void wrapInit1(LuaEnv luaenv, ObjectTranslator translator)
-        {
         
             translator.DelayWrapLoader(typeof(UnityEngine.UI.ScrollRect.ScrollRectEvent), UnityEngineUIScrollRectScrollRectEventWrap.__Register);
         

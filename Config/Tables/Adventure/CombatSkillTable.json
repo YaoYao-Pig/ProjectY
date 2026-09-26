@@ -376,6 +376,27 @@
       "ammoPerShot": 0,
       "damageScale": 1,
       "actionTemplate": 6
+    },
+    {
+      "id": 13,
+      "name": "副手斩击",
+      "description": "使用副手单手武器进行次要攻击；消耗 2 AP，基础伤害为主手斩击的 70%，应用副手武器倍率与属性要求。",
+      "iconId": 14,
+      "action": "secondary",
+      "cost": 2,
+      "range": 1,
+      "target": "enemy",
+      "proficiency": "sword",
+      "effectIds": [
+        9
+      ],
+      "skillGroup": "slash",
+      "cooldownTurns": 0,
+      "hitChance": 95,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 0.7,
+      "actionTemplate": 7
     }
   ]
 }

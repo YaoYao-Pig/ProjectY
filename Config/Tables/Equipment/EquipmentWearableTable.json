@@ -1,0 +1,211 @@
+{
+  "version": 1,
+  "name": "EquipmentWearableTable",
+  "description": "角色防具和戒指；左右戒指槽共同接受 ring 类型，属性直接加到战斗属性。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "物品 ID",
+      "ref": "EquipmentItemTable"
+    },
+    {
+      "name": "slot",
+      "type": "enum",
+      "description": "兼容装备槽类型",
+      "values": [
+        "head",
+        "body",
+        "ring",
+        "legs",
+        "feet",
+        "offhand"
+      ]
+    },
+    {
+      "name": "attributeNames",
+      "type": "string[]",
+      "description": "属性 code"
+    },
+    {
+      "name": "attributeValues",
+      "type": "int[]",
+      "description": "对应属性加成"
+    },
+    {
+      "name": "mount",
+      "type": "enum",
+      "description": "模型挂点；ring 随左右戒指槽选择手",
+      "values": [
+        "head",
+        "chest",
+        "ring",
+        "legs",
+        "feet",
+        "offhand"
+      ]
+    },
+    {
+      "name": "position",
+      "type": "float[]",
+      "description": "相对挂点的位置 XYZ"
+    },
+    {
+      "name": "rotation",
+      "type": "float[]",
+      "description": "相对挂点旋转 XYZ"
+    }
+  ],
+  "rows": [
+    {
+      "id": 51,
+      "slot": "head",
+      "attributeNames": [
+        "defense"
+      ],
+      "attributeValues": [
+        1
+      ],
+      "mount": "head",
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 52,
+      "slot": "body",
+      "attributeNames": [
+        "defense",
+        "endurance"
+      ],
+      "attributeValues": [
+        3,
+        1
+      ],
+      "mount": "chest",
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 53,
+      "slot": "ring",
+      "attributeNames": [
+        "strength"
+      ],
+      "attributeValues": [
+        2
+      ],
+      "mount": "ring",
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 54,
+      "slot": "ring",
+      "attributeNames": [
+        "intellect"
+      ],
+      "attributeValues": [
+        2
+      ],
+      "mount": "ring",
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 55,
+      "slot": "legs",
+      "attributeNames": [
+        "defense"
+      ],
+      "attributeValues": [
+        1
+      ],
+      "mount": "legs",
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 56,
+      "slot": "feet",
+      "attributeNames": [
+        "speed"
+      ],
+      "attributeValues": [
+        1
+      ],
+      "mount": "feet",
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    },
+    {
+      "id": 57,
+      "slot": "offhand",
+      "attributeNames": [
+        "defense"
+      ],
+      "attributeValues": [
+        3
+      ],
+      "mount": "offhand",
+      "position": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ]
+    }
+  ]
+}
