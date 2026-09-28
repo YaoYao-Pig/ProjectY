@@ -9,7 +9,7 @@
 ## 正文
 
 - 复用 [UI 框架](../Framework/UI.md)：`BattleHUD` 是 Main 层、非模态、缓存、不可 Back 关闭的 Panel；`BattleAction/BattleParty/BattleTurn` 是独立 Widget，通过 `CreateWidget` 创建并随 Panel 释放。组件均通过 Prefab 的 LuaReference 绑定。
-- `AdventureRuntimeDemo.SetView` 在进入/离开 battle 时调用 `UI.BattleHUDBridge` 打开/关闭；同场景保留原地战场，战斗相机使用全视口。UI 上的指针输入不会同时触发地格命令。世界棋子标签及旧事件棋盘仍由 Demo 绘制。
+- 远征流程由 [MainHud](MainHud.md) 持有嵌套的 BattleHUD Prefab 和 `BattleHUDContent` Widget；进入/离开 battle 显示/隐藏内容，复用原技能与回合命令。独立 `BattleHUD` Panel/Bridge 保留给定向检查，不与 MainHud 同时打开。原地战场及全视口相机保留，世界血条改为屏幕 UIFollower。
 - `BattleHUDModel.Build` 只投影真实 BattleData/CombatActorData 和装备数据：生命、AP、防御、Guard、移动/主要行动额度、弹匣余弹、行动顺序及日志。技能列表和说明使用装备后的 `SkillIds/Skill`，可用性复用 `SkillBudget/CanUseSkill`，包含冷却和弹药不足原因；不维护业务状态副本。
 - 控制器的 `Battle.Changed` 订阅归 visibleScope，只标脏、下一 Tick 读取完整结果；显示选择状态来自 Demo 的 `BattleHUDRevision`。技能选择、移动、结束回合、自动/手动 AI 仍通过既有命令和权限检查。隐藏时释放订阅及工具提示；复用缓存不会重复绑定按钮。
 - `CombatSkillTable.iconId` 引用 [BattleIconTable](../../Config/Tables/Adventure/BattleIconTable.json)。每行 `spritePath` 可为空；非空必须是 `Assets/...` 下已导入为 Sprite 的资源。`BattleHUDTable` 的四个物品槽仍是不可操作的占位；[装备背包和 3D 改装](Equipment.md)使用独立的探索阶段面板。
@@ -21,7 +21,7 @@
 
 ## 关键入口
 
-- [BattleHUDCtr.lua](../../Lua/UI/Panel/BattleHUDCtr.lua) / [BattleHUDBridge.lua](../../Lua/UI/BattleHUDBridge.lua)：框架接入与命令适配。
+- [BattleHUDContent.lua](../../Lua/UI/Widget/BattleHUDContent.lua)：MainHud 内战斗内容；[BattleHUDCtr.lua](../../Lua/UI/Panel/BattleHUDCtr.lua) / [BattleHUDBridge.lua](../../Lua/UI/BattleHUDBridge.lua)：独立检查入口。
 - [BattleHUDModel.lua](../../Lua/Game/Battle/BattleHUDModel.lua)：只读表现快照；规则仍见[战斗](Battle.md)。
 - [BattleHUDView.cs](../../Assets/GameFramework/Runtime/UI/BattleHUDView.cs) / [UIPointerState.cs](../../Assets/GameFramework/Runtime/UI/UIPointerState.cs)：布局、图标与悬停。
 - [BattleHUDAssets.cs](../../Assets/GameFramework/Editor/BattleHUDAssets.cs)：首次创建、LuaReference 绑定及图标同步；[BattleHUDTable.json](../../Config/Tables/Adventure/BattleHUDTable.json)：四个物品展示槽。

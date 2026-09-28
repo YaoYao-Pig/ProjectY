@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "name": "MapAreaForestSpawnTable",
+  "description": "每行独立抽取是否刷新、数量和敌对概率；复进使用持久状态。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "areaId",
+      "type": "int",
+      "description": "森林地图",
+      "ref": "MapAreaTable"
+    },
+    {
+      "name": "encounterId",
+      "type": "int",
+      "description": "遭遇模板",
+      "ref": "CombatEncounterTable"
+    },
+    {
+      "name": "chance",
+      "type": "int",
+      "description": "本类刷新百分比",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "minCount",
+      "type": "int",
+      "description": "最少组数",
+      "min": 0
+    },
+    {
+      "name": "maxCount",
+      "type": "int",
+      "description": "最多组数",
+      "min": 0
+    },
+    {
+      "name": "neutralChance",
+      "type": "int",
+      "description": "中立百分比，仅动物可为中立",
+      "min": 0,
+      "max": 100
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "areaId": 20,
+      "encounterId": 201,
+      "chance": 100,
+      "minCount": 1,
+      "maxCount": 2,
+      "neutralChance": 65
+    },
+    {
+      "id": 2,
+      "areaId": 20,
+      "encounterId": 202,
+      "chance": 100,
+      "minCount": 1,
+      "maxCount": 2,
+      "neutralChance": 65
+    },
+    {
+      "id": 3,
+      "areaId": 20,
+      "encounterId": 203,
+      "chance": 100,
+      "minCount": 1,
+      "maxCount": 2,
+      "neutralChance": 65
+    },
+    {
+      "id": 4,
+      "areaId": 20,
+      "encounterId": 204,
+      "chance": 65,
+      "minCount": 1,
+      "maxCount": 2,
+      "neutralChance": 0
+    }
+  ]
+}

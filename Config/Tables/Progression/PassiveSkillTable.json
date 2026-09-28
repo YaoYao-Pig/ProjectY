@@ -1,0 +1,179 @@
+{
+  "version": 1,
+  "name": "PassiveSkillTable",
+  "description": "天赋仅授予被动属性效果，不含主动技能。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "被动名称"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "被动说明"
+    },
+    {
+      "name": "attributeNames",
+      "type": "string[]",
+      "description": "每级加算属性"
+    },
+    {
+      "name": "attributeValues",
+      "type": "int[]",
+      "description": "对应每级加算数值"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "强健",
+      "description": "强健：每级体力 +1",
+      "attributeNames": [
+        "vitality"
+      ],
+      "attributeValues": [
+        1
+      ]
+    },
+    {
+      "id": 2,
+      "name": "沉稳",
+      "description": "沉稳：每级耐力 +1",
+      "attributeNames": [
+        "endurance"
+      ],
+      "attributeValues": [
+        1
+      ]
+    },
+    {
+      "id": 3,
+      "name": "敏锐",
+      "description": "敏锐：每级侦察 +2",
+      "attributeNames": [
+        "scouting"
+      ],
+      "attributeValues": [
+        2
+      ]
+    },
+    {
+      "id": 4,
+      "name": "剑术修习",
+      "description": "剑术修习：每级剑 +2",
+      "attributeNames": [
+        "sword"
+      ],
+      "attributeValues": [
+        2
+      ]
+    },
+    {
+      "id": 5,
+      "name": "奥术修习",
+      "description": "奥术修习：每级智力 +1",
+      "attributeNames": [
+        "intellect"
+      ],
+      "attributeValues": [
+        1
+      ]
+    },
+    {
+      "id": 6,
+      "name": "迅捷",
+      "description": "迅捷：每级速度 +1",
+      "attributeNames": [
+        "speed"
+      ],
+      "attributeValues": [
+        1
+      ]
+    },
+    {
+      "id": 7,
+      "name": "坚守",
+      "description": "坚守：每级防御 +1",
+      "attributeNames": [
+        "defense"
+      ],
+      "attributeValues": [
+        1
+      ]
+    },
+    {
+      "id": 8,
+      "name": "远行熟手",
+      "description": "远行熟手：每级巧匠 +2",
+      "attributeNames": [
+        "crafting"
+      ],
+      "attributeValues": [
+        2
+      ]
+    },
+    {
+      "id": 9,
+      "name": "野地厨艺",
+      "description": "野地厨艺：每级厨艺 +2",
+      "attributeNames": [
+        "cooking"
+      ],
+      "attributeValues": [
+        2
+      ]
+    },
+    {
+      "id": 10,
+      "name": "余烬之心",
+      "description": "余烬之心：每级体力 +2",
+      "attributeNames": [
+        "vitality"
+      ],
+      "attributeValues": [
+        2
+      ]
+    },
+    {
+      "id": 11,
+      "name": "同袍之盾",
+      "description": "同袍之盾：每级防御 +2",
+      "attributeNames": [
+        "defense"
+      ],
+      "attributeValues": [
+        2
+      ]
+    },
+    {
+      "id": 12,
+      "name": "古老知识",
+      "description": "古老知识：每级智力 +2",
+      "attributeNames": [
+        "intellect"
+      ],
+      "attributeValues": [
+        2
+      ]
+    },
+    {
+      "id": 13,
+      "name": "守望者",
+      "description": "守望者：每级耐力 +2",
+      "attributeNames": [
+        "endurance"
+      ],
+      "attributeValues": [
+        2
+      ]
+    }
+  ]
+}

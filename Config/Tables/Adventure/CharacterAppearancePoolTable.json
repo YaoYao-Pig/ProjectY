@@ -1,0 +1,197 @@
+{
+  "version": 1,
+  "name": "CharacterAppearancePoolTable",
+  "description": "角色与敌群外观生成规则；形状与调色板由共享资源目录提供",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "min": 1,
+      "description": "稳定外观池 ID"
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "外观池名称"
+    },
+    {
+      "name": "raceIds",
+      "type": "string[]",
+      "description": "种族 ID，对应角色资源目录"
+    },
+    {
+      "name": "raceWeights",
+      "type": "int[]",
+      "description": "每个种族的正整数权重，与 raceIds 一一对应",
+      "min": 1
+    },
+    {
+      "name": "sexIds",
+      "type": "string[]",
+      "description": "允许的性别表现 male / female"
+    },
+    {
+      "name": "sexWeights",
+      "type": "int[]",
+      "description": "每种性别的正整数权重",
+      "min": 1
+    },
+    {
+      "name": "sameRace",
+      "type": "bool",
+      "description": "同一敌群是否只抽取一次种族；false 时每名敌人独立抽取"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "人类外观池",
+      "raceIds": [
+        "human"
+      ],
+      "raceWeights": [
+        1
+      ],
+      "sexIds": [
+        "male",
+        "female"
+      ],
+      "sexWeights": [
+        1,
+        1
+      ],
+      "sameRace": true
+    },
+    {
+      "id": 2,
+      "name": "精灵外观池",
+      "raceIds": [
+        "elf"
+      ],
+      "raceWeights": [
+        1
+      ],
+      "sexIds": [
+        "male",
+        "female"
+      ],
+      "sexWeights": [
+        1,
+        1
+      ],
+      "sameRace": true
+    },
+    {
+      "id": 3,
+      "name": "哥布林外观池",
+      "raceIds": [
+        "goblin"
+      ],
+      "raceWeights": [
+        1
+      ],
+      "sexIds": [
+        "male",
+        "female"
+      ],
+      "sexWeights": [
+        1,
+        1
+      ],
+      "sameRace": true
+    },
+    {
+      "id": 4,
+      "name": "龙人外观池",
+      "raceIds": [
+        "dragon"
+      ],
+      "raceWeights": [
+        1
+      ],
+      "sexIds": [
+        "male",
+        "female"
+      ],
+      "sexWeights": [
+        1,
+        1
+      ],
+      "sameRace": true
+    },
+    {
+      "id": 5,
+      "name": "兽人外观池",
+      "raceIds": [
+        "orc"
+      ],
+      "raceWeights": [
+        1
+      ],
+      "sexIds": [
+        "male",
+        "female"
+      ],
+      "sexWeights": [
+        1,
+        1
+      ],
+      "sameRace": true
+    },
+    {
+      "id": 6,
+      "name": "废墟混合族群示例",
+      "raceIds": [
+        "human",
+        "elf",
+        "goblin",
+        "dragon",
+        "orc"
+      ],
+      "raceWeights": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "sexIds": [
+        "male",
+        "female"
+      ],
+      "sexWeights": [
+        1,
+        1
+      ],
+      "sameRace": true
+    },
+    {
+      "id": 7,
+      "name": "混编敌人示例",
+      "raceIds": [
+        "human",
+        "elf",
+        "goblin",
+        "dragon",
+        "orc"
+      ],
+      "raceWeights": [
+        1,
+        1,
+        1,
+        1,
+        1
+      ],
+      "sexIds": [
+        "male",
+        "female"
+      ],
+      "sexWeights": [
+        1,
+        1
+      ],
+      "sameRace": false
+    }
+  ]
+}

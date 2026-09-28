@@ -12,14 +12,22 @@ namespace ProjectY.Samples
             public static Asset Read(LuaTable row) => new Asset { Id = row.Get<int>("id"), Path = row.Get<string>("path") };
         }
         public sealed class Socket { public int Id; public string Name, Kind, CalloutSide; public Vector3 Position, Rotation; public Asset Attachment; }
+        public sealed class Grip
+        {
+            public Vector3 Position, Rotation;
+            public static Grip Read(LuaTable row) => new Grip { Position=Vector(row,"position"), Rotation=Vector(row,"rotation") };
+        }
         public sealed class Weapon
         {
             public int Id; public Asset Model; public Socket[] Sockets;
             public Vector3 PreviewRotation; public float PreviewZoom;
+            public Grip PrimaryGrip, SecondaryGrip;
             public static Weapon Read(LuaTable row)
             {
                 var result = new Weapon { Id = row.Get<int>("id"),PreviewRotation=Vector(row,"previewRotation"),PreviewZoom=row.Get<float>("previewZoom") };
                 using (var asset = row.Get<LuaTable>("asset")) result.Model = Asset.Read(asset);
+                using (var grip=row.Get<LuaTable>("primaryGrip")) result.PrimaryGrip=Grip.Read(grip);
+                using (var grip=row.Get<LuaTable>("secondaryGrip")) result.SecondaryGrip=Grip.Read(grip);
                 using (var sockets = row.Get<LuaTable>("sockets"))
                 {
                     result.Sockets = new Socket[sockets.Length];
@@ -36,7 +44,13 @@ namespace ProjectY.Samples
         public sealed class Pose
         {
             public int Id; public Asset Upper, Forearm, Hand;
+            public int ModuleId, HoldId, AttackActionId;
+            public string ModuleName, OffHandMode;
+            public bool HasMainWeapon, HasOffWeapon, LockWeaponOrientation;
+            public Grip PrimaryGrip, SecondaryGrip;
             public bool OffHandFollowsWeapon;
+            public Vector3 MainWeaponScale = Vector3.one, OffWeaponScale = Vector3.one;
+            public Vector3 WeaponRotationOffset, OffWeaponRotationOffset;
             public Vector3 MainShoulder, MainElbow, MainHand, OffShoulder, OffElbow, OffHand, WeaponRotation, OffWeaponRotation;
         }
         public sealed class Action
@@ -69,6 +83,12 @@ namespace ProjectY.Samples
             {
                 result.Hold = new Pose { Id = pose.Get<int>("id"),OffHandFollowsWeapon=pose.Get<bool>("offHandFollowsWeapon"), MainShoulder=Vector(pose,"mainShoulder"),MainElbow=Vector(pose,"mainElbow"),MainHand=Vector(pose,"mainHand"),
                     OffShoulder=Vector(pose,"offShoulder"),OffElbow=Vector(pose,"offElbow"),OffHand=Vector(pose,"offHand"),WeaponRotation=Vector(pose,"weaponRotation"),OffWeaponRotation=Vector(pose,"offWeaponRotation") };
+                result.Hold.ModuleId=pose.Get<int>("moduleId");result.Hold.ModuleName=pose.Get<string>("moduleName");result.Hold.HoldId=pose.Get<int>("holdId");result.Hold.OffHandMode=pose.Get<string>("offHandMode");
+                result.Hold.AttackActionId=pose.Get<int>("attackActionId");result.Hold.HasMainWeapon=pose.Get<bool>("hasMainWeapon");result.Hold.HasOffWeapon=pose.Get<bool>("hasOffWeapon");
+                result.Hold.LockWeaponOrientation=pose.Get<bool>("lockWeaponOrientation");
+                result.Hold.WeaponRotationOffset=Vector(pose,"weaponRotationOffset");result.Hold.OffWeaponRotationOffset=Vector(pose,"offWeaponRotationOffset");
+                using(var grip=pose.Get<LuaTable>("primaryGrip")) result.Hold.PrimaryGrip=Grip.Read(grip);
+                using(var grip=pose.Get<LuaTable>("secondaryGrip")) result.Hold.SecondaryGrip=Grip.Read(grip);
                 using (var a=pose.Get<LuaTable>("upper")) result.Hold.Upper=Asset.Read(a);
                 using (var a=pose.Get<LuaTable>("forearm")) result.Hold.Forearm=Asset.Read(a);
                 using (var a=pose.Get<LuaTable>("hand")) result.Hold.Hand=Asset.Read(a);

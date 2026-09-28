@@ -1,13 +1,15 @@
 -- Edit Mode 独立 LuaEnv：真实 C# 状态与现有命令贯通探索、原地战斗、结算和重进。
 local Registry=require('Core.SystemRegistry')
-local registry=Registry(Services)
+local registry=Registry({Adventure=Services.Adventure,Player=Services.Player,UI={IsWorldPaused=false},
+    ReadConfig=function(_,name) return Services:ReadConfig(name) end,LogError=function(_,message) Services:LogError(message) end})
 registry:Register('Config',require('Config.ConfigSystem'))
 registry:Register('PlayerModel',require('Game.PlayerModelSystem'),{'Config'})
 registry:Register('Map',require('Game.Map.MapSystem'),{'Config'})
 registry:Register('MapArea',require('Game.MapArea.MapAreaSystem'),{'Config'})
 registry:Register('Battle',require('Game.Battle.BattleSystem'),{'Config'})
 registry:Register('Equipment',require('Game.Equipment.EquipmentSystem'),{'Config'})
-registry:Register('AdventureEvents',require('Game.Adventure.EventSystem'),{'Battle','PlayerModel'})
+registry:Register('Growth',require('Game.Progression.GrowthSystem'),{'Battle'})
+registry:Register('AdventureEvents',require('Game.Adventure.EventSystem'),{'Battle','PlayerModel','Growth','Equipment'})
 registry:Register('Adventure',require('Game.Adventure.AdventureSystem'),{'Map','MapArea','AdventureEvents','Equipment'})
 local messages={}
 local function test(name,run) run();messages[#messages+1]='PASS '..name end
@@ -41,6 +43,7 @@ local ok,err=xpcall(function()
         local goal=area:Find(enemy.Q,enemy.R)
         local original={}
         for _=1,600 do
+            if data.Phase=='event' then assert(adventure:Choose(3));assert(adventure:ReturnToMap()) end
             if data.Phase=='battle' then break end
             if state.RemainingSteps==0 then
                 local path=assert(area:FindPath(state.CellIndex,goal.index))

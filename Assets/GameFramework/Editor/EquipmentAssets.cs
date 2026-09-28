@@ -64,6 +64,8 @@ namespace ProjectY.Editor
             {
                 var asset=Array.Find(assets,x=>x.id==item.assetId);
                 var root=new GameObject("Weapon_"+item.id);
+                var authored=AssetDatabase.LoadAssetAtPath<GameObject>(asset.prefabPath);
+                if(authored!=null)root.transform.localScale=authored.transform.localScale;
                 try
                 {
                     var model=(GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(asset.modelPath));model.transform.SetParent(root.transform,false);

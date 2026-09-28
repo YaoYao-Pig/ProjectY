@@ -54,6 +54,20 @@
       "type": "int[]",
       "description": "胜利后授予首名存活角色的特质",
       "ref": "CombatTraitTable"
+    },
+    {
+      "name": "experience",
+      "type": "int",
+      "description": "胜利后每名参战队员的经验",
+      "min": 0,
+      "default": 50
+    },
+    {
+      "name": "appearancePoolId",
+      "type": "int",
+      "description": "角色/敌群创建时使用的外观池；显示刷新不重新随机",
+      "ref": "CharacterAppearancePoolTable",
+      "default": 1
     }
   ],
   "rows": [
@@ -71,7 +85,67 @@
       "rewardCoins": 35,
       "rewardTraitIds": [
         1
-      ]
+      ],
+      "experience": 50,
+      "appearancePoolId": 6
+    },
+    {
+      "id": 201,
+      "name": "林地野马",
+      "radius": 5,
+      "obstacleChance": 0,
+      "enemyIds": [
+        201
+      ],
+      "maxRounds": 30,
+      "rewardCoins": 0,
+      "rewardTraitIds": [],
+      "experience": 20,
+      "appearancePoolId": 1
+    },
+    {
+      "id": 202,
+      "name": "林地野鸡",
+      "radius": 5,
+      "obstacleChance": 0,
+      "enemyIds": [
+        202
+      ],
+      "maxRounds": 30,
+      "rewardCoins": 0,
+      "rewardTraitIds": [],
+      "experience": 20,
+      "appearancePoolId": 1
+    },
+    {
+      "id": 203,
+      "name": "林地野兔",
+      "radius": 5,
+      "obstacleChance": 0,
+      "enemyIds": [
+        203
+      ],
+      "maxRounds": 30,
+      "rewardCoins": 0,
+      "rewardTraitIds": [],
+      "experience": 20,
+      "appearancePoolId": 1
+    },
+    {
+      "id": 204,
+      "name": "森林哥布林",
+      "radius": 5,
+      "obstacleChance": 0,
+      "enemyIds": [
+        4,
+        5,
+        4
+      ],
+      "maxRounds": 30,
+      "rewardCoins": 12,
+      "rewardTraitIds": [],
+      "experience": 50,
+      "appearancePoolId": 3
     }
   ]
 }

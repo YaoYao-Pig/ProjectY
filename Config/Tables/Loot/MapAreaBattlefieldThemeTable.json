@@ -1,0 +1,155 @@
+{
+  "version": 1,
+  "name": "MapAreaBattlefieldThemeTable",
+  "description": "事件战场的地面与障碍主题。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "regionType",
+      "type": "enum",
+      "description": "适用大地图地貌",
+      "enumRef": "Map.E_MapRegion"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "环境主题"
+    },
+    {
+      "name": "floorColor",
+      "type": "string",
+      "description": "地面纯色 #RRGGBB"
+    },
+    {
+      "name": "wallColor",
+      "type": "string",
+      "description": "墙体纯色 #RRGGBB"
+    },
+    {
+      "name": "wallHeight",
+      "type": "float",
+      "description": "墙体高度",
+      "min": 0.5,
+      "max": 5
+    },
+    {
+      "name": "roomRadiusScale",
+      "type": "float",
+      "description": "房间尺寸倍率",
+      "min": 0.6,
+      "max": 1.4
+    },
+    {
+      "name": "windingScale",
+      "type": "float",
+      "description": "走廊曲折倍率",
+      "min": 0,
+      "max": 2
+    },
+    {
+      "name": "heightNoise",
+      "type": "float",
+      "description": "地面小幅起伏，不改变可通行性",
+      "min": 0,
+      "max": 0.25
+    },
+    {
+      "name": "assetId",
+      "type": "int",
+      "description": "地面与墙体柱模型",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "surfaceProfileId",
+      "type": "int",
+      "description": "地牢基础材质与地貌覆盖",
+      "ref": "MapAreaDungeonSurfaceTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "regionType": 1,
+      "name": "野外战场",
+      "floorColor": "#759754",
+      "wallColor": "#898379",
+      "wallHeight": 0.8,
+      "roomRadiusScale": 1,
+      "windingScale": 1,
+      "heightNoise": 0,
+      "assetId": 1,
+      "surfaceProfileId": 1
+    },
+    {
+      "id": 2,
+      "regionType": 2,
+      "name": "野外战场",
+      "floorColor": "#759754",
+      "wallColor": "#898379",
+      "wallHeight": 0.8,
+      "roomRadiusScale": 0.8,
+      "windingScale": 1.3,
+      "heightNoise": 0,
+      "assetId": 1,
+      "surfaceProfileId": 2
+    },
+    {
+      "id": 3,
+      "regionType": 3,
+      "name": "野外战场",
+      "floorColor": "#759754",
+      "wallColor": "#898379",
+      "wallHeight": 0.8,
+      "roomRadiusScale": 1.1,
+      "windingScale": 1.1,
+      "heightNoise": 0,
+      "assetId": 1,
+      "surfaceProfileId": 3
+    },
+    {
+      "id": 4,
+      "regionType": 4,
+      "name": "野外战场",
+      "floorColor": "#759754",
+      "wallColor": "#898379",
+      "wallHeight": 0.8,
+      "roomRadiusScale": 1,
+      "windingScale": 1.25,
+      "heightNoise": 0,
+      "assetId": 1,
+      "surfaceProfileId": 4
+    },
+    {
+      "id": 5,
+      "regionType": 5,
+      "name": "野外战场",
+      "floorColor": "#759754",
+      "wallColor": "#898379",
+      "wallHeight": 0.8,
+      "roomRadiusScale": 0.95,
+      "windingScale": 1.15,
+      "heightNoise": 0,
+      "assetId": 1,
+      "surfaceProfileId": 5
+    },
+    {
+      "id": 6,
+      "regionType": 6,
+      "name": "野外战场",
+      "floorColor": "#759754",
+      "wallColor": "#898379",
+      "wallHeight": 0.8,
+      "roomRadiusScale": 0.9,
+      "windingScale": 0.85,
+      "heightNoise": 0,
+      "assetId": 1,
+      "surfaceProfileId": 6
+    }
+  ]
+}

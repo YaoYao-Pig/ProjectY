@@ -13,10 +13,25 @@ namespace ProjectY.Samples
         private Transform[] arms;
         private int weaponAsset, offhandAsset, poseId, sequence;
         private bool initialized;
+        private PawnAnimationView animationView;
+        private PawnCustomizationView customizationView;
+        private int customizationRevision;
         private float started=-100;
         private sealed class Attachment { public int Id; public Transform Transform; }
         private readonly Dictionary<string,Attachment> wearables=new Dictionary<string,Attachment>();
         private readonly List<string> removed=new List<string>();
+        public void SetCustomization(PawnCustomizationView value)
+        {
+            int revision = value == null ? 0 : value.Revision;
+            if (value == customizationView && revision == customizationRevision) return;
+            foreach (var item in wearables.Values) WeaponModelView.Remove(item.Transform.gameObject);
+            wearables.Clear(); customizationView = value; customizationRevision = revision;
+        }
+        public void SetAnimation(PawnAnimationView value)
+        {
+            if (animationView == value) return;
+            Apply(null); animationView = value;
+        }
         public void Apply(EquipmentVisualData value)
         {
             if(value==null)
@@ -29,7 +44,10 @@ namespace ProjectY.Samples
             if(catalog==null) throw new InvalidOperationException("人物未绑定装备资源目录。");
             ApplyWeapon(value.WeaponView,ref weapon,ref weaponAsset);
             ApplyWeapon(value.OffhandView,ref offhand,ref offhandAsset);
-            if(poseId!=value.Hold.Id)
+            value.Hold.MainWeaponScale=weapon!=null?weapon.transform.localScale:Vector3.one;
+            value.Hold.OffWeaponScale=offhand!=null?offhand.transform.localScale:Vector3.one;
+            animationView?.SetHold(value.Hold);
+            if(animationView==null && poseId!=value.Hold.Id)
             {
                 if(arms!=null) foreach(var arm in arms) WeaponModelView.Remove(arm.gameObject);
                 arms=new Transform[6];
@@ -48,9 +66,19 @@ namespace ProjectY.Samples
             {
                 if(wearables.TryGetValue(worn.Slot,out var existing)&&existing.Id==worn.Model.Id) continue;
                 if(existing!=null) WeaponModelView.Remove(existing.Transform.gameObject);
-                wearables[worn.Slot]=new Attachment {Id=worn.Model.Id,Transform=Instantiate(catalog.Resolve(worn.Model),transform,false).transform};
+                var fitted = customizationView != null && PawnCustomizationCatalog.NeedsFit(worn.Mount);
+                if (fitted && (worn.Position != Vector3.zero || worn.Rotation != Vector3.zero)) throw new InvalidOperationException("Fitted wearable offsets must be authored in the shared rest pose.");
+                var skin = fitted || (animationView != null && (worn.Mount == "legs" || worn.Mount == "feet"));
+                var obj = fitted ? customizationView.CreateFit(worn.Model.Path) : skin ? animationView.CreateSkin(worn.Model.Id, transform) : Instantiate(catalog.Resolve(worn.Model),transform,false);
+                wearables[worn.Slot]=new Attachment {Id=worn.Model.Id,Transform=obj.transform};
+                if(animationView!=null && !skin)
+                {
+                    var anchor=animationView.Anchor(worn.Mount=="ring" ? (worn.Slot=="rightRing" ? "mainHand" : "offHand") : worn.Mount=="offhand" ? "offHand" : worn.Mount);
+                    obj.transform.SetParent(anchor,false);
+                    obj.transform.localPosition=worn.Position;obj.transform.localRotation=Quaternion.Euler(worn.Rotation);
+                }
             }
-            if(initialized && value.Motion.Sequence!=sequence && value.Motion.Kind!="none") started=Time.unscaledTime;
+            if(initialized && value.Motion.Sequence!=sequence && value.Motion.Kind!="none") started=Time.time;
             sequence=value.Motion.Sequence;initialized=true;view=value;RenderPose();
         }
         private static void ClearWeapon(ref WeaponModelView model,ref int asset)
@@ -86,6 +114,7 @@ namespace ProjectY.Samples
         public Vector3 SlotWorldPosition(string slot)
         {
             if(view==null) throw new InvalidOperationException("Equipment portrait has no appearance.");
+            if(animationView!=null) return animationView.Anchor(slot=="weapon"||slot=="rightRing" ? "mainHand" : slot=="offhand"||slot=="leftRing" ? "offHand" : slot=="body" ? "chest" : slot).position;
             return transform.TransformPoint(SlotPosition(slot));
         }
         private Vector3 WearablePosition(EquipmentVisualData.Wearable worn)
@@ -103,7 +132,23 @@ namespace ProjectY.Samples
         }
         private void RenderPose()
         {
-            var pose=view.Hold;var action=view.Motion;var t=action.Duration>0?(Time.unscaledTime-started)/action.Duration:2;
+            if(animationView!=null)
+            {
+                if(weapon!=null && weapon.transform.parent!=animationView.MainGrip)
+                {weapon.transform.SetParent(animationView.MainGrip,false);weapon.transform.localPosition=Vector3.zero;weapon.transform.localRotation=Quaternion.identity;}
+                if(offhand!=null && offhand.transform.parent!=animationView.OffGrip)
+                {offhand.transform.SetParent(animationView.OffGrip,false);offhand.transform.localPosition=Vector3.zero;offhand.transform.localRotation=Quaternion.identity;}
+                if(weapon!=null) AlignGrip(weapon.transform,view.WeaponView.PrimaryGrip);
+                if(offhand!=null) AlignGrip(offhand.transform,view.OffhandView.PrimaryGrip);
+                if(weapon!=null)
+                {
+                    float progress=animationView.ReloadProgress;
+                    float drop=progress>=0?Mathf.Sin(progress*Mathf.PI)*view.Motion.MagazineDrop:0;
+                    foreach(var socket in view.WeaponView.Sockets) if(socket.Kind=="magazine") weapon.Socket(socket.Id).localPosition=socket.Position-Vector3.up*drop;
+                }
+                return; // Animator/IK owns arms. Never overwrite those bones with the rigid preview pose.
+            }
+            var pose=view.Hold;var action=view.Motion;var t=action.Duration>0?(Time.time-started)/action.Duration:2;
             var pulse=t>=0&&t<1?Mathf.Sin(t*Mathf.PI):0;
             var recoil=t>=0&&t<1?Mathf.Sin(Mathf.Repeat(t*Mathf.Max(1,action.Shots),1)*Mathf.PI):0;
             var shift=new Vector3(0,pulse*action.HandLift,-recoil*action.Recoil);
@@ -116,12 +161,15 @@ namespace ProjectY.Samples
             if(weapon!=null)
             {
                 weapon.transform.localPosition=main;
-                weapon.transform.localRotation=(offAttack?Quaternion.identity:rotation)*Quaternion.Euler(pose.WeaponRotation);
+                weapon.transform.localRotation=(offAttack?Quaternion.identity:rotation)*Quaternion.Euler(pose.WeaponRotation)*Quaternion.Euler(pose.WeaponRotationOffset);
+                weapon.transform.localRotation*=Quaternion.Inverse(Quaternion.Euler(view.WeaponView.PrimaryGrip.Rotation));
+                weapon.transform.localPosition-=weapon.transform.localRotation*Vector3.Scale(weapon.transform.localScale,view.WeaponView.PrimaryGrip.Position);
+                if(pose.OffHandFollowsWeapon) off=weapon.transform.localPosition+weapon.transform.localRotation*Vector3.Scale(weapon.transform.localScale,view.WeaponView.SecondaryGrip.Position);
                 foreach(var socket in view.WeaponView.Sockets) if(socket.Kind=="magazine")
                     weapon.Socket(socket.Id).localPosition=socket.Position-Vector3.up*(pulse*action.MagazineDrop);
             }
             if(offhand!=null)
-            {offhand.transform.localPosition=off;offhand.transform.localRotation=(offAttack?rotation:Quaternion.identity)*Quaternion.Euler(pose.OffWeaponRotation);}
+            {offhand.transform.localRotation=(offAttack?rotation:Quaternion.identity)*Quaternion.Euler(pose.OffWeaponRotation)*Quaternion.Euler(pose.OffWeaponRotationOffset)*Quaternion.Inverse(Quaternion.Euler(view.OffhandView.PrimaryGrip.Rotation));offhand.transform.localPosition=off-offhand.transform.localRotation*Vector3.Scale(offhand.transform.localScale,view.OffhandView.PrimaryGrip.Position);}
             Segment(arms[0],pose.MainShoulder,pose.MainElbow,.105f);Segment(arms[1],pose.MainElbow,main,.088f);arms[2].localPosition=main;
             Segment(arms[3],pose.OffShoulder,pose.OffElbow,.105f);Segment(arms[4],pose.OffElbow,off,.088f);arms[5].localPosition=off;
             foreach(var worn in view.Wearables)
@@ -130,6 +178,11 @@ namespace ProjectY.Samples
                 mount.localPosition=WearablePosition(worn)+worn.Position;
                 mount.localRotation=Quaternion.Euler(worn.Rotation);
             }
+        }
+        private static void AlignGrip(Transform weapon,EquipmentVisualData.Grip grip)
+        {
+            var inverse=Quaternion.Inverse(Quaternion.Euler(grip.Rotation));
+            weapon.localRotation=inverse;weapon.localPosition=-(inverse*Vector3.Scale(weapon.localScale,grip.Position));
         }
 #if UNITY_EDITOR
         public void Bind(EquipmentAssetCatalog value) {catalog=value;}

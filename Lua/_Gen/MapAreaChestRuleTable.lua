@@ -1,0 +1,13 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaChestRuleTableRow
+---@field id number 稳定配置 ID
+---@field areaId number 小地图配置
+---@field lootTableId number 宝箱与内容定义
+---@field strategy "reachable"|"rooms" 候选位置策略
+---@field minCount number 最少宝箱数
+---@field maxCount number 最多宝箱数
+---@field minDistance number 距入口最小寻路距离
+---@field maxDistance number 距入口最大寻路距离
+---@field spacing number 宝箱间最小六边形格距
+---@field seedSalt number 独立随机通道
+return {["name"]="MapAreaChestRuleTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="areaId",["type"]="int",["description"]="\229\176\143\229\156\176\229\155\190\233\133\141\231\189\174",["ref"]="MapAreaTable"},{["name"]="lootTableId",["type"]="int",["description"]="\229\174\157\231\174\177\228\184\142\229\134\133\229\174\185\229\174\154\228\185\137",["ref"]="EquipmentLootTable"},{["name"]="strategy",["type"]="enum",["description"]="\229\128\153\233\128\137\228\189\141\231\189\174\231\173\150\231\149\165",["values"]={"reachable","rooms"}},{["name"]="minCount",["type"]="int",["description"]="\230\156\128\229\176\145\229\174\157\231\174\177\230\149\176",["min"]=0,["max"]=100},{["name"]="maxCount",["type"]="int",["description"]="\230\156\128\229\164\154\229\174\157\231\174\177\230\149\176",["min"]=0,["max"]=100},{["name"]="minDistance",["type"]="int",["description"]="\232\183\157\229\133\165\229\143\163\230\156\128\229\176\143\229\175\187\232\183\175\232\183\157\231\166\187",["min"]=0},{["name"]="maxDistance",["type"]="int",["description"]="\232\183\157\229\133\165\229\143\163\230\156\128\229\164\167\229\175\187\232\183\175\232\183\157\231\166\187",["min"]=0},{["name"]="spacing",["type"]="int",["description"]="\229\174\157\231\174\177\233\151\180\230\156\128\229\176\143\229\133\173\232\190\185\229\189\162\230\160\188\232\183\157",["min"]=1},{["name"]="seedSalt",["type"]="int",["description"]="\231\139\172\231\171\139\233\154\143\230\156\186\233\128\154\233\129\147",["min"]=0}},["fingerprint"]="bef5532530a477d062a89d0fc4f74ab23db71cc1414e383666d2ea887eb3d0c5"}

@@ -6,8 +6,13 @@ namespace ProjectY.Data
 {
     /// <summary>角色的唯一可变状态；基础属性与技能定义由 Lua 配表查询。</summary>
     [LuaCallCSharp]
-    public sealed class CombatActorData
+    public sealed partial class CombatActorData
     {
+        // Bounded display history preserves attack + guard in the same AI command.
+        // Snapshots copy it in C#; no Lua view retains this mutable actor.
+        public struct PresentationAction { public int Sequence, TemplateId, Shots, TargetQ, TargetR; }
+        private readonly List<PresentationAction> presentationActions = new List<PresentationAction>(8);
+        public PresentationAction[] CopyPresentationActions() => presentationActions.ToArray();
         private readonly List<int> traits = new List<int>();
         private readonly Dictionary<int, int> cooldowns = new Dictionary<int, int>();
         public int ActionSequence { get; private set; }
@@ -27,6 +32,13 @@ namespace ProjectY.Data
         public bool Moved { get; private set; }
         public bool MainUsed { get; private set; }
         public int TraitCount => traits.Count;
+        public bool DropResolved { get; private set; }
+        public void ResolveDrop()
+        {
+            if(HP!=0 || Team!=2 || AnimalOwnerId!=0 || DropResolved)throw new InvalidOperationException("Enemy drop cannot be resolved.");
+            DropResolved=true;
+        }
+        public CharacterGrowthData Growth { get; } = new CharacterGrowthData();
 
         public CombatActorData(int id, int templateId)
         {
@@ -34,6 +46,8 @@ namespace ProjectY.Data
             Id = id; TemplateId = templateId;
         }
         public int GetTraitAt(int index) => traits[index];
+        public bool HasTrait(int id) => traits.Contains(id);
+        public bool RemoveTrait(int id) => traits.Remove(id);
         public int GetCooldown(int skillId) => cooldowns.TryGetValue(skillId, out var value) ? value : 0;
         public void SetCooldown(int skillId, int turns)
         {
@@ -44,6 +58,8 @@ namespace ProjectY.Data
         {
             if (templateId < 0 || shots < 1) throw new ArgumentOutOfRangeException(nameof(shots));
             ActionTemplateId = templateId; ActionShots = shots; ActionTargetQ = q; ActionTargetR = r; ActionSequence++;
+            if (presentationActions.Count == 8) presentationActions.RemoveAt(0);
+            presentationActions.Add(new PresentationAction {Sequence=ActionSequence, TemplateId=templateId, Shots=shots, TargetQ=q, TargetR=r});
         }
         public void AddTrait(int id)
         {
@@ -59,9 +75,9 @@ namespace ProjectY.Data
         }
         public void Deploy(int team, int q, int r)
         {
-            if (team != 1 && team != 2) throw new ArgumentOutOfRangeException(nameof(team));
+            if (team != 0 && team != 1 && team != 2) throw new ArgumentOutOfRangeException(nameof(team));
             Team = team; Q = q; R = r; AP = 0; Guard = 0; Moved = false; MainUsed = false;
-            cooldowns.Clear(); ActionTemplateId = 0;
+            cooldowns.Clear(); ActionTemplateId = 0; presentationActions.Clear();
         }
         public void BeginTurn(int points)
         {
@@ -73,6 +89,7 @@ namespace ProjectY.Data
         {
             if (HP == 0 || Moved || cost < 0 || AP < cost) throw new InvalidOperationException("Invalid move budget.");
             Q = q; R = r; AP -= cost; Moved = true;
+            MovementStyle="walk";MovementSequence++;
         }
         public void SpendAction(string kind, int cost)
         {
@@ -85,6 +102,12 @@ namespace ProjectY.Data
         public int Damage(int amount)
         {
             if (amount < 0) throw new ArgumentOutOfRangeException(nameof(amount));
+            if (MountedAnimal != null)
+            {
+                var absorbed = MountedAnimal.Damage(amount);
+                if (MountedAnimal.HP == 0) MountedAnimal = null;
+                return absorbed; // 坐骑承担整次伤害；死亡时丢弃本次溢出伤害。
+            }
             var applied = Math.Min(HP, amount); HP -= applied; return applied;
         }
         public int Heal(int amount)

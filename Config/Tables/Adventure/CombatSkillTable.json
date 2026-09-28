@@ -57,7 +57,8 @@
       "values": [
         "enemy",
         "ally",
-        "self"
+        "self",
+        "cell"
       ]
     },
     {
@@ -79,7 +80,8 @@
         "weapon",
         "spell",
         "support",
-        "slash"
+        "slash",
+        "animal"
       ]
     },
     {
@@ -122,6 +124,18 @@
       "type": "int",
       "description": "短动作模板",
       "ref": "EquipmentActionTable"
+    },
+    {
+      "name": "contexts",
+      "type": "enum[]",
+      "description": "允许使用的场景；life 为探索生活技能，battle 为战斗技能，可同时选择",
+      "values": [
+        "life",
+        "battle"
+      ],
+      "default": [
+        "battle"
+      ]
     }
   ],
   "rows": [
@@ -144,7 +158,10 @@
       "shots": 1,
       "ammoPerShot": 0,
       "damageScale": 1,
-      "actionTemplate": 0
+      "actionTemplate": 4,
+      "contexts": [
+        "battle"
+      ]
     },
     {
       "id": 2,
@@ -165,7 +182,10 @@
       "shots": 1,
       "ammoPerShot": 0,
       "damageScale": 1,
-      "actionTemplate": 0
+      "actionTemplate": 2,
+      "contexts": [
+        "battle"
+      ]
     },
     {
       "id": 3,
@@ -186,7 +206,10 @@
       "shots": 1,
       "ammoPerShot": 0,
       "damageScale": 1,
-      "actionTemplate": 0
+      "actionTemplate": 1,
+      "contexts": [
+        "battle"
+      ]
     },
     {
       "id": 4,
@@ -207,7 +230,10 @@
       "shots": 1,
       "ammoPerShot": 0,
       "damageScale": 1,
-      "actionTemplate": 0
+      "actionTemplate": 0,
+      "contexts": [
+        "battle"
+      ]
     },
     {
       "id": 5,
@@ -228,7 +254,10 @@
       "shots": 1,
       "ammoPerShot": 0,
       "damageScale": 1,
-      "actionTemplate": 0
+      "actionTemplate": 1,
+      "contexts": [
+        "battle"
+      ]
     },
     {
       "id": 6,
@@ -249,7 +278,10 @@
       "shots": 1,
       "ammoPerShot": 0,
       "damageScale": 1,
-      "actionTemplate": 1
+      "actionTemplate": 1,
+      "contexts": [
+        "battle"
+      ]
     },
     {
       "id": 7,
@@ -270,7 +302,10 @@
       "shots": 1,
       "ammoPerShot": 1,
       "damageScale": 1,
-      "actionTemplate": 2
+      "actionTemplate": 2,
+      "contexts": [
+        "battle"
+      ]
     },
     {
       "id": 8,
@@ -291,7 +326,10 @@
       "shots": 3,
       "ammoPerShot": 1,
       "damageScale": 0.65,
-      "actionTemplate": 2
+      "actionTemplate": 2,
+      "contexts": [
+        "battle"
+      ]
     },
     {
       "id": 9,
@@ -312,7 +350,10 @@
       "shots": 1,
       "ammoPerShot": 0,
       "damageScale": 1,
-      "actionTemplate": 3
+      "actionTemplate": 3,
+      "contexts": [
+        "battle"
+      ]
     },
     {
       "id": 10,
@@ -333,7 +374,10 @@
       "shots": 1,
       "ammoPerShot": 0,
       "damageScale": 1,
-      "actionTemplate": 4
+      "actionTemplate": 4,
+      "contexts": [
+        "battle"
+      ]
     },
     {
       "id": 11,
@@ -354,7 +398,10 @@
       "shots": 1,
       "ammoPerShot": 0,
       "damageScale": 1,
-      "actionTemplate": 5
+      "actionTemplate": 5,
+      "contexts": [
+        "battle"
+      ]
     },
     {
       "id": 12,
@@ -375,7 +422,10 @@
       "shots": 1,
       "ammoPerShot": 0,
       "damageScale": 1,
-      "actionTemplate": 6
+      "actionTemplate": 6,
+      "contexts": [
+        "battle"
+      ]
     },
     {
       "id": 13,
@@ -396,7 +446,323 @@
       "shots": 1,
       "ammoPerShot": 0,
       "damageScale": 0.7,
-      "actionTemplate": 7
+      "actionTemplate": 7,
+      "contexts": [
+        "battle"
+      ]
+    },
+    {
+      "id": 101,
+      "name": "破势一击",
+      "description": "破势一击：近身攻击一名敌人。 伤害倍率 1.25。",
+      "action": "main",
+      "cost": 2,
+      "range": 1,
+      "target": "enemy",
+      "proficiency": "sword",
+      "effectIds": [
+        1
+      ],
+      "iconId": 1,
+      "skillGroup": "weapon",
+      "cooldownTurns": 1,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1.25,
+      "actionTemplate": 4,
+      "contexts": [
+        "battle"
+      ]
+    },
+    {
+      "id": 102,
+      "name": "裂阵斩",
+      "description": "裂阵斩：近身攻击一名敌人。 伤害倍率 1.7。",
+      "action": "main",
+      "cost": 2,
+      "range": 1,
+      "target": "enemy",
+      "proficiency": "sword",
+      "effectIds": [
+        1
+      ],
+      "iconId": 1,
+      "skillGroup": "weapon",
+      "cooldownTurns": 2,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1.7,
+      "actionTemplate": 5,
+      "contexts": [
+        "battle"
+      ]
+    },
+    {
+      "id": 103,
+      "name": "凝光术",
+      "description": "凝光术：法术攻击 3 格内的敌人。 伤害倍率 1.25。",
+      "action": "main",
+      "cost": 2,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "staff",
+      "effectIds": [
+        3
+      ],
+      "iconId": 3,
+      "skillGroup": "spell",
+      "cooldownTurns": 1,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1.25,
+      "actionTemplate": 1,
+      "contexts": [
+        "battle"
+      ]
+    },
+    {
+      "id": 104,
+      "name": "群星之火",
+      "description": "群星之火：法术攻击 3 格内的敌人。 伤害倍率 1.65。",
+      "action": "main",
+      "cost": 2,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "staff",
+      "effectIds": [
+        3
+      ],
+      "iconId": 3,
+      "skillGroup": "spell",
+      "cooldownTurns": 2,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1.65,
+      "actionTemplate": 1,
+      "contexts": [
+        "battle"
+      ]
+    },
+    {
+      "id": 105,
+      "name": "穿叶箭",
+      "description": "穿叶箭：攻击 3 格内的一名敌人。 伤害倍率 1.3。",
+      "action": "main",
+      "cost": 2,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "bow",
+      "effectIds": [
+        2
+      ],
+      "iconId": 2,
+      "skillGroup": "weapon",
+      "cooldownTurns": 1,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1.3,
+      "actionTemplate": 2,
+      "contexts": [
+        "battle"
+      ]
+    },
+    {
+      "id": 106,
+      "name": "贯风箭",
+      "description": "贯风箭：攻击 3 格内的一名敌人。 伤害倍率 1.7。",
+      "action": "main",
+      "cost": 2,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "bow",
+      "effectIds": [
+        2
+      ],
+      "iconId": 2,
+      "skillGroup": "weapon",
+      "cooldownTurns": 2,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1.7,
+      "actionTemplate": 2,
+      "contexts": [
+        "battle"
+      ]
+    },
+    {
+      "id": 107,
+      "name": "战地救护",
+      "description": "战地救护：恢复 3 格内一名友军的生命。",
+      "action": "main",
+      "cost": 2,
+      "range": 3,
+      "target": "ally",
+      "proficiency": "staff",
+      "effectIds": [
+        5
+      ],
+      "iconId": 5,
+      "skillGroup": "spell",
+      "cooldownTurns": 1,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1.0,
+      "actionTemplate": 1,
+      "contexts": [
+        "battle"
+      ]
+    },
+    {
+      "id": 108,
+      "name": "稳固架势",
+      "description": "稳固架势：减免 3 点伤害，持续到自身下回合开始；不叠加。",
+      "action": "secondary",
+      "cost": 1,
+      "range": 0,
+      "target": "self",
+      "proficiency": "sword",
+      "effectIds": [
+        4
+      ],
+      "iconId": 4,
+      "skillGroup": "support",
+      "cooldownTurns": 1,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1.0,
+      "actionTemplate": 0,
+      "contexts": [
+        "battle"
+      ]
+    },
+    {
+      "id": 201,
+      "name": "驯服",
+      "description": "以动物亲和与魅力尝试驯服。探索中可驯服中立动物，战斗中可驯服敌对动物；敌对动物伤势越重越容易成功。",
+      "action": "main",
+      "cost": 2,
+      "range": 1,
+      "target": "enemy",
+      "proficiency": "animalAffinity",
+      "effectIds": [
+        201
+      ],
+      "iconId": 1,
+      "skillGroup": "animal",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "contexts": [
+        "life",
+        "battle"
+      ]
+    },
+    {
+      "id": 202,
+      "name": "冲击",
+      "description": "骑马沿直线冲至目标前方并攻击；冲刺距离越长，伤害越高。",
+      "action": "main",
+      "cost": 2,
+      "range": 5,
+      "target": "enemy",
+      "proficiency": "unarmed",
+      "effectIds": [
+        202
+      ],
+      "iconId": 1,
+      "skillGroup": "animal",
+      "cooldownTurns": 1,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "contexts": [
+        "battle"
+      ]
+    },
+    {
+      "id": 203,
+      "name": "飞扑",
+      "description": "骑鸡向前跃进一格并攻击相邻目标。",
+      "action": "main",
+      "cost": 2,
+      "range": 2,
+      "target": "enemy",
+      "proficiency": "unarmed",
+      "effectIds": [
+        203
+      ],
+      "iconId": 1,
+      "skillGroup": "animal",
+      "cooldownTurns": 1,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "contexts": [
+        "battle"
+      ]
+    },
+    {
+      "id": 204,
+      "name": "跳跃",
+      "description": "骑兔子跃向最多三格内的空地，可以越过低矮阻挡；落点必须可站立。",
+      "action": "main",
+      "cost": 2,
+      "range": 3,
+      "target": "cell",
+      "proficiency": "unarmed",
+      "effectIds": [
+        204
+      ],
+      "iconId": 1,
+      "skillGroup": "animal",
+      "cooldownTurns": 1,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "contexts": [
+        "battle"
+      ]
+    },
+    {
+      "id": 205,
+      "name": "扑咬",
+      "description": "动物的近身攻击。",
+      "action": "main",
+      "cost": 2,
+      "range": 1,
+      "target": "enemy",
+      "proficiency": "unarmed",
+      "effectIds": [
+        203
+      ],
+      "iconId": 1,
+      "skillGroup": "animal",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "contexts": [
+        "battle"
+      ]
     }
   ]
 }

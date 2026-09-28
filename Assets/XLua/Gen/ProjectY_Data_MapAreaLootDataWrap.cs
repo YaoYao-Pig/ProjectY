@@ -21,14 +21,20 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.MapAreaLootData);
-			Utils.BeginObjectRegister(type, L, translator, 0, 0, 4, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 3, 7, 0);
 			
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetItemIdAt", _m_GetItemIdAt);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetCountAt", _m_GetCountAt);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SetContents", _m_SetContents);
 			
 			
 			Utils.RegisterFunc(L, Utils.GETTER_IDX, "Id", _g_get_Id);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "CellIndex", _g_get_CellIndex);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "TableId", _g_get_TableId);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Looted", _g_get_Looted);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "Name", _g_get_Name);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "ContentsReady", _g_get_ContentsReady);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "ItemCount", _g_get_ItemCount);
             
 			
 			
@@ -57,6 +63,94 @@ namespace XLua.CSObjectWrap
         
         
         
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_GetItemIdAt(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.MapAreaLootData gen_to_be_invoked = (ProjectY.Data.MapAreaLootData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _index = LuaAPI.xlua_tointeger(L, 2);
+                    
+                        var gen_ret = gen_to_be_invoked.GetItemIdAt( _index );
+                        LuaAPI.xlua_pushinteger(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_GetCountAt(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.MapAreaLootData gen_to_be_invoked = (ProjectY.Data.MapAreaLootData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _index = LuaAPI.xlua_tointeger(L, 2);
+                    
+                        var gen_ret = gen_to_be_invoked.GetCountAt( _index );
+                        LuaAPI.xlua_pushinteger(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_SetContents(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.MapAreaLootData gen_to_be_invoked = (ProjectY.Data.MapAreaLootData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    string _name = LuaAPI.lua_tostring(L, 2);
+                    int[] _ids = (int[])translator.GetObject(L, 3, typeof(int[]));
+                    int[] _amounts = (int[])translator.GetObject(L, 4, typeof(int[]));
+                    
+                    gen_to_be_invoked.SetContents( _name, _ids, _amounts );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
         
         
         
@@ -111,6 +205,48 @@ namespace XLua.CSObjectWrap
 			
                 ProjectY.Data.MapAreaLootData gen_to_be_invoked = (ProjectY.Data.MapAreaLootData)translator.FastGetCSObj(L, 1);
                 LuaAPI.lua_pushboolean(L, gen_to_be_invoked.Looted);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_Name(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.MapAreaLootData gen_to_be_invoked = (ProjectY.Data.MapAreaLootData)translator.FastGetCSObj(L, 1);
+                LuaAPI.lua_pushstring(L, gen_to_be_invoked.Name);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_ContentsReady(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.MapAreaLootData gen_to_be_invoked = (ProjectY.Data.MapAreaLootData)translator.FastGetCSObj(L, 1);
+                LuaAPI.lua_pushboolean(L, gen_to_be_invoked.ContentsReady);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_ItemCount(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.MapAreaLootData gen_to_be_invoked = (ProjectY.Data.MapAreaLootData)translator.FastGetCSObj(L, 1);
+                LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.ItemCount);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }

@@ -13,11 +13,16 @@ namespace ProjectY.Samples
             public string Name, Traits;
             public bool Moved, MainUsed;
             public PawnAppearanceData Appearance;
+            public int ActionSequence;
+            public ProjectY.Data.CombatActorData.PresentationAction[] Actions;
+            public int[] OccupiedCells;
+            public int MovementSequence;
+            public string MovementStyle;
         }
-        public sealed class Site { public int Id, AreaConfigId; public string Name, Reason; public Vector3 Position; public bool Available, Visited; }
+        public sealed class Site { public int Id, AreaConfigId; public string Name, Reason, Kind; public Vector3 Position; public bool Available, Visited; }
         public sealed class Choice { public int Id; public string Label, Reason; public bool Available; }
         public sealed class Cell { public int Q, R, CellIndex; public bool Blocked; }
-        public sealed class Skill { public int Id, Cost; public string Name, Description, Action; public int[] Targets; }
+        public sealed class Skill { public int Id, Cost; public string Name, Description, Action; public int[] Targets, TargetCells; }
         public string Phase, Result, Error, EventTitle, EventText, Encounter;
         public int Coins, Round, ActiveId, Radius;
         public Actor[] Party, Units;
@@ -55,6 +60,13 @@ namespace ProjectY.Samples
             AP = row.Get<int>("ap"), Q = row.Get<int>("q"), R = row.Get<int>("r"), Guard = row.Get<int>("guard"),
             Moved = row.Get<bool>("moved"), MainUsed = row.Get<bool>("mainUsed"), CellIndex = row.Get<int>("cellIndex") - 1 };
             using (var appearance = row.Get<LuaTable>("appearance")) actor.Appearance = PawnAppearanceData.Read(appearance);
+            var source = row.Get<ProjectY.Data.CombatActorData>("presentationActor");
+            if (source == null) throw new InvalidOperationException("Actor snapshot lacks its presentation source.");
+            actor.ActionSequence = source.ActionSequence;
+            actor.Actions = source.CopyPresentationActions();
+            actor.MovementSequence=source.MovementSequence;actor.MovementStyle=source.MovementStyle;
+            actor.OccupiedCells=Values<int>(row,"occupiedCells");
+            for(int i=0;i<actor.OccupiedCells.Length;i++)actor.OccupiedCells[i]--;
             return actor;
         }
         private static Cell ReadCell(LuaTable row) => new Cell { Q = row.Get<int>("q"), R = row.Get<int>("r"), Blocked = row.Get<bool>("blocked"), CellIndex = row.Get<int>("cellIndex") - 1 };
@@ -66,14 +78,19 @@ namespace ProjectY.Samples
             Party = Rows(root, "party", ReadActor), Units = Rows(root, "units", ReadActor), Cells = Rows(root, "cells", ReadCell),
             Reachable = Rows(root, "reachable", ReadCell), Logs = Values<string>(root, "logs"),
             Sites = Rows(root, "sites", row => new Site { Id = row.Get<int>("id"), Name = row.Get<string>("name"),
-                AreaConfigId = row.Get<int>("areaConfigId"), Reason = row.Get<string>("reason"),
+                AreaConfigId = row.Get<int>("areaConfigId"), Reason = row.Get<string>("reason"), Kind = row.Get<string>("kind"),
                 Position = new Vector3(row.Get<float>("x"), row.Get<float>("y"), row.Get<float>("z")),
                 Available = row.Get<bool>("available"), Visited = row.Get<bool>("visited") }),
             Choices = Rows(root, "choices", row => new Choice { Id = row.Get<int>("id"), Label = row.Get<string>("label"),
                 Reason = row.Get<string>("reason"), Available = row.Get<bool>("available") }),
             Skills = Rows(root, "skills", row => new Skill { Id = row.Get<int>("id"), Cost = row.Get<int>("cost"), Name = row.Get<string>("name"),
-                Action = row.Get<string>("action"), Description = row.Get<string>("description"), Targets = Values<int>(row, "targets") })
+                Action = row.Get<string>("action"), Description = row.Get<string>("description"), Targets = Values<int>(row, "targets"),
+                TargetCells = Values<int>(row,"targetCells") })
         };
         public Actor Active => Array.Find(Units, actor => actor.Id == ActiveId);
+        public void RetainPollingFeedback(AdventureViewData previous)
+        {
+            if(previous!=null && Phase==previous.Phase)Error=previous.Error;
+        }
     }
 }

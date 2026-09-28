@@ -20,7 +20,7 @@ namespace ProjectY.Data
 
     /// <summary>Authoritative placement state. Exchanges are planned on a copy and committed atomically.</summary>
     [LuaCallCSharp]
-    public sealed class InventoryGridData
+    public sealed partial class InventoryGridData
     {
         private readonly Dictionary<int, int[]> shapes = new Dictionary<int, int[]>();
         private List<InventoryPlacementData> placements = new List<InventoryPlacementData>();

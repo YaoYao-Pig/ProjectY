@@ -1,0 +1,47 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>角色工坊 · Project Y</title><link rel="stylesheet" href="style.css">
+  <script type="importmap">{"imports":{"three":"./vendor/three.module.min.js"}}</script>
+</head>
+<body>
+  <header><a class="brand" href="/">Y<span>PROJECT Y / CHARACTER LAB</span></a><div class="header-right"><span class="dot"></span> 模块化角色库 <span class="edition">VOL. 01</span></div></header>
+  <main>
+    <section class="intro"><div><p class="eyebrow">FIVE LINEAGES. MANY FACES.</p><h1>角色工坊<span>选择一个面孔，开始一段冒险。</span></h1></div><button id="export" class="button outline" disabled>导出外观 JSON ↗</button></section>
+    <div id="error" class="error" role="alert" hidden></div>
+    <div class="workspace">
+      <aside class="controls">
+        <section><div class="section-title"><span>01</span><h2>血统与身形</h2></div><label>种族</label><div id="races" class="race-list"></div><label>性别</label><div id="sex" class="segments"></div><label>体型</label><div id="body" class="segments"></div></section>
+        <section><div class="section-title"><span>02</span><h2>面孔与细节</h2></div><label>脸型</label><div id="head" class="segments"></div><label>发型</label><div id="hair" class="segments wrap"></div><label>肤色</label><div id="skin" class="swatches"></div><label>发色</label><div id="hairColor" class="swatches"></div><label>衣服颜色</label><div id="clothColor" class="swatches"></div></section>
+        <section class="gear-section"><div class="section-title"><span>03</span><h2>装备试穿</h2></div><label for="gearHead">头部</label><select id="gearHead"></select><label for="gearChest">身体甲</label><select id="gearChest"></select><div class="locks"><label><input type="checkbox" id="gearLegs">长裤</label><label><input type="checkbox" id="gearFeet">靴子</label></div><label for="gearBack">背部</label><select id="gearBack"></select><label for="gearWeapon">武器组合</label><select id="gearWeapon"></select><pre class="gear-note" id="gripSummary"></pre><p class="gear-note" id="gearNote">仅试穿，不改变角色存档中的装备。</p></section>
+        <section class="grip-section"><div class="section-title"><span>04</span><h2>武器朝向与握点</h2></div>
+          <label class="grip-toggle"><input id="gripEnabled" type="checkbox" disabled>开启可视化编辑</label>
+          <p id="gripHint" class="gear-note">先选择武器组合。</p>
+          <fieldset id="gripFields" disabled>
+            <label for="gripTarget">编辑目标</label><select id="gripTarget"></select>
+            <p id="gripScope" class="grip-status"></p>
+            <div class="grip-toolbar"><button id="griptranslate" class="selected">平移</button><button id="griprotate">旋转</button><button id="gripFocus">聚焦握点</button></div>
+            <label id="gripPositionLabel">位置 / 米</label><div id="gripPosition" class="grip-vector"></div>
+            <label id="gripRotationLabel">旋转 / 度</label><div id="gripRotation" class="grip-vector"></div>
+            <p class="gear-note">金色：主握点 · 蓝色：第二握点。编辑时自动暂停，可播放动作复查。</p>
+            <button id="gripReset" class="text-button">恢复本次打开时的值</button>
+          </fieldset>
+          <p id="gripStatus" class="grip-status" role="status" aria-live="polite">正在读取配置…</p>
+          <div class="grip-actions"><button id="gripRetry" class="text-button">重试保存</button><button id="gripReload" class="text-button">重新读取配置</button></div>
+          <button id="gripExport" class="button outline" disabled>导出游戏配置 ↗</button>
+        </section>
+        <section class="random-section"><div class="section-title"><span>05</span><h2>偶遇一个角色</h2></div><div class="locks"><label><input type="checkbox" id="lockRace" checked>锁定种族</label><label><input type="checkbox" id="lockSex">锁定性别</label></div><div class="seed-row"><input id="seed" type="number" min="0" max="2147483647" value="20260927" aria-label="随机种子"><button id="replay" title="按当前种子重现" disabled>↺ 重现</button></div><button id="random" class="button primary" disabled>随机组合 <span>↗</span></button></section>
+      </aside>
+      <section class="stage-area">
+        <div class="stage-heading"><div><p class="eyebrow">CHARACTER PREVIEW</p><h2 id="characterName">正在准备角色…</h2><p id="characterSubtitle">读取 Unity 资源包</p></div><button class="icon-button" id="resetCamera" title="重置视角">⌖ 视角复位</button></div>
+        <div id="viewport"><div id="loading">加载模型与动作…</div><div class="stage-mark">Y</div><div class="viewport-hint">拖动旋转 · 滚轮缩放 · 右键平移</div><div class="model-count" id="modelCount"></div></div>
+        <div class="animation"><div class="animation-title"><span>动作预览</span><span id="time">00:00</span></div><div id="animations" class="animation-buttons"></div><div class="playback"><button id="play" aria-label="暂停动画">Ⅱ</button><input id="timeline" type="range" min="0" max="1000" value="0" aria-label="动画进度"><select id="speed" aria-label="播放速度"><option value="0.5">0.5×</option><option value="1" selected>1×</option><option value="1.5">1.5×</option></select></div></div>
+      </section>
+    </div>
+    <section class="footer-bar"><div><span class="dot"></span><span id="source">等待 Unity 资源</span></div><div class="footer-actions"><label class="text-button">导入外观<input id="import" type="file" accept="application/json,.json" hidden></label><button class="text-button" id="refresh">检查资源更新 ↻</button></div></section>
+    <details class="provenance"><summary>资源来源与预览说明</summary><p>网格、材质颜色、骨骼和六类动作均从 Unity 的实际角色资源导出。网页独立渲染，光照与游戏画面可能略有不同。装备试穿使用 Unity 的贴合网格；武器组合的持握、行走和攻击从实际装配与握点求解中采样。</p><pre id="provenance"></pre><p>返回 Unity：角色 → 从网页外观 JSON 创建预览 Prefab。修改源模型后，执行「同步模块化角色资源」和「导出角色网页资源」。</p></details>
+  </main>
+  <dialog id="exportDialog"><form method="dialog"><div class="section-title"><h2>角色外观 JSON</h2><button class="text-button" aria-label="关闭外观导出">关闭 ×</button></div><p>保存后，可在 Unity 的「角色 → 从网页外观 JSON 创建预览 Prefab」中导入。</p><textarea id="exportJson" readonly aria-label="外观 JSON"></textarea><div class="dialog-actions"><span id="copyStatus"></span><button type="button" id="copyJson" class="button outline">复制 JSON</button><button type="button" id="downloadJson" class="button primary">下载文件 ↗</button></div></form></dialog>
+  <script type="module" src="app.mjs"></script>
+</body></html>

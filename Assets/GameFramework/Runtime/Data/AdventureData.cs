@@ -6,10 +6,31 @@ namespace ProjectY.Data
 {
     /// <summary>远征会话与事件状态；队伍和战斗共享角色实例，无 Lua 可变状态副本。</summary>
     [LuaCallCSharp]
-    public sealed class AdventureData
+    public sealed partial class AdventureData
     {
         private readonly List<CombatActorData> party = new List<CombatActorData>();
         private readonly HashSet<int> visited = new HashSet<int>();
+        private readonly List<ChronicleEntryData> journal = new List<ChronicleEntryData>();
+        private readonly HashSet<string> storyTriggers = new HashSet<string>();
+        public string EventReturnPhase { get; private set; } = "map";
+        public string StoryTriggerKey { get; private set; } = "";
+        public bool HasStoryTrigger(string key) => storyTriggers.Contains(key);
+        public int JournalCount => journal.Count;
+        public ChronicleEntryData GetJournalAt(int index) => journal[index];
+        public int EventActorId { get; private set; }
+        public string EventLocation { get; private set; } = "";
+        public void SetEventContext(int actorId, string location)
+        {
+            RequirePhase("event");
+            if (!party.Exists(actor => actor.Id == actorId) || string.IsNullOrEmpty(location)) throw new ArgumentException("Invalid event cast.");
+            EventActorId = actorId; EventLocation = location;
+        }
+        public void Record(string kind, string title, string body, string location, int eventId, int choiceId, int subjectId, bool shared)
+        {
+            if (subjectId != 0 && !party.Exists(actor => actor.Id == subjectId)) throw new ArgumentException("Unknown chronicle subject.");
+            var participants = shared ? party.ConvertAll(actor => actor.Id).ToArray() : new[] { subjectId };
+            journal.Add(new ChronicleEntryData(journal.Count + 1, kind, title, body, location, eventId, choiceId, subjectId, participants));
+        }
         public BattleData Battle { get; } = new BattleData();
         public MapAreaData Areas { get; } = new MapAreaData();
         public EquipmentData Equipment { get; } = new EquipmentData();
@@ -25,7 +46,9 @@ namespace ProjectY.Data
         public bool HasVisited(int siteId) => visited.Contains(siteId);
         public void Reset(uint seed)
         {
-            Seed = seed; party.Clear(); visited.Clear(); Battle.Clear(); Areas.Clear(); Equipment.Clear();
+            Seed = seed; party.Clear(); visited.Clear(); journal.Clear(); storyTriggers.Clear(); Battle.Clear(); Areas.Clear(); Equipment.Clear();
+            EventReturnPhase = "map"; StoryTriggerKey = "";
+            EventActorId = 0; EventLocation = "";
             Phase = "map"; SiteId = 0; EventId = 0; ChoiceId = 0; AreaEncounterId = 0; ResultText = "";
         }
         private void RequirePhase(string phase)
@@ -43,13 +66,24 @@ namespace ProjectY.Data
         {
             RequirePhase("map");
             if (siteId < 1 || eventId < 1) throw new ArgumentOutOfRangeException(nameof(siteId));
+            EventReturnPhase = "map"; StoryTriggerKey = "";
             SiteId = siteId; EventId = eventId; ChoiceId = 0; ResultText = ""; Phase = "event";
+        }
+        public void BeginAreaEvent(int eventId, string triggerKey)
+        {
+            RequirePhase("area");
+            if (eventId < 1 || string.IsNullOrEmpty(triggerKey) || Areas.Active == null)
+                throw new ArgumentException("Invalid exploration story.");
+            Areas.Active.Stop(); EventReturnPhase = "area"; StoryTriggerKey = triggerKey;
+            EventId = eventId; ChoiceId = 0; ResultText = ""; Phase = "event";
         }
         public void ResolveChoice(int choiceId)
         {
             RequirePhase("event");
             if (choiceId < 1) throw new ArgumentOutOfRangeException(nameof(choiceId));
-            ChoiceId = choiceId; visited.Add(SiteId); Phase = "resolving";
+            ChoiceId = choiceId;
+            if (StoryTriggerKey != "") storyTriggers.Add(StoryTriggerKey); else visited.Add(SiteId);
+            Phase = "resolving";
         }
         public void BeginBattle() { RequirePhase("resolving"); Phase = "battle"; }
         public void BeginAreaBattle(int encounterId)
@@ -65,6 +99,12 @@ namespace ProjectY.Data
             RequirePhase("map");
             if (siteId < 1 || Areas.ActiveSiteId != siteId) throw new InvalidOperationException("MapArea entry is not prepared.");
             SiteId = siteId; EventId = 0; ChoiceId = 0; ResultText = ""; Phase = "area"; visited.Add(siteId);
+        }
+        public void BeginEventArea(int siteId)
+        {
+            RequirePhase("resolving");
+            if(siteId!=SiteId || Areas.ActiveSiteId!=siteId || AreaEncounterId!=0)throw new InvalidOperationException("Event battlefield is not prepared.");
+            EventId=0;ChoiceId=0;EventActorId=0;EventLocation="";ResultText="";EventReturnPhase="map";StoryTriggerKey="";Phase="area";
         }
         public void LeaveArea()
         {
@@ -88,7 +128,9 @@ namespace ProjectY.Data
         }
         public void ReturnToMap()
         {
-            RequirePhase("result"); Phase = "map"; Battle.Clear(); SiteId = 0; EventId = 0; ChoiceId = 0; ResultText = "";
+            RequirePhase("result"); Phase = EventReturnPhase; Battle.Clear();
+            if (Phase == "map") SiteId = 0;
+            EventId = 0; ChoiceId = 0; ResultText = ""; EventActorId = 0; EventLocation = ""; StoryTriggerKey = "";
         }
     }
 }

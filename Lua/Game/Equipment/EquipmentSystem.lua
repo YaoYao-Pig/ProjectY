@@ -1,6 +1,5 @@
 local Class=require('Core.Class')
 local System=require('Core.LuaSystem')
-local Hex=require('Game.Map.HexGrid')
 local Equipment=Class('EquipmentSystem',System)
 function Equipment:OnInit(context)
     System.OnInit(self,context)
@@ -8,6 +7,7 @@ function Equipment:OnInit(context)
     self.config=context.systems:Get('Config');self.rules=require('Game.Equipment.EquipmentRules').New(self.config,self.data)
     self.recipe=self.config:GetTable('EquipmentDemoTable'):Get(1)
     self.loot=self.config:GetTable('EquipmentLootTable')
+    self.worldLoot=require('Game.Loot.MapLoot').New(self.config,self)
     for _,item in ipairs(self.rules.items:All()) do self.data.Grid:Define(item.id,item.width,item.height) end
 end
 function Equipment:CanGrant(ids,counts)
@@ -87,55 +87,9 @@ function Equipment:Command(command,actorId,weaponId,socketId,value)
     end
     error('Unknown equipment command: '..tostring(command))
 end
-function Equipment:InitializeLoot(areas)
-    local area,state=areas:ActiveLayout(),areas.data.Active
-    if state.LootInitialized then return end
-    if area.configId==self.recipe.areaId then
-        local queue,dist,head={area.entryIndex},{[area.entryIndex]=0},1
-        while head<=#queue do local index=queue[head];head=head+1
-            for _,cell in ipairs(area:Neighbors(area.cells[index])) do
-                if not dist[cell.index] then dist[cell.index]=dist[index]+1;queue[#queue+1]=cell.index end
-            end
-        end
-        local used=areas:EnemyOccupancy(area,state)
-        for i=0,state.MemberCount-1 do used[state:GetMemberCellAt(i)]=true end
-        for i,id in ipairs(self.recipe.lootTableIds) do
-            local selected,score
-            for _,index in ipairs(queue) do if not used[index] and not state:IsNpcOccupied(index) then
-                local delta=math.abs(dist[index]-self.recipe.lootDistances[i])
-                if not score or delta<score then selected,score=index,delta end
-            end end
-            assert(selected,'No reachable loot cell');used[selected]=true;state:AddLoot(selected,id)
-        end
-    end
-    state:CompleteLootInitialization()
-end
-function Equipment:Loot(areas,id)
-    if self.adventure.Phase~='area' then return false,'只能在探索时搜刮' end
-    local state,area=areas.data.Active,areas:ActiveLayout()
-    local loot
-    for i=0,state.LootCount-1 do local row=state:GetLootAt(i);if row.Id==id then loot=row end end
-    if not loot or loot.Looted then return false,'这里已经搜刮过了' end
-    local cell=area.cells[loot.CellIndex];local near=false
-    for i=0,state.MemberCount-1 do
-        local member=area.cells[state:GetMemberCellAt(i)]
-        if Hex.Distance(cell.q,cell.r,member.q,member.r)<=self.recipe.interactionRadius and area:CanSee(member,cell) then near=true end
-    end
-    if not near then return false,'先靠近宝箱或掉落物（相邻一格）' end
-    local row=self.loot:Get(loot.TableId)
-    if not self:CanGrant(row.itemIds,row.counts) then return false,'背包空间不足；掉落物保留，请整理后再搜刮' end
-    for i,itemId in ipairs(row.itemIds) do assert(self:Grant(itemId,row.counts[i])) end
-    state:Loot(id);return true,'已搜刮：'..row.name
-end
-function Equipment:LootSnapshot(areas)
-    local state=areas.data.Active;local visible={};local result={}
-    for i=0,state.VisibleCount-1 do visible[state:GetVisibleAt(i)]=true end
-    for i=0,state.LootCount-1 do local loot=state:GetLootAt(i);local row=self.loot:Get(loot.TableId)
-        if visible[loot.CellIndex] and (not loot.Looted or row.kind=='chest') then
-            result[#result+1]={id=loot.Id,cellIndex=loot.CellIndex,name=row.name,looted=loot.Looted,
-                asset=self.rules:Asset(loot.Looted and row.openedAssetId or row.assetId)}
-        end
-    end
-    return result
-end
+function Equipment:InitializeLoot(areas) return self.worldLoot:Initialize(areas) end
+function Equipment:Loot(areas,id) return self.worldLoot:Collect(areas,id) end
+function Equipment:LootSnapshot(areas) return self.worldLoot:Snapshot(areas) end
+function Equipment:GenerateEnemyDrops(areas,battle) return self.worldLoot:EnemyDrops(areas,battle) end
+function Equipment:LootContents(container) return self.worldLoot:Contents(container) end
 return Equipment

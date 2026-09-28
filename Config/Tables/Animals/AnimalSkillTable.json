@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "name": "AnimalSkillTable",
+  "description": "骑兵技能随当前坐骑亲密度自动解锁；更换物种时技能集合随之变化。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "speciesId",
+      "type": "int",
+      "description": "动物物种",
+      "ref": "AnimalSpeciesTable"
+    },
+    {
+      "name": "skillId",
+      "type": "int",
+      "description": "授予技能",
+      "ref": "CombatSkillTable"
+    },
+    {
+      "name": "minimumBond",
+      "type": "int",
+      "description": "所需亲密度",
+      "min": 0
+    },
+    {
+      "name": "movement",
+      "type": "enum",
+      "description": "冲击直线移动、飞扑与跳跃",
+      "values": [
+        "charge",
+        "pounce",
+        "leap"
+      ]
+    },
+    {
+      "name": "minimumDistance",
+      "type": "int",
+      "description": "目标最小格距",
+      "min": 1
+    },
+    {
+      "name": "maximumDistance",
+      "type": "int",
+      "description": "目标最大格距",
+      "min": 1
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "speciesId": 1,
+      "skillId": 202,
+      "minimumBond": 10,
+      "movement": "charge",
+      "minimumDistance": 2,
+      "maximumDistance": 5
+    },
+    {
+      "id": 2,
+      "speciesId": 2,
+      "skillId": 203,
+      "minimumBond": 10,
+      "movement": "pounce",
+      "minimumDistance": 2,
+      "maximumDistance": 2
+    },
+    {
+      "id": 3,
+      "speciesId": 3,
+      "skillId": 204,
+      "minimumBond": 10,
+      "movement": "leap",
+      "minimumDistance": 1,
+      "maximumDistance": 3
+    }
+  ]
+}

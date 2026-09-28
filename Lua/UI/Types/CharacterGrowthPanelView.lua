@@ -1,0 +1,64 @@
+---@meta
+-- Generated from LuaReference. Do not edit; never require this file.
+---@class CharacterGrowthPanelView
+---@field Root CS.UnityEngine.RectTransform
+---@field Canvas CS.UnityEngine.Canvas
+---@field Panel CS.ProjectY.UI.LuaPanel
+---@field Style CS.ProjectY.UI.StoryGrowthView
+---@field Page CS.UnityEngine.RectTransform
+---@field Title CS.UnityEngine.UI.Text
+---@field Role CS.UnityEngine.UI.Text
+---@field Character CS.ProjectY.UI.InventoryCharacterView
+---@field HeroLevel CS.UnityEngine.UI.Text
+---@field HeroHealth CS.UnityEngine.UI.Text
+---@field ExperienceFill CS.UnityEngine.RectTransform
+---@field HeroExperience CS.UnityEngine.UI.Text
+---@field Close CS.UnityEngine.UI.Button
+---@field CloseText CS.UnityEngine.UI.Text
+---@field Party1 CS.UnityEngine.UI.Button
+---@field Party1Text CS.UnityEngine.UI.Text
+---@field Party2 CS.UnityEngine.UI.Button
+---@field Party2Text CS.UnityEngine.UI.Text
+---@field Party3 CS.UnityEngine.UI.Button
+---@field Party3Text CS.UnityEngine.UI.Text
+---@field Party4 CS.UnityEngine.UI.Button
+---@field Party4Text CS.UnityEngine.UI.Text
+---@field Summary CS.UnityEngine.UI.Text
+---@field OverviewTab CS.UnityEngine.UI.Button
+---@field OverviewTabText CS.UnityEngine.UI.Text
+---@field SkillsTab CS.UnityEngine.UI.Button
+---@field SkillsTabText CS.UnityEngine.UI.Text
+---@field HistoryTab CS.UnityEngine.UI.Button
+---@field HistoryTabText CS.UnityEngine.UI.Text
+---@field Overview CS.UnityEngine.RectTransform
+---@field Attributes CS.UnityEngine.RectTransform
+---@field AttributesScroll CS.UnityEngine.UI.ScrollRect
+---@field Traits CS.UnityEngine.RectTransform
+---@field TraitsScroll CS.UnityEngine.UI.ScrollRect
+---@field TraitDetail CS.UnityEngine.UI.Text
+---@field Skills CS.UnityEngine.RectTransform
+---@field PreviousTree CS.UnityEngine.UI.Button
+---@field PreviousTreeText CS.UnityEngine.UI.Text
+---@field NextTree CS.UnityEngine.UI.Button
+---@field NextTreeText CS.UnityEngine.UI.Text
+---@field TreeTitle CS.UnityEngine.UI.Text
+---@field Graph CS.UnityEngine.RectTransform
+---@field GraphScroll CS.UnityEngine.UI.ScrollRect
+---@field TalentName CS.UnityEngine.UI.Text
+---@field TalentDetail CS.UnityEngine.UI.Text
+---@field Invest CS.UnityEngine.UI.Button
+---@field InvestText CS.UnityEngine.UI.Text
+---@field SkillTitle CS.UnityEngine.UI.Text
+---@field SkillRows CS.UnityEngine.RectTransform
+---@field SkillRowsScroll CS.UnityEngine.UI.ScrollRect
+---@field History CS.UnityEngine.RectTransform
+---@field HistorySummary CS.UnityEngine.UI.Text
+---@field PreviousHistory CS.UnityEngine.UI.Button
+---@field PreviousHistoryText CS.UnityEngine.UI.Text
+---@field NextHistory CS.UnityEngine.UI.Button
+---@field NextHistoryText CS.UnityEngine.UI.Text
+---@field HistoryRows CS.UnityEngine.RectTransform
+---@field HistoryRowsScroll CS.UnityEngine.UI.ScrollRect
+---@field Hint CS.UnityEngine.UI.Text
+local View = {}
+return View

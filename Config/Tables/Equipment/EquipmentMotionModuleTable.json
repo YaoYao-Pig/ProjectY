@@ -1,0 +1,169 @@
+{
+  "version": 1,
+  "name": "EquipmentMotionModuleTable",
+  "description": "动作模组与武器几何握点分离；动画持握配置可独立编辑",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "动作模组 ID",
+      "min": 1
+    },
+    {
+      "name": "code",
+      "type": "string",
+      "description": "稳定模组名"
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "模组名称"
+    },
+    {
+      "name": "poseId",
+      "type": "int",
+      "description": "基础身体与双手位置",
+      "ref": "EquipmentPoseTable"
+    },
+    {
+      "name": "holdId",
+      "type": "int",
+      "description": "PawnAnimations 中独立的持握动画配置 ID",
+      "min": 0
+    },
+    {
+      "name": "sourceHoldId",
+      "type": "int",
+      "description": "首次创建持握配置时复制的已存在模板",
+      "min": 0
+    },
+    {
+      "name": "offHandMode",
+      "type": "enum",
+      "description": "副手解算方式",
+      "values": [
+        "free",
+        "shield",
+        "shared",
+        "independent"
+      ]
+    },
+    {
+      "name": "attackActionId",
+      "type": "int",
+      "description": "主手的默认动作表现模板",
+      "ref": "EquipmentActionTable"
+    },
+    {
+      "name": "offActionId",
+      "type": "int",
+      "description": "副手攻击表现模板；0 为不提供",
+      "ref": "EquipmentActionTable"
+    },
+    {
+      "name": "lockWeaponOrientation",
+      "type": "bool",
+      "default": false,
+      "description": "动作期间也保持模组规定的武器朝向，适用于一手持杖、另一手施法"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "code": "single",
+      "name": "单手",
+      "poseId": 3,
+      "holdId": 3,
+      "sourceHoldId": 3,
+      "offHandMode": "free",
+      "attackActionId": 4,
+      "offActionId": 7,
+      "lockWeaponOrientation": false
+    },
+    {
+      "id": 2,
+      "code": "sword_shield",
+      "name": "单手与盾",
+      "poseId": 6,
+      "holdId": 6,
+      "sourceHoldId": 3,
+      "offHandMode": "shield",
+      "attackActionId": 4,
+      "offActionId": 7,
+      "lockWeaponOrientation": false
+    },
+    {
+      "id": 3,
+      "code": "two_hand",
+      "name": "双手共持",
+      "poseId": 4,
+      "holdId": 4,
+      "sourceHoldId": 4,
+      "offHandMode": "shared",
+      "attackActionId": 5,
+      "offActionId": 0,
+      "lockWeaponOrientation": false
+    },
+    {
+      "id": 4,
+      "code": "dual",
+      "name": "双手双持",
+      "poseId": 7,
+      "holdId": 7,
+      "sourceHoldId": 3,
+      "offHandMode": "independent",
+      "attackActionId": 4,
+      "offActionId": 7,
+      "lockWeaponOrientation": false
+    },
+    {
+      "id": 5,
+      "code": "staff",
+      "name": "法杖",
+      "poseId": 1,
+      "holdId": 1,
+      "sourceHoldId": 1,
+      "offHandMode": "free",
+      "attackActionId": 1,
+      "offActionId": 0,
+      "lockWeaponOrientation": true
+    },
+    {
+      "id": 6,
+      "code": "bow",
+      "name": "弓",
+      "poseId": 8,
+      "holdId": 8,
+      "sourceHoldId": 2,
+      "offHandMode": "shared",
+      "attackActionId": 8,
+      "offActionId": 0,
+      "lockWeaponOrientation": false
+    },
+    {
+      "id": 7,
+      "code": "gun_rifle",
+      "name": "步枪",
+      "poseId": 2,
+      "holdId": 2,
+      "sourceHoldId": 2,
+      "offHandMode": "shared",
+      "attackActionId": 2,
+      "offActionId": 0,
+      "lockWeaponOrientation": false
+    },
+    {
+      "id": 8,
+      "code": "unarmed",
+      "name": "空手",
+      "poseId": 3,
+      "holdId": 0,
+      "sourceHoldId": 0,
+      "offHandMode": "free",
+      "attackActionId": 0,
+      "offActionId": 7,
+      "lockWeaponOrientation": false
+    }
+  ]
+}

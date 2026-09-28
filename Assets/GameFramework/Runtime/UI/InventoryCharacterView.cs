@@ -17,6 +17,7 @@ namespace ProjectY.UI
         [SerializeField] private PawnView pawnPrefab;
         [SerializeField] private MapRuntimeDemo.AssetBinding[] parts;
         [SerializeField] private Callout[] callouts;
+        [SerializeField] private Color background = new Color(.055f,.075f,.083f);
         private readonly Dictionary<int,MapRuntimeDemo.AssetBinding> assets=new Dictionary<int,MapRuntimeDemo.AssetBinding>();
         private GameObject studio;
         private Transform pivot;
@@ -47,7 +48,7 @@ namespace ProjectY.UI
         }
         private void CreateStudio()
         {
-            if(pawnPrefab==null||image==null||parts==null||callouts==null||callouts.Length!=8)
+            if(pawnPrefab==null||image==null||parts==null||callouts==null||(callouts.Length!=0&&callouts.Length!=8))
                 throw new InvalidOperationException("请同步背包 3D 预览引用。");
             assets.Clear();foreach(var part in parts) assets.Add(part.id,part);
             studio=new GameObject("InventoryCharacterStudio") {hideFlags=HideFlags.HideAndDontSave};
@@ -59,7 +60,10 @@ namespace ProjectY.UI
             cameraView.transform.localPosition=new Vector3(0,1.04f,5);cameraView.transform.LookAt(studio.transform.position+Vector3.up*1.04f);
             cameraView.enabled=false;cameraView.orthographic=true;cameraView.nearClipPlane=.1f;cameraView.farClipPlane=15;
             cameraView.scene=gameObject.scene;cameraView.cullingMask=1<<31;
-            cameraView.clearFlags=CameraClearFlags.SolidColor;cameraView.backgroundColor=new Color(.055f,.075f,.083f);
+            cameraView.clearFlags=CameraClearFlags.SolidColor;cameraView.backgroundColor=background;
+#if UNITY_EDITOR
+            cameraView.overrideSceneCullingMask=UnityEditor.SceneManagement.EditorSceneManager.GetSceneCullingMask(gameObject.scene);
+#endif
             cameraView.allowHDR=false;
             Light("Key",new Color(1,.9f,.75f),1.25f,new Vector3(35,155,0));
             Light("Fill",new Color(.55f,.76f,1),.75f,new Vector3(15,-25,0));
@@ -75,6 +79,7 @@ namespace ProjectY.UI
         public void RenderPreview()
         {
             if(pawn==null) return;
+            pawn.TickPresentation(Time.unscaledDeltaTime);
             var size=image.rectTransform.rect.size;
             int width=Mathf.Clamp(Mathf.RoundToInt(size.x*1.5f),128,1200),height=Mathf.Clamp(Mathf.RoundToInt(size.y*1.5f),128,1200);
             if(texture==null||texture.width!=width||texture.height!=height)

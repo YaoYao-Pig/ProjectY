@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "name": "EquipmentHoldAdjustmentTable",
+  "description": "武器型号 × 持握模组 × 主副手的局部朝向修正；缺少专属行时明确使用零修正，沿用模组基准姿势",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "修正记录 ID",
+      "min": 1
+    },
+    {
+      "name": "weaponId",
+      "type": "int",
+      "description": "武器型号（物品配置 ID，非库存实例 ID）",
+      "ref": "EquipmentWeaponTable"
+    },
+    {
+      "name": "moduleId",
+      "type": "int",
+      "description": "当前持握动作模组",
+      "ref": "EquipmentMotionModuleTable"
+    },
+    {
+      "name": "hand",
+      "type": "enum",
+      "description": "武器所属主手或副手；双手共持的同一武器使用 main",
+      "values": [
+        "main",
+        "off"
+      ]
+    },
+    {
+      "name": "rotationOffset",
+      "type": "float[]",
+      "description": "动作基准朝向之后叠加的武器局部 XYZ 欧拉角（度）；与手掌握点旋转独立"
+    }
+  ],
+  "rows": []
+}

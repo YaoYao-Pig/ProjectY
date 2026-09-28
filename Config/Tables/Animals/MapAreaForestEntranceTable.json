@@ -1,0 +1,33 @@
+{
+  "version": 1,
+  "name": "MapAreaForestEntranceTable",
+  "description": "按大地图 Region 类型创建森林小地图入口，每个真实森林 Region 一个入口。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "regionType",
+      "type": "enum",
+      "description": "大地图地貌类型",
+      "enumRef": "Map.E_MapRegion"
+    },
+    {
+      "name": "areaId",
+      "type": "int",
+      "description": "森林地图",
+      "ref": "MapAreaTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "regionType": 5,
+      "areaId": 20
+    }
+  ]
+}

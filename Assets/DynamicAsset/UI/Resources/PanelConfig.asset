@@ -133,3 +133,207 @@ MonoBehaviour:
     PauseWorldOnOpen: 1
     CloseOnSceneChange: 1
     Prefab: {fileID: 7234587169577550630, guid: 8261409660dc5b440bce177b0d424491, type: 3}
+  - Name: StoryChoice
+    Module: Adventure
+    Kind: 1
+    Layer: Main
+    Modal: 0
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 5322251489322332527, guid: 50f38b7d0db89094dbfc0ae5a459934f, type: 3}
+  - Name: GrowthRow
+    Module: Adventure
+    Kind: 1
+    Layer: Main
+    Modal: 0
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 5780630089110900076, guid: 8efb9e31cf2ee5f4dbf52f2991f3afb7, type: 3}
+  - Name: TraitTag
+    Module: Adventure
+    Kind: 1
+    Layer: Main
+    Modal: 0
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 2647079029317464007, guid: 9fc988125763c5449a698993af313230, type: 3}
+  - Name: TalentNode
+    Module: Adventure
+    Kind: 1
+    Layer: Main
+    Modal: 0
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 1468662938428966271, guid: a2e9417eb42a2664db5473152b8634a2, type: 3}
+  - Name: TalentEdge
+    Module: Adventure
+    Kind: 1
+    Layer: Main
+    Modal: 0
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 6866845745215932319, guid: 54d5903e6daf88b4d84bcf8dc66aa90c, type: 3}
+  - Name: StoryEvent
+    Module: Adventure
+    Kind: 0
+    Layer: Popup
+    Modal: 1
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 1
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 9088252601800096477, guid: 267aa0baf71d5604aa0a72ee4a49eef1, type: 3}
+  - Name: CharacterGrowth
+    Module: Adventure
+    Kind: 0
+    Layer: Popup
+    Modal: 1
+    Cache: 1
+    CloseOnBack: 1
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 1
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 6195668763355147955, guid: b7d08ded42a2a8649bc2e9e804c3ad5a, type: 3}
+  - Name: AdventureJournal
+    Module: Adventure
+    Kind: 0
+    Layer: Main
+    Modal: 0
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 3123536351130917216, guid: 12194b629bf773c44bc943e527cc465c, type: 3}
+  - Name: JournalAttribute
+    Module: Adventure
+    Kind: 1
+    Layer: Main
+    Modal: 0
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 3922418833954938389, guid: d14b051b2d64363429b1a1d6359b6973, type: 3}
+  - Name: JournalSkill
+    Module: Adventure
+    Kind: 1
+    Layer: Main
+    Modal: 0
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 1737523616529645011, guid: a61d8cba2d586274c9508201de9a2e78, type: 3}
+  - Name: JournalEntry
+    Module: Adventure
+    Kind: 1
+    Layer: Main
+    Modal: 0
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 34422178235305231, guid: 3a17b35eafa6d6d4caea784e27df7097, type: 3}
+  - Name: HudRow
+    Module: MainHud
+    Kind: 1
+    Layer: Main
+    Modal: 0
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 4944644960863691432, guid: f5d82513db8d89645a0633f6011d8431, type: 3}
+  - Name: HudParty
+    Module: MainHud
+    Kind: 1
+    Layer: Main
+    Modal: 0
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 1764775351044946236, guid: 300b2f8cd3e6790489482448b4da6e73, type: 3}
+  - Name: HudHealth
+    Module: MainHud
+    Kind: 1
+    Layer: Main
+    Modal: 0
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 3474462778200267363, guid: 173ef9c9db1cfcd4fb7134f4a811e3e6, type: 3}
+  - Name: MainHud
+    Module: MainHud
+    Kind: 0
+    Layer: Main
+    Modal: 0
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 7296807320531238797, guid: 3a56be8ecff883f4bb46d8666312913b, type: 3}
+  - Name: CharacterSkill
+    Module: MainHud
+    Kind: 1
+    Layer: Main
+    Modal: 0
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 1911881944722016627, guid: 04388d602eb4ff24ba47f33a6e1f74d2, type: 3}
+  - Name: GM
+    Module: GM
+    Kind: 0
+    Layer: Popup
+    Modal: 1
+    Cache: 1
+    CloseOnBack: 1
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 1
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 7507950336158137626, guid: 16be6f35d30b9c64c9b81eed0c8a9846, type: 3}

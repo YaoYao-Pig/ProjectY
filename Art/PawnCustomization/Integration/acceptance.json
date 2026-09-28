@@ -1,0 +1,67 @@
+{
+  "blenderModules": 29,
+  "races": [
+    "human",
+    "elf",
+    "goblin",
+    "dragon",
+    "orc"
+  ],
+  "sexes": [
+    "male",
+    "female"
+  ],
+  "bodies": 6,
+  "faces": 20,
+  "hairMeshes": 3,
+  "unity": {
+    "modules": 29,
+    "bones": 23,
+    "appearances": 60,
+    "sampledPoses": 180,
+    "maxSkinError": 2.8154914843980805e-07,
+    "validAvatar": true,
+    "unchangedScene": true
+  },
+  "web": {
+    "nodeTests": 4,
+    "passed": 4,
+    "uiVerified": [
+      "race switch",
+      "sex switch",
+      "body and face selection",
+      "compatible hair filtering",
+      "seed replay",
+      "Unity descriptor JSON display",
+      "walking",
+      "death at timeline 90 percent",
+      "pause",
+      "source freshness"
+    ],
+    "downloadEvent": "In-app browser automation did not return a download event; JSON text export verified",
+    "consoleErrors": 0
+  },
+  "prefabRoundtrip": {
+    "path": "Assets/DynamicAsset/PawnCustomization/Presets/Preview_ElfFemale.prefab",
+    "skinTintRestored": true
+  },
+  "legacyLua": "PASS pawn_appearance.lua",
+  "legacyAnimation": "PASS PawnAnimationValidation.Run: original skins, weapon grips, locomotion, duplicate suppression, pause, hit/death, route",
+  "limits": [
+    "No new gameplay race pools or persistence rules",
+    "No full equipment fit validation",
+    "No new Play Mode acceptance"
+  ],
+  "rootOffset": [
+    0,
+    0.14,
+    0
+  ],
+  "editorOperations": [
+    "Initial script refresh/compile: new files not yet imported",
+    "User-approved exit Play and batch import of five scripts: compilation passed",
+    "User-approved targeted import for root offset and edit preset tint: compilation passed",
+    "User-approved legacy assertion update, exit Play and targeted import: regression passed"
+  ],
+  "editorOperationsNote": "Editor automatic refreshes are not counted as agent-controlled compilation operations. No agent-started Play Mode or WebGL build."
+}

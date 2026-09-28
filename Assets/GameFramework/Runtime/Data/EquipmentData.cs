@@ -21,7 +21,7 @@ namespace ProjectY.Data
         internal EquipmentWearableData(int id, int itemId) { Id=id; ItemId=itemId; }
     }
     [LuaCallCSharp]
-    public sealed class EquipmentWeaponData
+    public sealed partial class EquipmentWeaponData
     {
         private readonly Dictionary<int, int> runes = new Dictionary<int, int>();
         public int Id { get; }
@@ -46,7 +46,7 @@ namespace ProjectY.Data
     }
     /// <summary>Expedition-owned physical weapons, detachable magazines and shared loose items.</summary>
     [LuaCallCSharp]
-    public sealed class EquipmentData
+    public sealed partial class EquipmentData
     {
         private readonly List<InventoryStackData> stacks = new List<InventoryStackData>();
         private readonly List<EquipmentWeaponData> weapons = new List<EquipmentWeaponData>();

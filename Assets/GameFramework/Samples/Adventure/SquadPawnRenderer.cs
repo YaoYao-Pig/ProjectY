@@ -4,16 +4,23 @@ using UnityEngine;
 
 namespace ProjectY.Samples
 {
-    /// <summary>小队模型与平滑显示；目标格来自 C# 权威快照，不参与寻路或决定占格。</summary>
+    /// <summary>Scene squad presentation. Destination and HP come from detached snapshots.</summary>
     public sealed class SquadPawnRenderer : IDisposable
     {
-        private sealed class Pawn { public int ActorId, FromCell, Cell; public PawnView View; public Vector3 Target; }
+        private sealed class Pawn
+        {
+            public int ActorId, Sequence, MovementSequence;
+            public PawnView View;
+            public PawnMotion Motion;
+            public AdventureViewData.Actor Actor;
+            public bool Retiring;
+        }
         private readonly List<Pawn> pawns = new List<Pawn>(4);
         private readonly GameObject root;
         private readonly PawnView prefab;
         private readonly Func<PawnAppearanceData.Part, GameObject> resolve;
-        private float walkSpeed;
-        private MapAreaViewData terrain;
+        public bool Busy => pawns.Exists(p => p.Motion.Moving || p.View.PresentationBusy);
+        public bool ActionBusy => pawns.Exists(p => p.View.PresentationBusy);
         public SquadPawnRenderer(Transform parent, PawnView prefab, Func<PawnAppearanceData.Part, GameObject> resolve)
         {
             if (prefab == null) throw new InvalidOperationException("小队棋子 Prefab 尚未绑定。");
@@ -22,54 +29,91 @@ namespace ProjectY.Samples
         }
         public void SetState(MapAreaViewData.State state, AdventureViewData.Actor[] party, MapAreaViewData layout, bool inBattle = false)
         {
-            walkSpeed = layout.IsTown ? layout.Radius * 1.7320508f / layout.MoveStepSeconds : 0;
-            terrain = layout;
-            if (state.Members.Length < 1 || state.Members.Length > 4) throw new InvalidOperationException("小队成员数量应为 1–4。");
+            var occupied = new HashSet<int>();
+            foreach (var member in state.Members) occupied.Add(member.CellIndex);
+            foreach (var actor in state.Enemies) occupied.Add(actor.CellIndex);
+            var allowed = inBattle ? new HashSet<int>(state.Known) : null;
             foreach (var member in state.Members)
             {
                 var actor = Array.Find(party, value => value.Id == member.ActorId);
                 if (actor == null || actor.HP <= 0) throw new InvalidOperationException("探索成员与存活队伍不一致。");
                 var pawn = pawns.Find(value => value.ActorId == member.ActorId);
-                var position = layout.Cells[member.CellIndex].Position + Vector3.up * .015f;
                 if (pawn == null)
                 {
-                    pawn = new Pawn { ActorId = actor.Id, FromCell = member.CellIndex, Cell = member.CellIndex, View = UnityEngine.Object.Instantiate(prefab, root.transform, false) };
-                    pawn.View.name = actor.Name; pawn.View.transform.position = position; pawns.Add(pawn);
+                    pawn = new Pawn { ActorId = actor.Id, Sequence = actor.ActionSequence, MovementSequence=actor.MovementSequence, View = UnityEngine.Object.Instantiate(prefab, root.transform, false) };
+                    pawn.View.name = actor.Name; pawn.View.ApplyAppearance(actor.Appearance, resolve);
+                    pawn.Motion = new PawnMotion(pawn.View.transform, member.CellIndex, layout);
+                    pawn.View.Capture(actor, pawn.View.transform.position, 0); pawns.Add(pawn);
                 }
-                if (pawn.Cell != member.CellIndex)
-                {
-                    // 快照轮询可能略早于显示插值完成；先收束上一段，避免转角切出真实导航边。
-                    if (layout.IsTown) pawn.View.transform.position = TownSurfaceRenderer.Ground(layout, pawn.Cell, pawn.Cell, pawn.Target);
-                    pawn.FromCell = pawn.Cell; pawn.Cell = member.CellIndex;
-                }
-                pawn.Target = position; pawn.View.ApplyAppearance(actor.Appearance, resolve);
-                // 静态战棋先直接落到结算后的格子，避免跨多格插值穿过墙壁。
-                if (inBattle) pawn.View.transform.position = position;
+                pawn.Actor = actor; pawn.View.ApplyAppearance(actor.Appearance, resolve);
+                pawn.Motion.Speed = inBattle ? pawn.View.BattleMoveSpeed : layout.Radius * 1.7320508f / layout.MoveStepSeconds;
+                pawn.Motion.SetDestination(member.CellIndex, occupied, allowed,pawn.MovementSequence!=actor.MovementSequence?actor.MovementStyle:null);
+                pawn.MovementSequence=actor.MovementSequence;
             }
-            for (var i = pawns.Count - 1; i >= 0; i--)
-                if (!Array.Exists(state.Members, member => member.ActorId == pawns[i].ActorId))
-                { Destroy(pawns[i].View.gameObject); pawns.RemoveAt(i); }
+            foreach (var pawn in pawns)
+                if (!Array.Exists(state.Members, member => member.ActorId == pawn.ActorId))
+                {
+                    var actor = Array.Find(party, value => value.Id == pawn.ActorId);
+                    if (actor == null || actor.HP > 0) throw new InvalidOperationException("Missing living squad member.");
+                    pawn.Actor = actor; pawn.Retiring = true; pawn.Motion.Skip();
+                }
+        }
+        public float ImpactDelay()
+        {
+            float delay = 0;
+            foreach (var pawn in pawns)
+                if (pawn.Actor.ActionSequence != pawn.Sequence)
+                    delay = Mathf.Max(delay, pawn.Motion.SecondsRemaining + pawn.View.ImpactTime(pawn.Actor, pawn.Sequence));
+            return delay;
+        }
+        public void Capture(float impactDelay)
+        {
+            foreach (var pawn in pawns)
+            {
+                pawn.View.Capture(pawn.Actor, pawn.Motion.ActionTarget(pawn.Actor), impactDelay);
+                pawn.Sequence = pawn.Actor.ActionSequence;
+            }
+        }
+        public void CaptureExit(AdventureViewData.Actor[] party)
+        {
+            foreach (var pawn in pawns)
+            {
+                pawn.Actor = Array.Find(party, value => value.Id == pawn.ActorId);
+                pawn.View.Capture(pawn.Actor, pawn.View.transform.position, 0);
+            }
         }
         public void Tick(float deltaTime)
         {
-            var factor = 1 - Mathf.Exp(-deltaTime * 18);
-            foreach (var pawn in pawns)
+            for (int i = pawns.Count - 1; i >= 0; i--)
             {
-                var transform = pawn.View.transform; var direction = pawn.Target - transform.position; direction.y = 0;
-                if (direction.sqrMagnitude > .01f) transform.rotation = Quaternion.Slerp(transform.rotation, Quaternion.LookRotation(direction), factor);
-                if (walkSpeed > 0)
-                {
-                    var from = transform.position; var target = pawn.Target; from.y = target.y = 0;
-                    transform.position = TownSurfaceRenderer.Ground(terrain, pawn.FromCell, pawn.Cell, Vector3.MoveTowards(from, target, walkSpeed * deltaTime));
-                }
-                else transform.position = Vector3.Lerp(transform.position, pawn.Target, factor);
+                var pawn = pawns[i];
+                float speed = pawn.Retiring ? 0 : pawn.Motion.Tick(deltaTime);
+                pawn.View.TickPresentation(deltaTime, speed);
+                if (pawn.Retiring && pawn.View.DeathFinished) {Destroy(pawn.View.gameObject); pawns.RemoveAt(i);}
             }
         }
-        public Vector3 Position(int actorId)
+        public void Skip() {foreach (var pawn in pawns) {pawn.Motion.Skip(); pawn.View.SkipPresentation();}}
+        public int PickActor(Ray ray,out float distance)
+        {
+            int actorId=0;distance=float.PositiveInfinity;
+            foreach(var pawn in pawns)
+                if(!pawn.Retiring && pawn.Actor.HP>0 && pawn.View.Raycast(ray,out var hit) && hit<distance)
+                {actorId=pawn.ActorId;distance=hit;}
+            return actorId;
+        }
+        public void Interact(int actorId,bool talking) {pawns.Find(p=>p.ActorId==actorId).View.PlayInteraction(talking);}
+        public Vector3 Position(int actorId) => Target(actorId).position;
+        public Transform HealthTarget(int actorId)
+        {
+            var pawn=pawns.Find(value=>value.ActorId==actorId);
+            if(pawn==null)throw new InvalidOperationException("Missing health target: "+actorId);
+            return pawn.View.HealthTarget;
+        }
+        public Transform Target(int actorId)
         {
             var pawn = pawns.Find(value => value.ActorId == actorId);
-            if (pawn == null) throw new InvalidOperationException("未找到探索棋子：" + actorId);
-            return pawn.View.transform.position;
+            if (pawn == null) throw new InvalidOperationException("Missing squad pawn: " + actorId);
+            return pawn.View.transform;
         }
         private static void Destroy(GameObject value)
         { value.SetActive(false); if (Application.isPlaying) UnityEngine.Object.Destroy(value); else UnityEngine.Object.DestroyImmediate(value); }

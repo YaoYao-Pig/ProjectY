@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "name": "GrowthRuleTable",
+  "description": "养成全局策略；数值全部可调。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "initialAttributePoints",
+      "type": "int",
+      "description": "初始属性点",
+      "min": 0
+    },
+    {
+      "name": "initialTalentPoints",
+      "type": "int",
+      "description": "初始被动天赋点",
+      "min": 0
+    },
+    {
+      "name": "directionMin",
+      "type": "int",
+      "description": "每次至少抽取的不同属性方向",
+      "min": 1,
+      "max": 20
+    },
+    {
+      "name": "directionMax",
+      "type": "int",
+      "description": "每次最多抽取的不同属性方向",
+      "min": 1,
+      "max": 20
+    },
+    {
+      "name": "directionWeight",
+      "type": "formula",
+      "description": "方向抽取权重，变量 value 为角色当前属性",
+      "variables": [
+        "value"
+      ]
+    },
+    {
+      "name": "tierWeight",
+      "type": "formula",
+      "description": "同方向内技能权重，变量 value/tier/weight",
+      "variables": [
+        "value",
+        "tier",
+        "weight"
+      ]
+    },
+    {
+      "name": "includeEquipment",
+      "type": "bool",
+      "description": "抽取和层级门槛是否包含装备加成"
+    },
+    {
+      "name": "logVisibleCount",
+      "type": "int",
+      "description": "游戏内日志保留的可见条数；完整经历不裁剪",
+      "min": 1,
+      "max": 50
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "initialAttributePoints": 2,
+      "initialTalentPoints": 2,
+      "directionMin": 2,
+      "directionMax": 3,
+      "directionWeight": "max(1, value)",
+      "tierWeight": "weight * (1 + value * tier / 20)",
+      "includeEquipment": false,
+      "logVisibleCount": 5
+    }
+  ]
+}

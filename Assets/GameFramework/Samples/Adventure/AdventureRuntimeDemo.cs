@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 using XLua;
+using ProjectY.UI;
 
 namespace ProjectY.Samples
 {
@@ -22,7 +23,6 @@ namespace ProjectY.Samples
         [SerializeField] private EquipmentAssetCatalog equipmentCatalog;
         [SerializeField] private MapRuntimeDemo.AssetBinding[] pawnBindings;
         private const string Bridge = "Game.Adventure.DemoBridge";
-        private const float PanelWidth = 320;
         private readonly Dictionary<int, MapRuntimeDemo.AssetBinding> assets = new Dictionary<int, MapRuntimeDemo.AssetBinding>();
         private MapPreviewRenderer mapRenderer;
         private MapAreaRenderer areaRenderer;
@@ -32,10 +32,54 @@ namespace ProjectY.Samples
         private AreaCombatRenderer combatRenderer;
         private AreaLootRenderer lootRenderer;
         private bool equipmentOpen;
+        private bool growthOpen, storyOpen, gmOpen;
+        public Font MainHudFont => mainHud.Font;
+        public void SetGMOpen(bool value) {gmOpen=value;}
+        public void OpenGM()
+        {
+            if(equipmentOpen || growthOpen || storyOpen || view==null || pendingExitView!=null)return;
+            bootstrap.CallModule("UI.AdventureUIBridge","gm",this);
+        }
+        private MainHudView mainHud;
+        public Camera WorldCamera => mapCamera;
+        public void SetMainHud(MainHudView value) {mainHud=value;}
+        public void ToggleEnvironment() {showEnvironment=!showEnvironment;}
+        public int[] RenderedHealthActorIds()
+        {
+            var ids=new List<int>();
+            if(view==null)return ids.ToArray();
+            if(HasArea)
+            {
+                foreach(var member in view.Area.Members)ids.Add(member.ActorId);
+                foreach(var actor in view.Area.Enemies)if(actor.HP>0)ids.Add(actor.Id);
+            }
+            else if(view.Phase=="battle")foreach(var actor in view.Units)if(actor.HP>0)ids.Add(actor.Id);
+            return ids.ToArray();
+        }
+        public Transform HealthTarget(int actorId)
+        {
+            if(!HasArea) throw new InvalidOperationException("No 3D scene for health follower.");
+            return Array.Exists(view.Party,actor=>actor.Id==actorId)?squadRenderer.HealthTarget(actorId):combatRenderer.HealthTarget(actorId);
+        }
+        public Vector2 HealthScreenPosition(int actorId)
+        {
+            if(view==null||view.Phase!="battle"||HasArea) throw new InvalidOperationException("Screen target is only used by the legacy 2D board.");
+            var actor=Array.Find(view.Units,value=>value.Id==actorId);
+            if(actor==null) throw new ArgumentException("Missing board actor: "+actorId);
+            var size=BoardSize();var center=BoardCenter();var point=CellCenter(actor.Q,actor.R,center,size);
+            return new Vector2(point.x,Screen.height-point.y+size*.8f+22);
+        }
+        public void SetGrowthOpen(bool value) { growthOpen=value; }
+        public void SetStoryOpen(bool value) { storyOpen=value; }
+        public void OpenGrowth()
+        {
+            if(equipmentOpen || (view?.Phase!="map" && view?.Phase!="area")) return;
+            bootstrap.CallModule("UI.AdventureUIBridge","growth",this);
+        }
         public void SetEquipmentOpen(bool value) { equipmentOpen=value; }
         public void OpenEquipment()
         {
-            if(view?.Phase!="map"&&view?.Phase!="area") return;
+            if(growthOpen || storyOpen || (view?.Phase!="map"&&view?.Phase!="area")) return;
             bootstrap.CallModule("UI.EquipmentUIBridge","open",this);
         }
         private TownNpcRenderer townNpcs;
@@ -49,16 +93,35 @@ namespace ProjectY.Samples
         private Vector3 worldFocus, displayedParty;
         private float worldZoom, worldYaw, worldPitch;
         private AdventureViewData view;
+        private AdventureViewData pendingExitView;
+        private bool AnimationBusy => HasArea && (squadRenderer.Busy || combatRenderer.Busy);
         private Vector3 focus;
         private float zoom, yaw = -25, pitch = 52, nextAI;
         private int selectedSkill, lastActor;
+        private int selectedCharacter, selectedCharacterSkill;
+        public int SelectedCharacterId => selectedCharacter;
+        public int SelectedCharacterSkill => selectedCharacterSkill;
+        public void SelectCharacter(int id)
+        {
+            if(view==null || (view.Phase!="map" && view.Phase!="area") || !Array.Exists(view.Party,actor=>actor.Id==id))return;
+            selectedCharacter=id;selectedCharacterSkill=0;BattleHUDRevision++;
+        }
+        public void SelectCharacterSkill(int actorId,int skillId,string target)
+        {
+            if(view==null || view.Phase!="area")return;
+            SelectCharacter(actorId);
+            if(target=="self") {SendCommand("character_skill",actorId,skillId,actorId);return;}
+            if(target!="unit" && target!="cell")throw new ArgumentException("Unknown character skill target.",nameof(target));
+            selectedCharacterSkill=skillId;characterSkillTarget=target;view.Error="";BattleHUDRevision++;
+        }
+        private string characterSkillTarget;
+        public void CancelCharacterSkill() {selectedCharacterSkill=0;characterSkillTarget=null;BattleHUDRevision++;}
         private int selectedAreaCell=-1;
         private bool moveSelected = true, autoAI = true;
         private string fatalError;
         private Font font;
         private Texture2D hexTexture, circleTexture;
-        private GUIStyle textStyle, titleStyle, subtitleStyle, buttonStyle, tokenStyle, smallStyle, healthStyle, toggleStyle;
-        private Vector2 sidebarScroll;
+        private GUIStyle textStyle, titleStyle, subtitleStyle, buttonStyle, tokenStyle, smallStyle, toggleStyle;
         private static readonly Color Background = new Color(.045f, .07f, .085f);
         private static readonly Color Panel = new Color(.075f, .105f, .12f);
         private static readonly Color Teal = new Color(.31f, .83f, .71f);
@@ -76,7 +139,7 @@ namespace ProjectY.Samples
         {
             if (view?.Phase != "battle" || view.Active.Team != 1) return;
             var skill = Array.Find(view.Skills, row => row.Id == id);
-            if (skill == null || skill.Targets.Length == 0) return;
+            if (skill == null || (skill.Targets.Length == 0 && skill.TargetCells.Length == 0)) return;
             selectedSkill = id; moveSelected = false; view.Error = ""; BattleHUDRevision++;
         }
         public void SelectBattleMove()
@@ -120,10 +183,12 @@ namespace ProjectY.Samples
             texture.SetPixels(pixels); texture.Apply(false, true); return texture;
         }
         public void StartExpedition()
+        { BuildExpedition("start"); }
+        private void BuildExpedition(string command)
         {
             try
             {
-                var values = bootstrap.CallModule(Bridge, "start");
+                var values = bootstrap.CallModule(Bridge, command);
                 using (var mapRoot = (LuaTable)values[0])
                 using (var stateRoot = (LuaTable)values[1])
                 {
@@ -140,25 +205,50 @@ namespace ProjectY.Samples
             catch (Exception exception) { Report(exception); }
         }
         // 也是此 demo 的最小自动化入口：与按钮使用相同命令，不绕过玩法检查。
-        public void SendCommand(string command, int a = 0, int b = 0)
+        public void SendCommand(string command, int a = 0, int b = 0, int c = 0)
         {
             if (fatalError != null) return;
+            if (command == "load_characters")
+            {
+                if (view.Phase != "map" && view.Phase != "area") return;
+                BuildExpedition(command); return;
+            }
+            if (pendingExitView != null || (!command.StartsWith("gm_",StringComparison.Ordinal) && HasArea && command != "snapshot" && command != "area_stop" &&
+                (view.Phase == "battle" ? AnimationBusy : squadRenderer.ActionBusy || combatRenderer.ActionBusy))) return;
+            if(command=="hud_follow")
+            {
+                if(!HasArea) return;
+                followParty=true;focus=displayedParty;zoom=13*areaLayout.Radius;return;
+            }
             try
             {
-                var values = bootstrap.CallModule(Bridge, command, a, b);
-                using (var root = (LuaTable)values[0]) SetView(AdventureViewData.Read(root));
+                var values = bootstrap.CallModule(Bridge, command, a, b, c);
+                using (var root = (LuaTable)values[0])
+                {
+                    var next=AdventureViewData.Read(root);
+                    if(command=="snapshot")next.RetainPollingFeedback(view);
+                    SetView(next);
+                }
+                if(command=="character_skill")CancelCharacterSkill();
                 if(view.Phase=="area" && string.IsNullOrEmpty(view.Error))
                 {
+                    if(command=="area_loot" || command=="area_interact") squadRenderer.Interact(view.Area.Members[0].ActorId,command=="area_interact");
                     if(command=="area_move_cell") selectedAreaCell=a-1;
                     else if(command=="area_stop" || command=="area_walk") selectedAreaCell=-1;
                 }
             }
             catch (Exception exception) { Report(exception); }
         }
-        private void SetView(AdventureViewData value)
+        private void SetView(AdventureViewData value, bool exitPresentationComplete = false)
         {
-            var openHUD = value.Phase == "battle" && view?.Phase != "battle";
-            var closeHUD = value.Phase != "battle" && view?.Phase == "battle";
+            if(value.Phase!=view?.Phase || !Array.Exists(value.Party,actor=>actor.Id==selectedCharacter))
+            {selectedCharacterSkill=0;characterSkillTarget=null;}
+            if(!Array.Exists(value.Party,actor=>actor.Id==selectedCharacter))selectedCharacter=0;
+            if (!exitPresentationComplete && HasArea && view.Phase == "battle" && value.Area == null)
+            {
+                squadRenderer.CaptureExit(value.Party);
+                if (AnimationBusy) {pendingExitView=value;return;}
+            }
             var enteringBattle = value.Area != null && value.Phase == "battle" && view?.Phase != "battle";
             var resumingExploration = value.Area != null && value.Phase == "area" && view?.Phase == "battle";
             if (value.Area != null && !HasArea)
@@ -213,6 +303,8 @@ namespace ProjectY.Samples
                 squadRenderer.SetState(view.Area, view.Party, areaLayout, view.Phase == "battle");
                 explorationRenderer.SetState(view.Area, view.Phase == "area");
                 combatRenderer.SetState(view.Area, areaLayout);
+                float impactDelay=Mathf.Max(squadRenderer.ImpactDelay(),combatRenderer.ImpactDelay());
+                squadRenderer.Capture(impactDelay);combatRenderer.Capture(impactDelay);
                 townNpcs?.SetState(view.Area, areaLayout);
                 lootRenderer.Apply(view.Area,areaLayout);
             }
@@ -224,8 +316,7 @@ namespace ProjectY.Samples
                 nextAI = Time.unscaledTime + .8f;
             }
             BattleHUDRevision++;
-            if (openHUD) bootstrap.CallModule("UI.BattleHUDBridge", "open", this);
-            else if (closeHUD) bootstrap.CallModule("UI.BattleHUDBridge", "close");
+            bootstrap.CallModule("UI.AdventureUIBridge", "sync", this);
         }
         private void FocusBattle()
         {
@@ -257,12 +348,16 @@ namespace ProjectY.Samples
                 var corner = inverse * Vector3.Scale(bounds.extents, new Vector3(x, y, z));
                 extent.x = Mathf.Max(extent.x, Mathf.Abs(corner.x)); extent.y = Mathf.Max(extent.y, Mathf.Abs(corner.y));
             }
-            zoom = Mathf.Max(8, Mathf.Max(extent.y, extent.x / Mathf.Max(.2f, (Screen.width - PanelWidth) / Screen.height)) * 1.18f);
+            zoom = Mathf.Max(8, Mathf.Max(extent.y, extent.x / Mathf.Max(.2f, (Screen.width - (mainHud!=null?mainHud.WorldLeftInset:0)) / Screen.height)) * 1.18f);
         }
         private void Update()
         {
             environment?.Tick(Time.unscaledDeltaTime, view?.Area);
             if (view == null || fatalError != null) return;
+            if(Input.GetKeyDown(KeyCode.F8))OpenGM();
+            if(gmOpen)return;
+            if(Input.GetKeyDown(KeyCode.C)) OpenGrowth();
+            if(growthOpen || storyOpen) return;
             if(Input.GetKeyDown(KeyCode.I))
             {
                 if(equipmentOpen) bootstrap.CallModule("UI.EquipmentUIBridge","close");else OpenEquipment();
@@ -274,9 +369,15 @@ namespace ProjectY.Samples
                 if (fatalError != null) return;
                 displayedParty = Vector3.Lerp(displayedParty, areaLayout.Cells[view.Area.CellIndex].Position, 1 - Mathf.Exp(-Time.unscaledDeltaTime * 18));
                 squadRenderer.Tick(Time.deltaTime);
+                combatRenderer.Tick(Time.deltaTime);
+                if (Input.GetKeyDown(KeyCode.Space) && (view.Phase == "battle" || pendingExitView != null))
+                {squadRenderer.Skip();combatRenderer.Skip();}
+                if (pendingExitView != null && !AnimationBusy)
+                {var completed=pendingExitView;pendingExitView=null;SetView(completed,true);return;}
                 townNpcs?.Tick(Time.deltaTime);
                 if (followParty) focus = displayedParty;
                 if (view.Phase == "area" && Input.GetKeyDown(KeyCode.Space)) SendCommand("area_stop");
+                if (view.Phase == "area" && Input.GetKeyDown(KeyCode.Escape) && selectedCharacterSkill!=0) CancelCharacterSkill();
                 if(view.Phase=="area"&&!areaLayout.IsTown&&Input.GetKeyDown(KeyCode.E))
                 {var loot=NearestLoot();if(loot!=null) SendCommand("area_loot",loot.Id);}
                 if (townCamera != null)
@@ -291,7 +392,7 @@ namespace ProjectY.Samples
                     if (thirdPerson)
                     {
                         var pointer = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
-                        if (showEnvironment && new Rect(Screen.width - 308, 64, 290, 238).Contains(pointer)) return;
+                        if (AreaPointerBlocked()) return;
                         townCamera.Orbit();
                         if (view.Area.InteractionKind != 0 || Input.GetKey(KeyCode.Space)) { townCamera.ResetSteering(); wasWalking = false; return; }
                         var direction = townCamera.Direction(areaLayout, view.Area, Time.deltaTime);
@@ -303,12 +404,12 @@ namespace ProjectY.Samples
                     }
                 }
             }
-            if (view.Phase == "battle" && view.Active.Team == 2 && autoAI && Time.unscaledTime >= nextAI)
+            if (view.Phase == "battle" && !AnimationBusy && pendingExitView == null && view.Active.Team == 2 && autoAI && Time.unscaledTime >= nextAI)
             {
                 SendCommand("ai"); nextAI = Time.unscaledTime + .8f;
             }
             if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
-            if ((view.Phase != "map" && !HasArea) || (view.Phase != "battle" && Input.mousePosition.x <= PanelWidth)) return;
+            if ((view.Phase != "map" && !HasArea) || (view.Phase != "battle" && Input.mousePosition.x <= (mainHud!=null?mainHud.WorldLeftInset:0))) return;
             if (Input.GetKeyDown(KeyCode.F)) FitMap();
             zoom = Mathf.Clamp(zoom * Mathf.Exp(-Input.mouseScrollDelta.y * .12f), 3, 2000);
             if (Input.GetMouseButton(1)) { yaw += Input.GetAxis("Mouse X") * 3; pitch = Mathf.Clamp(pitch - Input.GetAxis("Mouse Y") * 2, 20, 85); }
@@ -318,21 +419,49 @@ namespace ProjectY.Samples
             if (step.sqrMagnitude > 0 && HasArea) followParty = false;
             if (HasArea && Input.GetMouseButtonDown(0))
             {
-                var index = areaRenderer.Pick(mapCamera.ScreenPointToRay(Input.mousePosition));
-                if (index >= 0)
+                var ray=mapCamera.ScreenPointToRay(Input.mousePosition);
+                var index = areaRenderer.Pick(ray);
+                if (view.Phase == "area")
                 {
-                    if (view.Phase == "area") {if(!AreaPointerBlocked()) SendCommand("area_move_cell", index + 1);}
-                    else if (view.Active.Team == 1)
+                    if(AreaPointerBlocked())return;
+                    if(selectedCharacterSkill!=0 && characterSkillTarget=="unit")
                     {
-                        if (moveSelected) SendCommand("move_cell", index + 1);
-                        else
+                        var targetId=PickAreaActor(ray,index);
+                        if(targetId!=0)SendCommand("character_skill",selectedCharacter,selectedCharacterSkill,targetId);
+                        else {view.Error="请选择目标模型或它占据的格子";BattleHUDRevision++;}
+                    }
+                    else if(index>=0)
+                    {
+                        if(selectedCharacterSkill==0)SendCommand("area_move_cell",index+1);
+                        else SendCommand("character_skill",selectedCharacter,selectedCharacterSkill,index+1);
+                    }
+                }
+                else if(view.Phase=="battle" && view.Active.Team==1)
+                {
+                    if(moveSelected) {if(index>=0)SendCommand("move_cell",index+1);}
+                    else
+                    {
+                        var skill=Array.Find(view.Skills,row=>row.Id==selectedSkill);
+                        if(skill!=null && skill.TargetCells.Length>0) {if(index>=0)SendCommand("skill_cell",selectedSkill,index+1);}
+                        else if(selectedSkill>0)
                         {
-                            var target = Array.Find(view.Units, actor => actor.HP > 0 && actor.CellIndex == index);
-                            if (target != null && selectedSkill > 0) SendCommand("skill", selectedSkill, target.Id);
+                            var targetId=PickAreaActor(ray,index);
+                            if(targetId!=0)SendCommand("skill",selectedSkill,targetId);
                         }
                     }
                 }
             }
+        }
+        private int PickAreaActor(Ray ray,int groundCell)
+        {
+            var enemy=combatRenderer.PickActor(ray,out var enemyDistance);
+            var party=squadRenderer.PickActor(ray,out var partyDistance);
+            if(enemy!=0 || party!=0)return enemyDistance<=partyDistance?enemy:party;
+            if(groundCell<0)return 0;
+            var target=Array.Find(view.Area.Enemies,actor=>Array.IndexOf(actor.OccupiedCells,groundCell)>=0);
+            if(target!=null)return target.Id;
+            var member=Array.Find(view.Area.Members,row=>row.CellIndex==groundCell);
+            return member==null?0:member.ActorId;
         }
         private void LateUpdate()
         {
@@ -345,7 +474,7 @@ namespace ProjectY.Samples
                 DrawExplorationGrid(); return;
             }
             mapCamera.orthographic = true; mapCamera.nearClipPlane = .1f;
-            var fraction = view.Phase == "battle" ? 0 : Mathf.Min(.7f, PanelWidth / Screen.width);
+            var fraction = view.Phase == "battle" ? 0 : Mathf.Min(.7f, (mainHud!=null?mainHud.WorldLeftInset:0) / Screen.width);
             mapCamera.rect = new Rect(fraction, 0, 1 - fraction, 1);
             var bounds = HasArea ? areaRenderer.Bounds : mapRenderer.Bounds;
             var rotation = Quaternion.Euler(pitch, yaw, 0); var distance = bounds.size.magnitude + zoom + 40;
@@ -363,18 +492,10 @@ namespace ProjectY.Samples
         }
         private bool AreaPointerBlocked()
         {
-            if(equipmentOpen || fatalError!=null || (EventSystem.current!=null && EventSystem.current.IsPointerOverGameObject())) return true;
+            if(equipmentOpen || growthOpen || storyOpen || fatalError!=null || (EventSystem.current!=null && EventSystem.current.IsPointerOverGameObject())) return true;
             var point=new Vector2(Input.mousePosition.x,Screen.height-Input.mousePosition.y);
             if(!new Rect(0,0,Screen.width,Screen.height).Contains(point)) return true;
-            if(!thirdPerson) return point.x<=PanelWidth;
-            if(new Rect(18,18,Mathf.Min(470,Screen.width-36),112).Contains(point) || new Rect(Screen.width-154,20,135,78).Contains(point)) return true;
             if(showEnvironment && new Rect(Screen.width-308,106,290,196).Contains(point)) return true;
-            NearestInteraction(out var kind,out _,out _);
-            if(kind!=0 || view.Area.InteractionKind!=0)
-            {
-                var width=Mathf.Min(520,Screen.width-36);var height=view.Area.InteractionKind==0?65:170;
-                if(new Rect((Screen.width-width)/2,Screen.height-height-22,width,height).Contains(point)) return true;
-            }
             return false;
         }
         private void DrawExplorationGrid()
@@ -395,7 +516,6 @@ namespace ProjectY.Samples
             smallStyle.normal.textColor = new Color(.63f, .72f, .74f);
             buttonStyle = new GUIStyle(GUI.skin.button) { font = font, fontSize = 15, wordWrap = true, padding = new RectOffset(12, 12, 9, 9) };
             tokenStyle = new GUIStyle(textStyle) { alignment = TextAnchor.MiddleCenter, fontStyle = FontStyle.Bold, fontSize = 14 };
-            healthStyle = new GUIStyle(smallStyle) { alignment = TextAnchor.MiddleCenter };
             toggleStyle = new GUIStyle(GUI.skin.toggle) { font = font, fontSize = 14 };
         }
         private static void Fill(Rect rect, Color color, Texture texture = null)
@@ -410,140 +530,14 @@ namespace ProjectY.Samples
         }
         private void OnGUI()
         {
-            if(equipmentOpen) return;
+            if(equipmentOpen || growthOpen || storyOpen) return;
             EnsureStyles();
-            if (view != null && view.Phase == "battle")
-            {
-                if (HasArea) DrawAreaBattle(); else DrawBattle();
-                return;
-            }
-            if (view != null && thirdPerson) { DrawTownWalk(); return; }
-            Fill(new Rect(0, 0, PanelWidth, Screen.height), Panel);
             if (view == null) { GUI.Label(new Rect(22, 22, Screen.width - 44, 200), fatalError ?? "正在准备远征…", textStyle); return; }
-            DrawSidebar();
-            if (view.Phase == "area") DrawArea();
-            else if (view.Phase == "map") DrawSites();
-            else DrawEvent();
-            if (!string.IsNullOrEmpty(LastError))
-            {
-                var rect = new Rect(PanelWidth + 20, Screen.height - 65, Screen.width - PanelWidth - 40, 50);
-                Fill(rect, new Color(.30f, .12f, .1f, .97f)); GUI.Label(new Rect(rect.x + 12, rect.y + 8, rect.width - 24, 38), LastError, textStyle);
-            }
+            if(view.Phase=="battle"&&!HasArea) DrawBattle();
+            else if(view.Phase=="map") DrawSites();
+            if(showEnvironment) DrawEnvironmentWindow();
         }
-        private void DrawSidebar()
-        {
-            GUILayout.BeginArea(new Rect(20, 20, PanelWidth - 40, Screen.height - 40));
-            if((view.Phase=="map"||view.Phase=="area")&&Button("背包与装备  [I]")) OpenEquipment();
-            GUILayout.Label("边境远征", titleStyle);
-            GUILayout.Label("探索 · 抉择 · 六边形战斗", smallStyle);
-            GUILayout.Space(14); GUILayout.Label("队伍资金  /  " + view.Coins + " 金币", subtitleStyle);
-            GUILayout.Space(10); sidebarScroll = GUILayout.BeginScrollView(sidebarScroll);
-            if ((view.Phase == "map" || view.Phase == "area") && !string.IsNullOrEmpty(view.Result))
-            { GUILayout.Label(view.Result, textStyle); GUILayout.Space(10); }
-            if (view.Phase == "area") DrawAreaActions();
-            else if (view.Phase == "map")
-            {
-                GUILayout.Label("选择目的地", subtitleStyle);
-                GUILayout.Label("进入地牢带队探索，进入城镇第三人称逛街。营地与野外事件保留原演示。", smallStyle);
-                foreach (var site in view.Sites)
-                {
-                    if (Button((site.Visited ? "✓  " : "◇  ") + site.Id + "  " + site.Name, site.Available)) { SendCommand("visit", site.Id); break; }
-                    if (!site.Available && !string.IsNullOrEmpty(site.Reason)) GUILayout.Label(site.Reason, smallStyle);
-                }
-                GUILayout.Space(10);
-                if (Button("全图视角  [F]")) FitMap();
-                GUILayout.Label("滚轮缩放 · 中键平移 · 右键旋转", smallStyle);
-            }
-            if (environment != null) { GUILayout.Space(12); DrawEnvironmentControls(); }
-            GUILayout.Space(16); GUILayout.Label("同行者", subtitleStyle);
-            foreach (var actor in view.Party)
-            {
-                GUILayout.Space(9); GUILayout.Label(actor.Name, textStyle);
-                GUILayout.Label((actor.HP == 0 ? "倒地  ·  " : "生命  ") + actor.HP + " / " + actor.MaxHP, smallStyle);
-                if (!string.IsNullOrEmpty(actor.Traits)) GUILayout.Label(actor.Traits, smallStyle);
-            }
-            if (view.Phase == "map") { GUILayout.Space(18); if (Button("开始新远征")) StartExpedition(); }
-            GUILayout.EndScrollView(); GUILayout.EndArea();
-        }
-        private void DrawAreaActions()
-        {
-            var area = view.Area;
-            foreach(var loot in area.Loots) if(!loot.Looted&&Button("搜刮 · "+loot.Name,IsNearLoot(loot))) {SendCommand("area_loot",loot.Id);break;}
-            GUILayout.Label(area.Name, subtitleStyle);
-            GUILayout.Label(area.Theme + " · 来自 Region #" + area.SourceRegionId, smallStyle);
-            if (areaLayout.IsTown)
-            {
-                GUILayout.Label("预设街区组合 · " + areaLayout.Facilities.Length + " 处设施 · " + area.Npcs.Length + " 位居民", smallStyle);
-                if (Button("第三人称逛街  [V]")) ToggleTownCamera();
-                GUILayout.Label("左键带队移动，靠近设施门口或居民后按 E。", textStyle);
-                foreach (var facility in areaLayout.Facilities)
-                    if (Button("前往 · " + facility.Name))
-                    { SendCommand("area_move_cell", facility.EntryIndex + 1); break; }
-                DrawTownInteraction();
-                if (Button("返回大地图")) SendCommand("area_leave");
-                return;
-            }
-            GUILayout.Label(areaLayout.Cells.Length + " 格 / " + area.RoomCount + " 个房间 / " + area.PropCount + " 件陈设\n" + area.WalkableCount + " 格可走地面 / 已发现 " + area.Known.Length + " 格", smallStyle);
-            var current = Array.Find(areaLayout.Rooms, room => room.Id == areaLayout.Cells[area.CellIndex].RoomId);
-            GUILayout.Label(current == null ? "宽通道 · 净宽至少 " + areaLayout.CorridorWidth + " 格" : current.Name + " · 第 " + current.Tier + " 级生成", smallStyle);
-            GUILayout.Label("一级连接石窟 / 二级精细随机 / 三级预设大房间", smallStyle);
-            GUILayout.Space(8);
-            GUILayout.Label("点击已发现地面，整队移动。每人各占一格，受阻自动跟随；空格停止。", textStyle);
-            if (Button("定位小队并跟随")) { followParty = true; focus = displayedParty; zoom = 13 * areaLayout.Radius; }
-            if (Button("停止移动  [Space]", area.Route.Length > 0)) SendCommand("area_stop");
-            if (Button("完整布局视角  [F]")) FitMap();
-            var nextReveal = GUILayout.Toggle(revealArea, " 显示完整结构（仅调试查看）", toggleStyle);
-            if (nextReveal != revealArea) { revealArea = nextReveal; areaRenderer.UpdateVisibility(area, revealArea); }
-            GUILayout.Label("已击败敌群 " + area.ClearedEncounters + " / " + area.EncounterCount + "。接近且看见敌人时自动进入战斗。", smallStyle);
-            GUILayout.Label("调试显示不解锁未知路径或敌人。绿色为入口，金色为深处地标。", smallStyle);
-            GUILayout.Space(8);
-            if (Button("返回大地图（测试入口）")) SendCommand("area_leave");
-            GUILayout.Label("再次进入保留布局、位置和探索记录；开始新远征才重置。", smallStyle);
-        }
-        private void DrawArea()
-        {
-            GUI.Label(new Rect(PanelWidth + 24, 20, Screen.width - PanelWidth - 48, 35), view.Area.Theme + (areaLayout.IsTown ? "  /  城镇街区" : "  /  地牢探索"), subtitleStyle);
-            if (revealArea)
-                foreach (var room in areaLayout.Rooms)
-                {
-                    var point = mapCamera.WorldToScreenPoint(areaLayout.Cells[room.CenterIndex].Position);
-                    if (point.z > 0 && point.x > PanelWidth + 70)
-                        GUI.Label(new Rect(point.x - 65, Screen.height - point.y - 36, 150, 30), "L" + room.Tier + " " + room.Name, smallStyle);
-                }
-            foreach (var index in view.Area.Route)
-            {
-                var point = mapCamera.WorldToScreenPoint(areaLayout.Cells[index].Position + Vector3.up * .1f);
-                if (point.z > 0 && point.x > PanelWidth) Fill(new Rect(point.x - 2, Screen.height - point.y - 2, 4, 4), Teal, circleTexture);
-            }
-            foreach (var member in view.Area.Members)
-            {
-                var marker = mapCamera.WorldToScreenPoint(squadRenderer.Position(member.ActorId) + Vector3.up * 2.55f);
-                if (marker.z <= 0 || marker.x <= PanelWidth) continue;
-                var actor = Array.Find(view.Party, item => item.Id == member.ActorId);
-                GUI.Label(new Rect(marker.x - 65, Screen.height - marker.y - 14, 130, 25), actor.Name, healthStyle);
-            }
-            DrawAreaEnemies();
-        }
-        private void DrawAreaEnemies()
-        {
-            foreach (var actor in view.Area.Enemies) DrawWorldActor(actor);
-        }
-        private void DrawWorldActor(AdventureViewData.Actor actor)
-        {
-            var position = mapCamera.WorldToScreenPoint(areaLayout.Cells[actor.CellIndex].Position + Vector3.up * 2.65f);
-            if (position.z <= 0 || position.x <= (view.Phase == "battle" ? 45 : PanelWidth + 45) || position.x >= Screen.width - 45) return;
-            var x = position.x; var y = Screen.height - position.y;
-            GUI.Label(new Rect(x - 85, y - 26, 170, 24), actor.Name, healthStyle);
-            var bar = new Rect(x - 32, y, 64, 5);
-            Fill(bar, Background); Fill(new Rect(bar.x, bar.y, bar.width * actor.HP / actor.MaxHP, bar.height), actor.Team == 1 ? Teal : Enemy);
-            GUI.Label(new Rect(x - 45, y + 7, 90, 20), actor.HP + "/" + actor.MaxHP, healthStyle);
-        }
-        private void DrawAreaBattle()
-        {
-            foreach (var actor in view.Units) if (actor.Team == 1 && actor.HP > 0) DrawWorldActor(actor);
-            DrawAreaEnemies();
-        }
-        private void ToggleTownCamera()
+        public void ToggleTownCamera()
         {
             SendCommand("area_stop"); townCamera.ResetSteering(); wasWalking = false; thirdPerson = !thirdPerson;
             followParty = true; focus = displayedParty;
@@ -565,28 +559,6 @@ namespace ProjectY.Samples
                 { best = range; kind = 2; id = npc.Id; label = Array.Find(areaLayout.Npcs, value => value.Id == npc.Id).Name; }
             }
         }
-        private void DrawTownInteraction()
-        {
-            if (view.Area.InteractionKind == 0)
-            {
-                NearestInteraction(out var kind, out var id, out var label);
-                if (kind != 0 && Button("[E]  查看 · " + label)) SendCommand("area_interact", kind, id);
-                return;
-            }
-            string name, description;
-            if (view.Area.InteractionKind == 1)
-            {
-                var site = Array.Find(areaLayout.Facilities, value => value.Id == view.Area.InteractionId);
-                name = site.Name; description = site.Description;
-            }
-            else
-            {
-                var npc = Array.Find(areaLayout.Npcs, value => value.Id == view.Area.InteractionId);
-                name = npc.Name; description = npc.Description;
-            }
-            GUILayout.Label(name, subtitleStyle); GUILayout.Label(description, textStyle);
-            if (Button("继续逛街  [Esc]")) SendCommand("area_close");
-        }
         private void DrawEnvironmentControls()
         {
             GUILayout.Label("画面 · " + Mathf.FloorToInt(environment.Hour).ToString("00") + ":" + Mathf.FloorToInt(environment.Hour % 1 * 60).ToString("00"), subtitleStyle);
@@ -603,92 +575,38 @@ namespace ProjectY.Samples
         private void DrawEnvironmentWindow()
         {
             if (environment == null) return;
-            if (GUI.Button(new Rect(Screen.width - 154, 64, 135, 34), showEnvironment ? "收起光照" : "时间 / 天气", buttonStyle)) showEnvironment = !showEnvironment;
             if (!showEnvironment) return;
             var rect = new Rect(Screen.width - 308, 106, 290, 196); Fill(rect, Panel);
             GUILayout.BeginArea(new Rect(rect.x + 12, rect.y + 10, rect.width - 24, rect.height - 20)); DrawEnvironmentControls(); GUILayout.EndArea();
-        }
-        private void DrawTownWalk()
-        {
-            DrawEnvironmentWindow();
-            var header = new Rect(18, 18, Mathf.Min(470, Screen.width - 36), 112);
-            Fill(header, new Color(.075f, .105f, .12f, .90f));
-            GUI.Label(new Rect(32, 29, header.width - 28, 32), view.Area.Theme + " · " + view.Area.Name, subtitleStyle);
-            GUI.Label(new Rect(32, 65, header.width - 28, 52), "WASD 带队 · 右键拖动镜头 · 滚轮远近\nE 交互 · V 俯视/第三人称 · 空格停止", smallStyle);
-            var leave = GUI.Button(new Rect(Screen.width - 154, 20, 135, 36), "返回大地图", buttonStyle);
-            if (leave) { SendCommand("area_leave"); return; }
-            // 只标注附近设施，避免远处名字遮挡街景。距离同时考虑相机前后。
-            var leader = squadRenderer.Position(view.Area.Members[0].ActorId);
-            foreach (var facility in areaLayout.Facilities)
-            {
-                var position = areaLayout.Cells[facility.EntryIndex].Position;
-                if ((position - leader).sqrMagnitude > 28 * 28) continue;
-                var point = mapCamera.WorldToScreenPoint(position + Vector3.up * 2.3f);
-                if (point.z > .2f && point.x > 65 && point.x < Screen.width - 65)
-                    GUI.Label(new Rect(point.x - 65, Screen.height - point.y - 24, 130, 25), facility.Name, healthStyle);
-            }
-            NearestInteraction(out var kind, out _, out _);
-            if (kind != 0 || view.Area.InteractionKind != 0)
-            {
-                var width = Mathf.Min(520, Screen.width - 36); var height = view.Area.InteractionKind == 0 ? 65 : 170;
-                var card = new Rect((Screen.width - width) / 2, Screen.height - height - 22, width, height);
-                Fill(card, Panel); GUILayout.BeginArea(new Rect(card.x + 14, card.y + 12, card.width - 28, card.height - 20));
-                DrawTownInteraction(); GUILayout.EndArea();
-            }
-            if (!string.IsNullOrEmpty(LastError))
-                GUI.Label(new Rect(24, 140, Screen.width - 48, 52), LastError, textStyle);
         }
         private void DrawSites()
         {
             foreach (var site in view.Sites)
             {
                 var point = mapCamera.WorldToScreenPoint(site.Position + Vector3.up * .6f);
-                if (point.z < 0 || point.x < PanelWidth + 15 || point.x > Screen.width - 15) continue;
+                if (point.z < 0 || point.x < (mainHud!=null?mainHud.WorldLeftInset:0) + 15 || point.x > Screen.width - 15) continue;
                 var rect = new Rect(point.x - 17, Screen.height - point.y - 17, 34, 34);
                 Fill(new Rect(rect.x - 3, rect.y - 3, 40, 40), Background, circleTexture);
                 Fill(rect, site.Available ? Gold : new Color(.4f, .46f, .46f), circleTexture);
                 GUI.Label(rect, site.Id.ToString(), tokenStyle);
-                if (site.Available && GUI.Button(rect, GUIContent.none, GUIStyle.none)) { SendCommand("visit", site.Id); break; }
+                if (site.Available && GUI.Button(rect, GUIContent.none, GUIStyle.none) && (EventSystem.current==null||!EventSystem.current.IsPointerOverGameObject())) { SendCommand("visit", site.Id); break; }
             }
-            GUI.Label(new Rect(PanelWidth + 24, 22, Screen.width - PanelWidth - 48, 40), "大地图  /  选择一处地点开始探索", subtitleStyle);
-        }
-        private void DrawEvent()
-        {
-            var area = new Rect(PanelWidth, 0, Screen.width - PanelWidth, Screen.height);
-            Fill(area, new Color(.02f, .035f, .045f, .76f));
-            var width = Mathf.Min(590, area.width - 60);
-            var card = new Rect(area.center.x - width / 2, Mathf.Max(30, Screen.height * .16f), width, Mathf.Min(470, Screen.height - 90));
-            Fill(card, Panel); Fill(new Rect(card.x, card.y, card.width, 4), Gold);
-            GUILayout.BeginArea(new Rect(card.x + 28, card.y + 27, card.width - 56, card.height - 54));
-            GUILayout.Label(view.Phase == "event" ? "途中见闻" : "远征记录", smallStyle);
-            GUILayout.Space(10); GUILayout.Label(view.Phase == "event" ? view.EventTitle : "本次行动结束", titleStyle);
-            GUILayout.Space(18); GUILayout.Label(view.Phase == "event" ? view.EventText : view.Result, textStyle);
-            GUILayout.Space(22);
-            if (view.Phase == "event")
-            {
-                foreach (var choice in view.Choices)
-                {
-                    if (Button(choice.Label, choice.Available)) { SendCommand("choose", choice.Id); break; }
-                    if (!choice.Available) GUILayout.Label(choice.Reason, smallStyle);
-                    GUILayout.Space(5);
-                }
-            }
-            else if (Button("返回大地图")) SendCommand("return");
-            GUILayout.EndArea();
         }
         private Vector2 CellCenter(int q, int r, Vector2 center, float size) => center + new Vector2(1.7320508f * (q + r * .5f), 1.5f * r) * size;
+        private float BoardSize() => Mathf.Max(8,Mathf.Min((Screen.width-70)/((view.Radius*2+1)*1.7320508f),(Screen.height-210)/(view.Radius*3+2)));
+        private Vector2 BoardCenter() => new Vector2(Screen.width*.5f,95+(Screen.height-210)*.5f);
         private void DrawBattle()
         {
             var area = new Rect(0, 0, Screen.width, Screen.height); Fill(area, Background);
-            var size = Mathf.Max(8, Mathf.Min((area.width - 70) / ((view.Radius * 2 + 1) * 1.7320508f), (area.height - 210) / (view.Radius * 3 + 2)));
-            var center = new Vector2(area.center.x, 95 + (area.height - 210) / 2);
+            var size = BoardSize();var center = BoardCenter();
             var chosen = Array.Find(view.Skills, skill => skill.Id == selectedSkill);
             AdventureViewData.Cell clicked = null;
             foreach (var cell in view.Cells)
             {
                 var position = CellCenter(cell.Q, cell.R, center, size);
                 var rect = new Rect(position.x - size * .8660254f, position.y - size, size * 1.7320508f, size * 2);
-                var reachable = moveSelected && view.Active.Team == 1 && Array.Exists(view.Reachable, next => next.Q == cell.Q && next.R == cell.R);
+                var reachable = view.Active.Team == 1 && (moveSelected && Array.Exists(view.Reachable, next => next.Q == cell.Q && next.R == cell.R)
+                    || chosen!=null && Array.IndexOf(chosen.TargetCells,cell.CellIndex+1)>=0);
                 var color = cell.Blocked ? new Color(.12f, .15f, .17f) : reachable ? new Color(.19f, .39f, .34f) : new Color(.18f, .23f, .25f);
                 Fill(rect, new Color(.08f, .12f, .14f), hexTexture);
                 var inner = new Rect(rect.x + 2, rect.y + 2, rect.width - 4, rect.height - 4); Fill(inner, color, hexTexture);
@@ -707,7 +625,8 @@ namespace ProjectY.Samples
                 if (moveSelected) SendCommand("move", clicked.Q, clicked.R);
                 else
                 {
-                    var target = Array.Find(view.Units, actor => actor.HP > 0 && actor.Q == clicked.Q && actor.R == clicked.R);
+                    if(chosen!=null && chosen.TargetCells.Length>0) {SendCommand("skill_cell",selectedSkill,clicked.CellIndex+1);return;}
+                    var target = Array.Find(view.Units, actor => actor.HP > 0 && Array.IndexOf(actor.OccupiedCells,clicked.CellIndex)>=0);
                     if (target != null && selectedSkill > 0) SendCommand("skill", selectedSkill, target.Id);
                 }
             }
@@ -723,10 +642,6 @@ namespace ProjectY.Samples
             var separator = actor.Name.IndexOf(" · ", StringComparison.Ordinal);
             var label = actor.HP == 0 ? "×" : separator > 0 ? actor.Name.Substring(0, separator) : actor.Name.Substring(0, Mathf.Min(3, actor.Name.Length));
             GUI.Label(rect, label, tokenStyle);
-            if (actor.HP == 0) return;
-            var bar = new Rect(position.x - size * .65f, position.y + size * .64f, size * 1.3f, 5);
-            Fill(bar, new Color(.06f, .08f, .09f)); Fill(new Rect(bar.x, bar.y, bar.width * actor.HP / actor.MaxHP, bar.height), actor.Team == 1 ? Teal : Enemy);
-            GUI.Label(new Rect(position.x - size, position.y + size * .72f, size * 2, 18), actor.HP + "/" + actor.MaxHP, healthStyle);
         }
         private void OnDestroy()
         {

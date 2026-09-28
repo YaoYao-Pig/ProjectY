@@ -7,11 +7,25 @@ namespace ProjectY.Data
     [LuaCallCSharp]
     public sealed class MapAreaLootData
     {
+        private int[] itemIds, counts;
         public int Id { get; }
         public int CellIndex { get; }
         public int TableId { get; }
         public bool Looted { get; internal set; }
-        internal MapAreaLootData(int id, int cell, int table) { Id = id; CellIndex = cell; TableId = table; }
+        public string Name { get; private set; }
+        public bool ContentsReady => itemIds!=null;
+        public int ItemCount => itemIds==null?throw new InvalidOperationException("Loot contents are not initialized."):itemIds.Length;
+        public int GetItemIdAt(int index) => itemIds[index];
+        public int GetCountAt(int index) => counts[index];
+        internal MapAreaLootData(int id,int cell,int table) {Id=id;CellIndex=cell;TableId=table;}
+        internal MapAreaLootData(int id,int cell,int table,string name,int[] ids,int[] amounts):this(id,cell,table) {SetContents(name,ids,amounts);}
+        public void SetContents(string name,int[] ids,int[] amounts)
+        {
+            if(ContentsReady || Looted || string.IsNullOrEmpty(name) || ids==null || amounts==null || ids.Length!=amounts.Length)throw new ArgumentException("Invalid loot contents.");
+            var unique=new HashSet<int>();
+            for(int i=0;i<ids.Length;i++)if(ids[i]<1 || amounts[i]<1 || !unique.Add(ids[i]))throw new ArgumentException("Invalid loot item.");
+            Name=name;itemIds=(int[])ids.Clone();counts=(int[])amounts.Clone();
+        }
     }
     /// <summary>地牢敌群与战斗共享角色实例；离开地点不恢复生命或重新生成。</summary>
     [LuaCallCSharp]
@@ -21,7 +35,7 @@ namespace ProjectY.Data
         public int Id { get; }
         public int EncounterId { get; }
         public int EnemyCount => enemies.Count;
-        public bool Defeated => enemies.Count > 0 && enemies.TrueForAll(actor => actor.HP == 0);
+        public bool Defeated => enemies.Count > 0 && enemies.TrueForAll(actor => actor.HP == 0 || actor.AnimalOwnerId != 0);
         public CombatActorData GetEnemyAt(int index) => enemies[index];
         internal MapAreaEncounterData(int id, int encounterId) { Id = id; EncounterId = encounterId; }
         public CombatActorData AddEnemy(int id, int templateId, int q, int r)
@@ -60,11 +74,18 @@ namespace ProjectY.Data
         public bool LootInitialized { get; private set; }
         public int LootCount => loot.Count;
         public MapAreaLootData GetLootAt(int index) => loot[index];
-        public void AddLoot(int cellIndex, int tableId)
+        // 原固定配方 API 保留；Lua 在首次访问时物化固定内容。随机生成使用下面的完整重载。
+        public void AddLoot(int cellIndex,int tableId)
         {
             CheckCell(cellIndex);
-            if (LootInitialized || tableId < 1 || loot.Exists(row => row.CellIndex == cellIndex)) throw new InvalidOperationException("Invalid loot placement.");
-            loot.Add(new MapAreaLootData(loot.Count + 1, cellIndex, tableId)); Revision++;
+            if(LootInitialized || tableId<1 || loot.Exists(row=>row.CellIndex==cellIndex))throw new InvalidOperationException("Invalid loot placement.");
+            loot.Add(new MapAreaLootData(loot.Count+1,cellIndex,tableId));Revision++;
+        }
+        public void AddLoot(int cellIndex,int tableId,string name,int[] itemIds,int[] counts,bool enemyDrop)
+        {
+            CheckCell(cellIndex);
+            if(tableId<1 || (!enemyDrop && (LootInitialized || loot.Exists(row=>row.CellIndex==cellIndex))))throw new InvalidOperationException("Invalid loot placement.");
+            loot.Add(new MapAreaLootData(loot.Count+1,cellIndex,tableId,name,itemIds,counts));Revision++;
         }
         public void CompleteLootInitialization() { LootInitialized = true; }
         public void Loot(int id)
@@ -80,6 +101,32 @@ namespace ProjectY.Data
         private int[] memberCells = Array.Empty<int>();
         private int cursor;
         private float elapsed;
+        private double explorationRoundElapsed;
+        public int WorldRound { get; private set; }
+        public void CompleteWorldRound()
+        {
+            WorldRound=checked(WorldRound+1);
+            foreach(var encounter in encounters)
+                for(int i=0;i<encounter.EnemyCount;i++)
+                {
+                    var actor=encounter.GetEnemyAt(i);
+                    if(actor.HP>0 && actor.AnimalOwnerId==0)actor.AdvanceTamingRound();
+                }
+            Revision++;
+        }
+        public int AdvanceExplorationRounds(float deltaTime, float roundSeconds, float stepSeconds)
+        {
+            if(deltaTime<0 || float.IsNaN(deltaTime) || float.IsInfinity(deltaTime) || roundSeconds<=0 ||
+                float.IsNaN(roundSeconds) || float.IsInfinity(roundSeconds) || stepSeconds<=0 || float.IsNaN(stepSeconds) || float.IsInfinity(stepSeconds))
+                throw new ArgumentOutOfRangeException(nameof(deltaTime));
+            if(RemainingSteps==0)return 0;
+            // 只累计实际路线仍在执行的时长；停止、改道和进出战斗不清空余量。
+            explorationRoundElapsed+=Math.Min(deltaTime,Math.Max(0,RemainingSteps*(double)stepSeconds-elapsed));
+            int completed=(int)Math.Floor(explorationRoundElapsed/roundSeconds);
+            explorationRoundElapsed-=completed*(double)roundSeconds;
+            for(int i=0;i<completed;i++)CompleteWorldRound();
+            return completed;
+        }
         private readonly List<MapAreaNpcData> npcs = new List<MapAreaNpcData>();
         private readonly List<MapAreaEncounterData> encounters = new List<MapAreaEncounterData>();
         public bool EncountersInitialized { get; private set; }

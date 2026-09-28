@@ -21,8 +21,8 @@ local ok,err=xpcall(function()
         local site={id=77,pointId=11,areaConfigId=1,source={regionId=1,regionConfigId=1,regionType=1,q=0,r=0,height=1,biomeWeights={{regionType=1,weight=1}}}}
         assert(areas:Enter(site,123));eq:InitializeLoot(areas)
         local area,state=areas:ActiveLayout(),areas.data.Active
-        assert(state.LootCount==3 and state.LootInitialized)
-        for i=0,state.LootCount-1 do
+        local generatedCount=state.LootCount;assert(generatedCount>=5 and state.LootInitialized)
+        for i=0,2 do
             local loot=state:GetLootAt(i);assert(area:FindPath(area.entryIndex,loot.CellIndex))
             state:DeployMembers({party[1].Id},{loot.CellIndex});areas:RevealSquad(area,state)
             assert(eq:Loot(areas,loot.Id));local count=inventory:CountItem(31)
@@ -30,7 +30,7 @@ local ok,err=xpcall(function()
         end
         assert(inventory:CountItem(11)==1 and inventory:CountItem(12)==1 and inventory:CountItem(13)==1 and inventory.MagazineCount==3)
         assert(areas:Leave());assert(areas:Enter(site,123));eq:InitializeLoot(areas)
-        assert(areas.data.Active.LootCount==3 and areas.data.Active:GetLootAt(0).Looted)
+        assert(areas.data.Active.LootCount==generatedCount and areas.data.Active:GetLootAt(0).Looted)
         assert(areas:Leave())
     end)
     test('runes compose resolved skills, reject mismatched slots, and return to shared inventory',function()

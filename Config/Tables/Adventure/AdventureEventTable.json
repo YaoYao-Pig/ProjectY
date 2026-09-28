@@ -30,6 +30,34 @@
       "type": "int[]",
       "description": "选项顺序",
       "ref": "AdventureChoiceTable"
+    },
+    {
+      "name": "presentation",
+      "type": "enum",
+      "description": "simple 自动结算并记日志；complex 展示通用图文选项面板",
+      "values": [
+        "simple",
+        "complex"
+      ],
+      "default": "complex"
+    },
+    {
+      "name": "illustration",
+      "type": "string",
+      "description": "Sprite 资源路径；复杂事件必须配置",
+      "default": "Assets/DynamicAsset/UI/Art/Story/Wayfarers.png"
+    },
+    {
+      "name": "actorAttribute",
+      "type": "string",
+      "description": "故事主角由最高此属性的存活队员担任；空为首名，平手按队伍顺序",
+      "default": ""
+    },
+    {
+      "name": "logKind",
+      "type": "string",
+      "description": "引用 StoryLogTemplateTable.kind",
+      "default": "event"
     }
   ],
   "rows": [
@@ -42,7 +70,11 @@
         1,
         2,
         3
-      ]
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Wayfarers.png",
+      "actorAttribute": "",
+      "logKind": "event"
     },
     {
       "id": 2,
@@ -52,7 +84,11 @@
       "choiceIds": [
         4,
         3
-      ]
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Wayfarers.png",
+      "actorAttribute": "",
+      "logKind": "event"
     },
     {
       "id": 3,
@@ -63,7 +99,11 @@
         2,
         1,
         3
-      ]
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Wayfarers.png",
+      "actorAttribute": "",
+      "logKind": "event"
     },
     {
       "id": 4,
@@ -73,7 +113,97 @@
       "choiceIds": [
         5,
         3
-      ]
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Wayfarers.png",
+      "actorAttribute": "",
+      "logKind": "event"
+    },
+    {
+      "id": 5,
+      "name": "石缝里的路标",
+      "description": "{actor}发现了旧旅人留下的路标。",
+      "repeatable": false,
+      "choiceIds": [
+        6
+      ],
+      "presentation": "simple",
+      "illustration": "",
+      "actorAttribute": "scouting",
+      "logKind": "discovery"
+    },
+    {
+      "id": 6,
+      "name": "余烬中的援手",
+      "description": "风把火星卷进倒塌的门廊。{actor}被碎石压住了衣角，同伴伸出手。是继续独自逞强，还是接受这份帮助？",
+      "repeatable": false,
+      "choiceIds": [
+        7,
+        8,
+        3
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Wayfarers.png",
+      "actorAttribute": "",
+      "logKind": "event"
+    },
+    {
+      "id": 7,
+      "name": "地牢入口的旧营地",
+      "description": "石阶下有一处旧营地。",
+      "repeatable": false,
+      "choiceIds": [
+        9
+      ],
+      "presentation": "simple",
+      "illustration": "",
+      "actorAttribute": "scouting",
+      "logKind": "discovery"
+    },
+    {
+      "id": 8,
+      "name": "铁匠的货架",
+      "description": "铁匠擦去零件上的油污，把三件改装件放在台面上。“挑一件合适的，路上会轻松些。”",
+      "repeatable": true,
+      "choiceIds": [
+        10,
+        11,
+        12,
+        3
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Wayfarers.png",
+      "actorAttribute": "",
+      "logKind": "event"
+    },
+    {
+      "id": 9,
+      "name": "出发前的补给",
+      "description": "货架上摆着弹药和备用弹匣，商人等着你做出选择。",
+      "repeatable": true,
+      "choiceIds": [
+        13,
+        14,
+        5,
+        3
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Wayfarers.png",
+      "actorAttribute": "",
+      "logKind": "event"
+    },
+    {
+      "id": 10,
+      "name": "收好行囊",
+      "description": "小队清点刚刚找到的物资。",
+      "repeatable": false,
+      "choiceIds": [
+        15
+      ],
+      "presentation": "simple",
+      "illustration": "",
+      "actorAttribute": "",
+      "logKind": "discovery"
     }
   ]
 }

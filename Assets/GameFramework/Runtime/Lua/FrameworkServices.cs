@@ -14,7 +14,9 @@ namespace ProjectY
         public AdventureData Adventure { get; } = new AdventureData();
         public LocalizationService Localization => LocalizationService.Shared;
         public UIHost UI { get; }
-        public FrameworkServices(UIHost ui) { UI = ui; }
+        public CharacterAppearanceService Appearances { get; } = new CharacterAppearanceService();
+        public CharacterSaveService CharacterSaves { get; }
+        public FrameworkServices(UIHost ui, string characterSavePath = null) { UI = ui; CharacterSaves = new CharacterSaveService(Appearances, characterSavePath); }
 
         // 统一从 _Gen 读取导表二进制；xLua 直接把 byte[] 映射为保留零字节的 Lua 字符串。
         public byte[] ReadConfig(string name)

@@ -2,26 +2,31 @@
 local Hex=require('Game.Map.HexGrid')
 local Squad={}
 local function copy(values) local result={};for i,v in ipairs(values) do result[i]=v end;return result end
-local function distances(area,target,allowed,limit)
+local function distances(area,target,allowed,limit,member)
     limit=limit or 12 -- 编队只需局部距离场，避免对每一步反复遍历整个地牢。
     local queue,head,result={target},1,{[target]=0}
     while head<=#queue do
         local index=queue[head];head=head+1
         for _,nextIndex in ipairs(area.cells[index].neighbors) do
             local cell=area.cells[nextIndex]
-            if result[index]<limit and area:CanStep(area.cells[index],cell) and not result[nextIndex] and allowed(cell) then
+            if result[index]<limit and area:CanStep(area.cells[index],cell) and not result[nextIndex] and allowed(cell,member or 1) then
                 result[nextIndex]=result[index]+1;queue[#queue+1]=nextIndex
             end
         end
     end
     return result
 end
-function Squad.Deploy(area,anchor,count,allowed)
+function Squad.Deploy(area,anchor,count,allowed,footprint)
     assert(count>=1 and count<=4,'Squad size must be 1..4')
-    local result,queue,head,seen={},{anchor},1,{[anchor]=true}
+    local result,queue,head,seen,used={},{anchor},1,{[anchor]=true},{}
     while head<=#queue and #result<count do
         local index=queue[head];head=head+1
-        if not allowed or allowed(area.cells[index]) then result[#result+1]=index end
+        local cells=footprint and footprint(index,#result+1) or {index}
+        local fits=cells~=nil
+        if cells then for _,part in ipairs(cells) do if used[part] then fits=false end end end
+        if fits and (not allowed or allowed(area.cells[index],#result+1)) then
+            result[#result+1]=index;for _,part in ipairs(cells) do used[part]=true end
+        end
         for _,cell in ipairs(area:Neighbors(area.cells[index])) do
             if not seen[cell.index] then seen[cell.index]=true;queue[#queue+1]=cell.index end
         end
@@ -40,13 +45,17 @@ local function targets(area,positions,leader,allowed)
     local result={leader}
     for i=2,#positions do
         local cell=candidates[i-1]
-        result[i]=area:CanStep(to,cell) and allowed(cell) and cell.index or positions[i-1]
+        result[i]=area:CanStep(to,cell) and allowed(cell,i) and cell.index or positions[i-1]
     end
     return result
 end
 -- 最多 7³ 种同帧组合；排除重格、迎面交换与穿墙。距离场使队员能绕陈设跟进。
-local function jointStep(area,positions,leader,goals,fields,allowed,avoid,cohesionLimit)
-    local nextPositions,used={leader},{[leader]=true}
+local function jointStep(area,positions,leader,goals,fields,allowed,avoid,cohesionLimit,footprint)
+    local function shape(index,member) return footprint and footprint(index,member) or {index} end
+    if not allowed(area.cells[leader],1) then return nil end
+    local leaderCells=shape(leader,1);if not leaderCells then return nil end
+    local nextPositions,used={leader},{}
+    for _,index in ipairs(leaderCells) do used[index]=true end
     local best,bestScore
     local function visit(i,score)
         if bestScore and score>=bestScore then return end
@@ -57,22 +66,24 @@ local function jointStep(area,positions,leader,goals,fields,allowed,avoid,cohesi
         local candidates={positions[i]}
         for _,index in ipairs(area.cells[positions[i]].neighbors) do
             local cell=area.cells[index]
-            if area:CanStep(area.cells[positions[i]],cell) and allowed(cell) then candidates[#candidates+1]=index end
+            if area:CanStep(area.cells[positions[i]],cell) and allowed(cell,i) then candidates[#candidates+1]=index end
         end
         for _,index in ipairs(candidates) do
-            local valid=not used[index] and fields[i][index]~=nil
+            local cells=shape(index,i)
+            local valid=cells~=nil and fields[i][index]~=nil and allowed(area.cells[index],i)
+            if cells then for _,part in ipairs(cells) do if used[part] then valid=false end end end
             for j=1,i-1 do if index==positions[j] and nextPositions[j]==positions[i] then valid=false end end
             if valid then
-                used[index]=true;nextPositions[i]=index
+                for _,part in ipairs(cells) do used[part]=true end;nextPositions[i]=index
                 local value=fields[i][index]*10+(index==positions[i] and 0 or 1)+(index==avoid and 100 or 0)
                 visit(i+1,score+value)
-                used[index]=nil
+                for _,part in ipairs(cells) do used[part]=nil end
             end
         end
     end
     visit(2,0);return best
 end
-function Squad.Plan(area,positions,path,allowed,settle)
+function Squad.Plan(area,positions,path,allowed,settle,footprint)
     assert(#positions>=1 and #positions<=4,'Squad is not deployed')
     local current,frames=copy(positions),{}
     local function append(nextPositions)
@@ -84,9 +95,9 @@ function Squad.Plan(area,positions,path,allowed,settle)
     local dispersed=false
     for _,index in ipairs(current) do if not nearby[index] then dispersed=true;break end end
     if dispersed then
-        local goals=Squad.Deploy(area,current[1],#current,allowed)
+        local goals=Squad.Deploy(area,current[1],#current,allowed,footprint)
         local fields={[1]=distances(area,current[1],allowed,#area.cells)}
-        for i=2,#current do fields[i]=distances(area,goals[i],allowed,#area.cells) end
+        for i=2,#current do fields[i]=distances(area,goals[i],allowed,#area.cells,i) end
         local seen={}
         for _=1,#area.cells do
             local limit=0
@@ -96,7 +107,7 @@ function Squad.Plan(area,positions,path,allowed,settle)
             end
             if limit<=4 then break end
             seen[table.concat(current,',')]=true
-            local nextPositions=jointStep(area,current,current[1],goals,fields,allowed,nil,limit)
+            local nextPositions=jointStep(area,current,current[1],goals,fields,allowed,nil,limit,footprint)
             if not nextPositions or seen[table.concat(nextPositions,',')] then return nil,'战后队伍暂时无法收拢，请清理附近的阻挡' end
             append(nextPositions)
         end
@@ -105,8 +116,8 @@ function Squad.Plan(area,positions,path,allowed,settle)
     for _,leader in ipairs(path) do
         local goals=targets(area,current,leader,allowed);local fields={[1]=distances(area,leader,allowed,4)}
         finalGoals=goals
-        for i=2,#positions do fields[i]=distances(area,goals[i],allowed) end
-        local nextPositions=jointStep(area,current,leader,goals,fields,allowed)
+        for i=2,#positions do fields[i]=distances(area,goals[i],allowed,nil,i) end
+        local nextPositions=jointStep(area,current,leader,goals,fields,allowed,nil,nil,footprint)
         -- 若领队下一格被占，先留在原地让同伴侧移；绝不把队员传送过去。
         -- 等待时按领队当前位置约束队形。拐角后的位置可能比末尾同伴多隔一格，
         -- 若继续使用前方四格距离场，会把合法的原地收拢也误判为无路可走。
@@ -117,10 +128,10 @@ function Squad.Plan(area,positions,path,allowed,settle)
                 waitingFields={[1]=distances(area,current[1],allowed,4)}
                 for i=2,#positions do waitingFields[i]=fields[i] end
             end
-            local clearing=jointStep(area,current,current[1],goals,waitingFields,allowed,leader)
+            local clearing=jointStep(area,current,current[1],goals,waitingFields,allowed,leader,nil,footprint)
             if not clearing or table.concat(clearing,',')==table.concat(current,',') then return nil,'通路暂时无法容纳整队，请选择附近更开阔的位置' end
             append(clearing)
-            nextPositions=jointStep(area,current,leader,goals,fields,allowed)
+            nextPositions=jointStep(area,current,leader,goals,fields,allowed,nil,nil,footprint)
         end
         if not nextPositions then return nil,'小队无法在此处错身，请选择附近更开阔的位置' end
         append(nextPositions)
@@ -128,11 +139,11 @@ function Squad.Plan(area,positions,path,allowed,settle)
     -- 领队抵达后允许同伴收拢；空间不足时保持合法的跟随形状，不强挤成固定三角形。
     if finalGoals and settle~=false then
         local fields={[1]=distances(area,current[1],allowed,4)}
-        for i=2,#positions do fields[i]=distances(area,finalGoals[i],allowed) end
+        for i=2,#positions do fields[i]=distances(area,finalGoals[i],allowed,nil,i) end
         local seen={}
         for _=1,8 do
             seen[table.concat(current,',')]=true
-            local nextPositions=jointStep(area,current,current[1],finalGoals,fields,allowed)
+            local nextPositions=jointStep(area,current,current[1],finalGoals,fields,allowed,nil,nil,footprint)
             if not nextPositions or seen[table.concat(nextPositions,',')] then break end
             append(nextPositions)
         end

@@ -1,3 +1,4 @@
+local EmptyGrowth=assert(loadfile('Tools/Tests/growth_empty.lua'))()
 -- 无 Editor 的最小检查：真实配表、战场连通、阻挡与属性公式。
 package.path = 'Lua/?.lua;' .. package.path
 local Board = require('Game.Battle.BattleBoard')
@@ -42,8 +43,8 @@ test('path search respects blockers, occupied cells and movement budget', functi
 end)
 test('real unit, skill, effect and event tables agree and trait modifiers affect formulas', function()
     local stats = require('Game.Battle.CombatStats')(config)
-    local source = {TemplateId = 1, TraitCount = 0, Guard = 0}
-    local target = {TemplateId = 4, TraitCount = 0, Guard = 0}
+    local source = {Growth=EmptyGrowth(),TemplateId = 1, TraitCount = 0, Guard = 0}
+    local target = {Growth=EmptyGrowth(),TemplateId = 4, TraitCount = 0, Guard = 0}
     local skill = config:GetTable('CombatSkillTable'):Get(1)
     local effect = config:GetTable('CombatEffectTable'):Get(skill.effectIds[1])
     local original = effect.amount:Evaluate(stats:EffectVariables(source, target, skill))

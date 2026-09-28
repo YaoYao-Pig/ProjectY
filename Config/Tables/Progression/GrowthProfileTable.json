@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "name": "GrowthProfileTable",
+  "description": "每个角色模板的初始树、特质和锁住的潜力。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "unitId",
+      "type": "int",
+      "description": "角色模板",
+      "ref": "CombatUnitTable"
+    },
+    {
+      "name": "treeIds",
+      "type": "int[]",
+      "description": "初始开放树",
+      "ref": "TalentTreeTable"
+    },
+    {
+      "name": "traitIds",
+      "type": "int[]",
+      "description": "初始特质",
+      "ref": "CombatTraitTable"
+    },
+    {
+      "name": "potential",
+      "type": "int",
+      "description": "等待事件释放的额外天赋点",
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "unitId": 1,
+      "treeIds": [
+        1
+      ],
+      "traitIds": [
+        3
+      ],
+      "potential": 2
+    },
+    {
+      "id": 2,
+      "unitId": 2,
+      "treeIds": [
+        1
+      ],
+      "traitIds": [],
+      "potential": 2
+    },
+    {
+      "id": 3,
+      "unitId": 3,
+      "treeIds": [
+        1
+      ],
+      "traitIds": [],
+      "potential": 2
+    },
+    {
+      "id": 4,
+      "unitId": 4,
+      "treeIds": [
+        1
+      ],
+      "traitIds": [],
+      "potential": 2
+    },
+    {
+      "id": 5,
+      "unitId": 5,
+      "treeIds": [
+        1
+      ],
+      "traitIds": [],
+      "potential": 2
+    },
+    {
+      "id": 6,
+      "unitId": 6,
+      "treeIds": [
+        1
+      ],
+      "traitIds": [],
+      "potential": 2
+    }
+  ]
+}

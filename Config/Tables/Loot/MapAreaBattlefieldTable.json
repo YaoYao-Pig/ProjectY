@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "name": "MapAreaBattlefieldTable",
+  "description": "旧事件使用的小型战场；几何沿用战斗模板半径和障碍概率。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "surfaceId",
+      "type": "int",
+      "description": "地面材质",
+      "ref": "MapAreaSurfaceTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "surfaceId": 1
+    }
+  ]
+}

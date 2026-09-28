@@ -35,6 +35,19 @@ local defaults = {
     BattleMain = "主要行动", -- 战斗 HUD
     BattleSecondary = "次要行动", -- 战斗 HUD
     BattleItemHint = "物品槽位\n当前仅展示配置图标，尚未接入背包与物品使用。", -- 战斗 HUD
+    GrowthTitle = "同行者 · 旅人手记", -- 角色养成 UI
+    GrowthNoTraits = "尚未留下印记", -- 角色养成 UI
+    GrowthTraitHint = "冒险中的选择会带来特质，也可能改变已有特质。", -- 角色养成 UI
+    GrowthJourneyHint = "经历会改变特质、唤醒潜力，也会打开新的道路。", -- 角色养成 UI
+    GrowthChooseNode = "选择被动节点", -- 角色养成 UI
+    GrowthLearned = "已研习 · ", -- 角色养成 UI
+    GrowthInnate = "固有／装备 · ", -- 角色养成 UI
+    GrowthStudy = "学习 · ", -- 角色养成 UI
+    GrowthLearnAvailable = "选择一项研习 · 等级 ", -- 角色养成 UI
+    GrowthKnownSkills = "已掌握的主动技能", -- 角色养成 UI
+    GrowthLockedTree = "  ·  未解锁", -- 角色养成 UI
+    GrowthAdjacent = "任一相邻", -- 角色养成 UI
+    GrowthPrerequisites = "全部前置", -- 角色养成 UI
 -- @localization-end
 }
 return require('Config.LanguageProxy').Create(defaults)

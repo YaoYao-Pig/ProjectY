@@ -8,6 +8,8 @@ function UI:OnInit(context)
     self.panels = {}; self.opened = {}; self.sequence = 0
 end
 function UI:Open(name, args)
+    -- 场景事件发生在 Start / 首次 UI Tick 之间时，先清理旧场景窗口，再打开新窗口。
+    self:SyncScene()
     local definition = self.host:GetConfig(name)
     assert(not definition.IsWidget, 'Cannot open a Widget as a Panel')
     assert(ranks[definition.Layer], 'Unknown panel layer')
@@ -51,6 +53,10 @@ function UI:RefreshInput()
         if entry.definition.Modal then blocked = true end
     end
 end
+function UI:IsOpen(name)
+    local entry=self.panels[name]
+    return entry~=nil and entry.ctrl.visible
+end
 function UI:Close(name, forceDestroy)
     local entry = self.panels[name]
     if not entry then return false end
@@ -70,11 +76,14 @@ function UI:Back()
     end
     return false
 end
-function UI:Tick(dt, unscaledDt)
+function UI:SyncScene()
     if self.sceneVersion ~= self.host.SceneVersion then
         self.sceneVersion = self.host.SceneVersion
         self:OnSceneChanged()
     end
+end
+function UI:Tick(dt, unscaledDt)
+    self:SyncScene()
     local snapshot = {}
     for i, entry in ipairs(self.opened) do snapshot[i] = entry end
     for _, entry in ipairs(snapshot) do

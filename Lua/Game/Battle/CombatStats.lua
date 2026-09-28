@@ -5,6 +5,8 @@ function Stats:ctor(config, equipmentData)
     self.equipment = require('Game.Equipment.EquipmentRules').New(config,equipmentData)
     self.units = config:GetTable('CombatUnitTable')
     self.traits = config:GetTable('CombatTraitTable')
+    self.growth = require('Game.Progression.GrowthRules').New(config)
+    self.animals = require('Game.Animals.AnimalRules').New(config)
     self.attributes = {}
     for _, row in ipairs(self.units:All()) do
         assert(#row.attributeNames == #row.attributeValues, 'Unit attribute arrays differ: ' .. row.id)
@@ -19,14 +21,14 @@ function Stats:ctor(config, equipmentData)
     end
 end
 function Stats:Template(unit) return self.units:Get(unit.TemplateId) end
-function Stats:Get(unit, name)
+function Stats:Get(unit, name, excludeEquipment)
     -- 未训练的二级属性允许缺失，其基础值按契约为 0。
     local value = assert(self.attributes[unit.TemplateId])[name] or 0
     for i = 0, unit.TraitCount - 1 do
         local trait = self.traits:Get(unit:GetTraitAt(i))
         if trait.attribute == name then value = value + trait.amount end
     end
-    return math.max(0, value + self.equipment:AttributeBonus(unit,name))
+    return math.max(0, value + self.growth:Bonus(unit,name) + (excludeEquipment and 0 or self.equipment:AttributeBonus(unit,name)))
 end
 function Stats:MaximumHP(unit)
     local hp = self:Template(unit).maxHealth:Evaluate({vitality = self:Get(unit, 'vitality'), endurance = self:Get(unit, 'endurance')})
@@ -39,6 +41,7 @@ function Stats:EffectVariables(source, target, skill)
     values.defense = self:Get(target, 'defense')
     values.guard = target.Guard
     values.proficiency = self:Get(source, skill.proficiency)
+    values.distance = 0
     return values
 end
 return Stats

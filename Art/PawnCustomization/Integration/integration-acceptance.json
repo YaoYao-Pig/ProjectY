@@ -1,0 +1,71 @@
+{
+  "date": "2026-09-28",
+  "scope": [
+    "configured humanoid enemy pools",
+    "manual character/backpack save/load",
+    "wearable fits",
+    "two-hand loadout motion modules",
+    "weapon-local Vector3 grip points",
+    "Unity-derived browser equipment preview"
+  ],
+  "equipmentCombinations": 660,
+  "equipmentPoses": 19800,
+  "maxGripError": 5.78656454308657e-07,
+  "maxSampledHeadPenetration": 0.0,
+  "legacy": {
+    "combinations": 360,
+    "poses": 1080,
+    "templates": 6
+  },
+  "nonzeroGripChecks": {
+    "cases": 11,
+    "maxPositionError": 3.47891046e-07,
+    "nonzeroOffsets": true,
+    "scaledRifle": true
+  },
+  "persistence": {
+    "saveRoundTrip": true,
+    "backpackRoundTrip": true,
+    "healthPreserved": true,
+    "stableEnemy": true,
+    "corruptRejected": true,
+    "unknownVersionRejected": true,
+    "partyCount": 4,
+    "enemyGroups": 3
+  },
+  "persistenceDetails": [
+    "level",
+    "experience",
+    "invested attributes",
+    "talent rank",
+    "learned skills",
+    "pending offers",
+    "growth RNG",
+    "HP",
+    "appearance",
+    "equipment ownership",
+    "grid placement",
+    "coins",
+    "HUD commands",
+    "atomic overwrite",
+    "corrupt and unknown-version rejection"
+  ],
+  "webTests": 4,
+  "weaponLoadouts": 11,
+  "gearFits": 42,
+  "coveredBodyMeshes": 42,
+  "verificationMode": "Independent Unity Edit Mode preview scenes and Lua environments; no agent-started Play Mode",
+  "limitations": [
+    "No map/event/battle continuation in character saves",
+    "Bow uses a basic shooting reference; dedicated draw animation and deforming string are not authored",
+    "Only rifle assets are present among gun classes; new gun classes require matching rows and content"
+  ],
+  "editorOperations": [
+    "One batch of new C# and configuration imports",
+    "XLua/Generate Code and generated-binding compilation",
+    "User-approved explicit import of three new wrappers",
+    "Motion module/refactor batch",
+    "Two user-approved grip correction batches; remaining tuning changed assets/config only"
+  ],
+  "concurrentWorkspaceNote": "After this feature passed its Edit Mode tests, concurrent animal-save edits added AnimalMountSave to CharacterSaveState; the new CombatActorAnimals.cs had not yet been imported when checked. These parallel changes were preserved."
+}

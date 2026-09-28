@@ -71,7 +71,7 @@ namespace ProjectY.Editor
                     var anchor = new GameObject(Slots[i]).transform; anchor.SetParent(rig.transform, false); anchor.localPosition = Positions[i];
                     var row = mounts.GetArrayElementAtIndex(i); row.FindPropertyRelative("slot").stringValue = Slots[i]; row.FindPropertyRelative("anchor").objectReferenceValue = anchor;
                 }
-                fields.ApplyModifiedPropertiesWithoutUndo(); PrefabUtility.SaveAsPrefabAsset(rig.gameObject, RigPath);
+                fields.ApplyModifiedPropertiesWithoutUndo(); PawnAnimationAssets.Attach(rig); PrefabUtility.SaveAsPrefabAsset(rig.gameObject, RigPath);
                 var parts = new Dictionary<int, PartRow>(); foreach (var row in JsonUtility.FromJson<PartTable>(Read("PawnPartTable")).rows) parts.Add(row.id, row);
                 foreach (var template in JsonUtility.FromJson<TemplateTable>(Read("PawnTemplateTable")).rows)
                 {

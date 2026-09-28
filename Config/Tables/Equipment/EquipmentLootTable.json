@@ -46,6 +46,13 @@
       "name": "counts",
       "type": "int[]",
       "description": "对应数量，必须为正"
+    },
+    {
+      "name": "poolId",
+      "type": "int",
+      "description": "随机池 ID；0 使用固定 itemIds/counts",
+      "min": 0,
+      "default": 0
     }
   ],
   "rows": [
@@ -66,7 +73,8 @@
         1,
         24,
         1
-      ]
+      ],
+      "poolId": 0
     },
     {
       "id": 2,
@@ -79,7 +87,8 @@
       ],
       "counts": [
         1
-      ]
+      ],
+      "poolId": 0
     },
     {
       "id": 3,
@@ -92,7 +101,48 @@
       ],
       "counts": [
         24
-      ]
+      ],
+      "poolId": 0
+    },
+    {
+      "id": 10,
+      "name": "地牢藏宝箱",
+      "kind": "chest",
+      "assetId": 7,
+      "openedAssetId": 8,
+      "itemIds": [],
+      "counts": [],
+      "poolId": 1
+    },
+    {
+      "id": 11,
+      "name": "林间藏宝箱",
+      "kind": "chest",
+      "assetId": 7,
+      "openedAssetId": 8,
+      "itemIds": [],
+      "counts": [],
+      "poolId": 2
+    },
+    {
+      "id": 100,
+      "name": "近战敌人的战利品",
+      "kind": "ground",
+      "assetId": 8,
+      "openedAssetId": 8,
+      "itemIds": [],
+      "counts": [],
+      "poolId": 3
+    },
+    {
+      "id": 101,
+      "name": "弓手的战利品",
+      "kind": "ground",
+      "assetId": 8,
+      "openedAssetId": 8,
+      "itemIds": [],
+      "counts": [],
+      "poolId": 4
     }
   ]
 }

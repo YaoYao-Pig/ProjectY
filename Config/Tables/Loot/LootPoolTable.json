@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "name": "LootPoolTable",
+  "description": "每个条目独立判定的掉落池；可能同时命中多项，也可能为空。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "掉落池名"
+    },
+    {
+      "name": "seedSalt",
+      "type": "int",
+      "description": "独立随机通道",
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "地牢宝箱",
+      "seedSalt": 137
+    },
+    {
+      "id": 2,
+      "name": "森林宝箱",
+      "seedSalt": 271
+    },
+    {
+      "id": 3,
+      "name": "近战敌人遗物",
+      "seedSalt": 419
+    },
+    {
+      "id": 4,
+      "name": "弓手遗物",
+      "seedSalt": 563
+    }
+  ]
+}

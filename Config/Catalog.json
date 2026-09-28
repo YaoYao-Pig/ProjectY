@@ -240,11 +240,56 @@
               "name": "Town",
               "value": 2,
               "description": "聚落街区（策略待实现）"
+            },
+            {
+              "name": "Forest",
+              "value": 3,
+              "description": "森林空地与林间小径"
+            },
+            {
+              "name": "Battlefield",
+              "value": 4,
+              "description": "事件战场与战后探索"
             }
           ]
         }
       ],
       "constants": []
+    },
+    {
+      "id": "Animals",
+      "folder": "Animals",
+      "description": "动物、驯服与骑兵技能",
+      "enums": [],
+      "constants": []
+    },
+    {
+      "id": "Global",
+      "folder": null,
+      "description": "全局游戏玩法常量",
+      "enums": [],
+      "constants": [
+        {
+          "name": "ExplorationRoundSeconds",
+          "type": "float",
+          "value": 3,
+          "description": "小队探索移动时累计多少游戏秒推进一个回合；静止与暂停不累计，战斗按整轮推进"
+        }
+      ]
+    },
+    {
+      "id": "Loot",
+      "folder": "Loot",
+      "description": "宝箱生成与敌人掉落",
+      "enums": [],
+      "constants": [
+        {
+          "name": "EventBattlefieldAreaId",
+          "type": "int",
+          "value": 30,
+          "description": "旧事件战斗转入并保留的局部战场定义"
+        }
+      ]
     }
   ]
 }

@@ -1,0 +1,183 @@
+{
+  "version": 1,
+  "name": "LootEntryTable",
+  "description": "掉落概率为百分比，数量为命中后的闭区间随机整数。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "poolId",
+      "type": "int",
+      "description": "所属掉落池",
+      "ref": "LootPoolTable"
+    },
+    {
+      "name": "itemId",
+      "type": "int",
+      "description": "物品",
+      "ref": "EquipmentItemTable"
+    },
+    {
+      "name": "chance",
+      "type": "float",
+      "description": "独立命中概率（百分比）",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "minCount",
+      "type": "int",
+      "description": "最小数量",
+      "min": 1
+    },
+    {
+      "name": "maxCount",
+      "type": "int",
+      "description": "最大数量",
+      "min": 1
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "poolId": 1,
+      "itemId": 31,
+      "chance": 80,
+      "minCount": 12,
+      "maxCount": 24
+    },
+    {
+      "id": 2,
+      "poolId": 1,
+      "itemId": 11,
+      "chance": 30,
+      "minCount": 1,
+      "maxCount": 1
+    },
+    {
+      "id": 3,
+      "poolId": 1,
+      "itemId": 12,
+      "chance": 25,
+      "minCount": 1,
+      "maxCount": 1
+    },
+    {
+      "id": 4,
+      "poolId": 1,
+      "itemId": 13,
+      "chance": 20,
+      "minCount": 1,
+      "maxCount": 1
+    },
+    {
+      "id": 5,
+      "poolId": 1,
+      "itemId": 40,
+      "chance": 15,
+      "minCount": 1,
+      "maxCount": 1
+    },
+    {
+      "id": 6,
+      "poolId": 1,
+      "itemId": 51,
+      "chance": 20,
+      "minCount": 1,
+      "maxCount": 1
+    },
+    {
+      "id": 7,
+      "poolId": 2,
+      "itemId": 31,
+      "chance": 55,
+      "minCount": 6,
+      "maxCount": 18
+    },
+    {
+      "id": 8,
+      "poolId": 2,
+      "itemId": 46,
+      "chance": 20,
+      "minCount": 1,
+      "maxCount": 1
+    },
+    {
+      "id": 9,
+      "poolId": 2,
+      "itemId": 56,
+      "chance": 30,
+      "minCount": 1,
+      "maxCount": 1
+    },
+    {
+      "id": 10,
+      "poolId": 2,
+      "itemId": 53,
+      "chance": 8,
+      "minCount": 1,
+      "maxCount": 1
+    },
+    {
+      "id": 11,
+      "poolId": 3,
+      "itemId": 40,
+      "chance": 35,
+      "minCount": 1,
+      "maxCount": 1
+    },
+    {
+      "id": 12,
+      "poolId": 3,
+      "itemId": 57,
+      "chance": 20,
+      "minCount": 1,
+      "maxCount": 1
+    },
+    {
+      "id": 13,
+      "poolId": 3,
+      "itemId": 13,
+      "chance": 10,
+      "minCount": 1,
+      "maxCount": 1
+    },
+    {
+      "id": 14,
+      "poolId": 4,
+      "itemId": 46,
+      "chance": 35,
+      "minCount": 1,
+      "maxCount": 1
+    },
+    {
+      "id": 15,
+      "poolId": 4,
+      "itemId": 51,
+      "chance": 20,
+      "minCount": 1,
+      "maxCount": 1
+    },
+    {
+      "id": 16,
+      "poolId": 4,
+      "itemId": 56,
+      "chance": 25,
+      "minCount": 1,
+      "maxCount": 1
+    },
+    {
+      "id": 17,
+      "poolId": 4,
+      "itemId": 12,
+      "chance": 10,
+      "minCount": 1,
+      "maxCount": 1
+    }
+  ]
+}

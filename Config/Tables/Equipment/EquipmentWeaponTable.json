@@ -17,7 +17,8 @@
       "values": [
         "staff",
         "gun",
-        "melee"
+        "melee",
+        "bow"
       ]
     },
     {
@@ -37,12 +38,6 @@
       "type": "int[]",
       "description": "装备时替换的基础攻击",
       "ref": "CombatSkillTable"
-    },
-    {
-      "name": "poseId",
-      "type": "int",
-      "description": "人物持握姿态",
-      "ref": "EquipmentPoseTable"
     },
     {
       "name": "magazineItemId",
@@ -99,6 +94,19 @@
       "type": "int",
       "description": "副手授予技能；0 表示不可放入副手",
       "min": 0
+    },
+    {
+      "name": "gripId",
+      "type": "int",
+      "description": "武器独立握点配置",
+      "ref": "EquipmentGripTable",
+      "default": 1
+    },
+    {
+      "name": "gunClass",
+      "type": "string",
+      "description": "枪型选择动作匹配规则；非枪为空",
+      "default": ""
     }
   ],
   "rows": [
@@ -117,7 +125,6 @@
         2,
         3
       ],
-      "poseId": 1,
       "magazineItemId": 0,
       "previewRotation": [
         8,
@@ -130,7 +137,9 @@
       "damageMultiplier": 1,
       "requirementId": 1,
       "hands": 2,
-      "offhandSkillId": 0
+      "offhandSkillId": 0,
+      "gripId": 1,
+      "gunClass": ""
     },
     {
       "id": 2,
@@ -148,7 +157,6 @@
         2,
         3
       ],
-      "poseId": 2,
       "magazineItemId": 21,
       "previewRotation": [
         8,
@@ -161,7 +169,9 @@
       "damageMultiplier": 1,
       "requirementId": 2,
       "hands": 2,
-      "offhandSkillId": 0
+      "offhandSkillId": 0,
+      "gripId": 2,
+      "gunClass": "rifle"
     },
     {
       "id": 40,
@@ -175,7 +185,6 @@
         2,
         3
       ],
-      "poseId": 3,
       "magazineItemId": 0,
       "previewRotation": [
         4,
@@ -188,7 +197,9 @@
       "damageMultiplier": 1.0,
       "requirementId": 40,
       "hands": 1,
-      "offhandSkillId": 13
+      "offhandSkillId": 13,
+      "gripId": 40,
+      "gunClass": ""
     },
     {
       "id": 41,
@@ -202,7 +213,6 @@
         2,
         3
       ],
-      "poseId": 3,
       "magazineItemId": 0,
       "previewRotation": [
         4,
@@ -215,7 +225,9 @@
       "damageMultiplier": 1.3,
       "requirementId": 41,
       "hands": 1,
-      "offhandSkillId": 13
+      "offhandSkillId": 13,
+      "gripId": 41,
+      "gunClass": ""
     },
     {
       "id": 42,
@@ -229,7 +241,6 @@
         2,
         3
       ],
-      "poseId": 4,
       "magazineItemId": 0,
       "previewRotation": [
         4,
@@ -242,7 +253,9 @@
       "damageMultiplier": 1.2,
       "requirementId": 42,
       "hands": 2,
-      "offhandSkillId": 0
+      "offhandSkillId": 0,
+      "gripId": 42,
+      "gunClass": ""
     },
     {
       "id": 43,
@@ -256,7 +269,6 @@
         2,
         3
       ],
-      "poseId": 4,
       "magazineItemId": 0,
       "previewRotation": [
         4,
@@ -269,7 +281,9 @@
       "damageMultiplier": 1.55,
       "requirementId": 43,
       "hands": 2,
-      "offhandSkillId": 0
+      "offhandSkillId": 0,
+      "gripId": 43,
+      "gunClass": ""
     },
     {
       "id": 44,
@@ -285,7 +299,6 @@
         2,
         3
       ],
-      "poseId": 5,
       "magazineItemId": 0,
       "previewRotation": [
         4,
@@ -298,7 +311,9 @@
       "damageMultiplier": 1.65,
       "requirementId": 44,
       "hands": 2,
-      "offhandSkillId": 0
+      "offhandSkillId": 0,
+      "gripId": 44,
+      "gunClass": ""
     },
     {
       "id": 45,
@@ -314,7 +329,6 @@
         2,
         3
       ],
-      "poseId": 5,
       "magazineItemId": 0,
       "previewRotation": [
         4,
@@ -327,7 +341,37 @@
       "damageMultiplier": 2.1,
       "requirementId": 45,
       "hands": 2,
-      "offhandSkillId": 0
+      "offhandSkillId": 0,
+      "gripId": 45,
+      "gunClass": ""
+    },
+    {
+      "id": 46,
+      "kind": "bow",
+      "socketIds": [],
+      "skillIds": [
+        2
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 0,
+      "previewRotation": [
+        4,
+        15,
+        -18
+      ],
+      "previewZoom": 1.2,
+      "categoryId": 6,
+      "level": 1,
+      "damageMultiplier": 1,
+      "requirementId": 46,
+      "hands": 2,
+      "offhandSkillId": 0,
+      "gripId": 46,
+      "gunClass": ""
     }
   ]
 }

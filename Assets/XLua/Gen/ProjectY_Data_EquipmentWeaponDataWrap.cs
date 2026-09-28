@@ -21,12 +21,14 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.EquipmentWeaponData);
-			Utils.BeginObjectRegister(type, L, translator, 0, 1, 5, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 2, 6, 0);
 			
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetRuneSocketAt", _m_GetRuneSocketAt);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetRune", _m_GetRune);
 			
 			
-			Utils.RegisterFunc(L, Utils.GETTER_IDX, "Id", _g_get_Id);
+			Utils.RegisterFunc(L, Utils.GETTER_IDX, "RuneCount", _g_get_RuneCount);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "Id", _g_get_Id);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "ItemId", _g_get_ItemId);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "OwnerActorId", _g_get_OwnerActorId);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Hand", _g_get_Hand);
@@ -61,6 +63,35 @@ namespace XLua.CSObjectWrap
         
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_GetRuneSocketAt(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.EquipmentWeaponData gen_to_be_invoked = (ProjectY.Data.EquipmentWeaponData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _index = LuaAPI.xlua_tointeger(L, 2);
+                    
+                        var gen_ret = gen_to_be_invoked.GetRuneSocketAt( _index );
+                        LuaAPI.xlua_pushinteger(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _m_GetRune(RealStatePtr L)
         {
 		    try {
@@ -91,6 +122,20 @@ namespace XLua.CSObjectWrap
         
         
         
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_RuneCount(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.EquipmentWeaponData gen_to_be_invoked = (ProjectY.Data.EquipmentWeaponData)translator.FastGetCSObj(L, 1);
+                LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.RuneCount);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _g_get_Id(RealStatePtr L)

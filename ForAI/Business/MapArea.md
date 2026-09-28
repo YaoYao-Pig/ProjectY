@@ -8,8 +8,12 @@
 
 ## 正文
 
+- 森林/地牢的概率宝箱，以及旧事件转入 `Battlefield` 后的战后走动、拾取与地点重进，见[宝箱与敌人掉落](Loot.md)。事件战场保留原半径的六边形棋盘，实际 cells 不使用定义表的方形采样尺寸。
+
+- `Forest` 独立策略及区域入口、动物与哥布林刷新、驯服与骑乘见[森林动物与骑乘](Animals.md)，复用当前单层原地战斗与探索状态。
+
 - 大地图聚落实例经 `MapAreaEntranceTable.townId → areaId` 生成单一交互入口；同一城镇的分散建筑共享入口。`AdventureSystem:Visit` 按 `areaConfigId` 进入 MapArea，旧营地/野外事件保留。入口带真实 Region ID/类型、坐标、高度与地貌混合权重，地图本身仍使用[大地图](Map.md)的只读快照。
-- `MapAreaGenerator` 按 `E_MapAreaType` 注册策略、独立参数表和主题表。当前 Dungeon 与 [Town 城镇街区](TownArea.md) 均可生成；注册时可指定 themeTableName，省略时使用地牢主题表。以后新增类型应注册自己的生成策略，不在入口里套用其他类型。
+- `MapAreaGenerator` 按 `E_MapAreaType` 注册策略、独立参数表和主题表。当前 Dungeon、[Town 城镇街区](TownArea.md)、[Forest 森林](Animals.md) 与 [Battlefield 事件战场](Loot.md) 均可生成；注册时可指定 themeTableName，省略时使用地牢主题表。以后新增类型应注册自己的生成策略，不在入口里套用其他类型。
 - `MapAreaTable` 定义类型、策略参数 ID、宽高、六边形半径、视野、移动间隔和种子盐。默认地牢 96×96，共 9216 格（包含实体墙），地格半径 1.5；格子使用轴向 q/r，与 BattleBoard 共用 HexGrid。调整 hexRadius 放大地面间距、通道和陈设，不改变格数、寻路与视野半径的格单位。尺寸目前配置范围 32–192，房间数量/半径也需与面积匹配，放置次数耗尽明确报错。
 - 地格身份为 `index`，位置为 `q/r/layer`：`Find(q,r)` 默认地面层 0，`AddLayerCell` 追加独立桥面格，因此 `#cells` 可超过 width×height。`neighbors[1..6]` 保存明确索引（边界为 0），`walkMask` 与目标 blocked 决定 `CanStep`；邻接和寻路不得自行按 q/r 推断。`MoveToIndex` / `area_move_cell` 保留点击层，旧 `MoveTo(q,r)` 只选择地面层。城镇目前公开全图，地牢视线仍是单层射线；尚未定义多层战斗视线。
 - 地牢 `generationVersion=3`：`DungeonRooms/DungeonDistricts` 按功能分区选择、聚合和绘制房间；`DungeonGenerator` 优先连接同分区，再跨分区并添加缩短折返的回路；`DungeonPassages` 绘制变宽通道；`DungeonProps` 布置物件。默认一级洞穴 2 个、二级随机房间 5 个、三级预设 3 个。入口/目标由 presetId 指定，种子仍由远征种子、稳定聚落实例 ID 与配置盐派生。
@@ -23,7 +27,7 @@
 - 路径所有成员都只能经过已发现且无 NPC 的格。`SetSquadRoute` 接收按帧展开的全员位置并在 C# 中一次验证/保存，`Advance` 按游戏 Tick 同时推进整队；停止与重新点目标都从当前真实位置开始。地牢墙体挡视线，面对的墙格可见，当前视野为全员视野并集；城镇 discovery=open 进场一次公开全部地格。Lua 规划临时表不作为第二份可变状态。
 - `MapAreaEncounterTable` 为指定地牢配置敌群数、遭遇模板、警戒距离和战场边距；未配置的区域不生成敌人。`DungeonEncounters` 用独立种子从远离入口的非入口房间生成敌群，当前默认 3 组，每组复用两名近战和一名弓手。`MapAreaEncounterData` 保存唯一敌人实例、HP 和位置，重进不刷新；新远征统一清空。
 - `AdventureSystem:Tick` 在探索移动更新后检测敌我距离及原地形视线，满足条件即停止队伍路线，通过 `BattleWindow/StartArea` 原地开战；规则见[战斗](Battle.md)。胜利只结算一次，存活队员留在各自战斗结束格继续探索，下一次探索移动先逐格收拢散队；失败/超时返回大地图，下次进入从入口部署。敌人伤势与清除状态保留。
-- `BattleBoard.FromArea(area,q,r,radius,layer)` 按平面半径裁出包含各层的窗口，共享原格身份和导航边。当前原地战斗仅接单层地牢；城镇多层导航与旧事件独立棋盘继续使用各自原有入口。
+- `BattleBoard.FromArea(area,q,r,radius,layer)` 按平面半径裁出包含各层的窗口，共享原格身份和导航边。当前原地战斗接单层地牢与森林；城镇多层导航与旧事件独立棋盘继续使用各自原有入口。
 - Unity 菜单 `Project Y/地图/打开 MapArea 地牢测试` 复用 `AdventureDemo.unity`，Play 后点击“古代地下迷宫”地点。左键移动、空格停止、滚轮缩放、中键/WASD 平移、右键旋转；侧栏可跟随小队、查看全图与完整结构。调试显示不解锁探索状态，测试返回按钮允许在任意位置返回大地图。
 - `MapAreaRenderer` 使用已绑定、配表指定的低模陈设做 GPU 实例渲染；地牢继续使用低模柱、未知格压平和探索明暗。城镇由 `TownSurfaceRenderer` 按 `corners/deckThickness/stairRise` 绘制台地、台阶、坡道和薄桥面，拾取使用实际三角形；桥下不填成实体。静态快照还包含层、邻接、通行掩码和物件 `scaleX/Y/Z`，进入时读取一次；动态快照按需更新。显示数据不持有 LuaTable，也不作为玩法状态。
 - `LayoutSnapshot` 的嵌套数值数组必须复制为普通 Lua 数组：冻结布局是带 `__index/__len` 的空代理，xLua `LuaTable.Length` 调用 `xlua_objlen`，不会使用代理的 `__len`。直接传 `corners/neighbors` 会让 C# 收到零长度数组；颜色也复制，确保显示快照不共享只读代理。最小边界回归为 `python -B Tools/Tests/run_lua.py Tools/Tests/maparea_snapshot.lua`。

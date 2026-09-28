@@ -3,6 +3,7 @@ local Appearance={}
 Appearance.__index=Appearance
 function Appearance.New(config)
     local self=setmetatable({parts=config:GetTable('PawnPartTable'),templates={}},Appearance)
+    self.equipmentRules=require('Game.Equipment.EquipmentRules').New(config)
     for _,row in ipairs(config:GetTable('PawnTemplateTable'):All()) do
         assert(not self.templates[row.unitId],'Duplicate pawn template for unit: '..row.unitId)
         self.templates[row.unitId]=row
@@ -22,16 +23,17 @@ function Appearance:Resolve(partIds)
     assert(slots.body and slots.base,'Pawn appearance requires body and base')
     return result
 end
-function Appearance:Template(unitId,equipment)
+function Appearance:Template(unitId,equipment,customizationJson)
     local row=assert(self.templates[unitId],'Missing pawn template for unit: '..unitId)
+    if not equipment and customizationJson and customizationJson~='' then equipment=self.equipmentRules:ConfiguredVisual(unitId) end
     if equipment then
         local ids={equipment.pose.corePartId}
         for _,id in ipairs(row.partIds) do
             local slot=self.parts:Get(id).slot
-            if slot~='body' and slot~='mainHand' and slot~='offHand' and slot~='head' and slot~='chest' then ids[#ids+1]=id end
+            if slot~='body' and slot~='mainHand' and slot~='offHand' and (equipment.templateEquipment or (slot~='head' and slot~='chest')) then ids[#ids+1]=id end
         end
-        return {templateId=row.id,parts=self:Resolve(ids),equipment=equipment}
+        return {templateId=row.id,parts=self:Resolve(ids),equipment=equipment,customizationJson=customizationJson}
     end
-    return {templateId=row.id,parts=self:Resolve(row.partIds)}
+    return {templateId=row.id,parts=self:Resolve(row.partIds),customizationJson=customizationJson}
 end
 return Appearance

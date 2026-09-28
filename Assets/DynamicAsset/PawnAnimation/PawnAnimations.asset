@@ -1,0 +1,265 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fec9763255775942b0f8c6cfaed4e4b, type: 3}
+  m_Name: PawnAnimations
+  m_EditorClassIdentifier: 
+  BodyParts: 010000000f00000013000000
+  Controller: {fileID: 9100000, guid: 84806ebf839e0f742b9ecba552127fb3, type: 2}
+  Actions:
+  - TemplateId: 0
+    State: 
+    Clip: {fileID: 7994627924475153551, guid: bc2d6c5c87eb98648a666352a52c7ac4, type: 3}
+    Duration: 0.05
+    Impact: 0.45
+    UseAuthoredGrip: 0
+    GripKeys: []
+    OffGripOffset: {x: 0, y: 0, z: 0}
+  - TemplateId: 1
+    State: Cast
+    Clip: {fileID: -5255406209399062677, guid: bc2d6c5c87eb98648a666352a52c7ac4, type: 3}
+    Duration: 0.6
+    Impact: 0.45
+    UseAuthoredGrip: 0
+    GripKeys: []
+    OffGripOffset: {x: 0, y: 0, z: 0}
+  - TemplateId: 2
+    State: Fire
+    Clip: {fileID: 2564068224262579217, guid: bc2d6c5c87eb98648a666352a52c7ac4, type: 3}
+    Duration: 0.55
+    Impact: 0.45
+    UseAuthoredGrip: 1
+    GripKeys:
+    - Time: 0
+      WeaponRotation: {x: 0, y: -25, z: 0}
+    - Time: 0.2
+      WeaponRotation: {x: -5, y: -25, z: 0}
+    - Time: 0.45
+      WeaponRotation: {x: -2, y: -25, z: 0}
+    - Time: 0.8
+      WeaponRotation: {x: 0, y: -25, z: 0}
+    - Time: 1
+      WeaponRotation: {x: 0, y: -25, z: 0}
+    OffGripOffset: {x: 0, y: 0, z: 0}
+  - TemplateId: 3
+    State: Reload
+    Clip: {fileID: -4628965742493065687, guid: bc2d6c5c87eb98648a666352a52c7ac4, type: 3}
+    Duration: 0.9
+    Impact: 0.45
+    UseAuthoredGrip: 1
+    GripKeys:
+    - Time: 0
+      WeaponRotation: {x: 0, y: -25, z: 0}
+    - Time: 0.2
+      WeaponRotation: {x: -10, y: -45, z: 0}
+    - Time: 0.45
+      WeaponRotation: {x: -10, y: -45, z: 0}
+    - Time: 0.8
+      WeaponRotation: {x: -5, y: -35, z: 0}
+    - Time: 1
+      WeaponRotation: {x: 0, y: -25, z: 0}
+    OffGripOffset: {x: 0, y: -0.14, z: -0.12}
+  - TemplateId: 4
+    State: Attack
+    Clip: {fileID: -2807887025256620907, guid: bc2d6c5c87eb98648a666352a52c7ac4, type: 3}
+    Duration: 0.5
+    Impact: 0.45
+    UseAuthoredGrip: 0
+    GripKeys: []
+    OffGripOffset: {x: 0, y: 0, z: 0}
+  - TemplateId: 5
+    State: HeavySlash
+    Clip: {fileID: 1705686167135224321, guid: bc2d6c5c87eb98648a666352a52c7ac4, type: 3}
+    Duration: 0.75
+    Impact: 0.45
+    UseAuthoredGrip: 1
+    GripKeys:
+    - Time: 0
+      WeaponRotation: {x: 40, y: 0, z: 4}
+    - Time: 0.2
+      WeaponRotation: {x: 55, y: -10, z: 4}
+    - Time: 0.45
+      WeaponRotation: {x: 100, y: 5, z: 4}
+    - Time: 0.8
+      WeaponRotation: {x: 75, y: 5, z: 4}
+    - Time: 1
+      WeaponRotation: {x: 40, y: 0, z: 4}
+    OffGripOffset: {x: 0, y: 0, z: 0}
+  - TemplateId: 6
+    State: HeavySlash
+    Clip: {fileID: 1705686167135224321, guid: bc2d6c5c87eb98648a666352a52c7ac4, type: 3}
+    Duration: 0.95
+    Impact: 0.45
+    UseAuthoredGrip: 1
+    GripKeys:
+    - Time: 0
+      WeaponRotation: {x: 40, y: 0, z: 4}
+    - Time: 0.2
+      WeaponRotation: {x: 55, y: -10, z: 4}
+    - Time: 0.45
+      WeaponRotation: {x: 100, y: 5, z: 4}
+    - Time: 0.8
+      WeaponRotation: {x: 75, y: 5, z: 4}
+    - Time: 1
+      WeaponRotation: {x: 40, y: 0, z: 4}
+    OffGripOffset: {x: 0, y: 0, z: 0}
+  - TemplateId: 7
+    State: OffAttack
+    Clip: {fileID: -2807887025256620907, guid: bc2d6c5c87eb98648a666352a52c7ac4, type: 3}
+    Duration: 0.5
+    Impact: 0.45
+    UseAuthoredGrip: 0
+    GripKeys: []
+    OffGripOffset: {x: 0, y: 0, z: 0}
+  - TemplateId: 8
+    State: Fire
+    Clip: {fileID: 2564068224262579217, guid: bc2d6c5c87eb98648a666352a52c7ac4, type: 3}
+    Duration: 0.55
+    Impact: 0.45
+    UseAuthoredGrip: 0
+    GripKeys: []
+    OffGripOffset: {x: 0, y: 0, z: 0}
+  Holds:
+  - PoseId: 0
+    IdleState: Idle
+    MainGripRotation: {x: 336.88086, y: 273.64813, z: 172.25098}
+    OffGripRotation: {x: 341.15112, y: 114.80043, z: 184.38264}
+    HandHeadClearance: 0.14
+    IdleVariants:
+    - Idle
+    - IdleTalking
+    - IdleSword
+    KeepWeaponUpright: 1
+  - PoseId: 1
+    IdleState: IdleSpell
+    MainGripRotation: {x: 2.9200342, y: 292.78342, z: 150.83896}
+    OffGripRotation: {x: 300.1779, y: 333.1023, z: 11.239424}
+    HandHeadClearance: 0.14
+    IdleVariants:
+    - IdleSpell
+    - Idle
+    KeepWeaponUpright: 1
+  - PoseId: 2
+    IdleState: IdleRifle
+    MainGripRotation: {x: 297.20105, y: 14.348194, z: 82.25716}
+    OffGripRotation: {x: 308.03137, y: 138.99652, z: 89.629715}
+    HandHeadClearance: 0.4
+    IdleVariants:
+    - IdleRifle
+    - Idle
+    KeepWeaponUpright: 1
+  - PoseId: 3
+    IdleState: IdleSword
+    MainGripRotation: {x: 20.18122, y: 325.12723, z: 130.13048}
+    OffGripRotation: {x: 301.7578, y: 146.88637, z: 196.74014}
+    HandHeadClearance: 0.14
+    IdleVariants:
+    - IdleSword
+    - Idle
+    KeepWeaponUpright: 1
+  - PoseId: 4
+    IdleState: Idle
+    MainGripRotation: {x: 301.42758, y: 282.3907, z: 170.24194}
+    OffGripRotation: {x: 305.31268, y: 110.343735, z: 183.18718}
+    HandHeadClearance: 0.3
+    IdleVariants:
+    - Idle
+    - IdleTalking
+    KeepWeaponUpright: 1
+  - PoseId: 5
+    IdleState: Idle
+    MainGripRotation: {x: 299.4884, y: 283.3568, z: 168.40903}
+    OffGripRotation: {x: 303.3292, y: 109.88842, z: 184.56326}
+    HandHeadClearance: 0.24
+    IdleVariants:
+    - Idle
+    - IdleTalking
+    KeepWeaponUpright: 1
+  - PoseId: 6
+    IdleState: IdleSword
+    MainGripRotation: {x: 20.18122, y: 325.12723, z: 130.13048}
+    OffGripRotation: {x: 301.7578, y: 146.88637, z: 196.74014}
+    HandHeadClearance: 0.14
+    IdleVariants:
+    - IdleSword
+    - Idle
+    KeepWeaponUpright: 1
+  - PoseId: 7
+    IdleState: IdleSword
+    MainGripRotation: {x: 20.18122, y: 325.12723, z: 130.13048}
+    OffGripRotation: {x: 301.7578, y: 146.88637, z: 196.74014}
+    HandHeadClearance: 0.14
+    IdleVariants:
+    - IdleSword
+    - Idle
+    KeepWeaponUpright: 1
+  - PoseId: 8
+    IdleState: IdleRifle
+    MainGripRotation: {x: 297.20105, y: 14.348194, z: 82.25716}
+    OffGripRotation: {x: 308.03137, y: 138.99652, z: 89.629715}
+    HandHeadClearance: 0.16
+    IdleVariants:
+    - IdleRifle
+    - Idle
+    KeepWeaponUpright: 1
+  Skins:
+  - AssetId: 24
+    Mesh: {fileID: 4300000, guid: 10585e74cbceb204d86e20dc3aa13c01, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 8bad6275377269342b28fb4604905d4e, type: 2}
+    - {fileID: 2100000, guid: ab95db1ecebda5d4a99bad107abcbe2b, type: 2}
+    - {fileID: 2100000, guid: df80f625469bd7743a5e9373b85d39a4, type: 2}
+    - {fileID: 2100000, guid: ee5b3742ce37a734d838bb5254adcdf3, type: 2}
+  - AssetId: 25
+    Mesh: {fileID: 4300000, guid: c8c72e56ac96e2042803161086b63015, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: ab95db1ecebda5d4a99bad107abcbe2b, type: 2}
+    - {fileID: 2100000, guid: df80f625469bd7743a5e9373b85d39a4, type: 2}
+    - {fileID: 2100000, guid: ee5b3742ce37a734d838bb5254adcdf3, type: 2}
+  Hit: {fileID: -245273357908900549, guid: bc2d6c5c87eb98648a666352a52c7ac4, type: 3}
+  Death: {fileID: 3532616527226485280, guid: bc2d6c5c87eb98648a666352a52c7ac4, type: 3}
+  IdleVariants:
+  - State: Idle
+    ReferenceClip: {fileID: 7994627924475153551, guid: bc2d6c5c87eb98648a666352a52c7ac4, type: 3}
+    Weight: 4
+  - State: IdleSword
+    ReferenceClip: {fileID: 8324860437086164814, guid: bc2d6c5c87eb98648a666352a52c7ac4, type: 3}
+    Weight: 3
+  - State: IdleTalking
+    ReferenceClip: {fileID: 6476497563760123848, guid: bc2d6c5c87eb98648a666352a52c7ac4, type: 3}
+    Weight: 1
+  - State: IdleSpell
+    ReferenceClip: {fileID: 3732886095724451988, guid: bc2d6c5c87eb98648a666352a52c7ac4, type: 3}
+    Weight: 3
+  - State: IdleRifle
+    ReferenceClip: {fileID: -4708846537797790282, guid: bc2d6c5c87eb98648a666352a52c7ac4, type: 3}
+    Weight: 3
+  MoveVariants:
+  - State: Move
+    ReferenceClip: {fileID: -7003542030617561338, guid: bc2d6c5c87eb98648a666352a52c7ac4, type: 3}
+    Weight: 1
+  - State: MoveFormal
+    ReferenceClip: {fileID: 6426452042675443912, guid: bc2d6c5c87eb98648a666352a52c7ac4, type: 3}
+    Weight: 1
+  VariationSeed: 137
+  IdleChangeSeconds: {x: 4, y: 9}
+  MoveChangeSeconds: {x: 7, y: 13}
+  IdlePlaybackRange: {x: 0.92, y: 1.08}
+  MovePlaybackRange: {x: 0.96, y: 1.04}
+  AmbientBlendSeconds: 0.35
+  WalkSpeed: 2
+  RunSpeed: 4
+  BattleMoveSpeed: 7.5
+  BlendSeconds: 0.06
+  HitSeconds: 0.3
+  CorpseSeconds: 0.8
+  PresentationSpeed: 1
+  BaseHeight: 0.14

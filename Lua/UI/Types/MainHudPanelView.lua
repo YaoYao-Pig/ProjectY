@@ -1,0 +1,55 @@
+---@meta
+-- Generated from LuaReference. Do not edit; never require this file.
+---@class MainHudPanelView
+---@field Root CS.UnityEngine.RectTransform
+---@field Canvas CS.UnityEngine.Canvas
+---@field Panel CS.ProjectY.UI.LuaPanel
+---@field Group CS.UnityEngine.CanvasGroup
+---@field HealthLayer CS.UnityEngine.RectTransform
+---@field Exploration CS.UnityEngine.RectTransform
+---@field Location CS.UnityEngine.UI.Text
+---@field Subtitle CS.UnityEngine.UI.Text
+---@field Coins CS.UnityEngine.UI.Text
+---@field NavigationToggle CS.UnityEngine.UI.Button
+---@field NavigationToggleText CS.UnityEngine.UI.Text
+---@field Inventory CS.UnityEngine.UI.Button
+---@field InventoryText CS.UnityEngine.UI.Text
+---@field Growth CS.UnityEngine.UI.Button
+---@field GrowthText CS.UnityEngine.UI.Text
+---@field Focus CS.UnityEngine.UI.Button
+---@field FocusText CS.UnityEngine.UI.Text
+---@field Environment CS.UnityEngine.UI.Button
+---@field EnvironmentText CS.UnityEngine.UI.Text
+---@field NavigationTitle CS.UnityEngine.UI.Text
+---@field NavigationRows CS.UnityEngine.RectTransform
+---@field NavigationRowsScroll CS.UnityEngine.UI.ScrollRect
+---@field Leave CS.UnityEngine.UI.Button
+---@field LeaveText CS.UnityEngine.UI.Text
+---@field Stop CS.UnityEngine.UI.Button
+---@field StopText CS.UnityEngine.UI.Text
+---@field CameraMode CS.UnityEngine.UI.Button
+---@field CameraModeText CS.UnityEngine.UI.Text
+---@field Restart CS.UnityEngine.UI.Button
+---@field RestartText CS.UnityEngine.UI.Text
+---@field PartyRows CS.UnityEngine.RectTransform
+---@field Logs CS.UnityEngine.UI.Text
+---@field Interaction CS.UnityEngine.RectTransform
+---@field InteractionTitle CS.UnityEngine.UI.Text
+---@field InteractionBody CS.UnityEngine.UI.Text
+---@field Interact CS.UnityEngine.UI.Button
+---@field InteractText CS.UnityEngine.UI.Text
+---@field Hint CS.UnityEngine.UI.Text
+---@field BattleContent CS.ProjectY.UI.LuaReference
+---@field HUD CS.ProjectY.UI.MainHudView
+---@field Style CS.ProjectY.UI.MainHudView
+---@field CharacterSkills CS.UnityEngine.RectTransform
+---@field SkillActor CS.UnityEngine.UI.Text
+---@field CancelSkill CS.UnityEngine.UI.Button
+---@field CancelSkillText CS.UnityEngine.UI.Text
+---@field CharacterSkillSlots CS.UnityEngine.RectTransform
+---@field SkillEmpty CS.UnityEngine.UI.Text
+---@field SkillHint CS.UnityEngine.UI.Text
+---@field GM CS.UnityEngine.UI.Button
+---@field GMText CS.UnityEngine.UI.Text
+local View = {}
+return View

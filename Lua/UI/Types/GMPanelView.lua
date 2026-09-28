@@ -1,0 +1,25 @@
+---@meta
+-- Generated from LuaReference. Do not edit; never require this file.
+---@class GMPanelView
+---@field Root CS.UnityEngine.RectTransform
+---@field Canvas CS.UnityEngine.Canvas
+---@field Panel CS.ProjectY.UI.LuaPanel
+---@field Title CS.UnityEngine.UI.Text
+---@field Close CS.UnityEngine.UI.Button
+---@field CloseText CS.UnityEngine.UI.Text
+---@field Description CS.UnityEngine.UI.Text
+---@field Target CS.UnityEngine.UI.Text
+---@field SlotLabel CS.UnityEngine.UI.Text
+---@field Slot CS.UnityEngine.UI.InputField
+---@field SlotText CS.UnityEngine.UI.Text
+---@field LevelUp CS.UnityEngine.UI.Button
+---@field LevelUpText CS.UnityEngine.UI.Text
+---@field SkillLabel CS.UnityEngine.UI.Text
+---@field SkillId CS.UnityEngine.UI.InputField
+---@field SkillText CS.UnityEngine.UI.Text
+---@field GrantSkill CS.UnityEngine.UI.Button
+---@field GrantSkillText CS.UnityEngine.UI.Text
+---@field SkillName CS.UnityEngine.UI.Text
+---@field Result CS.UnityEngine.UI.Text
+local View = {}
+return View

@@ -36,7 +36,7 @@ function Board.Create(radius, seed, obstacleChance)
     local board = setmetatable({radius = radius, cells = {}, byKey = {}}, Board)
     for q = -radius, radius do
         for r = math.max(-radius, -q - radius), math.min(radius, -q + radius) do
-            local cell = {q = q, r = r, blocked = false}
+            local cell = {index=#board.cells+1,q = q, r = r, blocked = false}
             board.cells[#board.cells + 1] = cell; board.byKey[Hex.Key(q, r)] = cell
         end
     end

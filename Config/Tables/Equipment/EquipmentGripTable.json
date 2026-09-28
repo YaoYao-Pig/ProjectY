@@ -1,0 +1,287 @@
+{
+  "version": 1,
+  "name": "EquipmentGripTable",
+  "description": "每件武器独立微调抓握；双持时副手使用其自身武器的主握点",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "独立握点配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "编辑名称"
+    },
+    {
+      "name": "poseId",
+      "type": "int",
+      "description": "武器尺寸对应的基准姿势；共持时使用",
+      "ref": "EquipmentPoseTable"
+    },
+    {
+      "name": "mainPosition",
+      "type": "float[]",
+      "description": "主握点：武器本地坐标，米"
+    },
+    {
+      "name": "mainRotation",
+      "type": "float[]",
+      "description": "主握点：武器本地欧拉角，度"
+    },
+    {
+      "name": "offPosition",
+      "type": "float[]",
+      "description": "共持时第二只手的握点：武器本地坐标，米"
+    },
+    {
+      "name": "offRotation",
+      "type": "float[]",
+      "description": "第二握点：武器本地欧拉角，度"
+    },
+    {
+      "name": "attackActionId",
+      "type": "int",
+      "description": "0 使用模组默认；非零为武器动作变体",
+      "ref": "EquipmentActionTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "poseId": 1,
+      "mainPosition": [
+        0,
+        0,
+        0
+      ],
+      "mainRotation": [
+        0,
+        0,
+        0
+      ],
+      "offPosition": [
+        0,
+        0.16,
+        0
+      ],
+      "offRotation": [
+        0,
+        0,
+        0
+      ],
+      "attackActionId": 0,
+      "name": "武器 1 握点"
+    },
+    {
+      "id": 2,
+      "poseId": 2,
+      "mainPosition": [
+        0.071637,
+        -0.06457,
+        -0.053535
+      ],
+      "mainRotation": [
+        0,
+        0,
+        0
+      ],
+      "offPosition": [
+        -0.0015877829,
+        0,
+        0.26279264999999996
+      ],
+      "offRotation": [
+        0,
+        0,
+        0
+      ],
+      "attackActionId": 0,
+      "name": "武器 2 握点"
+    },
+    {
+      "id": 40,
+      "poseId": 3,
+      "mainPosition": [
+        0,
+        0,
+        -0.050242
+      ],
+      "mainRotation": [
+        6.846191,
+        0,
+        0
+      ],
+      "offPosition": [
+        -0.890216231,
+        -0.269739419,
+        -0.12512286
+      ],
+      "offRotation": [
+        0,
+        0,
+        0
+      ],
+      "attackActionId": 0,
+      "name": "武器 40 握点"
+    },
+    {
+      "id": 41,
+      "poseId": 3,
+      "mainPosition": [
+        0,
+        0,
+        0
+      ],
+      "mainRotation": [
+        0,
+        0,
+        0
+      ],
+      "offPosition": [
+        -0.890216231,
+        -0.269739419,
+        -0.12512286
+      ],
+      "offRotation": [
+        0,
+        0,
+        0
+      ],
+      "attackActionId": 0,
+      "name": "武器 41 握点"
+    },
+    {
+      "id": 42,
+      "poseId": 4,
+      "mainPosition": [
+        0,
+        0,
+        0
+      ],
+      "mainRotation": [
+        0,
+        0,
+        0
+      ],
+      "offPosition": [
+        -0.0120009668,
+        -0.171621829,
+        0.00138821756
+      ],
+      "offRotation": [
+        0,
+        0,
+        0
+      ],
+      "attackActionId": 0,
+      "name": "武器 42 握点"
+    },
+    {
+      "id": 43,
+      "poseId": 4,
+      "mainPosition": [
+        0,
+        0,
+        0
+      ],
+      "mainRotation": [
+        0,
+        0,
+        0
+      ],
+      "offPosition": [
+        -0.0120009668,
+        -0.171621829,
+        0.00138821756
+      ],
+      "offRotation": [
+        0,
+        0,
+        0
+      ],
+      "attackActionId": 0,
+      "name": "武器 43 握点"
+    },
+    {
+      "id": 44,
+      "poseId": 5,
+      "mainPosition": [
+        0,
+        0,
+        0
+      ],
+      "mainRotation": [
+        0,
+        0,
+        0
+      ],
+      "offPosition": [
+        -0.02012924,
+        -0.193015531,
+        0.011824674
+      ],
+      "offRotation": [
+        0,
+        0,
+        0
+      ],
+      "attackActionId": 6,
+      "name": "武器 44 握点"
+    },
+    {
+      "id": 45,
+      "poseId": 5,
+      "mainPosition": [
+        0,
+        0,
+        0
+      ],
+      "mainRotation": [
+        0,
+        0,
+        0
+      ],
+      "offPosition": [
+        -0.02012924,
+        -0.193015531,
+        0.011824674
+      ],
+      "offRotation": [
+        0,
+        0,
+        0
+      ],
+      "attackActionId": 6,
+      "name": "武器 45 握点"
+    },
+    {
+      "id": 46,
+      "name": "长弓 · 右手弦位与左手弓把",
+      "poseId": 8,
+      "mainPosition": [
+        -0.3,
+        -0.03168246650244988,
+        -0.2692976444685715
+      ],
+      "mainRotation": [
+        0,
+        0,
+        0
+      ],
+      "offPosition": [
+        0,
+        0,
+        0
+      ],
+      "offRotation": [
+        0,
+        0,
+        0
+      ],
+      "attackActionId": 0
+    }
+  ]
+}

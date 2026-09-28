@@ -1,0 +1,16 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class AnimalSpeciesTableRow
+---@field id number 稳定配置 ID
+---@field name string 动物名称
+---@field unitId number 战斗模板
+---@field rideable boolean 驯服后是否立即骑乘
+---@field footprintQ number[] 轴向 q 偏移，必须包含原点
+---@field footprintR number[] 配对的轴向 r 偏移，支持一到多格
+---@field tameDifficulty number 从成功率扣除的驯服难度
+---@field riderSeat number[] Unity 骑手髋部坐标 x/y/z
+---@field moveRange number 骑乘移动距离
+---@field initialBond number 初始亲密度
+---@field bondPerBattle number 共同完成战斗增长的亲密度
+---@field maximumBond number 亲密度上限
+---@field tameRetryTurns number 驯服失败后此动物再次接受尝试所需的回合数
+return {["name"]="AnimalSpeciesTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="name",["type"]="text",["description"]="\229\138\168\231\137\169\229\144\141\231\167\176"},{["name"]="unitId",["type"]="int",["description"]="\230\136\152\230\150\151\230\168\161\230\157\191",["ref"]="CombatUnitTable"},{["name"]="rideable",["type"]="bool",["description"]="\233\169\175\230\156\141\229\144\142\230\152\175\229\144\166\231\171\139\229\141\179\233\170\145\228\185\152"},{["name"]="footprintQ",["type"]="int[]",["description"]="\232\189\180\229\144\145 q \229\129\143\231\167\187\239\188\140\229\191\133\233\161\187\229\140\133\229\144\171\229\142\159\231\130\185"},{["name"]="footprintR",["type"]="int[]",["description"]="\233\133\141\229\175\185\231\154\132\232\189\180\229\144\145 r \229\129\143\231\167\187\239\188\140\230\148\175\230\140\129\228\184\128\229\136\176\229\164\154\230\160\188"},{["name"]="tameDifficulty",["type"]="float",["description"]="\228\187\142\230\136\144\229\138\159\231\142\135\230\137\163\233\153\164\231\154\132\233\169\175\230\156\141\233\154\190\229\186\166"},{["name"]="riderSeat",["type"]="float[]",["description"]="Unity \233\170\145\230\137\139\233\171\139\233\131\168\229\157\144\230\160\135 x/y/z"},{["name"]="moveRange",["type"]="int",["description"]="\233\170\145\228\185\152\231\167\187\229\138\168\232\183\157\231\166\187",["min"]=1},{["name"]="initialBond",["type"]="int",["description"]="\229\136\157\229\167\139\228\186\178\229\175\134\229\186\166",["min"]=0},{["name"]="bondPerBattle",["type"]="int",["description"]="\229\133\177\229\144\140\229\174\140\230\136\144\230\136\152\230\150\151\229\162\158\233\149\191\231\154\132\228\186\178\229\175\134\229\186\166",["min"]=0},{["name"]="maximumBond",["type"]="int",["description"]="\228\186\178\229\175\134\229\186\166\228\184\138\233\153\144",["min"]=1},{["name"]="tameRetryTurns",["type"]="int",["description"]="\233\169\175\230\156\141\229\164\177\232\180\165\229\144\142\230\173\164\229\138\168\231\137\169\229\134\141\230\172\161\230\142\165\229\143\151\229\176\157\232\175\149\230\137\128\233\156\128\231\154\132\229\155\158\229\144\136\230\149\176",["min"]=1}},["fingerprint"]="fc0fc5fbb2346548f546e23facdef95cd4e7b625b76879aa4cf033c1f7a74f28"}

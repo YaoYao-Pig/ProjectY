@@ -1,0 +1,103 @@
+{
+  "version": 1,
+  "name": "TalentEdgeTable",
+  "description": "from→to 为有向前置；邻接模式会按无向边使用。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "fromId",
+      "type": "int",
+      "description": "起点",
+      "ref": "TalentNodeTable"
+    },
+    {
+      "name": "toId",
+      "type": "int",
+      "description": "终点",
+      "ref": "TalentNodeTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "fromId": 1,
+      "toId": 2
+    },
+    {
+      "id": 2,
+      "fromId": 1,
+      "toId": 3
+    },
+    {
+      "id": 3,
+      "fromId": 1,
+      "toId": 4
+    },
+    {
+      "id": 4,
+      "fromId": 1,
+      "toId": 5
+    },
+    {
+      "id": 5,
+      "fromId": 2,
+      "toId": 4
+    },
+    {
+      "id": 6,
+      "fromId": 3,
+      "toId": 5
+    },
+    {
+      "id": 7,
+      "fromId": 4,
+      "toId": 6
+    },
+    {
+      "id": 8,
+      "fromId": 5,
+      "toId": 7
+    },
+    {
+      "id": 9,
+      "fromId": 6,
+      "toId": 7
+    },
+    {
+      "id": 10,
+      "fromId": 2,
+      "toId": 8
+    },
+    {
+      "id": 11,
+      "fromId": 3,
+      "toId": 9
+    },
+    {
+      "id": 12,
+      "fromId": 101,
+      "toId": 102
+    },
+    {
+      "id": 13,
+      "fromId": 101,
+      "toId": 103
+    },
+    {
+      "id": 14,
+      "fromId": 102,
+      "toId": 104
+    },
+    {
+      "id": 15,
+      "fromId": 103,
+      "toId": 104
+    }
+  ]
+}

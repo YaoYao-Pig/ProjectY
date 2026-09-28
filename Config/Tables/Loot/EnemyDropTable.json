@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "name": "EnemyDropTable",
+  "description": "按敌人战斗模板配置死亡掉落；未配置模板无掉落，驯服不触发。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "unitId",
+      "type": "int",
+      "description": "敌人模板",
+      "ref": "CombatUnitTable"
+    },
+    {
+      "name": "lootTableId",
+      "type": "int",
+      "description": "地面战利品及掉落池",
+      "ref": "EquipmentLootTable"
+    },
+    {
+      "name": "seedSalt",
+      "type": "int",
+      "description": "独立随机通道",
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "unitId": 4,
+      "lootTableId": 100,
+      "seedSalt": 731
+    },
+    {
+      "id": 2,
+      "unitId": 5,
+      "lootTableId": 101,
+      "seedSalt": 997
+    }
+  ]
+}

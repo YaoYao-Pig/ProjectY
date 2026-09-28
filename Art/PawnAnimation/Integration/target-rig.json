@@ -1,0 +1,335 @@
+{
+  "bones": [
+    {
+      "name": "root",
+      "parent": null,
+      "head": [
+        0,
+        0,
+        0
+      ],
+      "tail": [
+        0,
+        0,
+        0.15
+      ]
+    },
+    {
+      "name": "pelvis",
+      "parent": "root",
+      "head": [
+        0,
+        0,
+        0.82
+      ],
+      "tail": [
+        0,
+        0,
+        0.94
+      ]
+    },
+    {
+      "name": "spine_01",
+      "parent": "pelvis",
+      "head": [
+        0,
+        0,
+        0.94
+      ],
+      "tail": [
+        0,
+        0,
+        1.05
+      ]
+    },
+    {
+      "name": "spine_02",
+      "parent": "spine_01",
+      "head": [
+        0,
+        0,
+        1.05
+      ],
+      "tail": [
+        0,
+        0,
+        1.18
+      ]
+    },
+    {
+      "name": "spine_03",
+      "parent": "spine_02",
+      "head": [
+        0,
+        0,
+        1.18
+      ],
+      "tail": [
+        0,
+        0,
+        1.3
+      ]
+    },
+    {
+      "name": "neck_01",
+      "parent": "spine_03",
+      "head": [
+        0,
+        0,
+        1.3
+      ],
+      "tail": [
+        0,
+        0,
+        1.38
+      ]
+    },
+    {
+      "name": "Head",
+      "parent": "neck_01",
+      "head": [
+        0,
+        0,
+        1.38
+      ],
+      "tail": [
+        0,
+        0,
+        1.78
+      ]
+    },
+    {
+      "name": "clavicle_l",
+      "parent": "spine_03",
+      "head": [
+        0.04,
+        0,
+        1.25
+      ],
+      "tail": [
+        0.28999999165534973,
+        0.0,
+        1.25
+      ]
+    },
+    {
+      "name": "upperarm_l",
+      "parent": "clavicle_l",
+      "head": [
+        0.28999999165534973,
+        0.0,
+        1.25
+      ],
+      "tail": [
+        0.5318676829338074,
+        0.0,
+        1.25
+      ]
+    },
+    {
+      "name": "lowerarm_l",
+      "parent": "upperarm_l",
+      "head": [
+        0.5318676829338074,
+        0.0,
+        1.25
+      ],
+      "tail": [
+        0.7770206928253174,
+        0.0,
+        1.25
+      ]
+    },
+    {
+      "name": "hand_l",
+      "parent": "lowerarm_l",
+      "head": [
+        0.7770206928253174,
+        0.0,
+        1.25
+      ],
+      "tail": [
+        0.9470207095146179,
+        0.0,
+        1.25
+      ]
+    },
+    {
+      "name": "thigh_l",
+      "parent": "pelvis",
+      "head": [
+        0.17,
+        0,
+        0.82
+      ],
+      "tail": [
+        0.17,
+        0,
+        0.56
+      ]
+    },
+    {
+      "name": "calf_l",
+      "parent": "thigh_l",
+      "head": [
+        0.17,
+        0,
+        0.56
+      ],
+      "tail": [
+        0.17,
+        0,
+        0.23
+      ]
+    },
+    {
+      "name": "foot_l",
+      "parent": "calf_l",
+      "head": [
+        0.17,
+        0,
+        0.23
+      ],
+      "tail": [
+        0.17,
+        -0.16,
+        0.15
+      ]
+    },
+    {
+      "name": "ball_l",
+      "parent": "foot_l",
+      "head": [
+        0.17,
+        -0.16,
+        0.15
+      ],
+      "tail": [
+        0.17,
+        -0.26,
+        0.15
+      ]
+    },
+    {
+      "name": "clavicle_r",
+      "parent": "spine_03",
+      "head": [
+        -0.04,
+        0,
+        1.25
+      ],
+      "tail": [
+        -0.28999999165534973,
+        0.0,
+        1.25
+      ]
+    },
+    {
+      "name": "upperarm_r",
+      "parent": "clavicle_r",
+      "head": [
+        -0.28999999165534973,
+        0.0,
+        1.25
+      ],
+      "tail": [
+        -0.5318676829338074,
+        0.0,
+        1.25
+      ]
+    },
+    {
+      "name": "lowerarm_r",
+      "parent": "upperarm_r",
+      "head": [
+        -0.5318676829338074,
+        0.0,
+        1.25
+      ],
+      "tail": [
+        -0.7770206928253174,
+        0.0,
+        1.25
+      ]
+    },
+    {
+      "name": "hand_r",
+      "parent": "lowerarm_r",
+      "head": [
+        -0.7770206928253174,
+        0.0,
+        1.25
+      ],
+      "tail": [
+        -0.9470207095146179,
+        0.0,
+        1.25
+      ]
+    },
+    {
+      "name": "thigh_r",
+      "parent": "pelvis",
+      "head": [
+        -0.17,
+        0,
+        0.82
+      ],
+      "tail": [
+        -0.17,
+        0,
+        0.56
+      ]
+    },
+    {
+      "name": "calf_r",
+      "parent": "thigh_r",
+      "head": [
+        -0.17,
+        0,
+        0.56
+      ],
+      "tail": [
+        -0.17,
+        0,
+        0.23
+      ]
+    },
+    {
+      "name": "foot_r",
+      "parent": "calf_r",
+      "head": [
+        -0.17,
+        0,
+        0.23
+      ],
+      "tail": [
+        -0.17,
+        -0.16,
+        0.15
+      ]
+    },
+    {
+      "name": "ball_r",
+      "parent": "foot_r",
+      "head": [
+        -0.17,
+        -0.16,
+        0.15
+      ],
+      "tail": [
+        -0.17,
+        -0.26,
+        0.15
+      ]
+    }
+  ],
+  "vertices": 204,
+  "triangles": 344,
+  "highest_z": 1.7799999713897705,
+  "lowest_z": 0.125,
+  "materials": [
+    "M_MapLP_Timber",
+    "M_MapLP_Window",
+    "M_MapLP_PlasterShade"
+  ]
+}

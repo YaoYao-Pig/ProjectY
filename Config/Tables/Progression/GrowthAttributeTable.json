@@ -1,0 +1,249 @@
+{
+  "version": 1,
+  "name": "GrowthAttributeTable",
+  "description": "显示、加点、主动技能抽取方向共用属性注册表。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "code",
+      "type": "string",
+      "description": "CombatStats 属性代码"
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "显示名"
+    },
+    {
+      "name": "category",
+      "type": "enum",
+      "description": "属性分组",
+      "values": [
+        "primary",
+        "combat",
+        "life"
+      ]
+    },
+    {
+      "name": "pointCost",
+      "type": "int",
+      "description": "每次加点消耗",
+      "min": 1
+    },
+    {
+      "name": "amount",
+      "type": "int",
+      "description": "每次增加数值",
+      "min": 1
+    },
+    {
+      "name": "maximumInvestment",
+      "type": "int",
+      "description": "可投入的属性增量上限",
+      "min": 1
+    },
+    {
+      "name": "skillDirection",
+      "type": "bool",
+      "description": "是否参与主动技能方向抽取"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "code": "vitality",
+      "name": "体力",
+      "category": "primary",
+      "pointCost": 1,
+      "amount": 1,
+      "maximumInvestment": 30,
+      "skillDirection": true
+    },
+    {
+      "id": 2,
+      "code": "endurance",
+      "name": "耐力",
+      "category": "primary",
+      "pointCost": 1,
+      "amount": 1,
+      "maximumInvestment": 30,
+      "skillDirection": true
+    },
+    {
+      "id": 3,
+      "code": "intellect",
+      "name": "智力",
+      "category": "primary",
+      "pointCost": 1,
+      "amount": 1,
+      "maximumInvestment": 30,
+      "skillDirection": true
+    },
+    {
+      "id": 4,
+      "code": "strength",
+      "name": "力量",
+      "category": "primary",
+      "pointCost": 1,
+      "amount": 1,
+      "maximumInvestment": 30,
+      "skillDirection": true
+    },
+    {
+      "id": 5,
+      "code": "speed",
+      "name": "速度",
+      "category": "primary",
+      "pointCost": 1,
+      "amount": 1,
+      "maximumInvestment": 30,
+      "skillDirection": true
+    },
+    {
+      "id": 6,
+      "code": "defense",
+      "name": "防御",
+      "category": "primary",
+      "pointCost": 1,
+      "amount": 1,
+      "maximumInvestment": 30,
+      "skillDirection": true
+    },
+    {
+      "id": 7,
+      "code": "sword",
+      "name": "剑",
+      "category": "combat",
+      "pointCost": 1,
+      "amount": 1,
+      "maximumInvestment": 30,
+      "skillDirection": true
+    },
+    {
+      "id": 8,
+      "code": "polearm",
+      "name": "长柄武器",
+      "category": "combat",
+      "pointCost": 1,
+      "amount": 1,
+      "maximumInvestment": 30,
+      "skillDirection": true
+    },
+    {
+      "id": 9,
+      "code": "unarmed",
+      "name": "空手",
+      "category": "combat",
+      "pointCost": 1,
+      "amount": 1,
+      "maximumInvestment": 30,
+      "skillDirection": true
+    },
+    {
+      "id": 10,
+      "code": "staff",
+      "name": "法杖",
+      "category": "combat",
+      "pointCost": 1,
+      "amount": 1,
+      "maximumInvestment": 30,
+      "skillDirection": true
+    },
+    {
+      "id": 11,
+      "code": "dagger",
+      "name": "匕首",
+      "category": "combat",
+      "pointCost": 1,
+      "amount": 1,
+      "maximumInvestment": 30,
+      "skillDirection": true
+    },
+    {
+      "id": 12,
+      "code": "bow",
+      "name": "弓箭",
+      "category": "combat",
+      "pointCost": 1,
+      "amount": 1,
+      "maximumInvestment": 30,
+      "skillDirection": true
+    },
+    {
+      "id": 13,
+      "code": "greatsword",
+      "name": "双手武器",
+      "category": "combat",
+      "pointCost": 1,
+      "amount": 1,
+      "maximumInvestment": 30,
+      "skillDirection": true
+    },
+    {
+      "id": 14,
+      "code": "firearms",
+      "name": "枪械",
+      "category": "combat",
+      "pointCost": 1,
+      "amount": 1,
+      "maximumInvestment": 30,
+      "skillDirection": true
+    },
+    {
+      "id": 15,
+      "code": "scouting",
+      "name": "侦察",
+      "category": "life",
+      "pointCost": 1,
+      "amount": 1,
+      "maximumInvestment": 30,
+      "skillDirection": false
+    },
+    {
+      "id": 16,
+      "code": "crafting",
+      "name": "巧匠",
+      "category": "life",
+      "pointCost": 1,
+      "amount": 1,
+      "maximumInvestment": 30,
+      "skillDirection": false
+    },
+    {
+      "id": 17,
+      "code": "cooking",
+      "name": "厨艺",
+      "category": "life",
+      "pointCost": 1,
+      "amount": 1,
+      "maximumInvestment": 30,
+      "skillDirection": false
+    },
+    {
+      "id": 18,
+      "code": "animalAffinity",
+      "name": "动物亲和",
+      "category": "life",
+      "pointCost": 1,
+      "amount": 1,
+      "maximumInvestment": 30,
+      "skillDirection": true
+    },
+    {
+      "id": 19,
+      "code": "charisma",
+      "name": "魅力",
+      "category": "life",
+      "pointCost": 1,
+      "amount": 1,
+      "maximumInvestment": 30,
+      "skillDirection": false
+    }
+  ]
+}

@@ -1,0 +1,274 @@
+{
+  "version": 1,
+  "modules": [
+    {
+      "id": "body_male_0",
+      "slot": "body",
+      "race": "",
+      "sex": "male",
+      "label": "纤细"
+    },
+    {
+      "id": "body_male_1",
+      "slot": "body",
+      "race": "",
+      "sex": "male",
+      "label": "匀称"
+    },
+    {
+      "id": "body_male_2",
+      "slot": "body",
+      "race": "",
+      "sex": "male",
+      "label": "健壮"
+    },
+    {
+      "id": "body_female_0",
+      "slot": "body",
+      "race": "",
+      "sex": "female",
+      "label": "纤细"
+    },
+    {
+      "id": "body_female_1",
+      "slot": "body",
+      "race": "",
+      "sex": "female",
+      "label": "匀称"
+    },
+    {
+      "id": "body_female_2",
+      "slot": "body",
+      "race": "",
+      "sex": "female",
+      "label": "健壮"
+    },
+    {
+      "id": "head_human_male_0",
+      "slot": "head",
+      "race": "human",
+      "sex": "male",
+      "label": "柔和"
+    },
+    {
+      "id": "head_human_male_1",
+      "slot": "head",
+      "race": "human",
+      "sex": "male",
+      "label": "棱角"
+    },
+    {
+      "id": "head_human_female_0",
+      "slot": "head",
+      "race": "human",
+      "sex": "female",
+      "label": "柔和"
+    },
+    {
+      "id": "head_human_female_1",
+      "slot": "head",
+      "race": "human",
+      "sex": "female",
+      "label": "棱角"
+    },
+    {
+      "id": "head_elf_male_0",
+      "slot": "head",
+      "race": "elf",
+      "sex": "male",
+      "label": "柔和"
+    },
+    {
+      "id": "head_elf_male_1",
+      "slot": "head",
+      "race": "elf",
+      "sex": "male",
+      "label": "棱角"
+    },
+    {
+      "id": "head_elf_female_0",
+      "slot": "head",
+      "race": "elf",
+      "sex": "female",
+      "label": "柔和"
+    },
+    {
+      "id": "head_elf_female_1",
+      "slot": "head",
+      "race": "elf",
+      "sex": "female",
+      "label": "棱角"
+    },
+    {
+      "id": "head_goblin_male_0",
+      "slot": "head",
+      "race": "goblin",
+      "sex": "male",
+      "label": "柔和"
+    },
+    {
+      "id": "head_goblin_male_1",
+      "slot": "head",
+      "race": "goblin",
+      "sex": "male",
+      "label": "棱角"
+    },
+    {
+      "id": "head_goblin_female_0",
+      "slot": "head",
+      "race": "goblin",
+      "sex": "female",
+      "label": "柔和"
+    },
+    {
+      "id": "head_goblin_female_1",
+      "slot": "head",
+      "race": "goblin",
+      "sex": "female",
+      "label": "棱角"
+    },
+    {
+      "id": "head_dragon_male_0",
+      "slot": "head",
+      "race": "dragon",
+      "sex": "male",
+      "label": "柔和"
+    },
+    {
+      "id": "head_dragon_male_1",
+      "slot": "head",
+      "race": "dragon",
+      "sex": "male",
+      "label": "棱角"
+    },
+    {
+      "id": "head_dragon_female_0",
+      "slot": "head",
+      "race": "dragon",
+      "sex": "female",
+      "label": "柔和"
+    },
+    {
+      "id": "head_dragon_female_1",
+      "slot": "head",
+      "race": "dragon",
+      "sex": "female",
+      "label": "棱角"
+    },
+    {
+      "id": "head_orc_male_0",
+      "slot": "head",
+      "race": "orc",
+      "sex": "male",
+      "label": "柔和"
+    },
+    {
+      "id": "head_orc_male_1",
+      "slot": "head",
+      "race": "orc",
+      "sex": "male",
+      "label": "棱角"
+    },
+    {
+      "id": "head_orc_female_0",
+      "slot": "head",
+      "race": "orc",
+      "sex": "female",
+      "label": "柔和"
+    },
+    {
+      "id": "head_orc_female_1",
+      "slot": "head",
+      "race": "orc",
+      "sex": "female",
+      "label": "棱角"
+    },
+    {
+      "id": "hair_0",
+      "slot": "hair",
+      "race": "all",
+      "sex": "",
+      "label": "短脊"
+    },
+    {
+      "id": "hair_1",
+      "slot": "hair",
+      "race": "human,elf,goblin,orc",
+      "sex": "",
+      "label": "短发"
+    },
+    {
+      "id": "hair_2",
+      "slot": "hair",
+      "race": "human,elf,goblin,orc",
+      "sex": "",
+      "label": "齐肩"
+    },
+    {
+      "id": "none",
+      "slot": "hair",
+      "race": "all",
+      "sex": "",
+      "label": "无发"
+    }
+  ],
+  "races": [
+    {
+      "id": "human",
+      "label": "人类",
+      "colors": [
+        "#c9966c",
+        "#e2b994",
+        "#925d42"
+      ]
+    },
+    {
+      "id": "elf",
+      "label": "精灵",
+      "colors": [
+        "#d0b69a",
+        "#c3bca8",
+        "#967c68"
+      ]
+    },
+    {
+      "id": "goblin",
+      "label": "哥布林",
+      "colors": [
+        "#8eaa69",
+        "#6d8b58",
+        "#b1b76d"
+      ]
+    },
+    {
+      "id": "dragon",
+      "label": "龙人",
+      "colors": [
+        "#8c6658",
+        "#598d83",
+        "#687c9e"
+      ]
+    },
+    {
+      "id": "orc",
+      "label": "兽人",
+      "colors": [
+        "#879275",
+        "#647c64",
+        "#a19669"
+      ]
+    }
+  ],
+  "hairColors": [
+    "#49372c",
+    "#a78049",
+    "#a3a397",
+    "#613d39"
+  ],
+  "clothColors": [
+    "#526f73",
+    "#6b6549",
+    "#79575a",
+    "#647557"
+  ]
+}

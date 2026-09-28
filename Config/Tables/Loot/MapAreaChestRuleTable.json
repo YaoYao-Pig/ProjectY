@@ -1,0 +1,99 @@
+{
+  "version": 1,
+  "name": "MapAreaChestRuleTable",
+  "description": "小地图宝箱独立生成策略；只选入口可达、无角色/NPC占用的地格。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "areaId",
+      "type": "int",
+      "description": "小地图配置",
+      "ref": "MapAreaTable"
+    },
+    {
+      "name": "lootTableId",
+      "type": "int",
+      "description": "宝箱与内容定义",
+      "ref": "EquipmentLootTable"
+    },
+    {
+      "name": "strategy",
+      "type": "enum",
+      "description": "候选位置策略",
+      "values": [
+        "reachable",
+        "rooms"
+      ]
+    },
+    {
+      "name": "minCount",
+      "type": "int",
+      "description": "最少宝箱数",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "maxCount",
+      "type": "int",
+      "description": "最多宝箱数",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "minDistance",
+      "type": "int",
+      "description": "距入口最小寻路距离",
+      "min": 0
+    },
+    {
+      "name": "maxDistance",
+      "type": "int",
+      "description": "距入口最大寻路距离",
+      "min": 0
+    },
+    {
+      "name": "spacing",
+      "type": "int",
+      "description": "宝箱间最小六边形格距",
+      "min": 1
+    },
+    {
+      "name": "seedSalt",
+      "type": "int",
+      "description": "独立随机通道",
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "areaId": 1,
+      "lootTableId": 10,
+      "strategy": "rooms",
+      "minCount": 2,
+      "maxCount": 4,
+      "minDistance": 12,
+      "maxDistance": 500,
+      "spacing": 6,
+      "seedSalt": 51073
+    },
+    {
+      "id": 2,
+      "areaId": 20,
+      "lootTableId": 11,
+      "strategy": "reachable",
+      "minCount": 2,
+      "maxCount": 4,
+      "minDistance": 10,
+      "maxDistance": 140,
+      "spacing": 5,
+      "seedSalt": 52711
+    }
+  ]
+}

@@ -1,3 +1,4 @@
+local EmptyGrowth=assert(loadfile('Tools/Tests/growth_empty.lua'))()
 -- Targeted, editor-free projection checks against the real config and skill rules.
 package.path = 'Lua/?.lua;' .. package.path
 local config = require('Config.ConfigSystem')()
@@ -9,11 +10,11 @@ local battle = require('Game.Battle.BattleSystem')()
 battle.skills = config:GetTable('CombatSkillTable'); battle.encounters = config:GetTable('CombatEncounterTable')
 battle.stats = require('Game.Battle.CombatStats')(config)
 battle.board = require('Game.Battle.BattleBoard').Create(4, 123, 0)
-local hero = {Id=1,TemplateId=2,Team=1,HP=32,MaxHP=38,AP=4,Guard=3,Moved=false,MainUsed=false,TraitCount=0,Q=-1,R=0}
-local down = {Id=2,TemplateId=3,Team=1,HP=0,MaxHP=34,AP=0,Guard=0,Moved=false,MainUsed=false,TraitCount=0,Q=-2,R=0}
-local enemy = {Id=101,TemplateId=4,Team=2,HP=24,MaxHP=34,AP=4,Guard=0,Moved=false,MainUsed=false,TraitCount=0,Q=0,R=0}
+local hero = {Id=1,Growth=EmptyGrowth(),TemplateId=2,Team=1,HP=32,MaxHP=38,AP=4,Guard=3,Moved=false,MainUsed=false,TraitCount=0,Q=-1,R=0}
+local down = {Id=2,Growth=EmptyGrowth(),TemplateId=3,Team=1,HP=0,MaxHP=34,AP=0,Guard=0,Moved=false,MainUsed=false,TraitCount=0,Q=-2,R=0}
+local enemy = {Id=101,Growth=EmptyGrowth(),TemplateId=4,Team=2,HP=24,MaxHP=34,AP=4,Guard=0,Moved=false,MainUsed=false,TraitCount=0,Q=0,R=0}
 local units = {hero,down,enemy}; local order = {1,101,2}
-for _,unit in ipairs(units) do function unit:GetCooldown() return 0 end end
+for _,unit in ipairs(units) do unit.AnimalOwnerId=0;function unit:GetCooldown() return 0 end end
 battle.data = {Winner='',ActiveId=1,UnitCount=3,TurnCount=3,TurnIndex=0,Round=3,MaxRounds=18,EncounterId=1,LogCount=2,
     GetUnitAt=function(_,i) return units[i+1] end,GetTurnAt=function(_,i) return order[i+1] end,
     GetLogAt=function(_,i) return ({'first','second'})[i+1] end}

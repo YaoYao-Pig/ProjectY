@@ -1,0 +1,136 @@
+{
+  "version": 1,
+  "name": "EquipmentMotionMatchTable",
+  "description": "主副手装备组合必须精确匹配一行；禁止在运行时猜测回退模组",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "匹配规则 ID",
+      "min": 1
+    },
+    {
+      "name": "mainKind",
+      "type": "enum",
+      "description": "主手武器种类；空手为 none",
+      "values": [
+        "none",
+        "melee",
+        "staff",
+        "bow",
+        "gun"
+      ]
+    },
+    {
+      "name": "mainHands",
+      "type": "int",
+      "description": "主武器需要的手数；空手为 0",
+      "min": 0,
+      "max": 2
+    },
+    {
+      "name": "offKind",
+      "type": "enum",
+      "description": "副手实际状态",
+      "values": [
+        "none",
+        "weapon",
+        "shield"
+      ]
+    },
+    {
+      "name": "gunClass",
+      "type": "string",
+      "description": "枪型；非枪械为空，新增枪型添加相应规则"
+    },
+    {
+      "name": "moduleId",
+      "type": "int",
+      "description": "匹配后的动作模组",
+      "ref": "EquipmentMotionModuleTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "mainKind": "none",
+      "mainHands": 0,
+      "offKind": "none",
+      "gunClass": "",
+      "moduleId": 8
+    },
+    {
+      "id": 2,
+      "mainKind": "none",
+      "mainHands": 0,
+      "offKind": "weapon",
+      "gunClass": "",
+      "moduleId": 1
+    },
+    {
+      "id": 3,
+      "mainKind": "none",
+      "mainHands": 0,
+      "offKind": "shield",
+      "gunClass": "",
+      "moduleId": 2
+    },
+    {
+      "id": 4,
+      "mainKind": "melee",
+      "mainHands": 1,
+      "offKind": "none",
+      "gunClass": "",
+      "moduleId": 1
+    },
+    {
+      "id": 5,
+      "mainKind": "melee",
+      "mainHands": 1,
+      "offKind": "shield",
+      "gunClass": "",
+      "moduleId": 2
+    },
+    {
+      "id": 6,
+      "mainKind": "melee",
+      "mainHands": 1,
+      "offKind": "weapon",
+      "gunClass": "",
+      "moduleId": 4
+    },
+    {
+      "id": 7,
+      "mainKind": "melee",
+      "mainHands": 2,
+      "offKind": "none",
+      "gunClass": "",
+      "moduleId": 3
+    },
+    {
+      "id": 8,
+      "mainKind": "staff",
+      "mainHands": 2,
+      "offKind": "none",
+      "gunClass": "",
+      "moduleId": 5
+    },
+    {
+      "id": 9,
+      "mainKind": "bow",
+      "mainHands": 2,
+      "offKind": "none",
+      "gunClass": "",
+      "moduleId": 6
+    },
+    {
+      "id": 10,
+      "mainKind": "gun",
+      "mainHands": 2,
+      "offKind": "none",
+      "gunClass": "rifle",
+      "moduleId": 7
+    }
+  ]
+}

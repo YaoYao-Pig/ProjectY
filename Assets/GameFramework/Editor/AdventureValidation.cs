@@ -11,6 +11,10 @@ namespace ProjectY.Editor
     {
         [MenuItem("Project Y/远征/验证战斗与事件")]
         public static void Run() => RunFile("Tools/Tests/adventure_integration.lua");
+        [MenuItem("Project Y/远征/验证角色养成与故事")]
+        public static void RunGrowth() => RunFile("Tools/Tests/growth_integration.lua");
+        [MenuItem("Project Y/远征/验证探索与故事接入")]
+        public static void RunExplorationStory() => RunFile("Tools/Tests/exploration_story_integration.lua");
         [MenuItem("Project Y/地图/验证 MapArea 地牢")]
         public static void RunArea() => RunFile("Tools/Tests/maparea_integration.lua");
         [MenuItem("Project Y/远征/验证地牢原地战斗")]

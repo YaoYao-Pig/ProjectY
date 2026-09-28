@@ -1,0 +1,102 @@
+{
+  "version": 1,
+  "name": "GrowthLevelTable",
+  "description": "id 为到达的等级；每级独立配置，最后一行即等级上限。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "experience",
+      "type": "int",
+      "description": "从上一级升到本级所需经验",
+      "min": 1
+    },
+    {
+      "name": "attributePoints",
+      "type": "int",
+      "description": "升级给予属性点",
+      "min": 0
+    },
+    {
+      "name": "talentPoints",
+      "type": "int",
+      "description": "升级给予被动点",
+      "min": 0
+    },
+    {
+      "name": "learnSkill",
+      "type": "bool",
+      "description": "是否产生一次主动技能学习机会"
+    }
+  ],
+  "rows": [
+    {
+      "id": 2,
+      "experience": 40,
+      "attributePoints": 2,
+      "talentPoints": 1,
+      "learnSkill": true
+    },
+    {
+      "id": 3,
+      "experience": 60,
+      "attributePoints": 2,
+      "talentPoints": 1,
+      "learnSkill": false
+    },
+    {
+      "id": 4,
+      "experience": 80,
+      "attributePoints": 2,
+      "talentPoints": 1,
+      "learnSkill": true
+    },
+    {
+      "id": 5,
+      "experience": 100,
+      "attributePoints": 2,
+      "talentPoints": 1,
+      "learnSkill": false
+    },
+    {
+      "id": 6,
+      "experience": 120,
+      "attributePoints": 2,
+      "talentPoints": 1,
+      "learnSkill": true
+    },
+    {
+      "id": 7,
+      "experience": 140,
+      "attributePoints": 2,
+      "talentPoints": 1,
+      "learnSkill": false
+    },
+    {
+      "id": 8,
+      "experience": 160,
+      "attributePoints": 2,
+      "talentPoints": 1,
+      "learnSkill": true
+    },
+    {
+      "id": 9,
+      "experience": 180,
+      "attributePoints": 2,
+      "talentPoints": 1,
+      "learnSkill": false
+    },
+    {
+      "id": 10,
+      "experience": 200,
+      "attributePoints": 2,
+      "talentPoints": 1,
+      "learnSkill": true
+    }
+  ]
+}

@@ -28,7 +28,7 @@ namespace ProjectY.Samples
             public Member[] Members;
             public NpcState[] Npcs;
             public Loot[] Loots;
-            public AdventureViewData.Actor[] Enemies;
+            public AdventureViewData.Actor[] Enemies, Defeated;
             public int EncounterCount, ClearedEncounters;
             public int InteractionKind, InteractionId;
         }
@@ -144,6 +144,12 @@ namespace ProjectY.Samples
                     enemies = new AdventureViewData.Actor[rows.Length];
                     for (var i = 0; i < enemies.Length; i++) using (var row = rows.Get<int, LuaTable>(i + 1)) enemies[i] = AdventureViewData.ReadActor(row);
                 }
+                AdventureViewData.Actor[] defeated;
+                using (var rows = area.Get<LuaTable>("defeated"))
+                {
+                    defeated = new AdventureViewData.Actor[rows.Length];
+                    for (var i = 0; i < defeated.Length; i++) using (var row = rows.Get<int, LuaTable>(i + 1)) defeated[i] = AdventureViewData.ReadActor(row);
+                }
                 Loot[] loots;
                 using(var rows=area.Get<LuaTable>("loot"))
                 {
@@ -152,7 +158,7 @@ namespace ProjectY.Samples
                     for(int i=0;i<loots.Length;i++) using(var row=rows.Get<int,LuaTable>(i+1)) using(var asset=row.Get<LuaTable>("asset"))
                         loots[i]=new Loot {Id=row.Get<int>("id"),CellIndex=row.Get<int>("cellIndex")-1,Name=row.Get<string>("name"),Looted=row.Get<bool>("looted"),Asset=EquipmentVisualData.Asset.Read(asset)};
                 }
-                return new State { Members = members, Npcs = npcs, Enemies = enemies, Loots=loots,
+                return new State { Members = members, Npcs = npcs, Enemies = enemies, Defeated=defeated, Loots=loots,
                     EncounterCount = area.Get<int>("encounterCount"), ClearedEncounters = area.Get<int>("clearedEncounters"),
                     InteractionKind = area.Get<int>("interactionKind"), InteractionId = area.Get<int>("interactionId"),
                     Name = area.Get<string>("name"), Theme = area.Get<string>("theme"), Seed = area.Get<uint>("seed"),

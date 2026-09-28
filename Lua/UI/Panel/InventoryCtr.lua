@@ -70,7 +70,7 @@ function Inventory:Refresh()
         end
     end
     local actor=self.system:Actor(self.actorId);local lines={}
-    self.view.Character:Show(self.appearance:Template(actor.TemplateId,self.system.rules:ActorVisual(actor)))
+    self.view.Character:Show(self.appearance:Template(actor.TemplateId,self.system.rules:ActorVisual(actor),actor.CustomizationJson))
     for _,attribute in ipairs(self.system.rules.attributes:All()) do lines[#lines+1]=attribute.name..'  '..self.stats:Get(actor,attribute.code) end
     self.view.ActorStats.text=string.format('生命 %d / %d\n',actor.HP,actor.MaxHP)..table.concat(lines,'    ')
     local occupied=0;for i=0,data.Grid.Count-1 do local p=data.Grid:GetAt(i);occupied=occupied+p.Width*p.Height end

@@ -1,0 +1,11 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class GrowthAttributeTableRow
+---@field id number 稳定配置 ID
+---@field code string CombatStats 属性代码
+---@field name string 显示名
+---@field category "primary"|"combat"|"life" 属性分组
+---@field pointCost number 每次加点消耗
+---@field amount number 每次增加数值
+---@field maximumInvestment number 可投入的属性增量上限
+---@field skillDirection boolean 是否参与主动技能方向抽取
+return {["name"]="GrowthAttributeTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="code",["type"]="string",["description"]="CombatStats \229\177\158\230\128\167\228\187\163\231\160\129"},{["name"]="name",["type"]="text",["description"]="\230\152\190\231\164\186\229\144\141"},{["name"]="category",["type"]="enum",["description"]="\229\177\158\230\128\167\229\136\134\231\187\132",["values"]={"primary","combat","life"}},{["name"]="pointCost",["type"]="int",["description"]="\230\175\143\230\172\161\229\138\160\231\130\185\230\182\136\232\128\151",["min"]=1},{["name"]="amount",["type"]="int",["description"]="\230\175\143\230\172\161\229\162\158\229\138\160\230\149\176\229\128\188",["min"]=1},{["name"]="maximumInvestment",["type"]="int",["description"]="\229\143\175\230\138\149\229\133\165\231\154\132\229\177\158\230\128\167\229\162\158\233\135\143\228\184\138\233\153\144",["min"]=1},{["name"]="skillDirection",["type"]="bool",["description"]="\230\152\175\229\144\166\229\143\130\228\184\142\228\184\187\229\138\168\230\138\128\232\131\189\230\150\185\229\144\145\230\138\189\229\143\150"}},["fingerprint"]="dc66968603d3bd9c89a74dffd8167fd2e9d9320f47dbbbfdb813124b33d0aa26"}

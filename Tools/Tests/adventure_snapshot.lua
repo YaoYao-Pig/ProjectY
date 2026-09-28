@@ -1,3 +1,4 @@
+local EmptyGrowth=assert(loadfile('Tools/Tests/growth_empty.lua'))()
 -- 快照契约回归：真实 Battle 查询和 Adventure.Snapshot；配置与 Data 使用只读夹具。
 -- 对应 AdventureViewData.Read 的必需值类型，防止 Lua nil 进入 C# bool/int 字段。
 package.path = 'Lua/?.lua;' .. package.path
@@ -22,15 +23,15 @@ local skills = rows({
     [4] = {name = '防御', description = '保护自身', cost = 1, action = 'secondary', range = 0, target = 'self'},
 })
 local function fixture()
-    local hero = {Id = 1, TemplateId = 1, Team = 1, HP = 46, MaxHP = 46, AP = 4,
+    local hero = {Id = 1, Growth=EmptyGrowth(),TemplateId = 1, Team = 1, HP = 46, MaxHP = 46, AP = 4,
         Q = -4, R = 0, Guard = 0, Moved = false, MainUsed = false, TraitCount = 0}
-    local enemy = {Id = 101, TemplateId = 4, Team = 2, HP = 34, MaxHP = 34, AP = 0,
+    local enemy = {Id = 101, Growth=EmptyGrowth(),TemplateId = 4, Team = 2, HP = 34, MaxHP = 34, AP = 0,
         Q = 4, R = 0, Guard = 0, Moved = false, MainUsed = false, TraitCount = 0}
     local units = {hero, enemy}
     local battleData = {UnitCount = 2, Round = 1, EncounterId = 1, ActiveId = 1, Winner = '', LogCount = 1,
         GetUnitAt = function(_, index) return assert(units[index + 1]) end,
         GetLogAt = function(_, index) assert(index == 0); return '战斗开始' end}
-    local data = {Phase = 'battle', PartyCount = 1, ResultText = '', EventId = 1, AreaEncounterId = 0, Battle = battleData,
+    local data = {Phase = 'battle', Areas={ActiveSiteId=0}, PartyCount = 1, ResultText = '', EventId = 1, EventActorId=1, EventLocation='废墟', AreaEncounterId = 0, Battle = battleData,
         GetPartyAt = function(_, index) assert(index == 0); return hero end,
         HasVisited = function() return false end}
     local battle = Battle()
@@ -42,11 +43,13 @@ local function fixture()
     battle.skills = skills
     battle.encounters = rows({[1] = {name = '废墟守卫'}})
     local events = Events()
+    events.growth={Actor=function() return hero end}
+    events.chronicle=require('Game.Progression.Chronicle').New(config,data,battle.stats)
     events.data, events.player, events.stats = data, {Coins = 0}, battle.stats
     events.events = rows({[1] = {name = '废墟', description = '守卫仍在巡逻。', repeatable = false, choiceIds = {1, 2}}})
     events.choices = rows({
-        [1] = {label = '迎战', costCoins = 0, minScouting = 0, encounterIds = {1}, traitIds = {}, healParty = false},
-        [2] = {label = '侦察', costCoins = 0, minScouting = 4, encounterIds = {}, traitIds = {}, healParty = false},
+        [1] = {label = '迎战', costCoins = 0, minScouting = 0, encounterIds = {1}, traitIds = {}, healParty = false, requiredTraitIds={},forbiddenTraitIds={},itemIds={}},
+        [2] = {label = '侦察', costCoins = 0, minScouting = 4, encounterIds = {}, traitIds = {}, healParty = false, requiredTraitIds={},forbiddenTraitIds={},itemIds={}},
     })
     local adventure = Adventure()
     adventure.data, adventure.player, adventure.battle, adventure.events = data, events.player, battle, events

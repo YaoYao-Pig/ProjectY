@@ -1,0 +1,86 @@
+{
+  "version": 1,
+  "name": "MapAreaForestTable",
+  "description": "森林生成参数；林间空地保留战斗空间，树木按噪声形成疏密变化。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "gladeCount",
+      "type": "int",
+      "description": "安全空地数量",
+      "min": 4,
+      "max": 16
+    },
+    {
+      "name": "gladeRadius",
+      "type": "int",
+      "description": "空地净空半径",
+      "min": 2,
+      "max": 5
+    },
+    {
+      "name": "treeChance",
+      "type": "float",
+      "description": "林木基础密度",
+      "min": 0,
+      "max": 0.5
+    },
+    {
+      "name": "fernChance",
+      "type": "float",
+      "description": "非阻挡蕨类密度",
+      "min": 0,
+      "max": 0.5
+    },
+    {
+      "name": "oakAssetId",
+      "type": "int",
+      "description": "阔叶树资源",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "pineAssetId",
+      "type": "int",
+      "description": "针叶树资源",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "fernAssetId",
+      "type": "int",
+      "description": "蕨类资源",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "groundSurfaceId",
+      "type": "int",
+      "description": "苔草地面材质",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "trailSurfaceId",
+      "type": "int",
+      "description": "林间土路材质",
+      "ref": "MapAreaSurfaceTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "gladeCount": 8,
+      "gladeRadius": 3,
+      "treeChance": 0.26,
+      "fernChance": 0.1,
+      "oakAssetId": 201,
+      "pineAssetId": 202,
+      "fernAssetId": 203,
+      "groundSurfaceId": 201,
+      "trailSurfaceId": 202
+    }
+  ]
+}

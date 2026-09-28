@@ -1,0 +1,11 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class TalentNodeTableRow
+---@field id number 稳定配置 ID
+---@field treeId number 所属树
+---@field passiveId number 只引用被动技能
+---@field pointCost number 每级消耗天赋点
+---@field maxRank number 最高阶数
+---@field minLevel number 角色等级门槛
+---@field x number 图上 X 坐标
+---@field y number 图上 Y 坐标
+return {["name"]="TalentNodeTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="treeId",["type"]="int",["description"]="\230\137\128\229\177\158\230\160\145",["ref"]="TalentTreeTable"},{["name"]="passiveId",["type"]="int",["description"]="\229\143\170\229\188\149\231\148\168\232\162\171\229\138\168\230\138\128\232\131\189",["ref"]="PassiveSkillTable"},{["name"]="pointCost",["type"]="int",["description"]="\230\175\143\231\186\167\230\182\136\232\128\151\229\164\169\232\181\139\231\130\185",["min"]=1},{["name"]="maxRank",["type"]="int",["description"]="\230\156\128\233\171\152\233\152\182\230\149\176",["min"]=1,["max"]=10},{["name"]="minLevel",["type"]="int",["description"]="\232\167\146\232\137\178\231\173\137\231\186\167\233\151\168\230\167\155",["min"]=1},{["name"]="x",["type"]="float",["description"]="\229\155\190\228\184\138 X \229\157\144\230\160\135",["min"]=60},{["name"]="y",["type"]="float",["description"]="\229\155\190\228\184\138 Y \229\157\144\230\160\135",["min"]=40}},["fingerprint"]="095c05e4923823341cf651b7ae22f3e1cb683226a3248d7d9434fcdc6a9ff223"}

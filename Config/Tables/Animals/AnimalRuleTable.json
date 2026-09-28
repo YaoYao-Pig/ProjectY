@@ -1,0 +1,56 @@
+{
+  "version": 1,
+  "name": "AnimalRuleTable",
+  "description": "驯服成功率与技能入口。概率单位为百分数，满血中立动物不享受受伤加成。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "tameSkillId",
+      "type": "int",
+      "description": "驯服技能",
+      "ref": "CombatSkillTable"
+    },
+    {
+      "name": "chance",
+      "type": "formula",
+      "variables": ["affinity", "charisma", "missingHealth", "hostile", "difficulty"],
+      "description": "驯服概率；affinity/charisma/missingHealth/hostile/difficulty",
+      "variables": [
+        "affinity",
+        "charisma",
+        "missingHealth",
+        "hostile",
+        "difficulty"
+      ]
+    },
+    {
+      "name": "minimumChance",
+      "type": "float",
+      "description": "最小概率",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "maximumChance",
+      "type": "float",
+      "description": "最大概率",
+      "min": 0,
+      "max": 100
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "tameSkillId": 201,
+      "chance": "30 + affinity * 3 + charisma * 2 + missingHealth * hostile * 45 - difficulty",
+      "minimumChance": 5,
+      "maximumChance": 95
+    }
+  ]
+}

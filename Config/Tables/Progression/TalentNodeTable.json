@@ -1,0 +1,189 @@
+{
+  "version": 1,
+  "name": "TalentNodeTable",
+  "description": "节点坐标、被动、等级和点数；坐标以画布左上为原点。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "treeId",
+      "type": "int",
+      "description": "所属树",
+      "ref": "TalentTreeTable"
+    },
+    {
+      "name": "passiveId",
+      "type": "int",
+      "description": "只引用被动技能",
+      "ref": "PassiveSkillTable"
+    },
+    {
+      "name": "pointCost",
+      "type": "int",
+      "description": "每级消耗天赋点",
+      "min": 1
+    },
+    {
+      "name": "maxRank",
+      "type": "int",
+      "description": "最高阶数",
+      "min": 1,
+      "max": 10
+    },
+    {
+      "name": "minLevel",
+      "type": "int",
+      "description": "角色等级门槛",
+      "min": 1
+    },
+    {
+      "name": "x",
+      "type": "float",
+      "description": "图上 X 坐标",
+      "min": 60
+    },
+    {
+      "name": "y",
+      "type": "float",
+      "description": "图上 Y 坐标",
+      "min": 40
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "treeId": 1,
+      "passiveId": 1,
+      "pointCost": 1,
+      "maxRank": 2,
+      "minLevel": 1,
+      "x": 280,
+      "y": 145
+    },
+    {
+      "id": 2,
+      "treeId": 1,
+      "passiveId": 2,
+      "pointCost": 1,
+      "maxRank": 1,
+      "minLevel": 1,
+      "x": 170,
+      "y": 65
+    },
+    {
+      "id": 3,
+      "treeId": 1,
+      "passiveId": 3,
+      "pointCost": 1,
+      "maxRank": 1,
+      "minLevel": 1,
+      "x": 390,
+      "y": 65
+    },
+    {
+      "id": 4,
+      "treeId": 1,
+      "passiveId": 4,
+      "pointCost": 1,
+      "maxRank": 2,
+      "minLevel": 1,
+      "x": 100,
+      "y": 190
+    },
+    {
+      "id": 5,
+      "treeId": 1,
+      "passiveId": 5,
+      "pointCost": 1,
+      "maxRank": 2,
+      "minLevel": 1,
+      "x": 460,
+      "y": 190
+    },
+    {
+      "id": 6,
+      "treeId": 1,
+      "passiveId": 6,
+      "pointCost": 1,
+      "maxRank": 1,
+      "minLevel": 1,
+      "x": 200,
+      "y": 280
+    },
+    {
+      "id": 7,
+      "treeId": 1,
+      "passiveId": 7,
+      "pointCost": 1,
+      "maxRank": 1,
+      "minLevel": 1,
+      "x": 360,
+      "y": 280
+    },
+    {
+      "id": 8,
+      "treeId": 1,
+      "passiveId": 8,
+      "pointCost": 1,
+      "maxRank": 1,
+      "minLevel": 1,
+      "x": 60,
+      "y": 65
+    },
+    {
+      "id": 9,
+      "treeId": 1,
+      "passiveId": 9,
+      "pointCost": 1,
+      "maxRank": 1,
+      "minLevel": 1,
+      "x": 500,
+      "y": 65
+    },
+    {
+      "id": 101,
+      "treeId": 2,
+      "passiveId": 10,
+      "pointCost": 1,
+      "maxRank": 1,
+      "minLevel": 1,
+      "x": 280,
+      "y": 70
+    },
+    {
+      "id": 102,
+      "treeId": 2,
+      "passiveId": 11,
+      "pointCost": 1,
+      "maxRank": 1,
+      "minLevel": 1,
+      "x": 150,
+      "y": 170
+    },
+    {
+      "id": 103,
+      "treeId": 2,
+      "passiveId": 12,
+      "pointCost": 1,
+      "maxRank": 1,
+      "minLevel": 1,
+      "x": 410,
+      "y": 170
+    },
+    {
+      "id": 104,
+      "treeId": 2,
+      "passiveId": 13,
+      "pointCost": 1,
+      "maxRank": 1,
+      "minLevel": 1,
+      "x": 280,
+      "y": 280
+    }
+  ]
+}

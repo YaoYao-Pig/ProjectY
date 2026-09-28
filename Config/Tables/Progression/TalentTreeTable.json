@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "name": "TalentTreeTable",
+  "description": "可配置的网状被动天赋图。边既可作为无向邻接，也可作为有向前置。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "树名称"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "树介绍"
+    },
+    {
+      "name": "unlockRule",
+      "type": "enum",
+      "description": "adjacent_any：任意已学邻居；prerequisite_all：全部有向前置",
+      "values": [
+        "adjacent_any",
+        "prerequisite_all"
+      ]
+    },
+    {
+      "name": "rootIds",
+      "type": "int[]",
+      "description": "允许直接投入的起点",
+      "ref": "TalentNodeTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "远行者之路",
+      "description": "从一盏营火出发，走出自己的道路。任一相邻已学节点即可继续。",
+      "unlockRule": "adjacent_any",
+      "rootIds": [
+        1
+      ]
+    },
+    {
+      "id": 2,
+      "name": "余烬守望",
+      "description": "特殊经历开启的道路；汇合节点需要满足全部前置。",
+      "unlockRule": "prerequisite_all",
+      "rootIds": [
+        101
+      ]
+    }
+  ]
+}

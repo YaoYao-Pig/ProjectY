@@ -8,6 +8,7 @@
 | --- | --- |
 | Lua 风格、需求澄清、过度防御、Unity MCP、最小测试、编译、SubAgent | [开发约束 Skill](../.agents/skills/lua-code-style/SKILL.md) |
 | LuaConsole、Python、运行时注入、执行片段、调试控制台 | [LuaConsole](Tools/LuaConsole.md) |
+| GM、GMSystem、GM 面板、F8、指定槽位升级、按技能 ID 获取技能 | [GM 调试系统](Tools/GM.md) |
 | Blender、MCP、建模、FBX、贴图、材质、模型导入、Prefab | [Blender 资源管线](Tools/Blender.md) |
 | 大地图美术、low-poly、低多边形、模型风格、地块模型、民居模型、中世纪城堡、森林树、雪松、地牢模型、七格平台、MapLowPoly | [地图模型资源](Business/MapArt.md) |
 | 启动、LuaSystem、注册、Tick、require、Lua 文件、构建、xLua 桥接、退出 | [运行时](Framework/Runtime.md) |
@@ -17,10 +18,19 @@
 | Player、金币、等级、奖励、示例流程、Data、ModelSystem | [玩家示例](Business/Player.md) |
 | Battle、战斗、原地战斗、敌群、回合、行动点、技能、效果、属性、特质、敌方 AI | [六边形战斗](Business/Battle.md) |
 | 战斗 UI、BattleHUD、技能栏、物品槽、行动顺序、AP、Sprite、图标配置、自适应 | [战斗 HUD](Business/BattleHUD.md) |
+| MainHud、常驻 HUD、Overlay、UIFollower、屏幕血条、相机跟随、地点、队伍、交互提示 | [主 HUD 与跟随 UI](Business/MainHud.md) |
 | 装备、武器分类、等级、属性要求、单手剑、大剑、双手巨剑、推进器、槽位引线、法杖、符文、步枪、弹匣、换弹、搜刮、共享背包、3D 改装、持握动作、EquipmentWorkbench | [装备与改装 Demo](Business/Equipment.md) |
 | 网格背包、Inventory、占格、拖拽、旋转、收纳、满包、头部、身体甲、左右戒指、裤子、鞋子、副手、双持、盾牌、角色预览、模型图标、图标导出 | [网格背包与角色装备](Business/Inventory.md) |
-| Adventure、探索事件、选择、条件、营地、远征 Demo、战斗结算 | [探索事件与远征](Business/Adventure.md) |
+| 宝箱生成、掉落、战利品、概率、掉落池、敌人掉落、战后拾取、旧事件战场 | [宝箱与敌人掉落](Business/Loot.md) |
+| Adventure、探索事件、触发路径、设施交易、配件获取、选择、条件、营地、远征 Demo、战斗结算 | [探索事件与远征](Business/Adventure.md) |
+| Growth、养成、升级、经验、属性加点、被动、网状天赋、技能池、潜力、经历、特质标签、CharacterGrowth | [角色养成与经历](Business/Progression.md) |
+| 动物、动物亲和、魅力、驯服、中立、黄色框、坐骑、亲密度、骑兵、冲击、飞扑、跳跃、森林小地图、哥布林刷新 | [森林动物与骑乘](Business/Animals.md) |
 | 主角小队、战棋棋子、人物模型、圆形底座、模块化装备、武器挂点、PawnLowPoly | [小队棋子资源](Business/PawnArt.md) |
+| 动画、动作、骨骼、Humanoid、Avatar、蒙皮、Quaternius、UAL、双手握点、倒地 | [棋子动画](Business/PawnAnimation.md) |
+| 捏人、脸型、体型、男女、精灵、哥布林、龙人、兽人、模块化角色、随机外观 | [角色定制](Business/PawnCustomization.md) |
+| 角色存档、保存队伍、读取队伍、背包存档、磁盘保存 | [角色与背包存档](Business/CharacterSave.md) |
+| 攻击模组、剑盾、共持、双持、枪型、offset、Vector3、武器握点、武器朝向、旋转修正、持握组合 | [持武模组与握点](Business/EquipmentMotion.md) |
+| 角色工坊、角色网页、Character Lab、真实 Unity 资源、随机预览、握点编辑、offset 可视化、自动保存、4177 | [角色网页预览](Tools/CharacterPreview.md) |
 | 城镇小地图、第三人称、逛街、居民、工匠、巡游、酒馆、铁匠铺、商店、公会、广场、露天摊位、山城、联排、台地、台阶、坡道、上下层道路、街桥、连续室内、真实比例、米制、屋顶隐藏、面包房、药草铺、礼拜堂、仓库、马厩、瞭望塔、TownExpansionLowPoly、TownInteriorLowPoly、TownLowPoly | [城镇街区与漫游](Business/TownArea.md) |
 | 地块材质、铺装、城内外地面、地牢墙地、苔藓、木板、昼夜、天气、黄昏、环境光、雾、室内暖灯、MapEnvironmentController | [地图材质与环境表现](Business/MapPresentation.md) |
 | 装饰物、倒木、芦苇、石井、货车、晾晒架、矿道木架、遗骨、晶簇、MapDressingLowPoly | [地图环境装饰](Business/MapDressing.md) |

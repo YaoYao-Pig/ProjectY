@@ -33,6 +33,13 @@
       "name": "prefabPath",
       "type": "string",
       "description": "Unity 部件资源路径；通过 Editor 绑定实际引用"
+    },
+    {
+      "name": "equipmentItemId",
+      "type": "int",
+      "min": 0,
+      "default": 0,
+      "description": "手持部件关联的装备物品；0 为非手持部件，用于动作模组和握点配置"
     }
   ],
   "rows": [
@@ -40,115 +47,155 @@
       "id": 1,
       "name": "人类身体",
       "slot": "body",
-      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Human.fbx"
+      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Human.fbx",
+      "equipmentItemId": 0
     },
     {
       "id": 2,
       "name": "圆形棋子底座",
       "slot": "base",
-      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Base.fbx"
+      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Base.fbx",
+      "equipmentItemId": 0
     },
     {
       "id": 3,
       "name": "板甲",
       "slot": "chest",
-      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorPlate.fbx"
+      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorPlate.fbx",
+      "equipmentItemId": 0
     },
     {
       "id": 4,
       "name": "皮甲",
       "slot": "chest",
-      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorLeather.fbx"
+      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorLeather.fbx",
+      "equipmentItemId": 0
     },
     {
       "id": 5,
       "name": "法袍",
       "slot": "chest",
-      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorRobe.fbx"
+      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorRobe.fbx",
+      "equipmentItemId": 0
     },
     {
       "id": 6,
       "name": "头盔",
       "slot": "head",
-      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Helmet.fbx"
+      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Helmet.fbx",
+      "equipmentItemId": 0
     },
     {
       "id": 7,
       "name": "兜帽",
       "slot": "head",
-      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Hood.fbx"
+      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Hood.fbx",
+      "equipmentItemId": 0
     },
     {
       "id": 8,
       "name": "法师帽",
       "slot": "head",
-      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_MageHat.fbx"
+      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_MageHat.fbx",
+      "equipmentItemId": 0
     },
     {
       "id": 9,
       "name": "长剑",
       "slot": "mainHand",
-      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Sword.fbx"
+      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Sword.fbx",
+      "equipmentItemId": 40
     },
     {
       "id": 10,
       "name": "法杖",
       "slot": "mainHand",
-      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Staff.fbx"
+      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Staff.fbx",
+      "equipmentItemId": 1
     },
     {
       "id": 11,
       "name": "长弓",
       "slot": "mainHand",
-      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Bow.fbx"
+      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Bow.fbx",
+      "equipmentItemId": 46
     },
     {
       "id": 12,
       "name": "盾牌",
       "slot": "offHand",
-      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Shield.fbx"
+      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Shield.fbx",
+      "equipmentItemId": 57
     },
     {
       "id": 13,
       "name": "披风",
       "slot": "back",
-      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Cape.fbx"
+      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Cape.fbx",
+      "equipmentItemId": 0
     },
     {
       "id": 14,
       "name": "箭袋",
       "slot": "back",
-      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Quiver.fbx"
+      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Quiver.fbx",
+      "equipmentItemId": 0
     },
     {
       "id": 15,
       "name": "双手握持身体",
       "slot": "body",
-      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_HumanWarrior.fbx"
+      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_HumanWarrior.fbx",
+      "equipmentItemId": 0
     },
     {
       "id": 16,
       "name": "双手重剑",
       "slot": "mainHand",
-      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Greatsword.fbx"
+      "prefabPath": "Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Greatsword.fbx",
+      "equipmentItemId": 42
     },
     {
       "id": 17,
       "name": "居民身体",
       "slot": "body",
-      "prefabPath": "Assets/DynamicAsset/TownLowPoly/Models/NPC_Resident.fbx"
+      "prefabPath": "Assets/DynamicAsset/TownLowPoly/Models/NPC_Resident.fbx",
+      "equipmentItemId": 0
     },
     {
       "id": 18,
       "name": "工匠身体",
       "slot": "body",
-      "prefabPath": "Assets/DynamicAsset/TownLowPoly/Models/NPC_Artisan.fbx"
+      "prefabPath": "Assets/DynamicAsset/TownLowPoly/Models/NPC_Artisan.fbx",
+      "equipmentItemId": 0
     },
     {
       "id": 19,
       "name": "可动持握身体",
       "slot": "body",
-      "prefabPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_PawnCore.fbx"
+      "prefabPath": "Assets/DynamicAsset/EquipmentDemo/Models/Equip_PawnCore.fbx",
+      "equipmentItemId": 0
+    },
+    {
+      "id": 201,
+      "name": "Horse",
+      "slot": "body",
+      "prefabPath": "Assets/DynamicAsset/ForestAnimals/Models/Horse.fbx",
+      "equipmentItemId": 0
+    },
+    {
+      "id": 202,
+      "name": "Chicken",
+      "slot": "body",
+      "prefabPath": "Assets/DynamicAsset/ForestAnimals/Models/Chicken.fbx",
+      "equipmentItemId": 0
+    },
+    {
+      "id": 203,
+      "name": "Rabbit",
+      "slot": "body",
+      "prefabPath": "Assets/DynamicAsset/ForestAnimals/Models/Rabbit.fbx",
+      "equipmentItemId": 0
     }
   ]
 }

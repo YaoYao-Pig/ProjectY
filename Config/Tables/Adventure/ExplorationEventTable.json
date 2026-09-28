@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "name": "ExplorationEventTable",
+  "description": "将通用故事接入真实探索行为；一次性消费按地点与本表 ID 记录。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定 ID",
+      "min": 1
+    },
+    {
+      "name": "areaIds",
+      "type": "int[]",
+      "description": "适用局部地图；空数组表示全部",
+      "ref": "MapAreaTable"
+    },
+    {
+      "name": "trigger",
+      "type": "enum",
+      "description": "进入、探索距离、搜刮、胜利或设施交互",
+      "values": [
+        "enter",
+        "explore",
+        "loot",
+        "victory",
+        "facility"
+      ]
+    },
+    {
+      "name": "targetId",
+      "type": "int",
+      "description": "设施配置 ID／掉落表 ID／遭遇 ID；0 不限制",
+      "min": 0
+    },
+    {
+      "name": "minDistance",
+      "type": "int",
+      "description": "距入口最小六边形距离",
+      "min": 0
+    },
+    {
+      "name": "eventId",
+      "type": "int",
+      "description": "触发的非战斗事件",
+      "ref": "AdventureEventTable"
+    },
+    {
+      "name": "once",
+      "type": "bool",
+      "description": "每处地点只消费一次；反复服务可关闭"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "areaIds": [
+        1
+      ],
+      "trigger": "enter",
+      "targetId": 0,
+      "minDistance": 0,
+      "eventId": 7,
+      "once": true
+    },
+    {
+      "id": 2,
+      "areaIds": [
+        1
+      ],
+      "trigger": "explore",
+      "targetId": 0,
+      "minDistance": 6,
+      "eventId": 6,
+      "once": true
+    },
+    {
+      "id": 3,
+      "areaIds": [],
+      "trigger": "facility",
+      "targetId": 2,
+      "minDistance": 0,
+      "eventId": 8,
+      "once": false
+    },
+    {
+      "id": 4,
+      "areaIds": [],
+      "trigger": "facility",
+      "targetId": 3,
+      "minDistance": 0,
+      "eventId": 9,
+      "once": false
+    },
+    {
+      "id": 5,
+      "areaIds": [],
+      "trigger": "facility",
+      "targetId": 1,
+      "minDistance": 0,
+      "eventId": 4,
+      "once": false
+    },
+    {
+      "id": 6,
+      "areaIds": [
+        1
+      ],
+      "trigger": "loot",
+      "targetId": 1,
+      "minDistance": 0,
+      "eventId": 10,
+      "once": true
+    }
+  ]
+}

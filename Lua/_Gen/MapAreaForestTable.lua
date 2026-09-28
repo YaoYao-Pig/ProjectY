@@ -1,0 +1,13 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaForestTableRow
+---@field id number 稳定配置 ID
+---@field gladeCount number 安全空地数量
+---@field gladeRadius number 空地净空半径
+---@field treeChance number 林木基础密度
+---@field fernChance number 非阻挡蕨类密度
+---@field oakAssetId number 阔叶树资源
+---@field pineAssetId number 针叶树资源
+---@field fernAssetId number 蕨类资源
+---@field groundSurfaceId number 苔草地面材质
+---@field trailSurfaceId number 林间土路材质
+return {["name"]="MapAreaForestTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="gladeCount",["type"]="int",["description"]="\229\174\137\229\133\168\231\169\186\229\156\176\230\149\176\233\135\143",["min"]=4,["max"]=16},{["name"]="gladeRadius",["type"]="int",["description"]="\231\169\186\229\156\176\229\135\128\231\169\186\229\141\138\229\190\132",["min"]=2,["max"]=5},{["name"]="treeChance",["type"]="float",["description"]="\230\158\151\230\156\168\229\159\186\231\161\128\229\175\134\229\186\166",["min"]=0,["max"]=0.5},{["name"]="fernChance",["type"]="float",["description"]="\233\157\158\233\152\187\230\140\161\232\149\168\231\177\187\229\175\134\229\186\166",["min"]=0,["max"]=0.5},{["name"]="oakAssetId",["type"]="int",["description"]="\233\152\148\229\143\182\230\160\145\232\181\132\230\186\144",["ref"]="MapAssetTable"},{["name"]="pineAssetId",["type"]="int",["description"]="\233\146\136\229\143\182\230\160\145\232\181\132\230\186\144",["ref"]="MapAssetTable"},{["name"]="fernAssetId",["type"]="int",["description"]="\232\149\168\231\177\187\232\181\132\230\186\144",["ref"]="MapAssetTable"},{["name"]="groundSurfaceId",["type"]="int",["description"]="\232\139\148\232\141\137\229\156\176\233\157\162\230\157\144\232\180\168",["ref"]="MapAreaSurfaceTable"},{["name"]="trailSurfaceId",["type"]="int",["description"]="\230\158\151\233\151\180\229\156\159\232\183\175\230\157\144\232\180\168",["ref"]="MapAreaSurfaceTable"}},["fingerprint"]="c68a35772f21bac14790bae0be8db6950e28995fe5715e850880e26623ad8f7e"}

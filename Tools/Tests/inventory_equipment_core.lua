@@ -1,3 +1,4 @@
+local EmptyGrowth=assert(loadfile('Tools/Tests/growth_empty.lua'))()
 -- Actual configuration, offhand guards, damage resolution and shared pawn appearance; no Editor.
 package.path='Lua/?.lua;'..package.path
 local config=require('Config.ConfigSystem')()
@@ -24,7 +25,7 @@ data.main=main;data.off=off;assert(not system:HandAllowed(1,large,'weapon'))
 data.off=nil;data.shield=shield;assert(not system:HandAllowed(1,large,'weapon'))
 data.shield=nil;assert(system:HandAllowed(1,large,'weapon'));data.off=off
 print('PASS single-hand, shield and two-hand conflicts in both directions')
-local actor={Id=1,Team=1,TemplateId=1,TraitCount=0,ActionTemplateId=1,ActionSequence=0,ActionShots=0,ActionTargetQ=0,ActionTargetR=0}
+local actor={Id=1,Team=1,Growth=EmptyGrowth(),TemplateId=1,TraitCount=0,ActionTemplateId=1,ActionSequence=0,ActionShots=0,ActionTargetQ=0,ActionTargetR=0}
 local ids=rules:SkillIds(actor,stats:Template(actor));local count=0
 for _,id in ipairs(ids) do if id==13 then count=count+1 end end
 assert(count==1)
@@ -42,12 +43,15 @@ assert(snapshot.pose.offHandFollowsWeapon==false)
 for _,pose in ipairs(rules.poses:All()) do
     assert(pose.mainShoulder[1]>0 and pose.offShoulder[1]<0,'Shoulders must use character-relative handedness')
     assert(pose.mainElbow[1]>0 and pose.offElbow[1]<0,'Arm chains must stay on their own side')
-    assert(pose.mainHand[1]>0,'Main weapon must be held in the right hand')
-    if not pose.offHandFollowsWeapon then assert(pose.offHand[1]<0,'Free offhand must be on the left') end
+    -- mainHand is now the weapon origin; an archer's origin can be at the left-hand bow grip.
+    -- Actual palm positions include weapon-local markers and are checked by EquipmentGripValidation.
+    assert(#pose.mainHand==3 and #pose.offHand==3,'Weapon origin and pose targets must be 3D vectors')
+    -- Free/shared/shield handling is selected by the motion module, not by this legacy pose flag.
 end
 assert(snapshot.pose.mainHand[1]>0 and snapshot.pose.offHand[1]<0)
-assert(snapshot.pose.weaponRotation[3]>0 and snapshot.pose.offWeaponRotation[3]<0,'Sword grip rotations must mirror with their arms')
-print('PASS all five grip poses and portrait snapshots use character-relative left/right')
+assert(snapshot.pose.weaponRotation[3]<0 and snapshot.pose.offWeaponRotation[3]>0,'Sword blades must incline outward on each side')
+assert(snapshot.pose.moduleId==4,'Two equipped swords must select the dual-wield module')
+print('PASS grip poses use character-relative arm chains and weapon-local markers; dual-wield module selected')
 data.off=nil;data.main=nil;data.shield=shield;data.WearableCount=1
 local before=stats:Get(actor,'defense');assert(before>=3)
 snapshot=rules:ActorVisual(actor)

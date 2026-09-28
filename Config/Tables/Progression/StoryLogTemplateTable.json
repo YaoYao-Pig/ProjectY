@@ -1,0 +1,78 @@
+{
+  "version": 1,
+  "name": "StoryLogTemplateTable",
+  "description": "游戏内日志与角色经历共用模板，不输出 Console。允许 {actor}/{location}/{title}/{detail}/{companions} 占位符。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "kind",
+      "type": "string",
+      "description": "日志类别代码"
+    },
+    {
+      "name": "label",
+      "type": "text",
+      "description": "醒目文字标识"
+    },
+    {
+      "name": "color",
+      "type": "string",
+      "description": "六位十六进制颜色，不带 #"
+    },
+    {
+      "name": "template",
+      "type": "text",
+      "description": "通用正文模板"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "kind": "discovery",
+      "label": "发现",
+      "color": "D9C18D",
+      "template": "{actor}在{location}：{detail}"
+    },
+    {
+      "id": 2,
+      "kind": "event",
+      "label": "抉择",
+      "color": "C2CCA9",
+      "template": "{actor}与{companions}在{location}：{detail}"
+    },
+    {
+      "id": 3,
+      "kind": "trait",
+      "label": "特质",
+      "color": "97BDA4",
+      "template": "{actor}：{detail}"
+    },
+    {
+      "id": 4,
+      "kind": "growth",
+      "label": "成长",
+      "color": "DFC47C",
+      "template": "{actor}：{detail}"
+    },
+    {
+      "id": 5,
+      "kind": "battle",
+      "label": "战斗",
+      "color": "DCA38B",
+      "template": "{location}：{detail}"
+    },
+    {
+      "id": 6,
+      "kind": "loot",
+      "label": "获得",
+      "color": "CBB175",
+      "template": "{location}：{detail}"
+    }
+  ]
+}

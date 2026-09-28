@@ -1,0 +1,151 @@
+{
+  "version": 1,
+  "name": "AnimalSpeciesTable",
+  "description": "动物物种、可骑乘性与固定轴向占地；每只动物沿用独立 CombatActorData。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "动物名称"
+    },
+    {
+      "name": "unitId",
+      "type": "int",
+      "description": "战斗模板",
+      "ref": "CombatUnitTable"
+    },
+    {
+      "name": "rideable",
+      "type": "bool",
+      "description": "驯服后是否立即骑乘"
+    },
+    {
+      "name": "footprintQ",
+      "type": "int[]",
+      "description": "轴向 q 偏移，必须包含原点"
+    },
+    {
+      "name": "footprintR",
+      "type": "int[]",
+      "description": "配对的轴向 r 偏移，支持一到多格"
+    },
+    {
+      "name": "tameDifficulty",
+      "type": "float",
+      "description": "从成功率扣除的驯服难度"
+    },
+    {
+      "name": "riderSeat",
+      "type": "float[]",
+      "description": "Unity 骑手髋部坐标 x/y/z"
+    },
+    {
+      "name": "moveRange",
+      "type": "int",
+      "description": "骑乘移动距离",
+      "min": 1
+    },
+    {
+      "name": "initialBond",
+      "type": "int",
+      "description": "初始亲密度",
+      "min": 0
+    },
+    {
+      "name": "bondPerBattle",
+      "type": "int",
+      "description": "共同完成战斗增长的亲密度",
+      "min": 0
+    },
+    {
+      "name": "maximumBond",
+      "type": "int",
+      "description": "亲密度上限",
+      "min": 1
+    },
+    {
+      "name": "tameRetryTurns",
+      "type": "int",
+      "description": "驯服失败后此动物再次接受尝试所需的回合数",
+      "min": 1
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "马",
+      "unitId": 201,
+      "rideable": true,
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "tameDifficulty": 8,
+      "riderSeat": [
+        0,
+        1.4,
+        -0.05
+      ],
+      "moveRange": 5,
+      "initialBond": 0,
+      "bondPerBattle": 10,
+      "maximumBond": 100,
+      "tameRetryTurns": 3
+    },
+    {
+      "id": 2,
+      "name": "鸡",
+      "unitId": 202,
+      "rideable": true,
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "tameDifficulty": 0,
+      "riderSeat": [
+        0,
+        1.22,
+        -0.08
+      ],
+      "moveRange": 3,
+      "initialBond": 0,
+      "bondPerBattle": 10,
+      "maximumBond": 100,
+      "tameRetryTurns": 2
+    },
+    {
+      "id": 3,
+      "name": "兔子",
+      "unitId": 203,
+      "rideable": true,
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "tameDifficulty": 4,
+      "riderSeat": [
+        0,
+        1.0,
+        -0.1
+      ],
+      "moveRange": 4,
+      "initialBond": 0,
+      "bondPerBattle": 10,
+      "maximumBond": 100,
+      "tameRetryTurns": 3
+    }
+  ]
+}

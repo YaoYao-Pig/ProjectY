@@ -10,6 +10,11 @@ function Model.Build(battle, adventure)
         moved = actor.Moved, mainUsed = actor.MainUsed, player = player, round = data.Round,
         maxRounds = data.MaxRounds, encounter = battle.encounters:Get(data.EncounterId).name,
         moveAvailable = player and #battle:Reachable() > 0, skills = {}, party = {}, turns = {}, logs = {} }
+    if actor.MountedAnimal then
+        local mount=actor.MountedAnimal
+        result.name=result.name..' · '..battle.stats:Template(mount).name
+        result.hp=mount.HP;result.maxHP=mount.MaxHP
+    end
     local units = battle:Units()
     local weapon=battle.stats.equipment:Weapon(actor)
     local magazine=battle.stats.equipment:Loaded(weapon)
@@ -21,6 +26,7 @@ function Model.Build(battle, adventure)
         if not player then reason = L.BattleEnemyTurn
         elseif not budget then reason=budgetReason
         else
+            if skill.target=='cell' then available=#battle:SkillCells(id)>0 end
             for _, target in ipairs(units) do
                 if battle:CanUseSkill(id, target.Id) then available = true; break end
             end
@@ -39,7 +45,7 @@ function Model.Build(battle, adventure)
     for i = 0, adventure.PartyCount - 1 do result.party[#result.party + 1] = unitView(adventure:GetPartyAt(i)) end
     for i = 0, data.TurnCount - 1 do
         local unit = assert(battle:FindUnit(data:GetTurnAt(i)))
-        if unit.HP > 0 then
+        if unit.HP > 0 and unit.AnimalOwnerId==0 then
             local row = unitView(unit); row.acted = i < data.TurnIndex
             result.turns[#result.turns + 1] = row
         end

@@ -5,7 +5,7 @@ namespace ProjectY.Data
 {
     /// <summary>Authoritative mutable state. Lua systems forward commands and notifications.</summary>
     [LuaCallCSharp]
-    public sealed class PlayerData
+    public sealed partial class PlayerData
     {
         public int Coins { get; private set; }
         public int Level { get; private set; } = 1;

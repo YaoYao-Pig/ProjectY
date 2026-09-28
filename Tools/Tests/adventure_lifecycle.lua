@@ -79,8 +79,8 @@ test('Adventure rollback after acquiring state resets it only once', function()
     registry:Register('Config', configType(function()
         return {Get = function() return {partyIds = {}, maxPartySize = 4} end,All=function() return {} end}
     end))
-    for _, name in ipairs({'Map', 'MapArea', 'Battle', 'AdventureEvents','Equipment'}) do registry:Register(name, System) end
-    registry:Register('Adventure', function() return instance end, {'Config', 'Map', 'MapArea', 'Battle', 'AdventureEvents','Equipment'})
+    for _, name in ipairs({'Map', 'MapArea', 'Battle', 'AdventureEvents','Equipment','Growth'}) do registry:Register(name, System) end
+    registry:Register('Adventure', function() return instance end, {'Config', 'Map', 'MapArea', 'Battle', 'AdventureEvents','Equipment','Growth'})
     local ok, err = pcall(function() registry:Start() end)
     assertOriginalFailure(ok, err, registry, errors, 'Invalid demo party size')
     assert(resets == 1)

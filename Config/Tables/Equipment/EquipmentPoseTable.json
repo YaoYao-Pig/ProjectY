@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "EquipmentPoseTable",
-  "description": "参数化刚体持握姿态；独立手臂关节和手掌复用同一模型，不使用完整骨骼行走动画。",
+  "description": "角色持握位置与双手握点；骨骼角色使用手臂求解，静态回退使用同一套位置配置。",
   "key": "id",
   "fields": [
     {
@@ -97,9 +97,9 @@
         0
       ],
       "weaponRotation": [
+        15,
         0,
-        0,
-        0
+        -15
       ],
       "id": 1,
       "name": "单手持 · 施法",
@@ -142,30 +142,30 @@
       ],
       "weaponRotation": [
         0,
-        0,
+        -25,
         0
       ],
       "id": 2,
       "name": "双手持 · 远程",
       "mainElbow": [
-        0.4,
-        1.0,
-        0.05
+        0.47,
+        0.94,
+        0.17
       ],
       "mainHand": [
-        0.18,
-        1.1,
+        0.06,
+        0.98,
         0.3
       ],
       "offElbow": [
-        -0.42,
-        1.05,
-        0.32
+        -0.47,
+        0.94,
+        0.22
       ],
       "offHand": [
-        0.18,
-        1.1,
-        0.76
+        -0.03,
+        0.98,
+        0.49
       ],
       "offHandFollowsWeapon": true
     },
@@ -187,7 +187,7 @@
       "weaponRotation": [
         10,
         0,
-        18
+        -18
       ],
       "id": 3,
       "name": "单手持 · 剑",
@@ -229,31 +229,31 @@
         0
       ],
       "weaponRotation": [
-        5,
+        36,
         0,
-        6
+        4
       ],
       "id": 4,
       "name": "双手持 · 大剑",
       "mainElbow": [
-        0.35,
-        1.08,
-        0.19
+        0.46,
+        0.92,
+        0.18
       ],
       "mainHand": [
-        0.07,
-        1.07,
-        0.42
+        0.02,
+        1.0,
+        0.36
       ],
       "offElbow": [
-        -0.34,
-        0.98,
-        0.19
+        -0.46,
+        0.9,
+        0.18
       ],
       "offHand": [
-        -0.01,
-        0.92,
-        0.43
+        0.02,
+        0.86,
+        0.26
       ],
       "offHandFollowsWeapon": true
     },
@@ -273,31 +273,163 @@
         0
       ],
       "weaponRotation": [
-        9,
+        38,
         0,
-        12
+        3
       ],
       "id": 5,
       "name": "双手持 · 巨剑",
       "mainElbow": [
-        0.38,
-        1.09,
+        0.47,
+        0.91,
         0.19
       ],
       "mainHand": [
-        0.06,
-        1.03,
-        0.47
+        0.02,
+        0.98,
+        0.38
       ],
       "offElbow": [
-        -0.37,
-        0.94,
-        0.23
+        -0.47,
+        0.88,
+        0.19
       ],
       "offHand": [
-        -0.015,
-        0.84,
-        0.49
+        0.01,
+        0.82,
+        0.27
+      ],
+      "offHandFollowsWeapon": true
+    },
+    {
+      "corePartId": 19,
+      "upperAssetId": 10,
+      "forearmAssetId": 11,
+      "handAssetId": 12,
+      "mainShoulder": [
+        0.29,
+        1.25,
+        0
+      ],
+      "offShoulder": [
+        -0.29,
+        1.25,
+        0
+      ],
+      "weaponRotation": [
+        10,
+        0,
+        -18
+      ],
+      "id": 6,
+      "name": "单手与盾 · 模组基准",
+      "mainElbow": [
+        0.48,
+        1.12,
+        0.12
+      ],
+      "mainHand": [
+        0.46,
+        0.94,
+        0.3
+      ],
+      "offElbow": [
+        -0.46,
+        1.12,
+        0.1
+      ],
+      "offHand": [
+        -0.38,
+        1.08,
+        0.26
+      ],
+      "offHandFollowsWeapon": false
+    },
+    {
+      "corePartId": 19,
+      "upperAssetId": 10,
+      "forearmAssetId": 11,
+      "handAssetId": 12,
+      "mainShoulder": [
+        0.29,
+        1.25,
+        0
+      ],
+      "offShoulder": [
+        -0.29,
+        1.25,
+        0
+      ],
+      "weaponRotation": [
+        10,
+        0,
+        -18
+      ],
+      "id": 7,
+      "name": "双手双持 · 模组基准",
+      "mainElbow": [
+        0.48,
+        1.12,
+        0.12
+      ],
+      "mainHand": [
+        0.46,
+        0.94,
+        0.3
+      ],
+      "offElbow": [
+        -0.44,
+        1.09,
+        0.02
+      ],
+      "offHand": [
+        -0.46,
+        0.94,
+        0.3
+      ],
+      "offHandFollowsWeapon": false
+    },
+    {
+      "corePartId": 19,
+      "upperAssetId": 10,
+      "forearmAssetId": 11,
+      "handAssetId": 12,
+      "mainShoulder": [
+        0.29,
+        1.25,
+        0
+      ],
+      "offShoulder": [
+        -0.29,
+        1.25,
+        0
+      ],
+      "weaponRotation": [
+        12,
+        -90,
+        0
+      ],
+      "id": 8,
+      "name": "弓 · 基础持握模组",
+      "mainElbow": [
+        0.45,
+        1.08,
+        0.04
+      ],
+      "mainHand": [
+        -0.37,
+        1.23,
+        0.43
+      ],
+      "offElbow": [
+        -0.47,
+        1.12,
+        0.17
+      ],
+      "offHand": [
+        -0.37,
+        1.23,
+        0.43
       ],
       "offHandFollowsWeapon": true
     }

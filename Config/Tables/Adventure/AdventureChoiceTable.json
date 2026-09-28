@@ -57,6 +57,69 @@
       "type": "int[]",
       "description": "空为普通结果；有值时必须仅一个遭遇",
       "ref": "CombatEncounterTable"
+    },
+    {
+      "name": "requiredTraitIds",
+      "type": "int[]",
+      "description": "故事主角必须具备的特质",
+      "ref": "CombatTraitTable",
+      "default": []
+    },
+    {
+      "name": "forbiddenTraitIds",
+      "type": "int[]",
+      "description": "故事主角不可具备的特质",
+      "ref": "CombatTraitTable",
+      "default": []
+    },
+    {
+      "name": "removeTraitIds",
+      "type": "int[]",
+      "description": "移除受益者特质",
+      "ref": "CombatTraitTable",
+      "default": []
+    },
+    {
+      "name": "unlockTreeIds",
+      "type": "int[]",
+      "description": "解锁受益者天赋树",
+      "ref": "TalentTreeTable",
+      "default": []
+    },
+    {
+      "name": "experience",
+      "type": "int",
+      "description": "受益者获得经验",
+      "min": 0,
+      "default": 0
+    },
+    {
+      "name": "potentialPoints",
+      "type": "int",
+      "description": "释放最多多少锁住的潜力点",
+      "min": 0,
+      "default": 0
+    },
+    {
+      "name": "recipient",
+      "type": "enum",
+      "description": "特质、树、潜力、经验的受益者",
+      "values": [
+        "subject",
+        "party"
+      ],
+      "default": "subject"
+    },
+    {
+      "name": "itemIds",
+      "type": "int[]",
+      "description": "获得的共享背包物品",
+      "ref": "EquipmentItemTable"
+    },
+    {
+      "name": "itemCounts",
+      "type": "int[]",
+      "description": "对应物品数量，正数"
     }
   ],
   "rows": [
@@ -71,12 +134,21 @@
       "traitIds": [],
       "encounterIds": [
         1
-      ]
+      ],
+      "requiredTraitIds": [],
+      "forbiddenTraitIds": [],
+      "removeTraitIds": [],
+      "unlockTreeIds": [],
+      "experience": 0,
+      "potentialPoints": 0,
+      "recipient": "subject",
+      "itemIds": [],
+      "itemCounts": []
     },
     {
       "id": 2,
       "label": "侦察后取走补给（侦察 4）",
-      "result": "游侠找到隐蔽小路。带回 12 金币，领队获得「老练」。",
+      "result": "游侠找到隐蔽小路。带回 12 金币，全队获得「老练」与 40 经验。",
       "minScouting": 4,
       "costCoins": 0,
       "rewardCoins": 12,
@@ -84,7 +156,16 @@
       "traitIds": [
         1
       ],
-      "encounterIds": []
+      "encounterIds": [],
+      "requiredTraitIds": [],
+      "forbiddenTraitIds": [],
+      "removeTraitIds": [],
+      "unlockTreeIds": [],
+      "experience": 40,
+      "potentialPoints": 0,
+      "recipient": "party",
+      "itemIds": [],
+      "itemCounts": []
     },
     {
       "id": 3,
@@ -95,7 +176,16 @@
       "rewardCoins": 0,
       "healParty": false,
       "traitIds": [],
-      "encounterIds": []
+      "encounterIds": [],
+      "requiredTraitIds": [],
+      "forbiddenTraitIds": [],
+      "removeTraitIds": [],
+      "unlockTreeIds": [],
+      "experience": 0,
+      "potentialPoints": 0,
+      "recipient": "subject",
+      "itemIds": [],
+      "itemCounts": []
     },
     {
       "id": 4,
@@ -108,7 +198,16 @@
       "traitIds": [
         2
       ],
-      "encounterIds": []
+      "encounterIds": [],
+      "requiredTraitIds": [],
+      "forbiddenTraitIds": [],
+      "removeTraitIds": [],
+      "unlockTreeIds": [],
+      "experience": 0,
+      "potentialPoints": 0,
+      "recipient": "subject",
+      "itemIds": [],
+      "itemCounts": []
     },
     {
       "id": 5,
@@ -119,7 +218,249 @@
       "rewardCoins": 0,
       "healParty": true,
       "traitIds": [],
-      "encounterIds": []
+      "encounterIds": [],
+      "requiredTraitIds": [],
+      "forbiddenTraitIds": [],
+      "removeTraitIds": [],
+      "unlockTreeIds": [],
+      "experience": 0,
+      "potentialPoints": 0,
+      "recipient": "subject",
+      "itemIds": [],
+      "itemCounts": []
+    },
+    {
+      "minScouting": 0,
+      "costCoins": 0,
+      "rewardCoins": 6,
+      "healParty": false,
+      "traitIds": [],
+      "encounterIds": [],
+      "requiredTraitIds": [],
+      "forbiddenTraitIds": [],
+      "removeTraitIds": [],
+      "unlockTreeIds": [],
+      "experience": 25,
+      "potentialPoints": 0,
+      "recipient": "party",
+      "id": 6,
+      "label": "辨认路标",
+      "result": "{actor}带着同伴绕过了危险路段。小队获得 25 经验与 6 金币。",
+      "itemIds": [],
+      "itemCounts": []
+    },
+    {
+      "minScouting": 0,
+      "costCoins": 0,
+      "rewardCoins": 0,
+      "healParty": false,
+      "traitIds": [
+        4,
+        5
+      ],
+      "encounterIds": [],
+      "requiredTraitIds": [],
+      "forbiddenTraitIds": [],
+      "removeTraitIds": [
+        3
+      ],
+      "unlockTreeIds": [
+        2
+      ],
+      "experience": 45,
+      "potentialPoints": 2,
+      "recipient": "subject",
+      "id": 7,
+      "label": "握住同伴的手",
+      "result": "{actor}接受了同伴的援手，学会把背后交给别人。余烬留下伤痕，也点亮了新的道路。",
+      "itemIds": [],
+      "itemCounts": []
+    },
+    {
+      "minScouting": 0,
+      "costCoins": 0,
+      "rewardCoins": 0,
+      "healParty": false,
+      "traitIds": [
+        5
+      ],
+      "encounterIds": [],
+      "requiredTraitIds": [
+        3
+      ],
+      "forbiddenTraitIds": [],
+      "removeTraitIds": [
+        3
+      ],
+      "unlockTreeIds": [],
+      "experience": 45,
+      "potentialPoints": 1,
+      "recipient": "subject",
+      "id": 8,
+      "label": "承认自己需要帮助（傲慢）",
+      "result": "{actor}放下傲慢，与同伴一起走出倒塌的门廊。",
+      "itemIds": [],
+      "itemCounts": []
+    },
+    {
+      "id": 9,
+      "label": "查看旧营地",
+      "result": "入口旁的补给箱里或许还有可用零件。靠近后按 E 搜刮，打开背包的武器工坊即可安装。",
+      "minScouting": 0,
+      "costCoins": 0,
+      "rewardCoins": 0,
+      "healParty": false,
+      "traitIds": [],
+      "encounterIds": [],
+      "requiredTraitIds": [],
+      "forbiddenTraitIds": [],
+      "removeTraitIds": [],
+      "unlockTreeIds": [],
+      "experience": 0,
+      "potentialPoints": 0,
+      "recipient": "subject",
+      "itemIds": [],
+      "itemCounts": []
+    },
+    {
+      "id": 10,
+      "label": "购入剑脊推进器 · 30 金币",
+      "result": "铁匠把推进器包好交给了你。打开背包 → 武器工坊，选择双手巨剑的剑脊挂点安装。",
+      "minScouting": 0,
+      "costCoins": 30,
+      "rewardCoins": 0,
+      "healParty": false,
+      "traitIds": [],
+      "encounterIds": [],
+      "requiredTraitIds": [],
+      "forbiddenTraitIds": [],
+      "removeTraitIds": [],
+      "unlockTreeIds": [],
+      "experience": 0,
+      "potentialPoints": 0,
+      "recipient": "subject",
+      "itemIds": [
+        13
+      ],
+      "itemCounts": [
+        1
+      ]
+    },
+    {
+      "id": 11,
+      "label": "购入散射符文 · 20 金币",
+      "result": "你获得了散射符文，可在武器工坊装入法杖的头石挂点。",
+      "minScouting": 0,
+      "costCoins": 20,
+      "rewardCoins": 0,
+      "healParty": false,
+      "traitIds": [],
+      "encounterIds": [],
+      "requiredTraitIds": [],
+      "forbiddenTraitIds": [],
+      "removeTraitIds": [],
+      "unlockTreeIds": [],
+      "experience": 0,
+      "potentialPoints": 0,
+      "recipient": "subject",
+      "itemIds": [
+        11
+      ],
+      "itemCounts": [
+        1
+      ]
+    },
+    {
+      "id": 12,
+      "label": "购入精准符文 · 20 金币",
+      "result": "你获得了精准符文，可在武器工坊装入法杖的杆石挂点。",
+      "minScouting": 0,
+      "costCoins": 20,
+      "rewardCoins": 0,
+      "healParty": false,
+      "traitIds": [],
+      "encounterIds": [],
+      "requiredTraitIds": [],
+      "forbiddenTraitIds": [],
+      "removeTraitIds": [],
+      "unlockTreeIds": [],
+      "experience": 0,
+      "potentialPoints": 0,
+      "recipient": "subject",
+      "itemIds": [
+        12
+      ],
+      "itemCounts": [
+        1
+      ]
+    },
+    {
+      "id": 13,
+      "label": "购买弹药 ×24 · 8 金币",
+      "result": "装好这袋弹药，下一程或许用得上。",
+      "minScouting": 0,
+      "costCoins": 8,
+      "rewardCoins": 0,
+      "healParty": false,
+      "traitIds": [],
+      "encounterIds": [],
+      "requiredTraitIds": [],
+      "forbiddenTraitIds": [],
+      "removeTraitIds": [],
+      "unlockTreeIds": [],
+      "experience": 0,
+      "potentialPoints": 0,
+      "recipient": "subject",
+      "itemIds": [
+        31
+      ],
+      "itemCounts": [
+        24
+      ]
+    },
+    {
+      "id": 14,
+      "label": "购买满弹匣 · 12 金币",
+      "result": "商人交给你一只装满的兼容弹匣。",
+      "minScouting": 0,
+      "costCoins": 12,
+      "rewardCoins": 0,
+      "healParty": false,
+      "traitIds": [],
+      "encounterIds": [],
+      "requiredTraitIds": [],
+      "forbiddenTraitIds": [],
+      "removeTraitIds": [],
+      "unlockTreeIds": [],
+      "experience": 0,
+      "potentialPoints": 0,
+      "recipient": "subject",
+      "itemIds": [
+        21
+      ],
+      "itemCounts": [
+        1
+      ]
+    },
+    {
+      "id": 15,
+      "label": "记下这段旅程",
+      "result": "风声从远处的石廊传来。{actor}提醒同伴收好补给，再继续深入。",
+      "minScouting": 0,
+      "costCoins": 0,
+      "rewardCoins": 0,
+      "healParty": false,
+      "traitIds": [],
+      "encounterIds": [],
+      "requiredTraitIds": [],
+      "forbiddenTraitIds": [],
+      "removeTraitIds": [],
+      "unlockTreeIds": [],
+      "experience": 10,
+      "potentialPoints": 0,
+      "recipient": "party",
+      "itemIds": [],
+      "itemCounts": []
     }
   ]
 }

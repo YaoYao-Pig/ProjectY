@@ -1,0 +1,1315 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 93d21fe8a4c82e947ba7d70ccd601632, type: 3}
+  m_Name: PawnCustomization
+  m_EditorClassIdentifier: 
+  Rules:
+    version: 1
+    modules:
+    - id: body_male_0
+      slot: body
+      race: 
+      sex: male
+      label: "\u7EA4\u7EC6"
+    - id: body_male_1
+      slot: body
+      race: 
+      sex: male
+      label: "\u5300\u79F0"
+    - id: body_male_2
+      slot: body
+      race: 
+      sex: male
+      label: "\u5065\u58EE"
+    - id: body_female_0
+      slot: body
+      race: 
+      sex: female
+      label: "\u7EA4\u7EC6"
+    - id: body_female_1
+      slot: body
+      race: 
+      sex: female
+      label: "\u5300\u79F0"
+    - id: body_female_2
+      slot: body
+      race: 
+      sex: female
+      label: "\u5065\u58EE"
+    - id: head_human_male_0
+      slot: head
+      race: human
+      sex: male
+      label: "\u67D4\u548C"
+    - id: head_human_male_1
+      slot: head
+      race: human
+      sex: male
+      label: "\u68F1\u89D2"
+    - id: head_human_female_0
+      slot: head
+      race: human
+      sex: female
+      label: "\u67D4\u548C"
+    - id: head_human_female_1
+      slot: head
+      race: human
+      sex: female
+      label: "\u68F1\u89D2"
+    - id: head_elf_male_0
+      slot: head
+      race: elf
+      sex: male
+      label: "\u67D4\u548C"
+    - id: head_elf_male_1
+      slot: head
+      race: elf
+      sex: male
+      label: "\u68F1\u89D2"
+    - id: head_elf_female_0
+      slot: head
+      race: elf
+      sex: female
+      label: "\u67D4\u548C"
+    - id: head_elf_female_1
+      slot: head
+      race: elf
+      sex: female
+      label: "\u68F1\u89D2"
+    - id: head_goblin_male_0
+      slot: head
+      race: goblin
+      sex: male
+      label: "\u67D4\u548C"
+    - id: head_goblin_male_1
+      slot: head
+      race: goblin
+      sex: male
+      label: "\u68F1\u89D2"
+    - id: head_goblin_female_0
+      slot: head
+      race: goblin
+      sex: female
+      label: "\u67D4\u548C"
+    - id: head_goblin_female_1
+      slot: head
+      race: goblin
+      sex: female
+      label: "\u68F1\u89D2"
+    - id: head_dragon_male_0
+      slot: head
+      race: dragon
+      sex: male
+      label: "\u67D4\u548C"
+    - id: head_dragon_male_1
+      slot: head
+      race: dragon
+      sex: male
+      label: "\u68F1\u89D2"
+    - id: head_dragon_female_0
+      slot: head
+      race: dragon
+      sex: female
+      label: "\u67D4\u548C"
+    - id: head_dragon_female_1
+      slot: head
+      race: dragon
+      sex: female
+      label: "\u68F1\u89D2"
+    - id: head_orc_male_0
+      slot: head
+      race: orc
+      sex: male
+      label: "\u67D4\u548C"
+    - id: head_orc_male_1
+      slot: head
+      race: orc
+      sex: male
+      label: "\u68F1\u89D2"
+    - id: head_orc_female_0
+      slot: head
+      race: orc
+      sex: female
+      label: "\u67D4\u548C"
+    - id: head_orc_female_1
+      slot: head
+      race: orc
+      sex: female
+      label: "\u68F1\u89D2"
+    - id: hair_0
+      slot: hair
+      race: all
+      sex: 
+      label: "\u77ED\u810A"
+    - id: hair_1
+      slot: hair
+      race: human,elf,goblin,orc
+      sex: 
+      label: "\u77ED\u53D1"
+    - id: hair_2
+      slot: hair
+      race: human,elf,goblin,orc
+      sex: 
+      label: "\u9F50\u80A9"
+    - id: none
+      slot: hair
+      race: all
+      sex: 
+      label: "\u65E0\u53D1"
+    races:
+    - id: human
+      label: "\u4EBA\u7C7B"
+      colors:
+      - '#c9966c'
+      - '#e2b994'
+      - '#925d42'
+    - id: elf
+      label: "\u7CBE\u7075"
+      colors:
+      - '#d0b69a'
+      - '#c3bca8'
+      - '#967c68'
+    - id: goblin
+      label: "\u54E5\u5E03\u6797"
+      colors:
+      - '#8eaa69'
+      - '#6d8b58'
+      - '#b1b76d'
+    - id: dragon
+      label: "\u9F99\u4EBA"
+      colors:
+      - '#8c6658'
+      - '#598d83'
+      - '#687c9e'
+    - id: orc
+      label: "\u517D\u4EBA"
+      colors:
+      - '#879275'
+      - '#647c64'
+      - '#a19669'
+    hairColors:
+    - '#49372c'
+    - '#a78049'
+    - '#a3a397'
+    - '#613d39'
+    clothColors:
+    - '#526f73'
+    - '#6b6549'
+    - '#79575a'
+    - '#647557'
+  BoneNames:
+  - root
+  - pelvis
+  - spine_01
+  - spine_02
+  - spine_03
+  - neck_01
+  - Head
+  - clavicle_l
+  - upperarm_l
+  - lowerarm_l
+  - hand_l
+  - clavicle_r
+  - upperarm_r
+  - lowerarm_r
+  - hand_r
+  - thigh_l
+  - calf_l
+  - foot_l
+  - ball_l
+  - thigh_r
+  - calf_r
+  - foot_r
+  - ball_r
+  Parts:
+  - Id: body_male_0
+    Mesh: {fileID: 4300000, guid: 34298566bad67c74baf96729ae57286e, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 0368bd2152c3180409b8bd8352452fef, type: 2}
+    - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+    Roles:
+    - Cloth
+    - Skin
+    - Leather
+    - Trim
+  - Id: body_male_1
+    Mesh: {fileID: 4300000, guid: 38aa169bfc08aa249bbb75eb028e4e56, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 0368bd2152c3180409b8bd8352452fef, type: 2}
+    - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+    Roles:
+    - Cloth
+    - Skin
+    - Leather
+    - Trim
+  - Id: body_male_2
+    Mesh: {fileID: 4300000, guid: 18063593ea19eac459e501a50302b5c5, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 0368bd2152c3180409b8bd8352452fef, type: 2}
+    - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+    Roles:
+    - Cloth
+    - Skin
+    - Leather
+    - Trim
+  - Id: body_female_0
+    Mesh: {fileID: 4300000, guid: 83e63bccabbc6ae44a3478e92466c8cf, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 0368bd2152c3180409b8bd8352452fef, type: 2}
+    - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+    Roles:
+    - Cloth
+    - Skin
+    - Leather
+    - Trim
+  - Id: body_female_1
+    Mesh: {fileID: 4300000, guid: 955ffcf172118944895ee7549267918a, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 0368bd2152c3180409b8bd8352452fef, type: 2}
+    - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+    Roles:
+    - Cloth
+    - Skin
+    - Leather
+    - Trim
+  - Id: body_female_2
+    Mesh: {fileID: 4300000, guid: fa9d93f789890ef4198be6596e9591bb, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 0368bd2152c3180409b8bd8352452fef, type: 2}
+    - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+    Roles:
+    - Cloth
+    - Skin
+    - Leather
+    - Trim
+  - Id: head_human_male_0
+    Mesh: {fileID: 4300000, guid: 0186cf9cc41f6a84ab7b442c38bd0916, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 6d0900049ab3b4644aa3e666eed15985, type: 2}
+    - {fileID: 2100000, guid: 137a7c7405312ab458e1619ad7873fbf, type: 2}
+    - {fileID: 2100000, guid: fbc62aa43c25220408b6cee2605e99a1, type: 2}
+    - {fileID: 2100000, guid: 1b43ae2a34ec88443acc3129d4302a58, type: 2}
+    Roles:
+    - Skin
+    - EyeWhite
+    - Iris
+    - Hair
+    - Mouth
+  - Id: head_human_male_1
+    Mesh: {fileID: 4300000, guid: b95ee223506f7d540b74f4d31cf7a87a, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 6d0900049ab3b4644aa3e666eed15985, type: 2}
+    - {fileID: 2100000, guid: 137a7c7405312ab458e1619ad7873fbf, type: 2}
+    - {fileID: 2100000, guid: fbc62aa43c25220408b6cee2605e99a1, type: 2}
+    - {fileID: 2100000, guid: 1b43ae2a34ec88443acc3129d4302a58, type: 2}
+    Roles:
+    - Skin
+    - EyeWhite
+    - Iris
+    - Hair
+    - Mouth
+  - Id: head_human_female_0
+    Mesh: {fileID: 4300000, guid: 9834c60dde429334e99a955508dfc024, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 6d0900049ab3b4644aa3e666eed15985, type: 2}
+    - {fileID: 2100000, guid: 137a7c7405312ab458e1619ad7873fbf, type: 2}
+    - {fileID: 2100000, guid: fbc62aa43c25220408b6cee2605e99a1, type: 2}
+    - {fileID: 2100000, guid: 1b43ae2a34ec88443acc3129d4302a58, type: 2}
+    Roles:
+    - Skin
+    - EyeWhite
+    - Iris
+    - Hair
+    - Mouth
+  - Id: head_human_female_1
+    Mesh: {fileID: 4300000, guid: 8d50844759ba124488a223e74052f076, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 6d0900049ab3b4644aa3e666eed15985, type: 2}
+    - {fileID: 2100000, guid: 137a7c7405312ab458e1619ad7873fbf, type: 2}
+    - {fileID: 2100000, guid: fbc62aa43c25220408b6cee2605e99a1, type: 2}
+    - {fileID: 2100000, guid: 1b43ae2a34ec88443acc3129d4302a58, type: 2}
+    Roles:
+    - Skin
+    - EyeWhite
+    - Iris
+    - Hair
+    - Mouth
+  - Id: head_elf_male_0
+    Mesh: {fileID: 4300000, guid: d61b1848623b4e842a1e048820b704e3, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 1b43ae2a34ec88443acc3129d4302a58, type: 2}
+    - {fileID: 2100000, guid: 6d0900049ab3b4644aa3e666eed15985, type: 2}
+    - {fileID: 2100000, guid: 137a7c7405312ab458e1619ad7873fbf, type: 2}
+    - {fileID: 2100000, guid: fbc62aa43c25220408b6cee2605e99a1, type: 2}
+    Roles:
+    - Skin
+    - Mouth
+    - EyeWhite
+    - Iris
+    - Hair
+  - Id: head_elf_male_1
+    Mesh: {fileID: 4300000, guid: 6be03c19e29b5924f9f7c8eaa92ae36a, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 1b43ae2a34ec88443acc3129d4302a58, type: 2}
+    - {fileID: 2100000, guid: 6d0900049ab3b4644aa3e666eed15985, type: 2}
+    - {fileID: 2100000, guid: 137a7c7405312ab458e1619ad7873fbf, type: 2}
+    - {fileID: 2100000, guid: fbc62aa43c25220408b6cee2605e99a1, type: 2}
+    Roles:
+    - Skin
+    - Mouth
+    - EyeWhite
+    - Iris
+    - Hair
+  - Id: head_elf_female_0
+    Mesh: {fileID: 4300000, guid: 7f585e6ea9c56274c9086fbb08b94185, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 1b43ae2a34ec88443acc3129d4302a58, type: 2}
+    - {fileID: 2100000, guid: 6d0900049ab3b4644aa3e666eed15985, type: 2}
+    - {fileID: 2100000, guid: 137a7c7405312ab458e1619ad7873fbf, type: 2}
+    - {fileID: 2100000, guid: fbc62aa43c25220408b6cee2605e99a1, type: 2}
+    Roles:
+    - Skin
+    - Mouth
+    - EyeWhite
+    - Iris
+    - Hair
+  - Id: head_elf_female_1
+    Mesh: {fileID: 4300000, guid: 102b4f3342cc7a845b124ba3620deb2d, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 1b43ae2a34ec88443acc3129d4302a58, type: 2}
+    - {fileID: 2100000, guid: 6d0900049ab3b4644aa3e666eed15985, type: 2}
+    - {fileID: 2100000, guid: 137a7c7405312ab458e1619ad7873fbf, type: 2}
+    - {fileID: 2100000, guid: fbc62aa43c25220408b6cee2605e99a1, type: 2}
+    Roles:
+    - Skin
+    - Mouth
+    - EyeWhite
+    - Iris
+    - Hair
+  - Id: head_goblin_male_0
+    Mesh: {fileID: 4300000, guid: 10485501366649441987c8a42fcebeb1, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 1b43ae2a34ec88443acc3129d4302a58, type: 2}
+    - {fileID: 2100000, guid: 6d0900049ab3b4644aa3e666eed15985, type: 2}
+    - {fileID: 2100000, guid: 137a7c7405312ab458e1619ad7873fbf, type: 2}
+    - {fileID: 2100000, guid: fbc62aa43c25220408b6cee2605e99a1, type: 2}
+    Roles:
+    - Skin
+    - Mouth
+    - EyeWhite
+    - Iris
+    - Hair
+  - Id: head_goblin_male_1
+    Mesh: {fileID: 4300000, guid: fc06f433fd19c064d8126f90b013ca2c, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 1b43ae2a34ec88443acc3129d4302a58, type: 2}
+    - {fileID: 2100000, guid: 6d0900049ab3b4644aa3e666eed15985, type: 2}
+    - {fileID: 2100000, guid: 137a7c7405312ab458e1619ad7873fbf, type: 2}
+    - {fileID: 2100000, guid: fbc62aa43c25220408b6cee2605e99a1, type: 2}
+    Roles:
+    - Skin
+    - Mouth
+    - EyeWhite
+    - Iris
+    - Hair
+  - Id: head_goblin_female_0
+    Mesh: {fileID: 4300000, guid: 6ab13494459844c418b872408b3fb974, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 1b43ae2a34ec88443acc3129d4302a58, type: 2}
+    - {fileID: 2100000, guid: 6d0900049ab3b4644aa3e666eed15985, type: 2}
+    - {fileID: 2100000, guid: 137a7c7405312ab458e1619ad7873fbf, type: 2}
+    - {fileID: 2100000, guid: fbc62aa43c25220408b6cee2605e99a1, type: 2}
+    Roles:
+    - Skin
+    - Mouth
+    - EyeWhite
+    - Iris
+    - Hair
+  - Id: head_goblin_female_1
+    Mesh: {fileID: 4300000, guid: 7ed28b2860114664686cf8c6f4a50b1b, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 1b43ae2a34ec88443acc3129d4302a58, type: 2}
+    - {fileID: 2100000, guid: 6d0900049ab3b4644aa3e666eed15985, type: 2}
+    - {fileID: 2100000, guid: 137a7c7405312ab458e1619ad7873fbf, type: 2}
+    - {fileID: 2100000, guid: fbc62aa43c25220408b6cee2605e99a1, type: 2}
+    Roles:
+    - Skin
+    - Mouth
+    - EyeWhite
+    - Iris
+    - Hair
+  - Id: head_dragon_male_0
+    Mesh: {fileID: 4300000, guid: 0c7330b0a385e9644b138502cb336969, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 6d0900049ab3b4644aa3e666eed15985, type: 2}
+    - {fileID: 2100000, guid: 137a7c7405312ab458e1619ad7873fbf, type: 2}
+    - {fileID: 2100000, guid: 018cce324857cd540a7a99bafe022d6c, type: 2}
+    - {fileID: 2100000, guid: 1b43ae2a34ec88443acc3129d4302a58, type: 2}
+    Roles:
+    - Skin
+    - EyeWhite
+    - Iris
+    - Horn
+    - Mouth
+  - Id: head_dragon_male_1
+    Mesh: {fileID: 4300000, guid: 19e47b4b18ec0e347930cf3db08821c6, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 6d0900049ab3b4644aa3e666eed15985, type: 2}
+    - {fileID: 2100000, guid: 137a7c7405312ab458e1619ad7873fbf, type: 2}
+    - {fileID: 2100000, guid: 018cce324857cd540a7a99bafe022d6c, type: 2}
+    - {fileID: 2100000, guid: 1b43ae2a34ec88443acc3129d4302a58, type: 2}
+    Roles:
+    - Skin
+    - EyeWhite
+    - Iris
+    - Horn
+    - Mouth
+  - Id: head_dragon_female_0
+    Mesh: {fileID: 4300000, guid: b5b21a069fb57b3438ec0d4641ae39ff, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 6d0900049ab3b4644aa3e666eed15985, type: 2}
+    - {fileID: 2100000, guid: 137a7c7405312ab458e1619ad7873fbf, type: 2}
+    - {fileID: 2100000, guid: 018cce324857cd540a7a99bafe022d6c, type: 2}
+    - {fileID: 2100000, guid: 1b43ae2a34ec88443acc3129d4302a58, type: 2}
+    Roles:
+    - Skin
+    - EyeWhite
+    - Iris
+    - Horn
+    - Mouth
+  - Id: head_dragon_female_1
+    Mesh: {fileID: 4300000, guid: c58108f266e481345b11010878fe10cf, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 6d0900049ab3b4644aa3e666eed15985, type: 2}
+    - {fileID: 2100000, guid: 137a7c7405312ab458e1619ad7873fbf, type: 2}
+    - {fileID: 2100000, guid: 018cce324857cd540a7a99bafe022d6c, type: 2}
+    - {fileID: 2100000, guid: 1b43ae2a34ec88443acc3129d4302a58, type: 2}
+    Roles:
+    - Skin
+    - EyeWhite
+    - Iris
+    - Horn
+    - Mouth
+  - Id: head_orc_male_0
+    Mesh: {fileID: 4300000, guid: 5f76c9a08afa26e44a33c71a030041f5, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 6d0900049ab3b4644aa3e666eed15985, type: 2}
+    - {fileID: 2100000, guid: 137a7c7405312ab458e1619ad7873fbf, type: 2}
+    - {fileID: 2100000, guid: 018cce324857cd540a7a99bafe022d6c, type: 2}
+    - {fileID: 2100000, guid: 1b43ae2a34ec88443acc3129d4302a58, type: 2}
+    Roles:
+    - Skin
+    - EyeWhite
+    - Iris
+    - Horn
+    - Mouth
+  - Id: head_orc_male_1
+    Mesh: {fileID: 4300000, guid: aebb4134a7142694583a386b04c3a23d, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 6d0900049ab3b4644aa3e666eed15985, type: 2}
+    - {fileID: 2100000, guid: 137a7c7405312ab458e1619ad7873fbf, type: 2}
+    - {fileID: 2100000, guid: 018cce324857cd540a7a99bafe022d6c, type: 2}
+    - {fileID: 2100000, guid: 1b43ae2a34ec88443acc3129d4302a58, type: 2}
+    Roles:
+    - Skin
+    - EyeWhite
+    - Iris
+    - Horn
+    - Mouth
+  - Id: head_orc_female_0
+    Mesh: {fileID: 4300000, guid: 9a3903c42f2944f4a9f0a7d5e23f9656, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 6d0900049ab3b4644aa3e666eed15985, type: 2}
+    - {fileID: 2100000, guid: 137a7c7405312ab458e1619ad7873fbf, type: 2}
+    - {fileID: 2100000, guid: 018cce324857cd540a7a99bafe022d6c, type: 2}
+    - {fileID: 2100000, guid: 1b43ae2a34ec88443acc3129d4302a58, type: 2}
+    Roles:
+    - Skin
+    - EyeWhite
+    - Iris
+    - Horn
+    - Mouth
+  - Id: head_orc_female_1
+    Mesh: {fileID: 4300000, guid: fe76d698a10f903449dabdc1e8e5fc80, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: 05aab2cae747b5a4d8d80f6ff66f79ff, type: 2}
+    - {fileID: 2100000, guid: 6d0900049ab3b4644aa3e666eed15985, type: 2}
+    - {fileID: 2100000, guid: 137a7c7405312ab458e1619ad7873fbf, type: 2}
+    - {fileID: 2100000, guid: 018cce324857cd540a7a99bafe022d6c, type: 2}
+    - {fileID: 2100000, guid: 1b43ae2a34ec88443acc3129d4302a58, type: 2}
+    Roles:
+    - Skin
+    - EyeWhite
+    - Iris
+    - Horn
+    - Mouth
+  - Id: hair_0
+    Mesh: {fileID: 4300000, guid: c40d12ca55751cc4bb3269177f2a3684, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: fbc62aa43c25220408b6cee2605e99a1, type: 2}
+    Roles:
+    - Hair
+  - Id: hair_1
+    Mesh: {fileID: 4300000, guid: cf52b854851504549b2ded57e8e8d0d5, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: fbc62aa43c25220408b6cee2605e99a1, type: 2}
+    Roles:
+    - Hair
+  - Id: hair_2
+    Mesh: {fileID: 4300000, guid: ce406931fac25ca4b8272db5ef83137c, type: 2}
+    Materials:
+    - {fileID: 2100000, guid: fbc62aa43c25220408b6cee2605e99a1, type: 2}
+    Roles:
+    - Hair
+  GearFits:
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Helmet.fbx
+    Body: 
+    Race: human
+    Slot: head
+    Coverage: 0
+    HideHair: 1
+    Part:
+      Id: fit_helmet_human
+      Mesh: {fileID: 4300000, guid: cf5270c6c8277a84894ea7cfc815ab42, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      - {fileID: 2100000, guid: 0368bd2152c3180409b8bd8352452fef, type: 2}
+      Roles:
+      - Trim
+      - Leather
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Hood.fbx
+    Body: 
+    Race: human
+    Slot: head
+    Coverage: 0
+    HideHair: 1
+    Part:
+      Id: fit_hood_human
+      Mesh: {fileID: 4300000, guid: 479e62a7f5263744d88cf00749a5b9e8, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+      Roles:
+      - Cloth
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_MageHat.fbx
+    Body: 
+    Race: human
+    Slot: head
+    Coverage: 0
+    HideHair: 1
+    Part:
+      Id: fit_magehat_human
+      Mesh: {fileID: 4300000, guid: d860661ee24f14d4b9b2c96fcfd0bbad, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+      Roles:
+      - Cloth
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Helmet.fbx
+    Body: 
+    Race: elf
+    Slot: head
+    Coverage: 0
+    HideHair: 1
+    Part:
+      Id: fit_helmet_elf
+      Mesh: {fileID: 4300000, guid: e194f60676ec9a4499fb8e3a4c94f1ab, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      - {fileID: 2100000, guid: 0368bd2152c3180409b8bd8352452fef, type: 2}
+      Roles:
+      - Trim
+      - Leather
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Hood.fbx
+    Body: 
+    Race: elf
+    Slot: head
+    Coverage: 0
+    HideHair: 1
+    Part:
+      Id: fit_hood_elf
+      Mesh: {fileID: 4300000, guid: eda667cec13892848916529d3d5a15b8, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+      Roles:
+      - Cloth
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_MageHat.fbx
+    Body: 
+    Race: elf
+    Slot: head
+    Coverage: 0
+    HideHair: 1
+    Part:
+      Id: fit_magehat_elf
+      Mesh: {fileID: 4300000, guid: 91dafdaa0f9faea45af04f79b92fc2bf, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+      Roles:
+      - Cloth
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Helmet.fbx
+    Body: 
+    Race: goblin
+    Slot: head
+    Coverage: 0
+    HideHair: 1
+    Part:
+      Id: fit_helmet_goblin
+      Mesh: {fileID: 4300000, guid: 5f89a4ea2df78a849a1e295cc3a6436a, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      - {fileID: 2100000, guid: 0368bd2152c3180409b8bd8352452fef, type: 2}
+      Roles:
+      - Trim
+      - Leather
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Hood.fbx
+    Body: 
+    Race: goblin
+    Slot: head
+    Coverage: 0
+    HideHair: 1
+    Part:
+      Id: fit_hood_goblin
+      Mesh: {fileID: 4300000, guid: 2c5125fea32c124439f581398215c640, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+      Roles:
+      - Cloth
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_MageHat.fbx
+    Body: 
+    Race: goblin
+    Slot: head
+    Coverage: 0
+    HideHair: 1
+    Part:
+      Id: fit_magehat_goblin
+      Mesh: {fileID: 4300000, guid: ac5938b86262fef41bb0d29020fc7c1e, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+      Roles:
+      - Cloth
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Helmet.fbx
+    Body: 
+    Race: dragon
+    Slot: head
+    Coverage: 0
+    HideHair: 1
+    Part:
+      Id: fit_helmet_dragon
+      Mesh: {fileID: 4300000, guid: 0af038ae208e7d34dacde3fade1ac5a6, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      - {fileID: 2100000, guid: 0368bd2152c3180409b8bd8352452fef, type: 2}
+      Roles:
+      - Trim
+      - Leather
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Hood.fbx
+    Body: 
+    Race: dragon
+    Slot: head
+    Coverage: 0
+    HideHair: 1
+    Part:
+      Id: fit_hood_dragon
+      Mesh: {fileID: 4300000, guid: c2c661438b60e7b4f8f9528ec8e08e8b, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+      Roles:
+      - Cloth
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_MageHat.fbx
+    Body: 
+    Race: dragon
+    Slot: head
+    Coverage: 0
+    HideHair: 1
+    Part:
+      Id: fit_magehat_dragon
+      Mesh: {fileID: 4300000, guid: 38baec81aa066e943ba97bfef192e31c, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+      Roles:
+      - Cloth
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Helmet.fbx
+    Body: 
+    Race: orc
+    Slot: head
+    Coverage: 0
+    HideHair: 1
+    Part:
+      Id: fit_helmet_orc
+      Mesh: {fileID: 4300000, guid: e0f0f6591dc4a854ab5ca69ff988c70c, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      - {fileID: 2100000, guid: 0368bd2152c3180409b8bd8352452fef, type: 2}
+      Roles:
+      - Trim
+      - Leather
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Hood.fbx
+    Body: 
+    Race: orc
+    Slot: head
+    Coverage: 0
+    HideHair: 1
+    Part:
+      Id: fit_hood_orc
+      Mesh: {fileID: 4300000, guid: 720646b006cc7a04fb7d28437073699e, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+      Roles:
+      - Cloth
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_MageHat.fbx
+    Body: 
+    Race: orc
+    Slot: head
+    Coverage: 0
+    HideHair: 1
+    Part:
+      Id: fit_magehat_orc
+      Mesh: {fileID: 4300000, guid: 2cbc8159993ae6a4db17e48766a72543, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+      Roles:
+      - Cloth
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorLeather.fbx
+    Body: body_male_0
+    Race: 
+    Slot: chest
+    Coverage: 1
+    HideHair: 0
+    Part:
+      Id: fit_armorleather_body_male_0
+      Mesh: {fileID: 4300000, guid: 7775cf1745271c340a9f8db97800c059, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 0368bd2152c3180409b8bd8352452fef, type: 2}
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      Roles:
+      - Leather
+      - Trim
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorPlate.fbx
+    Body: body_male_0
+    Race: 
+    Slot: chest
+    Coverage: 1
+    HideHair: 0
+    Part:
+      Id: fit_armorplate_body_male_0
+      Mesh: {fileID: 4300000, guid: 764413d5da1bdee4e8dfac1d3de3f37e, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      Roles:
+      - Trim
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorRobe.fbx
+    Body: body_male_0
+    Race: 
+    Slot: chest
+    Coverage: 1
+    HideHair: 0
+    Part:
+      Id: fit_armorrobe_body_male_0
+      Mesh: {fileID: 4300000, guid: 29776968948ad1049bd3b641ff86c3f6, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      Roles:
+      - Cloth
+      - Trim
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Cape.fbx
+    Body: body_male_0
+    Race: 
+    Slot: back
+    Coverage: 0
+    HideHair: 0
+    Part:
+      Id: fit_cape_body_male_0
+      Mesh: {fileID: 4300000, guid: 2869313f52e15224f9fa41f4a159088e, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+      Roles:
+      - Cloth
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorLeather.fbx
+    Body: body_male_1
+    Race: 
+    Slot: chest
+    Coverage: 1
+    HideHair: 0
+    Part:
+      Id: fit_armorleather_body_male_1
+      Mesh: {fileID: 4300000, guid: 8d9d92b2e29ce2f4d860e9d96911a200, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 0368bd2152c3180409b8bd8352452fef, type: 2}
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      Roles:
+      - Leather
+      - Trim
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorPlate.fbx
+    Body: body_male_1
+    Race: 
+    Slot: chest
+    Coverage: 1
+    HideHair: 0
+    Part:
+      Id: fit_armorplate_body_male_1
+      Mesh: {fileID: 4300000, guid: de09478fe6084124b9e971c183c54504, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      Roles:
+      - Trim
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorRobe.fbx
+    Body: body_male_1
+    Race: 
+    Slot: chest
+    Coverage: 1
+    HideHair: 0
+    Part:
+      Id: fit_armorrobe_body_male_1
+      Mesh: {fileID: 4300000, guid: d5a20fa038727d143aeeea223c86e402, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      Roles:
+      - Cloth
+      - Trim
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Cape.fbx
+    Body: body_male_1
+    Race: 
+    Slot: back
+    Coverage: 0
+    HideHair: 0
+    Part:
+      Id: fit_cape_body_male_1
+      Mesh: {fileID: 4300000, guid: c0e545fa0d265d74dbadf1296c548d17, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+      Roles:
+      - Cloth
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorLeather.fbx
+    Body: body_male_2
+    Race: 
+    Slot: chest
+    Coverage: 1
+    HideHair: 0
+    Part:
+      Id: fit_armorleather_body_male_2
+      Mesh: {fileID: 4300000, guid: 1c631c122235a2a47ab5ba484412adc1, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 0368bd2152c3180409b8bd8352452fef, type: 2}
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      Roles:
+      - Leather
+      - Trim
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorPlate.fbx
+    Body: body_male_2
+    Race: 
+    Slot: chest
+    Coverage: 1
+    HideHair: 0
+    Part:
+      Id: fit_armorplate_body_male_2
+      Mesh: {fileID: 4300000, guid: a7a288dd5ce914e4ca45be5cd310ed56, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      Roles:
+      - Trim
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorRobe.fbx
+    Body: body_male_2
+    Race: 
+    Slot: chest
+    Coverage: 1
+    HideHair: 0
+    Part:
+      Id: fit_armorrobe_body_male_2
+      Mesh: {fileID: 4300000, guid: 87bc150e2f398da479de90747ba873ff, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      Roles:
+      - Cloth
+      - Trim
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Cape.fbx
+    Body: body_male_2
+    Race: 
+    Slot: back
+    Coverage: 0
+    HideHair: 0
+    Part:
+      Id: fit_cape_body_male_2
+      Mesh: {fileID: 4300000, guid: 8a59341c6a3f5ec4b9f412600f794317, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+      Roles:
+      - Cloth
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorLeather.fbx
+    Body: body_female_0
+    Race: 
+    Slot: chest
+    Coverage: 1
+    HideHair: 0
+    Part:
+      Id: fit_armorleather_body_female_0
+      Mesh: {fileID: 4300000, guid: b170132e07495044da241204ed14afc1, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 0368bd2152c3180409b8bd8352452fef, type: 2}
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      Roles:
+      - Leather
+      - Trim
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorPlate.fbx
+    Body: body_female_0
+    Race: 
+    Slot: chest
+    Coverage: 1
+    HideHair: 0
+    Part:
+      Id: fit_armorplate_body_female_0
+      Mesh: {fileID: 4300000, guid: d211bed6edd31974aac2244961f5e63a, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      Roles:
+      - Trim
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorRobe.fbx
+    Body: body_female_0
+    Race: 
+    Slot: chest
+    Coverage: 1
+    HideHair: 0
+    Part:
+      Id: fit_armorrobe_body_female_0
+      Mesh: {fileID: 4300000, guid: 10dfc5daee97f3b4b991c15f93944114, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      Roles:
+      - Cloth
+      - Trim
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Cape.fbx
+    Body: body_female_0
+    Race: 
+    Slot: back
+    Coverage: 0
+    HideHair: 0
+    Part:
+      Id: fit_cape_body_female_0
+      Mesh: {fileID: 4300000, guid: e0ca0ff8174e3564ca3c85c99e965668, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+      Roles:
+      - Cloth
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorLeather.fbx
+    Body: body_female_1
+    Race: 
+    Slot: chest
+    Coverage: 1
+    HideHair: 0
+    Part:
+      Id: fit_armorleather_body_female_1
+      Mesh: {fileID: 4300000, guid: 2b552f4f06c867b4ba92ec6501b659d5, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 0368bd2152c3180409b8bd8352452fef, type: 2}
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      Roles:
+      - Leather
+      - Trim
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorPlate.fbx
+    Body: body_female_1
+    Race: 
+    Slot: chest
+    Coverage: 1
+    HideHair: 0
+    Part:
+      Id: fit_armorplate_body_female_1
+      Mesh: {fileID: 4300000, guid: aca5b88d7a9010746943cde0ba4008aa, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      Roles:
+      - Trim
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorRobe.fbx
+    Body: body_female_1
+    Race: 
+    Slot: chest
+    Coverage: 1
+    HideHair: 0
+    Part:
+      Id: fit_armorrobe_body_female_1
+      Mesh: {fileID: 4300000, guid: 130bb0b4e8afe6a44a968f1ebd871aa1, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      Roles:
+      - Cloth
+      - Trim
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Cape.fbx
+    Body: body_female_1
+    Race: 
+    Slot: back
+    Coverage: 0
+    HideHair: 0
+    Part:
+      Id: fit_cape_body_female_1
+      Mesh: {fileID: 4300000, guid: 65c8e22eb080df94a81cd703830ff014, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+      Roles:
+      - Cloth
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorLeather.fbx
+    Body: body_female_2
+    Race: 
+    Slot: chest
+    Coverage: 1
+    HideHair: 0
+    Part:
+      Id: fit_armorleather_body_female_2
+      Mesh: {fileID: 4300000, guid: 8ad3d3144a04147438699cc8fb220a09, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 0368bd2152c3180409b8bd8352452fef, type: 2}
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      Roles:
+      - Leather
+      - Trim
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorPlate.fbx
+    Body: body_female_2
+    Race: 
+    Slot: chest
+    Coverage: 1
+    HideHair: 0
+    Part:
+      Id: fit_armorplate_body_female_2
+      Mesh: {fileID: 4300000, guid: 2426142a6ad2db54195cd9c699fff185, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      Roles:
+      - Trim
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_ArmorRobe.fbx
+    Body: body_female_2
+    Race: 
+    Slot: chest
+    Coverage: 1
+    HideHair: 0
+    Part:
+      Id: fit_armorrobe_body_female_2
+      Mesh: {fileID: 4300000, guid: 3cd27ac979416fc43a6550091ac84813, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      Roles:
+      - Cloth
+      - Trim
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Cape.fbx
+    Body: body_female_2
+    Race: 
+    Slot: back
+    Coverage: 0
+    HideHair: 0
+    Part:
+      Id: fit_cape_body_female_2
+      Mesh: {fileID: 4300000, guid: 08aae5c5730ed0f49895bd8060f00ad6, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+      Roles:
+      - Cloth
+  - SourcePath: Assets/DynamicAsset/EquipmentDemo/Models/Equip_Trousers.fbx
+    Body: 
+    Race: 
+    Slot: legs
+    Coverage: 2
+    HideHair: 0
+    Part:
+      Id: fit_trousers
+      Mesh: {fileID: 4300000, guid: a17afb8bab70f00469c7bdd5479df8d7, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 2126da0bf866d1f43a333be9a6433a6f, type: 2}
+      Roles:
+      - Cloth
+  - SourcePath: Assets/DynamicAsset/EquipmentDemo/Models/Equip_Boots.fbx
+    Body: 
+    Race: 
+    Slot: feet
+    Coverage: 4
+    HideHair: 0
+    Part:
+      Id: fit_boots
+      Mesh: {fileID: 4300000, guid: 5e70a6376228acd44af579236848487b, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 0368bd2152c3180409b8bd8352452fef, type: 2}
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      Roles:
+      - Leather
+      - Trim
+  - SourcePath: Assets/DynamicAsset/PawnLowPoly/Models/Pawn_Quiver.fbx
+    Body: 
+    Race: 
+    Slot: back
+    Coverage: 0
+    HideHair: 0
+    Part:
+      Id: fit_quiver
+      Mesh: {fileID: 4300000, guid: 0f77ec5f8cca8284ebccdd21f4a2efed, type: 2}
+      Materials:
+      - {fileID: 2100000, guid: 0368bd2152c3180409b8bd8352452fef, type: 2}
+      - {fileID: 2100000, guid: af22324b7b0447545822adb15d92630b, type: 2}
+      Roles:
+      - Leather
+      - Trim
+  CoveredBodies:
+  - Body: body_male_0
+    Mask: 1
+    Mesh: {fileID: 4300000, guid: 7960a0e21f8e4c140a81725f3b0b4548, type: 2}
+  - Body: body_male_0
+    Mask: 2
+    Mesh: {fileID: 4300000, guid: 7576480f46a75ed4995357a00acea415, type: 2}
+  - Body: body_male_0
+    Mask: 3
+    Mesh: {fileID: 4300000, guid: 409aaff3117fdfc40bb070adeeffb481, type: 2}
+  - Body: body_male_0
+    Mask: 4
+    Mesh: {fileID: 4300000, guid: 6ea4a0794ec427b4b9a98b0f0f3916e9, type: 2}
+  - Body: body_male_0
+    Mask: 5
+    Mesh: {fileID: 4300000, guid: 8e9e3fd536793634f9d41728dbcc99c9, type: 2}
+  - Body: body_male_0
+    Mask: 6
+    Mesh: {fileID: 4300000, guid: 4374acc3dd018a34489f0556cd7751db, type: 2}
+  - Body: body_male_0
+    Mask: 7
+    Mesh: {fileID: 4300000, guid: 3cb781a8fad278f4b9486d11eb783b4e, type: 2}
+  - Body: body_male_1
+    Mask: 1
+    Mesh: {fileID: 4300000, guid: 27d6e5dcbab594146a2c6e96b9aed957, type: 2}
+  - Body: body_male_1
+    Mask: 2
+    Mesh: {fileID: 4300000, guid: 6c605f99094b01b43b3a88bfa01d396d, type: 2}
+  - Body: body_male_1
+    Mask: 3
+    Mesh: {fileID: 4300000, guid: bf0f61c1b4d464e4cb3841e84ea57f4b, type: 2}
+  - Body: body_male_1
+    Mask: 4
+    Mesh: {fileID: 4300000, guid: ebf4f34a754d27f47abe09bb43048b7f, type: 2}
+  - Body: body_male_1
+    Mask: 5
+    Mesh: {fileID: 4300000, guid: 93cb966be1ffec640bf977409044dddb, type: 2}
+  - Body: body_male_1
+    Mask: 6
+    Mesh: {fileID: 4300000, guid: 0eb1bdbb50457eb4780aeb718c6ed174, type: 2}
+  - Body: body_male_1
+    Mask: 7
+    Mesh: {fileID: 4300000, guid: 58197fe2907a5ff4b872c2961a5dfc99, type: 2}
+  - Body: body_male_2
+    Mask: 1
+    Mesh: {fileID: 4300000, guid: 80dfe40663bff304cae9f3bf1997dcb7, type: 2}
+  - Body: body_male_2
+    Mask: 2
+    Mesh: {fileID: 4300000, guid: 1bb5ca7df4e42fd498ecc3b2f086785b, type: 2}
+  - Body: body_male_2
+    Mask: 3
+    Mesh: {fileID: 4300000, guid: c70671c16f53ae54c8e1de73c8ad3ab3, type: 2}
+  - Body: body_male_2
+    Mask: 4
+    Mesh: {fileID: 4300000, guid: cebeacccabb64774692bc8377af7ce14, type: 2}
+  - Body: body_male_2
+    Mask: 5
+    Mesh: {fileID: 4300000, guid: 388a82d90bdb3444bad34bebb55455db, type: 2}
+  - Body: body_male_2
+    Mask: 6
+    Mesh: {fileID: 4300000, guid: ee499c1786166c74796ba6a7ba4f7f4c, type: 2}
+  - Body: body_male_2
+    Mask: 7
+    Mesh: {fileID: 4300000, guid: 18d01a3759f6e1c459e95d1a254773a8, type: 2}
+  - Body: body_female_0
+    Mask: 1
+    Mesh: {fileID: 4300000, guid: 7f6e3601b113aa94bbb8d655838899d8, type: 2}
+  - Body: body_female_0
+    Mask: 2
+    Mesh: {fileID: 4300000, guid: 06b71e29f958a1845bbd17739fe6c959, type: 2}
+  - Body: body_female_0
+    Mask: 3
+    Mesh: {fileID: 4300000, guid: eeac8e52bacbbac4eb7ca204cfbff3e9, type: 2}
+  - Body: body_female_0
+    Mask: 4
+    Mesh: {fileID: 4300000, guid: 3625fc9b720f93a488b463eed6c21f19, type: 2}
+  - Body: body_female_0
+    Mask: 5
+    Mesh: {fileID: 4300000, guid: 8c571b3d230a537459cf7729f021d2ee, type: 2}
+  - Body: body_female_0
+    Mask: 6
+    Mesh: {fileID: 4300000, guid: 4c01c6e65f3f2b343bf9bfb46e4739d7, type: 2}
+  - Body: body_female_0
+    Mask: 7
+    Mesh: {fileID: 4300000, guid: e339d422235bfe4498ef0aa929b90989, type: 2}
+  - Body: body_female_1
+    Mask: 1
+    Mesh: {fileID: 4300000, guid: 5705db6f79d1b1d4f9d5b8fd510d8faa, type: 2}
+  - Body: body_female_1
+    Mask: 2
+    Mesh: {fileID: 4300000, guid: b3bcf7f0c52b2b54a8dcba839a728aeb, type: 2}
+  - Body: body_female_1
+    Mask: 3
+    Mesh: {fileID: 4300000, guid: 8240fdd89d55d5b4a81e3852213e465c, type: 2}
+  - Body: body_female_1
+    Mask: 4
+    Mesh: {fileID: 4300000, guid: b6c0d0abf137b624eaad49310ce1faa8, type: 2}
+  - Body: body_female_1
+    Mask: 5
+    Mesh: {fileID: 4300000, guid: 4e09564ec1fb16746abb594780a7a9ee, type: 2}
+  - Body: body_female_1
+    Mask: 6
+    Mesh: {fileID: 4300000, guid: a59b658316a74574b9cfcf4ac39847d5, type: 2}
+  - Body: body_female_1
+    Mask: 7
+    Mesh: {fileID: 4300000, guid: 2e716fe46eee01245b500c775e52da8e, type: 2}
+  - Body: body_female_2
+    Mask: 1
+    Mesh: {fileID: 4300000, guid: bedf8bcac2bc56441b2bf125f0d22f6a, type: 2}
+  - Body: body_female_2
+    Mask: 2
+    Mesh: {fileID: 4300000, guid: 73e384a057d754141836fa3bad2b3afb, type: 2}
+  - Body: body_female_2
+    Mask: 3
+    Mesh: {fileID: 4300000, guid: b75718faeff81a345b84a38a71f611c7, type: 2}
+  - Body: body_female_2
+    Mask: 4
+    Mesh: {fileID: 4300000, guid: 29ca6f76a2830404e9eab8c6c9804bf9, type: 2}
+  - Body: body_female_2
+    Mask: 5
+    Mesh: {fileID: 4300000, guid: 26059a07eb549eb4389d5de9c1735fe3, type: 2}
+  - Body: body_female_2
+    Mask: 6
+    Mesh: {fileID: 4300000, guid: 7673bde54e57f0a449ef6da224044999, type: 2}
+  - Body: body_female_2
+    Mask: 7
+    Mesh: {fileID: 4300000, guid: 4627ea2522d738c4f921b5b5dea380d0, type: 2}

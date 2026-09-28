@@ -1,3 +1,4 @@
+local EmptyGrowth=assert(loadfile('Tools/Tests/growth_empty.lua'))()
 -- 定向纯 Lua：真实地牢敌群部署、隔墙技能和战后散队收拢。
 package.path='Lua/?.lua;'..package.path
 local config=require('Config.ConfigSystem')()
@@ -36,8 +37,9 @@ print('PASS seeded enemy groups occupy distinct safe rooms without changing glob
 local flat=Layout.New({id=1,name='battle check',areaType=1,width=12,height=12,hexRadius=1.5,visionRadius=9,moveStepSeconds=.1},1,source,area.theme)
 for _,cell in ipairs(flat.cells) do cell.blocked=false;cell.blocksSight=false end
 local board=require('Game.Battle.BattleBoard').FromArea(flat,4,4,7)
-local hero={Id=1,TemplateId=2,Team=1,HP=38,AP=4,MainUsed=false,Moved=false,Q=3,R=4}
-local enemy={Id=101,TemplateId=4,Team=2,HP=34,Q=5,R=4}
+local hero={Id=1,Growth=EmptyGrowth(),TemplateId=2,Team=1,HP=38,AP=4,MainUsed=false,Moved=false,Q=3,R=4}
+local enemy={Id=101,Growth=EmptyGrowth(),TemplateId=4,Team=2,HP=34,Q=5,R=4}
+hero.AnimalOwnerId=0;enemy.AnimalOwnerId=0
 local battle=require('Game.Battle.BattleSystem')()
 battle.board=board;battle.skills=config:GetTable('CombatSkillTable');battle.stats=require('Game.Battle.CombatStats')(config)
 battle.data={Winner='',ActiveId=1,UnitCount=2,GetUnitAt=function(_,i) return ({hero,enemy})[i+1] end}

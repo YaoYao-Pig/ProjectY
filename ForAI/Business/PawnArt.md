@@ -9,7 +9,7 @@
 ## 正文
 
 - 棋子延续[地图模型](MapArt.md)的硬边、纯色和低饱和调色板，以圆形底座、略大的头手和武器剪影体现桌面战棋。身体高约 1.78 米，底座直径 1.38 米；固定人物尺度，不随 MapArea 地格半径缩放。
-- 源文件、脚本、暂存和预览位于 `Art/PawnLowPoly/`；Unity FBX 在 `Assets/DynamicAsset/PawnLowPoly/Models/`。16 个部件共用已有地图材质，四套装配 Prefab 为剑盾卫士、游侠弓手、法师、双手战士。战士用独立握持身体与双手剑；身体不合并装备，装备网格保留挂点局部原点，不能统一移到底部。当前均为固定棋子姿势，没有骨骼步行动画。
+- 源文件、脚本、暂存和预览位于 `Art/PawnLowPoly/`；Unity FBX 在 `Assets/DynamicAsset/PawnLowPoly/Models/`。16 个部件共用已有地图材质，四套装配 Prefab 为剑盾卫士、游侠弓手、法师、双手战士。身体不合并装备，装备网格保留挂点局部原点，不能统一移到底部。原部件仍是静态模型；运行时公共身体已接入独立的 [Humanoid 动画](PawnAnimation.md)。
 - Unity +Y 向上、+Z 为正面。身体/底座挂点为零；mainHand=(-0.5,0.98,0.28)、offHand=(0.5,0.98,0.28)、head=(0,1.59,0)、chest=(0,1.05,0)、back=(0,1.13,-0.2)。部件在挂点下使用零位移、零旋转和单位缩放；导出沿用经过验证的静态地图 FBX 预设与 bakeAxisConversion。
 - `PawnPartTable` 配置部件路径和插槽；`PawnTemplateTable.unitId → CombatUnitTable` 关联角色，partIds 组合初始外观。`PawnAppearance` 校验角色映射唯一、插槽互斥、必需身体/底座及资源引用；空装备插槽合法。主角装备快照使用无手臂核心替换模板身体，头部/胸甲/双手只显示实际装备；副手、穿戴部件及背包三维预览见[背包](Inventory.md)。追加独立手臂及武器快照；规则和可配置持握/短动作见[装备 Demo](Equipment.md)。
 - 模板包含四名主角及近战/弓手两类敌人；敌人复用已有部件，地牢按可见性生成显示棋子，以红色地格和血条区分阵营。地牢战斗显示与生命周期见[MapArea](MapArea.md)。
@@ -25,6 +25,8 @@
 - [Blender 预览](../../Art/PawnLowPoly/Previews/pawn-common-kit.png) / [Unity 比例预览](../../Art/PawnLowPoly/Previews/pawn-common-unity.png) / [Unity 尺寸记录](../../Art/PawnLowPoly/Integration/pawn-common-unity.json)。
 - [制作脚本](../../Art/PawnLowPoly/Scripts/build_pawn_common.py) / [导出脚本](../../Art/PawnLowPoly/Scripts/export_pawn_common.py)：初次创建入口，后续定向修改源作品并导出，不能重放初始化来覆盖已有资产。
 - [配置检查](../../Tools/Tests/pawn_appearance.lua)：不启动 Editor 或 Play。
+- [动作与骨骼适配](PawnAnimation.md)：实际资源、播放与装备契约、配置入口和首轮验收范围。
+- [有限角色定制](PawnCustomization.md)：五族男女脸/体型/发型模块、同骨架装配、随机描述与网页预览；旧模板未提供定制描述时仍使用原身体。
 - [双手战士制作](../../Art/PawnLowPoly/Scripts/build_warrior.py) / [四套模板预览](../../Art/PawnLowPoly/Previews/pawn-squad-kit.png)。
 - [挂点装配](../../Assets/GameFramework/Samples/Adventure/PawnView.cs) / [资源同步菜单](../../Assets/GameFramework/Editor/PawnAssetMenu.cs)：运行时组合与 Editor 序列化绑定。
 - [Unity 地牢编队预览](../../Art/PawnLowPoly/Previews/squad-maparea-unity.png) / [装配与换装检查记录](../../Art/PawnLowPoly/Integration/squad-unity.json) / [真实 Lua 快照入口](../../Art/PawnLowPoly/Scripts/preview_squad.lua) / [MCP 静态预览片段](../../Art/PawnLowPoly/Scripts/preview_squad.cs)：临时 PreviewScene 完成后关闭，不修改当前地图或启动 Play。

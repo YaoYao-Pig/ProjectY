@@ -6,6 +6,16 @@ AI 开发入口：[ForAI 短索引](ForAI/INDEX.md)。按关键词选择模块�
 
 ## 立即运行
 
+游戏入口：打开 `Assets/GameFramework/Samples/Adventure/AdventureDemo.unity` 后点击 Play，或使用 **Project Y → 远征 → 打开战斗与事件 Demo**。
+
+- 大地图侧栏的“地下探险”进入地牢，靠近补给箱按 E 获取符文、助推器和弹药，深入后触发故事。
+- “城镇”进入街区，走到铁匠、商店或酒馆的服务点附近按 E 交互。
+- I 打开背包并进入武器改装工坊；C 打开角色手记、天赋和经历。配置与操作见 [事件与养成](Docs/StoryGrowth.md)。
+
+地图预览场景用于地图联调；游戏内容使用上述远征入口。
+
+## 框架示例
+
 1. Unity 打开 `Assets/GameFramework/Samples/FrameworkDemo.unity`，点击 Play。也可用菜单 **Project Y → Demo → Open Scene**。
 2. **CLAIM REWARD**：读取二进制配置，在 Lua 求值奖励公式，再调用 C# `PlayerData.AddCoins`。Stats Widget 通过通知刷新。
 3. **LEVEL UP**：修改 C# 等级，下一次奖励随公式变化。

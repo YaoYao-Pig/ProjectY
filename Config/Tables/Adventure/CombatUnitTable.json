@@ -257,6 +257,75 @@
         1,
         4
       ]
+    },
+    {
+      "id": 201,
+      "name": "马",
+      "vitality": 9,
+      "endurance": 3,
+      "intellect": 1,
+      "strength": 6,
+      "speed": 6,
+      "defense": 2,
+      "attributeNames": [
+        "unarmed"
+      ],
+      "attributeValues": [
+        4
+      ],
+      "maxHealth": "12 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 5,
+      "moveCost": 1,
+      "skillIds": [
+        205
+      ]
+    },
+    {
+      "id": 202,
+      "name": "鸡",
+      "vitality": 4,
+      "endurance": 3,
+      "intellect": 1,
+      "strength": 4,
+      "speed": 5,
+      "defense": 0,
+      "attributeNames": [
+        "unarmed"
+      ],
+      "attributeValues": [
+        4
+      ],
+      "maxHealth": "12 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 3,
+      "moveCost": 1,
+      "skillIds": [
+        205
+      ]
+    },
+    {
+      "id": 203,
+      "name": "兔子",
+      "vitality": 5,
+      "endurance": 3,
+      "intellect": 1,
+      "strength": 3,
+      "speed": 7,
+      "defense": 1,
+      "attributeNames": [
+        "unarmed"
+      ],
+      "attributeValues": [
+        4
+      ],
+      "maxHealth": "12 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 4,
+      "moveCost": 1,
+      "skillIds": [
+        205
+      ]
     }
   ]
 }

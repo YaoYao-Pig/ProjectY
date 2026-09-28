@@ -7,6 +7,7 @@ local Battle = Class('BattleSystem', System)
 function Battle:OnInit(context)
     System.OnInit(self, context)
     local config = context.systems:Get('Config')
+    self.appearances=require('Game.Adventure.CharacterAppearance').New(config,context.services.Appearances)
     local adventure = assert(context.services.Adventure,
         'FrameworkServices.Adventure is unavailable; exit Play, compile C# and run XLua/Generate Code before restarting')
     self.data = assert(adventure.Battle, 'FrameworkServices.Adventure.Battle is unavailable')
@@ -19,7 +20,10 @@ function Battle:OnInit(context)
 end
 function Battle:Units()
     local units = {}
-    for i = 0, self.data.UnitCount - 1 do units[#units + 1] = self.data:GetUnitAt(i) end
+    for i = 0, self.data.UnitCount - 1 do
+        local actor=self.data:GetUnitAt(i)
+        if actor.AnimalOwnerId==0 then units[#units + 1] = actor end
+    end
     return units
 end
 function Battle:FindUnit(id)
@@ -43,8 +47,12 @@ function Battle:Start(encounterId, party, seed)
     self.data:SetRandomSeed(seed)
     self.board = board
     for i, unit in ipairs(party) do self.data:AddUnit(unit, 1, -board.radius, i - 1) end
+    local appearanceGroup=self.appearances:Group(encounter.appearancePoolId,(seed ~ (encounterId*65537)) & 0xffffffff)
     for i, templateId in ipairs(encounter.enemyIds) do
         local unit = self.data:AddEnemy(100 + i, templateId, board.radius, 1 - i)
+        local species=self.stats.animals.byUnit[templateId]
+        if species then unit:InitializeAnimal(species.id,(seed ~ unit.Id) & 0xffffffff)
+        else self.appearances:Assign(unit,appearanceGroup) end
         unit:SetMaxHP(self.stats:MaximumHP(unit)); unit:Restore()
     end
     self:Emit('battle_started', encounter.name)
@@ -59,8 +67,9 @@ function Battle:StartArea(encounterId, board, party, enemies)
     local function check(actor, q, r)
         local cell = assert(board:Find(q, r), 'Actor outside area battle window')
         local key = Hex.Key(q, r)
-        assert(actor.HP > 0 and not cell.blocked and not occupied[key] and not ids[actor.Id], 'Invalid area combat position')
-        occupied[key], ids[actor.Id] = true, true
+        assert(actor.HP > 0 and self.stats.animals:CanPlace(actor,board,q,r,occupied) and not ids[actor.Id], 'Invalid area combat position')
+        for _,part in ipairs(assert(self.stats.animals:Cells(actor,board,q,r))) do occupied[Hex.Key(part.q,part.r)]=true end
+        ids[actor.Id] = true
     end
     for _, row in ipairs(party) do check(row.actor, row.q, row.r) end
     for _, actor in ipairs(enemies) do check(actor, actor.Q, actor.R) end
@@ -71,6 +80,10 @@ function Battle:StartArea(encounterId, board, party, enemies)
     self:Emit('battle_started', encounter.name); self:NewRound()
 end
 function Battle:NewRound()
+    if self.data.Round>0 then
+        if self.board.onRoundCompleted then self.board.onRoundCompleted()
+        else for _,actor in ipairs(self:Units()) do if actor.HP>0 then actor:AdvanceTamingRound() end end end
+    end
     if self.data.Round >= self.data.MaxRounds then
         self.data:Finish('draw'); self:Emit('battle_ended', '战斗时间耗尽，队伍撤回。'); return
     end
@@ -106,7 +119,8 @@ function Battle:EndTurn()
     self:Emit('turn_ended', self.stats:Template(unit).name .. ' 结束行动', unit.Id)
     if self:CheckWinner() then return true end
     for i = self.data.TurnIndex + 1, self.data.TurnCount - 1 do
-        if self:FindUnit(self.data:GetTurnAt(i)).HP > 0 then self:BeginTurn(i); return true end
+        local nextUnit=self:FindUnit(self.data:GetTurnAt(i))
+        if nextUnit.HP > 0 and nextUnit.AnimalOwnerId==0 then self:BeginTurn(i); return true end
     end
     self:NewRound(); return true
 end
@@ -116,7 +130,7 @@ function Battle:Occupied(exceptId)
         for key in pairs(self.board.externalOccupied) do occupied[key] = true end
     end
     for _, unit in ipairs(self:Units()) do
-        if unit.HP > 0 and unit.Id ~= exceptId then occupied[Hex.Key(unit.Q, unit.R)] = unit end
+        if unit.HP > 0 and unit.Id ~= exceptId then self.stats.animals:Occupy(unit,self.board,occupied) end
     end
     return occupied
 end
@@ -124,8 +138,10 @@ function Battle:Reachable()
     if self.data.Winner ~= '' then return {} end
     local unit = self:Active(); local template = self.stats:Template(unit)
     if unit.Moved or unit.AP < template.moveCost then return {} end
-    local cells = self.board:Search(unit.Q, unit.R, self:Occupied(unit.Id), template.moveRange,
-        unit.Team == 1 and self.board.allowed or nil)
+    local occupied=self:Occupied(unit.Id)
+    local cells = self.board:Search(unit.Q, unit.R, occupied, self.stats.animals:MoveRange(unit,template),function(cell)
+        return self.stats.animals:CanPlace(unit,self.board,cell.q,cell.r,occupied,unit.Team==1 and self.board.allowed or nil)
+    end)
     local result = {}
     for _, cell in ipairs(cells) do if cell.q ~= unit.Q or cell.r ~= unit.R then result[#result + 1] = cell end end
     return result
@@ -142,14 +158,19 @@ function Battle:TryMove(q, r)
     end
     return false, '无法移动到这里：检查距离、占格、行动点和本回合移动次数'
 end
-function Battle:SkillIds(actor) return self.stats.equipment:SkillIds(actor,self.stats:Template(actor)) end
+function Battle:SkillIds(actor) return self.stats.animals:AddSkills(actor,self.stats.equipment:SkillIds(actor,self.stats:Template(actor))) end
 function Battle:Skill(actor,skillId) return self.stats.equipment:Skill(actor,skillId,self.stats) end
 function Battle:SkillBudget(skillId)
     if self.data.Winner ~= '' then return false, '战斗已经结束' end
     local source=self:Active();local skill=self:Skill(source,skillId)
+    if not require('Game.Battle.SkillContext')(skill,'battle') then return false,'此技能不能在战斗中使用' end
     local owns = false
     for _, id in ipairs(self:SkillIds(source)) do if id == skillId then owns = true; break end end
     if not owns then return false, '角色没有这个技能' end
+    local cavalry=self.stats.animals.bySkill[skillId]
+    if cavalry and (not source.MountedAnimal or source.MountedAnimal.AnimalSpeciesId~=cavalry.speciesId) then
+        return false,'需要骑乘'..self.stats.animals.species:Get(cavalry.speciesId).name
+    end
     if skill.action == 'main' and source.MainUsed then return false, '本回合主要行动已使用' end
     if source.AP < skill.cost then return false, '行动点不足' end
     if skill.cooldownTurns>0 and source:GetCooldown(skillId)>0 then return false,'技能冷却中：'..source:GetCooldown(skillId) end
@@ -159,12 +180,23 @@ function Battle:CanUseSkill(skillId, targetId)
     local ok,reason=self:SkillBudget(skillId)
     if not ok then return false,reason end
     local source=self:Active();local skill=self:Skill(source,skillId)
+    if skill.target=='cell' then return false,'请选择技能落点' end
     local target = self:FindUnit(targetId)
     if not target or target.HP <= 0 then return false, '请选择存活的目标' end
     if skill.target == 'self' and target.Id ~= source.Id then return false, '只能对自己使用' end
     if skill.target == 'enemy' and target.Team == source.Team then return false, '请选择敌人' end
     if skill.target == 'ally' and target.Team ~= source.Team then return false, '请选择友军' end
-    if Hex.Distance(source.Q, source.R, target.Q, target.R) > skill.range then return false, '目标超出射程' end
+    if self.stats.animals:Distance(source,target,self.board) > skill.range then return false, '目标超出射程' end
+    if skillId==self.stats.animals.rule.tameSkillId then
+        local tame,why=self.stats.animals:CanTame(source,target);if not tame then return false,why end
+        local occupied=self:Occupied(source.Id)
+        for key,value in pairs(occupied) do if value==target then occupied[key]=nil end end
+        if not self.stats.animals:CanPlace(target,self.board,target.Q,target.R,occupied,self.board.allowed) then return false,'动物的占地不足以骑乘' end
+    end
+    if self.stats.animals.bySkill[skillId] then
+        local landing,why=self.stats.animals:Landing(source,self.board:Find(target.Q,target.R),self.board,skillId,self:Occupied(source.Id),self.board.allowed)
+        if not landing then return false,why end
+    end
     if self.board.area and not self.board.area:CanSee(assert(self.board:Find(source.Q, source.R)), assert(self.board:Find(target.Q, target.R))) then
         return false, '墙壁或陈设遮挡了目标'
     end
@@ -175,6 +207,18 @@ function Battle:TrySkill(skillId, targetId)
     if not ok then return false, reason end
     local source, target = self:Active(), self:FindUnit(targetId)
     local skill = self:Skill(source,skillId)
+    if skillId==self.stats.animals.rule.tameSkillId then
+        source:SpendAction(skill.action,skill.cost);source:SetCooldown(skillId,skill.cooldownTurns)
+        local success,chance=self.stats.animals:Tame(source,target,self.stats)
+        self:Emit('tame',self.stats:Template(source).name..(success and ' 驯服并骑上了 ' or ' 未能驯服 ')..self.stats:Template(target).name..
+            string.format('（成功率 %.0f%%）',chance),source.Id,target.Id)
+        self:CheckWinner();return true
+    end
+    local landing,travel
+    if self.stats.animals.bySkill[skillId] then
+        landing,travel=self.stats.animals:Landing(source,self.board:Find(target.Q,target.R),self.board,skillId,self:Occupied(source.Id),self.board.allowed)
+        assert(landing,'Cavalry landing changed after validation')
+    end
     local targets={target}
     if skill.maxTargets>1 then
         local others={}
@@ -192,6 +236,7 @@ function Battle:TrySkill(skillId, targetId)
     -- 先完整校验效果，配置错误不会在扣除行动点后才暴露。
     for _,victim in ipairs(targets) do
       local values=self.stats:EffectVariables(source,victim,skill)
+      values.distance=travel or 0
       for _, id in ipairs(skill.effectIds) do
         local effect = self.effects:Get(id)
         local amount = effect.amount:Evaluate(values)
@@ -202,6 +247,7 @@ function Battle:TrySkill(skillId, targetId)
       end
     end
     source:SpendAction(skill.action, skill.cost)
+    if landing then source:RelocateWithSkill(landing.q,landing.r,self.stats.animals.bySkill[skillId].movement);self:Emit('moved','坐骑移动',source.Id) end
     self.stats.equipment:Consume(source,skill)
     source:SetCooldown(skillId,skill.cooldownTurns)
     source:RecordAction(skill.actionTemplate,skill.shots,target.Q,target.R)
@@ -214,7 +260,10 @@ function Battle:TrySkill(skillId, targetId)
         local hit=effect.kind~='damage' or skill.hitChance==100 or self.data:RollPercent()<skill.hitChance
         if not hit then self:Emit('miss',self.stats:Template(source).name..' · '..skill.name..' 未命中 '..self.stats:Template(target).name,source.Id,target.Id)
         else
-        if effect.kind == 'damage' then amount = target:Damage(amount)
+        if effect.kind == 'damage' then
+            local mount=target.MountedAnimal
+            amount = target:Damage(amount)
+            if mount and not target.MountedAnimal then self:Emit('mount_defeated',self.stats:Template(mount).name..' 死亡，骑手下马',target.Id,mount.Id) end
         elseif effect.kind == 'heal' then amount = target:Heal(amount)
         elseif effect.kind=='guard' then target:SetGuard(amount)
         else amount=self.stats.equipment:Loaded(self.stats.equipment:Weapon(source)).Rounds end
@@ -226,6 +275,29 @@ function Battle:TrySkill(skillId, targetId)
     end
     end
     self:CheckWinner(); return true
+end
+function Battle:CanUseSkillAt(skillId,q,r)
+    local ok,reason=self:SkillBudget(skillId);if not ok then return false,reason end
+    local source=self:Active();local skill=self:Skill(source,skillId)
+    if skill.target~='cell' then return false,'此技能需要角色目标' end
+    local cell=self.board:Find(q,r);if not cell then return false,'落点在战场之外' end
+    local landing,why=self.stats.animals:Landing(source,cell,self.board,skillId,self:Occupied(source.Id),self.board.allowed)
+    return landing~=nil,why
+end
+function Battle:SkillCells(skillId)
+    local cells={}
+    if self:Skill(self:Active(),skillId).target~='cell' then return cells end
+    for _,cell in ipairs(self.board.cells) do if self:CanUseSkillAt(skillId,cell.q,cell.r) then cells[#cells+1]=cell end end
+    return cells
+end
+function Battle:TrySkillAt(skillId,q,r)
+    Hex.CheckCoordinate(q,r)
+    local ok,reason=self:CanUseSkillAt(skillId,q,r);if not ok then return false,reason end
+    local source=self:Active();local skill=self:Skill(source,skillId)
+    source:SpendAction(skill.action,skill.cost);source:SetCooldown(skillId,skill.cooldownTurns)
+    source:RelocateWithSkill(q,r,self.stats.animals.bySkill[skillId].movement);source:RecordAction(skill.actionTemplate,skill.shots,q,r)
+    self:Emit('moved',self.stats:Template(source).name..' · '..skill.name,source.Id)
+    return true
 end
 -- AI 也通过同一套移动/技能命令执行，每次调用只推进一个敌方角色的回合。
 function Battle:StepAI()
@@ -244,7 +316,9 @@ function Battle:StepAI()
     end
     if not attack() then
         local occupied = self:Occupied(actor.Id)
-        local _, _, previous = self.board:Search(actor.Q, actor.R, occupied, #self.board.cells)
+        local _, _, previous = self.board:Search(actor.Q, actor.R, occupied, #self.board.cells,function(cell)
+            return self.stats.animals:CanPlace(actor,self.board,cell.q,cell.r,occupied)
+        end)
         local bestPath
         for _, target in ipairs(self:Units()) do
             if target.HP > 0 and target.Team ~= actor.Team then
@@ -258,7 +332,7 @@ function Battle:StepAI()
             end
         end
         if bestPath then
-            local destination = bestPath[math.min(#bestPath, self.stats:Template(actor).moveRange)]
+            local destination = bestPath[math.min(#bestPath, self.stats.animals:MoveRange(actor,self.stats:Template(actor)))]
             self:TryMove(destination.q, destination.r)
         end
         attack()

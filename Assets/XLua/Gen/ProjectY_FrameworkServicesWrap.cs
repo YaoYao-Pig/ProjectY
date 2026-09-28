@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.FrameworkServices);
-			Utils.BeginObjectRegister(type, L, translator, 0, 3, 4, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 3, 6, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "ReadConfig", _m_ReadConfig);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "LogError", _m_LogError);
@@ -32,6 +32,8 @@ namespace XLua.CSObjectWrap
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Adventure", _g_get_Adventure);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Localization", _g_get_Localization);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "UI", _g_get_UI);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "Appearances", _g_get_Appearances);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "CharacterSaves", _g_get_CharacterSaves);
             
 			
 			
@@ -54,6 +56,16 @@ namespace XLua.CSObjectWrap
             
 			try {
                 ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+				if(LuaAPI.lua_gettop(L) == 3 && translator.Assignable<ProjectY.UI.UIHost>(L, 2) && (LuaAPI.lua_isnil(L, 3) || LuaAPI.lua_type(L, 3) == LuaTypes.LUA_TSTRING))
+				{
+					ProjectY.UI.UIHost _ui = (ProjectY.UI.UIHost)translator.GetObject(L, 2, typeof(ProjectY.UI.UIHost));
+					string _characterSavePath = LuaAPI.lua_tostring(L, 3);
+					
+					var gen_ret = new ProjectY.FrameworkServices(_ui, _characterSavePath);
+					translator.Push(L, gen_ret);
+                    
+					return 1;
+				}
 				if(LuaAPI.lua_gettop(L) == 2 && translator.Assignable<ProjectY.UI.UIHost>(L, 2))
 				{
 					ProjectY.UI.UIHost _ui = (ProjectY.UI.UIHost)translator.GetObject(L, 2, typeof(ProjectY.UI.UIHost));
@@ -217,6 +229,34 @@ namespace XLua.CSObjectWrap
 			
                 ProjectY.FrameworkServices gen_to_be_invoked = (ProjectY.FrameworkServices)translator.FastGetCSObj(L, 1);
                 translator.Push(L, gen_to_be_invoked.UI);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_Appearances(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.FrameworkServices gen_to_be_invoked = (ProjectY.FrameworkServices)translator.FastGetCSObj(L, 1);
+                translator.Push(L, gen_to_be_invoked.Appearances);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_CharacterSaves(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.FrameworkServices gen_to_be_invoked = (ProjectY.FrameworkServices)translator.FastGetCSObj(L, 1);
+                translator.Push(L, gen_to_be_invoked.CharacterSaves);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }
