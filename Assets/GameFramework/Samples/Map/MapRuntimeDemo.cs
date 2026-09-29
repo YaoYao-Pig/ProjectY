@@ -25,6 +25,7 @@ namespace ProjectY.Samples
         private int maxCells;
         private MapPreviewData map;
         private MapPreviewRenderer mapRenderer;
+        private ProjectY.Rendering.FantasyPresentation presentation;
         private Vector3 focus;
         private float yaw = -25, pitch = 52, zoom = 35;
         private bool showWater = true, showBuildings = true, showRoads = true, showDecorations = true;
@@ -45,6 +46,7 @@ namespace ProjectY.Samples
             foreach (var binding in assetBindings) assets.Add(binding.id, binding);
             font = Font.CreateDynamicFontFromOSFont(new[] { "Microsoft YaHei", "Noto Sans CJK SC", "Arial" }, 16);
             mapRenderer = new MapPreviewRenderer(previewShader, transform);
+            presentation = new ProjectY.Rendering.FantasyPresentation(mapCamera, transform);
             MapPreviewData.ReadSizeSettings(bootstrap, out var defaultCells, out maxCells);
             if (string.IsNullOrWhiteSpace(targetCellsText)) targetCellsText = defaultCells.ToString(CultureInfo.InvariantCulture);
             Generate();
@@ -140,6 +142,7 @@ namespace ProjectY.Samples
             mapCamera.transform.SetPositionAndRotation(focus - rotation * Vector3.forward * distance, rotation);
             mapCamera.orthographicSize = zoom;
             mapCamera.farClipPlane = distance * 2 + 100;
+            presentation.SetShadowDistance(distance + 180);
             mapRenderer.Draw(mapCamera, showWater, showBuildings, showRoads, showDecorations);
         }
 
@@ -212,6 +215,7 @@ namespace ProjectY.Samples
 
         private void OnDestroy()
         {
+            presentation?.Dispose(); presentation = null;
             mapRenderer?.Dispose(); mapRenderer = null;
             if (font != null) Destroy(font);
         }

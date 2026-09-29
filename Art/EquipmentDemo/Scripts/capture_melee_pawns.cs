@@ -39,7 +39,7 @@ if(frame==1)for(int i=0;i<3;i++){
 }
 var target=new RenderTexture(1600,1000,24,RenderTextureFormat.ARGB32);target.antiAliasing=4;target.Create();Texture2D picture=null;
 try{
-camera.targetTexture=target;camera.aspect=1.6f;camera.Render();RenderTexture.active=target;picture=new Texture2D(1600,1000,TextureFormat.RGB24,false);picture.ReadPixels(new Rect(0,0,1600,1000),0,0);picture.Apply();
+camera.targetTexture=target;camera.aspect=1.6f;ProjectY.Rendering.UrpCameraRendering.Render(camera);RenderTexture.active=target;picture=new Texture2D(1600,1000,TextureFormat.RGB24,false);picture.ReadPixels(new Rect(0,0,1600,1000),0,0);picture.Apply();
 var path=System.IO.Path.GetFullPath("Art/EquipmentDemo/Previews/melee-pawns-"+(frame==0?"hold":"slash")+".png");System.IO.File.WriteAllBytes(path,picture.EncodeToPNG());paths.Add(path);
 }finally{camera.targetTexture=null;RenderTexture.active=prior;if(picture!=null)UnityEngine.Object.DestroyImmediate(picture);target.Release();UnityEngine.Object.DestroyImmediate(target);}
 }

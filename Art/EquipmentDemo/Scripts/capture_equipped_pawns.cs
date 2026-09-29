@@ -31,7 +31,7 @@ var camera=new GameObject("PawnCamera").AddComponent<Camera>();UnityEngine.Scene
 camera.transform.position=new Vector3(3.8f,2.7f,6.5f);camera.transform.LookAt(new Vector3(0,.9f,0));
 var target=new RenderTexture(1280,900,24,RenderTextureFormat.ARGB32);target.antiAliasing=4;target.Create();Texture2D picture=null;
 try{
-camera.targetTexture=target;camera.aspect=1280f/900;camera.Render();RenderTexture.active=target;picture=new Texture2D(1280,900,TextureFormat.RGB24,false);picture.ReadPixels(new Rect(0,0,1280,900),0,0);picture.Apply();
+camera.targetTexture=target;camera.aspect=1280f/900;ProjectY.Rendering.UrpCameraRendering.Render(camera);RenderTexture.active=target;picture=new Texture2D(1280,900,TextureFormat.RGB24,false);picture.ReadPixels(new Rect(0,0,1280,900),0,0);picture.Apply();
 var path=System.IO.Path.GetFullPath("Art/EquipmentDemo/Previews/equipped-pawns-actions.png");System.IO.File.WriteAllBytes(path,picture.EncodeToPNG());paths.Add(path);
 }finally{camera.targetTexture=null;RenderTexture.active=prior;if(picture!=null)UnityEngine.Object.DestroyImmediate(picture);target.Release();UnityEngine.Object.DestroyImmediate(target);}
 return paths;

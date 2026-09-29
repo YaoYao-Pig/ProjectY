@@ -62,7 +62,7 @@ namespace ProjectY.Editor
                 }
                 Canvas.ForceUpdateCanvases();
                 foreach(var style in root.GetComponentsInChildren<StoryGrowthView>()) style.Prepare();
-                Canvas.ForceUpdateCanvases();camera.Render();RenderTexture.active=texture;
+                Canvas.ForceUpdateCanvases();ProjectY.Rendering.UrpCameraRendering.Render(camera);RenderTexture.active=texture;
                 image=new Texture2D(1280,720,TextureFormat.RGB24,false);image.ReadPixels(new Rect(0,0,1280,720),0,0);image.Apply();
                 Directory.CreateDirectory("Docs/Previews");File.WriteAllBytes("Docs/Previews/StoryGrowth-"+name+".png",image.EncodeToPNG());
             }

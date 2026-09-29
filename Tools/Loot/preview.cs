@@ -29,7 +29,7 @@ foreach(var areaId in new[]{20,30}){
   var rotation=UnityEngine.Quaternion.Euler(58,-25,0);camera.transform.SetPositionAndRotation(center-rotation*UnityEngine.Vector3.forward*180,rotation);
   var rt=new UnityEngine.RenderTexture(1440,900,24);rt.Create();var previous=UnityEngine.RenderTexture.active;var image=new UnityEngine.Texture2D(1440,900,UnityEngine.TextureFormat.RGB24,false);
   try{
-   camera.targetTexture=rt;terrain.Draw(camera);camera.Render();UnityEngine.RenderTexture.active=rt;image.ReadPixels(new UnityEngine.Rect(0,0,1440,900),0,0);image.Apply();
+   camera.targetTexture=rt;terrain.Draw(camera);ProjectY.Rendering.UrpCameraRendering.Render(camera);UnityEngine.RenderTexture.active=rt;image.ReadPixels(new UnityEngine.Rect(0,0,1440,900),0,0);image.Apply();
    var path="Docs/Previews/Loot-"+areaId+".png";System.IO.File.WriteAllBytes(path,image.EncodeToPNG());outputs.Add(new{area=areaId,cells=layout.Cells.Length,loot=view.Area.Loots.Length,path=path});
   }finally{camera.targetTexture=null;UnityEngine.RenderTexture.active=previous;rt.Release();UnityEngine.Object.DestroyImmediate(rt);UnityEngine.Object.DestroyImmediate(image);}
  }finally{

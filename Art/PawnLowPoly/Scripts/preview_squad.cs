@@ -84,7 +84,7 @@ try {
   var texture=new UnityEngine.RenderTexture(1536,1000,24,UnityEngine.RenderTextureFormat.ARGB32);texture.antiAliasing=4;texture.Create();
   var previous=UnityEngine.RenderTexture.active;var image=new UnityEngine.Texture2D(1536,1000,UnityEngine.TextureFormat.RGB24,false);
   try {
-   camera.targetTexture=texture;camera.Render();UnityEngine.RenderTexture.active=texture;
+   camera.targetTexture=texture;ProjectY.Rendering.UrpCameraRendering.Render(camera);UnityEngine.RenderTexture.active=texture;
    image.ReadPixels(new UnityEngine.Rect(0,0,1536,1000),0,0);image.Apply();
    var path=System.IO.Path.Combine(root,"Art/PawnLowPoly/Previews/"+name+".png");System.IO.File.WriteAllBytes(path,image.EncodeToPNG());outputs.Add(path);
   } finally {camera.targetTexture=null;UnityEngine.RenderTexture.active=previous;texture.Release();UnityEngine.Object.DestroyImmediate(texture);UnityEngine.Object.DestroyImmediate(image);}

@@ -32,7 +32,7 @@ for(int i=0;i<dimensions.GetLength(0);i++){
  foreach(var t in canvas.GetComponentsInChildren<Transform>(true)) t.gameObject.layer=30;
  var target=new RenderTexture(w,h,24,RenderTextureFormat.ARGB32);target.antiAliasing=4;target.Create();Texture2D picture=null;
  try{
- camera.targetTexture=target;camera.Render();RenderTexture.active=target;picture=new Texture2D(w,h,TextureFormat.RGB24,false);picture.ReadPixels(new Rect(0,0,w,h),0,0);picture.Apply();
+ camera.targetTexture=target;ProjectY.Rendering.UrpCameraRendering.Render(camera);RenderTexture.active=target;picture=new Texture2D(w,h,TextureFormat.RGB24,false);picture.ReadPixels(new Rect(0,0,w,h),0,0);picture.Apply();
  var name=i<4?"workbench-leaders-"+w+"x"+h:i==4?"workbench-colossal-base":i==5?"workbench-colossal-thruster":"workbench-knight-sword";
  var path=System.IO.Path.GetFullPath(folder+"/"+name+".png");System.IO.File.WriteAllBytes(path,picture.EncodeToPNG());paths.Add(path);
  }finally{camera.targetTexture=null;RenderTexture.active=prior;if(picture!=null)UnityEngine.Object.DestroyImmediate(picture);target.Release();UnityEngine.Object.DestroyImmediate(target);}

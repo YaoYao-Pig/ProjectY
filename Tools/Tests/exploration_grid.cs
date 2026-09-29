@@ -58,7 +58,7 @@ try
     camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=Color.black;
     texture=new RenderTexture(1600,1000,24,RenderTextureFormat.ARGB32){antiAliasing=1};texture.Create();camera.targetTexture=texture;
     image=new Texture2D(1600,1000,TextureFormat.RGB24,false);
-    System.Action read=()=>{camera.Render();RenderTexture.active=texture;image.ReadPixels(new Rect(0,0,1600,1000),0,0);image.Apply();};
+    System.Action read=()=>{ProjectY.Rendering.UrpCameraRendering.Render(camera);RenderTexture.active=texture;image.ReadPixels(new Rect(0,0,1600,1000),0,0);image.Apply();};
     // Read inside the cell: a hollow outline must fail this check. Also verify the actual GPU fade.
     System.Func<Vector3,float> brightness=world=>{
         var pixel=camera.WorldToViewportPoint(world);int x=Mathf.RoundToInt(pixel.x*image.width),y=Mathf.RoundToInt(pixel.y*image.height);float peak=0;

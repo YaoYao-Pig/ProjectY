@@ -19,7 +19,7 @@
 - `Building_DungeonEntrance` 为独立石拱地牢入口，高 1.6、264 三角形，资源 ID 18 → 建筑 ID 1；`Building_SecludedCottage` 为低墙木顶矮屋，高 1.05、116 三角形，资源 ID 19 → 建筑 ID 6 → 隐居群落样式 5。两者均单格、共享原有材质，源为 RemoteSites.blend；原民居高 1.75。暗洞背板有厚度，避免单面剔除；生成规则归 [地图](Map.md)。
 - 建筑与地形均采用米制；Unity +Y 上，建筑 +Z 为正面，落地原点位于建筑底部中心。未来接入入口方向时需按 `building.entrance` 旋转，不能直接照搬 Web 占位建筑的局部正面轴。
 - 本套静态导出对副本网格烘焙 Blender Z 轴 180°，启用 FBX `bake_space_transform`，Unity importer 同时保持 `bakeAxisConversion=true`、Scale Factor 1、Convert Units 开启。这组参数经过实际模型验证；混用默认导出或默认 importer 会改变正面或留下 X=90° 根旋转，造成地块缩放轴错误。源对象保持原样，具体参数以清单和本套导出脚本为准。
-- 当前使用 Built-in `Standard` 纯色哑光材质，无外部贴图。视觉规则与配色由 [map-lowpoly-style](../../.agents/skills/map-lowpoly-style/SKILL.md) 维护，操作流程由 [Blender 资源管线](../Tools/Blender.md) 路由。
+- 当前使用 [URP Lit](../Framework/Rendering.md) 纯色哑光材质，无外部贴图。视觉规则与配色由 [map-lowpoly-style](../../.agents/skills/map-lowpoly-style/SKILL.md) 维护，操作流程由 [Blender 资源管线](../Tools/Blender.md) 路由。
 - 地牢内部新增 `Dungeon_Pillar/BrokenPillar/Altar/Sarcophagus/CrateStack/Brazier/RuinedArch/Bench`，资源 ID 20–27，源为 DungeonInteriors.blend，复用原材质。柱、断柱、木箱和火盆为单格占地，其余为七格占地；由 `MapAreaPropTable` 决定移动/视线和模型关系。废拱作为阻挡陈设使用，不能把其小门洞当作可通行入口。预设房间的墙地格罩与摆放归 [MapArea](MapArea.md) 配置，模型不生成房间。
 - 地牢成组设施 `Dungeon_RubbleMound/SupplyCache/RitualDais/TombCluster/RootThicket/BookArchive/DiningSet/BrokenColonnade` 为资源 ID 28–35，源为 DungeonGroups.blend。货垛和连柱廊占 13 格，其余占 19 格，每个模型作为完整设施使用；足迹通过 MapAreaPropTable 的局部坐标与模型同步旋转。复用原 29 种材质，不新增纹理或渲染特性。
 - 当前交付 36 个 FBX（其中旧地牢石塔未绑定，资源表使用 35 个）、29 个共用模型材质与独立展示场景（另有 1 个展示背景材质）。小陈设各 48–180 三角形，多格设施各 156–768 三角形；建筑三角形：民居 272、工坊 248、集会厅 460、城堡 1712。工坊含烟囱总高 2.124，高于墙体加屋顶的 1.9；后续相机包围盒用模型实测高度，勿只用配表墙高与屋顶高裁剪。

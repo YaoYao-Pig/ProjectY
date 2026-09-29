@@ -109,7 +109,7 @@ namespace ProjectY.Editor
                 camera.nearClipPlane=.01f;camera.farClipPlane=distance+bounds.size.magnitude+2;
                 Light(scene,"Key",new Color(1,.92f,.8f),1.3f,new Vector3(28,-32,0));
                 Light(scene,"Fill",new Color(.65f,.80f,1),.7f,new Vector3(15,145,0));
-                target=new RenderTexture(width,height,24,RenderTextureFormat.ARGB32);target.Create();camera.targetTexture=target;camera.Render();
+                target=new RenderTexture(width,height,24,RenderTextureFormat.ARGB32);target.Create();camera.targetTexture=target;ProjectY.Rendering.UrpCameraRendering.Render(camera);
                 RenderTexture.active=target;image=new Texture2D(width,height,TextureFormat.RGBA32,false);
                 image.ReadPixels(new Rect(0,0,width,height),0,0);image.Apply();
                 Directory.CreateDirectory(Path.GetDirectoryName(item.iconPath));File.WriteAllBytes(item.iconPath,image.EncodeToPNG());

@@ -65,7 +65,7 @@ namespace ProjectY.Editor
                 {canvas.renderMode=RenderMode.ScreenSpaceCamera;canvas.worldCamera=camera;canvas.planeDistance=1;}
                 Canvas.ForceUpdateCanvases();foreach(var view in root.GetComponentsInChildren<MainHudView>()) {view.ApplyLayout();view.UpdateFollowers();}
                 foreach(var view in root.GetComponentsInChildren<BattleHUDView>())view.ApplyLayout();
-                Canvas.ForceUpdateCanvases();camera.Render();RenderTexture.active=rt;image=new Texture2D(1280,720,TextureFormat.RGB24,false);
+                Canvas.ForceUpdateCanvases();ProjectY.Rendering.UrpCameraRendering.Render(camera);RenderTexture.active=rt;image=new Texture2D(1280,720,TextureFormat.RGB24,false);
                 image.ReadPixels(new Rect(0,0,1280,720),0,0);image.Apply();Directory.CreateDirectory("Docs/Previews");File.WriteAllBytes("Docs/Previews/MainHud-"+mode+".png",image.EncodeToPNG());
             }
             finally

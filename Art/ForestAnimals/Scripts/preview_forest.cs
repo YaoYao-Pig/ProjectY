@@ -29,7 +29,7 @@ try{
  System.Action<string,UnityEngine.Vector3,float> capture=(name,center,size)=>{
   camera.orthographicSize=size;var rotation=UnityEngine.Quaternion.Euler(58,155,0);camera.transform.SetPositionAndRotation(center-rotation*UnityEngine.Vector3.forward*240,rotation);
   var texture=new UnityEngine.RenderTexture(1600,1000,24,UnityEngine.RenderTextureFormat.ARGB32){antiAliasing=4};texture.Create();var previous=UnityEngine.RenderTexture.active;var image=new UnityEngine.Texture2D(1600,1000,UnityEngine.TextureFormat.RGB24,false);
-  try{camera.targetTexture=texture;renderer.Draw(camera);camera.Render();UnityEngine.RenderTexture.active=texture;image.ReadPixels(new UnityEngine.Rect(0,0,1600,1000),0,0);image.Apply();var path=System.IO.Path.Combine(root,"Art/ForestAnimals/Previews/"+name+".png");System.IO.File.WriteAllBytes(path,image.EncodeToPNG());outputs.Add(path);}
+  try{camera.targetTexture=texture;renderer.Draw(camera);ProjectY.Rendering.UrpCameraRendering.Render(camera);UnityEngine.RenderTexture.active=texture;image.ReadPixels(new UnityEngine.Rect(0,0,1600,1000),0,0);image.Apply();var path=System.IO.Path.Combine(root,"Art/ForestAnimals/Previews/"+name+".png");System.IO.File.WriteAllBytes(path,image.EncodeToPNG());outputs.Add(path);}
   finally{camera.targetTexture=null;UnityEngine.RenderTexture.active=previous;texture.Release();UnityEngine.Object.DestroyImmediate(texture);UnityEngine.Object.DestroyImmediate(image);}
  };
  var glade=layout.Cells[layout.Rooms[0].CenterIndex].Position;

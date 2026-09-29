@@ -8,7 +8,7 @@
 
 - 首批 29 个 Blender 模块：男女各三档身体、五族男女各两种脸、三种发型；另有明确的无发选项。种族为人类、精灵、哥布林、龙人、兽人。角色维持相同关节位置、四肢长度与身高，以头脸和轮廓区别；没有尾翼、表情骨骼或自由滑杆。
 - 源文件位于 `Art/PawnCustomization/Source`，FBX 经 `Staging` 进入 `Assets/DynamicAsset/PawnCustomization`；沿用现有[棋子动画](PawnAnimation.md)的 23 骨参考姿势。新增模块不得改名、重排层级或应用未核实的骨架变换。
-- `Integration/catalog.json` 是制作目录；`PawnCustomizationAssets.Build` 读取它与实际 FBX，校验 bind pose，按骨名重映射并生成规范坐标下的 Mesh、独立 Standard 材质和 `PawnCustomization.asset`。已有 Mesh/目录资源更新保留 GUID。
+- `Integration/catalog.json` 是制作目录；`PawnCustomizationAssets.Build` 读取它与实际 FBX，校验 bind pose，按骨名重映射并生成规范坐标下的 Mesh、独立 URP Lit 材质和 `PawnCustomization.asset`。已有 Mesh/目录资源更新保留 GUID；运行时换色使用 `_BaseColor`，参见[渲染管线](../Framework/Rendering.md)。
 - `PawnCustomizationData/PawnCustomizationRules` 归 Runtime/Data；保存版本、种子、种族、男女、实际身体/脸/发型 ID、三类颜色索引。`Rules.Randomize(seed, race?, sex?)` 使用局部 uint32 状态，根据目录筛选可用模块；龙人只允许短脊或无发。同步菜单生成 Resources 的只读目录，`CharacterAppearanceService` 校验并写入 `CombatActorData.CustomizationJson`，不在视图中随机。
 - `PawnCustomizationView` 绑定实际骨骼和三个蒙皮显示节点；`PawnView.ApplyAppearance` 接收 `PawnAppearanceData.Customization`。战斗、探索和背包快照传递同一个 `customizationJson`；未提供时仍可使用原动画身体。
 - `PawnAnimationAssets.Attach` 重建动画身体后重建定制绑定，避免重新同步动画丢失引用。`PawnCustomizationPreset` 保存网页描述及显示组件引用，用于导入的独立 Prefab。

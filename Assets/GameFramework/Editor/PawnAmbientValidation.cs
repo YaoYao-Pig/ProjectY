@@ -88,7 +88,7 @@ namespace ProjectY.Editor
                     var copy=new GameObject("AmbientPose");copy.transform.SetParent(skin.transform,false);copies.Add(copy);
                     copy.AddComponent<MeshFilter>().sharedMesh=mesh;copy.AddComponent<MeshRenderer>().sharedMaterials=skin.sharedMaterials;skins.Add(skin);skin.enabled=false;
                 }
-                camera.aspect=1600f/600;camera.targetTexture=rt;camera.Render();RenderTexture.active=rt;image=new Texture2D(1600,600,TextureFormat.RGB24,false);
+                camera.aspect=1600f/600;camera.targetTexture=rt;ProjectY.Rendering.UrpCameraRendering.Render(camera);RenderTexture.active=rt;image=new Texture2D(1600,600,TextureFormat.RGB24,false);
                 image.ReadPixels(new Rect(0,0,1600,600),0,0);image.Apply();File.WriteAllBytes("Art/PawnAnimation/Previews/"+name+".png",image.EncodeToPNG());
             }
             finally

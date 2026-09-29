@@ -12,6 +12,7 @@
 | Blender、MCP、建模、FBX、贴图、材质、模型导入、Prefab | [Blender 资源管线](Tools/Blender.md) |
 | 大地图美术、low-poly、低多边形、模型风格、地块模型、民居模型、中世纪城堡、森林树、雪松、地牢模型、七格平台、MapLowPoly | [地图模型资源](Business/MapArt.md) |
 | 启动、LuaSystem、注册、Tick、require、Lua 文件、构建、xLua 桥接、退出 | [运行时](Framework/Runtime.md) |
+| URP、渲染管线、后处理、奇幻风格、WarmFantasy、SSAO、Bloom、阴影、材质迁移、离屏相机 | [渲染管线](Framework/Rendering.md) |
 | Panel、Widget、MVC、LuaReference、UIRoot、WorldUIRoot、WorldUI、暂停、场景切换 | [UI](Framework/UI.md) |
 | JSON 表、导表、二进制、读表、公式、枚举、常量、Catalog、C# 查表、_Gen、生成目录、产物迁移 | [配置管线](Framework/Config.md) |
 | text、本地化、Language.lua、LuaTxt、UITxt、PrefabTxt、i18n、TMP | [本地化](Framework/Localization.md) |

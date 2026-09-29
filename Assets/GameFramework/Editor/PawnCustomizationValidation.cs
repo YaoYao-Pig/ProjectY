@@ -120,7 +120,7 @@ namespace ProjectY.Editor
                     for (int i = 0; i < skin.sharedMaterials.Length; i++) { skin.GetPropertyBlock(block, i); renderer.SetPropertyBlock(block, i); }
                     skin.enabled = false; disabled.Add(skin);
                 }
-                camera.targetTexture = rt; camera.Render(); RenderTexture.active = rt;
+                camera.targetTexture = rt; ProjectY.Rendering.UrpCameraRendering.Render(camera); RenderTexture.active = rt;
                 var result = new Texture2D(width, height, TextureFormat.RGB24, false); result.ReadPixels(new Rect(0, 0, width, height), 0, 0); result.Apply(); return result;
             }
             finally

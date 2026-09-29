@@ -23,6 +23,7 @@ namespace ProjectY.UI
         private Transform pivot;
         private PawnView pawn;
         private Camera cameraView;
+        private readonly UnityEngine.Rendering.Universal.UniversalRenderPipeline.SingleCameraRequest renderRequest = new UnityEngine.Rendering.Universal.UniversalRenderPipeline.SingleCameraRequest();
         private RenderTexture texture;
         private float yaw=-15,zoom=1,fit=1.2f;
         private Vector3 focus=new Vector3(0,1.04f,0);
@@ -65,6 +66,7 @@ namespace ProjectY.UI
             cameraView.overrideSceneCullingMask=UnityEditor.SceneManagement.EditorSceneManager.GetSceneCullingMask(gameObject.scene);
 #endif
             cameraView.allowHDR=false;
+            ProjectY.Rendering.UrpCameraRendering.ConfigurePreview(cameraView);
             Light("Key",new Color(1,.9f,.75f),1.25f,new Vector3(35,155,0));
             Light("Fill",new Color(.55f,.76f,1),.75f,new Vector3(15,-25,0));
         }
@@ -88,7 +90,7 @@ namespace ProjectY.UI
                 texture.Create();cameraView.targetTexture=texture;image.texture=texture;
             }
             pivot.localRotation=Quaternion.Euler(0,yaw,0);cameraView.aspect=(float)width/height;cameraView.orthographicSize=fit*zoom;
-            cameraView.transform.localPosition=focus+Vector3.forward*5;cameraView.transform.LookAt(studio.transform.TransformPoint(focus));cameraView.Render();
+            cameraView.transform.localPosition=focus+Vector3.forward*5;cameraView.transform.LookAt(studio.transform.TransformPoint(focus));ProjectY.Rendering.UrpCameraRendering.Render(cameraView, renderRequest);
             foreach(var callout in callouts)
             {
                 var projected=cameraView.WorldToViewportPoint(pawn.EquipmentSlotPosition(callout.Slot));

@@ -40,7 +40,7 @@ namespace ProjectY.Editor
             {
                 string name="M_MapLP_"+pair.Key,path=Root+"/Materials/"+name+".mat";
                 var mat=AssetDatabase.LoadAssetAtPath<Material>(path);
-                if(mat==null) {mat=new Material(template) {name=name};ColorUtility.TryParseHtmlString("#"+pair.Value,out var color);mat.color=color;mat.SetFloat("_Glossiness",.12f);AssetDatabase.CreateAsset(mat,path);}
+                if(mat==null) {mat=new Material(template) {name=name};ColorUtility.TryParseHtmlString("#"+pair.Value,out var color);mat.color=color;mat.SetFloat("_Smoothness",.12f);AssetDatabase.CreateAsset(mat,path);}
             }
             var assets=Read<AssetTable>("EquipmentAssetTable").rows;
             foreach(var row in assets)

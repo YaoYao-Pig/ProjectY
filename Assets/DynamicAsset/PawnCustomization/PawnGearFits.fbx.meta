@@ -3,7 +3,22 @@ guid: 975f8a83892bde74fbd615bfa2e214a6
 ModelImporter:
   serializedVersion: 22200
   internalIDToNameTable: []
-  externalObjects: {}
+  externalObjects:
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PC_Cloth
+    second: {fileID: 2100000, guid: 80b0b2fddb1e71b41b20c7f9881419ad, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PC_Leather
+    second: {fileID: 2100000, guid: ee589bfef9a3fd34c84370beef288d94, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
+      name: PC_Trim
+    second: {fileID: 2100000, guid: 1a03250dde007814e89b18df0b0ab98d, type: 2}
   materials:
     materialImportMode: 2
     materialName: 0

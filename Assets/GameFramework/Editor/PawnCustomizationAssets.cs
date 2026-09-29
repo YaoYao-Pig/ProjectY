@@ -64,7 +64,7 @@ namespace ProjectY.Editor
                 if (external == null)
                 {
                     external = new Material(shader) { name = "PC_" + role, color = material.color };
-                    external.SetFloat("_Glossiness", .12f); AssetDatabase.CreateAsset(external, path);
+                    external.SetFloat("_Smoothness", .12f); AssetDatabase.CreateAsset(external, path);
                 }
                 materials.Add(external); roles.Add(role);
             }
@@ -85,7 +85,7 @@ namespace ProjectY.Editor
             var binds = reference.bones.Select(b => b.worldToLocalMatrix * original.transform.localToWorldMatrix).ToArray();
             var parts = new List<PawnCustomizationCatalog.Part>();
             var shader = reference.sharedMaterials[0].shader;
-            if (shader.name != "Standard") throw new InvalidOperationException("Expected project Built-in Standard material.");
+            if (shader.name != "Universal Render Pipeline/Lit") throw new InvalidOperationException("Expected project URP Lit material.");
             foreach (var definition in rules.modules)
             {
                 if (definition.id == "none") continue;

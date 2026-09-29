@@ -27,6 +27,7 @@ namespace ProjectY.UI
         private WeaponModelView weapon;
         private EquipmentVisualData.Weapon model;
         private Camera cameraView;
+        private readonly UnityEngine.Rendering.Universal.UniversalRenderPipeline.SingleCameraRequest renderRequest = new UnityEngine.Rendering.Universal.UniversalRenderPipeline.SingleCameraRequest();
         private RenderTexture texture;
         private Font font;
         private float yaw=25,tilt=8,zoom=1.45f;
@@ -72,7 +73,8 @@ namespace ProjectY.UI
             cameraView.enabled=false;cameraView.orthographic=true;cameraView.nearClipPlane=.1f;cameraView.farClipPlane=15;
             cameraView.scene=gameObject.scene;
             cameraView.cullingMask=1<<31;cameraView.clearFlags=CameraClearFlags.SolidColor;cameraView.backgroundColor=new Color(.055f,.067f,.065f);
-            cameraView.allowHDR=false;cameraView.allowMSAA=true;
+            cameraView.allowHDR=false;
+            ProjectY.Rendering.UrpCameraRendering.ConfigurePreview(cameraView);cameraView.allowMSAA=true;
             var light=new GameObject("KeyLight").AddComponent<Light>();light.transform.SetParent(studio.transform,false);
             light.type=LightType.Directional;light.intensity=1.25f;light.color=new Color(1,.90f,.72f);light.cullingMask=1<<31;light.transform.localRotation=Quaternion.Euler(38,-35,0);
             var fill=new GameObject("FillLight").AddComponent<Light>();fill.transform.SetParent(studio.transform,false);
@@ -105,7 +107,7 @@ namespace ProjectY.UI
                 texture.Create();cameraView.targetTexture=texture;layout.Image.texture=texture;
             }
             cameraView.orthographicSize=zoom;cameraView.aspect=(float)width/height;
-            pivot.localRotation=Quaternion.Euler(tilt,yaw,0);cameraView.Render();
+            pivot.localRotation=Quaternion.Euler(tilt,yaw,0);ProjectY.Rendering.UrpCameraRendering.Render(cameraView, renderRequest);
             LayoutCallouts();
         }
         private readonly Vector2[] socketPoints=new Vector2[3];

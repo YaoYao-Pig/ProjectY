@@ -14,7 +14,7 @@ try{
    var rt=new UnityEngine.RenderTexture(1280,720,24);var previous=UnityEngine.RenderTexture.active;var image=new UnityEngine.Texture2D(1280,720,UnityEngine.TextureFormat.RGB24,false);
    try{
     camera.targetTexture=rt;foreach(var canvas in root.GetComponentsInChildren<UnityEngine.Canvas>(true))if(canvas.transform.parent==root.transform){canvas.renderMode=UnityEngine.RenderMode.ScreenSpaceCamera;canvas.worldCamera=camera;canvas.planeDistance=1;}
-    UnityEngine.Canvas.ForceUpdateCanvases();camera.Render();UnityEngine.RenderTexture.active=rt;image.ReadPixels(new UnityEngine.Rect(0,0,1280,720),0,0);image.Apply();
+    UnityEngine.Canvas.ForceUpdateCanvases();ProjectY.Rendering.UrpCameraRendering.Render(camera);UnityEngine.RenderTexture.active=rt;image.ReadPixels(new UnityEngine.Rect(0,0,1280,720),0,0);image.Apply();
     System.IO.Directory.CreateDirectory("Docs/Previews");System.IO.File.WriteAllBytes("Docs/Previews/GM.png",image.EncodeToPNG());
    }finally{UnityEngine.RenderTexture.active=previous;camera.targetTexture=null;UnityEngine.Object.DestroyImmediate(image);UnityEngine.Object.DestroyImmediate(rt);}
   }finally{lua.DoString("if CloseGMPreview then CloseGMPreview() end");lua.Global.Set<string,object>("Services",null);lua.Global.Set<string,object>("GMFont",null);services.Player.ClearListeners();}

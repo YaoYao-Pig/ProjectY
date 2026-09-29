@@ -130,7 +130,7 @@ namespace ProjectY.Editor
                     copy.AddComponent<MeshFilter>().sharedMesh=mesh;copy.AddComponent<MeshRenderer>().sharedMaterials=skin.sharedMaterials;
                     skins.Add(skin);skin.enabled=false;
                 }
-                camera.targetTexture=texture;camera.Render();RenderTexture.active=texture;image=new Texture2D(960,960,TextureFormat.RGB24,false);
+                camera.targetTexture=texture;ProjectY.Rendering.UrpCameraRendering.Render(camera);RenderTexture.active=texture;image=new Texture2D(960,960,TextureFormat.RGB24,false);
                 image.ReadPixels(new Rect(0,0,960,960),0,0);image.Apply();Directory.CreateDirectory("Art/PawnAnimation/Previews");
                 File.WriteAllBytes("Art/PawnAnimation/Previews/"+name+".png",image.EncodeToPNG());
             }

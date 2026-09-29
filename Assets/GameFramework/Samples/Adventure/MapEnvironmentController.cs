@@ -19,6 +19,7 @@ namespace ProjectY.Samples
         private Color weatherTint;
         private int weatherIndex;
         private readonly Snapshot original;
+        private readonly ProjectY.Rendering.FantasyPresentation presentation;
         public bool Running { get; set; }
         public float Hour { get => hour; set => hour = Mathf.Repeat(value, 24); }
         public int WeatherIndex => weatherIndex;
@@ -30,11 +31,10 @@ namespace ProjectY.Samples
             public Color Sky, Equator, Ground, FogColor, Background, SunColor;
             public bool Fog;
             public FogMode FogMode;
-            public float FogStart, FogEnd, FogDensity, Reflection, ShadowDistance, SunIntensity, ShadowStrength, ShadowBias, ShadowNormalBias;
+            public float FogStart, FogEnd, FogDensity, Reflection, SunIntensity, ShadowStrength, ShadowBias, ShadowNormalBias;
             public Light Sun;
             public Quaternion Rotation;
             public LightShadows Shadows;
-            public int PixelLights;
         }
         public MapEnvironmentController(MapEnvironmentData data, Light mainLight, Camera viewCamera, Transform owner)
         {
@@ -43,7 +43,7 @@ namespace ProjectY.Samples
             original = new Snapshot { Ambient = RenderSettings.ambientMode, Sky = RenderSettings.ambientSkyColor, Equator = RenderSettings.ambientEquatorColor,
                 Ground = RenderSettings.ambientGroundColor, Fog = RenderSettings.fog, FogMode = RenderSettings.fogMode, FogColor = RenderSettings.fogColor,
                 FogStart = RenderSettings.fogStartDistance, FogEnd = RenderSettings.fogEndDistance, FogDensity = RenderSettings.fogDensity, Reflection = RenderSettings.reflectionIntensity,
-                ShadowDistance = QualitySettings.shadowDistance, PixelLights = QualitySettings.pixelLightCount, Background = camera.backgroundColor, Sun = RenderSettings.sun,
+                Background = camera.backgroundColor, Sun = RenderSettings.sun,
                 Rotation = sun.transform.rotation, SunColor = sun.color, SunIntensity = sun.intensity, Shadows = sun.shadows, ShadowStrength = sun.shadowStrength,
                 ShadowBias = sun.shadowBias, ShadowNormalBias = sun.shadowNormalBias };
             Hour = data.StartHour; Running = data.AutoCycle;
@@ -60,7 +60,8 @@ namespace ProjectY.Samples
             }
             RenderSettings.ambientMode = AmbientMode.Trilight; RenderSettings.sun = sun; RenderSettings.reflectionIntensity = 0;
             sun.shadows = LightShadows.Soft; sun.shadowBias = .03f; sun.shadowNormalBias = .25f;
-            QualitySettings.shadowDistance = data.ShadowDistance; QualitySettings.pixelLightCount = Mathf.Max(original.PixelLights, data.MaxLights + 1);
+            presentation = new ProjectY.Rendering.FantasyPresentation(camera, owner);
+            presentation.SetShadowDistance(data.ShadowDistance);
         }
         public void SelectWeather(int index)
         {
@@ -114,16 +115,22 @@ namespace ProjectY.Samples
         {
             var distance = Mathf.Max(0, Vector3.Dot(focus - camera.transform.position, camera.transform.forward));
             RenderSettings.fogStartDistance = distance + fogStart; RenderSettings.fogEndDistance = distance + fogEnd;
+            presentation.SetShadowDistance(distance + Data.ShadowDistance);
         }
         public void Dispose()
         {
-            foreach (var lamp in lamps) { if (Application.isPlaying) UnityEngine.Object.Destroy(lamp.gameObject); else UnityEngine.Object.DestroyImmediate(lamp.gameObject); }
+            presentation.Dispose();
+            foreach (var lamp in lamps) { if (lamp == null) continue; if (Application.isPlaying) UnityEngine.Object.Destroy(lamp.gameObject); else UnityEngine.Object.DestroyImmediate(lamp.gameObject); }
             RenderSettings.ambientMode = original.Ambient; RenderSettings.ambientSkyColor = original.Sky; RenderSettings.ambientEquatorColor = original.Equator; RenderSettings.ambientGroundColor = original.Ground;
             RenderSettings.fog = original.Fog; RenderSettings.fogMode = original.FogMode; RenderSettings.fogColor = original.FogColor;
             RenderSettings.fogStartDistance = original.FogStart; RenderSettings.fogEndDistance = original.FogEnd; RenderSettings.fogDensity = original.FogDensity;
-            RenderSettings.reflectionIntensity = original.Reflection; RenderSettings.sun = original.Sun; QualitySettings.shadowDistance = original.ShadowDistance; QualitySettings.pixelLightCount = original.PixelLights;
-            camera.backgroundColor = original.Background; sun.transform.rotation = original.Rotation; sun.color = original.SunColor; sun.intensity = original.SunIntensity;
-            sun.shadows = original.Shadows; sun.shadowStrength = original.ShadowStrength; sun.shadowBias = original.ShadowBias; sun.shadowNormalBias = original.ShadowNormalBias;
+            RenderSettings.reflectionIntensity = original.Reflection; RenderSettings.sun = original.Sun;
+            if (camera != null) camera.backgroundColor = original.Background;
+            if (sun != null)
+            {
+                sun.transform.rotation = original.Rotation; sun.color = original.SunColor; sun.intensity = original.SunIntensity;
+                sun.shadows = original.Shadows; sun.shadowStrength = original.ShadowStrength; sun.shadowBias = original.ShadowBias; sun.shadowNormalBias = original.ShadowNormalBias;
+            }
         }
     }
 }

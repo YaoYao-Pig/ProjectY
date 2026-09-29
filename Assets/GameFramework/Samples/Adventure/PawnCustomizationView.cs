@@ -47,7 +47,7 @@ namespace ProjectY.Samples
                 renderer.sharedMesh = i == 0 ? catalog.BodyMesh(value.body, covered) : part.Mesh; renderer.sharedMaterials = part.Materials;
                 for (int m = 0; m < part.Materials.Length; m++)
                 {
-                    block.Clear(); block.SetColor("_Color", catalog.Rules.Tint(part.Roles[m], value, part.Materials[m].color));
+                    block.Clear(); block.SetColor("_BaseColor", catalog.Rules.Tint(part.Roles[m], value, part.Materials[m].color));
                     renderer.SetPropertyBlock(block, m);
                 }
             }
