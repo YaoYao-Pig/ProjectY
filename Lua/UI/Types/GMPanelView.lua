@@ -21,5 +21,12 @@
 ---@field GrantSkillText CS.UnityEngine.UI.Text
 ---@field SkillName CS.UnityEngine.UI.Text
 ---@field Result CS.UnityEngine.UI.Text
+---@field NpcTitle CS.UnityEngine.UI.Text
+---@field NpcSearch CS.UnityEngine.UI.InputField
+---@field NpcSearchText CS.UnityEngine.UI.Text
+---@field NpcRows CS.UnityEngine.RectTransform
+---@field NpcScroll CS.UnityEngine.UI.ScrollRect
+---@field NpcCount CS.UnityEngine.UI.Text
+---@field NpcHint CS.UnityEngine.UI.Text
 local View = {}
 return View

@@ -42,6 +42,7 @@ namespace ProjectY.Editor
             Entry("StoryEvent", UIKind.Panel, BuildEvent, arts);
             Entry("CharacterGrowth", UIKind.Panel, BuildGrowth, arts);
             Entry("AdventureJournal", UIKind.Panel, BuildJournal, arts);
+            CharacterJournalAssets.SyncGlyphs();
             AssetDatabase.SaveAssets();
             Debug.Log("Story and growth prefabs ready; existing layouts preserved.");
         }

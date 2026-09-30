@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.PreparedCharacterSave);
-			Utils.BeginObjectRegister(type, L, translator, 0, 1, 5, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 1, 7, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetActorAt", _m_GetActorAt);
 			
@@ -31,6 +31,8 @@ namespace XLua.CSObjectWrap
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Seed", _g_get_Seed);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Coins", _g_get_Coins);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "PlayerLevel", _g_get_PlayerLevel);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "Narrative", _g_get_Narrative);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "LegacyNarrative", _g_get_LegacyNarrative);
             
 			
 			
@@ -173,6 +175,34 @@ namespace XLua.CSObjectWrap
 			
                 ProjectY.Data.PreparedCharacterSave gen_to_be_invoked = (ProjectY.Data.PreparedCharacterSave)translator.FastGetCSObj(L, 1);
                 LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.PlayerLevel);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_Narrative(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.PreparedCharacterSave gen_to_be_invoked = (ProjectY.Data.PreparedCharacterSave)translator.FastGetCSObj(L, 1);
+                translator.Push(L, gen_to_be_invoked.Narrative);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_LegacyNarrative(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.PreparedCharacterSave gen_to_be_invoked = (ProjectY.Data.PreparedCharacterSave)translator.FastGetCSObj(L, 1);
+                LuaAPI.lua_pushboolean(L, gen_to_be_invoked.LegacyNarrative);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }

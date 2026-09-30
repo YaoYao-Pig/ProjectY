@@ -51,6 +51,7 @@ namespace ProjectY.Data
     public sealed class MapAreaNpcData
     {
         public int Id { get; }
+        public bool Present { get; internal set; } = true;
         public int CellIndex { get; private set; }
         public int PatrolCursor { get; private set; }
         private float elapsed;
@@ -146,6 +147,12 @@ namespace ProjectY.Data
         }
         public int NpcCount => npcs.Count;
         public MapAreaNpcData GetNpcAt(int index) => npcs[index];
+        public void SetNpcPresent(int id, bool present)
+        {
+            var npc = npcs[id - 1];
+            if (npc.Present == present) return;
+            npc.Present = present; Revision++;
+        }
         public int InteractionKind { get; private set; }
         public int InteractionId { get; private set; }
         public int SiteId { get; }
@@ -178,7 +185,7 @@ namespace ProjectY.Data
             if (id != npcs.Count + 1 || IsNpcOccupied(cell) || IsSquadReserved(cell)) throw new ArgumentException("Invalid NPC spawn.");
             npcs.Add(new MapAreaNpcData(id, cell)); Revision++;
         }
-        public bool IsNpcOccupied(int cell) => npcs.Exists(npc => npc.CellIndex == cell);
+        public bool IsNpcOccupied(int cell) => npcs.Exists(npc => npc.Present && npc.CellIndex == cell);
         public bool IsSquadReserved(int cell)
         {
             if (Array.IndexOf(memberCells, cell) >= 0) return true;

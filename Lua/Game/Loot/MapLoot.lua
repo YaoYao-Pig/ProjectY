@@ -39,15 +39,18 @@ function Loot:Initialize(areas)
     state:CompleteLootInitialization()
 end
 function Loot:EnemyDrops(areas,battle)
+    return self:ActorDrops(areas,battle:Units(),battle.stats)
+end
+function Loot:ActorDrops(areas,actors,stats)
     local area,state=areas:ActiveLayout(),areas.data.Active
     local generated=0
-    for _,actor in ipairs(battle:Units()) do
+    for _,actor in ipairs(actors) do
         if actor.Team==2 and actor.HP==0 and actor.AnimalOwnerId==0 and not actor.DropResolved then
             local rule=self.rules.enemies[actor.TemplateId]
             if rule then
                 local cell=assert(area:Find(actor.Q,actor.R),'Defeated enemy is outside the battlefield')
                 local seed=(area.seed ~ actor.Id*104729 ~ rule.seedSalt) & 0xffffffff
-                if self:Add(state,cell.index,rule.lootTableId,seed,true,battle.stats:Template(actor).name..'的战利品') then generated=generated+1 end
+                if self:Add(state,cell.index,rule.lootTableId,seed,true,stats:Template(actor).name..'的战利品') then generated=generated+1 end
             end
             actor:ResolveDrop()
         end

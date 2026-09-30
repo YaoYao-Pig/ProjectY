@@ -208,6 +208,31 @@ async function start() {
     pause: () => { playing = false; $('play').textContent = '▶'; } });
   setupGearControls(); rebuildAnimations(); apply(); fitCharacter(); $('loading').hidden = true;
   await gripEditor.load().catch(e => gripEditor.status('无法读取握点配置：' + e.message, true));
+  const query = new URLSearchParams(location.search);
+  if (query.has('item')) {
+    const itemId = Number(query.get('item'));
+    const loadout = bundle.loadouts.find(l => l.gripEditor?.weapons.some(w => w.slot === 'main' && w.itemId === itemId));
+    if (loadout) { gear.weapon = loadout.id; $('gearWeapon').value = loadout.id; rebuildAnimations(); apply(); fitCharacter(); }
+    else fail(new Error('此武器尚未导出持握预览；请在内容中心同步 Unity 资源后重开。'));
+  }
+  if (query.get('embed') === '1' && window.parent !== window) {
+    // Same-origin integration only. Parent owns the content draft and decides when to save.
+    const use = document.createElement('button'); use.textContent = '将当前外观应用到角色草稿'; use.className = 'button outline';use.hidden=query.has('item');
+    use.onclick = () => { validate(bundle.rules, descriptor); window.parent.postMessage({ type: 'content-appearance', descriptor }, location.origin); };
+    document.querySelector('header').append(use);
+    window.addEventListener('message', event => {
+      if (event.origin !== location.origin || event.source !== window.parent) return;
+      if (event.data?.type === 'content-grips-load') {
+        for (const row of event.data.rows) if (gripEditor.rows.has(row.id)) gripEditor.rows.set(row.id, structuredClone(row));
+        gripEditor.adjustments.clear();
+        for (const row of event.data.adjustments) gripEditor.adjustments.set(`${row.weaponId}:${row.moduleId}:${row.hand}`, structuredClone(row));
+        gripEditor.setLoadout(gripEditor.loadout); renderPose(); return;
+      }
+      if (event.data?.type !== 'content-appearance-load') return;
+      try { descriptor = structuredClone(validate(bundle.rules, event.data.descriptor)); apply(); } catch (error) { fail(error); }
+    });
+    window.parent.postMessage({ type: 'content-character-ready' }, location.origin);
+  }
   for (const id of ['random', 'replay', 'export']) $(id).disabled = false;
   const generate = fresh => {
     const seed = fresh ? crypto.getRandomValues(new Uint32Array(1))[0] & 0x7fffffff : Number($('seed').value);

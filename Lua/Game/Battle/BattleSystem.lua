@@ -16,6 +16,8 @@ function Battle:OnInit(context)
     self.effects = config:GetTable('CombatEffectTable')
     self.encounters = config:GetTable('CombatEncounterTable')
     self.Changed = Signal(context.log)
+    self.gameEffects=require('Game.Battle.GameEffects').New(self.stats,self.effects,function(...) self:Emit(...) end)
+    self.gameEffects:Validate()
     for _, row in ipairs(self.skills:All()) do assert(#row.effectIds > 0, 'Skill needs effects: ' .. row.id) end
 end
 function Battle:Units()
@@ -33,9 +35,9 @@ function Battle:FindUnit(id)
     end
 end
 function Battle:Active() return assert(self:FindUnit(self.data.ActiveId), 'No active battle unit') end
-function Battle:Emit(kind, message, sourceId, targetId, amount)
+function Battle:Emit(kind, message, sourceId, targetId, amount, target, attackHit, impact)
     self.data:AddLog(message)
-    self.Changed:Emit({kind = kind, sourceId = sourceId, targetId = targetId, amount = amount})
+    self.Changed:Emit({kind = kind, sourceId = sourceId, targetId = targetId, amount = amount,target=target,attackHit=attackHit==true,impact=impact})
 end
 function Battle:Start(encounterId, party, seed)
     local encounter = self.encounters:Get(encounterId)
@@ -85,7 +87,7 @@ function Battle:NewRound()
         else for _,actor in ipairs(self:Units()) do if actor.HP>0 then actor:AdvanceTamingRound() end end end
     end
     if self.data.Round >= self.data.MaxRounds then
-        self.data:Finish('draw'); self:Emit('battle_ended', '战斗时间耗尽，队伍撤回。'); return
+        self.data:Finish('draw'); self:ClearBattleEffects();self:Emit('battle_ended', '战斗时间耗尽，队伍撤回。'); return
     end
     local order = {}
     for _, unit in ipairs(self:Units()) do if unit.HP > 0 then order[#order + 1] = unit end end
@@ -102,6 +104,9 @@ function Battle:BeginTurn(index)
     self.data:SelectTurn(index)
     local unit = self:Active()
     unit:BeginTurn(self.stats:Template(unit).actionPoints)
+    self.gameEffects:TickActor(unit,'turn_start')
+    if self:CheckWinner() then return end
+    if unit.HP==0 then self:AdvanceTurn();return end
     self:Emit('turn_started', self.stats:Template(unit).name .. ' 行动', unit.Id)
 end
 function Battle:CheckWinner()
@@ -110,19 +115,38 @@ function Battle:CheckWinner()
     if alive[1] > 0 and alive[2] > 0 then return false end
     local result = alive[1] > 0 and 'victory' or 'defeat'
     self.data:Finish(result)
+    self:ClearBattleEffects()
     self:Emit('battle_ended', result == 'victory' and '敌人已被击退。' or '队伍失去战斗能力。')
     return true
+end
+function Battle:ClearBattleEffects()
+    for i=0,self.data.UnitCount-1 do
+        local unit=self.data:GetUnitAt(i)
+        self.gameEffects:Clear(unit,'battle_end')
+        if unit.MountedAnimal then self.gameEffects:Clear(unit.MountedAnimal,'battle_end') end
+    end
+end
+function Battle:ApplyEffect(effectId,source,target)
+    local ok,reason=self.gameEffects:Apply(effectId,source,target)
+    if ok and self.data.Round>0 and self.data.Winner=='' then
+        if not self:CheckWinner() and self:Active().HP==0 then self:AdvanceTurn() end
+    end
+    return ok,reason
 end
 function Battle:EndTurn()
     if self.data.Winner ~= '' then return false, '战斗已经结束' end
     local unit = self:Active()
+    self.gameEffects:TickActor(unit,'turn_end')
     self:Emit('turn_ended', self.stats:Template(unit).name .. ' 结束行动', unit.Id)
     if self:CheckWinner() then return true end
+    self:AdvanceTurn();return true
+end
+function Battle:AdvanceTurn()
     for i = self.data.TurnIndex + 1, self.data.TurnCount - 1 do
         local nextUnit=self:FindUnit(self.data:GetTurnAt(i))
         if nextUnit.HP > 0 and nextUnit.AnimalOwnerId==0 then self:BeginTurn(i); return true end
     end
-    self:NewRound(); return true
+    self:NewRound()
 end
 function Battle:Occupied(exceptId)
     local occupied = {}
@@ -235,15 +259,8 @@ function Battle:TrySkill(skillId, targetId)
     local program={}
     -- 先完整校验效果，配置错误不会在扣除行动点后才暴露。
     for _,victim in ipairs(targets) do
-      local values=self.stats:EffectVariables(source,victim,skill)
-      values.distance=travel or 0
       for _, id in ipairs(skill.effectIds) do
-        local effect = self.effects:Get(id)
-        local amount = effect.amount:Evaluate(values)
-        assert(amount >= 0 and amount <= 1000000 and amount == math.floor(amount), 'Invalid effect amount: ' .. id)
-        assert(effect.kind == 'damage' or effect.kind == 'heal' or effect.kind == 'guard' or effect.kind=='reload', 'Unknown combat effect: ' .. effect.kind)
-        if effect.kind=='damage' and amount>0 then amount=math.max(1,math.floor(amount*skill.damageScale)) end
-        program[#program + 1] = {kind = effect.kind, amount = amount,target=victim}
+        program[#program + 1] = self.gameEffects:Prepare(id,source,victim,skill,travel)
       end
     end
     source:SpendAction(skill.action, skill.cost)
@@ -252,24 +269,14 @@ function Battle:TrySkill(skillId, targetId)
     source:SetCooldown(skillId,skill.cooldownTurns)
     source:RecordAction(skill.actionTemplate,skill.shots,target.Q,target.R)
     for shot=1,skill.shots do
+    local impact={shot=shot}
     for _, effect in ipairs(program) do
       local target=effect.target
       if target.HP>0 then
-        local wasAlive = target.HP > 0
-        local amount = effect.amount
-        local hit=effect.kind~='damage' or skill.hitChance==100 or self.data:RollPercent()<skill.hitChance
+        local hit=effect.definition.kind~='damage' or skill.hitChance==100 or self.data:RollPercent()<skill.hitChance
         if not hit then self:Emit('miss',self.stats:Template(source).name..' · '..skill.name..' 未命中 '..self.stats:Template(target).name,source.Id,target.Id)
         else
-        if effect.kind == 'damage' then
-            local mount=target.MountedAnimal
-            amount = target:Damage(amount)
-            if mount and not target.MountedAnimal then self:Emit('mount_defeated',self.stats:Template(mount).name..' 死亡，骑手下马',target.Id,mount.Id) end
-        elseif effect.kind == 'heal' then amount = target:Heal(amount)
-        elseif effect.kind=='guard' then target:SetGuard(amount)
-        else amount=self.stats.equipment:Loaded(self.stats.equipment:Weapon(source)).Rounds end
-        local verb = ({damage = '伤害', heal = '治疗', guard = '防御',reload='装入子弹'})[effect.kind]
-        self:Emit(effect.kind, self.stats:Template(source).name .. ' · ' .. skill.name .. ' → ' .. self.stats:Template(target).name .. '（' .. verb .. ' ' .. amount .. '）', source.Id, target.Id, amount)
-        if wasAlive and target.HP == 0 then self:Emit('defeated', self.stats:Template(target).name .. ' 倒地', source.Id, target.Id) end
+        self.gameEffects:ApplyPrepared(effect,impact)
         end
       end
     end

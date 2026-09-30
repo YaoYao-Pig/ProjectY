@@ -1,0 +1,100 @@
+{
+  "version": 1,
+  "name": "QuestTable",
+  "description": "Mission 的独立阶段；以条件表达并行、分支和汇合，不保存 nextQuest。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "missionId",
+      "type": "int",
+      "description": "所属任务",
+      "ref": "MissionTable"
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "阶段名称"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "阶段目标"
+    },
+    {
+      "name": "startConditionId",
+      "type": "int",
+      "description": "激活条件",
+      "ref": "ConditionTable"
+    },
+    {
+      "name": "completeConditionId",
+      "type": "int",
+      "description": "完成条件",
+      "ref": "ConditionTable"
+    },
+    {
+      "name": "autoComplete",
+      "type": "bool",
+      "description": "就绪后自动完成",
+      "default": true
+    },
+    {
+      "name": "actionIds",
+      "type": "int[]",
+      "description": "完成动作",
+      "ref": "NarrativeActionTable",
+      "default": []
+    }
+  ],
+  "rows": [
+    {
+      "id": 101,
+      "missionId": 100,
+      "name": "准备补给",
+      "description": "共享背包备齐 36 发巡猎弹药。",
+      "startConditionId": 1,
+      "completeConditionId": 101
+    },
+    {
+      "id": 102,
+      "missionId": 100,
+      "name": "清理道路",
+      "description": "选择武力路线后击败 2 名荒野掠夺者，激活前的击杀不计入。",
+      "startConditionId": 111,
+      "completeConditionId": 102
+    },
+    {
+      "id": 103,
+      "missionId": 100,
+      "name": "寻找证言",
+      "description": "选择调查路线后向驿站书记取得证言。",
+      "startConditionId": 112,
+      "completeConditionId": 103
+    },
+    {
+      "id": 104,
+      "missionId": 100,
+      "name": "了解同行者",
+      "description": "与莱雅谈谈她的过去，此阶段可与准备补给并行。",
+      "startConditionId": 1,
+      "completeConditionId": 104,
+      "actionIds": [
+        4
+      ]
+    },
+    {
+      "id": 201,
+      "missionId": 200,
+      "name": "提出邀请",
+      "description": "好感达到 10 后提出入队邀请。",
+      "startConditionId": 1,
+      "completeConditionId": 123
+    }
+  ]
+}

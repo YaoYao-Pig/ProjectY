@@ -3,14 +3,26 @@ local Model={}
 function Model.Build(adventure)
     local data=adventure.data;local stats=adventure.battle.stats
     local model={phase=data.Phase,title='边境远征',subtitle='选择目的地，开始这一程。',coins=adventure.player.Coins,
-        rows={},party={},health={},logs={},interaction=nil,town=false}
+        rows={},menu={},party={},health={},logs={},interaction=nil,town=false}
     local function actor(row)
         local mount=row.MountedAnimal
-        return {id=row.Id,name=stats:Template(row).name..(mount and (' · '..stats:Template(mount).name) or ''),
-            hp=mount and mount.HP or row.HP,maxHP=mount and mount.MaxHP or row.MaxHP,team=row.Team,
+        local name=adventure.narrative and adventure.narrative.npcs:ActorName(row) or stats:Template(row).name
+        local effects=adventure.battle.gameEffects:Rows(row)
+        if mount then for _,effect in ipairs(adventure.battle.gameEffects:Rows(mount)) do
+            effect.name=effect.name..' · 坐骑';effect.body='坐骑：'..stats:Template(mount).name..'\n'..effect.body
+            effects[#effects+1]=effect
+        end end
+        return {id=row.Id,name=name..(mount and (' · '..stats:Template(mount).name) or ''),
+            hp=mount and mount.HP or row.HP,maxHP=mount and mount.MaxHP or row.MaxHP,healthId=mount and mount.Id or row.Id,team=row.Team,
+            ap=row.AP,maxAP=stats:Template(row).actionPoints,effects=effects,
             riderHP=mount and row.HP or nil,riderMaxHP=mount and row.MaxHP or nil}
     end
-    for i=0,data.PartyCount-1 do model.party[#model.party+1]=actor(data:GetPartyAt(i)) end
+    for i=0,data.PartyCount-1 do
+        local unit=data:GetPartyAt(i);local row=actor(unit)
+        row.appearance=adventure.appearances:Template(unit.TemplateId,stats.equipment:ActorVisual(unit),unit.CustomizationJson)
+        row.portraitKey=unit.Id..':'..data.Equipment.Revision..':'..unit.CustomizationJson
+        model.party[#model.party+1]=row
+    end
     if data.Phase=='map' then
         local groups={dungeon={},forest={},battlefield={},town={},event={}}
         for _,site in ipairs(adventure.sites) do
@@ -43,6 +55,7 @@ function Model.Build(adventure)
             if state.InteractionKind~=0 then
                 local item=state.InteractionKind==1 and area.facilities[state.InteractionId]
                     or areas.config:GetTable('MapAreaTownNpcTable'):Get(area.npcs[state.InteractionId].templateId)
+                if state.InteractionKind==2 and area.npcs[state.InteractionId].narrativeId then item=adventure.narrative.rules.npcs:Get(area.npcs[state.InteractionId].narrativeId) end
                 model.interaction={title=item.name,body=item.description,caption='继续探索  [Esc]',command='area_close'}
             elseif model.town then
                 local radius=1;for _,site in ipairs(area.facilities) do radius=math.max(radius,site.interactionRadius) end
@@ -56,8 +69,8 @@ function Model.Build(adventure)
                 for _,site in ipairs(area.facilities) do if distance[site.entryIndex] and distance[site.entryIndex]<=site.interactionRadius and distance[site.entryIndex]<best then
                     best=distance[site.entryIndex];model.interaction={title=site.name,body='与服务台交互',caption='交互  [E]',command='area_interact',a=1,b=site.id}
                 end end
-                for _,npc in ipairs(area.npcs) do local steps=distance[state:GetNpcAt(npc.id-1).CellIndex];if steps and steps<=1 and steps<best then
-                    local row=areas.config:GetTable('MapAreaTownNpcTable'):Get(npc.templateId)
+                for _,npc in ipairs(area.npcs) do local live=state:GetNpcAt(npc.id-1);local steps=distance[live.CellIndex];if live.Present and steps and steps<=1 and (steps<best or (steps==best and npc.narrativeId)) then
+                    local row=npc.narrativeId and adventure.narrative.rules.npcs:Get(npc.narrativeId) or areas.config:GetTable('MapAreaTownNpcTable'):Get(npc.templateId)
                     best=steps;model.interaction={title=row.name,body='与这位旅人交谈',caption='交谈  [E]',command='area_interact',a=2,b=npc.id}
                 end end
             end
@@ -75,8 +88,11 @@ function Model.Build(adventure)
         for _,unit in ipairs(adventure.battle:Units()) do if unit.HP>0 then local row=actor(unit);row.screen=true;model.health[#model.health+1]=row end end
     end
     if data.Phase=='map' or data.Phase=='area' then
-        model.rows[#model.rows+1]={title='保存队伍',body=adventure.characterSaves.Status,command='save_characters',available=true}
-        model.rows[#model.rows+1]={title='读取队伍 · 重新开始地图',body='恢复外观、养成、金币、装备与背包；清除当前地图进度',command='load_characters',available=adventure.characterSaves.HasSave}
+        if adventure.narrative then
+            if data.Phase=='map' then model.menu[#model.menu+1]={title='新建叙事示例 · 三人远征',body='重开地图，预留一个招募位置；不会覆盖磁盘存档',command='start_story',available=true} end
+        end
+        model.menu[#model.menu+1]={title='保存队伍',body=adventure.characterSaves.Status,command='save_characters',available=true}
+        model.menu[#model.menu+1]={title='读取队伍 · 重新开始地图',body='恢复队伍、背包、任务和 NPC 状态；地图探索重新开始',command='load_characters',available=adventure.characterSaves.HasSave}
     end
     local entries=adventure.growth.chronicle:Rows()
     for i=1,math.min(2,#entries) do

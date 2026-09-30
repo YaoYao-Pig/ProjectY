@@ -1,0 +1,94 @@
+{
+  "version": 1,
+  "name": "MissionTable",
+  "description": "网状叙事任务；category 只分类，行为由 Condition 与动作组合决定。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "任务名称"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "任务说明"
+    },
+    {
+      "name": "category",
+      "type": "enum",
+      "description": "任务分类",
+      "values": [
+        "basic",
+        "main",
+        "side",
+        "recruit"
+      ]
+    },
+    {
+      "name": "startConditionId",
+      "type": "int",
+      "description": "接取条件",
+      "ref": "ConditionTable"
+    },
+    {
+      "name": "completeConditionId",
+      "type": "int",
+      "description": "完成条件",
+      "ref": "ConditionTable"
+    },
+    {
+      "name": "autoAccept",
+      "type": "bool",
+      "description": "满足条件自动接取",
+      "default": false
+    },
+    {
+      "name": "autoComplete",
+      "type": "bool",
+      "description": "就绪后自动发放奖励",
+      "default": false
+    },
+    {
+      "name": "actionIds",
+      "type": "int[]",
+      "description": "完成时执行一次的动作",
+      "ref": "NarrativeActionTable",
+      "default": []
+    }
+  ],
+  "rows": [
+    {
+      "id": 100,
+      "name": "失踪的驿使",
+      "description": "准备补给、了解莱雅，再从清理道路或调查证言两条路线中找到驿使的去向。",
+      "category": "main",
+      "startConditionId": 1,
+      "completeConditionId": 120,
+      "actionIds": [
+        1,
+        2
+      ],
+      "autoAccept": false,
+      "autoComplete": false
+    },
+    {
+      "id": 200,
+      "name": "新的同行者",
+      "description": "赢得莱雅的信任，邀请她加入远征。",
+      "category": "recruit",
+      "startConditionId": 121,
+      "completeConditionId": 122,
+      "actionIds": [
+        3,
+        4
+      ]
+    }
+  ]
+}

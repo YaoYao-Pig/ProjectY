@@ -12,11 +12,11 @@
 - 远征流程由 [MainHud](MainHud.md) 持有嵌套的 BattleHUD Prefab 和 `BattleHUDContent` Widget；进入/离开 battle 显示/隐藏内容，复用原技能与回合命令。独立 `BattleHUD` Panel/Bridge 保留给定向检查，不与 MainHud 同时打开。原地战场及全视口相机保留，世界血条改为屏幕 UIFollower。
 - `BattleHUDModel.Build` 只投影真实 BattleData/CombatActorData 和装备数据：生命、AP、防御、Guard、移动/主要行动额度、弹匣余弹、行动顺序及日志。技能列表和说明使用装备后的 `SkillIds/Skill`，可用性复用 `SkillBudget/CanUseSkill`，包含冷却和弹药不足原因；不维护业务状态副本。
 - 控制器的 `Battle.Changed` 订阅归 visibleScope，只标脏、下一 Tick 读取完整结果；显示选择状态来自 Demo 的 `BattleHUDRevision`。技能选择、移动、结束回合、自动/手动 AI 仍通过既有命令和权限检查。隐藏时释放订阅及工具提示；复用缓存不会重复绑定按钮。
-- `CombatSkillTable.iconId` 引用 [BattleIconTable](../../Config/Tables/Adventure/BattleIconTable.json)。每行 `spritePath` 可为空；非空必须是 `Assets/...` 下已导入为 Sprite 的资源。`BattleHUDTable` 的四个物品槽仍是不可操作的占位；[装备背包和 3D 改装](Equipment.md)使用独立的探索阶段面板。
+- `CombatSkillTable.iconId` 引用 [BattleIconTable](../../Config/Tables/Adventure/BattleIconTable.json)。每行 `spritePath` 可为空；非空必须是 `Assets/...` 下已导入为 Sprite 的资源。`BattleHUDTable` 的四个物品槽保留兼容配置，UX 布局隐藏此占位栏；[装备背包和 3D 改装](Equipment.md)使用独立的探索阶段面板。
 - 换图流程：编辑表 → `node Tools/ConfigEditor/exporter.mjs` → Edit Mode 菜单 `Project Y/UI/同步战斗图标引用`。资源工具把 Sprite 直接序列化到 BattleHUD Prefab，运行时按 ID/路径校验，不动态搜索或加载；空路径禁用 Icon Image，保留槽位边框与文字。Sprite 当前采用单 Sprite 资源路径，不按图集子资源名解析。
 - 首次菜单 `Project Y/UI/创建战斗 HUD` 创建并注册四个 Prefab，同时导出 Lua View 提示；重复执行保留已有内容。可以直接编辑 `Assets/DynamicAsset/UI/Prefabs/Battle/` 的布局与样式；通用 PanelGenerator 不会重建其内容。
-- `BattleHUDView` 仅负责安全区域、布局、字体和图标。沿用 UIRoot 的 1280×720 / match 0.5；底栏最大宽 1232，逻辑宽度低于 1120 时技能/物品变两行，低于 900 时资源与命令上移。顶部行动顺序、左侧队伍、右侧可收起日志不拦截空白战场。字体优先用 Prefab 的 preferredFont，未指定时使用系统中文字体。
-- 数字键 1–8 选择当前页技能，Enter 结束己方回合，Esc 切回可移动模式，F 定位战场；技能超过八个时分页。技能/物品槽可悬停说明，不可用技能展示 AP、行动额度或目标原因；物品槽不可操作。
+- `BattleHUDView` 仅负责安全区域、布局、字体和图标。沿用 UIRoot 的 1280×720 / match 0.5；左下四格技能分页、顶部从当前角色开始的四个行动顺序卡，右下日志与回合命令。HP/AP 与状态图标统一由 [MainHud 的头顶 HudHealth](MainHud.md) 按角色展示，没有独立屏幕状态面板。逻辑宽度低于 1050 时收起常驻日志；字体优先用 Prefab 的 preferredFont，未指定时使用系统中文字体。
+- 数字键 1–4 选择当前页技能，Enter 结束己方回合，Esc 切回可移动模式，F 定位战场；技能超过四个时分页。技能可悬停说明；头顶 GameEffect 的悬停由 MainHud 负责，不可用技能展示 AP、行动额度或目标原因；物品槽不可操作。
 - 最小检查：`python Tools/Tests/run_lua.py Tools/Tests/battle_hud_core.lua`；Edit Mode 菜单 `Project Y/UI/验证战斗 HUD` 使用独立 PreviewScene、真实 C# 战斗数据与实际 Panel/Widget，检查点击、资源刷新、回合权限、空图及缓存重开退订，不进入 Play。此检查的输入适配器只模拟 Demo 的选择状态，实际场景输入需在用户开启 Play 后验收。
 
 ## 关键入口

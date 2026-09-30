@@ -1,0 +1,8 @@
+<linker>
+  <!-- New UI components can be called through xLua reflection before the next binding generation. -->
+  <assembly fullname="Assembly-CSharp">
+    <type fullname="ProjectY.UI.AnimationWrap" preserve="all" />
+    <type fullname="ProjectY.UI.HealthBarAnimation" preserve="all" />
+    <type fullname="ProjectY.UI.BattleFeedbackSystem" preserve="all" />
+  </assembly>
+</linker>

@@ -14,8 +14,12 @@ namespace ProjectY.Editor
     public static class CharacterJournalAssets
     {
         private static readonly Color Paper=new Color(.91f,.87f,.77f),Ink=new Color(.20f,.24f,.21f),Muted=new Color(.43f,.43f,.36f),Gold=new Color(.55f,.39f,.20f),Line=new Color(.67f,.61f,.49f,.45f);
-        private static readonly string[] Codes={"vitality","endurance","intellect","strength","speed","defense","sword","polearm","unarmed","staff","dagger","bow","greatsword","firearms","scouting","crafting","cooking"};
+        private static string[] codes;
         private static Dictionary<string,Sprite> sprites;
+        [Serializable] private sealed class Attributes { public AttributeRow[] rows; }
+        [Serializable] private sealed class AttributeRow { public string code; }
+        [Serializable] private sealed class Passives { public Passive[] rows; }
+        [Serializable] private sealed class Passive { public string[] attributeNames; }
         [Serializable] private sealed class Parts { public Part[] rows; }
         [Serializable] private sealed class Part { public int id;public string prefabPath; }
         [MenuItem("Project Y/UI/重建角色手记布局")]
@@ -31,6 +35,47 @@ namespace ProjectY.Editor
             Save("CharacterGrowth",UIKind.Panel,Build);
             AssetDatabase.SaveAssets();
             Debug.Log("Character journal layout, portrait, icons and bindings rebuilt.");
+        }
+        [MenuItem("Project Y/UI/同步角色手记图标")]
+        public static void SyncGlyphs()
+        {
+            if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("请在 Edit Mode 同步角色手记图标。");
+            PrepareSprites();
+            var entry=PanelAssets.LoadOrCreate().Get("CharacterGrowth");
+            if(entry.Prefab==null)throw new InvalidOperationException("请先创建角色手记 Prefab。");
+            var root=PrefabUtility.LoadPrefabContents(entry.PrefabPath);
+            try
+            {
+                var style=(StoryGrowthView)root.GetComponent<LuaReference>().Get("Style");
+                style.SetJournalTheme(codes.Select(code=>new StoryGrowthView.GlyphEntry{Code=code,Sprite=sprites[code]}).ToArray());
+                PrefabUtility.SaveAsPrefabAsset(root,entry.PrefabPath);
+            }
+            finally{PrefabUtility.UnloadPrefabContents(root);}
+            AssetDatabase.SaveAssets();
+            Debug.Log("Character journal glyphs synchronized from configured attributes/passives: "+codes.Length);
+        }
+        private static string[] ReadGlyphCodes()
+        {
+            var attributes=JsonUtility.FromJson<Attributes>(File.ReadAllText("Config/Tables/Progression/GrowthAttributeTable.json"));
+            var passives=JsonUtility.FromJson<Passives>(File.ReadAllText("Config/Tables/Progression/PassiveSkillTable.json"));
+            if(attributes==null || attributes.rows==null || passives==null || passives.rows==null)throw new InvalidOperationException("Missing journal attribute/passive configuration.");
+            var result=new List<string>();var seen=new HashSet<string>(StringComparer.Ordinal);
+            Action<string> add=code=>{
+                if(string.IsNullOrEmpty(code) || !System.Text.RegularExpressions.Regex.IsMatch(code,"^[A-Za-z][A-Za-z0-9_]*$") || code=="disc" || code=="ring")
+                    throw new InvalidOperationException("Invalid journal glyph code: "+code);
+                if(seen.Add(code))result.Add(code);
+            };
+            foreach(var row in attributes.rows)
+            {
+                if(row==null || seen.Contains(row.code))throw new InvalidOperationException("Duplicate/invalid journal attribute.");
+                add(row.code);
+            }
+            foreach(var row in passives.rows)
+            {
+                if(row==null || row.attributeNames==null || row.attributeNames.Length==0)throw new InvalidOperationException("Passive glyph requires its primary attribute.");
+                add(row.attributeNames[0]);
+            }
+            return result.ToArray();
         }
         private static void Save(string name,UIKind kind,Action<GameObject> build)
         {
@@ -86,7 +131,7 @@ namespace ProjectY.Editor
         }
         public static void Build(GameObject root)
         {
-            if(sprites==null) PrepareSprites();
+            PrepareSprites();
             var veil=Rect("Veil",root.transform,0,0,1280,720);veil.anchorMin=Vector2.zero;veil.anchorMax=Vector2.one;veil.offsetMin=veil.offsetMax=Vector2.zero;Paint(veil,new Color(.03f,.045f,.035f,.91f),true);
             var page=Rect("Page",root.transform,0,0,1200,664);page.anchorMin=page.anchorMax=page.pivot=new Vector2(.5f,.5f);page.anchoredPosition=Vector2.zero;Paint(page,Paper,true);
             var style=root.AddComponent<StoryGrowthView>();Bind(root,"Style",style);Bind(root,"Page",page);
@@ -136,7 +181,7 @@ namespace ProjectY.Editor
             Scroll(root,"HistoryRows",history,0,49,878,328);
             Bind(root,"Hint",Label("Hint",page,"",294,618,878,22,12,Muted));
             style.SetEditorBindings(root.GetComponentsInChildren<Text>(true),Array.Empty<StoryGrowthView.ArtEntry>(),page);
-            style.SetJournalTheme(Codes.Select(code=>new StoryGrowthView.GlyphEntry {Code=code,Sprite=sprites[code]}).ToArray());
+            style.SetJournalTheme(codes.Select(code=>new StoryGrowthView.GlyphEntry {Code=code,Sprite=sprites[code]}).ToArray());
         }
         private static Button RootButton(GameObject root,float w,float h,Color color)
         {
@@ -186,13 +231,15 @@ namespace ProjectY.Editor
         }
         private static void PrepareSprites()
         {
+            codes=ReadGlyphCodes();
             sprites=new Dictionary<string,Sprite>();if(!AssetDatabase.IsValidFolder("Assets/DynamicAsset/UI/Art/Journal")) AssetDatabase.CreateFolder("Assets/DynamicAsset/UI/Art","Journal");
-            foreach(var code in Codes.Concat(new[]{"disc","ring"}))
+            foreach(var code in codes.Concat(new[]{"disc","ring"}))
             {
                 var path="Assets/DynamicAsset/UI/Art/Journal/"+code+".asset";
                 var existing=AssetDatabase.LoadAllAssetsAtPath(path).OfType<Sprite>().FirstOrDefault();if(existing!=null) {sprites.Add(code,existing);continue;}
+                var points=code=="disc" || code=="ring"?Array.Empty<Vector2>():Glyph(code);
                 var texture=new Texture2D(64,64,TextureFormat.RGBA32,false) {name=code,filterMode=FilterMode.Bilinear,wrapMode=TextureWrapMode.Clamp};
-                var points=Glyph(code);var colors=new Color[4096];
+                var colors=new Color[4096];
                 for(int y=0;y<64;y++) for(int x=0;x<64;x++)
                 {
                     var p=new Vector2(x+.5f,y+.5f);float distance=100;
@@ -219,7 +266,17 @@ namespace ProjectY.Editor
                 case "crafting":p=new float[]{18,8,40,40,23,43,36,54,36,54,53,40,53,40,41,29,41,29,23,43};break;
                 case "cooking":p=new float[]{11,32,53,32,11,32,19,14,19,14,45,14,45,14,53,32,22,40,26,50,38,40,42,50};break;
                 case "bow":p=new float[]{18,10,39,23,39,23,44,32,44,32,39,41,39,41,18,54,18,10,18,54,10,32,54,32,46,38,54,32,46,26,54,32};break;
-                default:p=new float[]{15,12,48,50,48,50,52,54,52,54,54,43,54,43,23,14,13,27,32,11,9,7,18,16};break;
+                case "animalAffinity":p=new float[]{20,15,18,23,18,23,24,32,24,32,32,35,32,35,40,32,40,32,46,23,46,23,44,15,44,15,32,12,32,12,20,15,
+                    8,36,11,43,11,43,17,42,17,42,19,36,19,36,14,31,14,31,8,36,
+                    20,47,23,55,23,55,29,53,29,53,30,46,30,46,25,41,25,41,20,47,
+                    34,46,36,53,36,53,42,54,42,54,45,47,45,47,40,41,40,41,34,46,
+                    46,36,48,42,48,42,54,43,54,43,57,36,57,36,51,31,51,31,46,36};break;
+                case "charisma":p=new float[]{18,42,18,49,18,49,24,54,24,54,31,52,31,52,35,46,35,46,31,39,31,39,24,37,24,37,18,42,
+                    8,13,11,25,11,25,20,32,20,32,30,32,30,32,40,25,40,25,43,13,43,13,8,13,
+                    40,54,57,54,57,54,57,38,57,38,48,38,48,38,43,33,43,33,43,38,43,38,40,38,40,38,40,54,45,48,53,48,45,43,51,43};break;
+                case "strength":case "sword":case "polearm":case "unarmed":case "greatsword":case "firearms":
+                    p=new float[]{15,12,48,50,48,50,52,54,52,54,54,43,54,43,23,14,13,27,32,11,9,7,18,16};break;
+                default:throw new InvalidOperationException("No journal glyph asset or drawing recipe for "+code+". Add its Journal Sprite before synchronizing.");
             }
             var result=new Vector2[p.Length/2];for(int i=0;i<result.Length;i++) result[i]=new Vector2(p[i*2],p[i*2+1]);return result;
         }

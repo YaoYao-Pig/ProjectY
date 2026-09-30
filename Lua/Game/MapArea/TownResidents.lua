@@ -3,10 +3,10 @@ local Residents={}
 function Residents.Tick(area,state,dt)
     if #area.npcs==0 then return end
     local occupied={}
-    for i=0,state.NpcCount-1 do local npc=state:GetNpcAt(i);occupied[npc.CellIndex]=npc.Id end
+    for i=0,state.NpcCount-1 do local npc=state:GetNpcAt(i);if npc.Present then occupied[npc.CellIndex]=npc.Id end end
     for _,definition in ipairs(area.npcs) do
         local npc=state:GetNpcAt(definition.id-1)
-        if #definition.route>0 and not (state.InteractionKind==2 and state.InteractionId==npc.Id)
+        if not definition.narrativeId and #definition.route>0 and not (state.InteractionKind==2 and state.InteractionId==npc.Id)
             and npc:Due(dt,definition.stepSeconds) then
             local allowed=function(cell)
                 return (not occupied[cell.index] or occupied[cell.index]==npc.Id) and not state:IsSquadReserved(cell.index)

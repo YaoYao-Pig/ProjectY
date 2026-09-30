@@ -26,7 +26,7 @@ namespace ProjectY.Editor
                         {
                             string saved = File.ReadAllText(file); File.WriteAllText(file, "{broken");
                             lua.DoString("AssertCorruptCharacterSaveRejected()");
-                            File.WriteAllText(file, saved.Replace("\"version\": 1", "\"version\": 99")); lua.DoString("AssertCorruptCharacterSaveRejected()");
+                            File.WriteAllText(file, saved.Replace("\"version\": 2", "\"version\": 99")); lua.DoString("AssertCorruptCharacterSaveRejected()");
                             File.WriteAllText("Art/PawnCustomization/Integration/gameplay-validation.json", "{\"saveRoundTrip\":true,\"backpackRoundTrip\":true,\"healthPreserved\":true,\"stableEnemy\":true,\"corruptRejected\":true,\"unknownVersionRejected\":true,\"partyCount\":" + report.Get<int>("partyCount") + ",\"enemyGroups\":" + report.Get<int>("enemyGroups") + "}");
                             Debug.Log("Character generation and profile save/load passed, including corrupt/unknown-version rejection.");
                         }

@@ -4,13 +4,14 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import { createGripStore } from './grip-store.mjs';
+import { sourceFile } from './source-files.mjs';
 
 const types = { '.html': 'text/html; charset=utf-8', '.css': 'text/css', '.js': 'text/javascript', '.mjs': 'text/javascript', '.json': 'application/json', '.png': 'image/png' };
 export function sourceStatus(root, bundle) {
   if (!bundle?.dependencies?.length) throw new Error('资源包缺少 Unity 来源记录');
   const changed = [];
   for (const file of bundle.dependencies) {
-    const target = path.resolve(root, file.path), relative = path.relative(root, target);
+    const target = sourceFile(root, file.path), relative = path.relative(root, target);
     if (!relative || relative.startsWith('..') || path.isAbsolute(relative)) throw new Error('资源来源路径无效');
     if (!fs.existsSync(target) || crypto.createHash('sha256').update(fs.readFileSync(target)).digest('hex') !== file.sha256) changed.push(file.path);
   }

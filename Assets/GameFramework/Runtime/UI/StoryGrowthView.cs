@@ -73,10 +73,14 @@ namespace ProjectY.UI
         }
         public void SetGlyph(Image image, string code)
         {
-            foreach(var glyph in glyphs) if(glyph.Code==code) { image.sprite=glyph.Sprite;return; }
+            foreach(var glyph in glyphs) if(glyph.Code==code)
+            {
+                if(glyph.Sprite==null)throw new InvalidOperationException("Missing journal Sprite: "+code);
+                image.sprite=glyph.Sprite;return;
+            }
             throw new InvalidOperationException("Missing journal glyph: "+code);
         }
-        private void OnDestroy() { if (fallbackFont != null) Destroy(fallbackFont); }
+        private void OnDestroy() { if(fallbackFont!=null){if(Application.isPlaying)Destroy(fallbackFont);else DestroyImmediate(fallbackFont);} }
 #if UNITY_EDITOR
         [BlackList] public void SetEditorBindings(Text[] text, ArtEntry[] art, RectTransform page)
         { labels = text; illustrations = art; fittedPage = page; }

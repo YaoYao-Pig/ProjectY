@@ -1,0 +1,10 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class NarrativeSettingsTableRow
+---@field id number 稳定配置 ID
+---@field environmentId number 时钟来源配方
+---@field demoRecipeId number 独立三人开局示例
+---@field maxTransitions number 单次刷新流转上限，防止异常配置失控
+---@field playerSpeaker string 玩家选项发言名
+---@field spawnSearchRadius number NPC 出生和日程停留点距设施入口的最大道路格数
+---@field recruitSearchRadius number 招募新队员时距领队的最大站位搜索格数
+return {["name"]="NarrativeSettingsTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="environmentId",["type"]="int",["description"]="\230\151\182\233\146\159\230\157\165\230\186\144\233\133\141\230\150\185",["ref"]="MapEnvironmentTable"},{["name"]="demoRecipeId",["type"]="int",["description"]="\231\139\172\231\171\139\228\184\137\228\186\186\229\188\128\229\177\128\231\164\186\228\190\139",["ref"]="AdventureDemoTable"},{["name"]="maxTransitions",["type"]="int",["description"]="\229\141\149\230\172\161\229\136\183\230\150\176\230\181\129\232\189\172\228\184\138\233\153\144\239\188\140\233\152\178\230\173\162\229\188\130\229\184\184\233\133\141\231\189\174\229\164\177\230\142\167",["min"]=1},{["name"]="playerSpeaker",["type"]="text",["description"]="\231\142\169\229\174\182\233\128\137\233\161\185\229\143\145\232\168\128\229\144\141"},{["name"]="spawnSearchRadius",["type"]="int",["description"]="NPC \229\135\186\231\148\159\229\146\140\230\151\165\231\168\139\229\129\156\231\149\153\231\130\185\232\183\157\232\174\190\230\150\189\229\133\165\229\143\163\231\154\132\230\156\128\229\164\167\233\129\147\232\183\175\230\160\188\230\149\176",["min"]=1,["max"]=12,["default"]=3},{["name"]="recruitSearchRadius",["type"]="int",["description"]="\230\139\155\229\139\159\230\150\176\233\152\159\229\145\152\230\151\182\232\183\157\233\162\134\233\152\159\231\154\132\230\156\128\229\164\167\231\171\153\228\189\141\230\144\156\231\180\162\230\160\188\230\149\176",["min"]=1,["max"]=12,["default"]=4}},["fingerprint"]="e0f1a731825e14624ef0761fdcbfa0946f0d9f3b7232f6e6605a8f3e43940f70"}

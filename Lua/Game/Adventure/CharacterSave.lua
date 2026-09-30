@@ -1,11 +1,14 @@
 -- 外部文件先完整准备和校验，再创建新地图并提交；失败不改当前队伍。
 local Save={}
 function Save.Validate(adventure,prepared)
+    if adventure.narrative and not prepared.LegacyNarrative then require('Game.Narrative.NarrativeSave').Validate(adventure.narrative,prepared) end
     local config=adventure.config;local equipment=require('Game.Equipment.EquipmentRules').New(config,prepared.Equipment)
     local stats=require('Game.Battle.CombatStats')(config,prepared.Equipment)
+    local effects=require('Game.Battle.GameEffects').New(stats,config:GetTable('CombatEffectTable'))
     local attributes={};for _,row in ipairs(config:GetTable('GrowthAttributeTable'):All()) do attributes[row.code]=true end
     for i=0,prepared.ActorCount-1 do
         local actor=prepared:GetActorAt(i);config:GetTable('CombatUnitTable'):Get(actor.TemplateId)
+        effects:ValidateSaved(actor)
         equipment:MotionModule(actor)
         assert(adventure.appearances.templates[actor.TemplateId],'存档角色没有外观模板')
         for j=0,actor.TraitCount-1 do config:GetTable('CombatTraitTable'):Get(actor:GetTraitAt(j)) end
@@ -18,6 +21,7 @@ function Save.Validate(adventure,prepared)
         assert(stats:MaximumHP(actor)==actor.MaxHP,'角色生命上限与当前配置不一致，请迁移存档')
         local mount=actor.MountedAnimal
         if mount then
+            effects:ValidateSaved(mount)
             local species=stats.animals.species:Get(mount.AnimalSpeciesId)
             assert(species.unitId==mount.TemplateId and species.rideable and mount.AnimalBond<=species.maximumBond,'存档坐骑与配置不一致')
             assert(stats:MaximumHP(mount)==mount.MaxHP,'坐骑生命上限与配置不一致')
@@ -45,11 +49,13 @@ function Save.Validate(adventure,prepared)
         assert(item.kind=='rune' or item.kind=='module' or item.kind=='ammo','存档堆叠类型无效') end
 end
 function Save.Write(adventure)
+    if adventure.narrative and adventure.narrative.data.DialogueOpen then return false,'请先结束对话再保存' end
     if adventure.data.Phase~='map' and adventure.data.Phase~='area' then return false,'只能在探索期间保存队伍' end
     local ok,err=pcall(function() adventure.characterSaves:Save(adventure.data,adventure.player) end)
     return ok,ok and '' or tostring(err)
 end
 function Save.Read(adventure)
+    if adventure.narrative and adventure.narrative.data.DialogueOpen then return false,'请先结束对话再读取' end
     if adventure.data.Phase~='map' and adventure.data.Phase~='area' then return false,'只能在探索期间读取队伍' end
     local ok,prepared=pcall(function()
         local candidate=adventure.characterSaves:Prepare(adventure.data.Equipment);Save.Validate(adventure,candidate);return candidate
@@ -57,6 +63,7 @@ function Save.Read(adventure)
     if not ok then return false,tostring(prepared) end
     adventure:Start(prepared.Seed)
     adventure.characterSaves:Apply(prepared,adventure.data,adventure.player)
+    if adventure.narrative then adventure.narrative.lastRevision=nil;adventure.narrative:Refresh() end
     return true
 end
 return Save

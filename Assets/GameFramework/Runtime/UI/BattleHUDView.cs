@@ -12,7 +12,7 @@ namespace ProjectY.UI
         [Serializable]
         public sealed class Layout
         {
-            public RectTransform Root, SafeArea, Header, Turns, Party, Deck, Actor, Skills, Items, Commands, Hint, Log, Tooltip;
+            public RectTransform Root, SafeArea, Header, Turns, Party, Deck, Skills, Items, Commands, Hint, Log, Tooltip;
             public GridLayoutGroup SkillGrid, ItemGrid, TurnGrid;
             public Text[] Labels;
         }
@@ -77,47 +77,21 @@ namespace ProjectY.UI
         }
         private void LayoutContent(float width)
         {
-            Compact = width < 1120;
-            var narrow = width < 900;
-            var deckWidth = Mathf.Min(1232, width - 32);
-            var deckHeight = narrow ? 372 : Compact ? 228 : 172;
-            Place(layout.Deck, new Vector2(.5f, 0), -deckWidth / 2, 16, deckWidth, deckHeight);
-            Place(layout.Header, new Vector2(0, 1), 16, -84, 180, 68);
-            Place(layout.Party, new Vector2(0, 1), 16, -388, Compact ? 154 : 180, 286);
-            var turnWidth = Mathf.Min(680, width - 414);
-            Place(layout.Turns, new Vector2(.5f, 1), -turnWidth / 2 + 12, -78, turnWidth, 60);
-            layout.TurnGrid.cellSize = new Vector2((turnWidth - 7 * 6) / 8, 60);
-            Place(layout.Actor, Vector2.zero, 16, 16, 190, deckHeight - 32);
-            const float commandsWidth = 142;
-            var contentWidth = deckWidth - 190 - commandsWidth - 66;
-            var itemWidth = Compact ? 116 : 184;
-            var skillWidth = contentWidth - itemWidth - 20;
-            Place(layout.Skills, Vector2.zero, 220, 38, skillWidth, deckHeight - 54);
-            Place(layout.Items, Vector2.zero, 220 + skillWidth + 20, 38, itemWidth, deckHeight - 54);
-            Place(layout.Commands, Vector2.zero, deckWidth - commandsWidth - 16, 16, commandsWidth, deckHeight - 32);
-            var columns = Compact ? 4 : 8;
-            layout.SkillGrid.constraintCount = columns;
-            layout.SkillGrid.cellSize = new Vector2((skillWidth - (columns - 1) * 6) / columns, Compact ? 70 : 82);
-            layout.ItemGrid.constraintCount = Compact ? 2 : 4;
-            layout.ItemGrid.cellSize = new Vector2((itemWidth - (Compact ? 1 : 3) * 6) / (Compact ? 2 : 4), Compact ? 70 : 82);
-            Place(layout.Hint, Vector2.zero, 220, 12, contentWidth, 20);
-            Place(layout.Log, new Vector2(1, 0), -352, deckHeight + 30, 336, 144);
-            Place(layout.Tooltip, new Vector2(.5f, 0), -190, deckHeight + 30, 380, 148);
-            if (narrow)
-            {
-                Place(layout.Actor, Vector2.zero, 16, 214, 190, 142);
-                Place(layout.Commands, Vector2.zero, deckWidth - commandsWidth - 16, 234, commandsWidth, 122);
-                skillWidth = deckWidth - 168;
-                Place(layout.Skills, Vector2.zero, 16, 38, skillWidth, 174);
-                Place(layout.Items, Vector2.zero, deckWidth - 132, 38, 116, 174);
-                layout.SkillGrid.cellSize = new Vector2((skillWidth - 18) / 4, 70);
-                layout.ItemGrid.cellSize = new Vector2(55, 70);
-                Place(layout.Hint, Vector2.zero, 16, 12, deckWidth - 32, 20);
-                turnWidth = width - 32;
-                Place(layout.Turns, new Vector2(.5f, 1), -turnWidth / 2, -158, turnWidth, 60);
-                layout.TurnGrid.cellSize = new Vector2((turnWidth - 42) / 8, 60);
-                Place(layout.Party, new Vector2(0, 1), 16, -456, 154, 286);
-            }
+            Compact=width<1050;
+            var deckWidth=Mathf.Min(550,width-190);
+            Place(layout.Deck,Vector2.zero,18,18,deckWidth,140);
+            Place(layout.Header,new Vector2(0,1),18,-80,190,62);
+            var turnWidth=Mathf.Min(540,width-380);
+            Place(layout.Turns,new Vector2(.5f,1),-turnWidth/2,-84,turnWidth,62);
+            layout.TurnGrid.constraintCount=4;layout.TurnGrid.cellSize=new Vector2((turnWidth-24)/4,62);
+            layout.Party.gameObject.SetActive(false);
+            Place(layout.Skills,Vector2.zero,14,30,deckWidth-28,98);
+            layout.SkillGrid.constraintCount=4;layout.SkillGrid.cellSize=new Vector2((deckWidth-46)/4,72);
+            layout.Items.gameObject.SetActive(false);
+            Place(layout.Commands,Vector2.zero,deckWidth+32,18,142,140);
+            Place(layout.Hint,Vector2.zero,14,6,deckWidth-28,22);
+            Place(layout.Log,new Vector2(1,0),-498,18,480,140);
+            Place(layout.Tooltip,new Vector2(.5f,0),-200,174,400,152);
         }
         private static void Place(RectTransform rect, Vector2 anchor, float x, float y, float width, float height)
         {
@@ -127,7 +101,7 @@ namespace ProjectY.UI
         public int ReadShortcut()
         {
             if (!Application.isPlaying) return 0;
-            for (var i = 0; i < 8; i++) if (Input.GetKeyDown((KeyCode)((int)KeyCode.Alpha1 + i))) return i + 1;
+            for (var i = 0; i < 4; i++) if (Input.GetKeyDown((KeyCode)((int)KeyCode.Alpha1 + i))) return i + 1;
             if (Input.GetKeyDown(KeyCode.Return)) return 9;
             if (Input.GetKeyDown(KeyCode.Escape)) return 10;
             return 0;

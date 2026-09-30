@@ -8,18 +8,23 @@
 | --- | --- |
 | Lua 风格、需求澄清、过度防御、Unity MCP、最小测试、编译、SubAgent | [开发约束 Skill](../.agents/skills/lua-code-style/SKILL.md) |
 | LuaConsole、Python、运行时注入、执行片段、调试控制台 | [LuaConsole](Tools/LuaConsole.md) |
-| GM、GMSystem、GM 面板、F8、指定槽位升级、按技能 ID 获取技能 | [GM 调试系统](Tools/GM.md) |
+| GM、GMSystem、GM 面板、F8、指定槽位升级、按技能 ID 获取技能、查找 NPC、NPC 搜索、传送定位 | [GM 调试系统](Tools/GM.md) |
 | Blender、MCP、建模、FBX、贴图、材质、模型导入、Prefab | [Blender 资源管线](Tools/Blender.md) |
 | 大地图美术、low-poly、低多边形、模型风格、地块模型、民居模型、中世纪城堡、森林树、雪松、地牢模型、七格平台、MapLowPoly | [地图模型资源](Business/MapArt.md) |
 | 启动、LuaSystem、注册、Tick、require、Lua 文件、构建、xLua 桥接、退出 | [运行时](Framework/Runtime.md) |
 | URP、渲染管线、后处理、奇幻风格、WarmFantasy、SSAO、Bloom、阴影、材质迁移、离屏相机 | [渲染管线](Framework/Rendering.md) |
-| Panel、Widget、MVC、LuaReference、UIRoot、WorldUIRoot、WorldUI、暂停、场景切换 | [UI](Framework/UI.md) |
+| Panel、Widget、MVC、LuaReference、UIRoot、WorldUIRoot、WorldUI、AnimationWrap、UI 动效、按名称播放、暂停、场景切换 | [UI](Framework/UI.md) |
+| UIScrollList、无限滚动、虚拟列表、ScrollRect、CellTemplate、多模板、可变尺寸、列表复用 | [UIScrollList](Framework/UIScrollList.md) |
 | JSON 表、导表、二进制、读表、公式、枚举、常量、Catalog、C# 查表、_Gen、生成目录、产物迁移 | [配置管线](Framework/Config.md) |
+| Condition、条件组合、all、any、not、前置、后置、条件类型扩展 | [共享条件](Framework/Condition.md) |
+| Mission、Quest、网状叙事、任务、对话、NPC、招募、好感、阵营、声望、日程、Cinemachine | [任务对话与 NPC](Business/Narrative.md) |
+| Mission 编辑器、Web 任务、叙事关系图、Agent 工具、CLI、批量变更、影响分析、4179 | [叙事工坊与 Agent 工具](Tools/Narrative.md) |
 | text、本地化、Language.lua、LuaTxt、UITxt、PrefabTxt、i18n、TMP | [本地化](Framework/Localization.md) |
 | Player、金币、等级、奖励、示例流程、Data、ModelSystem | [玩家示例](Business/Player.md) |
 | Battle、战斗、原地战斗、敌群、回合、行动点、技能、效果、属性、特质、敌方 AI | [六边形战斗](Business/Battle.md) |
 | 战斗 UI、BattleHUD、技能栏、物品槽、行动顺序、AP、Sprite、图标配置、自适应 | [战斗 HUD](Business/BattleHUD.md) |
-| MainHud、常驻 HUD、Overlay、UIFollower、屏幕血条、相机跟随、地点、队伍、交互提示 | [主 HUD 与跟随 UI](Business/MainHud.md) |
+| GameEffect、GAS、持续效果、周期伤害、治疗、Buff、叠层、状态图标、战后保留 | [GameEffect](Business/GameEffects.md) |
+| MainHud、常驻 HUD、Overlay、UIFollower、屏幕血条、双层血条、震屏、BattleFeedbackSystem、相机跟随、地点、队伍、交互提示 | [主 HUD 与跟随 UI](Business/MainHud.md) |
 | 装备、武器分类、等级、属性要求、单手剑、大剑、双手巨剑、推进器、槽位引线、法杖、符文、步枪、弹匣、换弹、搜刮、共享背包、3D 改装、持握动作、EquipmentWorkbench | [装备与改装 Demo](Business/Equipment.md) |
 | 网格背包、Inventory、占格、拖拽、旋转、收纳、满包、头部、身体甲、左右戒指、裤子、鞋子、副手、双持、盾牌、角色预览、模型图标、图标导出 | [网格背包与角色装备](Business/Inventory.md) |
 | 宝箱生成、掉落、战利品、概率、掉落池、敌人掉落、战后拾取、旧事件战场 | [宝箱与敌人掉落](Business/Loot.md) |
@@ -43,6 +48,7 @@
 | Web 服务、注册表、一键启动、停止全部、服务管理、4173、4175 | [Web 服务管理](Tools/WebServices.md) |
 | PanelGenerator、生成 Prefab、PanelConfig 编辑、模块目录、EmmyLua | [UI 生成器](Tools/PanelGenerator.md) |
 | 配表网页、增列、表头、目录、模块根节点、总览、保存、409、前端 | [配置编辑器](Tools/ConfigEditor.md) |
+| 一站式、内容中心、可视化配表、物品编辑、武器编辑、特殊角色、模型选择、初始装备、MCP、4181 | [内容编辑中心](Tools/ContentCenter.md) |
 | 新增文档、更新文档、索引、阅读规则、skill | [维护约定](MAINTENANCE.md) |
 
 ## 正文

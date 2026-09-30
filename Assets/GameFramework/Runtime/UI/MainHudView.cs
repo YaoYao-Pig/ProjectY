@@ -12,12 +12,14 @@ namespace ProjectY.UI
     {
         [Serializable] public sealed class Layout
         {
-            public RectTransform Root,Safe,Header,Navigation,NavigationScroll,NavigationContent,Journal,Party,Interaction,Hint;
-            public GridLayoutGroup PartyGrid;
+            public RectTransform Root,Safe,Header,Navigation,NavigationScroll,NavigationContent,Journal,Party,Interaction,Hint,Common,Rail,Menu,Clock;
+            public GridLayoutGroup PartyGrid,SkillGrid;
             public Canvas Canvas;
             public Text[] Labels;
         }
         [SerializeField] private Layout layout;
+        [SerializeField] private BattleFeedbackSystem battleFeedback;
+        internal BattleFeedbackSystem BattleFeedback => battleFeedback != null ? battleFeedback : throw new InvalidOperationException("MainHud battle feedback binding is missing.");
         private readonly List<UIFollower> followers=new List<UIFollower>();
         private Font font;
         private bool exploration=true,navigation=true;
@@ -27,7 +29,7 @@ namespace ProjectY.UI
         private RectTransform characterSkills;
         public void SetCharacterSkillBar(RectTransform value) {characterSkills=value;layoutDirty=true;ApplyLayout();}
         public Font Font => font!=null?font:(font=Font.CreateDynamicFontFromOSFont(new[]{"Microsoft YaHei","PingFang SC","Noto Sans CJK SC","Arial"},16));
-        public float WorldLeftInset => exploration&&navigation?Mathf.Min(Screen.width*.42f,326*layout.Canvas.rootCanvas.scaleFactor):0;
+        public float WorldLeftInset => exploration&&navigation?Mathf.Min(Screen.width*.45f,526*layout.Canvas.rootCanvas.scaleFactor):0;
         public void Prepare() {foreach(var text in layout.Labels) text.font=Font;ApplyLayout();}
         public void SetMode(bool explore,bool showNavigation)
         {
@@ -46,19 +48,25 @@ namespace ProjectY.UI
             previousSize=layout.Root.rect.size;previousSafe=Screen.safeArea;layoutDirty=false;
             var screen=new Vector2(Mathf.Max(1,Screen.width),Mathf.Max(1,Screen.height));
             layout.Safe.anchorMin=Screen.safeArea.min/screen;layout.Safe.anchorMax=Screen.safeArea.max/screen;layout.Safe.offsetMin=layout.Safe.offsetMax=Vector2.zero;
+            layout.Common.anchorMin=layout.Safe.anchorMin;layout.Common.anchorMax=layout.Safe.anchorMax;
+            layout.Common.offsetMin=layout.Common.offsetMax=Vector2.zero;
             var size=layout.Safe.rect.size;var w=Mathf.Max(480,size.x);var h=Mathf.Max(360,size.y);
-            Place(layout.Header,0,1,16,-16,w-32,66);
-            var bottomReserve=characterSkills!=null?340:212;
-            Place(layout.Navigation,0,1,16,-96,294,Mathf.Max(90,h-bottomReserve));
-            layout.NavigationScroll.sizeDelta=new Vector2(270,Mathf.Max(42,h-bottomReserve-54));
-            var compact=w<1050;var partyWidth=compact?360:712;
-            Place(layout.Party,0,0,16,16,partyWidth,compact?118:56);
-            if(characterSkills!=null)Place(characterSkills,0,0,16,compact?142:80,partyWidth,116);
-            layout.PartyGrid.constraintCount=compact?2:4;
-            Place(layout.Journal,1,0,-340,16,324,188);
-            layout.Journal.gameObject.SetActive(exploration&&w>=900);
-            Place(layout.Interaction,.5f,0,-210,characterSkills!=null?(compact?270:208):(compact?148:92),420,100);
-            Place(layout.Hint,.5f,1,-Mathf.Min(720,w-360)/2,-88,Mathf.Min(720,w-360),42);
+            var narrow=w<1050;
+            Place(layout.Header,0,1,224,-18,Mathf.Max(170,w-380),48);
+            Place(layout.Party,0,1,18,-18,190,352);
+            layout.Party.localScale=Vector3.one*Mathf.Clamp((h-194)/352,.45f,1);
+            layout.PartyGrid.constraintCount=1;layout.PartyGrid.cellSize=new Vector2(190,82);
+            Place(layout.Navigation,0,1,222,-82,294,Mathf.Max(90,h-246));
+            layout.NavigationScroll.sizeDelta=new Vector2(270,Mathf.Max(42,h-300));
+            if(characterSkills!=null)Place(characterSkills,0,0,18,18,narrow?Mathf.Max(420,w-158):550,138);
+            if(characterSkills!=null)layout.SkillGrid.cellSize=new Vector2((characterSkills.sizeDelta.x-42)/4,70);
+            Place(layout.Journal,1,0,-Mathf.Min(480,w-612)-18,18,Mathf.Min(480,w-612),138);
+            layout.Journal.gameObject.SetActive(exploration&&!narrow);
+            Place(layout.Interaction,.5f,0,-210,172,420,100);
+            Place(layout.Hint,.5f,1,-Mathf.Min(560,w-400)/2,-76,Mathf.Min(560,w-400),42);
+            Place(layout.Clock,1,1,-130,-18,112,112);
+            Place(layout.Rail,1,1,-112,-150,94,300);
+            Place(layout.Menu,1,1,-442,-148,314,Mathf.Min(410,h-172));
         }
         private static void Place(RectTransform r,float ax,float ay,float x,float y,float w,float h)
         {r.anchorMin=r.anchorMax=new Vector2(ax,ay);r.pivot=new Vector2(0,ay);r.anchoredPosition=new Vector2(x,y);r.sizeDelta=new Vector2(w,h);}

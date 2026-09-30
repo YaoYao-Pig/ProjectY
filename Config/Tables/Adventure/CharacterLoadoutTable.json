@@ -1,0 +1,15 @@
+{
+  "version": 1,
+  "name": "CharacterLoadoutTable",
+  "description": "角色模板的初始装备与可选固定外观；新开局或首次招募时应用，读档不重复授予。",
+  "key": "id",
+  "fields": [
+    {"name":"id","type":"int","min":1,"description":"稳定配置 ID"},
+    {"name":"unitId","type":"int","ref":"CombatUnitTable","description":"角色模板（唯一）"},
+    {"name":"weaponId","type":"int","min":0,"description":"初始主手武器，0 为空手"},
+    {"name":"offhandWeaponId","type":"int","min":0,"description":"初始副手单手武器，0 为无"},
+    {"name":"wearableIds","type":"int[]","ref":"EquipmentWearableTable","description":"初始防具，按装备定义的槽位穿戴"},
+    {"name":"appearanceJson","type":"string","default":"","description":"角色工坊保存的固定外观；空字符串沿用外观池随机"}
+  ],
+  "rows": []
+}

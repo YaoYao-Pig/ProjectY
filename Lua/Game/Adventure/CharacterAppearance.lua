@@ -10,7 +10,8 @@ local function weighted(random,ids,weights)
 end
 function Appearance.New(config,service)
     assert(service,'Character appearance service is unavailable; compile and regenerate xLua bindings')
-    local self=setmetatable({pools=config:GetTable('CharacterAppearancePoolTable'),service=service,templates={}},Appearance)
+    local self=setmetatable({pools=config:GetTable('CharacterAppearancePoolTable'),service=service,templates={},fixed={}},Appearance)
+    for _,row in ipairs(config:GetTable('CharacterLoadoutTable'):All()) do if row.appearanceJson~='' then self.fixed[row.unitId]=row.appearanceJson end end
     for _,row in ipairs(config:GetTable('PawnTemplateTable'):All()) do self.templates[row.unitId]=row end
     for _,row in ipairs(self.pools:All()) do
         assert(#row.raceIds>0 and #row.raceIds==#row.raceWeights and #row.sexIds>0 and #row.sexIds==#row.sexWeights,'Invalid appearance pool: '..row.id)
@@ -30,6 +31,7 @@ function Appearance:Assign(actor,group)
     self.service:Create(actor,random:Integer(0,2147483647),race,sex)
 end
 function Appearance:Party(actor,seed)
+    if self.fixed[actor.TemplateId] then self.service:Apply(actor,self.fixed[actor.TemplateId]);return end
     local row=assert(self.templates[actor.TemplateId],'Party appearance template is missing')
     self:Assign(actor,self:Group(row.appearancePoolId,(seed ~ (actor.Id*104729)) & 0xffffffff))
 end

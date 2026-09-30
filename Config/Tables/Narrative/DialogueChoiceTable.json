@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "name": "DialogueChoiceTable",
+  "description": "玩家选择；条件不满足可隐藏或展示原因；nextNodeId=0 结束会话。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "text",
+      "type": "text",
+      "description": "选项文本"
+    },
+    {
+      "name": "conditionId",
+      "type": "int",
+      "description": "可选条件",
+      "ref": "ConditionTable"
+    },
+    {
+      "name": "hideWhenLocked",
+      "type": "bool",
+      "description": "不可选时隐藏",
+      "default": false
+    },
+    {
+      "name": "nextNodeId",
+      "type": "int",
+      "description": "下一节点；0 表示结束，由叙事校验检查引用",
+      "min": 0
+    },
+    {
+      "name": "actionIds",
+      "type": "int[]",
+      "description": "选择时执行的动作",
+      "ref": "NarrativeActionTable",
+      "default": []
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "text": "我来帮忙。",
+      "conditionId": 130,
+      "hideWhenLocked": true,
+      "nextNodeId": 2,
+      "actionIds": [
+        10
+      ]
+    },
+    {
+      "id": 2,
+      "text": "我们清理道路。",
+      "conditionId": 131,
+      "hideWhenLocked": true,
+      "nextNodeId": 2,
+      "actionIds": [
+        11
+      ]
+    },
+    {
+      "id": 3,
+      "text": "先找人问问。",
+      "conditionId": 131,
+      "hideWhenLocked": true,
+      "nextNodeId": 2,
+      "actionIds": [
+        12
+      ]
+    },
+    {
+      "id": 4,
+      "text": "说说你的过去。",
+      "conditionId": 132,
+      "hideWhenLocked": true,
+      "nextNodeId": 3,
+      "actionIds": [
+        14
+      ]
+    },
+    {
+      "id": 5,
+      "text": "关于驿使，我有结果了。",
+      "conditionId": 133,
+      "hideWhenLocked": true,
+      "nextNodeId": 1,
+      "actionIds": [
+        15
+      ]
+    },
+    {
+      "id": 6,
+      "text": "下一程，要不要一起走？",
+      "conditionId": 134,
+      "hideWhenLocked": true,
+      "nextNodeId": 1,
+      "actionIds": [
+        16
+      ]
+    },
+    {
+      "id": 7,
+      "text": "我们需要像你这样的同行者。",
+      "conditionId": 135,
+      "hideWhenLocked": true,
+      "nextNodeId": 1,
+      "actionIds": [
+        17
+      ]
+    },
+    {
+      "id": 8,
+      "text": "欢迎入队。",
+      "conditionId": 136,
+      "hideWhenLocked": true,
+      "nextNodeId": 4,
+      "actionIds": [
+        18
+      ]
+    },
+    {
+      "id": 9,
+      "text": "稍后再聊。",
+      "conditionId": 1,
+      "nextNodeId": 0
+    },
+    {
+      "id": 10,
+      "text": "继续。",
+      "conditionId": 1,
+      "nextNodeId": 1
+    },
+    {
+      "id": 20,
+      "text": "莱雅托我来问。你还记得什么？",
+      "conditionId": 137,
+      "hideWhenLocked": true,
+      "nextNodeId": 21,
+      "actionIds": [
+        13
+      ]
+    },
+    {
+      "id": 21,
+      "text": "改日再来。",
+      "conditionId": 1,
+      "nextNodeId": 0
+    }
+  ]
+}

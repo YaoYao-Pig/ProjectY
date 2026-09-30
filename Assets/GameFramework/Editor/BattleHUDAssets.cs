@@ -195,12 +195,6 @@ namespace ProjectY.Editor
             var logToggle = Button("LogToggle", topControls, out logText); Box((RectTransform)logToggle.transform, 0, 0, 174, 26);
             var deck = Node("ActionDeck", safe); Paint(deck, Ink, true); Frame(deck, Gold);
             var accent = Plate("CrownLine", deck, Bright).rectTransform; accent.anchorMin = new Vector2(.38f, 1); accent.anchorMax = new Vector2(.62f, 1); accent.offsetMin = new Vector2(0, -2); accent.offsetMax = Vector2.zero;
-            var actor = Node("ActiveActor", deck);
-            var actorName = Label("ActorName", actor, 20, Paper); Box(actorName.rectTransform, 0, 0, 190, 30, true);
-            var hpText = Label("HealthText", actor, 12, Paper); Box(hpText.rectTransform, 0, 34, 190, 20, true);
-            var healthTrack = Node("Health", actor); Box(healthTrack, 0, 57, 182, 5, true); Paint(healthTrack, Tile); var health = Plate("Fill", healthTrack, Green);
-            var ap = Label("AP", actor, 15, Bright); Box(ap.rectTransform, 0, 70, 190, 23, true);
-            var resources = Label("Resources", actor, 11, Muted); Box(resources.rectTransform, 0, 99, 190, 36, true);
             var skills = Node("Skills", deck); var skillTitle = Label("SectionLabel", skills, 12, Bright); Box(skillTitle.rectTransform, 0, 0, 160, 22, true);
             var skillSlots = Node("Slots", skills); Stretch(skillSlots, 0, 0, 0, 28); var skillGrid = Grid(skillSlots, 8, new Vector2(74, 82));
             var items = Node("Items", deck); var itemTitle = Label("SectionLabel", items, 12, Muted); Box(itemTitle.rectTransform, 0, 0, 110, 22, true);
@@ -222,11 +216,10 @@ namespace ProjectY.Editor
             var tipBody = Label("Body", tooltip, 12, Paper, TextAnchor.UpperLeft); Stretch(tipBody.rectTransform, 14, 14, 14, 46);
             var hud = root.AddComponent<BattleHUDView>();
             hud.SetEditorLayout(new BattleHUDView.Layout { Root = rect, SafeArea = safe, Header = header, Turns = turns, Party = party,
-                Deck = deck, Actor = actor, Skills = skills, Items = items, Commands = commands, Hint = hint, Log = log, Tooltip = tooltip,
+                Deck = deck, Skills = skills, Items = items, Commands = commands, Hint = hint, Log = log, Tooltip = tooltip,
                 SkillGrid = skillGrid, ItemGrid = itemGrid, TurnGrid = turnGrid, Labels = root.GetComponentsInChildren<Text>(true) });
             Bind(root, Ref("HUD", hud), Ref("Group", root.GetComponent<CanvasGroup>()), Ref("Encounter", encounter), Ref("Round", round),
                 Ref("PartySlots", party), Ref("TurnSlots", turns), Ref("SkillSlots", skillSlots), Ref("ItemSlots", itemSlots),
-                Ref("ActorName", actorName), Ref("HealthText", hpText), Ref("Health", health), Ref("AP", ap), Ref("Resources", resources),
                 Ref("SkillTitle", skillTitle), Ref("ItemTitle", itemTitle), Ref("Hint", hintText), Ref("EndTurn", endTurn), Ref("EndTurnText", endText),
                 Ref("Move", move), Ref("MoveText", moveText), Ref("Focus", focus), Ref("FocusText", focusText), Ref("Auto", auto), Ref("AutoText", autoText),
                 Ref("LogToggle", logToggle), Ref("LogToggleText", logText), Ref("Previous", prev), Ref("Next", next), Ref("Log", log), Ref("Logs", logs),

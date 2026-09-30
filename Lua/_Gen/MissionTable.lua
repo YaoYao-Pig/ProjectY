@@ -1,0 +1,12 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MissionTableRow
+---@field id number 稳定配置 ID
+---@field name string 任务名称
+---@field description string 任务说明
+---@field category "basic"|"main"|"side"|"recruit" 任务分类
+---@field startConditionId number 接取条件
+---@field completeConditionId number 完成条件
+---@field autoAccept boolean 满足条件自动接取
+---@field autoComplete boolean 就绪后自动发放奖励
+---@field actionIds number[] 完成时执行一次的动作
+return {["name"]="MissionTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="name",["type"]="text",["description"]="\228\187\187\229\138\161\229\144\141\231\167\176"},{["name"]="description",["type"]="text",["description"]="\228\187\187\229\138\161\232\175\180\230\152\142"},{["name"]="category",["type"]="enum",["description"]="\228\187\187\229\138\161\229\136\134\231\177\187",["values"]={"basic","main","side","recruit"}},{["name"]="startConditionId",["type"]="int",["description"]="\230\142\165\229\143\150\230\157\161\228\187\182",["ref"]="ConditionTable"},{["name"]="completeConditionId",["type"]="int",["description"]="\229\174\140\230\136\144\230\157\161\228\187\182",["ref"]="ConditionTable"},{["name"]="autoAccept",["type"]="bool",["description"]="\230\187\161\232\182\179\230\157\161\228\187\182\232\135\170\229\138\168\230\142\165\229\143\150",["default"]=false},{["name"]="autoComplete",["type"]="bool",["description"]="\229\176\177\231\187\170\229\144\142\232\135\170\229\138\168\229\143\145\230\148\190\229\165\150\229\138\177",["default"]=false},{["name"]="actionIds",["type"]="int[]",["description"]="\229\174\140\230\136\144\230\151\182\230\137\167\232\161\140\228\184\128\230\172\161\231\154\132\229\138\168\228\189\156",["ref"]="NarrativeActionTable",["default"]={}}},["fingerprint"]="2edb46fda3a675f9d14026ce013eecb9612ec68503af89610bbbadbe2f1a40b8"}

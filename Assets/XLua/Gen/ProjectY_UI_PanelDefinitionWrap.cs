@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.UI.PanelDefinition);
-			Utils.BeginObjectRegister(type, L, translator, 0, 1, 17, 12);
+			Utils.BeginObjectRegister(type, L, translator, 0, 1, 18, 13);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Validate", _m_Validate);
 			
@@ -36,6 +36,7 @@ namespace XLua.CSObjectWrap
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Kind", _g_get_Kind);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Layer", _g_get_Layer);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Modal", _g_get_Modal);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "ModalDimAlpha", _g_get_ModalDimAlpha);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Cache", _g_get_Cache);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "CloseOnBack", _g_get_CloseOnBack);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "IsWorldUI", _g_get_IsWorldUI);
@@ -49,6 +50,7 @@ namespace XLua.CSObjectWrap
             Utils.RegisterFunc(L, Utils.SETTER_IDX, "Kind", _s_set_Kind);
             Utils.RegisterFunc(L, Utils.SETTER_IDX, "Layer", _s_set_Layer);
             Utils.RegisterFunc(L, Utils.SETTER_IDX, "Modal", _s_set_Modal);
+            Utils.RegisterFunc(L, Utils.SETTER_IDX, "ModalDimAlpha", _s_set_ModalDimAlpha);
             Utils.RegisterFunc(L, Utils.SETTER_IDX, "Cache", _s_set_Cache);
             Utils.RegisterFunc(L, Utils.SETTER_IDX, "CloseOnBack", _s_set_CloseOnBack);
             Utils.RegisterFunc(L, Utils.SETTER_IDX, "IsWorldUI", _s_set_IsWorldUI);
@@ -273,6 +275,20 @@ namespace XLua.CSObjectWrap
         }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_ModalDimAlpha(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.UI.PanelDefinition gen_to_be_invoked = (ProjectY.UI.PanelDefinition)translator.FastGetCSObj(L, 1);
+                LuaAPI.lua_pushnumber(L, gen_to_be_invoked.ModalDimAlpha);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _g_get_Cache(RealStatePtr L)
         {
 		    try {
@@ -441,6 +457,21 @@ namespace XLua.CSObjectWrap
 			
                 ProjectY.UI.PanelDefinition gen_to_be_invoked = (ProjectY.UI.PanelDefinition)translator.FastGetCSObj(L, 1);
                 gen_to_be_invoked.Modal = LuaAPI.lua_toboolean(L, 2);
+            
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 0;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _s_set_ModalDimAlpha(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.UI.PanelDefinition gen_to_be_invoked = (ProjectY.UI.PanelDefinition)translator.FastGetCSObj(L, 1);
+                gen_to_be_invoked.ModalDimAlpha = (float)LuaAPI.lua_tonumber(L, 2);
             
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);

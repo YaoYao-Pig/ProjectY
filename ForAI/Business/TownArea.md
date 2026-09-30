@@ -21,8 +21,8 @@
 - 住宅池通过 `houseUnits` 计数：新三种米制联排模型每组包含 3 栋、占 13 格，`houseCount` 表示栋数，完整组团不能拆开凑数。相邻房屋贴合，组团后方封闭庭院不作为公共通路；旧单栋住宅和特殊设施模型保留，配置决定是否使用。
 - `MapAreaTownNpcTable.partIds → PawnPartTable` 配置居民和工匠，复用[棋子挂点](PawnArt.md)，不把 NPC 加入主角队伍或战斗单位表。服务 NPC 在设施服务点旁待机，室内设施限制在同一室内并避开门洞，额外居民沿门前路点来回巡游，到一圈终点停留；本版是固定棋子姿势，没有骨骼步行动画。
 - 静态设施、NPC 定义和巡游路线归 Lua 布局；`MapAreaNpcData` 的占格、游标、时钟和 `MapAreaStateData` 的交互目标是唯一可变状态。`TownResidents.Tick` 让居民避开其他 NPC、队员当前格及整队剩余路线；遇阻尝试绕向前方少量路点；迎面堵塞时编号较大的居民向有出口的空邻格侧让，保留巡游游标，每次最多一步。交谈时目标 NPC 暂停，退出区域不在后台巡游；重进保留所有人的位置。
-- 默认第三人称：WASD 发已连通的六邻接方向命令、同伴使用现有编队规划；松开键停止待执行路线，按住空格停止。右键拖动转镜头、滚轮拉近拉远；V 切换俯视点击移动。仍是六边形移动原型，不是自由移动 CharacterController。镜头同时检查由阻挡占地裁切的模型包围盒与真实台地/桥面三角形；棋子按当前移动边采样坡面、台阶，不吸到另一层。
-- E 与附近设施或 NPC 交互；距离按道路图计算，不能隔着桥面交谈，交互期间不能带队走路。铁匠购买改装件、商店购买弹药/补给、酒馆恢复通过[探索事件](Adventure.md)接入，结束后留在原地；其余设施和 NPC 仍显示介绍，Esc 关闭。尚无制作、商店库存或任务系统。
+- 默认第三人称：WASD 发已连通的六邻接方向命令、同伴使用现有编队规划。城镇键盘与点击路线在命令成功时立即提交首个合法整队步进并开始平滑显示，后续仍按配置的移动间隔推进；按住键在当前平滑移动结束后接下一格，没有额外按键冷却。显示宿主只读 C# 占格修订号并及时拉取快照，避免每格等待 0.1 秒轮询；松开键停止待执行路线，已开始的一格完成平滑过渡，按住空格停止。右键拖动转镜头、滚轮拉近拉远；V 切换俯视点击移动。仍是六边形移动原型，不是自由移动 CharacterController。镜头同时检查由阻挡占地裁切的模型包围盒与真实台地/桥面三角形；棋子按当前移动边采样坡面、台阶，不吸到另一层。
+- E 与附近设施或 NPC 交互；距离按道路图计算，不能隔着桥面交谈，交互期间不能带队走路。铁匠购买改装件、商店购买弹药/补给、酒馆恢复通过[探索事件](Adventure.md)接入，结束后留在原地；通用居民保留介绍，[具名叙事 NPC](Narrative.md)进入分支对话并接入任务/好感/阵营/日程。尚无制作与独立商店库存。
 - Unity 菜单 `Project Y/地图/打开城镇漫游测试` 复用 AdventureDemo；用户自行 Play 后选择城镇地点。地图资源现有 112 项，含[环境装饰](MapDressing.md)；棋子/装备资源按各自配置表同步，不固定其数量；改表经 exporter，模型须定向导入并执行远征菜单“同步地图资源引用”。新增棋子部件才需要“同步棋子资源引用”；运行时始终用空 Rig 按表装配。
 - 本套资源位于 `Art/TownLowPoly` / `Assets/DynamicAsset/TownLowPoly`：原 16 个模型保留，新增 `Town_RowHousesA/B/C`（ID 50–52）和 `Town_SkyBridge`（ID 53），新源为 `TerracedTown.blend`。街桥 FBX 只含栏杆与梁柱，地面由 `TownSurfaceRenderer` 按导航顶点生成；不能把桥当作落地实体柱。新模型复用共享哑光材质，未增加纹理依赖。
 - 最小算法检查：`town_core.lua` 覆盖四配方、连通、完整占地、NPC 路线、确定性、上下层身份、桥下净空和四人上下桥；`squad_movement.lua`、`maparea_core.lua` 检查共有导航的基本回归。Edit Mode 菜单 `Project Y/地图/验证城镇漫游` 使用真实 C# 状态检查巡游、门口交互、桥上/桥下往返与重进，不进入 Play。`preview_town.cs` 使用真实路线快照核对顶点采样、分层拾取并输出全景/街景/桥上/桥下图片。
@@ -40,6 +40,7 @@
 - [山城源文件](../../Art/TownLowPoly/Source/TerracedTown.blend) / [新模型 Blender 预览](../../Art/TownLowPoly/Previews/terraced-kit.png) / [山城建模脚本](../../Art/TownLowPoly/Scripts/build_terraced_kit.py) / [四个新模型定向导入片段](../../Art/TownLowPoly/Scripts/import_terraced.cs)。
 - [山城 Unity 导入记录](../../Art/TownLowPoly/Integration/terraced-unity-import.json) / [全景](../../Art/TownLowPoly/Previews/town-terraced-overview.png) / [桥上](../../Art/TownLowPoly/Previews/town-terraced-bridge.png) / [桥下](../../Art/TownLowPoly/Previews/town-terraced-underpass.png) / [预览检查记录](../../Art/TownLowPoly/Integration/town-preview.json)。
 - [算法检查](../../Tools/Tests/town_core.lua) / [真实数据检查](../../Tools/Tests/town_integration.lua) / [Unity 预览片段](../../Art/TownLowPoly/Scripts/preview_town.cs)。
+- [即时移动检查](../../Tools/Tests/town_movement.lua)：通过现有 `AdventureValidation.RunFile`（反射调用私有静态入口）在 Edit Mode 执行，使用真实 C# 占格与时钟；覆盖 1–4 人首步立即响应、短按/停止、后续步进间隔、障碍/交互、探索回合效果与地牢节奏，不初始化远征角色。
 - 街区组织参考：[香港石板街](https://www.discoverhongkong.com/eng/place-to-go/travel.guide-pottinger-street.html)的坡地台阶与沿街建筑、[尾道坡道](https://nihonisan-onomichi.jp/en/bunkazai01_hilly-roads/)的山坡街道；本项目采用奇幻低模改编，不复刻真实建筑。
 
 - [可进入建筑源](../../Art/TownInteriorLowPoly/Source/WalkableTown.blend) / [新模型](../../Assets/DynamicAsset/TownInteriorLowPoly/Models/) / [导入记录](../../Art/TownInteriorLowPoly/Integration/unity-import.json) / [几何通路检查](../../Art/TownInteriorLowPoly/Integration/geometry-check.json)。

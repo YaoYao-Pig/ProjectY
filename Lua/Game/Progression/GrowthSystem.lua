@@ -11,13 +11,19 @@ end
 function Growth:Actor(id)
     for i=0,self.data.PartyCount-1 do local actor=self.data:GetPartyAt(i); if actor.Id==id then return actor end end
 end
-function Growth:Initialize(actor)
+function Growth:PrepareActor(actor)
     local profile = assert(self.rules.profileByUnit[actor.TemplateId], 'Missing growth profile')
     local rule = self.rules.settings
     actor.Growth:Initialize((self.data.Seed+actor.Id*104729)%4294967296,rule.initialAttributePoints,rule.initialTalentPoints,profile.potential)
     for _, id in ipairs(profile.treeIds) do actor.Growth:UnlockTree(id) end
     for _, id in ipairs(profile.traitIds) do actor:AddTrait(id) end
-    self.chronicle:Record('growth',actor,'旅程伊始','带着自己的来历，加入这次远征。','营地',false)
+end
+function Growth:RecordJoined(actor,location)
+    self.chronicle:Record('growth',actor,'旅程伊始','带着自己的来历，加入这次远征。',location,false)
+end
+function Growth:Initialize(actor)
+    self:PrepareActor(actor)
+    self:RecordJoined(actor,'营地')
 end
 function Growth:Editable(id)
     if self.data.Phase ~= 'map' and self.data.Phase ~= 'area' then return nil, '请在探索间隙进行养成' end

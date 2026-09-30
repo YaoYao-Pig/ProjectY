@@ -112,7 +112,15 @@ namespace ProjectY.Editor
                 target=new RenderTexture(width,height,24,RenderTextureFormat.ARGB32);target.Create();camera.targetTexture=target;ProjectY.Rendering.UrpCameraRendering.Render(camera);
                 RenderTexture.active=target;image=new Texture2D(width,height,TextureFormat.RGBA32,false);
                 image.ReadPixels(new Rect(0,0,width,height),0,0);image.Apply();
-                Directory.CreateDirectory(Path.GetDirectoryName(item.iconPath));File.WriteAllBytes(item.iconPath,image.EncodeToPNG());
+                Directory.CreateDirectory(Path.GetDirectoryName(item.iconPath));
+                // Imported textures can remain memory-mapped in Unity. Replace the file instead of truncating it.
+                var temporary=item.iconPath+".tmp";
+                try
+                {
+                    File.WriteAllBytes(temporary,image.EncodeToPNG());
+                    if(File.Exists(item.iconPath)) File.Replace(temporary,item.iconPath,null);else File.Move(temporary,item.iconPath);
+                }
+                finally {if(File.Exists(temporary)) File.Delete(temporary);}
                 camera.targetTexture=null;
                 AssetDatabase.ImportAsset(item.iconPath,ImportAssetOptions.ForceSynchronousImport);
                 var importer=(TextureImporter)AssetImporter.GetAtPath(item.iconPath);

@@ -1,7 +1,6 @@
 ---@meta
 -- Generated from LuaReference. Do not edit; never require this file.
 ---@class MainHudPanelView
----@field Root CS.UnityEngine.RectTransform
 ---@field Canvas CS.UnityEngine.Canvas
 ---@field Panel CS.ProjectY.UI.LuaPanel
 ---@field Group CS.UnityEngine.CanvasGroup
@@ -51,5 +50,26 @@
 ---@field SkillHint CS.UnityEngine.UI.Text
 ---@field GM CS.UnityEngine.UI.Button
 ---@field GMText CS.UnityEngine.UI.Text
+---@field Menu CS.UnityEngine.RectTransform
+---@field MenuToggleText CS.UnityEngine.UI.Text
+---@field MenuToggle CS.UnityEngine.UI.Button
+---@field MissionsText CS.UnityEngine.UI.Text
+---@field Missions CS.UnityEngine.UI.Button
+---@field MenuTitle CS.UnityEngine.UI.Text
+---@field MenuRows CS.UnityEngine.RectTransform
+---@field MenuRowsScroll CS.UnityEngine.UI.ScrollRect
+---@field ClockNeedle CS.UnityEngine.RectTransform
+---@field ClockTime CS.UnityEngine.UI.Text
+---@field ClockDay CS.UnityEngine.UI.Text
+---@field SkillPreviousText CS.UnityEngine.UI.Text
+---@field SkillPrevious CS.UnityEngine.UI.Button
+---@field SkillNextText CS.UnityEngine.UI.Text
+---@field SkillNext CS.UnityEngine.UI.Button
+---@field SkillPage CS.UnityEngine.UI.Text
+---@field Root CS.UnityEngine.RectTransform
+---@field HealthTooltip CS.UnityEngine.RectTransform
+---@field HealthTipTitle CS.UnityEngine.UI.Text
+---@field HealthTipBody CS.UnityEngine.UI.Text
+---@field BattleFeedback CS.ProjectY.UI.BattleFeedbackSystem
 local View = {}
 return View

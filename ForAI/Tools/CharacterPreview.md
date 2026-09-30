@@ -7,6 +7,7 @@
 ## 正文
 
 - 默认地址 `http://127.0.0.1:4177`；工程根运行 `node Tools/WebServices/manage.mjs start character-preview`。已注册到[Web 服务管理](WebServices.md)，可通过 Editor 服务管理窗口启停和打开。
+- [内容中心](ContentCenter.md)在 `/character/` 内嵌同一工坊，`item` 定位武器；`embed=1` 时外观和握点通过同源消息进入父页面草稿，由父页面统一保存。独立工坊仍自动保存握点。Unity 导出追加新增武器的独立持握采样。
 - 提供五族男女、三档体型、脸型、有效发型与颜色选择；支持锁定种族/性别随机、种子重现、转动/缩放、动作播放暂停/进度/速度、外观 JSON 查看、复制、下载与导入。龙人自动过滤会撞角的全包发型。
 - Unity 菜单 `Project Y/角色/同步模块化角色资源` 更新资源目录、装备贴合与 PawnRig 绑定；`导出角色网页资源` 从实际 Mesh、材质、bind pose、动作采样和根偏移生成 `public/data/characters.json`。未持武时展示六类基础动作；11 个持武组合从实际 PawnView/Tick 与握点求解采样，提供持握待机、持械行走和武器动作。
 - 试穿包含三种头饰、三种护甲、裤靴、披风/箭袋、九种武器及双持/剑盾组合，展示所选[动作模组](../Business/EquipmentMotion.md)和局部握点。挂点下的符文、弹匣和推进器也来自真实资源。头饰覆盖发型时保留选项，卸下恢复；试穿状态不写入角色外观 JSON 或游戏库存。
@@ -19,6 +20,7 @@
 - 网页用同一目录与 uint32 随机算法，使用 Unity 导出的固定种子结果校对；从 Unity 左手坐标转换到网页右手坐标时同步转换顶点、法线、bind pose、姿势，并反转三角形绕序。不能把 Blender 单独生成的几何替代这一导出链路。
 - `public/` 可独立部署为静态站点，不依赖 Editor，也不访问 CDN；Three.js 0.180.0 模块和 MIT LICENSE 本地分发。光照由浏览器渲染，不承诺与 Unity 逐像素一致。待机展示台属于预览布景，播放动作时隐藏以避免遮住真实姿势。
 - 导出包记录 Unity 来源依赖及 SHA-256。本地服务 `/api/source-status` 检测文件修改/缺失；网页提示重新同步导出。资源包不会随模型修改自动更新；独立部署时没有工程源文件，明确显示无法校对源工程。
+- 来源校验把 Unity 的 `Packages/` 虚拟路径解析为锁定版本 PackageCache；导出先保存材质导入升级再计算摘要，JSON 采用原子替换避免网页读到半个资源包。
 - 服务只监听 loopback，检查 Host/Origin，生命周期复用统一宿主；握点保存/导出之外的资源接口只读。静态部署仍支持角色预览，但禁用配置编辑。资源包缺失不显示伪造模型，直接提示 Unity 导出入口。
 - 外观 JSON 使用[角色定制契约](../Business/PawnCustomization.md)。返回 Unity 的 `从网页外观 JSON 创建预览 Prefab` 入口验证并创建独立预设；游戏的敌群池和[角色存档](../Business/CharacterSave.md)由业务配置与 Data 管理。
 - 最小检查 `node --test Tools/CharacterPreview/tests/characters.test.mjs Tools/CharacterPreview/tests/grips.test.mjs` 覆盖资源、随机、来源、服务边界、临时工程写回/冲突/导表、缩放坐标、双臂骨长、附件归属和武器旋转隔离；要求新版导出包。Lua 解析用 `python Tools/Tests/run_lua.py Tools/Tests/equipment_motion.lua`。交互另用浏览器确认拖拽、组合切换和保存。

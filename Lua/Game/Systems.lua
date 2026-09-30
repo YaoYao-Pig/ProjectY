@@ -1,6 +1,7 @@
 -- 系统统一注册入口；依赖关系决定初始化顺序，关闭时按相反顺序释放。
 return function(registry)
     registry:Register('Config', require('Config.ConfigSystem'))
+    registry:Register('Condition', require('Game.Condition.ConditionSystem'), { 'Config' })
     registry:Register('Localization', require('Config.LocalizationSystem'), { 'Config' })
     registry:Register('PlayerModel', require('Game.PlayerModelSystem'), { 'Config' })
     registry:Register('Map', require('Game.Map.MapSystem'), { 'Config' })
@@ -10,6 +11,7 @@ return function(registry)
     registry:Register('Growth', require('Game.Progression.GrowthSystem'), { 'Battle' })
     registry:Register('AdventureEvents', require('Game.Adventure.EventSystem'), { 'Battle', 'PlayerModel', 'Growth','Equipment' })
     registry:Register('Adventure', require('Game.Adventure.AdventureSystem'), { 'Map', 'MapArea', 'AdventureEvents', 'Equipment' })
-    registry:Register('GM', require('Game.GM.GMSystem'), { 'Config', 'Growth' })
-    registry:Register('UI', require('UI.UISystem'), { 'PlayerModel', 'Localization','GM' })
+    registry:Register('Narrative', require('Game.Narrative.NarrativeSystem'), { 'Adventure', 'Condition' })
+    registry:Register('GM', require('Game.GM.GMSystem'), { 'Config', 'Growth', 'Narrative' })
+    registry:Register('UI', require('UI.UISystem'), { 'PlayerModel', 'Localization','GM','Narrative' })
 end

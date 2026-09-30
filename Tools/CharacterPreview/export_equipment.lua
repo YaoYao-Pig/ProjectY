@@ -46,5 +46,15 @@ function CharacterEquipmentGripIds()
     return main and main.ItemId or 0,main and equipment.rules.weapons:Get(main.ItemId).gripId or 0,
         off and off.ItemId or 0,off and equipment.rules.weapons:Get(off.ItemId).gripId or 0
 end
+function CharacterEquipmentByItem(itemId)
+    -- A clean detached inventory keeps arbitrary authored weapons independent of demo indices/capacity.
+    data.Equipment:Clear()
+    local item=equipment.rules.items:Get(itemId)
+    data.Equipment.Grid:Configure(math.max(item.width,12),math.max(item.height,10))
+    local weapon=data.Equipment:AddWeapon(itemId)
+    assert(equipment:Command('equip',1,weapon.Id,0,0))
+    actor:SetMaxHP(registry:Get('Battle').stats:MaximumHP(actor));actor:Restore()
+    return CharacterEquipmentSnapshot()
+end
 function CloseCharacterEquipmentFixture() registry:Shutdown() end
 return actor

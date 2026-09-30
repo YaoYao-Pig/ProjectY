@@ -13,9 +13,9 @@
 - `TownTerrain/RoyalTownTerrain` 在放模型前记录 `townInside`。`TownSurfaces.Apply` 在建筑和街网完成后按用途分类，并用有限距离传播给建筑周边铺院落、城界混色；只写外观字段。王城 `pavingRole=plaza` 保留广场铺装意图，不改变道路图。`MapAreaTownInteriorTable.surfaceId` 控制室内导航地格的底面；建筑模型自身的地板网格仍可覆盖底面并使用模型材质。
 - `MapAreaSystem.LayoutSnapshot` 对地牢和城镇都复制 `surfaces` 实体数组，地格持有 `surfaceId/sideSurfaceId`。`TownSurfaceRenderer` 写入 UV1 图案参数、UV2 覆盖 RGB 与平滑度；`MapAreaRenderer` 地牢地形使用独立实例材质与 `_SurfaceData/_SurfaceFinish` 数组，陈设仍为原纯色材质。共享 Shader 的模式 0 为纯色模型，1 为城镇顶点参数，2 为地牢实例参数；世界坐标生成连续图案，远景淡化细缝。未知格关闭图案，苔藓覆盖色同样遵守探索迷雾。台阶/坡面、射线与人物贴地契约不变。
 - 光照源表为 `MapEnvironmentTable`（生命周期和视觉时钟）、`MapLightKeyTable`（24 小时循环关键帧）、`MapWeatherTable`（晴/阴倍率和雾距）。黄昏通过时间关键帧表达；默认视觉日 600 秒、初始 10:00。`MapPresentation.Snapshot` 校验顺序、天气引用与雾距后复制给 C#，不导出只读代理数组。
-- `MapEnvironmentController` 持有视觉时间，支持暂停、手动小时和天气选择。时间在大地图/小地图之间延续，但不存档、不影响 NPC 日程或战斗时间。方向光兼作夜间月光，插值天空/水平/地面环境光、雾色和阴影；按领队真实占格混合室内外环境，按进入室内的队员开启限量点光，默认最多 4 盏。
+- `MapEnvironmentController` 仍可独立使用视觉时间；远征 Demo 由[叙事游戏时钟](Narrative.md)驱动 Hour，使昼夜与 NPC 日程一致并随叙事状态存档。方向光兼作夜间月光，插值天空/水平/地面环境光、雾色和阴影；按领队真实占格混合室内外环境，按进入室内的队员开启限量点光，默认最多 4 盏。
 - 局部灯在 `SetArea` 缓存建筑中心，Tick 不扫描全图、不新建灯。控制器要求显式绑定方向光、相机与宿主，`AdventureRuntimeDemo.environmentSun` 通过原生 Editor API 保存。销毁时释放灯并恢复原场景 RenderSettings、方向光、相机背景和受影响的 QualitySettings。雾距相对观察焦点计算，避免远处正交相机把整张大地图淹没。
-- 第三人称右上角“时间 / 天气”及俯视侧栏可调视觉时间与天气；拖动时间或选小时会暂停自动循环，可重新勾选。渲染使用 [URP 与奇幻风格](../Framework/Rendering.md)，无烘焙光照依赖。本版不是天文太阳模型，也不包含自动天气随机、街灯日程或楼上室内。
+- 远征“时间 / 天气”窗口显示游戏时间、提供天气预览；时间参数通过配置调整，避免视觉时刻与 NPC 日程分离。渲染使用 [URP 与奇幻风格](../Framework/Rendering.md)，无烘焙光照依赖。本版不是天文太阳模型，也不包含自动天气随机、街灯日程或楼上室内。
 - 最小检查：`town_interiors.lua` 验证源表快照、地表引用与广场/院落/园地，以及真实配方的门洞和四人进出；`preview_expansion.cs/.lua` 在 Edit Mode 用真实远征命令检查全部室内、屋顶恢复、时间跨日、天气光强并截图。脚本属于原生 MCP 片段，不放入 Assets 编译；完整检查结果在扩展资源目录下。
 
 ## 关键入口

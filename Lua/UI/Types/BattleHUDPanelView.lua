@@ -1,7 +1,6 @@
 ---@meta
 -- Generated from LuaReference. Do not edit; never require this file.
 ---@class BattleHUDPanelView
----@field Root CS.UnityEngine.RectTransform
 ---@field Canvas CS.UnityEngine.Canvas
 ---@field Panel CS.ProjectY.UI.LuaPanel
 ---@field HUD CS.ProjectY.UI.BattleHUDView
@@ -12,11 +11,6 @@
 ---@field TurnSlots CS.UnityEngine.RectTransform
 ---@field SkillSlots CS.UnityEngine.RectTransform
 ---@field ItemSlots CS.UnityEngine.RectTransform
----@field ActorName CS.UnityEngine.UI.Text
----@field HealthText CS.UnityEngine.UI.Text
----@field Health CS.UnityEngine.UI.Image
----@field AP CS.UnityEngine.UI.Text
----@field Resources CS.UnityEngine.UI.Text
 ---@field SkillTitle CS.UnityEngine.UI.Text
 ---@field ItemTitle CS.UnityEngine.UI.Text
 ---@field Hint CS.UnityEngine.UI.Text
@@ -37,5 +31,6 @@
 ---@field Tooltip CS.UnityEngine.RectTransform
 ---@field TipTitle CS.UnityEngine.UI.Text
 ---@field TipBody CS.UnityEngine.UI.Text
+---@field Root CS.UnityEngine.RectTransform
 local View = {}
 return View

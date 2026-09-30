@@ -29,7 +29,14 @@ local ok,err=xpcall(function()
     test('overview reads real attributes and trait tags; attribute button mutates once',function()
         assert(adapter.growthOpen and Services.UI.IsWorldPaused)
         assert(panel.view.Summary.text:find('属性点 2',1,true))
-        assert(#panel.pools.Attributes==17 and #panel.pools.Traits==1)
+        assert(#panel.pools.Attributes==growth.rules.attributes.Count and #panel.pools.Traits==1)
+        local seen={}
+        for i,row in ipairs(growth.rules.attributes:All()) do
+            local widget=panel.pools.Attributes[i]
+            assert(widget.view.Icon.sprite~=nil,'Missing rendered glyph for '..row.code)
+            seen[row.code]=true
+        end
+        assert(seen.animalAffinity and seen.charisma,'Animal affinity and charisma must be covered by the real UI check')
         local actor=data:GetPartyAt(0);local hp=actor.MaxHP
         panel.pools.Attributes[1].view.Button.onClick:Invoke()
         assert(actor.MaxHP==hp+4 and actor.Growth.AttributePoints==1 and adapter.commands==1)

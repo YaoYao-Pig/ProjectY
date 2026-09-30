@@ -1,0 +1,61 @@
+{
+  "version": 1,
+  "name": "DialogueTable",
+  "description": "NPC 对话入口。节点允许循环，但每次推进必须来自玩家选择。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "对话名称"
+    },
+    {
+      "name": "npcId",
+      "type": "int",
+      "description": "对话对象",
+      "ref": "NpcTable"
+    },
+    {
+      "name": "conditionId",
+      "type": "int",
+      "description": "开启条件",
+      "ref": "ConditionTable"
+    },
+    {
+      "name": "entryNodeId",
+      "type": "int",
+      "description": "起始节点",
+      "ref": "DialogueNodeTable"
+    },
+    {
+      "name": "cameraId",
+      "type": "int",
+      "description": "镜头配方",
+      "ref": "DialogueCameraTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "驿路上的约定",
+      "npcId": 1,
+      "conditionId": 1,
+      "entryNodeId": 1,
+      "cameraId": 1
+    },
+    {
+      "id": 2,
+      "name": "一封没有收件人的信",
+      "npcId": 2,
+      "conditionId": 1,
+      "entryNodeId": 20,
+      "cameraId": 1
+    }
+  ]
+}

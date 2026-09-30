@@ -25,7 +25,7 @@ function Generator:Register(areaType,strategy,tableName,themeTableName)
     self.strategies[areaType]={strategy=strategy,profiles=profiles,themes=themes}
 end
 function Generator:CanGenerate(areaId) return self.strategies[self.definitions:Get(areaId).areaType]~=nil end
-function Generator:Generate(areaId,worldSeed,pointId,source)
+function Generator:Generate(areaId,worldSeed,pointId,source,decorate)
     local definition=self.definitions:Get(areaId)
     local implementation=assert(self.strategies[definition.areaType],'MapArea strategy is not implemented')
     Random(worldSeed)
@@ -57,6 +57,7 @@ function Generator:Generate(areaId,worldSeed,pointId,source)
         end
         for i=1,3 do cell.color[i]=base[i]*(0.94+noise*0.12) end
     end
+    if decorate then decorate(area) end
     return Layout.Freeze(area)
 end
 return Generator

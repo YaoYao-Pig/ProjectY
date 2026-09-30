@@ -13,7 +13,7 @@ namespace ProjectY.Data
         public AttributeEntry[] attributes; public IntEntry[] talents; public int[] trees, skills, pending, offers;
     }
     [Serializable] internal sealed class ActorSave
-    { public int id, templateId, hp, maxHP; public string appearance; public int[] traits; public GrowthSave growth; public AnimalMountSave mount; }
+    { public int id, templateId, hp, maxHP; public string appearance; public int[] traits; public GrowthSave growth; public bool hasMount; public AnimalMountSave mount; public GameEffectSave[] effects; }
     [Serializable] internal sealed class WeaponSave
     { public int id, itemId, owner, magazine; public string hand; public IntEntry[] runes; }
     [Serializable] internal sealed class MagazineSave { public int id, itemId, ammo, capacity, rounds; }
@@ -22,7 +22,7 @@ namespace ProjectY.Data
     [Serializable] internal sealed class EquipmentSave
     { public int width, height, nextId; public IntEntry[] stacks; public WeaponSave[] weapons; public MagazineSave[] magazines; public WearableSave[] wearables; public PlacementSave[] placements; }
     [Serializable] internal sealed class CharacterSaveDocument
-    { public int version, coins, playerLevel; public uint seed; public string savedAt; public ActorSave[] actors; public EquipmentSave equipment; }
+    { public int version, coins, playerLevel; public uint seed; public string savedAt; public ActorSave[] actors; public EquipmentSave equipment; public NarrativeSave narrative; }
 
     internal static class SaveCheck
     {
@@ -55,13 +55,16 @@ namespace ProjectY.Data
     {
         public string CustomizationJson { get; private set; } = "";
         internal void SetCustomization(string json) { if (string.IsNullOrEmpty(json)) throw new ArgumentException("Missing actor appearance."); CustomizationJson = json; }
-        internal ActorSave CaptureSave() => new ActorSave { id = Id, templateId = TemplateId, hp = HP, maxHP = MaxHP, appearance = CustomizationJson, traits = traits.ToArray(), growth = Growth.CaptureSave(),mount=CaptureMount() };
+        internal ActorSave CaptureSave() => new ActorSave { id = Id, templateId = TemplateId, hp = HP, maxHP = MaxHP, appearance = CustomizationJson, traits = traits.ToArray(), growth = Growth.CaptureSave(),hasMount=MountedAnimal!=null,mount=CaptureMount(),effects=Effects.Capture() };
         internal static CombatActorData FromSave(ActorSave row, CharacterAppearanceService appearances)
         {
             SaveCheck.Require(row != null && row.id > 0 && row.templateId > 0 && row.maxHP >= 1 && row.maxHP <= 1000000 && row.hp >= 0 && row.hp <= row.maxHP, "角色身份或生命");
             SaveCheck.PositiveIds(row.traits, "特质"); var actor = new CombatActorData(row.id, row.templateId);
             actor.MaxHP = row.maxHP; actor.HP = row.hp; actor.traits.AddRange(row.traits); actor.Growth.RestoreSave(row.growth);
-            actor.RestoreMount(row.mount);appearances.Apply(actor, row.appearance); return actor;
+            actor.Effects.Restore(row.effects);
+            if(row.hasMount){SaveCheck.Require(row.mount!=null,"缺少坐骑记录");actor.RestoreMount(row.mount);}
+            else SaveCheck.Require(row.mount==null || (row.mount.id==0 && row.mount.templateId==0 && row.mount.speciesId==0 && row.mount.hp==0 && row.mount.maxHP==0 && row.mount.bond==0 && row.mount.random==0),"未骑乘角色包含坐骑数据");
+            appearances.Apply(actor, row.appearance); return actor;
         }
     }
     public sealed partial class EquipmentWeaponData

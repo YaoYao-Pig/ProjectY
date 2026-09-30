@@ -112,7 +112,7 @@ namespace ProjectY.Editor
             foreach(var orthographic in new[]{false,true})
             {
                 camera.orthographic=orthographic;camera.orthographicSize=8;camera.transform.position=originalPosition;camera.transform.rotation=originalRotation;
-                if(!follower.Project()||follower.Bounds.width<96||follower.Bounds.width>128.1f) throw new InvalidOperationException("Health follower size is outside the compact range.");
+                if(!follower.Project()||follower.Bounds.width<((RectTransform)fixture.transform).rect.width*.75f-.1f||follower.Bounds.width>((RectTransform)fixture.transform).rect.width+.1f) throw new InvalidOperationException("Health follower size is outside the compact range.");
                 var expected=camera.WorldToScreenPoint(target.position+offset)+fixture.transform.parent.TransformVector(new Vector3(screenOffset.x,screenOffset.y,0));
                 var actual=RectTransformUtility.WorldToScreenPoint(null,fixture.transform.position);
                 if(Vector2.Distance((Vector2)expected,actual)>1)throw new InvalidOperationException("Health bar does not project to its actual head anchor.");
@@ -142,6 +142,7 @@ namespace ProjectY.Editor
                     var shown=follower.Project();
                     if(Mathf.Abs(group.alpha-alphas[i])>.015f||shown!=(alphas[i]>0))
                         throw new InvalidOperationException("Unexpected zoom fade alpha: "+group.alpha+" at "+values[i]+" (orthographic="+orthographic+").");
+                    if(!shown&&group.blocksRaycasts)throw new InvalidOperationException("Hidden head status icons must not intercept input.");
                 }
             }
             follower.BindScreen(overlay,new Vector2(Screen.width*.5f,Screen.height*.5f));

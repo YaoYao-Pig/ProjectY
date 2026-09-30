@@ -1,0 +1,302 @@
+{
+  "version": 1,
+  "name": "ConditionTable",
+  "description": "可复用的只读条件图。all/any/not 组合子条件，其他 kind 由 Lua 注册校验与求值处理器；无隐式通过的空条件。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定条件 ID",
+      "min": 1
+    },
+    {
+      "name": "kind",
+      "type": "string",
+      "description": "条件类型；组合类型为 all/any/not，扩展类型通过 ConditionSystem:Register 注册"
+    },
+    {
+      "name": "conditionIds",
+      "type": "int[]",
+      "description": "组合节点的子条件；叶子为空，not 必须且只能有一个子条件",
+      "ref": "ConditionTable",
+      "default": []
+    },
+    {
+      "name": "targetId",
+      "type": "int",
+      "description": "叶子处理器定义的目标配置 ID；由对应处理器校验引用",
+      "default": 0
+    },
+    {
+      "name": "key",
+      "type": "string",
+      "description": "叶子处理器定义的事实键",
+      "default": ""
+    },
+    {
+      "name": "value",
+      "type": "int",
+      "description": "叶子处理器定义的整数阈值或参数",
+      "default": 0
+    },
+    {
+      "name": "state",
+      "type": "string",
+      "description": "叶子处理器定义的目标状态",
+      "default": ""
+    },
+    {
+      "name": "reason",
+      "type": "text",
+      "description": "条件不满足时显示的原因，必须非空"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "kind": "always",
+      "reason": "无前置要求"
+    },
+    {
+      "id": 2,
+      "kind": "never",
+      "reason": "当前内容尚未开放"
+    },
+    {
+      "id": 101,
+      "kind": "item_count",
+      "reason": "需要 36 发巡猎弹药",
+      "targetId": 31,
+      "value": 36
+    },
+    {
+      "id": 102,
+      "kind": "kill_count",
+      "reason": "需要击败 2 名荒野掠夺者",
+      "targetId": 4,
+      "value": 2
+    },
+    {
+      "id": 103,
+      "kind": "flag",
+      "reason": "尚未获得证言",
+      "key": "courier_evidence",
+      "value": 1
+    },
+    {
+      "id": 104,
+      "kind": "flag",
+      "reason": "还没听过莱雅的故事",
+      "key": "lya_story",
+      "value": 1
+    },
+    {
+      "id": 105,
+      "kind": "quest_state",
+      "reason": "先准备好补给",
+      "targetId": 101,
+      "state": "completed"
+    },
+    {
+      "id": 106,
+      "kind": "flag",
+      "reason": "未选择武力路线",
+      "key": "courier_route",
+      "value": 1
+    },
+    {
+      "id": 107,
+      "kind": "flag",
+      "reason": "未选择调查路线",
+      "key": "courier_route",
+      "value": 2
+    },
+    {
+      "id": 111,
+      "kind": "all",
+      "reason": "补给和武力路线尚未就绪",
+      "conditionIds": [
+        105,
+        106
+      ]
+    },
+    {
+      "id": 112,
+      "kind": "all",
+      "reason": "补给和调查路线尚未就绪",
+      "conditionIds": [
+        105,
+        107
+      ]
+    },
+    {
+      "id": 113,
+      "kind": "quest_state",
+      "reason": "道路尚未清理",
+      "targetId": 102,
+      "state": "completed"
+    },
+    {
+      "id": 114,
+      "kind": "quest_state",
+      "reason": "证言尚未取得",
+      "targetId": 103,
+      "state": "completed"
+    },
+    {
+      "id": 115,
+      "kind": "any",
+      "reason": "完成任意一条调查路线",
+      "conditionIds": [
+        113,
+        114
+      ]
+    },
+    {
+      "id": 120,
+      "kind": "all",
+      "reason": "准备补给、了解莱雅，并完成任意路线",
+      "conditionIds": [
+        105,
+        115,
+        142
+      ]
+    },
+    {
+      "id": 121,
+      "kind": "mission_state",
+      "reason": "先完成失踪的驿使",
+      "targetId": 100,
+      "state": "completed"
+    },
+    {
+      "id": 122,
+      "kind": "quest_state",
+      "reason": "尚未提出邀请",
+      "targetId": 201,
+      "state": "completed"
+    },
+    {
+      "id": 123,
+      "kind": "all",
+      "reason": "赢得信任并提出邀请",
+      "conditionIds": [
+        124,
+        125
+      ]
+    },
+    {
+      "id": 124,
+      "kind": "npc_relation",
+      "reason": "莱雅好感需要达到 10",
+      "targetId": 1,
+      "value": 10
+    },
+    {
+      "id": 125,
+      "kind": "flag",
+      "reason": "尚未邀请莱雅",
+      "key": "lya_invited",
+      "value": 1
+    },
+    {
+      "id": 130,
+      "kind": "mission_state",
+      "reason": "已经接受这份委托",
+      "targetId": 100,
+      "state": "inactive"
+    },
+    {
+      "id": 131,
+      "kind": "all",
+      "reason": "当前不能选择路线",
+      "conditionIds": [
+        138,
+        139
+      ]
+    },
+    {
+      "id": 132,
+      "kind": "not",
+      "reason": "已经听过这个故事",
+      "conditionIds": [
+        104
+      ]
+    },
+    {
+      "id": 133,
+      "kind": "mission_state",
+      "reason": "任务尚未就绪",
+      "targetId": 100,
+      "state": "ready"
+    },
+    {
+      "id": 134,
+      "kind": "all",
+      "reason": "先完成委托且尚未接取邀请任务",
+      "conditionIds": [
+        121,
+        140
+      ]
+    },
+    {
+      "id": 135,
+      "kind": "all",
+      "reason": "先接受邀请任务并赢得信任",
+      "conditionIds": [
+        141,
+        124
+      ]
+    },
+    {
+      "id": 136,
+      "kind": "mission_state",
+      "reason": "招募任务尚未就绪",
+      "targetId": 200,
+      "state": "ready"
+    },
+    {
+      "id": 137,
+      "kind": "quest_state",
+      "reason": "当前没有调查证言的任务",
+      "targetId": 103,
+      "state": "active"
+    },
+    {
+      "id": 138,
+      "kind": "mission_state",
+      "reason": "先接受委托",
+      "targetId": 100,
+      "state": "active"
+    },
+    {
+      "id": 139,
+      "kind": "flag",
+      "reason": "路线已经确定",
+      "key": "courier_route",
+      "value": 0
+    },
+    {
+      "id": 140,
+      "kind": "mission_state",
+      "reason": "已经接取招募任务",
+      "targetId": 200,
+      "state": "inactive"
+    },
+    {
+      "id": 141,
+      "kind": "mission_state",
+      "reason": "先接取招募任务",
+      "targetId": 200,
+      "state": "active"
+    },
+    {
+      "id": 142,
+      "kind": "quest_state",
+      "targetId": 104,
+      "state": "completed",
+      "reason": "还没了解莱雅的过去"
+    }
+  ]
+}

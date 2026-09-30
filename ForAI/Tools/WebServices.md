@@ -10,6 +10,8 @@
 
 - Unity 菜单 `Project Y/Web 服务/` 提供“启动全部”“停止全部”“服务管理”“打开配置工作台”“打开地图实验室”。管理窗口从注册表获取完整列表，可刷新状态、单独启动/打开、停止、查看日志。原 Config/Open Local Editor 与 地图/打开地图实验室 入口也复用统一管理器，打开前先确保服务就绪。
 - 当前注册配置工作台（4173）、地图实验室（4175）与[角色工坊](CharacterPreview.md)（4177）。注册来源为 `Tools/WebServices/services.json`，字段为稳定 id、显示 name、工程内 module、HTTP 工厂 factory、默认 port 与 portEnvironment；新增注册项自动纳入全部操作和窗口，无需新增 C# 菜单。工厂接收 `{root}`，返回尚未 listen、含一个 request 处理器的 Node HTTP Server。
+- [叙事工坊](Narrative.md) 注册为 `narrative`（4179），提供任务/对话/NPC 网络查看与编辑，共用同一服务管理流程。
+- [内容编辑中心](ContentCenter.md) 注册为 `content-center`（4181），统一物品、任务、角色、投放与模型/持握编辑。
 - 工程根执行 `node Tools/WebServices/manage.mjs start|stop|status all|服务ID`；JSON 输出逐项结果，批量中单项失败不阻止其他项。Editor 使用 `PROJECT_Y_NODE` 或 PATH 的 node，隐藏后台进程并异步等待最多 45 秒，不触发 Unity Refresh/Play。业务服务首次启动最多等待 10 秒，重复启动复用同工程实例。
 - `host.mjs` 在原业务工厂外承接健康检查与停止。宿主只监听 127.0.0.1，核对 Host/Origin；身份包含工程真实路径摘要、服务 ID、随机实例 ID。当前用户临时目录 `project-y-web-services/` 保存停止令牌和实例记录，不输出令牌到菜单/命令行；日志为临时目录 `project-y-web-服务ID-*.log`。
 - 停止先核对工程与实例，再携带本地记录中的令牌请求 `/api/web-services/stop`，停止接受新请求并等待已提交的保存/生成完成，最多等待 35 秒。只允许当前实例移除自己的记录；凭证缺失、其他工程、端口冲突或替换实例均不继续停止。不按端口或 node 进程名批量查杀，PID 仅供展示。

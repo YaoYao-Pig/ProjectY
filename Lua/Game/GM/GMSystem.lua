@@ -8,7 +8,9 @@ function GM:OnInit(context)
     self.data=context.services.Adventure
     self.growth=context.systems:Get('Growth')
     self.skills=context.systems:Get('Config'):GetTable('CombatSkillTable')
-    self.commands={level_up=self.LevelUp,grant_skill=self.GrantSkill}
+    self.npcs=require('Game.GM.NpcCommands').New(context.systems:Get('Adventure'),context.systems:Get('Narrative'))
+    self.commands={level_up={run=self.LevelUp,actor=true},grant_skill={run=self.GrantSkill,actor=true},
+        goto_npc={run=function(gm,id)return gm.npcs:GoTo(id)end}}
 end
 function GM:Slot(slot)
     if not integer(slot) or slot<1 or slot>self.data.PartyCount then return nil,'槽位必须是 1～'..self.data.PartyCount..' 的有效队员槽位' end
@@ -21,8 +23,11 @@ end
 function GM:Execute(command,slot,value)
     local action=self.commands[command]
     if not action then return false,'未知 GM 命令：'..tostring(command) end
-    local actor,reason=self:Slot(slot);if not actor then return false,reason end
-    return action(self,actor,value)
+    if action.actor then
+        local actor,reason=self:Slot(slot);if not actor then return false,reason end
+        return action.run(self,actor,value)
+    end
+    return action.run(self,slot,value)
 end
 function GM:LevelUp(actor)
     local growth,rules=actor.Growth,self.growth.rules
@@ -41,5 +46,5 @@ function GM:GrantSkill(actor,id)
     self.growth:PrepareOffers(actor)
     return true,self.growth.stats:Template(actor).name..' 已获得「'..skill.name..'」'
 end
-function GM:OnShutdown() self.data=nil;self.growth=nil;self.skills=nil;self.commands=nil end
+function GM:OnShutdown() self.data=nil;self.growth=nil;self.skills=nil;self.commands=nil;self.npcs=nil end
 return GM

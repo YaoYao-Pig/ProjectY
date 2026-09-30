@@ -1,0 +1,49 @@
+{
+  "version": 1,
+  "name": "FactionTable",
+  "description": "玩家对各阵营声望，独立于 NPC 好感。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "阵营名称"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "阵营说明"
+    },
+    {
+      "name": "minValue",
+      "type": "int",
+      "description": "最低声望"
+    },
+    {
+      "name": "maxValue",
+      "type": "int",
+      "description": "最高声望"
+    },
+    {
+      "name": "initialValue",
+      "type": "int",
+      "description": "初始声望"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "边境驿路同盟",
+      "description": "维持商道和消息往来的松散同盟。",
+      "minValue": -100,
+      "maxValue": 100,
+      "initialValue": 0
+    }
+  ]
+}

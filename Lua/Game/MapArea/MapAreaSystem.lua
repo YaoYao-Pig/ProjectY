@@ -106,12 +106,14 @@ end
 function AreaSystem:Activate(site,worldSeed,fromEvent)
     local layout=self.layouts[site.id]
     if not layout then
-        layout=self.generator:Generate(site.areaConfigId,worldSeed,site.pointId,site.source)
+        local decorate=self.narrative and function(area) self.narrative.npcs:Populate(area,site) end or nil
+        layout=self.generator:Generate(site.areaConfigId,worldSeed,site.pointId,site.source,decorate)
         self.layouts[site.id]=layout
     end
     local state=self.data:Enter(site.id,#layout.cells,layout.entryIndex)
     self:InitializeEncounters(layout,state)
     if state.NpcCount==0 then for _,npc in ipairs(layout.npcs) do state:AddNpc(npc.id,npc.spawnIndex) end end
+    if self.narrative then self.narrative.npcs:SyncPresence() end
     local ids={};for i=0,self.adventure.PartyCount-1 do
         local actor=self.adventure:GetPartyAt(i);if actor.HP>0 then ids[#ids+1]=actor.Id end
     end
@@ -215,8 +217,8 @@ function AreaSystem:StartBattle(battle,group)
     for index in pairs(self:EnemyOccupancy(area,state,group.Id)) do
         local cell=area.cells[index];board.externalOccupied[Hex.Key(cell.q,cell.r)]=true
     end
-    battle:StartArea(group.EncounterId,board,party,enemies)
     self.adventure:BeginAreaBattle(group.Id)
+    battle:StartArea(group.EncounterId,board,party,enemies)
     self:RevealBattle(battle)
 end
 function AreaSystem:BattleMembers(battle)
@@ -324,14 +326,17 @@ function AreaSystem:MoveToIndex(index,settle)
     if state:IsNpcOccupied(goal.index) then return false,'居民正在经过，请稍候或从旁边绕行' end
     local enemies=self:EnemyOccupancy(layout,state)
     if enemies[goal.index] then return false,'敌人占据了这个位置' end
-    -- 单次命令读取一份已探索集合，规划完成即释放，避免距离场遍历频繁跨 Lua/C#。
-    local known={};for i=0,state.KnownCount-1 do known[state:GetKnownAt(i)]=true end
-    local occupied=enemies;for i=0,state.NpcCount-1 do occupied[state:GetNpcAt(i).CellIndex]=true end
+    -- 探索图单次读取已知集合；公开城镇无需每走一格跨 Lua/C# 复制全图。
+    local known
+    if layout.discovery~='open' then
+        known={};for i=0,state.KnownCount-1 do known[state:GetKnownAt(i)]=true end
+    end
+    local occupied=enemies;for i=0,state.NpcCount-1 do local npc=state:GetNpcAt(i);if npc.Present then occupied[npc.CellIndex]=true end end
     local ids={};for i=0,state.MemberCount-1 do ids[#ids+1]=state:GetMemberIdAt(i) end
     local shape=self:SquadFootprint(layout,ids)
     local allowed=function(cell,member)
         local cells=shape(cell.index,member);if not cells then return false end
-        for _,index in ipairs(cells) do if layout.cells[index].blocked or not known[index] or occupied[index] then return false end end
+        for _,index in ipairs(cells) do if layout.cells[index].blocked or (known and not known[index]) or occupied[index] then return false end end
         return true
     end
     local path=layout:FindPath(state.CellIndex,goal.index,allowed)
@@ -339,7 +344,12 @@ function AreaSystem:MoveToIndex(index,settle)
     local positions={};for i=0,state.MemberCount-1 do positions[#positions+1]=state:GetMemberCellAt(i) end
     local frames,reason=Squad.Plan(layout,positions,path,allowed,settle,shape)
     if not frames then return false,reason end
-    state:SetSquadRoute(frames);return true
+    state:SetSquadRoute(frames)
+    -- 城镇先提交一个合法的整队步进，让显示立即开始走；剩余帧仍按原步长推进。
+    if layout.areaType==self.townType then
+        self:AdvanceMovement(layout,state,layout.moveStepSeconds)
+    end
+    return true
 end
 -- 第三人称键盘输入只发六邻接方向，不直接写位置；仍经过同一整队规划与占格检查。
 function AreaSystem:Walk(direction)
@@ -362,6 +372,7 @@ function AreaSystem:Interact(kind,id)
         index=facility.entryIndex;radius=facility.interactionRadius
     elseif kind==2 then
         if not area.npcs[id] then return false,'居民不存在' end
+        if not state:GetNpcAt(id-1).Present then return false,'这位居民已经离开' end
         index=state:GetNpcAt(id-1).CellIndex;radius=1
     else return false,'未知交互类型' end
     local path=area:FindPath(state.CellIndex,index)
@@ -380,12 +391,38 @@ function AreaSystem:Leave()
     if self.adventure.Phase~='area' then return false,'当前不在探索区域' end
     self.adventure:LeaveArea();return true
 end
+-- 即时首步与后续 Tick 共用探索回合/效果结算，不能只推进占格而漏掉回合效果。
+function AreaSystem:AdvanceMovement(layout,state,dt)
+    local rounds=state:AdvanceExplorationRounds(dt,self.explorationRoundSeconds,layout.moveStepSeconds)
+    if rounds>0 then
+        local effects=self.context.systems:Get('Battle').gameEffects
+        local targets={}
+        for i=0,self.adventure.PartyCount-1 do targets[#targets+1]=self.adventure:GetPartyAt(i) end
+        for i=0,state.EncounterCount-1 do local group=state:GetEncounterAt(i)
+            for j=0,group.EnemyCount-1 do local actor=group:GetEnemyAt(j);if actor.AnimalOwnerId==0 then targets[#targets+1]=actor end end
+        end
+        for _=1,rounds do for _,actor in ipairs(targets) do
+            effects:TickActor(actor,'turn_start');effects:TickActor(actor,'turn_end')
+        end end
+        self.context.systems:Get('Equipment'):GenerateActorDrops(self,targets,self.combatStats)
+        local ids,cells={},{}
+        for i=0,state.MemberCount-1 do local id=state:GetMemberIdAt(i)
+            if self:PartyActor(id).HP>0 then ids[#ids+1]=id;cells[#cells+1]=state:GetMemberCellAt(i) end
+        end
+        if #ids==0 then state:Stop();self.adventure:LeaveArea();return end
+        if #ids~=state.MemberCount then state:Stop();state:DeployMembers(ids,cells);self:RevealSquad(layout,state) end
+    end
+    if state:Advance(dt,layout.moveStepSeconds) then self:RevealSquad(layout,state) end
+end
 function AreaSystem:Tick(dt)
     if self.adventure.Phase~='area' then return end
+    local ui=self.context.services.UI -- 独立 Edit Mode 数据检查允许无 UIHost。
+    if (ui and ui.IsWorldPaused) or (self.narrative and self.narrative.data.DialogueOpen) then return end
     local layout,state=self:ActiveLayout(),self.data.Active
-    state:AdvanceExplorationRounds(dt,self.explorationRoundSeconds,layout.moveStepSeconds)
-    if state:Advance(dt,layout.moveStepSeconds) then self:RevealSquad(layout,state) end
+    self:AdvanceMovement(layout,state,dt)
+    if self.adventure.Phase~='area' then return end
     require('Game.MapArea.TownResidents').Tick(layout,state,dt)
+    if self.narrative then self.narrative.npcs:Tick(layout,state,dt) end
 end
 function AreaSystem:Clear() self.layouts={};self.data:Clear() end
 -- 后续遭遇从当前区域裁取同坐标战场，不另随机一张竞技场，不移动或替换原地形。
@@ -396,7 +433,7 @@ end
 function AreaSystem:Snapshot(battle)
     local area,state=self:ActiveLayout(),self.data.Active
     local known,visible,route,members,npcs={},{},{},{},{}
-    for i=0,state.NpcCount-1 do local npc=state:GetNpcAt(i);npcs[#npcs+1]={id=npc.Id,cellIndex=npc.CellIndex} end
+    for i=0,state.NpcCount-1 do local npc=state:GetNpcAt(i);npcs[#npcs+1]={id=npc.Id,cellIndex=npc.CellIndex,present=npc.Present} end
     for i=0,state.MemberCount-1 do members[#members+1]={actorId=state:GetMemberIdAt(i),cellIndex=state:GetMemberCellAt(i)} end
     for i=0,state.KnownCount-1 do known[#known+1]=state:GetKnownAt(i) end
     for i=0,state.VisibleCount-1 do visible[#visible+1]=state:GetVisibleAt(i) end
@@ -442,8 +479,13 @@ function AreaSystem:LayoutSnapshot()
         entryIndex=site.entryIndex,interactionRadius=site.interactionRadius} end
     for i,npc in ipairs(area.npcs) do
         local template=self.config:GetTable('MapAreaTownNpcTable'):Get(npc.templateId)
-        result.npcs[i]={id=npc.id,name=template.name,description=template.description,stepSeconds=npc.stepSeconds,
+        local identity=npc.narrativeId and self.narrative.rules.npcs:Get(npc.narrativeId) or template
+        result.npcs[i]={id=npc.id,narrativeId=npc.narrativeId or 0,name=identity.name,description=identity.description,stepSeconds=npc.stepSeconds,
             appearance={templateId=npc.templateId,parts=self.appearance:Resolve(template.partIds)}}
+        if npc.narrativeId then
+            local look=self.narrative.adventure.characterAppearances.fixed[identity.actorTemplateId]
+            if look then result.npcs[i].appearance.customizationJson=look end
+        end
     end
     for i,cell in ipairs(area.cells) do
         local x,_,z=Hex.ToWorld(cell.q,cell.r,cell.height,area.hexRadius)

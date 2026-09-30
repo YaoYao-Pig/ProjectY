@@ -19,8 +19,9 @@
 - 每轮按速度降序、实例 ID 升序决定次序，轮中跳过死亡角色。每个角色回合重置 AP、一次移动和一次主要行动额度；次要行动仅受 AP 限制。移动范围/消耗及角色 AP 来自模板；技能消耗、射程和目标来自配表。防御不叠加，持续至自己下回合开始；普通治疗不复活。
 - `TryMove/TrySkill/EndTurn` 对正常不可操作输入返回 `false, reason`，不消费资源；配置/生命周期契约错误直接报错。技能完整求值校验后再扣 AP。`StepAI` 每次推进一名敌人，调用相同的命令入口，没有另一套数值或行动权限。
 - `CombatUnitTable` 定义一级/二级属性、最大生命公式和固有技能；未训练二级属性为 0。`CombatStats` 还叠加特质、[养成](Progression.md)投入/被动与装备；重复特质不叠加，生命上限变化保留已受伤害。`EquipmentRules:SkillIds` 合并角色已研习主动技能，敌我共用查询，敌人默认无养成投入。
-- `CombatSkillTable` 定义 main/secondary、AP、距离、目标、命中、CD、耗弹与动作模板，引用 `CombatEffectTable` 的 damage/heal/guard/reload。`SkillIds/Skill/SkillBudget` 是装备后技能查询入口；散射、冷却、枪械规则见[装备 Demo](Equipment.md)。数值沿用受限 RPN 公式；未实现通用脚本语言、持续 Buff 或反应攻击。
+- `CombatSkillTable` 定义 main/secondary、AP、距离、目标、命中、CD、耗弹与动作模板，组合 `CombatEffectTable` 的即时和[持续 GameEffect](GameEffects.md)。`SkillIds/Skill/SkillBudget` 是装备后技能查询入口；散射、冷却、枪械规则见[装备 Demo](Equipment.md)。数值沿用受限 RPN 公式；未实现通用脚本语言或反应攻击。
 - `Changed` 发出 battle_started/turn_started/turn_ended/moved/damage/heal/guard/defeated/battle_ended 通知。通知不是可修改或取消结算的拦截器；监听方按自身生命周期退订。战斗日志保留最近 80 条。
+- `damage` 通知的 `attackHit` 标记区分即时技能伤害与持续伤害；`impact` 携带原始 `shot` 序号、可选 `critical` 标记及实际 `defeated` 结果（含坐骑死亡）。当前没有暴击概率/倍率规则，只提供表现标记入口；未命中不生成伤害反馈，连射同步结算顺序不变。表现层检查 `amount>0`，震屏、连射间隔与血条契约见 [MainHud](MainHud.md)。
 - 战斗 UI 复用 Panel/Widget；技能图标由 `CombatSkillTable.iconId` 引用配置。显示投影、图标同步、操作与验证见[战斗 HUD](BattleHUD.md)。
 - 局部场景的[动作表现](PawnAnimation.md)读取 C# 角色有限动作记录，不改变结算；Demo 等待移动/动画结束再推进自动 AI。技能 actionTemplate 也覆盖基础技能和养成技能，敌人共用。MapArea 快照单独给出倒地敌人以播放死亡，不混入存活占格或头顶 HUD。
 - 存活敌人清零获胜，队伍清零失败，轮数耗尽为 draw；胜负状态只写一次。奖励由[远征流程](Adventure.md)消费，不在 BattleSystem 中发放。

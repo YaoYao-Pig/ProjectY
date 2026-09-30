@@ -79,7 +79,7 @@ export class GripEditor {
     this.adjustments = new Map(data.adjustments.map(row => [adjustmentKey(row.weaponId,row.moduleId,row.hand), structuredClone(row)]));
     this.initial = new Map(data.rows.map(row => [row.id, structuredClone(row)]));
     this.available = true; this.blocked = false; this.invalid = false; this.pending.clear();
-    this.status('配置已读取 · 修改后自动保存'); this.setLoadout(this.loadout); this.renderPose();
+    this.status(new URLSearchParams(location.search).get('embed')==='1'&&window.parent!==window?'配置已读取 · 修改将加入内容中心草稿':'配置已读取 · 修改后自动保存'); this.setLoadout(this.loadout); this.renderPose();
   }
   setLoadout(loadout) {
     const previousTarget = this.loadout === loadout ? $('gripTarget').value : '';
@@ -154,13 +154,18 @@ export class GripEditor {
     this.pending.add(prefix === 'weapon' ? adjustmentKey(weapon.itemId,this.meta.moduleId,weapon.slot) : row.id); this.status(this.blocked ? '保存已暂停，草稿保留；请重试或重新读取。' : '有修改 · 等待自动保存', this.blocked);
     $('gripExport').disabled = true; this.updateTarget(); this.updateSummary(); this.renderPose(); if (save) this.scheduleSave();
   }
-  scheduleSave() { clearTimeout(this.timer); if (!this.blocked && !this.invalid) this.timer = setTimeout(() => this.flush(), 650); }
+  scheduleSave() { clearTimeout(this.timer); if (!this.blocked && !this.invalid) { if(new URLSearchParams(location.search).get('embed')==='1'&&window.parent!==window) this.flush(); else this.timer = setTimeout(() => this.flush(), 650); } }
   async request(url, method, input) {
     const response = await fetch(url, { method, headers: { 'Content-Type': 'application/json', 'X-Editor-Token': this.token }, body: JSON.stringify(input) });
     const data = await response.json(); if (!response.ok) throw new Error(data.error || '保存失败'); return data;
   }
   async flush() {
     if (this.saving || this.blocked || this.invalid || this.handles.dragging || !this.pending.size) return;
+    if (new URLSearchParams(location.search).get('embed') === '1' && window.parent !== window) {
+      const changes = [...this.pending].map(id => typeof id === 'string' ? { kind: 'adjustment', row: structuredClone(this.adjustments.get(id)) } : { kind: 'grip', row: structuredClone(this.rows.get(id)) });
+      window.parent.postMessage({ type: 'content-grips', changes }, location.origin);
+      this.pending.clear(); this.status('已加入内容中心草稿 · 请在内容中心保存并导出'); return;
+    }
     this.saving = true;
     try {
       while (this.pending.size && !this.invalid && !this.handles.dragging) {
@@ -178,6 +183,7 @@ export class GripEditor {
     finally { this.saving = false; $('gripExport').disabled = Boolean(this.pending.size) || this.invalid; }
   }
   async exportConfig() {
+    if (new URLSearchParams(location.search).get('embed') === '1' && window.parent !== window) { this.status('请回到内容中心统一保存并导出'); return; }
     if (this.pending.size || this.saving || this.invalid) return;
     $('gripExport').disabled = true;
     try { await this.request('./api/grips/export', 'POST', { revision: this.revision }); this.status('已导出游戏配置；重新加载游戏配置后生效。网页动作采样可在 Unity 重新导出。'); }

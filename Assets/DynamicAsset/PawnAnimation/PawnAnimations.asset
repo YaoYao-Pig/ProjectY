@@ -96,18 +96,22 @@ MonoBehaviour:
   - TemplateId: 6
     State: HeavySlash
     Clip: {fileID: 1705686167135224321, guid: bc2d6c5c87eb98648a666352a52c7ac4, type: 3}
-    Duration: 0.95
-    Impact: 0.45
+    Duration: 0.6
+    Impact: 0.48
     UseAuthoredGrip: 1
     GripKeys:
     - Time: 0
       WeaponRotation: {x: 40, y: 0, z: 4}
-    - Time: 0.2
-      WeaponRotation: {x: 55, y: -10, z: 4}
-    - Time: 0.45
-      WeaponRotation: {x: 100, y: 5, z: 4}
-    - Time: 0.8
-      WeaponRotation: {x: 75, y: 5, z: 4}
+    - Time: 0.26
+      WeaponRotation: {x: 60, y: 90, z: 35}
+    - Time: 0.32
+      WeaponRotation: {x: 60, y: 90, z: 35}
+    - Time: 0.48
+      WeaponRotation: {x: 60, y: 90, z: 115}
+    - Time: 0.56
+      WeaponRotation: {x: 60, y: 90, z: 145}
+    - Time: 0.76
+      WeaponRotation: {x: 60, y: 90, z: 80}
     - Time: 1
       WeaponRotation: {x: 40, y: 0, z: 4}
     OffGripOffset: {x: 0, y: 0, z: 0}

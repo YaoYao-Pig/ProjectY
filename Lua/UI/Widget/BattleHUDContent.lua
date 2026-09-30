@@ -13,7 +13,7 @@ function HUD:Bind()
     assert(#self.settings.itemIconIds == 4, 'Battle HUD has four item presentation slots')
     self.view.HUD:Prepare()
     self.actions, self.items, self.party, self.turns = {}, {}, {}, {}
-    for i = 1, 8 do
+    for i = 1, 4 do
         local widget = self:CreateWidget('BattleAction', self.view.SkillSlots)
         widget:Initialize(self.view.HUD, function(row) self.demo:SelectBattleSkill(row.id) end)
         self.actions[i] = widget
@@ -28,7 +28,7 @@ function HUD:Bind()
         widget:Initialize(self.view.HUD, false, function(id) self.demo:FocusBattleActor(id) end)
         self.party[i] = widget
     end
-    for i = 1, 8 do
+    for i = 1, 4 do
         local widget = self:CreateWidget('BattleTurn', self.view.TurnSlots)
         widget:Initialize(self.view.HUD, true, function(id) self.demo:FocusBattleActor(id) end)
         self.turns[i] = widget
@@ -54,16 +54,9 @@ function HUD:Refresh()
     local model = Model.Build(self.battle, self.context.services.Adventure)
     if self.lastActor ~= model.actorId then self.page = 1; self.lastActor = model.actorId end
     self.model = model
-    local pages = math.max(1, math.ceil(#model.skills / 8)); self.page = math.min(pages, math.max(1, self.page))
+    local pages = math.max(1, math.ceil(#model.skills / 4)); self.page = math.min(pages, math.max(1, self.page))
     self.view.Encounter.text = model.encounter
     self.view.Round.text = string.format(L.BattleRound, model.round, model.maxRounds)
-    self.view.ActorName.text = model.name
-    self.view.HealthText.text = string.format(L.BattleHP, model.hp, model.maxHP)
-    self.view.HUD:SetHealth(self.view.Health, model.hp / model.maxHP)
-    self.view.AP.text = string.format(L.BattleAP, model.ap, model.maxAP)
-    self.view.Resources.text = string.format(L.BattleResources, model.defense, model.guard,
-        model.moved and L.BattleSpent or L.BattleReady, model.mainUsed and L.BattleSpent or L.BattleReady)
-        .. (model.ammo~='' and ('\n'..model.ammo) or '')
     self.view.SkillTitle.text = L.BattleSkills .. (pages > 1 and ('  ' .. self.page .. '/' .. pages) or '')
     self.view.ItemTitle.text = L.BattleItems
     self.view.EndTurnText.text = model.player and L.BattleEndTurn or L.BattleAdvanceAI
@@ -73,7 +66,7 @@ function HUD:Refresh()
     self.view.FocusText.text = L.BattleFocus
     self.view.AutoText.text = self.demo.BattleAutoAI and L.BattleAutoOn or L.BattleAutoOff
     self.view.LogToggleText.text = self.logVisible and L.BattleHideLog or L.BattleShowLog
-    self.view.Log.gameObject:SetActive(self.logVisible)
+    self.view.Log.gameObject:SetActive(self.logVisible and not self.view.HUD.Compact)
     self.view.Logs.text = table.concat(model.logs, '\n')
     self.view.Previous.gameObject:SetActive(pages > 1); self.view.Next.gameObject:SetActive(pages > 1)
     self.view.Previous.interactable = self.page > 1; self.view.Next.interactable = self.page < pages
@@ -81,7 +74,7 @@ function HUD:Refresh()
     self.view.Hint.text = errorText and errorText ~= '' and errorText or (not model.player and L.BattleEnemyTurn
         or (self.demo.IsBattleMoveSelected and L.BattleMoveHint or L.BattleTargetHint))
     for i, widget in ipairs(self.actions) do
-        local row = model.skills[(self.page - 1) * 8 + i]
+        local row = model.skills[(self.page - 1) * 4 + i]
         widget:SetData(row, i, row ~= nil and row.id == self.demo.SelectedBattleSkill, row and self.icons:Get(row.iconId))
     end
     for i, widget in ipairs(self.items) do widget:SetData(nil, nil, false, self.icons:Get(self.settings.itemIconIds[i])) end
@@ -95,7 +88,7 @@ function HUD:Tick()
     if self.dirty or self.revision ~= self.demo.BattleHUDRevision then self:Refresh() end
     if not self.view.Group.interactable then return end
     local shortcut = self.view.HUD:ReadShortcut()
-    if shortcut >= 1 and shortcut <= 8 then
+    if shortcut >= 1 and shortcut <= 4 then
         local row = self.actions[shortcut].row
         if row and row.available then self.demo:SelectBattleSkill(row.id) end
     elseif shortcut == 9 and self.model.player then self.demo:SendCommand('end_turn', 0, 0)

@@ -1,0 +1,119 @@
+{
+  "version": 1,
+  "name": "DialogueNodeTable",
+  "description": "对话文本节点，选项决定边；speaker 可为 npc/player/narrator。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "dialogueId",
+      "type": "int",
+      "description": "所属对话",
+      "ref": "DialogueTable"
+    },
+    {
+      "name": "speaker",
+      "type": "enum",
+      "description": "说话者",
+      "values": [
+        "npc",
+        "player",
+        "narrator"
+      ]
+    },
+    {
+      "name": "text",
+      "type": "text",
+      "description": "显示正文"
+    },
+    {
+      "name": "choiceIds",
+      "type": "int[]",
+      "description": "顺序展示的选项；空列表显示结束",
+      "ref": "DialogueChoiceTable",
+      "default": []
+    },
+    {
+      "name": "shot",
+      "type": "enum",
+      "description": "镜头构图",
+      "values": [
+        "pair",
+        "npc",
+        "player"
+      ],
+      "default": "pair"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "dialogueId": 1,
+      "speaker": "npc",
+      "text": "路上的信已经断了三天。如果你愿意帮忙，我们可以一起找出驿使的去向。",
+      "choiceIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        7,
+        8,
+        9
+      ]
+    },
+    {
+      "id": 2,
+      "dialogueId": 1,
+      "speaker": "npc",
+      "text": "先备齐弹药。你可以扫清道路，也可以去找驿站书记，听听他还记得什么。",
+      "choiceIds": [
+        10
+      ],
+      "shot": "npc"
+    },
+    {
+      "id": 3,
+      "dialogueId": 1,
+      "speaker": "npc",
+      "text": "我曾以为，只要一个人走得足够快，就不需要同行者。后来我明白，有些消息值得等。",
+      "choiceIds": [
+        10
+      ],
+      "shot": "npc"
+    },
+    {
+      "id": 4,
+      "dialogueId": 1,
+      "speaker": "npc",
+      "text": "那么，下一程我们一起走。",
+      "choiceIds": [],
+      "shot": "pair"
+    },
+    {
+      "id": 20,
+      "dialogueId": 2,
+      "speaker": "npc",
+      "text": "驿使留下过一封没有收件人的信。你为什么问起他？",
+      "choiceIds": [
+        20,
+        21
+      ],
+      "shot": "npc"
+    },
+    {
+      "id": 21,
+      "dialogueId": 2,
+      "speaker": "npc",
+      "text": "信封里是一张旧路线图。他改走了北面的山道。把这个消息带给莱雅吧。",
+      "choiceIds": [],
+      "shot": "npc"
+    }
+  ]
+}

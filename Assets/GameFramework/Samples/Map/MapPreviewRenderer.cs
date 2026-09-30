@@ -275,12 +275,16 @@ namespace ProjectY.Samples
 
         public void Dispose()
         {
-            if (roadMesh != null) Object.Destroy(roadMesh);
-            if (waterMesh != null) Object.Destroy(waterMesh);
-            foreach (var value in waterMaterials) Object.Destroy(value);
-            waterMaterials.Clear(); Object.Destroy(waterEdges);
-            Object.Destroy(roadObject); Object.Destroy(material); Object.Destroy(roadMaterial);
+            Release(roadMesh); Release(waterMesh);
+            foreach (var value in waterMaterials) Release(value);
+            waterMaterials.Clear(); Release(waterEdges);
+            Release(roadObject); Release(material); Release(roadMaterial);
             batches.Clear(); models.Clear();
+        }
+        private static void Release(Object value)
+        {
+            if(value==null)return;
+            if(Application.isPlaying)Object.Destroy(value);else Object.DestroyImmediate(value);
         }
     }
 }

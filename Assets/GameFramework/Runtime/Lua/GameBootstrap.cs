@@ -39,7 +39,8 @@ namespace ProjectY
         {
             if (Instance != null && Instance != this) { Destroy(gameObject); return; }
             Instance = this;
-            DontDestroyOnLoad(gameObject);
+            // 独立 Editor PreviewScene 会显式初始化真实宿主来验证命令链；只在 Play 中跨场景常驻。
+            if (Application.isPlaying) DontDestroyOnLoad(gameObject);
             try
             {
                 var ui = gameObject.AddComponent<UIHost>();

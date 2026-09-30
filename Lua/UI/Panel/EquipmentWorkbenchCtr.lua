@@ -139,7 +139,7 @@ function Workbench:Refresh()
     end
     if loaded then lines[#lines+1]='弹匣 '..loaded.Rounds..' / '..loaded.Capacity..' · 散装弹药 '..data:CountItem(loaded.AmmoItemId) end
     -- Preview a selected inventory weapon without mutating actor ownership.
-    local previewRules=setmetatable({Weapon=function() return weapon end},{__index=self.rules})
+    local previewRules=self.rules:PreviewWeapon(weapon)
     for _,id in ipairs(previewRules:SkillIds(actor,self.stats:Template(actor))) do
         local skill=previewRules:Skill(actor,id,self.stats)
         local effects={};local damage=false

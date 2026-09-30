@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.AdventureData);
-			Utils.BeginObjectRegister(type, L, translator, 0, 20, 16, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 22, 17, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "HasStoryTrigger", _m_HasStoryTrigger);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetJournalAt", _m_GetJournalAt);
@@ -31,6 +31,8 @@ namespace XLua.CSObjectWrap
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "HasVisited", _m_HasVisited);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Reset", _m_Reset);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "AddPartyActor", _m_AddPartyActor);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "PrepareRecruitActor", _m_PrepareRecruitActor);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "AddPreparedRecruit", _m_AddPreparedRecruit);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "BeginEvent", _m_BeginEvent);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "BeginAreaEvent", _m_BeginAreaEvent);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "ResolveChoice", _m_ResolveChoice);
@@ -53,6 +55,7 @@ namespace XLua.CSObjectWrap
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Battle", _g_get_Battle);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Areas", _g_get_Areas);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Equipment", _g_get_Equipment);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "Narrative", _g_get_Narrative);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Seed", _g_get_Seed);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Phase", _g_get_Phase);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "SiteId", _g_get_SiteId);
@@ -337,6 +340,64 @@ namespace XLua.CSObjectWrap
                     
                     
                     return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_PrepareRecruitActor(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.AdventureData gen_to_be_invoked = (ProjectY.Data.AdventureData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _id = LuaAPI.xlua_tointeger(L, 2);
+                    int _templateId = LuaAPI.xlua_tointeger(L, 3);
+                    
+                        var gen_ret = gen_to_be_invoked.PrepareRecruitActor( _id, _templateId );
+                        translator.Push(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_AddPreparedRecruit(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.AdventureData gen_to_be_invoked = (ProjectY.Data.AdventureData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    ProjectY.Data.CombatActorData _actor = (ProjectY.Data.CombatActorData)translator.GetObject(L, 2, typeof(ProjectY.Data.CombatActorData));
+                    
+                    gen_to_be_invoked.AddPreparedRecruit( _actor );
+                    
+                    
+                    
+                    return 0;
                 }
                 
             } catch(System.Exception gen_e) {
@@ -788,6 +849,20 @@ namespace XLua.CSObjectWrap
 			
                 ProjectY.Data.AdventureData gen_to_be_invoked = (ProjectY.Data.AdventureData)translator.FastGetCSObj(L, 1);
                 translator.Push(L, gen_to_be_invoked.Equipment);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_Narrative(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.AdventureData gen_to_be_invoked = (ProjectY.Data.AdventureData)translator.FastGetCSObj(L, 1);
+                translator.Push(L, gen_to_be_invoked.Narrative);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }

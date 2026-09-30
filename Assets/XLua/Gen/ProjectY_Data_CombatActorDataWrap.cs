@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.CombatActorData);
-			Utils.BeginObjectRegister(type, L, translator, 0, 25, 27, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 26, 28, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "InitializeAnimal", _m_InitializeAnimal);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "RollAnimalPercent", _m_RollAnimalPercent);
@@ -30,6 +30,7 @@ namespace XLua.CSObjectWrap
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "TameAndRide", _m_TameAndRide);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "AddAnimalBond", _m_AddAnimalBond);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "RelocateWithSkill", _m_RelocateWithSkill);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "DetachDefeatedMount", _m_DetachDefeatedMount);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "CopyPresentationActions", _m_CopyPresentationActions);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "ResolveDrop", _m_ResolveDrop);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetTraitAt", _m_GetTraitAt);
@@ -77,6 +78,7 @@ namespace XLua.CSObjectWrap
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "TraitCount", _g_get_TraitCount);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "DropResolved", _g_get_DropResolved);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Growth", _g_get_Growth);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "Effects", _g_get_Effects);
             
 			
 			
@@ -314,6 +316,33 @@ namespace XLua.CSObjectWrap
                     string _style = LuaAPI.lua_tostring(L, 4);
                     
                     gen_to_be_invoked.RelocateWithSkill( _q, _r, _style );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_DetachDefeatedMount(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.CombatActorData gen_to_be_invoked = (ProjectY.Data.CombatActorData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    
+                    gen_to_be_invoked.DetachDefeatedMount(  );
                     
                     
                     
@@ -1218,6 +1247,20 @@ namespace XLua.CSObjectWrap
 			
                 ProjectY.Data.CombatActorData gen_to_be_invoked = (ProjectY.Data.CombatActorData)translator.FastGetCSObj(L, 1);
                 translator.Push(L, gen_to_be_invoked.Growth);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_Effects(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.CombatActorData gen_to_be_invoked = (ProjectY.Data.CombatActorData)translator.FastGetCSObj(L, 1);
+                translator.Push(L, gen_to_be_invoked.Effects);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }

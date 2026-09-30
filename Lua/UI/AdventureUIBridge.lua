@@ -3,6 +3,11 @@ return function(command,demo)
     if command=='gm' then
         if ui:IsOpen('GM') then ui:Close('GM');return end
         ui:Open('GM',{demo=assert(demo),font=demo.MainHudFont})
+    elseif command=='missions' then
+        if ui:IsOpen('MissionJournal') then ui:Close('MissionJournal');return end
+        if data.Phase~='map' and data.Phase~='area' then return end
+        if data.Phase=='area' then main:Get('MapArea'):Stop() end
+        ui:Open('MissionJournal',{demo=assert(demo)})
     elseif command=='growth' then
         if ui:IsOpen('CharacterGrowth') then ui:Close('CharacterGrowth');return end
         if data.Phase~='map' and data.Phase~='area' then return end
@@ -10,6 +15,9 @@ return function(command,demo)
         ui:Open('CharacterGrowth',{demo=assert(demo)})
     elseif command=='sync' then
         if not ui:IsOpen('MainHud') then ui:Open('MainHud',{demo=demo}) end
+        local dialogue=main:Get('Narrative').data.DialogueOpen
+        if dialogue and not ui:IsOpen('Dialogue') then ui:Open('Dialogue',{demo=demo})
+        elseif not dialogue and ui:IsOpen('Dialogue') then ui:Close('Dialogue') end
         local event=data.Phase=='event' or data.Phase=='result'
         if event and not ui:IsOpen('StoryEvent') then ui:Open('StoryEvent',{demo=demo})
         elseif not event and ui:IsOpen('StoryEvent') then ui:Close('StoryEvent') end

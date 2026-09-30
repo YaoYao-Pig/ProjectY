@@ -40,7 +40,7 @@ namespace ProjectY.UI
                 var rect = (RectTransform)blocker.transform;
                 rect.anchorMin = Vector2.zero; rect.anchorMax = Vector2.one;
                 rect.offsetMin = rect.offsetMax = Vector2.zero;
-                blocker.GetComponent<Image>().color = new Color(0, 0, 0, 0.65f);
+                blocker.GetComponent<Image>().color = new Color(0, 0, 0, config.ModalDimAlpha);
             }
         }
 

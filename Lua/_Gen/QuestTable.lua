@@ -1,0 +1,11 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class QuestTableRow
+---@field id number 稳定配置 ID
+---@field missionId number 所属任务
+---@field name string 阶段名称
+---@field description string 阶段目标
+---@field startConditionId number 激活条件
+---@field completeConditionId number 完成条件
+---@field autoComplete boolean 就绪后自动完成
+---@field actionIds number[] 完成动作
+return {["name"]="QuestTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="missionId",["type"]="int",["description"]="\230\137\128\229\177\158\228\187\187\229\138\161",["ref"]="MissionTable"},{["name"]="name",["type"]="text",["description"]="\233\152\182\230\174\181\229\144\141\231\167\176"},{["name"]="description",["type"]="text",["description"]="\233\152\182\230\174\181\231\155\174\230\160\135"},{["name"]="startConditionId",["type"]="int",["description"]="\230\191\128\230\180\187\230\157\161\228\187\182",["ref"]="ConditionTable"},{["name"]="completeConditionId",["type"]="int",["description"]="\229\174\140\230\136\144\230\157\161\228\187\182",["ref"]="ConditionTable"},{["name"]="autoComplete",["type"]="bool",["description"]="\229\176\177\231\187\170\229\144\142\232\135\170\229\138\168\229\174\140\230\136\144",["default"]=true},{["name"]="actionIds",["type"]="int[]",["description"]="\229\174\140\230\136\144\229\138\168\228\189\156",["ref"]="NarrativeActionTable",["default"]={}}},["fingerprint"]="e4dcc9b11b70ab6f86e5b67de026aeac7ca52a8f3871a6e4c27d2c8b05e5d2e5"}

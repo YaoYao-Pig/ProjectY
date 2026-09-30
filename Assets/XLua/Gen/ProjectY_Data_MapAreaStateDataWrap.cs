@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.MapAreaStateData);
-			Utils.BeginObjectRegister(type, L, translator, 0, 28, 16, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 29, 16, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetLootAt", _m_GetLootAt);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "AddLoot", _m_AddLoot);
@@ -33,6 +33,7 @@ namespace XLua.CSObjectWrap
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "AddEncounter", _m_AddEncounter);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "CompleteEncounterInitialization", _m_CompleteEncounterInitialization);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetNpcAt", _m_GetNpcAt);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SetNpcPresent", _m_SetNpcPresent);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetMemberIdAt", _m_GetMemberIdAt);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetMemberCellAt", _m_GetMemberCellAt);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetKnownAt", _m_GetKnownAt);
@@ -415,6 +416,35 @@ namespace XLua.CSObjectWrap
                     
                     
                     return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_SetNpcPresent(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.MapAreaStateData gen_to_be_invoked = (ProjectY.Data.MapAreaStateData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _id = LuaAPI.xlua_tointeger(L, 2);
+                    bool _present = LuaAPI.lua_toboolean(L, 3);
+                    
+                    gen_to_be_invoked.SetNpcPresent( _id, _present );
+                    
+                    
+                    
+                    return 0;
                 }
                 
             } catch(System.Exception gen_e) {

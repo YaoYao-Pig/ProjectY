@@ -1,0 +1,46 @@
+{
+  "version": 1,
+  "name": "NpcPlacementTable",
+  "description": "为唯一 NPC 选择首个匹配的地图地点；同一身份不会在多个城镇重复生成。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "npcId",
+      "type": "int",
+      "description": "NPC 身份",
+      "ref": "NpcTable"
+    },
+    {
+      "name": "areaId",
+      "type": "int",
+      "description": "目标城镇类型",
+      "ref": "MapAreaTable"
+    },
+    {
+      "name": "facilityId",
+      "type": "int",
+      "description": "出生设施",
+      "ref": "MapAreaTownFacilityTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "npcId": 1,
+      "areaId": 2,
+      "facilityId": 1
+    },
+    {
+      "id": 2,
+      "npcId": 2,
+      "areaId": 2,
+      "facilityId": 3
+    }
+  ]
+}

@@ -4,7 +4,7 @@ using XLua;
 namespace ProjectY.Data
 {
     [Serializable] internal sealed class AnimalMountSave
-    { public int id,templateId,speciesId,hp,maxHP,bond;public uint random; }
+    { public int id,templateId,speciesId,hp,maxHP,bond;public uint random;public GameEffectSave[] effects; }
     public sealed partial class CombatActorData
     {
         public int AnimalSpeciesId { get; private set; }
@@ -60,11 +60,12 @@ namespace ProjectY.Data
             Q = q; R = r; Moved = true;
             MovementStyle=style;MovementSequence++;
         }
+        public void DetachDefeatedMount() {if(MountedAnimal!=null&&MountedAnimal.HP==0)MountedAnimal=null;}
         internal AnimalMountSave CaptureMount()
         {
             var animal=MountedAnimal;
             return animal==null?null:new AnimalMountSave {id=animal.Id,templateId=animal.TemplateId,speciesId=animal.AnimalSpeciesId,
-                hp=animal.HP,maxHP=animal.MaxHP,bond=animal.AnimalBond,random=animal.animalRandom};
+                hp=animal.HP,maxHP=animal.MaxHP,bond=animal.AnimalBond,random=animal.animalRandom,effects=animal.Effects.Capture()};
         }
         internal void RestoreMount(AnimalMountSave row)
         {
@@ -73,6 +74,7 @@ namespace ProjectY.Data
                 row.maxHP<=1000000 && row.bond>=0 && row.random!=0,"坐骑状态");
             var animal=new CombatActorData(row.id,row.templateId);
             animal.InitializeAnimal(row.speciesId,row.random);animal.HP=row.hp;animal.MaxHP=row.maxHP;
+            animal.Effects.Restore(row.effects);
             animal.AnimalBond=row.bond;animal.AnimalOwnerId=Id;MountedAnimal=animal;
         }
     }

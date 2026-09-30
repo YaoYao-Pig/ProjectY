@@ -49,6 +49,9 @@ namespace XLua.CSObjectWrap
             translator.DelayWrapLoader(typeof(ProjectY.UI.MainHudView), ProjectYUIMainHudViewWrap.__Register);
         
         
+            translator.DelayWrapLoader(typeof(ProjectY.UI.NarrativeView), ProjectYUINarrativeViewWrap.__Register);
+        
+        
             translator.DelayWrapLoader(typeof(ProjectY.UI.PanelDefinition), ProjectYUIPanelDefinitionWrap.__Register);
         
         
@@ -112,6 +115,12 @@ namespace XLua.CSObjectWrap
             translator.DelayWrapLoader(typeof(ProjectY.Data.EquipmentMagazineData), ProjectYDataEquipmentMagazineDataWrap.__Register);
         
         
+            translator.DelayWrapLoader(typeof(ProjectY.Data.GameEffectInstanceData), ProjectYDataGameEffectInstanceDataWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(ProjectY.Data.GameEffectCollectionData), ProjectYDataGameEffectCollectionDataWrap.__Register);
+        
+        
             translator.DelayWrapLoader(typeof(ProjectY.Data.InventoryPlacementData), ProjectYDataInventoryPlacementDataWrap.__Register);
         
         
@@ -131,6 +140,15 @@ namespace XLua.CSObjectWrap
         
         
             translator.DelayWrapLoader(typeof(ProjectY.Data.MapAreaData), ProjectYDataMapAreaDataWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(ProjectY.Data.NarrativeProgressData), ProjectYDataNarrativeProgressDataWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(ProjectY.Data.DialogueLineData), ProjectYDataDialogueLineDataWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(ProjectY.Data.NarrativeData), ProjectYDataNarrativeDataWrap.__Register);
         
         
             translator.DelayWrapLoader(typeof(UnityEngine.Object), UnityEngineObjectWrap.__Register);
@@ -156,6 +174,10 @@ namespace XLua.CSObjectWrap
         
             translator.DelayWrapLoader(typeof(UnityEngine.Vector3), UnityEngineVector3Wrap.__Register);
         
+        }
+        
+        static void wrapInit1(LuaEnv luaenv, ObjectTranslator translator)
+        {
         
             translator.DelayWrapLoader(typeof(UnityEngine.Color), UnityEngineColorWrap.__Register);
         
@@ -174,10 +196,6 @@ namespace XLua.CSObjectWrap
         
             translator.DelayWrapLoader(typeof(UnityEngine.UI.GraphicRaycaster), UnityEngineUIGraphicRaycasterWrap.__Register);
         
-        }
-        
-        static void wrapInit1(LuaEnv luaenv, ObjectTranslator translator)
-        {
         
             translator.DelayWrapLoader(typeof(UnityEngine.UI.Button), UnityEngineUIButtonWrap.__Register);
         

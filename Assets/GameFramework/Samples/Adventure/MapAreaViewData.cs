@@ -34,10 +34,10 @@ namespace ProjectY.Samples
         }
         public sealed class Member { public int ActorId, CellIndex; }
         public sealed class Loot { public int Id,CellIndex;public string Name;public bool Looted;public EquipmentVisualData.Asset Asset; }
-        public sealed class NpcState { public int Id, CellIndex; }
+        public sealed class NpcState { public int Id, CellIndex; public bool Present; }
         public sealed class Npc
         {
-            public int Id;
+            public int Id, NarrativeId;
             public string Name, Description;
             public float StepSeconds;
             public PawnAppearanceData Appearance;
@@ -136,7 +136,7 @@ namespace ProjectY.Samples
                 {
                     npcs = new NpcState[rows.Length];
                     for (var i = 0; i < npcs.Length; i++) using (var row = rows.Get<int, LuaTable>(i + 1))
-                        npcs[i] = new NpcState { Id = row.Get<int>("id"), CellIndex = row.Get<int>("cellIndex") - 1 };
+                        npcs[i] = new NpcState { Id = row.Get<int>("id"), CellIndex = row.Get<int>("cellIndex") - 1, Present = row.Get<bool>("present") };
                 }
                 AdventureViewData.Actor[] enemies;
                 using (var rows = area.Get<LuaTable>("enemies"))
@@ -195,7 +195,7 @@ namespace ProjectY.Samples
                     result.Npcs = new Npc[rows.Length];
                     for (var i = 0; i < rows.Length; i++) using (var row = rows.Get<int, LuaTable>(i + 1))
                     using (var appearance = row.Get<LuaTable>("appearance"))
-                        result.Npcs[i] = new Npc { Id = row.Get<int>("id"), Name = row.Get<string>("name"), Description = row.Get<string>("description"),
+                        result.Npcs[i] = new Npc { Id = row.Get<int>("id"), NarrativeId = row.Get<int>("narrativeId"), Name = row.Get<string>("name"), Description = row.Get<string>("description"),
                             StepSeconds = row.Get<float>("stepSeconds"), Appearance = PawnAppearanceData.Read(appearance) };
                 }
                 for (var i = 0; i < result.Cells.Length; i++)

@@ -10,6 +10,7 @@ namespace ProjectY.UI
     {
         [SerializeField] private RectTransform content;
         [SerializeField] private CanvasGroup visibility;
+        [SerializeField] private bool interactiveChildren;
         [SerializeField] private Vector3 worldOffset=new Vector3(0,.32f,0);
         [SerializeField] private Vector2 screenOffset=new Vector2(0,4);
         [SerializeField] private float referenceDistance=18,referenceOrthoSize=12,minScale=.75f,maxScale=1;
@@ -81,7 +82,7 @@ namespace ProjectY.UI
         private void SetVisible(bool value)
         {SetAlpha(value?1:0);}
         private void SetAlpha(float alpha)
-        {ProjectedVisible=alpha>0;visibility.alpha=alpha;visibility.interactable=false;visibility.blocksRaycasts=false;}
+        {ProjectedVisible=alpha>0;visibility.alpha=alpha;visibility.interactable=interactiveChildren&&ProjectedVisible;visibility.blocksRaycasts=interactiveChildren&&ProjectedVisible;}
 #if UNITY_EDITOR
         [BlackList] public void SetEditorBindings(RectTransform rect,CanvasGroup group) {content=rect;visibility=group;}
 #endif

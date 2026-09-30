@@ -5,6 +5,7 @@ function Equipment:OnInit(context)
     System.OnInit(self,context)
     self.adventure=context.services.Adventure;self.data=self.adventure.Equipment
     self.config=context.systems:Get('Config');self.rules=require('Game.Equipment.EquipmentRules').New(self.config,self.data)
+    self.initialLoadouts=require('Game.Equipment.InitialLoadout').New(self.config)
     self.recipe=self.config:GetTable('EquipmentDemoTable'):Get(1)
     self.loot=self.config:GetTable('EquipmentLootTable')
     self.worldLoot=require('Game.Loot.MapLoot').New(self.config,self)
@@ -30,6 +31,15 @@ function Equipment:Start()
     self.data.Grid:Configure(self.recipe.bagWidth,self.recipe.bagHeight)
     assert(self:CanGrant(self.recipe.starterItemIds,self.recipe.starterCounts),'Starter items exceed backpack capacity')
     for i,id in ipairs(self.recipe.starterItemIds) do assert(self:Grant(id,self.recipe.starterCounts[i])) end
+end
+function Equipment:StartPartyLoadouts()
+    local ids,counts={},{}
+    for i=0,self.adventure.PartyCount-1 do
+        local items=self.initialLoadouts:Items(self.adventure:GetPartyAt(i).TemplateId)
+        for _,id in ipairs(items) do ids[#ids+1]=id;counts[#counts+1]=1 end
+    end
+    assert(self:CanGrant(ids,counts),'Initial character equipment exceeds backpack capacity')
+    for i=0,self.adventure.PartyCount-1 do self.initialLoadouts:Apply(self.data,self.adventure:GetPartyAt(i)) end
 end
 function Equipment:Actor(id)
     for i=0,self.adventure.PartyCount-1 do local actor=self.adventure:GetPartyAt(i);if actor.Id==id then return actor end end
@@ -91,5 +101,6 @@ function Equipment:InitializeLoot(areas) return self.worldLoot:Initialize(areas)
 function Equipment:Loot(areas,id) return self.worldLoot:Collect(areas,id) end
 function Equipment:LootSnapshot(areas) return self.worldLoot:Snapshot(areas) end
 function Equipment:GenerateEnemyDrops(areas,battle) return self.worldLoot:EnemyDrops(areas,battle) end
+function Equipment:GenerateActorDrops(areas,actors,stats) return self.worldLoot:ActorDrops(areas,actors,stats) end
 function Equipment:LootContents(container) return self.worldLoot:Contents(container) end
 return Equipment

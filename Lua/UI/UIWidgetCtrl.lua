@@ -13,6 +13,9 @@ function Widget:OnShow(args) end
 function Widget:OnHide() end
 function Widget:OnDestroy() end
 function Widget:Tick(dt, unscaledDt) end
+-- Optional animation binding is explicit: callers opt in by providing AnimationWrap on their View.
+function Widget:PlayAnimation(name,key) self.view[key or 'Animation']:Play(name) end
+function Widget:StopAnimation(key) self.view[key or 'Animation']:Stop() end
 function Widget:AddWidget(widgetType, reference)
     if type(widgetType) == 'string' then widgetType = require('UI.Widget.' .. widgetType) end
     local widget = widgetType(self.context, reference)

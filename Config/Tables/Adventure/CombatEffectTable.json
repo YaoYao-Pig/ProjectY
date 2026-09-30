@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "CombatEffectTable",
-  "description": "技能效果指令；数值复用现有受限公式，不执行任意源码。",
+  "description": "可由技能组合或独立施加的 GameEffect；即时、定时与无限持续效果共用定义。",
   "key": "id",
   "fields": [
     {
@@ -20,7 +20,8 @@
         "guard",
         "reload",
         "tame",
-        "relocate"
+        "relocate",
+        "modifier"
       ]
     },
     {
@@ -38,6 +39,99 @@
         "guard",
         "distance"
       ]
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "持续效果显示名称；即时效果可留空",
+      "default": ""
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "状态图标的说明",
+      "default": ""
+    },
+    {
+      "name": "iconId",
+      "type": "int",
+      "description": "状态图标，空 Sprite 时显示名称首字",
+      "ref": "BattleIconTable",
+      "default": 1
+    },
+    {
+      "name": "duration",
+      "type": "enum",
+      "description": "生命周期",
+      "values": [
+        "instant",
+        "duration",
+        "infinite"
+      ],
+      "default": "instant"
+    },
+    {
+      "name": "durationTurns",
+      "type": "int",
+      "description": "有限持续回合数",
+      "min": 0,
+      "max": 1000000,
+      "default": 0
+    },
+    {
+      "name": "periodTurns",
+      "type": "int",
+      "description": "伤害/治疗触发间隔；属性效果为 0",
+      "min": 0,
+      "max": 1000000,
+      "default": 0
+    },
+    {
+      "name": "tickPhase",
+      "type": "enum",
+      "description": "目标回合开始或结束；探索时同一世界回合各推进一次对应阶段",
+      "values": [
+        "turn_start",
+        "turn_end"
+      ],
+      "default": "turn_start"
+    },
+    {
+      "name": "stacking",
+      "type": "enum",
+      "description": "按目标与效果 ID 刷新计时、创建独立实例或叠层并刷新计时；数值在施加时快照",
+      "values": [
+        "refresh",
+        "independent",
+        "stack"
+      ],
+      "default": "refresh"
+    },
+    {
+      "name": "maxStacks",
+      "type": "int",
+      "description": "叠层上限；非叠层模式为 1",
+      "min": 1,
+      "max": 100,
+      "default": 1
+    },
+    {
+      "name": "removeOnBattleEnd",
+      "type": "bool",
+      "description": "战斗结束时移除，否则保留并参与探索世界回合",
+      "default": true
+    },
+    {
+      "name": "removeOnDeath",
+      "type": "bool",
+      "description": "目标倒地时移除",
+      "default": true
+    },
+    {
+      "name": "attribute",
+      "type": "string",
+      "description": "modifier 修改的角色属性；amount 支持负值",
+      "default": ""
     }
   ],
   "rows": [

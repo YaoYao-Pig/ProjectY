@@ -1,0 +1,15 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class NpcTableRow
+---@field id number 稳定配置 ID
+---@field name string NPC 名称
+---@field description string 人物介绍
+---@field townTemplateId number 城镇外观和移动模板
+---@field actorTemplateId number 招募后的角色模板
+---@field factionId number 所属阵营
+---@field recruitable boolean 是否可招募
+---@field relationMin number 最低好感
+---@field relationMax number 最高好感
+---@field initialRelation number 初始好感
+---@field dialogueIds number[] 按顺序选择首个满足条件的对话
+---@field missionIds number[] 关联任务，用于工具导航和 HUD
+return {["name"]="NpcTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1,["max"]=89999},{["name"]="name",["type"]="text",["description"]="NPC \229\144\141\231\167\176"},{["name"]="description",["type"]="text",["description"]="\228\186\186\231\137\169\228\187\139\231\187\141"},{["name"]="townTemplateId",["type"]="int",["description"]="\229\159\142\233\149\135\229\164\150\232\167\130\229\146\140\231\167\187\229\138\168\230\168\161\230\157\191",["ref"]="MapAreaTownNpcTable"},{["name"]="actorTemplateId",["type"]="int",["description"]="\230\139\155\229\139\159\229\144\142\231\154\132\232\167\146\232\137\178\230\168\161\230\157\191",["ref"]="CombatUnitTable"},{["name"]="factionId",["type"]="int",["description"]="\230\137\128\229\177\158\233\152\181\232\144\165",["ref"]="FactionTable"},{["name"]="recruitable",["type"]="bool",["description"]="\230\152\175\229\144\166\229\143\175\230\139\155\229\139\159"},{["name"]="relationMin",["type"]="int",["description"]="\230\156\128\228\189\142\229\165\189\230\132\159"},{["name"]="relationMax",["type"]="int",["description"]="\230\156\128\233\171\152\229\165\189\230\132\159"},{["name"]="initialRelation",["type"]="int",["description"]="\229\136\157\229\167\139\229\165\189\230\132\159"},{["name"]="dialogueIds",["type"]="int[]",["description"]="\230\140\137\233\161\186\229\186\143\233\128\137\230\139\169\233\166\150\228\184\170\230\187\161\232\182\179\230\157\161\228\187\182\231\154\132\229\175\185\232\175\157",["ref"]="DialogueTable",["default"]={}},{["name"]="missionIds",["type"]="int[]",["description"]="\229\133\179\232\129\148\228\187\187\229\138\161\239\188\140\231\148\168\228\186\142\229\183\165\229\133\183\229\175\188\232\136\170\229\146\140 HUD",["ref"]="MissionTable",["default"]={}}},["fingerprint"]="c783da9a57f03cffd6acb325bc2320dbc77fe716e3de85c24ac6d9b659cf13a8"}

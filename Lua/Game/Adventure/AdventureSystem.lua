@@ -22,7 +22,8 @@ function Adventure:OnInit(context)
     assert(self.recipe.maxPartySize<=4 and #self.recipe.partyIds > 0 and #self.recipe.partyIds <= self.recipe.maxPartySize, 'Invalid demo party size')
     assert(#self.recipe.buildingIds == #self.recipe.buildingEventIds, 'Building event mapping differs')
 end
-function Adventure:Start(seed)
+function Adventure:Start(seed,recipeId)
+    self.recipe = self.config:GetTable('AdventureDemoTable'):Get(recipeId or 1)
     seed = seed or self.recipe.seed
     local map = self.mapSystem:Generate(seed, self.recipe.regionIds)
     local sites, dry = {}, {}
@@ -70,6 +71,9 @@ function Adventure:Start(seed)
         actor:SetMaxHP(self.battle.stats:MaximumHP(actor)); actor:Restore()
     end
     self.equipment:Start()
+    self.equipment:StartPartyLoadouts()
+    for i=0,self.data.PartyCount-1 do local actor=self.data:GetPartyAt(i);actor:SetMaxHP(self.battle.stats:MaximumHP(actor));actor:Restore() end
+    if self.narrative then self.narrative:Start() end
 end
 function Adventure:Visit(siteId)
     local site = self.sites[siteId]
@@ -91,6 +95,7 @@ function Adventure:Visit(siteId)
     return true
 end
 function Adventure:AreaCommand(command,a,b)
+    if self.narrative and self.narrative.data.DialogueOpen then return false,'请先结束当前对话' end
     if command=='area_tame' then return self.areas:Tame(a,b) end
     if command=='area_loot' then
         local ok,reason=self.equipment:Loot(self.areas,a)
@@ -108,6 +113,14 @@ function Adventure:AreaCommand(command,a,b)
     if command=='area_walk' then return self.areas:Walk(a) end
     if command=='area_interact' then
         local ok,reason=self.areas:Interact(a,b)
+        if ok and a==2 and self.narrative then
+            local npc=self.areas:ActiveLayout().npcs[b]
+            if npc.narrativeId then
+                ok,reason=self.narrative.dialogue:Open(npc.narrativeId,b)
+                if not ok then self.areas:CloseInteraction() end
+                return ok,reason
+            end
+        end
         if ok and a==1 then self.explorationEvents:Try('facility',self.areas:ActiveLayout().facilities[b].configId) end
         return ok,reason
     end
@@ -202,10 +215,12 @@ function Adventure:BattleCommand(command, a, b)
     return ok, reason
 end
 function Adventure:Tick()
+    if self.data.Phase=='battle' and self.data.Battle.Winner~='' then self:SettleBattle();return end
     if self.data.Phase~='area' then return end
+    if self.narrative and self.narrative.data.DialogueOpen then return end
     if self.context.services.UI.IsWorldPaused then return end
     local group=self.areas:FindEncounter()
-    if group then self.areas:StartBattle(self.battle,group)
+    if group then self.areas:StartBattle(self.battle,group);self:SettleBattle()
     else self.explorationEvents:Try('explore',0) end
 end
 function Adventure:ReturnToMap()
@@ -221,7 +236,9 @@ function Adventure:Snapshot()
     -- cells 和 reachable 都由 C# ReadCell 读取，必须包含相同的值类型字段。
     local function cellView(cell) return {q = cell.q, r = cell.r, blocked = cell.blocked,cellIndex=cell.index or 0} end
     local function actorView(actor)
-        return require('Game.Battle.CombatSnapshot')(actor,self.battle.stats,self.appearances)
+        local row=require('Game.Battle.CombatSnapshot')(actor,self.battle.stats,self.appearances)
+        if self.narrative then row.name=self.narrative.npcs:ActorName(actor) or row.name end
+        return row
     end
     for i = 0, self.data.PartyCount - 1 do
         local actor=self.data:GetPartyAt(i);local row=actorView(actor)

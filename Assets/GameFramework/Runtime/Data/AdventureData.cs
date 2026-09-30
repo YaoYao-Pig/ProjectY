@@ -34,6 +34,7 @@ namespace ProjectY.Data
         public BattleData Battle { get; } = new BattleData();
         public MapAreaData Areas { get; } = new MapAreaData();
         public EquipmentData Equipment { get; } = new EquipmentData();
+        public NarrativeData Narrative { get; } = new NarrativeData();
         public uint Seed { get; private set; }
         public string Phase { get; private set; } = "map";
         public int SiteId { get; private set; }
@@ -46,7 +47,7 @@ namespace ProjectY.Data
         public bool HasVisited(int siteId) => visited.Contains(siteId);
         public void Reset(uint seed)
         {
-            Seed = seed; party.Clear(); visited.Clear(); journal.Clear(); storyTriggers.Clear(); Battle.Clear(); Areas.Clear(); Equipment.Clear();
+            Seed = seed; party.Clear(); visited.Clear(); journal.Clear(); storyTriggers.Clear(); Battle.Clear(); Areas.Clear(); Equipment.Clear(); Narrative.Clear();
             EventReturnPhase = "map"; StoryTriggerKey = "";
             EventActorId = 0; EventLocation = "";
             Phase = "map"; SiteId = 0; EventId = 0; ChoiceId = 0; AreaEncounterId = 0; ResultText = "";
@@ -61,6 +62,19 @@ namespace ProjectY.Data
             if (party.Count >= 4) throw new InvalidOperationException("The adventure squad supports at most four members.");
             if (party.Exists(member => member.Id == id)) throw new InvalidOperationException("Duplicate party actor.");
             var actor = new CombatActorData(id, templateId); party.Add(actor); return actor;
+        }
+        public CombatActorData PrepareRecruitActor(int id, int templateId)
+        {
+            if ((Phase != "map" && Phase != "area") || party.Count >= 4 || party.Exists(member => member.Id == id) || id <= 0 || templateId <= 0)
+                throw new InvalidOperationException("Cannot recruit this actor into the current squad.");
+            return new CombatActorData(id, templateId);
+        }
+        public void AddPreparedRecruit(CombatActorData actor)
+        {
+            if (actor == null || !actor.Growth.Initialized || actor.HP <= 0 || party.Count >= 4 ||
+                (Phase != "map" && Phase != "area") || party.Exists(member => member.Id == actor.Id))
+                throw new InvalidOperationException("Invalid prepared recruit.");
+            party.Add(actor);
         }
         public void BeginEvent(int siteId, int eventId)
         {

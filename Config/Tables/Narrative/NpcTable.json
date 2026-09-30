@@ -1,0 +1,116 @@
+{
+  "version": 1,
+  "name": "NpcTable",
+  "description": "具有唯一叙事身份的 NPC；渲染和巡游复用城镇资源。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1,
+      "max": 89999
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "NPC 名称"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "人物介绍"
+    },
+    {
+      "name": "townTemplateId",
+      "type": "int",
+      "description": "城镇外观和移动模板",
+      "ref": "MapAreaTownNpcTable"
+    },
+    {
+      "name": "actorTemplateId",
+      "type": "int",
+      "description": "招募后的角色模板",
+      "ref": "CombatUnitTable"
+    },
+    {
+      "name": "factionId",
+      "type": "int",
+      "description": "所属阵营",
+      "ref": "FactionTable"
+    },
+    {
+      "name": "recruitable",
+      "type": "bool",
+      "description": "是否可招募"
+    },
+    {
+      "name": "relationMin",
+      "type": "int",
+      "description": "最低好感"
+    },
+    {
+      "name": "relationMax",
+      "type": "int",
+      "description": "最高好感"
+    },
+    {
+      "name": "initialRelation",
+      "type": "int",
+      "description": "初始好感"
+    },
+    {
+      "name": "dialogueIds",
+      "type": "int[]",
+      "description": "按顺序选择首个满足条件的对话",
+      "ref": "DialogueTable",
+      "default": []
+    },
+    {
+      "name": "missionIds",
+      "type": "int[]",
+      "description": "关联任务，用于工具导航和 HUD",
+      "ref": "MissionTable",
+      "default": []
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "莱雅",
+      "description": "熟悉边境道路的流浪剑士，正在寻找失踪的驿使。",
+      "townTemplateId": 2,
+      "actorTemplateId": 6,
+      "factionId": 1,
+      "recruitable": true,
+      "relationMin": -100,
+      "relationMax": 100,
+      "initialRelation": 0,
+      "dialogueIds": [
+        1
+      ],
+      "missionIds": [
+        100,
+        200
+      ]
+    },
+    {
+      "id": 2,
+      "name": "驿站书记",
+      "description": "记录每一封到达边境的信件，也记得那位失踪的驿使。",
+      "townTemplateId": 1,
+      "actorTemplateId": 3,
+      "factionId": 1,
+      "recruitable": false,
+      "relationMin": -100,
+      "relationMax": 100,
+      "initialRelation": 0,
+      "dialogueIds": [
+        2
+      ],
+      "missionIds": [
+        100
+      ]
+    }
+  ]
+}

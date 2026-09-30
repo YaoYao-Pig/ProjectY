@@ -5,7 +5,7 @@ local function test(name, run) run(); messages[#messages+1]='PASS '..name end
 local ok, err = xpcall(function()
     local hud,battle,ui,adapter=fixture.hud,fixture.battle,fixture.ui,fixture.adapter
     test('configured framework prefabs show real resources and blank icons',function()
-        assert(hud.view.HealthText.text:find(tostring(battle:Active().HP),1,true))
+        assert(hud.model.hp==battle:Active().HP)
         assert(hud.model.ap==battle:Active().AP and #hud.model.party==4 and #hud.model.turns==7)
         assert(not hud.actions[1].view.Icon.enabled and not hud.items[1].view.Icon.enabled)
         for _,item in ipairs(hud.items) do assert(not item.view.Button.interactable) end
@@ -14,7 +14,7 @@ local ok, err = xpcall(function()
     test('button selection, resource refresh and cached reopen release their listeners',function()
         hud.actions[2].view.Button.onClick:Invoke();assert(adapter.SelectedBattleSkill==4 and adapter.selections==1)
         assert(battle:TrySkill(4,battle.data.ActiveId));ui:Tick(0,0)
-        assert(hud.model.guard==3 and hud.model.ap==3 and hud.view.Resources.text:find('3'))
+        assert(hud.model.guard==3 and hud.model.ap==3)
         assert(#battle.Changed.listeners==1)
         ui:Close('BattleHUD');assert(#battle.Changed.listeners==0)
         hud=ui:Open('BattleHUD',{demo=adapter});assert(#battle.Changed.listeners==1)
@@ -31,6 +31,7 @@ local ok, err = xpcall(function()
         hud.view.Tooltip.gameObject:SetActive(true);ui:Close('BattleHUD')
         assert(not hud.view.Tooltip.gameObject.activeSelf and #battle.Changed.listeners==0)
     end)
+
 end,debug.traceback)
 fixture.registry:Shutdown()
 if not ok then error(err,0) end

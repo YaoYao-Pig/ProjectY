@@ -43,10 +43,11 @@ function Model.Build(battle, adventure)
             active = unit.Id == actor.Id, team = unit.Team, speed = battle.stats:Get(unit, 'speed') }
     end
     for i = 0, adventure.PartyCount - 1 do result.party[#result.party + 1] = unitView(adventure:GetPartyAt(i)) end
-    for i = 0, data.TurnCount - 1 do
+    for offset = 0, data.TurnCount - 1 do
+        local i=(data.TurnIndex+offset)%data.TurnCount
         local unit = assert(battle:FindUnit(data:GetTurnAt(i)))
         if unit.HP > 0 and unit.AnimalOwnerId==0 then
-            local row = unitView(unit); row.acted = i < data.TurnIndex
+            local row = unitView(unit); row.acted = false;row.nextRound=i<data.TurnIndex
             result.turns[#result.turns + 1] = row
         end
     end

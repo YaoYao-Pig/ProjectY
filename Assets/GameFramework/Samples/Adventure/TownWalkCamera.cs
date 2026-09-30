@@ -43,7 +43,7 @@ namespace ProjectY.Samples
                 var index = origin.Neighbors[d]; if (index < 0) continue;
                 var target = layout.Cells[index];
                 if (target.Blocked || Vector3.Dot((target.Position - origin.Position).normalized, input) < .2f) continue;
-                var occupied = false; foreach (var npc in state.Npcs) if (npc.CellIndex == index) { occupied = true; break; }
+                var occupied = false; foreach (var npc in state.Npcs) if (npc.Present && npc.CellIndex == index) { occupied = true; break; }
                 if (occupied) continue;
                 var score = (target.Position - desired).sqrMagnitude;
                 if (score < best) { best = score; direction = d + 1; }

@@ -16,6 +16,7 @@ namespace ProjectY.UI
         public UIKind Kind;
         public string Layer = "Main";
         public bool Modal;
+        [Range(0,1)] public float ModalDimAlpha = .65f;
         public bool Cache = true;
         public bool CloseOnBack = true;
         public bool IsWorldUI;

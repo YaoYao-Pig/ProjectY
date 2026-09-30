@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "name": "NarrativeSettingsTable",
+  "description": "叙事运行参数。时钟速度和初始时刻复用地图环境配方。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "environmentId",
+      "type": "int",
+      "description": "时钟来源配方",
+      "ref": "MapEnvironmentTable"
+    },
+    {
+      "name": "demoRecipeId",
+      "type": "int",
+      "description": "独立三人开局示例",
+      "ref": "AdventureDemoTable"
+    },
+    {
+      "name": "maxTransitions",
+      "type": "int",
+      "description": "单次刷新流转上限，防止异常配置失控",
+      "min": 1
+    },
+    {
+      "name": "playerSpeaker",
+      "type": "text",
+      "description": "玩家选项发言名"
+    },
+    {
+      "name": "spawnSearchRadius",
+      "type": "int",
+      "description": "NPC 出生和日程停留点距设施入口的最大道路格数",
+      "min": 1,
+      "max": 12,
+      "default": 3
+    },
+    {
+      "name": "recruitSearchRadius",
+      "type": "int",
+      "description": "招募新队员时距领队的最大站位搜索格数",
+      "min": 1,
+      "max": 12,
+      "default": 4
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "environmentId": 1,
+      "demoRecipeId": 2,
+      "maxTransitions": 256,
+      "playerSpeaker": "你"
+    }
+  ]
+}

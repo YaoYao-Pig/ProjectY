@@ -21,12 +21,13 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.MapAreaNpcData);
-			Utils.BeginObjectRegister(type, L, translator, 0, 1, 3, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 1, 4, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Due", _m_Due);
 			
 			
 			Utils.RegisterFunc(L, Utils.GETTER_IDX, "Id", _g_get_Id);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "Present", _g_get_Present);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "CellIndex", _g_get_CellIndex);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "PatrolCursor", _g_get_PatrolCursor);
             
@@ -99,6 +100,20 @@ namespace XLua.CSObjectWrap
 			
                 ProjectY.Data.MapAreaNpcData gen_to_be_invoked = (ProjectY.Data.MapAreaNpcData)translator.FastGetCSObj(L, 1);
                 LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.Id);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_Present(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.MapAreaNpcData gen_to_be_invoked = (ProjectY.Data.MapAreaNpcData)translator.FastGetCSObj(L, 1);
+                LuaAPI.lua_pushboolean(L, gen_to_be_invoked.Present);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }

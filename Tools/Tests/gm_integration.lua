@@ -38,6 +38,48 @@ local ok,err=xpcall(function()
         while second.Growth.Level<gm.growth.rules.maxLevel do assert(gm:Execute('level_up',2)) end
         local revision=second.Growth.Revision;assert(not gm:Execute('level_up',2));assert(second.Growth.Revision==revision)
     end)
+    local story=registry:Get('Narrative')
+    local function assertNearNpc(id)
+        assert(adventure.data.Areas.ActiveSiteId==story.npcs.locations[id])
+        local layout,state=adventure.areas:ActiveLayout(),adventure.data.Areas.Active
+        local npc=gm.npcs:LocalNpc(layout,id);local target=state:GetNpcAt(npc.id-1)
+        local path=layout:FindPath(state.CellIndex,target.CellIndex)
+        assert(path and #path==1,'Leader must be on a connected, interactable neighboring cell')
+        local used={}
+        for i=0,state.MemberCount-1 do local index=state:GetMemberCellAt(i)
+            assert(not used[index] and not state:IsNpcOccupied(index) and not layout.cells[index].blocked);used[index]=true
+        end
+        assert(state.RemainingSteps==0 and state.MemberCount==4)
+        assert(adventure.areas:Interact(2,npc.id));assert(adventure.areas:CloseInteraction())
+    end
+    test('NPC name/ID search reads real placement and unknown IDs do not change the world',function()
+        local rows=gm.npcs:Search('莱雅');assert(#rows==1 and rows[1].id==1 and rows[1].available)
+        assert(#gm.npcs:Search('  2  ')==1 and #gm.npcs:Search('not an npc')==0)
+        for _,id in ipairs({0,-1,1.5,99999}) do assert(not gm:Execute('goto_npc',id)) end
+        assert(adventure.data.Phase=='map' and adventure.data.Areas.ActiveSiteId==0)
+    end)
+    test('NPC travel works from world map, the same town and a different town without changing task facts',function()
+        local coins=adventure.player.Coins;local items=adventure.data.Equipment.Grid.Count
+        assert(gm:Execute('goto_npc',1));assertNearNpc(1)
+        assert(gm.npcs:Search('1')[1].body:find('当前位置'))
+        assert(gm:Execute('goto_npc',2));assertNearNpc(2)
+        local other
+        for _,site in ipairs(adventure.sites) do if site.areaConfigId and site.areaConfigId~=1 and site.areaConfigId~=20 and site.id~=story.npcs.locations[1] then other=site;break end end
+        assert(other and adventure.areas:Leave());assert(adventure.areas:Enter(other,adventure.data.Seed))
+        assert(gm:Execute('goto_npc',1));assertNearNpc(1)
+        assert(adventure.player.Coins==coins and adventure.data.Equipment.Grid.Count==items and story.data:Status('mission',100)=='inactive')
+        assert(adventure.data:GetPartyAt(0)==first and adventure.data:GetPartyAt(1)==second)
+    end)
+    test('already recruited and unavailable NPCs are explained without spawning replacements',function()
+        local before=adventure.data.Areas.ActiveSiteId
+        story.data:SetValue('recruited:1',first.Id)
+        local rows=gm.npcs:Search('莱雅');assert(not rows[1].available and rows[1].body:find('槽位 1'))
+        assert(not gm:Execute('goto_npc',1) and adventure.data.Areas.ActiveSiteId==before)
+        story.data:SetValue('recruited:1',0)
+        local site=story.npcs.locations[1];story.npcs.locations[1]=nil
+        rows=gm.npcs:Search('莱雅');assert(not rows[1].available and rows[1].body:find('未生成'))
+        assert(not gm:Execute('goto_npc',1));story.npcs.locations[1]=site
+    end)
     local demo={BattleHUDRevision=0,SelectedCharacterId=first.Id,LastError='',commands=0}
     function demo:SetGMOpen(value) self.open=value end
     function demo:SendCommand(command,slot,id)
@@ -55,6 +97,17 @@ local ok,err=xpcall(function()
         panel=ui:Open('GM',{demo=demo,font=GMFont});assert(panel.view.Result.text=='' and demo.open)
         panel.view.Slot.text='2';panel.view.SkillId.text='201';panel:Refresh()
         panel.view.Result.text='检查通过：槽位升级、技能授予与边界校验均正常。'
+    end)
+    test('NPC search and real list button dispatch travel, preserving the pause until close',function()
+        panel.view.NpcSearch.text='驿站';panel:Tick()
+        assert(panel.view.NpcCount.text=='找到 1 位 NPC' and panel.npcRows[1].view.Title.text:find('驿站书记'))
+        local before=demo.commands;panel.npcRows[1].view.Button.onClick:Invoke()
+        assert(demo.commands==before+1 and panel.view.Result.text:find('已到达') and Services.UI.IsWorldPaused)
+        assertNearNpc(2)
+        panel.view.NpcSearch.text='没有这个人';panel:Tick();assert(panel.view.NpcCount.text=='没有匹配的 NPC')
+        panel.view.NpcSearch.text='';panel:Tick()
+        panel.view.Close.onClick:Invoke();assert(not Services.UI.IsWorldPaused)
+        panel=ui:Open('GM',{demo=demo,font=GMFont});assert(#panel.npcRows>=2)
     end)
 end,debug.traceback)
 if not ok then CloseGMPreview();error(err,0) end

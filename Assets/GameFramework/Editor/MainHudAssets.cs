@@ -15,24 +15,7 @@ namespace ProjectY.Editor
         [MenuItem("Project Y/UI/同步紧凑血条与跟随参数")]
         public static void SyncHealthFollower()
         {
-            if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Edit Mode required.");
-            const string path="Assets/DynamicAsset/UI/Prefabs/MainHud/HudHealthWidget.prefab";
-            var root=PrefabUtility.LoadPrefabContents(path);
-            try
-            {
-                var reference=root.GetComponent<LuaReference>();var rect=(RectTransform)root.transform;
-                rect.sizeDelta=new Vector2(128,36);rect.anchorMin=rect.anchorMax=new Vector2(.5f,.5f);rect.pivot=new Vector2(.5f,0);
-                var name=reference.GetText("Name");name.fontSize=12;name.rectTransform.anchoredPosition=new Vector2(6,-2);name.rectTransform.sizeDelta=new Vector2(116,18);
-                var fill=reference.GetImage("Health");var track=(RectTransform)fill.transform.parent;
-                track.anchoredPosition=new Vector2(6,-21);track.sizeDelta=new Vector2(116,11);
-                var text=reference.GetText("HealthText");text.fontSize=10;text.rectTransform.sizeDelta=new Vector2(116,11);
-                var settings=new SerializedObject(root.GetComponent<UIFollower>());
-                settings.FindProperty("worldOffset").vector3Value=new Vector3(0,.32f,0);settings.FindProperty("screenOffset").vector2Value=new Vector2(0,4);
-                settings.FindProperty("referenceOrthoSize").floatValue=12;settings.FindProperty("minScale").floatValue=.75f;settings.FindProperty("maxScale").floatValue=1;
-                settings.FindProperty("orthographicFade").vector2Value=new Vector2(12,20);settings.FindProperty("perspectiveFade").vector2Value=new Vector2(18,30);
-                settings.ApplyModifiedPropertiesWithoutUndo();PrefabUtility.SaveAsPrefabAsset(root,path);
-            }
-            finally {PrefabUtility.UnloadPrefabContents(root);}
+            UXLayoutAssets.ApplyHeadHealth();
         }
         static MainHudAssets()
         {LuaViewHints.Register(typeof(MainHudView),"CS.ProjectY.UI.MainHudView");LuaViewHints.Register(typeof(UIFollower),"CS.ProjectY.UI.UIFollower");}
@@ -126,6 +109,7 @@ namespace ProjectY.Editor
             view.SetEditorBindings(new MainHudView.Layout {Root=(RectTransform)root.transform,Safe=safe,Header=header,Navigation=navigation,NavigationScroll=(RectTransform)rows.parent.parent,
                 NavigationContent=rows,Journal=journal,Party=party,PartyGrid=grid,Interaction=interaction,Hint=hint.rectTransform,Canvas=canvas,Labels=exploration.GetComponentsInChildren<Text>(true)});
             Bind(root,"HUD",view);Bind(root,"Style",view);
+            BattleFeedbackAssets.SetupMain(root);
         }
         private static void BuildRow(GameObject root)
         {
@@ -150,6 +134,7 @@ namespace ProjectY.Editor
                 var group=root.GetComponent<CanvasGroup>();group.blocksRaycasts=false;group.interactable=false;
                 var follow=root.AddComponent<UIFollower>();follow.SetEditorBindings(rect,group);Bind(root,"Follower",follow);
             }
+            BattleFeedbackAssets.SetupHealth(root);
         }
     }
 }

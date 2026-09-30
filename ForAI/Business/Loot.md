@@ -8,6 +8,8 @@
 
 ## 正文
 
+- [持续 GameEffect](GameEffects.md) 在探索中造成的死亡，经 `GenerateActorDrops / MapLoot:ActorDrops` 复用同一套掉落规则与 DropResolved 标记；战斗结算的 `EnemyDrops` 也委托此入口。
+
 - `Game.Loot` 集中管理掉落解释、宝箱生成计划与地图掉落事务；`EquipmentSystem` 保留原有 `InitializeLoot/Loot/LootSnapshot` 门面并提供背包 `CanGrant/Grant`。地图布局只负责可达性，实际随机内容与领取状态在 C# `MapAreaLootData` 中保存，不在 Lua 保存第二份库存。
 - `MapAreaChestRuleTable` 按 areaId 配置宝箱类型、数量区间、距入口的寻路距离范围、宝箱间格距和独立种子盐；`reachable` 选择可达地格，`rooms` 限定房间/林间空地。避开入口、目标、地图陈设、NPC 和角色完整占格，不改变导航阻挡；空间不足明确报告配置错误，不静默减量。首版地牢和森林各新增 2～4 个随机宝箱，原入口补给保留。
 - `EquipmentLootTable` 定义箱子/地面战利品名称及关闭/开启模型。poolId=0 使用原固定 itemIds/counts，poolId>0 引用 `LootPoolTable`，随机容器不再填写固定物品。原地牢入口补给继续沿用 EquipmentDemoTable 的固定距离配方，新增宝箱使用独立策略。

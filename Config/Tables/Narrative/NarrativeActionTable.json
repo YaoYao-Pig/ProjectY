@@ -1,0 +1,121 @@
+{
+  "version": 1,
+  "name": "NarrativeActionTable",
+  "description": "叙事命令；执行前检查整组奖励容量和招募位置，完成记录防止重复领取。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "kind",
+      "type": "enum",
+      "description": "动作类型",
+      "values": [
+        "set_flag",
+        "add_coins",
+        "grant_item",
+        "accept_mission",
+        "claim_mission",
+        "recruit_npc",
+        "add_relation",
+        "add_reputation"
+      ]
+    },
+    {
+      "name": "targetId",
+      "type": "int",
+      "description": "目标配置 ID，由动作类型检查",
+      "default": 0
+    },
+    {
+      "name": "key",
+      "type": "string",
+      "description": "事实键，仅 set_flag 使用",
+      "default": ""
+    },
+    {
+      "name": "value",
+      "type": "int",
+      "description": "数量或增量；set_flag 为目标值",
+      "default": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "kind": "add_coins",
+      "value": 40
+    },
+    {
+      "id": 2,
+      "kind": "add_reputation",
+      "targetId": 1,
+      "value": 5
+    },
+    {
+      "id": 3,
+      "kind": "recruit_npc",
+      "targetId": 1
+    },
+    {
+      "id": 4,
+      "kind": "add_relation",
+      "targetId": 1,
+      "value": 10
+    },
+    {
+      "id": 10,
+      "kind": "accept_mission",
+      "targetId": 100
+    },
+    {
+      "id": 11,
+      "kind": "set_flag",
+      "key": "courier_route",
+      "value": 1
+    },
+    {
+      "id": 12,
+      "kind": "set_flag",
+      "key": "courier_route",
+      "value": 2
+    },
+    {
+      "id": 13,
+      "kind": "set_flag",
+      "key": "courier_evidence",
+      "value": 1
+    },
+    {
+      "id": 14,
+      "kind": "set_flag",
+      "key": "lya_story",
+      "value": 1
+    },
+    {
+      "id": 15,
+      "kind": "claim_mission",
+      "targetId": 100
+    },
+    {
+      "id": 16,
+      "kind": "accept_mission",
+      "targetId": 200
+    },
+    {
+      "id": 17,
+      "kind": "set_flag",
+      "key": "lya_invited",
+      "value": 1
+    },
+    {
+      "id": 18,
+      "kind": "claim_mission",
+      "targetId": 200
+    }
+  ]
+}

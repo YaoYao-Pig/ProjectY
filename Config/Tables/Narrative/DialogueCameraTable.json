@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "name": "DialogueCameraTable",
+  "description": "Cinemachine 对话构图；玩家与 NPC 的位置来自实际渲染对象。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "distance",
+      "type": "float",
+      "description": "双人构图额外距离",
+      "min": 1
+    },
+    {
+      "name": "height",
+      "type": "float",
+      "description": "人物注视高度",
+      "min": 0
+    },
+    {
+      "name": "pitch",
+      "type": "float",
+      "description": "俯角",
+      "min": 0,
+      "max": 80
+    },
+    {
+      "name": "fieldOfView",
+      "type": "float",
+      "description": "视场角",
+      "min": 15,
+      "max": 90
+    },
+    {
+      "name": "blendSeconds",
+      "type": "float",
+      "description": "镜头过渡秒数",
+      "min": 0
+    },
+    {
+      "name": "panelWidth",
+      "type": "float",
+      "description": "右侧 UI 宽度（1280 参考分辨率）",
+      "min": 300,
+      "max": 640
+    },
+    {
+      "name": "closeupScale",
+      "type": "float",
+      "description": "说话者镜头距离倍率",
+      "min": 0.3,
+      "max": 1
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "distance": 5,
+      "height": 1.25,
+      "pitch": 22,
+      "fieldOfView": 45,
+      "blendSeconds": 0.65,
+      "panelWidth": 440,
+      "closeupScale": 0.7
+    }
+  ]
+}

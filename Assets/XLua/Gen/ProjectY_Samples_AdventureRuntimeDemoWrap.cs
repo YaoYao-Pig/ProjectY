@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Samples.AdventureRuntimeDemo);
-			Utils.BeginObjectRegister(type, L, translator, 0, 23, 10, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 25, 10, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SetGMOpen", _m_SetGMOpen);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "OpenGM", _m_OpenGM);
@@ -35,6 +35,8 @@ namespace XLua.CSObjectWrap
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "OpenGrowth", _m_OpenGrowth);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SetEquipmentOpen", _m_SetEquipmentOpen);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "OpenEquipment", _m_OpenEquipment);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SetDialogueCamera", _m_SetDialogueCamera);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "EndDialogueCamera", _m_EndDialogueCamera);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SelectCharacter", _m_SelectCharacter);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SelectCharacterSkill", _m_SelectCharacterSkill);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "CancelCharacterSkill", _m_CancelCharacterSkill);
@@ -426,6 +428,70 @@ namespace XLua.CSObjectWrap
                 {
                     
                     gen_to_be_invoked.OpenEquipment(  );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_SetDialogueCamera(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Samples.AdventureRuntimeDemo gen_to_be_invoked = (ProjectY.Samples.AdventureRuntimeDemo)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _actorId = LuaAPI.xlua_tointeger(L, 2);
+                    int _npcId = LuaAPI.xlua_tointeger(L, 3);
+                    string _shot = LuaAPI.lua_tostring(L, 4);
+                    float _distance = (float)LuaAPI.lua_tonumber(L, 5);
+                    float _height = (float)LuaAPI.lua_tonumber(L, 6);
+                    float _cameraPitch = (float)LuaAPI.lua_tonumber(L, 7);
+                    float _fov = (float)LuaAPI.lua_tonumber(L, 8);
+                    float _blend = (float)LuaAPI.lua_tonumber(L, 9);
+                    float _closeup = (float)LuaAPI.lua_tonumber(L, 10);
+                    float _panelFraction = (float)LuaAPI.lua_tonumber(L, 11);
+                    
+                    gen_to_be_invoked.SetDialogueCamera( _actorId, _npcId, _shot, _distance, _height, _cameraPitch, _fov, _blend, _closeup, _panelFraction );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_EndDialogueCamera(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Samples.AdventureRuntimeDemo gen_to_be_invoked = (ProjectY.Samples.AdventureRuntimeDemo)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    
+                    gen_to_be_invoked.EndDialogueCamera(  );
                     
                     
                     

@@ -1,0 +1,11 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class DialogueCameraTableRow
+---@field id number 稳定配置 ID
+---@field distance number 双人构图额外距离
+---@field height number 人物注视高度
+---@field pitch number 俯角
+---@field fieldOfView number 视场角
+---@field blendSeconds number 镜头过渡秒数
+---@field panelWidth number 右侧 UI 宽度（1280 参考分辨率）
+---@field closeupScale number 说话者镜头距离倍率
+return {["name"]="DialogueCameraTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="distance",["type"]="float",["description"]="\229\143\140\228\186\186\230\158\132\229\155\190\233\162\157\229\164\150\232\183\157\231\166\187",["min"]=1},{["name"]="height",["type"]="float",["description"]="\228\186\186\231\137\169\230\179\168\232\167\134\233\171\152\229\186\166",["min"]=0},{["name"]="pitch",["type"]="float",["description"]="\228\191\175\232\167\146",["min"]=0,["max"]=80},{["name"]="fieldOfView",["type"]="float",["description"]="\232\167\134\229\156\186\232\167\146",["min"]=15,["max"]=90},{["name"]="blendSeconds",["type"]="float",["description"]="\233\149\156\229\164\180\232\191\135\230\184\161\231\167\146\230\149\176",["min"]=0},{["name"]="panelWidth",["type"]="float",["description"]="\229\143\179\228\190\167 UI \229\174\189\229\186\166\239\188\1361280 \229\143\130\232\128\131\229\136\134\232\190\168\231\142\135\239\188\137",["min"]=300,["max"]=640},{["name"]="closeupScale",["type"]="float",["description"]="\232\175\180\232\175\157\232\128\133\233\149\156\229\164\180\232\183\157\231\166\187\229\128\141\231\142\135",["min"]=0.3,["max"]=1}},["fingerprint"]="a6568370be4e23310ea91b2e67c6f3844e37c442b5174a0bf4e5b8e83e5c3dd9"}

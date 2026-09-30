@@ -43,8 +43,8 @@ test('path search respects blockers, occupied cells and movement budget', functi
 end)
 test('real unit, skill, effect and event tables agree and trait modifiers affect formulas', function()
     local stats = require('Game.Battle.CombatStats')(config)
-    local source = {Growth=EmptyGrowth(),TemplateId = 1, TraitCount = 0, Guard = 0}
-    local target = {Growth=EmptyGrowth(),TemplateId = 4, TraitCount = 0, Guard = 0}
+    local source = {Growth=EmptyGrowth(),Effects={Count=0},TemplateId = 1, TraitCount = 0, Guard = 0}
+    local target = {Growth=EmptyGrowth(),Effects={Count=0},TemplateId = 4, TraitCount = 0, Guard = 0}
     local skill = config:GetTable('CombatSkillTable'):Get(1)
     local effect = config:GetTable('CombatEffectTable'):Get(skill.effectIds[1])
     local original = effect.amount:Evaluate(stats:EffectVariables(source, target, skill))

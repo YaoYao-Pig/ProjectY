@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "name": "NpcScheduleTable",
+  "description": "每天循环的连续时段；在当前城镇按道路寻路，交谈时暂停。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "npcId",
+      "type": "int",
+      "description": "NPC 身份",
+      "ref": "NpcTable"
+    },
+    {
+      "name": "startMinute",
+      "type": "int",
+      "description": "起始分钟，含端点",
+      "min": 0,
+      "max": 1439
+    },
+    {
+      "name": "endMinute",
+      "type": "int",
+      "description": "结束分钟，不含端点",
+      "min": 1,
+      "max": 1440
+    },
+    {
+      "name": "facilityId",
+      "type": "int",
+      "description": "此时段的目的设施",
+      "ref": "MapAreaTownFacilityTable"
+    },
+    {
+      "name": "activity",
+      "type": "text",
+      "description": "日程说明"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "npcId": 1,
+      "startMinute": 0,
+      "endMinute": 480,
+      "facilityId": 1,
+      "activity": "在酒馆休息"
+    },
+    {
+      "id": 2,
+      "npcId": 1,
+      "startMinute": 480,
+      "endMinute": 1080,
+      "facilityId": 5,
+      "activity": "在广场等待消息"
+    },
+    {
+      "id": 3,
+      "npcId": 1,
+      "startMinute": 1080,
+      "endMinute": 1440,
+      "facilityId": 1,
+      "activity": "回酒馆整理线索"
+    },
+    {
+      "id": 4,
+      "npcId": 2,
+      "startMinute": 0,
+      "endMinute": 540,
+      "facilityId": 1,
+      "activity": "在酒馆歇脚"
+    },
+    {
+      "id": 5,
+      "npcId": 2,
+      "startMinute": 540,
+      "endMinute": 1140,
+      "facilityId": 3,
+      "activity": "在商店接收信件"
+    },
+    {
+      "id": 6,
+      "npcId": 2,
+      "startMinute": 1140,
+      "endMinute": 1440,
+      "facilityId": 1,
+      "activity": "返回酒馆"
+    }
+  ]
+}

@@ -27,6 +27,7 @@ namespace ProjectY.Samples
             foreach (var npc in state.Npcs)
             {
                 var item = items[npc.Id];
+                if(!npc.Present){item.View.gameObject.SetActive(false);continue;}
                 if (item.Cell != npc.CellIndex)
                 {
                     if (item.Cell >= 0) item.View.transform.position = TownSurfaceRenderer.Ground(layout, item.Cell, item.Cell, item.Target);
@@ -40,6 +41,7 @@ namespace ProjectY.Samples
         {
             foreach (var item in items.Values)
             {
+                if(!item.View.gameObject.activeSelf)continue;
                 var target = item.View.transform; var delta = item.Target - target.position; delta.y = 0;
                 if (delta.sqrMagnitude > .01f) target.rotation = Quaternion.Slerp(target.rotation, Quaternion.LookRotation(delta), 1 - Mathf.Exp(-dt * 10));
                 var from = target.position; var to = item.Target; from.y = to.y = 0;

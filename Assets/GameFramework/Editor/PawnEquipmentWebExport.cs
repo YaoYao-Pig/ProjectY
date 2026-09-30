@@ -14,6 +14,8 @@ namespace ProjectY.Editor
 {
     internal static class PawnEquipmentWebExport
     {
+        [Serializable] private sealed class ItemRow { public int id; public string name, kind; }
+        [Serializable] private sealed class ItemRows { public ItemRow[] rows; }
         internal static PawnCustomizationAssets.WebLoadout[] Export()
         {
             var scene = EditorSceneManager.NewPreviewScene(); var services = new FrameworkServices(null);
@@ -27,10 +29,14 @@ namespace ProjectY.Editor
                     try
                     {
                         string[] labels = { "法杖与双符文", "步枪与弹匣", "铁制单手剑", "骑士单手剑", "佣兵大剑", "皇家大剑", "破城巨剑与推进器", "黑曜石巨剑", "双持单手剑", "剑盾", "长弓 · 基础射击" };
-                        for (int index = 0; index < labels.Length; index++)
+                        var selections = labels.Select((label, index) => new { label, id = "weapon_" + index, command = "CharacterEquipmentLoadout(" + index + ",false)" }).ToList();
+                        var existing = new HashSet<int>(new[] { 1, 2, 40, 41, 42, 43, 44, 45, 46 });
+                        foreach (var item in JsonUtility.FromJson<ItemRows>(File.ReadAllText("Config/Tables/Equipment/EquipmentItemTable.json")).rows)
+                            if (item.kind == "weapon" && !existing.Contains(item.id)) selections.Add(new { label = item.name, id = "item_" + item.id, command = "CharacterEquipmentByItem(" + item.id + ")" });
+                        for (int index = 0; index < selections.Count; index++)
                         {
                             AdventureViewData.Actor state;
-                            using (var row = (LuaTable)lua.DoString("return CharacterEquipmentLoadout(" + index + ",false)")[0]) state = AdventureViewData.ReadActor(row);
+                            using (var row = (LuaTable)lua.DoString("return " + selections[index].command)[0]) state = AdventureViewData.ReadActor(row);
                             var pawn = UnityEngine.Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>("Assets/DynamicAsset/PawnLowPoly/PawnRig.prefab")).GetComponent<PawnView>();
                             SceneManager.MoveGameObjectToScene(pawn.gameObject, scene);
                             try
@@ -42,7 +48,7 @@ namespace ProjectY.Editor
                                 var meshes = ExportAttachments(attachments, "weapon_" + index + "_");
                                 var animations = Sample(pawn, custom, view, animator, actor, state, attachments);
                                 var primary=state.Appearance.Equipment.Hold.PrimaryGrip;var secondary=state.Appearance.Equipment.Hold.SecondaryGrip;
-                                result.Add(new PawnCustomizationAssets.WebLoadout { id = "weapon_" + index, label = labels[index], moduleId=state.Appearance.Equipment.Hold.ModuleId,moduleName=state.Appearance.Equipment.Hold.ModuleName,
+                                result.Add(new PawnCustomizationAssets.WebLoadout { id = selections[index].id, label = selections[index].label, moduleId=state.Appearance.Equipment.Hold.ModuleId,moduleName=state.Appearance.Equipment.Hold.ModuleName,
                                     primaryGrip=new[]{primary.Position.x,primary.Position.y,primary.Position.z,primary.Rotation.x,primary.Rotation.y,primary.Rotation.z},
                                     secondaryGrip=new[]{secondary.Position.x,secondary.Position.y,secondary.Position.z,secondary.Rotation.x,secondary.Rotation.y,secondary.Rotation.z},meshes = meshes, animations = animations,
                                     gripEditor = ExportGripEditor(lua, state.Appearance.Equipment, view, custom, animator, attachments) });

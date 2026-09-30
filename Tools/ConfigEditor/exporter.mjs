@@ -1,4 +1,6 @@
 import fs from 'node:fs';
+import { validateNarrative } from '../Narrative/rules.mjs';
+import { validateContent } from '../ContentCenter/rules.mjs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
@@ -119,6 +121,8 @@ export function validateTables(inputs, catalog = emptyCatalog()) {
     for (const row of table.rows) for (const value of (field.type.endsWith('[]') ? row[field.name] : [row[field.name]]))
       assert(keys.has(value), `${table.name}[${row[table.key]}].${field.name}: missing ${field.ref}[${value}]`);
   }
+  validateNarrative(tables);
+  validateContent(tables);
   return tables;
 }
 

@@ -34,6 +34,15 @@ end
 -- No inventory is required for static config/attribute queries; battle supplies the expedition's real Data.
 function Rules:Weapon(actor) return self.data and actor.Team==1 and self.data:Equipped(actor.Id) or nil end
 function Rules:Offhand(actor) return self.data and actor.Team==1 and self.data:Offhand(actor.Id) or nil end
+-- The workbench inspects one weapon, not a hypothetical mixed loadout. Keep real inventory untouched.
+function Rules:PreviewWeapon(weapon)
+    local module=self.motion:Resolve(self.weapons:Get(weapon.ItemId),nil,nil)
+    return setmetatable({
+        Weapon=function() return weapon end,
+        Offhand=function() return nil end,
+        MotionModule=function() return module end,
+    },{__index=self})
+end
 function Rules:MotionModule(actor)
     local main,off=self:Weapon(actor),self:Offhand(actor)
     if actor.Team~=1 then

@@ -158,8 +158,24 @@ namespace ProjectY.Editor
         }
         public static void ConfigureGrip(PawnAnimationSet.Action action)
         {
+            if(action.TemplateId==6)
+            {
+                action.UseAuthoredGrip=true;action.Impact=.48f;action.OffGripOffset=Vector3.zero;
+                // Turn the edge into the shoulder-side cutting plane before accelerating through the strike.
+                // Constant X/Y fixes the blade-face normal while Z swings the edge through the cutting plane.
+                action.GripKeys=new[] {
+                    new PawnAnimationSet.GripKey {Time=0,WeaponRotation=new Vector3(40,0,4)},
+                    new PawnAnimationSet.GripKey {Time=.26f,WeaponRotation=new Vector3(60,90,35)},
+                    new PawnAnimationSet.GripKey {Time=.32f,WeaponRotation=new Vector3(60,90,35)},
+                    new PawnAnimationSet.GripKey {Time=.48f,WeaponRotation=new Vector3(60,90,115)},
+                    new PawnAnimationSet.GripKey {Time=.56f,WeaponRotation=new Vector3(60,90,145)},
+                    new PawnAnimationSet.GripKey {Time=.76f,WeaponRotation=new Vector3(60,90,80)},
+                    new PawnAnimationSet.GripKey {Time=1,WeaponRotation=new Vector3(40,0,4)}
+                };
+                return;
+            }
             float[] times={0,.2f,.45f,.8f,1};Vector3[] angles;
-            if(action.TemplateId==5 || action.TemplateId==6)
+            if(action.TemplateId==5)
                 angles=new[]{new Vector3(40,0,4),new Vector3(55,-10,4),new Vector3(100,5,4),new Vector3(75,5,4),new Vector3(40,0,4)};
             else if(action.TemplateId==2)
                 angles=new[]{new Vector3(0,-25,0),new Vector3(-5,-25,0),new Vector3(-2,-25,0),new Vector3(0,-25,0),new Vector3(0,-25,0)};

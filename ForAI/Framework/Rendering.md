@@ -13,6 +13,7 @@
 - `FantasyPresentation` 由远征环境控制器或地图 Demo 创建，显式接收相机和宿主；创建全局 Volume、开启 SMAA，并克隆 URP 资产作为会话配置，避免修改原始资产。销毁时释放 Volume/克隆并恢复相机及 Quality 管线。地图阴影距离从观察焦点向后计算。昼夜、天气、室内灯和雾仍归[地图环境](../Business/MapPresentation.md)。
 - 常规模型使用 URP Lit；人物定制的 PropertyBlock 使用 `_BaseColor`，平滑度使用 `_Smoothness`。共享地图 Shader 保留 `_Color` 实例数组、UV1/UV2 图案和 `_SurfaceData/_SurfaceFinish` 契约，提供 ForwardLit、ShadowCaster、DepthOnly、DepthNormals 通道；探索格使用独立 URP 透明 Shader。
 - `UrpCameraRendering.Render` 使用 SingleCameraRequest 替代内置管线的 `Camera.Render()`。背包和工坊相机复用请求对象，经 `ConfigurePreview` 选择 Renderer 1、关闭世界后处理和阴影；图标与 Editor 捕获同样使用渲染请求。新增手动截图脚本也应使用此入口。
+- `InventoryCharacterView` 的背包与 HUD 头像通过 `SkinnedPreviewSnapshot` 同步烘焙当前姿态，再提交离屏请求，避免同帧换发型/装备后读取旧 GPU 蒙皮缓冲。代理和 Mesh 由预览持有并复用，换装后刷新源列表，关闭时释放；请求期间临时隐藏源 Renderer，结束或异常时恢复，不修改共享网格。场景角色仍使用正常蒙皮。
 - 菜单 `Project Y/渲染/安装 URP 奇幻风格资源` 用于首次接入或恢复缺失资产：创建缺失资源、不重置已有风格参数；调用 Unity 材质升级器保留材质 GUID、颜色、纹理与透明模式，FBX 内嵌 Standard 材质抽出后显式 remap。安装要求 Edit Mode，不保存打开的场景。
 - 最小检查：`preview_urp.cs` 是 MCP 片段，使用真实王城布局在临时 PreviewScene 渲染白天/黄昏，检查粉色/黑屏、单相机渲染请求和状态恢复；不进入 Play，不写存档。启动异常需单独确认时，只检查一次远征启动和退出；完整游戏回归与 Player 构建另行授权。
 
@@ -20,4 +21,5 @@
 
 - [管线资产](../../Assets/GameFramework/Rendering/WarmFantasyURP.asset) / [世界 Renderer](../../Assets/GameFramework/Rendering/WarmFantasyRenderer.asset) / [预览 Renderer](../../Assets/GameFramework/Rendering/PreviewRenderer.asset) / [风格参数](../../Assets/GameFramework/Resources/Rendering/WarmFantasy.asset)。
 - [会话生命周期](../../Assets/GameFramework/Runtime/Rendering/FantasyPresentation.cs) / [离屏渲染](../../Assets/GameFramework/Runtime/Rendering/UrpCameraRendering.cs) / [安装与材质转换](../../Assets/GameFramework/Editor/FantasyRenderingAssets.cs)。
+- [角色预览快照](../../Assets/GameFramework/Runtime/Rendering/SkinnedPreviewSnapshot.cs) / [换装渲染定向检查](../../Tools/Tests/skinned_preview_render.cs)：MCP Edit Mode 片段，在独立 PreviewScene 检查同帧换发型、身体、头盔穿脱、缩放、材质、缓存复用、异常恢复及源资产不变，不进入 Play。
 - [预览入口](../../Tools/Rendering/preview_urp.cs) / [真实布局](../../Tools/Rendering/preview_urp.lua) / [检查结果](../../Docs/Previews/Rendering/validation.json) / [运行截图](../../Docs/Previews/Rendering/urp-runtime-map.png)。

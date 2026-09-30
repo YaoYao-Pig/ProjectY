@@ -184,6 +184,8 @@ namespace ProjectY.Editor
         }
         private static Dependency[] Dependencies()
         {
+            // Importing a material can upgrade its serialized shader properties. Hash the saved source.
+            AssetDatabase.SaveAssets();
             var paths = new HashSet<string>(AssetDatabase.GetDependencies(new[] { CatalogPath, RigPath }, true));
             paths.Add(ModelPath); paths.Add(RulePath); paths.Add("Art/PawnCustomization/Integration/gear-manifest.json"); paths.Add("Assets/DynamicAsset/PawnCustomization/PawnGearFits.fbx"); paths.Add("Assets/GameFramework/Resources/CharacterAppearanceCatalog.json");
             foreach (string name in new[] { "EquipmentMotionModuleTable", "EquipmentMotionMatchTable", "EquipmentGripTable", "EquipmentHoldAdjustmentTable", "EquipmentPoseTable", "EquipmentWeaponTable", "EquipmentActionTable", "EquipmentSocketTable", "EquipmentItemTable" })
@@ -240,7 +242,13 @@ namespace ProjectY.Editor
                     animations = animations.ToArray(), loadouts = PawnEquipmentWebExport.Export(), dependencies = Dependencies(),
                     randomFixtures = new[] { 0, 1, 42, 20260927, int.MaxValue }.Select(seed => catalog.Rules.Randomize(seed)).ToArray() };
                 const string folder = "Tools/CharacterPreview/public/data"; Directory.CreateDirectory(folder);
-                File.WriteAllText(folder + "/characters.json", JsonUtility.ToJson(bundle));
+                var output = folder + "/characters.json"; var temporary = output + ".tmp";
+                try
+                {
+                    File.WriteAllText(temporary, JsonUtility.ToJson(bundle));
+                    if (File.Exists(output)) File.Replace(temporary, output, null); else File.Move(temporary, output);
+                }
+                finally { if (File.Exists(temporary)) File.Delete(temporary); }
                 Debug.Log("Exported actual Unity meshes, palettes and six Humanoid animations for Character Lab.");
             }
             finally { EditorSceneManager.ClosePreviewScene(scene); }
