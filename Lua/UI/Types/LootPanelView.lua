@@ -15,5 +15,6 @@
 ---@field Status CS.UnityEngine.UI.Text
 ---@field Inventory CS.ProjectY.UI.InventoryPanelView
 ---@field Loot CS.ProjectY.UI.LootPanelView
+---@field SelectedIcon CS.UnityEngine.UI.Image
 local View = {}
 return View
