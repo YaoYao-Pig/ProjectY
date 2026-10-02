@@ -9,6 +9,7 @@ namespace ProjectY.Data
     {
         private int[] itemIds, counts;
         internal LootItemData[] SearchItems;
+        internal InventoryGridData SearchGrid { get; } = new InventoryGridData();
         internal bool Opened;
         public int Id { get; }
         public int CellIndex { get; }
@@ -27,18 +28,38 @@ namespace ProjectY.Data
             foreach(var item in SearchItems) if(item.SourceIndex==index) count+=item.Count;
             return count;
         }
-        internal void PrepareSearch(string[] kinds)
+        internal void PrepareSearch(string[] kinds,int[] widths,int[] heights)
         {
-            if(!ContentsReady || kinds.Length!=itemIds.Length) throw new ArgumentException("Loot kinds differ from contents.");
+            if(!ContentsReady || kinds.Length!=itemIds.Length || widths.Length!=itemIds.Length || heights.Length!=itemIds.Length)
+                throw new ArgumentException("Loot definitions differ from contents.");
             if(SearchItems!=null) return;
             var entries=new List<LootItemData>();
+            var positions=new List<int[]>();int x=0,y=0,line=0;
             for(int i=0;i<itemIds.Length;i++)
             {
+                if(widths[i]<1 || widths[i]>6 || heights[i]<1)throw new ArgumentException("Invalid loot footprint.");
+                SearchGrid.Define(itemIds[i],widths[i],heights[i]);
                 bool instance=kinds[i]=="weapon" || kinds[i]=="magazine" || kinds[i]=="wearable";
                 for(int j=0;j<(instance?counts[i]:1);j++)
+                {
+                    if(x+widths[i]>6){x=0;y+=line;line=0;}
+                    positions.Add(new[]{x,y});x+=widths[i];line=Math.Max(line,heights[i]);
                     entries.Add(new LootItemData(this,entries.Count,i,itemIds[i],instance?1:counts[i],kinds[i]));
+                }
             }
             SearchItems=entries.ToArray();counts=null;
+            SearchGrid.Configure(6,Math.Max(6,y+line));
+            for(int i=0;i<SearchItems.Length;i++)
+                if(!SearchGrid.Insert(SearchItems[i].Key,SearchItems[i].ItemId,positions[i][0],positions[i][1],false))
+                    throw new InvalidOperationException("Generated loot does not fit its container grid.");
+        }
+        internal int SourceIndexFor(int itemId)
+        {int index=Array.IndexOf(itemIds,itemId);return index<0?itemIds.Length:index;}
+        internal void AddSearchItem(LootItemData item)
+        {
+            if(item.SourceIndex==itemIds.Length){Array.Resize(ref itemIds,itemIds.Length+1);itemIds[item.SourceIndex]=item.ItemId;}
+            else if(itemIds[item.SourceIndex]!=item.ItemId)throw new InvalidOperationException("Loot source index mismatch.");
+            Array.Resize(ref SearchItems,SearchItems.Length+1);SearchItems[SearchItems.Length-1]=item;
         }
         internal MapAreaLootData(int id,int cell,int table) {Id=id;CellIndex=cell;TableId=table;Physical=new ContainerState(cell);}
         internal MapAreaLootData(int id,int cell,int table,string name,int[] ids,int[] amounts):this(id,cell,table) {SetContents(name,ids,amounts);}
@@ -131,6 +152,12 @@ namespace ProjectY.Data
         {
             if (id < 1 || id > loot.Count || loot[id - 1].Looted) throw new InvalidOperationException("Loot is unavailable.");
             loot[id - 1].Looted = true; Revision++;
+        }
+        internal void UpdateLootContents(int id)
+        {
+            var container=loot[id-1];bool empty=true;
+            foreach(var item in container.SearchItems)if(item.Count>0){empty=false;break;}
+            container.Looted=empty;Revision++;
         }
         private readonly bool[] known;
         private readonly List<int> discovered = new List<int>();

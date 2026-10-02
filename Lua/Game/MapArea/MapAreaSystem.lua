@@ -276,8 +276,8 @@ function AreaSystem:RevealSquad(layout,state)
         return
     end
     local cells,seen={},{}
-    -- 同一次队伍揭示复用已有营造查询投影，避免每条射线重复跨 C# 查询相同工事版本。
-    local sight=layout.layeredVisibility and layout.NavigationView and layout:NavigationView() or layout
+    -- 所有地图的单次队伍揭示都复用查询投影，避免每条射线重复跨 C# 查询相同工事版本。
+    local sight=layout.NavigationView and layout:NavigationView() or layout
     local query=sight.layeredVisibility and require('Game.MapArea.LayeredVisibility').NewQuery(sight)
     for i=0,state.MemberCount-1 do for _,index in ipairs(sight:VisibleFrom(state:GetMemberCellAt(i),query)) do
         if not seen[index] then seen[index]=true;cells[#cells+1]=index end

@@ -16,6 +16,8 @@ function Terrain.Wrap(base,loot,state)
             local original=source.cells[index];if not original then return nil end
             local record=records[index];local cell=original
             if record then cell=setmetatable({}, {__index=function(_,key)
+                -- 身份、坐标和几何继承静态地格，不为每次读字段跨桥查询容器耐久。
+                if key~='blocked' and key~='blocksSight' then return original[key] end
                 if not record.physical.Destroyed then
                     if key=='blocked' then return original.blocked or record.definition.blocksMovement end
                     if key=='blocksSight' then return original.blocksSight or record.definition.blocksSight end
@@ -25,8 +27,8 @@ function Terrain.Wrap(base,loot,state)
             rawset(cells,index,cell);return cell
         end})
         function area:Find(q,r,layer) local cell=source:Find(q,r,layer);return cell and self.cells[cell.index] end
-        function area:CanSee(origin,target)
-            if not source:CanSee(origin,target) then return false end
+        function area:CanSee(origin,target,query)
+            if not source:CanSee(origin,target,query) then return false end
             local distance=Hex.Distance(origin.q,origin.r,target.q,target.r)
             if distance<=1 then return true end
             local ax,_,az=Hex.ToWorld(origin.q,origin.r,0,1);local bx,_,bz=Hex.ToWorld(target.q,target.r,0,1)

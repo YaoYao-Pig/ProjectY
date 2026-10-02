@@ -27,7 +27,9 @@ local ok,err=xpcall(function()
             state:DeployMembers({party[1].Id},{loot.CellIndex});areas:RevealSquad(area,state)
             assert(eq:Loot(areas,loot.Id));assert(loadfile('Tools/Tests/loot_helpers.lua'))().TakeAll(eq,areas);eq.worldLoot.session:Close()
             local count=inventory:CountItem(31)
-            assert(not eq:Loot(areas,loot.Id));assert(inventory:CountItem(31)==count)
+            if eq.loot:Get(loot.TableId).kind=='chest' then assert(eq:Loot(areas,loot.Id));eq.worldLoot.session:Close()
+            else assert(not eq:Loot(areas,loot.Id)) end
+            assert(inventory:CountItem(31)==count)
         end
         assert(inventory:CountItem(11)==1 and inventory:CountItem(12)==1 and inventory:CountItem(13)==1 and inventory.MagazineCount==3)
         assert(areas:Leave());assert(areas:Enter(site,123));eq:InitializeLoot(areas)

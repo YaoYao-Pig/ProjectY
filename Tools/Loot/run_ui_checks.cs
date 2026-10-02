@@ -34,21 +34,24 @@ try {
         arrange(reference);var tile=findTile(reference,key);
         tile.OnPointerClick(new UnityEngine.EventSystems.PointerEventData(UnityEngine.EventSystems.EventSystem.current) {button=UnityEngine.EventSystems.PointerEventData.InputButton.Left});
     };
-    System.Action<ProjectY.UI.LuaReference,string,int,int,bool> beginDrag=(reference,key,x,y,cancel)=>{
+    System.Action<ProjectY.UI.LuaReference,string,int,int,bool,bool> beginTarget=(reference,key,x,y,cancel,toSource)=>{
         arrange(reference);
         var bag=reference.GetComponent<ProjectY.UI.InventoryPanelView>();var layout=bag.EditorLayout;
         var selected=findTile(reference,key);
         var rect=(RectTransform)selected.transform;
         var e=new UnityEngine.EventSystems.PointerEventData(UnityEngine.EventSystems.EventSystem.current) {button=UnityEngine.EventSystems.PointerEventData.InputButton.Left};
         e.pointerPressRaycast=new UnityEngine.EventSystems.RaycastResult {module=reference.GetComponent<UnityEngine.UI.GraphicRaycaster>()};
-        float cell=layout.Grid.rect.width/12;
+        var destination=toSource?(RectTransform)typeof(ProjectY.UI.LootPanelView).GetField("grid",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic).GetValue(reference.GetComponent<ProjectY.UI.LootPanelView>()):layout.Grid;
+        float cell=destination.rect.width/(toSource?6:12);
         e.position=RectTransformUtility.WorldToScreenPoint(camera,rect.TransformPoint(new Vector3(rect.rect.xMin+cell*.5f,rect.rect.yMax-cell*.5f,0)));
         selected.OnBeginDrag(e);
-        e.position=cancel?new Vector2(-1000,-1000):RectTransformUtility.WorldToScreenPoint(camera,layout.Grid.TransformPoint(new Vector3(layout.Grid.rect.xMin+(x+.5f)*cell,layout.Grid.rect.yMax-(y+.5f)*cell,0)));
+        e.position=cancel?new Vector2(-1000,-1000):RectTransformUtility.WorldToScreenPoint(camera,destination.TransformPoint(new Vector3(destination.rect.xMin+(x+.5f)*cell,destination.rect.yMax-(y+.5f)*cell,0)));
         selected.OnDrag(e);currentTile=selected;currentEvent=e;
     };
+    System.Action<ProjectY.UI.LuaReference,string,int,int,bool> beginDrag=(reference,key,x,y,cancel)=>{beginTarget(reference,key,x,y,cancel,false);};
     System.Action endDrag=()=>{currentTile.OnEndDrag(currentEvent);currentTile=null;currentEvent=null;};
     System.Action<ProjectY.UI.LuaReference,string,int,int,bool> drag=(reference,key,x,y,cancel)=>{beginDrag(reference,key,x,y,cancel);endDrag();};
+    System.Action<ProjectY.UI.LuaReference,string,int,int,bool> deposit=(reference,key,x,y,cancel)=>{beginTarget(reference,key,x,y,cancel,true);endDrag();};
     System.Action<ProjectY.UI.LuaReference,bool> checkDrag=(reference,active)=>{
         var bag=reference.GetComponent<ProjectY.UI.InventoryPanelView>();
         var flags=System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic;
@@ -74,8 +77,9 @@ try {
     using(var lua=new XLua.LuaEnv()) {
         var services=new ProjectY.FrameworkServices(host);var loader=new ProjectY.LuaFileLoader(ProjectY.LuaScriptPaths.RuntimeRoot);lua.AddLoader(loader.Load);
         lua.Global.Set("Services",services);lua.Global.Set("CaptureLoot",capture);lua.Global.Set("DragLoot",drag);lua.Global.Set("BeginLootDrag",beginDrag);lua.Global.Set("EndLootDrag",endDrag);lua.Global.Set("CheckLootDrag",checkDrag);lua.Global.Set("ClickLoot",click);
+        lua.Global.Set("DropInLoot",deposit);
         try {return lua.DoString(System.IO.File.ReadAllText("Tools/Tests/loot_ui_integration.lua"),"@Tools/Tests/loot_ui_integration.lua")[0];}
-        finally {lua.Global.Set<string,object>("Services",null);lua.Global.Set<string,object>("CaptureLoot",null);lua.Global.Set<string,object>("DragLoot",null);lua.Global.Set<string,object>("BeginLootDrag",null);lua.Global.Set<string,object>("EndLootDrag",null);lua.Global.Set<string,object>("CheckLootDrag",null);lua.Global.Set<string,object>("ClickLoot",null);services.Player.ClearListeners();}
+        finally {lua.Global.Set<string,object>("Services",null);lua.Global.Set<string,object>("CaptureLoot",null);lua.Global.Set<string,object>("DragLoot",null);lua.Global.Set<string,object>("BeginLootDrag",null);lua.Global.Set<string,object>("EndLootDrag",null);lua.Global.Set<string,object>("CheckLootDrag",null);lua.Global.Set<string,object>("ClickLoot",null);lua.Global.Set<string,object>("DropInLoot",null);services.Player.ClearListeners();}
     }
 } finally {
     host.Shutdown();Time.timeScale=oldTimeScale;camera.targetTexture=null;RenderTexture.active=previous;target.Release();UnityEngine.Object.DestroyImmediate(target);

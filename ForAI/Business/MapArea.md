@@ -43,6 +43,7 @@
 - `TownSurfaceRenderer` 按有几何的地格包围盒构建静态 BVH；相机避障和鼠标拾取先筛选少量候选，再按原地格顺序使用相同的精确三角形算法。查询复用候选数组，迷雾/楼板剖切仍即时过滤；只有地形重建时重建索引，不逐帧遍历全图或分配查询集合。
 - 平薄楼板由 `deckThickness>0` 明确选择面网格，包含船体下舱layer0；显示剖切支持 `cutawayGroup/cutawayLayer` 与 `coverInteriorId`，用于同一大结构的下舱和露天高台。旧城镇未设置group时保持原室内剖切语义；[沉船](Shipwreck.md)记录其分层规则。导航边由 `LayeredFloorEdges` 共用，不以显示剖切改变权威占格。分层柱墙的底面位于所属楼板，避免贯穿下层；柱体绘制、拾取与镜头射线共用底面及剖切状态。
 - 探索规划的占地缓存仅存在于单次 `SquadFootprint` 闭包，单格角色直接使用真实锚点索引、多格按同一物种形状共享结果，保留楼层。建造投影的查询生命周期见[营造地形](Construction.md)，不得把局部规划视图保存成地图权威状态。
+- 探索视野的整队揭示同样使用单次 `NavigationView()`，包括普通单层地图；每次揭示只读取一次工事版本，不能在逐格射线中重复跨 C# 查询。容器投影读取静态字段不查询耐久，`CanSee` 必须向内层传递同一个多层视野 query，保持几何缓存复用。下一次揭示重新取得视图，仍即时观察工事和容器变化。
 - `SquadPawnRenderer` 按 `members(actorId,cellIndex)` 显示独立棋子，平滑位置和朝向，不决定占格。模型高度固定，地格半径 1.5；进入区域创建，离开/销毁时释放，身体和装备通过显式 Prefab 挂点组合。资源与同步菜单见[棋子资源](PawnArt.md)。
 - `ExplorationGridRenderer` 在 `phase=area` 时显示小队附近当前可见、可行走且与成员同层的六边形半透明面片；进入战斗关闭。距离取全员平滑显示位置的最近水平距离，默认 3 格内清晰、3–6 格平滑渐隐（格单位为相邻格中心间距）。`AdventureRuntimeDemo.explorationGrid` 配置范围、格边留缝比例和颜色；面片沿 `TownSurfaceRenderer.AppendOverlay` 贴合斜坡/台阶，shader 经 Resources 加载，进入区域创建、离开/销毁时释放。它不决定移动范围或修改迷雾。
 - 悬停面片用 `HoverColor`（亮青）、成功点击移动后的选中目标用 `SelectedColor`（亮绿），选中优先；目标保留到下一次成功选择，停止、第三人称行走、进入战斗或离开地图会清除。交互高亮仅显示可见且可行走的被指向格，允许在基础渐隐半径外及被明确拾取的其他层显示；不扩大周围可见范围。鼠标经过背包、侧栏及第三人称面板时取消悬停。
@@ -62,6 +63,7 @@
 - [地牢高程生成](../../Lua/Game/MapArea/DungeonTerrain.lua) / [定向检查](../../Tools/Tests/dungeon_relief.lua)：共享顶点、通道净宽、陈设支撑、双向通行、确定性与高地视线；用现有 `run_lua.py` 执行。
 - [多层 Edit Mode 检查与预览](../../Tools/Tests/maparea_multilevel_preview.cs) / [真实状态输入](../../Tools/Tests/maparea_multilevel_preview.lua)：编译后的 MCP `execute_code` 方法体，检查二楼往返/重进、楼板剖切与拾取、坡阶脚底、冲锋和未知迷雾；输出到 `Docs/Previews/MapArea/`，不进入 Play、不保存场景。
 - [编队规划](../../Lua/Game/MapArea/SquadMovement.lua) / [编队检查](../../Tools/Tests/squad_movement.lua)：1–4 人、转角、窄口、真实地牢往返的逐帧占格/邻接约束；[棋子显示](../../Assets/GameFramework/Samples/Adventure/SquadPawnRenderer.cs)：只读显示副本。
+- [视野查询回归](../../Tools/Tests/maparea_visibility_queries.lua)：用 `python -B Tools/Tests/run_lua.py Tools/Tests/maparea_visibility_queries.lua` 检查单层/多层视野集合一致、工事增删与容器破坏，以及整队查询的跨桥读取次数和 query 传递。
 - [探索高亮](../../Assets/GameFramework/Samples/Adventure/ExplorationGridRenderer.cs) / [渐隐 Shader](../../Assets/GameFramework/Resources/Rendering/ExplorationGrid.shader) / [最小显示检查](../../Tools/Tests/exploration_grid.cs)：C# 编译后通过 Unity MCP `execute_code` 执行检查文件的方法体，验证可见格、障碍、队员并集、层隔离、战斗切换、坡道台阶贴合、格内填充和 GPU 距离渐隐，并输出独立预览图；不进入 Play、不保存场景。
 - [真实 C# 移动基准](../../Tools/Tests/town_movement_perf.lua) / [射线与显示基准](../../Tools/Tests/maparea_raycast_perf.cs) / [BVH 对照](../../Tools/Tests/maparea_raycast_bvh.cs) / [可见性快照检查](../../Tools/Tests/maparea_visibility_snapshot.lua)：有限 Edit Mode 检查，不渲染或启动 Play；前后耗时与命中一致性结果保存到 `Docs/Previews/MapArea/`。
 - [敌群部署](../../Lua/Game/MapArea/DungeonEncounters.lua) / [敌群配置](../../Config/Tables/MapArea/MapAreaEncounterTable.json) / [战斗显示](../../Assets/GameFramework/Samples/Adventure/AreaCombatRenderer.cs)；原地战斗验证入口见[战斗](Battle.md)。

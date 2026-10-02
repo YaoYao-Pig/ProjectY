@@ -46,9 +46,9 @@ function Model.Build(adventure)
         if data.Phase=='area' then
             if data.ResultText~='' then model.rows[#model.rows+1]={title='最近结果',body=data.ResultText,command='snapshot',available=false} end
             model.rows[#model.rows+1]={title='定位小队并跟随',body='从全图视角回到同行者身边',command='hud_follow'}
-            for _,loot in ipairs(adventure.equipment:LootSnapshot(areas)) do if not loot.looted then
-                model.rows[#model.rows+1]={title=(loot.canSearch and '搜刮 · ' or '容器 · ')..loot.name,
-                    body=loot.canSearch and '靠近后搜索物品，拖入共享背包' or ('耐久 '..loot.durability..'/'..loot.maxDurability..' · 选择伤害技能攻击；锁定容器须先清除守卫'),
+            for _,loot in ipairs(adventure.equipment:LootSnapshot(areas)) do if not loot.looted or loot.canSearch then
+                model.rows[#model.rows+1]={title=(loot.looted and '存放 · ' or loot.canSearch and '搜刮 · ' or '容器 · ')..loot.name,
+                    body=loot.canSearch and '靠近后整理容器、存入或取出物品' or ('耐久 '..loot.durability..'/'..loot.maxDurability..' · 选择伤害技能攻击；锁定容器须先清除守卫'),
                     command='area_loot',a=loot.id,available=loot.canSearch}
             end end
             for _,obstacle in ipairs(adventure.obstacles:Snapshot()) do

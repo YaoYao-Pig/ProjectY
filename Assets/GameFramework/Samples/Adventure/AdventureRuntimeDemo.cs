@@ -628,7 +628,7 @@ namespace ProjectY.Samples
                 if(loot!=null)
                 {
                     var label=loot.Name+(loot.MaxDurability>0&&!loot.Destroyed?" · 耐久 "+loot.Durability+"/"+loot.MaxDurability:"");
-                    label+=loot.CanSearch&&!loot.Looted?"\n靠近后 E 搜刮":!loot.Destroyed?"\n选择攻击技能后点击容器":"";
+                    label+=loot.CanSearch?"\n靠近后 E 搜刮 / 存放":!loot.Destroyed?"\n选择攻击技能后点击容器":"";
                     GUI.Label(new Rect(Input.mousePosition.x+16,Screen.height-Input.mousePosition.y+12,300,62),label,textStyle);
                 }
             }
@@ -759,7 +759,11 @@ namespace ProjectY.Samples
             return loot.Near;
         }
         private MapAreaViewData.Loot NearestLoot()
-        { foreach(var loot in view.Area.Loots) if(!loot.Looted&&loot.CanSearch&&IsNearLoot(loot)) return loot;return null; }
+        {
+            foreach(var loot in view.Area.Loots) if(!loot.Looted&&loot.CanSearch&&IsNearLoot(loot)) return loot;
+            foreach(var loot in view.Area.Loots) if(loot.CanSearch&&IsNearLoot(loot)) return loot;
+            return null;
+        }
         private MapAreaViewData.Obstacle NearestObstacle()
         {
             foreach(var obstacle in view.Area.Obstacles)foreach(var index in obstacle.Cells)foreach(var member in view.Area.Members)

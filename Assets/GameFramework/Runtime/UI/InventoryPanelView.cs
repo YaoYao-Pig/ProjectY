@@ -50,6 +50,9 @@ namespace ProjectY.UI
         public Font Font => font??(font=UnityEngine.Font.CreateDynamicFontFromOSFont(new[]{"Microsoft YaHei","Noto Sans CJK SC","Arial"},16));
         private Item dragging;
         private Image dragIcon;
+        private IInventoryGridTarget otherGrid;
+        internal void SetOtherGrid(IInventoryGridTarget value) {otherGrid=value;}
+        private bool OverOtherGrid => otherGrid!=null && RectTransformUtility.RectangleContainsScreenPoint(otherGrid.Viewport,pointer,eventCamera);
         private bool rotated;
         private Vector2 pointer,grab;
         private Camera eventCamera;
@@ -152,8 +155,14 @@ namespace ProjectY.UI
         }
         private void Preview()
         {
-            var slot=HoverSlot();bool valid;
-            if(slot!=null)
+            bool other=OverOtherGrid;var slot=other?null:HoverSlot();bool valid;float previewCell=cellSize;
+            if(other)
+            {
+                valid=otherGrid.Placement(dragging,rotated,pointer,eventCamera,grab,out int x,out int y,out int w,out int h);
+                previewCell=otherGrid.CellSize;layout.Preview.transform.SetParent(otherGrid.Grid,false);
+                Place(layout.Preview.rectTransform,x*previewCell,y*previewCell,w*previewCell,h*previewCell);
+            }
+            else if(slot!=null)
             {layout.Preview.transform.SetParent(slot.Rect,false);Place(layout.Preview.rectTransform,1,1,slot.Rect.rect.width-2,slot.Rect.rect.height-2);valid=Compatible(slot);}
             else
             {
@@ -163,11 +172,11 @@ namespace ProjectY.UI
                 Place(layout.Preview.rectTransform,x*cellSize,y*cellSize,(merge?.W(merge.Rotated) ?? dragging.W(rotated))*cellSize,(merge?.H(merge.Rotated) ?? dragging.H(rotated))*cellSize);
             }
             layout.Preview.color=valid?new Color(.35f,.8f,.52f,.42f):new Color(.9f,.28f,.23f,.45f);
-            layout.Preview.gameObject.SetActive(slot!=null || RectTransformUtility.RectangleContainsScreenPoint(layout.Grid,pointer,eventCamera));
+            layout.Preview.gameObject.SetActive(other || slot!=null || RectTransformUtility.RectangleContainsScreenPoint(layout.Grid,pointer,eventCamera));
             layout.Preview.transform.SetAsLastSibling();
             RectTransformUtility.ScreenPointToLocalPointInRectangle(layout.Frame,pointer,eventCamera,out var p);
-            var size=new Vector2(dragging.W(rotated),dragging.H(rotated))*cellSize;
-            dragIcon.rectTransform.anchoredPosition=p+new Vector2(size.x*.5f-grab.x*cellSize,grab.y*cellSize-size.y*.5f);
+            var size=new Vector2(dragging.W(rotated),dragging.H(rotated))*previewCell;
+            dragIcon.rectTransform.anchoredPosition=p+new Vector2(size.x*.5f-grab.x*previewCell,grab.y*previewCell-size.y*.5f);
             var iconSize=size-new Vector2(8,8);
             dragIcon.rectTransform.sizeDelta=rotated?new Vector2(iconSize.y,iconSize.x):iconSize;
             dragIcon.rectTransform.localRotation=Quaternion.Euler(0,0,rotated?-90:0);
@@ -177,8 +186,15 @@ namespace ProjectY.UI
         internal void EndDrag(PointerEventData e)
         {
             if(dragging==null) return;
-            pointer=e.position;ActionKey=dragging.Key;ActionRotated=rotated;Coordinates(out int x,out int y);ActionX=x;ActionY=y;
-            var slot=HoverSlot();string command=slot!=null?"equip:"+slot.Key:RectTransformUtility.RectangleContainsScreenPoint(layout.Grid,pointer,eventCamera)?"move":"cancel";
+            pointer=e.position;ActionKey=dragging.Key;ActionRotated=rotated;int x,y;string command;
+            if(OverOtherGrid)
+            {otherGrid.Placement(dragging,rotated,pointer,eventCamera,grab,out x,out y,out _,out _);command="move_source";}
+            else
+            {
+                Coordinates(out x,out y);var slot=HoverSlot();
+                command=slot!=null?"equip:"+slot.Key:RectTransformUtility.RectangleContainsScreenPoint(layout.Grid,pointer,eventCamera)?"move":"cancel";
+            }
+            ActionX=x;ActionY=y;
             CancelDrag();Command.Invoke(command);
         }
         public void CancelDrag()

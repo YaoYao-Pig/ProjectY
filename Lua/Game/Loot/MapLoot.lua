@@ -104,12 +104,13 @@ function Loot:Collect(areas,id)
     if self.session.Active then return false,'请先关闭当前搜刮窗口' end
     local state,area=areas.data.Active,areas:ActiveLayout();local container
     for i=0,state.LootCount-1 do local row=state:GetLootAt(i);if row.Id==id then container=row;break end end
-    if not container or container.Looted then return false,'这里已经搜刮过了' end
+    if not container then return false,'容器不存在' end
+    local definition=self.rules.containers:Get(container.TableId)
+    if container.Looted and definition.kind=='ground' and definition.brokenAssetId==0 then return false,'这里已经搜刮过了' end
     local physical=self:SyncLock(state,container)
     if not physical.Unlocked then return false,'清除守卫后才能打开或破坏这个容器' end
     if not physical.CanSearch then return false,'用普通攻击或伤害技能打碎容器后再拾取' end
     if not self:Near(areas,container) then return false,'先靠近容器的可交互一侧' end
-    local definition=self.rules.containers:Get(container.TableId)
     if definition.interaction=='tool' and not physical.Destroyed and not self.session:IsOpened(container) then
         local worker=false
         for i=0,state.MemberCount-1 do local actor=areas:PartyActor(state:GetMemberIdAt(i))
@@ -123,14 +124,17 @@ function Loot:Collect(areas,id)
         if not areas:RefreshLivingSquad() then return false,'队伍已无法继续探索' end
     end
     self:Prepare(container);state:Stop()
-    self.session:Open(state,{id},false,container.Name,'搜刮后，将需要的物品拖入左侧背包')
+    self.session:Open(state,{id},false,container.Name,'搜索后可双向拖动物品，也可在容器内整理位置')
     return true
 end
 function Loot:Prepare(container)
     self:Contents(container)
-    local kinds={}
-    for i=0,container.ItemCount-1 do kinds[#kinds+1]=self.equipment.rules.items:Get(container:GetItemIdAt(i)).kind end
-    self.session:Prepare(container,kinds)
+    local kinds,widths,heights={},{},{}
+    for i=0,container.ItemCount-1 do
+        local item=self.equipment.rules.items:Get(container:GetItemIdAt(i))
+        kinds[#kinds+1]=item.kind;widths[#widths+1]=item.width;heights[#heights+1]=item.height
+    end
+    self.session:Prepare(container,kinds,widths,heights)
 end
 function Loot:OpenBattle(areas,first,summary)
     local state=areas.data.Active;local ids={}
@@ -152,6 +156,23 @@ function Loot:Take(areas,key,x,y,rotated)
     local count=entry.Count
     if not session:Take(self.equipment.data,key,x,y,rotated,ammo,capacity,rounds) then return false,'放置位置无效；物品仍在右侧，同类物品请拖到已有堆叠上' end
     return true,self.equipment.rules.items:Get(entry.ItemId).name..' ×'..count,entry.ContainerId
+end
+function Loot:Move(areas,key,x,y,rotated)
+    local session=self.session
+    if self.equipment.adventure.Phase~='area' or not session.Active or session.Area~=areas.data.Active then return false,'搜刮已结束' end
+    if session.SelectedContainerId==0 then return false,'请先选择一个容器，再整理或存入物品' end
+    if not session:Move(key,x,y,rotated) then return false,'位置被占用、超出容器范围或物品尚未搜索' end
+    return true,'已保存容器内的位置'
+end
+function Loot:Put(areas,key,x,y,rotated)
+    local session=self.session
+    if self.equipment.adventure.Phase~='area' or not session.Active or session.Area~=areas.data.Active then return false,'搜刮已结束' end
+    if session.SelectedContainerId==0 then return false,'请先选择要存入的战利品容器' end
+    local place=self.equipment.data.Grid:Find(key)
+    if not place then return false,'只能存入左侧背包中的物品' end
+    local name=self.equipment.rules.items:Get(place.ItemId).name
+    if not session:Put(self.equipment.data,key,x,y,rotated) then return false,'容器位置被占用或超出范围，物品保留在背包中' end
+    return true,'已存入容器：'..name
 end
 function Loot:Snapshot(areas)
     local state,area=areas.data.Active,areas:ActiveLayout();local visible,result={},{}

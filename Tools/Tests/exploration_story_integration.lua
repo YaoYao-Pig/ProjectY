@@ -71,7 +71,8 @@ local ok,err=xpcall(function()
         assert(adventure:AreaCommand('area_loot',chest.Id))
         assert(loadfile('Tools/Tests/loot_helpers.lua'))().TakeAll(equipment,areas,function(...) return adventure:TakeLoot(...) end)
         adventure:CloseLoot();assert(chest.Looted and equipment.data:CountItem(13)==1)
-        assert(not adventure:AreaCommand('area_loot',chest.Id));assert(equipment.data:CountItem(13)==1)
+        assert(adventure:AreaCommand('area_loot',chest.Id));assert(equipment.worldLoot.session.Remaining==0);adventure:CloseLoot()
+        assert(equipment.data:CountItem(13)==1)
         local weapon,socket
         for i=0,equipment.data.WeaponCount-1 do
             local candidate=equipment.data:GetWeaponAt(i);local def=equipment.rules.weapons:Get(candidate.ItemId)

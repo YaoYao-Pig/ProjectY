@@ -4,6 +4,14 @@ using UnityEngine.UI;
 
 namespace ProjectY.UI
 {
+    internal interface IInventoryGridTarget
+    {
+        RectTransform Grid { get; }
+        RectTransform Viewport { get; }
+        float CellSize { get; }
+        bool Placement(InventoryPanelView.Item item,bool rotated,Vector2 pointer,Camera camera,Vector2 grab,
+            out int x,out int y,out int width,out int height);
+    }
     internal interface IInventoryItemOwner
     {
         void Select(string key);

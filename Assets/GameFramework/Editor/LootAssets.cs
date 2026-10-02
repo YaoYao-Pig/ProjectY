@@ -26,6 +26,7 @@ namespace ProjectY.Editor
             {
                 if(root.transform.childCount==0) Build(root);
                 UpgradeReadability(root);
+                UpgradeStorage(root);
                 var reference=root.GetComponent<LuaReference>();
                 if(root.GetComponent<LootPanelView>()==null) throw new InvalidOperationException("搜刮 Prefab 缺少 LootPanelView。");
                 reference.ValidateBindings();PrefabUtility.SaveAsPrefabAsset(root,entry.PrefabPath);LuaViewHints.Export(reference,entry.ViewType);
@@ -76,6 +77,32 @@ namespace ProjectY.Editor
             var serialized=new SerializedObject(root.GetComponent<LootPanelView>());
             serialized.FindProperty("detailIcon").objectReferenceValue=inspection;serialized.ApplyModifiedPropertiesWithoutUndo();
             layout.Labels=root.GetComponentsInChildren<Text>(true);EditorUtility.SetDirty(inventory);
+            reference.SetEditorBindings(refs.ToArray());
+        }
+        private static void UpgradeStorage(GameObject root)
+        {
+            var reference=root.GetComponent<LuaReference>();var refs=new List<LuaReference.Entry>(reference.GetEditorBindings());
+            var inventory=root.GetComponent<InventoryPanelView>();var source=(RectTransform)inventory.EditorLayout.Frame.Find("Loot");
+            var binding=refs.Find(entry=>entry.Key=="Sources");Dropdown sources;
+            if(binding.Target==null)
+            {
+                var go=DefaultControls.CreateDropdown(new DefaultControls.Resources());go.name="Sources";go.transform.SetParent(source,false);
+                sources=go.GetComponent<Dropdown>();sources.options.Clear();sources.navigation=new Navigation {mode=Navigation.Mode.None};
+                var background=go.GetComponent<Image>();background.color=new Color(.14f,.18f,.18f);
+                sources.captionText.color=Paper;sources.captionText.fontSize=14;
+                sources.itemText.color=Paper;sources.itemText.fontSize=14;sources.template.GetComponent<Image>().color=Card;
+                var toggle=sources.itemText.transform.parent.GetComponent<Toggle>();toggle.targetGraphic.color=new Color(.14f,.18f,.18f);toggle.graphic.color=Gold;
+                var arrow=go.transform.Find("Arrow");arrow.gameObject.SetActive(false);
+                Label("ArrowLabel",go.transform,"▼",13,450,5,22,22).color=Gold;
+                refs.Add(new LuaReference.Entry("Sources",sources));
+            }
+            else sources=(Dropdown)binding.Target;
+            Box((RectTransform)sources.transform,18,41,480,32);
+            Box(reference.GetText("SearchStatus").rectTransform,18,77,480,22);
+            Box((RectTransform)source.Find("Viewport"),18,104,480,378);
+            var hint=inventory.EditorLayout.Frame.Find("Hint").GetComponent<Text>();
+            hint.text="左右双向拖拽  ·  R 旋转  ·  右键取消  ·  战斗汇总先选择容器再存入";
+            inventory.EditorLayout.Labels=root.GetComponentsInChildren<Text>(true);EditorUtility.SetDirty(inventory);
             reference.SetEditorBindings(refs.ToArray());
         }
         private static void Build(GameObject root)

@@ -40,6 +40,8 @@ namespace ProjectY.Data
             shapes[itemId]=new[]{width,height};
         }
         internal void Clear() => placements.Clear();
+        internal void CopyShape(InventoryGridData source,int itemId)
+        {var shape=source.shapes[itemId];Define(itemId,shape[0],shape[1]);}
         private InventoryPlacementData Placement(string key, int itemId, int x, int y, bool rotated)
         {
             var shape=shapes[itemId];
