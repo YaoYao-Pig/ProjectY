@@ -13,11 +13,29 @@ namespace ProjectY.Editor
     /// <summary>Deterministic model-to-Sprite export. No scene edits or Play Mode required.</summary>
     public static class EquipmentIconExporter
     {
-        [Serializable] private sealed class Item {public int id,assetId,width,height;public string iconMode,iconPath;public float[] iconRotation;public float iconPadding;}
+        [Serializable] private sealed class Item {public int id,assetId,width,height;public string kind,iconMode,iconPath;public float[] iconRotation;public float iconPadding;}
         [Serializable] private sealed class Items {public Item[] rows;}
         [Serializable] private sealed class Asset {public int id;public string modelPath,prefabPath;}
         [Serializable] private sealed class Assets {public Asset[] rows;}
         private static T Read<T>(string table) => JsonUtility.FromJson<T>(File.ReadAllText("Config/Tables/Equipment/"+table+".json"));
+        public static void ExportItems(int[] ids)
+        {
+            if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("模型图标导出需要 Edit Mode。");
+            var items=Read<Items>("EquipmentItemTable").rows;var assets=Read<Assets>("EquipmentAssetTable").rows;
+            foreach(var id in ids)
+            {
+                var item=Array.Find(items,x=>x.id==id);
+                if(item==null||item.iconMode!="model"||item.iconRotation==null||item.iconRotation.Length!=3||item.iconPadding<1||item.iconPadding>2)
+                    throw new InvalidOperationException("Invalid model icon item: "+id);
+                var path=Path.GetFullPath(item.iconPath);var assetRoot=Path.GetFullPath(Application.dataPath)+Path.DirectorySeparatorChar;
+                if(!path.StartsWith(assetRoot,StringComparison.OrdinalIgnoreCase)||!path.EndsWith(".png",StringComparison.OrdinalIgnoreCase))throw new InvalidOperationException("Invalid icon path: "+item.iconPath);
+                var asset=Array.Find(assets,x=>x.id==item.assetId);
+                var prefab=asset==null?null:AssetDatabase.LoadAssetAtPath<GameObject>(asset.prefabPath);
+                if(prefab==null)throw new InvalidOperationException("Missing icon model: "+id);
+                Export(item,prefab);
+            }
+            EquipmentAssets.SyncItemIcons();AssetDatabase.SaveAssetIfDirty(AssetDatabase.LoadAssetAtPath<EquipmentAssetCatalog>(EquipmentAssets.CatalogPath));
+        }
         [MenuItem("Project Y/装备/导出物品模型图标并同步背包")]
         public static void ExportAndSync()
         {
@@ -95,12 +113,23 @@ namespace ProjectY.Editor
             {
                 var model=(GameObject)PrefabUtility.InstantiatePrefab(prefab,scene);
                 model.transform.position=Vector3.zero;model.transform.rotation=Quaternion.Euler(item.iconRotation[0],item.iconRotation[1],item.iconRotation[2]);
-                var renderers=model.GetComponentsInChildren<Renderer>();
-                if(renderers.Length==0) throw new InvalidOperationException("Model has no visible geometry: "+item.id);
-                var bounds=renderers[0].bounds;foreach(var renderer in renderers) bounds.Encapsulate(renderer.bounds);
+                var points=Geometry(model);
+                float aspect=(float)item.width/item.height;
+                float angle=0;var bounds=ProjectedBounds(points,0);
+                if(item.kind=="weapon" && item.height>item.width)
+                {
+                    float fit=Mathf.Max(bounds.size.x/aspect,bounds.size.y);
+                    for(int candidate=-90;candidate<=90;candidate++)
+                    {
+                        var trial=ProjectedBounds(points,candidate);float score=Mathf.Max(trial.size.x/aspect,trial.size.y);
+                        if(score<fit*.9999f) {fit=score;angle=candidate;bounds=trial;}
+                    }
+                    model.transform.rotation=Quaternion.AngleAxis(angle,Vector3.forward)*model.transform.rotation;
+                }
                 if(bounds.size.sqrMagnitude<.000001f) throw new InvalidOperationException("Empty model bounds: "+item.id);
                 var camera=new GameObject("IconCamera").AddComponent<Camera>();SceneManager.MoveGameObjectToScene(camera.gameObject,scene);
                 camera.enabled=false;camera.scene=scene;camera.orthographic=true;camera.clearFlags=CameraClearFlags.SolidColor;camera.backgroundColor=Color.clear;
+                ProjectY.Rendering.UrpCameraRendering.ConfigurePreview(camera);
                 int width=Mathf.Max(32,Mathf.RoundToInt(512f*item.width/Mathf.Max(item.width,item.height)));
                 int height=Mathf.Max(32,Mathf.RoundToInt(512f*item.height/Mathf.Max(item.width,item.height)));
                 camera.allowHDR=false;camera.aspect=(float)width/height;camera.orthographicSize=Mathf.Max(bounds.extents.x/camera.aspect,bounds.extents.y)*item.iconPadding;
@@ -135,6 +164,32 @@ namespace ProjectY.Editor
                 if(target!=null) {target.Release();Object.DestroyImmediate(target);}
                 EditorSceneManager.ClosePreviewScene(scene);
             }
+        }
+        private static List<Vector3> Geometry(GameObject model)
+        {
+            var points=new List<Vector3>();
+            foreach(var renderer in model.GetComponentsInChildren<Renderer>())
+            {
+                if(!renderer.enabled) continue;
+                var skinned=renderer as SkinnedMeshRenderer;Mesh mesh;
+                if(skinned!=null) {mesh=new Mesh();skinned.BakeMesh(mesh);}
+                else
+                {
+                    var filter=renderer.GetComponent<MeshFilter>();
+                    if(filter==null || filter.sharedMesh==null) throw new InvalidOperationException("Icon renderer has no mesh: "+renderer.name);
+                    mesh=filter.sharedMesh;
+                }
+                try {foreach(var vertex in mesh.vertices) points.Add(renderer.transform.TransformPoint(vertex));}
+                finally {if(skinned!=null) Object.DestroyImmediate(mesh);}
+            }
+            if(points.Count==0) throw new InvalidOperationException("Model has no visible geometry: "+model.name);
+            return points;
+        }
+        private static Bounds ProjectedBounds(List<Vector3> points,float angle)
+        {
+            var rotation=Quaternion.AngleAxis(angle,Vector3.forward);var bounds=new Bounds(rotation*points[0],Vector3.zero);
+            foreach(var point in points) bounds.Encapsulate(rotation*point);
+            return bounds;
         }
         private static void Light(Scene scene,string name,Color color,float intensity,Vector3 angles)
         {

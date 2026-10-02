@@ -1,0 +1,265 @@
+{
+  "version": 1,
+  "name": "MapAreaObstacleTable",
+  "description": "临时障碍和工具交互；状态按地点保留到远征结束。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "障碍规则 ID",
+      "min": 1
+    },
+    {
+      "name": "areaId",
+      "type": "int",
+      "description": "生成的小地图",
+      "ref": "MapAreaTable"
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "障碍名称"
+    },
+    {
+      "name": "count",
+      "type": "int",
+      "description": "每地点生成数量",
+      "min": 0,
+      "max": 8
+    },
+    {
+      "name": "minDistance",
+      "type": "int",
+      "description": "距入口最少寻路格数",
+      "min": 1
+    },
+    {
+      "name": "spacing",
+      "type": "int",
+      "description": "障碍中心之间最小格距",
+      "min": 1
+    },
+    {
+      "name": "seedSalt",
+      "type": "int",
+      "description": "独立随机流种子盐",
+      "min": 1
+    },
+    {
+      "name": "blocksMovement",
+      "type": "bool",
+      "description": "是否暂时阻止通行"
+    },
+    {
+      "name": "assetId",
+      "type": "int",
+      "description": "障碍模型",
+      "ref": "EquipmentAssetTable"
+    },
+    {
+      "name": "toolTag",
+      "type": "string",
+      "description": "适用的已装备武器标签",
+      "ref": "EquipmentWeaponTagTable"
+    },
+    {
+      "name": "eventId",
+      "type": "int",
+      "description": "交互事件",
+      "ref": "AdventureEventTable"
+    },
+    {
+      "name": "manualDamage",
+      "type": "int",
+      "description": "徒手执行者扣血，至少保留 1 生命",
+      "min": 0
+    },
+    {
+      "name": "manualRounds",
+      "type": "int",
+      "description": "徒手消耗探索回合",
+      "min": 0
+    },
+    {
+      "name": "toolRounds",
+      "type": "int",
+      "description": "工具消耗探索回合",
+      "min": 0
+    },
+    {
+      "name": "manualChance",
+      "type": "int",
+      "description": "徒手成功率百分比",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "toolChance",
+      "type": "int",
+      "description": "工具成功率百分比",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "lootTableId",
+      "type": "int",
+      "description": "处理后出现的战利品容器；0 为无掉落",
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 11,
+      "areaId": 1,
+      "name": "坍塌石堆",
+      "count": 1,
+      "minDistance": 7,
+      "spacing": 5,
+      "seedSalt": 1709,
+      "blocksMovement": true,
+      "assetId": 80,
+      "toolTag": "pickaxe",
+      "eventId": 101,
+      "manualDamage": 8,
+      "manualRounds": 3,
+      "toolRounds": 1,
+      "manualChance": 100,
+      "toolChance": 100,
+      "lootTableId": 0
+    },
+    {
+      "id": 12,
+      "areaId": 1,
+      "name": "堆积木箱",
+      "count": 0,
+      "minDistance": 9,
+      "spacing": 5,
+      "seedSalt": 1922,
+      "blocksMovement": true,
+      "assetId": 81,
+      "toolTag": "axe",
+      "eventId": 102,
+      "manualDamage": 5,
+      "manualRounds": 3,
+      "toolRounds": 1,
+      "manualChance": 100,
+      "toolChance": 100,
+      "lootTableId": 0
+    },
+    {
+      "id": 13,
+      "areaId": 1,
+      "name": "可疑土堆",
+      "count": 1,
+      "minDistance": 11,
+      "spacing": 5,
+      "seedSalt": 2135,
+      "blocksMovement": false,
+      "assetId": 82,
+      "toolTag": "shovel",
+      "eventId": 103,
+      "manualDamage": 4,
+      "manualRounds": 3,
+      "toolRounds": 1,
+      "manualChance": 100,
+      "toolChance": 100,
+      "lootTableId": 10
+    },
+    {
+      "id": 14,
+      "areaId": 1,
+      "name": "上锁箱子",
+      "count": 0,
+      "minDistance": 13,
+      "spacing": 5,
+      "seedSalt": 2348,
+      "blocksMovement": false,
+      "assetId": 7,
+      "toolTag": "crowbar",
+      "eventId": 104,
+      "manualDamage": 3,
+      "manualRounds": 3,
+      "toolRounds": 1,
+      "manualChance": 30,
+      "toolChance": 85,
+      "lootTableId": 10
+    },
+    {
+      "id": 201,
+      "areaId": 20,
+      "name": "坍塌石堆",
+      "count": 1,
+      "minDistance": 7,
+      "spacing": 5,
+      "seedSalt": 1709,
+      "blocksMovement": true,
+      "assetId": 80,
+      "toolTag": "pickaxe",
+      "eventId": 101,
+      "manualDamage": 8,
+      "manualRounds": 3,
+      "toolRounds": 1,
+      "manualChance": 100,
+      "toolChance": 100,
+      "lootTableId": 0
+    },
+    {
+      "id": 202,
+      "areaId": 20,
+      "name": "堆积木箱",
+      "count": 0,
+      "minDistance": 9,
+      "spacing": 5,
+      "seedSalt": 1922,
+      "blocksMovement": true,
+      "assetId": 81,
+      "toolTag": "axe",
+      "eventId": 102,
+      "manualDamage": 5,
+      "manualRounds": 3,
+      "toolRounds": 1,
+      "manualChance": 100,
+      "toolChance": 100,
+      "lootTableId": 0
+    },
+    {
+      "id": 203,
+      "areaId": 20,
+      "name": "可疑土堆",
+      "count": 1,
+      "minDistance": 11,
+      "spacing": 5,
+      "seedSalt": 2135,
+      "blocksMovement": false,
+      "assetId": 82,
+      "toolTag": "shovel",
+      "eventId": 103,
+      "manualDamage": 4,
+      "manualRounds": 3,
+      "toolRounds": 1,
+      "manualChance": 100,
+      "toolChance": 100,
+      "lootTableId": 11
+    },
+    {
+      "id": 204,
+      "areaId": 20,
+      "name": "上锁箱子",
+      "count": 0,
+      "minDistance": 13,
+      "spacing": 5,
+      "seedSalt": 2348,
+      "blocksMovement": false,
+      "assetId": 7,
+      "toolTag": "crowbar",
+      "eventId": 104,
+      "manualDamage": 3,
+      "manualRounds": 3,
+      "toolRounds": 1,
+      "manualChance": 30,
+      "toolChance": 85,
+      "lootTableId": 11
+    }
+  ]
+}

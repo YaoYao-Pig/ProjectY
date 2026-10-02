@@ -65,7 +65,7 @@ function Infrastructure:ctor(config, regionTypes)
             range(building.height, 0.1, 20, false, 'building height'); range(building.roofHeight, 0, 10, false, 'roofHeight')
         end
     end
-    assert(total <= 16, 'Town maxCount total exceeds the generation budget of 16')
+    assert(total <= 18, 'Town maxCount total exceeds the generation budget of 18')
 end
 function Infrastructure:EdgeCost(a, b)
     if a.waterLevel or b.waterLevel or a.buildingId or b.buildingId then return nil end

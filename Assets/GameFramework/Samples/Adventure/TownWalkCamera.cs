@@ -8,21 +8,19 @@ namespace ProjectY.Samples
     {
         private readonly IList<Bounds> obstacles;
         private readonly System.Func<Ray, float, float> terrainDistance;
-        private float yaw, pitch = 25, distance = 8;
+        private float yaw = -35, pitch = 50, distance = 28;
         private Vector3 desired, lastInput;
         private bool steering;
         public bool Walking { get; private set; }
         public TownWalkCamera(MapAreaViewData layout, MapAreaViewData.State state, IList<Bounds> obstacles, System.Func<Ray, float, float> terrainDistance = null)
         {
             this.obstacles = obstacles; this.terrainDistance = terrainDistance;
-            var forward = layout.Cells[state.GoalIndex].Position - layout.Cells[state.CellIndex].Position;
-            yaw = Mathf.Atan2(forward.x, forward.z) * Mathf.Rad2Deg;
         }
         public void ResetSteering() { steering = false; Walking = false; }
         public void Orbit()
         {
-            if (Input.GetMouseButton(1)) { yaw += Input.GetAxis("Mouse X") * 3; pitch = Mathf.Clamp(pitch - Input.GetAxis("Mouse Y") * 2, 10, 55); }
-            distance = Mathf.Clamp(distance - Input.mouseScrollDelta.y * .65f, 3, 14);
+            if (Input.GetMouseButton(1)) { yaw += Input.GetAxis("Mouse X") * 3; pitch = Mathf.Clamp(pitch - Input.GetAxis("Mouse Y") * 2, 25, 72); }
+            distance = Mathf.Clamp(distance * Mathf.Exp(-Input.mouseScrollDelta.y * .10f), 8, 55);
         }
         public int Direction(MapAreaViewData layout, MapAreaViewData.State state, float dt)
         {
@@ -53,16 +51,27 @@ namespace ProjectY.Samples
         public void Apply(Camera camera, Vector3 leader)
         {
             var focus = leader + Vector3.up * 1.25f;
-            var rotation = Quaternion.Euler(pitch, yaw, 0); var backward = -(rotation * Vector3.forward);
-            var actualDistance = distance;
-            var ray = new Ray(focus, backward);
-            foreach (var obstacle in obstacles)
-                if (obstacle.IntersectRay(ray, out var hit) && hit >= 0 && hit < actualDistance) actualDistance = Mathf.Max(.35f, hit - .2f);
-            if (terrainDistance != null) actualDistance = Mathf.Max(.35f, terrainDistance(ray, actualDistance) - .15f);
+            var rotation = Quaternion.Euler(pitch, yaw, 0);
+            var actualDistance = Clearance(focus, rotation);
+            // Raise the view over nearby roofs before moving close enough to lose the surrounding streets.
+            for (var raised = pitch + 5; actualDistance < distance * .8f && raised <= 77; raised += 5)
+            {
+                var candidate = Quaternion.Euler(raised, yaw, 0); var clearance = Clearance(focus, candidate);
+                if (clearance > actualDistance) { rotation = candidate; actualDistance = clearance; }
+            }
+            var backward = -(rotation * Vector3.forward);
             var position = focus + backward * actualDistance; position.y = Mathf.Max(leader.y + .35f, position.y);
-            camera.orthographic = false; camera.rect = new Rect(0, 0, 1, 1); camera.fieldOfView = 58;
+            camera.orthographic = false; camera.rect = new Rect(0, 0, 1, 1); camera.fieldOfView = 38;
             camera.nearClipPlane = .08f; camera.farClipPlane = 400;
             camera.transform.SetPositionAndRotation(position, Quaternion.LookRotation(focus - position));
+        }
+        private float Clearance(Vector3 focus, Quaternion rotation)
+        {
+            var result = distance; var ray = new Ray(focus, -(rotation * Vector3.forward));
+            foreach (var obstacle in obstacles)
+                if (obstacle.IntersectRay(ray, out var hit) && hit >= 0 && hit < result) result = Mathf.Max(.35f, hit - .2f);
+            if (terrainDistance != null) result = Mathf.Max(.35f, terrainDistance(ray, result) - .15f);
+            return result;
         }
     }
 }

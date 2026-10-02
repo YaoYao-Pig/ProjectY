@@ -20,6 +20,23 @@
       "type": "int",
       "description": "独立随机通道",
       "min": 0
+    },
+    {
+      "name": "mode",
+      "type": "enum",
+      "description": "逐项独立概率，或按权重抽取固定次数",
+      "default": "independent",
+      "values": [
+        "independent",
+        "weighted"
+      ]
+    },
+    {
+      "name": "drawCount",
+      "type": "int",
+      "description": "weighted 模式抽取次数；允许重复，同物品合并",
+      "default": 1,
+      "min": 1
     }
   ],
   "rows": [
@@ -42,6 +59,20 @@
       "id": 4,
       "name": "弓手遗物",
       "seedSalt": 563
+    },
+    {
+      "id": 5,
+      "name": "首领奖励武器",
+      "seedSalt": 719,
+      "mode": "weighted",
+      "drawCount": 2
+    },
+    {
+      "id": 6,
+      "name": "武器架",
+      "seedSalt": 811,
+      "mode": "weighted",
+      "drawCount": 1
     }
   ]
 }

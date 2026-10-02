@@ -1,0 +1,422 @@
+{
+  "version": 1,
+  "name": "MapAreaShipwreckDressingTable",
+  "description": "沉船独立小物池；优先实际桌面支撑槽，地面杂物需保持通路。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "规则编号",
+      "min": 1
+    },
+    {
+      "name": "profileId",
+      "type": "int",
+      "description": "模板",
+      "ref": "MapAreaShipwreckTable"
+    },
+    {
+      "name": "assetId",
+      "type": "int",
+      "description": "小物模型",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "roomIds",
+      "type": "int[]",
+      "description": "可用房间",
+      "ref": "MapAreaShipwreckRoomTable"
+    },
+    {
+      "name": "placement",
+      "type": "enum",
+      "description": "地面或真实桌面",
+      "values": [
+        "floor",
+        "surface"
+      ]
+    },
+    {
+      "name": "count",
+      "type": "int",
+      "description": "期望数量",
+      "min": 1
+    },
+    {
+      "name": "halfX",
+      "type": "float",
+      "description": "实际X半宽",
+      "min": 0
+    },
+    {
+      "name": "halfZ",
+      "type": "float",
+      "description": "实际Z半长",
+      "min": 0
+    },
+    {
+      "name": "centerX",
+      "type": "float",
+      "description": "模型中心X"
+    },
+    {
+      "name": "centerZ",
+      "type": "float",
+      "description": "模型中心Z"
+    },
+    {
+      "name": "baseY",
+      "type": "float",
+      "description": "模型包围盒底Y"
+    },
+    {
+      "name": "height",
+      "type": "float",
+      "description": "模型高度",
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "profileId": 1,
+      "assetId": 830,
+      "roomIds": [
+        5,
+        8
+      ],
+      "placement": "surface",
+      "count": 1,
+      "halfX": 0.08399999886751175,
+      "halfZ": 0.10449999943375587,
+      "centerX": 0.0,
+      "centerZ": -0.020500000566244125,
+      "baseY": 0.0,
+      "height": 0.06499999761581421
+    },
+    {
+      "id": 2,
+      "profileId": 1,
+      "assetId": 831,
+      "roomIds": [
+        5,
+        8
+      ],
+      "placement": "surface",
+      "count": 1,
+      "halfX": 0.20999999344348907,
+      "halfZ": 0.15000000596046448,
+      "centerX": 0.0,
+      "centerZ": 0.0,
+      "baseY": 0.0,
+      "height": 0.019999999552965164
+    },
+    {
+      "id": 3,
+      "profileId": 1,
+      "assetId": 832,
+      "roomIds": [
+        5
+      ],
+      "placement": "surface",
+      "count": 1,
+      "halfX": 0.11299999803304672,
+      "halfZ": 0.15000000596046448,
+      "centerX": 0.00299999862909317,
+      "centerZ": 0.0,
+      "baseY": 0.0,
+      "height": 0.10599999874830246
+    },
+    {
+      "id": 4,
+      "profileId": 1,
+      "assetId": 833,
+      "roomIds": [
+        5,
+        3
+      ],
+      "placement": "surface",
+      "count": 1,
+      "halfX": 0.08900000154972076,
+      "halfZ": 0.08900000154972076,
+      "centerX": 0.0,
+      "centerZ": 0.0,
+      "baseY": 0.0,
+      "height": 0.27799999713897705
+    },
+    {
+      "id": 5,
+      "profileId": 1,
+      "assetId": 834,
+      "roomIds": [
+        5,
+        8
+      ],
+      "placement": "surface",
+      "count": 1,
+      "halfX": 0.23499999940395355,
+      "halfZ": 0.05700000002980232,
+      "centerX": 0.0,
+      "centerZ": 0.0,
+      "baseY": 0.0,
+      "height": 0.11400000005960464
+    },
+    {
+      "id": 6,
+      "profileId": 1,
+      "assetId": 835,
+      "roomIds": [
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "placement": "surface",
+      "count": 3,
+      "halfX": 0.10000000149011612,
+      "halfZ": 0.10000000149011612,
+      "centerX": 0.0,
+      "centerZ": 0.0,
+      "baseY": 0.0,
+      "height": 0.41200000047683716
+    },
+    {
+      "id": 7,
+      "profileId": 1,
+      "assetId": 836,
+      "roomIds": [
+        1,
+        3
+      ],
+      "placement": "surface",
+      "count": 2,
+      "halfX": 0.09600000083446503,
+      "halfZ": 0.05567999929189682,
+      "centerX": 0.0,
+      "centerZ": 0.0,
+      "baseY": 0.0,
+      "height": 0.2720000147819519
+    },
+    {
+      "id": 8,
+      "profileId": 1,
+      "assetId": 837,
+      "roomIds": [
+        1,
+        3
+      ],
+      "placement": "surface",
+      "count": 3,
+      "halfX": 0.09646585583686829,
+      "halfZ": 0.06499999761581421,
+      "centerX": -0.03146585822105408,
+      "centerZ": 0.0,
+      "baseY": 0.0,
+      "height": 0.15700000524520874
+    },
+    {
+      "id": 9,
+      "profileId": 1,
+      "assetId": 838,
+      "roomIds": [
+        3
+      ],
+      "placement": "surface",
+      "count": 2,
+      "halfX": 0.1080000028014183,
+      "halfZ": 0.1080000028014183,
+      "centerX": 0.0,
+      "centerZ": 0.0,
+      "baseY": 0.0,
+      "height": 0.09799999743700027
+    },
+    {
+      "id": 10,
+      "profileId": 1,
+      "assetId": 839,
+      "roomIds": [
+        3
+      ],
+      "placement": "surface",
+      "count": 2,
+      "halfX": 0.15299999713897705,
+      "halfZ": 0.15299999713897705,
+      "centerX": 0.0,
+      "centerZ": 0.0,
+      "baseY": 0.0,
+      "height": 0.04600000008940697
+    },
+    {
+      "id": 11,
+      "profileId": 1,
+      "assetId": 840,
+      "roomIds": [
+        2,
+        4
+      ],
+      "placement": "surface",
+      "count": 1,
+      "halfX": 0.1939999982714653,
+      "halfZ": 0.14350000023841858,
+      "centerX": 0.0040000006556510925,
+      "centerZ": 0.011500000953674316,
+      "baseY": 0.0,
+      "height": 0.14800000190734863
+    },
+    {
+      "id": 12,
+      "profileId": 1,
+      "assetId": 841,
+      "roomIds": [
+        1,
+        2
+      ],
+      "placement": "surface",
+      "count": 1,
+      "halfX": 0.11749999970197678,
+      "halfZ": 0.10853883251547813,
+      "centerX": 0.0,
+      "centerZ": -0.03253883495926857,
+      "baseY": 0.0,
+      "height": 0.20324303209781647
+    },
+    {
+      "id": 13,
+      "profileId": 1,
+      "assetId": 842,
+      "roomIds": [
+        2,
+        4,
+        7
+      ],
+      "placement": "floor",
+      "count": 4,
+      "halfX": 0.12334882095456123,
+      "halfZ": 0.1276276744902134,
+      "centerX": 0.017348822206258774,
+      "centerZ": 0.021627675741910934,
+      "baseY": 0.0,
+      "height": 0.033584993332624435
+    },
+    {
+      "id": 14,
+      "profileId": 1,
+      "assetId": 843,
+      "roomIds": [
+        2,
+        6,
+        7
+      ],
+      "placement": "floor",
+      "count": 3,
+      "halfX": 0.08500000089406967,
+      "halfZ": 0.08889711275696754,
+      "centerX": 0.0,
+      "centerZ": -0.023897115141153336,
+      "baseY": 0.0,
+      "height": 0.1379999965429306
+    },
+    {
+      "id": 15,
+      "profileId": 1,
+      "assetId": 844,
+      "roomIds": [
+        2,
+        4
+      ],
+      "placement": "surface",
+      "count": 1,
+      "halfX": 0.11749999970197678,
+      "halfZ": 0.06750000268220901,
+      "centerX": 0.0,
+      "centerZ": 0.0,
+      "baseY": 0.0,
+      "height": 0.07800000160932541
+    },
+    {
+      "id": 16,
+      "profileId": 1,
+      "assetId": 845,
+      "roomIds": [
+        5
+      ],
+      "placement": "surface",
+      "count": 1,
+      "halfX": 0.10400000214576721,
+      "halfZ": 0.0729999989271164,
+      "centerX": 0.0,
+      "centerZ": 0.0,
+      "baseY": 0.0,
+      "height": 0.027899999171495438
+    },
+    {
+      "id": 17,
+      "profileId": 1,
+      "assetId": 846,
+      "roomIds": [
+        1,
+        5
+      ],
+      "placement": "surface",
+      "count": 1,
+      "halfX": 0.08120831847190857,
+      "halfZ": 0.07488490268588066,
+      "centerX": -0.009791679680347443,
+      "centerZ": 3.951415419578552e-05,
+      "baseY": 0.0,
+      "height": 0.1850000023841858
+    },
+    {
+      "id": 18,
+      "profileId": 1,
+      "assetId": 847,
+      "roomIds": [
+        3
+      ],
+      "placement": "surface",
+      "count": 2,
+      "halfX": 0.06499999761581421,
+      "halfZ": 0.06590933725237846,
+      "centerX": 0.0,
+      "centerZ": 0.00409066304564476,
+      "baseY": 0.0,
+      "height": 0.20000000298023224
+    },
+    {
+      "id": 19,
+      "profileId": 1,
+      "assetId": 848,
+      "roomIds": [
+        1,
+        4
+      ],
+      "placement": "surface",
+      "count": 1,
+      "halfX": 0.1599999964237213,
+      "halfZ": 0.09299999848008156,
+      "centerX": 0.0,
+      "centerZ": 0.004999998956918716,
+      "baseY": 0.0,
+      "height": 0.16258063912391663
+    },
+    {
+      "id": 20,
+      "profileId": 1,
+      "assetId": 849,
+      "roomIds": [
+        1,
+        5
+      ],
+      "placement": "surface",
+      "count": 1,
+      "halfX": 0.1724081113934517,
+      "halfZ": 0.041846487671136856,
+      "centerX": -0.043408118188381195,
+      "centerZ": 0.0,
+      "baseY": 0.0,
+      "height": 0.09595824778079987
+    }
+  ]
+}

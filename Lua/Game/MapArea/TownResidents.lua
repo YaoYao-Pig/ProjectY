@@ -9,7 +9,7 @@ function Residents.Tick(area,state,dt)
         if not definition.narrativeId and #definition.route>0 and not (state.InteractionKind==2 and state.InteractionId==npc.Id)
             and npc:Due(dt,definition.stepSeconds) then
             local allowed=function(cell)
-                return (not occupied[cell.index] or occupied[cell.index]==npc.Id) and not state:IsSquadReserved(cell.index)
+                return not cell.interiorId and (not occupied[cell.index] or occupied[cell.index]==npc.Id) and not state:IsSquadReserved(cell.index)
             end
             -- 迎面遇人时寻找前方少量路点，从空余侧街绕行；每次仍只走一个相邻格。
             local moved=false
@@ -62,18 +62,24 @@ function Residents.Populate(area,row,config,doors)
     end
     for _,site in ipairs(area.facilities) do
         local door=area.cells[site.entryIndex];local found
-        for _,cell in ipairs(area:Neighbors(door)) do
+        local room=door.interiorId and area.interiors[door.interiorId]
+        if room and room.serviceNpcIndex then
+            found=area.cells[room.serviceNpcIndex]
+            assert(not occupied[found.index] and not found.blocked and found.index~=site.approachIndex and area:CanStep(door,found),'Invalid building service NPC position')
+        else for _,cell in ipairs(area:Neighbors(door)) do
             if not occupied[cell.index] and cell.index~=area.entryIndex and cell.index~=site.approachIndex
                 and cell.interiorId==door.interiorId then found=cell;break end
+        end
         end
         assert(found,'No service NPC space');addNpc(site.npcTemplateId,found.index,{})
     end
     for i=1,row.residentCount do
         local start=doors[(i-1)%#doors+1];local target=doors[(i+3)%#doors+1]
         local spawn
-        for _,cell in ipairs(area:Neighbors(start)) do if not occupied[cell.index] and cell.index~=area.entryIndex then spawn=cell;break end end
+        for _,cell in ipairs(area:Neighbors(start)) do if not cell.interiorId and not occupied[cell.index] and cell.index~=area.entryIndex then spawn=cell;break end end
         assert(spawn,'No resident spawn space')
-        local out=assert(area:FindPath(spawn.index,target.index));local back=assert(area:FindPath(target.index,spawn.index))
+        local public=function(cell)return not cell.interiorId end
+        local out=assert(area:FindPath(spawn.index,target.index,public));local back=assert(area:FindPath(target.index,spawn.index,public))
         local route={};for _,index in ipairs(out) do route[#route+1]=index end;for _,index in ipairs(back) do route[#route+1]=index end
         addNpc(row.residentTemplateIds[(i-1)%#row.residentTemplateIds+1],spawn.index,route)
     end

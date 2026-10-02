@@ -58,6 +58,8 @@ function Generator:Generate(areaId,worldSeed,pointId,source,decorate)
         for i=1,3 do cell.color[i]=base[i]*(0.94+noise*0.12) end
     end
     if decorate then decorate(area) end
+    require('Game.Loot.ContainerLayout').Populate(area,self.config)
+    require('Game.MapArea.FloorBoundary').Build(area)
     return Layout.Freeze(area)
 end
 return Generator

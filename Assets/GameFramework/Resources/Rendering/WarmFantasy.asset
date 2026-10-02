@@ -94,6 +94,7 @@ MonoBehaviour:
   - {fileID: 4443361993424763131}
   - {fileID: 7608286929922412437}
   - {fileID: -3929782338189192631}
+  - {fileID: 6050755750303201970}
 --- !u!114 &4443361993424763131
 MonoBehaviour:
   m_ObjectHideFlags: 3
@@ -116,6 +117,46 @@ MonoBehaviour:
   balance:
     m_OverrideState: 1
     m_Value: 5
+--- !u!114 &6050755750303201970
+MonoBehaviour:
+  m_ObjectHideFlags: 3
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 97fa69be0494a4c42858b0cb27416afd, type: 3}
+  m_Name: Pixel Art
+  m_EditorClassIdentifier:
+  active: 1
+  enableEffect:
+    m_OverrideState: 1
+    m_Value: 1
+  referenceHeight:
+    m_OverrideState: 1
+    m_Value: 540
+  colorLevels:
+    m_OverrideState: 1
+    m_Value: 32
+  colorStrength:
+    m_OverrideState: 1
+    m_Value: 0.45
+  ditherStrength:
+    m_OverrideState: 1
+    m_Value: 0.06
+  outlineStrength:
+    m_OverrideState: 1
+    m_Value: 0.8
+  outlineWidth:
+    m_OverrideState: 1
+    m_Value: 1
+  outlineDepthThreshold:
+    m_OverrideState: 1
+    m_Value: 0.012
+  creaseStrength:
+    m_OverrideState: 1
+    m_Value: 0.22
 --- !u!114 &7608286929922412437
 MonoBehaviour:
   m_ObjectHideFlags: 3

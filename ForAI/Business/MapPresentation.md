@@ -15,11 +15,13 @@
 - 光照源表为 `MapEnvironmentTable`（生命周期和视觉时钟）、`MapLightKeyTable`（24 小时循环关键帧）、`MapWeatherTable`（晴/阴倍率和雾距）。黄昏通过时间关键帧表达；默认视觉日 600 秒、初始 10:00。`MapPresentation.Snapshot` 校验顺序、天气引用与雾距后复制给 C#，不导出只读代理数组。
 - `MapEnvironmentController` 仍可独立使用视觉时间；远征 Demo 由[叙事游戏时钟](Narrative.md)驱动 Hour，使昼夜与 NPC 日程一致并随叙事状态存档。方向光兼作夜间月光，插值天空/水平/地面环境光、雾色和阴影；按领队真实占格混合室内外环境，按进入室内的队员开启限量点光，默认最多 4 盏。
 - 局部灯在 `SetArea` 缓存建筑中心，Tick 不扫描全图、不新建灯。控制器要求显式绑定方向光、相机与宿主，`AdventureRuntimeDemo.environmentSun` 通过原生 Editor API 保存。销毁时释放灯并恢复原场景 RenderSettings、方向光、相机背景和受影响的 QualitySettings。雾距相对观察焦点计算，避免远处正交相机把整张大地图淹没。
+- `Tick` 按所选[渲染风格](../Framework/Rendering.md)对昼夜光强应用表现倍率，不改源表或叙事时间。奇幻模式使用独立的天空材质克隆，随真实主光更新太阳/晨昏；只在模式变化或太阳明显移动时请求环境反射更新。像素模式回到原始光照；销毁恢复 skybox、reflectionIntensity 和 camera.clearFlags。
 - 远征“时间 / 天气”窗口显示游戏时间、提供天气预览；时间参数通过配置调整，避免视觉时刻与 NPC 日程分离。渲染使用 [URP 与奇幻风格](../Framework/Rendering.md)，无烘焙光照依赖。本版不是天文太阳模型，也不包含自动天气随机、街灯日程或楼上室内。
 - 最小检查：`town_interiors.lua` 验证源表快照、地表引用与广场/院落/园地，以及真实配方的门洞和四人进出；`preview_expansion.cs/.lua` 在 Edit Mode 用真实远征命令检查全部室内、屋顶恢复、时间跨日、天气光强并截图。脚本属于原生 MCP 片段，不放入 Assets 编译；完整检查结果在扩展资源目录下。
 
 ## 关键入口
 
+- [独立地牢纹理库](../../Art/AssetExpansion202610/Dungeon/texture_manifest.json)：3 墙面与 3 地面 Base Color，Unity 目录 `Assets/DynamicAsset/AssetExpansion202610/Dungeon/Textures`，对应 URP/Lit 材质使用 sRGB、Repeat、mipmap。当前 `MapPreviewInstanced.shader` 没有 `_BaseMap` 输入，陈设实例也只读颜色/发光；本批纹理未接入运行时随机地图。平铺视觉检查及边缘残差见[审核档案](../../Art/AssetExpansion202610/Dungeon/review.json)。
 - [地牢材质配方](../../Config/Tables/MapArea/MapAreaDungeonSurfaceTable.json) / [房间与墙面选择](../../Lua/Game/MapArea/DungeonSurfaces.lua) / [装饰与定向检查](MapDressing.md)。
 - [地表定义](../../Config/Tables/MapArea/MapAreaSurfaceTable.json) / [城镇地表组合](../../Config/Tables/MapArea/MapAreaTownSurfaceTable.json) / [地表选择](../../Lua/Game/MapArea/TownSurfaces.lua)。
 - [环境配方](../../Config/Tables/Rendering/MapEnvironmentTable.json) / [时间关键帧](../../Config/Tables/Rendering/MapLightKeyTable.json) / [天气](../../Config/Tables/Rendering/MapWeatherTable.json) / [配置快照](../../Lua/Game/Rendering/MapPresentation.lua)。

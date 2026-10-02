@@ -1,0 +1,170 @@
+{
+  "version": 1,
+  "name": "MapAreaShipwreckRoomTable",
+  "description": "生活/货物/船长/藏宝分区；露天平台仅剖开正下方实际室内。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "编号",
+      "min": 1
+    },
+    {
+      "name": "profileId",
+      "type": "int",
+      "description": "模板",
+      "ref": "MapAreaShipwreckTable"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "房间名称"
+    },
+    {
+      "name": "layer",
+      "type": "int",
+      "description": "楼层"
+    },
+    {
+      "name": "minZ",
+      "type": "float",
+      "description": "分区起始"
+    },
+    {
+      "name": "maxZ",
+      "type": "float",
+      "description": "分区结束"
+    },
+    {
+      "name": "interiorId",
+      "type": "int",
+      "description": "真实室内身份；露天为0"
+    },
+    {
+      "name": "coverInteriorId",
+      "type": "int",
+      "description": "覆盖的下方室内；独立于自身室内"
+    },
+    {
+      "name": "centerX",
+      "type": "float",
+      "description": "房间目标X"
+    },
+    {
+      "name": "centerZ",
+      "type": "float",
+      "description": "房间目标Z"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "profileId": 1,
+      "name": "船员卧舱",
+      "layer": 0,
+      "minZ": -36,
+      "maxZ": -21,
+      "interiorId": 1001,
+      "coverInteriorId": 0,
+      "centerX": 0,
+      "centerZ": -28.5
+    },
+    {
+      "id": 2,
+      "profileId": 1,
+      "name": "货舱与军械区",
+      "layer": 0,
+      "minZ": -21,
+      "maxZ": 9,
+      "interiorId": 1002,
+      "coverInteriorId": 0,
+      "centerX": -8,
+      "centerZ": 0
+    },
+    {
+      "id": 3,
+      "profileId": 1,
+      "name": "炉灶与餐舱",
+      "layer": 0,
+      "minZ": 9,
+      "maxZ": 24,
+      "interiorId": 1003,
+      "coverInteriorId": 0,
+      "centerX": 6,
+      "centerZ": 18
+    },
+    {
+      "id": 4,
+      "profileId": 1,
+      "name": "船艏储藏舱",
+      "layer": 0,
+      "minZ": 24,
+      "maxZ": 39,
+      "interiorId": 1004,
+      "coverInteriorId": 0,
+      "centerX": 0,
+      "centerZ": 31.5
+    },
+    {
+      "id": 5,
+      "profileId": 1,
+      "name": "船长室与航海区",
+      "layer": 1,
+      "minZ": -45,
+      "maxZ": -27,
+      "interiorId": 2001,
+      "coverInteriorId": 0,
+      "centerX": 0,
+      "centerZ": -34.5
+    },
+    {
+      "id": 6,
+      "profileId": 1,
+      "name": "艏楼器材间",
+      "layer": 1,
+      "minZ": 27,
+      "maxZ": 54,
+      "interiorId": 2002,
+      "coverInteriorId": 0,
+      "centerX": -4,
+      "centerZ": 33
+    },
+    {
+      "id": 7,
+      "profileId": 1,
+      "name": "断桅主甲板",
+      "layer": 1,
+      "minZ": -27,
+      "maxZ": 27,
+      "interiorId": 0,
+      "coverInteriorId": 0,
+      "centerX": 0,
+      "centerZ": -3
+    },
+    {
+      "id": 8,
+      "profileId": 1,
+      "name": "艉楼瞭望平台",
+      "layer": 2,
+      "minZ": -43.5,
+      "maxZ": -27,
+      "interiorId": 0,
+      "coverInteriorId": 2001,
+      "centerX": 0,
+      "centerZ": -36
+    },
+    {
+      "id": 9,
+      "profileId": 1,
+      "name": "船艏藏宝高台",
+      "layer": 2,
+      "minZ": 27,
+      "maxZ": 52,
+      "interiorId": 0,
+      "coverInteriorId": 2002,
+      "centerX": 0,
+      "centerZ": 43.5
+    }
+  ]
+}

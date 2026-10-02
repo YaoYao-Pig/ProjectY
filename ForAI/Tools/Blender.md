@@ -13,7 +13,7 @@
 - 当前 Blender 为 Steam 安装：`D:/Software/Steam/steamapps/common/Blender/blender.exe`（5.2.2 LTS）；插件位于 `%APPDATA%/Blender Foundation/Blender/5.2/scripts/addons/blender_mcp.py`，与 Python 包同源，协议版本 7。
 - 本地桥接使用 `127.0.0.1:9876`。MCP 进程遥测和插件 Allow Telemetry 均关闭；插件已启用并保存用户偏好，正常图形启动时按插件默认行为自动连接。
 - 机器配置、运行时和日志不随 Git 分发；新机器按 Skill 的连接参考安装，不能仅凭本文认为已接入。Codex 配置备份保存在同一本机 runtime 父目录。
-- 项目 Unity 版本以 [ProjectVersion.txt](../../ProjectSettings/ProjectVersion.txt) 为准；当前为 2022.3.55f1c1，采用 Built-in 管线。Unity MCP 包版本以 [manifest.json](../../Packages/manifest.json) 为准，当前配置为 10.2.0。
+- 项目 Unity 版本以 [ProjectVersion.txt](../../ProjectSettings/ProjectVersion.txt) 为准；当前为 2022.3.55f1c1，采用 [URP 14 渲染管线](../Framework/Rendering.md)。Unity MCP 包版本以 [manifest.json](../../Packages/manifest.json) 为准，当前配置为 10.2.0。
 - 大地图资源采用 `Art/MapLowPoly` 保留来源，`Assets/DynamicAsset/MapLowPoly` 保存 Unity 产物，几何与资源边界见 [地图模型资源](../Business/MapArt.md)。其他模块沿用各自目录，不由这套美术资源新增加载规则。
 - 源 `.blend` 建议保留在 `Assets` 外，进入 Unity 的 FBX/贴图和后续材质/Prefab 沿用任务确认的目录。`.meta`/GUID 由 Unity 管理，既有资源更新保留引用。
 - 最小验证分层：配置解析 → MCP tools/list → Blender 场景读取/截图 → 暂存目录 FBX 导出 → 目标 Unity 实例导入/预览。只报告实际完成的层级；后两步不互相替代。

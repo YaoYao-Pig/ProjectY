@@ -1,0 +1,13 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaShipwreckRoomTableRow
+---@field id number 编号
+---@field profileId number 模板
+---@field name string 房间名称
+---@field layer number 楼层
+---@field minZ number 分区起始
+---@field maxZ number 分区结束
+---@field interiorId number 真实室内身份；露天为0
+---@field coverInteriorId number 覆盖的下方室内；独立于自身室内
+---@field centerX number 房间目标X
+---@field centerZ number 房间目标Z
+return {["name"]="MapAreaShipwreckRoomTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\188\150\229\143\183",["min"]=1},{["name"]="profileId",["type"]="int",["description"]="\230\168\161\230\157\191",["ref"]="MapAreaShipwreckTable"},{["name"]="name",["type"]="string",["description"]="\230\136\191\233\151\180\229\144\141\231\167\176"},{["name"]="layer",["type"]="int",["description"]="\230\165\188\229\177\130"},{["name"]="minZ",["type"]="float",["description"]="\229\136\134\229\140\186\232\181\183\229\167\139"},{["name"]="maxZ",["type"]="float",["description"]="\229\136\134\229\140\186\231\187\147\230\157\159"},{["name"]="interiorId",["type"]="int",["description"]="\231\156\159\229\174\158\229\174\164\229\134\133\232\186\171\228\187\189\239\188\155\233\156\178\229\164\169\228\184\1860"},{["name"]="coverInteriorId",["type"]="int",["description"]="\232\166\134\231\155\150\231\154\132\228\184\139\230\150\185\229\174\164\229\134\133\239\188\155\231\139\172\231\171\139\228\186\142\232\135\170\232\186\171\229\174\164\229\134\133"},{["name"]="centerX",["type"]="float",["description"]="\230\136\191\233\151\180\231\155\174\230\160\135X"},{["name"]="centerZ",["type"]="float",["description"]="\230\136\191\233\151\180\231\155\174\230\160\135Z"}},["fingerprint"]="96e11143f9ae6dccf02f94524050f8d85b66b827ccf574590bd287bd84d07141"}

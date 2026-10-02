@@ -1,0 +1,1391 @@
+{
+  "group": "Weapons",
+  "asset_count": 55,
+  "view_count": 220,
+  "revision": 3,
+  "reference_images_viewed": 18,
+  "reference_links_per_asset": 2,
+  "lore_min_han_characters": 124,
+  "overall": "三视图与斜视中未见明显错位、外部悬浮构件或穿模；造型符合本项目纯色低多边形奇幻方向。",
+  "repairs": [
+    "弓臂重绘并使弦位于握把后方，有真实净距。",
+    "剑与匕首补实体刃茎；尖刃侧面收细。",
+    "高盾中脊分段贴合曲面，避免被盾面吞没。",
+    "独眼镜保护架延伸并连接底轨。",
+    "枪与弩托增加浅倒角；短铳缩小机匣并区别五款握柄。",
+    "枪械击锤改为有枢轴的短弯钩；晶舱有开放支柱和托座。",
+    "蘑菇杖浅色斑点嵌入伞面；暗色材质略提高可读性。",
+    "第三版定向修正：五款剑的纹条、补片与铆点裁切贴合实际刃面，背面嵌入0.8毫米；只重导5款及重渲20视图，另5款剑复看未修改。"
+  ],
+  "reviews": [
+    {
+      "id": "AEW_Sword_DragonTithe",
+      "display_name": "龙税",
+      "category": "Sword",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Sword_DragonTithe_front.png",
+        "side": "Previews/AEW_Sword_DragonTithe_side.png",
+        "back": "Previews/AEW_Sword_DragonTithe_back.png",
+        "hero": "Previews/AEW_Sword_DragonTithe_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Sword.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "上扬铜角护手与单侧鳞脊形成识别点，红柄长度适合单手；背面没有额外悬浮饰件。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 456
+      },
+      "fbx_sha256": "8d5fb6b70451a35039b6e4683821d82aa7a7dd955b06a9ea20238eae749492a7",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。",
+      "revision3_rechecked": true,
+      "revision3_review_method": "Personally reopened Sword and Greatsword sheets (ten models x four views); additionally opened each of the five changed side views at full 512 px."
+    },
+    {
+      "id": "AEW_Sword_VeteranRemnant",
+      "display_name": "归营残锋",
+      "category": "Sword",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Sword_VeteranRemnant_front.png",
+        "side": "Previews/AEW_Sword_VeteranRemnant_side.png",
+        "back": "Previews/AEW_Sword_VeteranRemnant_back.png",
+        "hero": "Previews/AEW_Sword_VeteranRemnant_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Sword.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "截断偏斜剑尖、两道铆接补片和暗色短护手清楚可辨，保留残剑的非对称轮廓。 第三版：两道补片、四枚铆点及缺口暗片已按真实菱形刃面分片贴合；单独查看侧图，补片两端不再浮离刀面。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 632
+      },
+      "fbx_sha256": "e17d75be04e767b04f612b90dab4cb7fcfee5f1466f14c4e4d6bf0283eaa635a",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。",
+      "revision3_rechecked": true,
+      "revision3_review_method": "Personally reopened Sword and Greatsword sheets (ten models x four views); additionally opened each of the five changed side views at full 512 px.",
+      "geometry_revision": 3
+    },
+    {
+      "id": "AEW_Sword_MarshHeron",
+      "display_name": "泽鹭",
+      "category": "Sword",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Sword_MarshHeron_front.png",
+        "side": "Previews/AEW_Sword_MarshHeron_side.png",
+        "back": "Previews/AEW_Sword_MarshHeron_back.png",
+        "hero": "Previews/AEW_Sword_MarshHeron_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Sword.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "细叶刃与下垂铜护手比例协调，绿柄和窄嵌线有明确区别，侧面刃尖已收细。 第三版：绿色长条跟随偏心叶刃的各三角面，正面嵌线连续，单独侧视中不再出现独立于刀面的细线。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 452
+      },
+      "fbx_sha256": "dd9cd3d891f839e744beee1fa661ddfafd6d55dc107e1c77037e184abd509740",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。",
+      "revision3_rechecked": true,
+      "revision3_review_method": "Personally reopened Sword and Greatsword sheets (ten models x four views); additionally opened each of the five changed side views at full 512 px.",
+      "geometry_revision": 3
+    },
+    {
+      "id": "AEW_Sword_EclipseVow",
+      "display_name": "蚀誓",
+      "category": "Sword",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Sword_EclipseVow_front.png",
+        "side": "Previews/AEW_Sword_EclipseVow_side.png",
+        "back": "Previews/AEW_Sword_EclipseVow_back.png",
+        "hero": "Previews/AEW_Sword_EclipseVow_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Sword.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "开口圆护手包围实体刃茎，黑灰刃配细金线；背面轮廓仍清晰，环与握柄有接合。 第三版：金色长条底面沿菱形刃脊两侧折转；放大侧视确认金线贴住刃面，没有原先细长的背景间隙。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 648
+      },
+      "fbx_sha256": "1ef826d84c3e5a5357fac8fc27294237573ecfd75d62330b4a9962f913633c1b",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。",
+      "revision3_rechecked": true,
+      "revision3_review_method": "Personally reopened Sword and Greatsword sheets (ten models x four views); additionally opened each of the five changed side views at full 512 px.",
+      "geometry_revision": 3
+    },
+    {
+      "id": "AEW_Sword_PilgrimFlame",
+      "display_name": "朝灯",
+      "category": "Sword",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Sword_PilgrimFlame_front.png",
+        "side": "Previews/AEW_Sword_PilgrimFlame_side.png",
+        "back": "Previews/AEW_Sword_PilgrimFlame_back.png",
+        "hero": "Previews/AEW_Sword_PilgrimFlame_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Sword.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "起伏火焰刃、枝刺护手与紫柄组成独立轮廓，侧视保持连续实体厚度。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 532
+      },
+      "fbx_sha256": "e9a5c035d8447ad48c892709de921566babea9c9dce0cdaeed1635aa53e966a5",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。",
+      "revision3_rechecked": true,
+      "revision3_review_method": "Personally reopened Sword and Greatsword sheets (ten models x four views); additionally opened each of the five changed side views at full 512 px."
+    },
+    {
+      "id": "AEW_Greatsword_KilnBreaker",
+      "display_name": "裂窑",
+      "category": "Greatsword",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Greatsword_KilnBreaker_front.png",
+        "side": "Previews/AEW_Greatsword_KilnBreaker_side.png",
+        "back": "Previews/AEW_Greatsword_KilnBreaker_back.png",
+        "hero": "Previews/AEW_Greatsword_KilnBreaker_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Greatsword.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "宽截头、单侧铜齿和长红柄清楚区别于尖头剑，侧面保留截头的厚实形态。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 464
+      },
+      "fbx_sha256": "215d1afdaea439bd357c1958992a2c1528bd7f2fe074d860a0e190b58ee31f54",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。",
+      "revision3_rechecked": true,
+      "revision3_review_method": "Personally reopened Sword and Greatsword sheets (ten models x four views); additionally opened each of the five changed side views at full 512 px."
+    },
+    {
+      "id": "AEW_Greatsword_GraveBell",
+      "display_name": "墓钟",
+      "category": "Greatsword",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Greatsword_GraveBell_front.png",
+        "side": "Previews/AEW_Greatsword_GraveBell_side.png",
+        "back": "Previews/AEW_Greatsword_GraveBell_back.png",
+        "hero": "Previews/AEW_Greatsword_GraveBell_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Greatsword.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "长尖灰刃配宽叉护手与钟形配重，两道补片服贴于刃根，双手握柄长度明确。 第三版：两道补片与铆点跟随宽刃斜面，正面铆接特征保留，侧视补片端部与刀面连接。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 668
+      },
+      "fbx_sha256": "3df07fbab923a73820d2c9a56f9593981f0c62cb367d685ff89813c26a085165",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。",
+      "revision3_rechecked": true,
+      "revision3_review_method": "Personally reopened Sword and Greatsword sheets (ten models x four views); additionally opened each of the five changed side views at full 512 px.",
+      "geometry_revision": 3
+    },
+    {
+      "id": "AEW_Greatsword_DragonRib",
+      "display_name": "山龙肋",
+      "category": "Greatsword",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Greatsword_DragonRib_front.png",
+        "side": "Previews/AEW_Greatsword_DragonRib_side.png",
+        "back": "Previews/AEW_Greatsword_DragonRib_back.png",
+        "hero": "Previews/AEW_Greatsword_DragonRib_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Greatsword.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "四道骨肋沿左脊形成不对称剪影，根部与刃体相接，侧视没有游离的骨片。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 576
+      },
+      "fbx_sha256": "6003b164e8caa0323051dfb970a40e106ba5f7e3de129addb81e21a308431d75",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。",
+      "revision3_rechecked": true,
+      "revision3_review_method": "Personally reopened Sword and Greatsword sheets (ten models x four views); additionally opened each of the five changed side views at full 512 px."
+    },
+    {
+      "id": "AEW_Greatsword_TideAnchor",
+      "display_name": "潮锚",
+      "category": "Greatsword",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Greatsword_TideAnchor_front.png",
+        "side": "Previews/AEW_Greatsword_TideAnchor_side.png",
+        "back": "Previews/AEW_Greatsword_TideAnchor_back.png",
+        "hero": "Previews/AEW_Greatsword_TideAnchor_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Greatsword.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "宽青灰尖刃、下弯锚爪护手和长握柄比例稳定，暗面与亮刃分区可读。 第三版：长金条按真实刃面三角形分片，侧视只剩贴合轮廓的薄金线，没有游离长条。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 464
+      },
+      "fbx_sha256": "05816b5886bd6c828902a3b80c693395fe8bcc3912534c6fe0b8342792cf3e0b",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。",
+      "revision3_rechecked": true,
+      "revision3_review_method": "Personally reopened Sword and Greatsword sheets (ten models x four views); additionally opened each of the five changed side views at full 512 px.",
+      "geometry_revision": 3
+    },
+    {
+      "id": "AEW_Greatsword_ThornCrown",
+      "display_name": "荆王",
+      "category": "Greatsword",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Greatsword_ThornCrown_front.png",
+        "side": "Previews/AEW_Greatsword_ThornCrown_side.png",
+        "back": "Previews/AEW_Greatsword_ThornCrown_back.png",
+        "hero": "Previews/AEW_Greatsword_ThornCrown_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Greatsword.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "折线宽刃、外翻枝刺与紫色长柄构成统一造型；侧面收尖不再形成平截刀尖。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 532
+      },
+      "fbx_sha256": "ce572becc84593a64a351952363b4ff5586e7a58f4b0efc3eb6ab1b3125b1b3a",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。",
+      "revision3_rechecked": true,
+      "revision3_review_method": "Personally reopened Sword and Greatsword sheets (ten models x four views); additionally opened each of the five changed side views at full 512 px."
+    },
+    {
+      "id": "AEW_Bow_YewWarden",
+      "display_name": "紫杉守望",
+      "category": "Bow",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Bow_YewWarden_front.png",
+        "side": "Previews/AEW_Bow_YewWarden_side.png",
+        "back": "Previews/AEW_Bow_YewWarden_back.png",
+        "hero": "Previews/AEW_Bow_YewWarden_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Bow.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "紫杉长弓为连续单弧，弦在握把后方保持净距，前后视弓臂渐细。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 572
+      },
+      "fbx_sha256": "08a9f453f8f25ca67a6101d899b0f50a145080b9ff8d191cd4e4771540b62422",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Bow_MoonAntler",
+      "display_name": "月鹿",
+      "category": "Bow",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Bow_MoonAntler_front.png",
+        "side": "Previews/AEW_Bow_MoonAntler_side.png",
+        "back": "Previews/AEW_Bow_MoonAntler_back.png",
+        "hero": "Previews/AEW_Bow_MoonAntler_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Bow.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "骨白反曲梢与深木弓腹清楚区分，弦连到两端弦槽，角梢与木臂连成整体。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 636
+      },
+      "fbx_sha256": "9d255a2bcb84501249c3587236c9e02ee4fecc5b4419ea11f93d96a8873c5dd6",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Bow_FenReed",
+      "display_name": "苇泽",
+      "category": "Bow",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Bow_FenReed_front.png",
+        "side": "Previews/AEW_Bow_FenReed_side.png",
+        "back": "Previews/AEW_Bow_FenReed_back.png",
+        "hero": "Previews/AEW_Bow_FenReed_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Bow.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "绿色短弓上下臂不等长，白色缠握位于弓腹中央，弦没有穿过握把。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 572
+      },
+      "fbx_sha256": "ef6753132623baeeee77322a3b13e2994fd466122fa92b7077a0df6aa08e1d9d",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Bow_AshRecurve",
+      "display_name": "烬羽",
+      "category": "Bow",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Bow_AshRecurve_front.png",
+        "side": "Previews/AEW_Bow_AshRecurve_side.png",
+        "back": "Previews/AEW_Bow_AshRecurve_back.png",
+        "hero": "Previews/AEW_Bow_AshRecurve_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Bow.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "黑红层压弓腹与铜梢可辨，重绘后的弦为直线，侧面两层结构紧贴。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 572
+      },
+      "fbx_sha256": "9c0aaa424c4a7703e08c0fc213ad126aad01703bf83aa4f87ef31cbfb6f2e4ba",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Bow_BellHunt",
+      "display_name": "巡铃",
+      "category": "Bow",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Bow_BellHunt_front.png",
+        "side": "Previews/AEW_Bow_BellHunt_side.png",
+        "back": "Previews/AEW_Bow_BellHunt_back.png",
+        "hero": "Previews/AEW_Bow_BellHunt_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Bow.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "较长素木弓臂和铜中架形成独立识别，包握和铆点服贴，弦留出可见 brace height。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 640
+      },
+      "fbx_sha256": "28d6ea3940ce4e42c57ecfacfaaed0050f8f2fe47b6ddb857bfafe1dc33f7f97",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Crossbow_GateArbalest",
+      "display_name": "门垒",
+      "category": "Crossbow",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Crossbow_GateArbalest_front.png",
+        "side": "Previews/AEW_Crossbow_GateArbalest_side.png",
+        "back": "Previews/AEW_Crossbow_GateArbalest_back.png",
+        "hero": "Previews/AEW_Crossbow_GateArbalest_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Crossbow.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "单层宽钢弓臂、前蹬环和长木托结构清楚，侧面箭槽连续，横弦没有跨过扳机。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 436
+      },
+      "fbx_sha256": "f354f7905f5f61161e49ab4ef428f4517c0f80798161bfaad60e3fada7ff27ba",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Crossbow_ClockAbbey",
+      "display_name": "钟院",
+      "category": "Crossbow",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Crossbow_ClockAbbey_front.png",
+        "side": "Previews/AEW_Crossbow_ClockAbbey_side.png",
+        "back": "Previews/AEW_Crossbow_ClockAbbey_back.png",
+        "hero": "Previews/AEW_Crossbow_ClockAbbey_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Crossbow.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "双层横臂由中央铜柱连接，绞轮位于木托两侧，前后视层间净距清楚。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 1104
+      },
+      "fbx_sha256": "1bc6022a8c5946e2a874620ef207f8b202f6253acffa8481857e8100e5cda0b0",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Crossbow_BriarScout",
+      "display_name": "棘径",
+      "category": "Crossbow",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Crossbow_BriarScout_front.png",
+        "side": "Previews/AEW_Crossbow_BriarScout_side.png",
+        "back": "Previews/AEW_Crossbow_BriarScout_back.png",
+        "hero": "Previews/AEW_Crossbow_BriarScout_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Crossbow.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "短绿托与骨白横臂形成轻型轮廓，弦与箭槽有完整路径，背面握柄不缺面。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 392
+      },
+      "fbx_sha256": "ef4921798512ca180f3d7012561a04a278d8debd2f02f5f1abeb20abb105deed",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Crossbow_SaltWinch",
+      "display_name": "盐港",
+      "category": "Crossbow",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Crossbow_SaltWinch_front.png",
+        "side": "Previews/AEW_Crossbow_SaltWinch_side.png",
+        "back": "Previews/AEW_Crossbow_SaltWinch_back.png",
+        "hero": "Previews/AEW_Crossbow_SaltWinch_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Crossbow.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "长蓝托、双侧绞轮、前蹬环可分辨，侧视托体有浅倒角，轮轴连接到托体。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 1012
+      },
+      "fbx_sha256": "73cf598f537cfe6d806f3b9a210125153a8995b6d51b726ed45a701294cd6372",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Crossbow_Reliquary",
+      "display_name": "小圣匣",
+      "category": "Crossbow",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Crossbow_Reliquary_front.png",
+        "side": "Previews/AEW_Crossbow_Reliquary_side.png",
+        "back": "Previews/AEW_Crossbow_Reliquary_back.png",
+        "hero": "Previews/AEW_Crossbow_Reliquary_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Crossbow.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "暗红短托与拱形护架形成圣匣轮廓，拱脚坐在机匣上，弓臂和弦的层次明确。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 448
+      },
+      "fbx_sha256": "93def46291c264f9db6c19fd4f184c91c6b6b0b10c3f311cf2b2d559de17a0ff",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Longgun_PilgrimMusket",
+      "display_name": "行旅铳",
+      "category": "Longgun",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Longgun_PilgrimMusket_front.png",
+        "side": "Previews/AEW_Longgun_PilgrimMusket_side.png",
+        "back": "Previews/AEW_Longgun_PilgrimMusket_back.png",
+        "hero": "Previews/AEW_Longgun_PilgrimMusket_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Longgun.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "细长八角管与木质长托稳定相接，铜箍没有悬浮，侧面肩托倒角和短击锤可辨。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 616
+      },
+      "fbx_sha256": "8b989a964605bb5e6c2ddb6796fb3e98af2b8d9fd33ee784abcf07729526cc24",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Longgun_CinderMouth",
+      "display_name": "烬口",
+      "category": "Longgun",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Longgun_CinderMouth_front.png",
+        "side": "Previews/AEW_Longgun_CinderMouth_side.png",
+        "back": "Previews/AEW_Longgun_CinderMouth_back.png",
+        "hero": "Previews/AEW_Longgun_CinderMouth_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Longgun.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "宽钟口、短重管与厚木托形成独立剪影，前视孔口居中，护弓保持开口。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 652
+      },
+      "fbx_sha256": "a11dafeb6abf3f8cb4e8b8e61c75f53f7808ccc4850d6f76a7bd26bb17439ace",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Longgun_AntlerWatch",
+      "display_name": "角哨",
+      "category": "Longgun",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Longgun_AntlerWatch_front.png",
+        "side": "Previews/AEW_Longgun_AntlerWatch_side.png",
+        "back": "Previews/AEW_Longgun_AntlerWatch_back.png",
+        "hero": "Previews/AEW_Longgun_AntlerWatch_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Longgun.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "骨白护木和细长管区分明显，侧板沿肩托贴合，前后视没有偏轴枪管。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 640
+      },
+      "fbx_sha256": "a916527dee750fb46871820d602be36abe6fa7eb330f1ea6e51d6b203a9837bb",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Longgun_AlchemistCarbine",
+      "display_name": "炼潮",
+      "category": "Longgun",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Longgun_AlchemistCarbine_front.png",
+        "side": "Previews/AEW_Longgun_AlchemistCarbine_side.png",
+        "back": "Previews/AEW_Longgun_AlchemistCarbine_back.png",
+        "hero": "Previews/AEW_Longgun_AlchemistCarbine_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Longgun.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "短管、绿色木托和侧面蓝晶舱可辨，晶舱有上下端环与支柱，不被实心管遮住。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 752
+      },
+      "fbx_sha256": "4fcbae68be74ed094bd62763065a6cfca395c01ce2131dece51250c083cbd5a8",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Longgun_GraveWarden",
+      "display_name": "墓卫",
+      "category": "Longgun",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Longgun_GraveWarden_front.png",
+        "side": "Previews/AEW_Longgun_GraveWarden_side.png",
+        "back": "Previews/AEW_Longgun_GraveWarden_back.png",
+        "hero": "Previews/AEW_Longgun_GraveWarden_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Longgun.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "红色旧旗缠带覆盖肩托，黑灰重管与银色箍环分层；侧视握柄与托体连续。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 664
+      },
+      "fbx_sha256": "955d1f0fc70c6e84d27c05c8bd6b11f7dca521af5c929e6538f54cace275139b",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Pistol_DuelOath",
+      "display_name": "决斗誓",
+      "category": "Pistol",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Pistol_DuelOath_front.png",
+        "side": "Previews/AEW_Pistol_DuelOath_side.png",
+        "back": "Previews/AEW_Pistol_DuelOath_back.png",
+        "hero": "Previews/AEW_Pistol_DuelOath_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Pistol.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "修长单管与收腰弯柄比例已修正，象牙柄片贴在两侧，击锤有枢轴和短弯钩。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 496
+      },
+      "fbx_sha256": "3cd353702e3d342c9934cc6c9adfe9f9e0270b44aa16b3cbc9495685fbf089a4",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Pistol_DockScatter",
+      "display_name": "码头喇叭",
+      "category": "Pistol",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Pistol_DockScatter_front.png",
+        "side": "Previews/AEW_Pistol_DockScatter_side.png",
+        "back": "Previews/AEW_Pistol_DockScatter_back.png",
+        "hero": "Previews/AEW_Pistol_DockScatter_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Pistol.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "短钟口、宽握柄和铜护弓区别于决斗铳，前面枪口居中，扳机位于护弓内部。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 492
+      },
+      "fbx_sha256": "2b039fde9f91b543b37ceea1dbd2e33b8d07a1d02db6452c0d3ac6df973c2ddf",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Pistol_TwinVigil",
+      "display_name": "双守",
+      "category": "Pistol",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Pistol_TwinVigil_front.png",
+        "side": "Previews/AEW_Pistol_TwinVigil_side.png",
+        "back": "Previews/AEW_Pistol_TwinVigil_back.png",
+        "hero": "Previews/AEW_Pistol_TwinVigil_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Pistol.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "并列双管在正面清楚可见，白色握柄收窄，侧视机匣没有吞没整段枪管。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 564
+      },
+      "fbx_sha256": "18fdee8733dca8af163910f4d7b860e99a27d0017076c626cd1548a548e57250",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Pistol_MothSpark",
+      "display_name": "蛾火",
+      "category": "Pistol",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Pistol_MothSpark_front.png",
+        "side": "Previews/AEW_Pistol_MothSpark_side.png",
+        "back": "Previews/AEW_Pistol_MothSpark_back.png",
+        "hero": "Previews/AEW_Pistol_MothSpark_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Pistol.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "紧凑绿柄与蓝晶舱结构清楚，支柱连接上下环，前后视舱体偏置为有意设计。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 592
+      },
+      "fbx_sha256": "10eed814ebf62df90ff9159b3edf416470398f9eb483856928effee91bafa7d2",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Pistol_GallowsKey",
+      "display_name": "绞门钥",
+      "category": "Pistol",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Pistol_GallowsKey_front.png",
+        "side": "Previews/AEW_Pistol_GallowsKey_side.png",
+        "back": "Previews/AEW_Pistol_GallowsKey_back.png",
+        "hero": "Previews/AEW_Pistol_GallowsKey_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Pistol.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "红色钩形握柄与开口尾环形成识别点，短黑管连接机匣，背部轮廓完整。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 616
+      },
+      "fbx_sha256": "d0dd939d79e3cc25d5c86c556fb83c6910004724b9d487bb1d7c9f321a498d07",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Shield_HearthKite",
+      "display_name": "炉乡",
+      "category": "Shield",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Shield_HearthKite_front.png",
+        "side": "Previews/AEW_Shield_HearthKite_side.png",
+        "back": "Previews/AEW_Shield_HearthKite_back.png",
+        "hero": "Previews/AEW_Shield_HearthKite_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Shield.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "赤陶鸢面、浅金火纹与连续包边可辨，侧面盾弧和背面双带、握杆都有厚度。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 508
+      },
+      "fbx_sha256": "f02e235e093467d43f0c442086b0ba8228e05ba86559b1904dbf814a9674bc87",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Shield_SunkenRound",
+      "display_name": "沉日",
+      "category": "Shield",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Shield_SunkenRound_front.png",
+        "side": "Previews/AEW_Shield_SunkenRound_side.png",
+        "back": "Previews/AEW_Shield_SunkenRound_back.png",
+        "hero": "Previews/AEW_Shield_SunkenRound_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Shield.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "绿铜圆面、四向日纹与中央鼓包均位于盾面上，背面木胎和双带未露缺口。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 960
+      },
+      "fbx_sha256": "ace2019f3ab9e09e2840f28ed86366ab85bd9c22d2601e86ecb366f097f395cb",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Shield_AshPavise",
+      "display_name": "灰垒",
+      "category": "Shield",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Shield_AshPavise_front.png",
+        "side": "Previews/AEW_Shield_AshPavise_side.png",
+        "back": "Previews/AEW_Shield_AshPavise_back.png",
+        "hero": "Previews/AEW_Shield_AshPavise_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Shield.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "高矩形盾的分段中脊已重新贴合弧面，正面保持完整连续，侧面不再把中脊吞没。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 504
+      },
+      "fbx_sha256": "17ee294ef13c8f416a053612b6d9d00d5418ce886a5d6f0e250eb5795f136992",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Shield_DragonScale",
+      "display_name": "龙眠",
+      "category": "Shield",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Shield_DragonScale_front.png",
+        "side": "Previews/AEW_Shield_DragonScale_side.png",
+        "back": "Previews/AEW_Shield_DragonScale_back.png",
+        "hero": "Previews/AEW_Shield_DragonScale_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Shield.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "叶形骨边与四层红鳞形成体量，侧面鳞片为叠甲而非游离板，背带连接木胎。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 580
+      },
+      "fbx_sha256": "40932b0f2b6efaee45c3c1a2e82532aa56e3a754050da21db29e7a72f59a7ebb",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Shield_BrokenHalo",
+      "display_name": "缺环",
+      "category": "Shield",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Shield_BrokenHalo_front.png",
+        "side": "Previews/AEW_Shield_BrokenHalo_side.png",
+        "back": "Previews/AEW_Shield_BrokenHalo_back.png",
+        "hero": "Previews/AEW_Shield_BrokenHalo_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Shield.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "象牙五角面与缺口金环清楚可辨，环随盾弧贴合，背面握持空间完整。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 616
+      },
+      "fbx_sha256": "15c966564075e63a5f7a3a92e13cd067393577db630681b6d506d8bf60ced2dc",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Dagger_Ratcatcher",
+      "display_name": "捕鼠人",
+      "category": "Dagger",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Dagger_Ratcatcher_front.png",
+        "side": "Previews/AEW_Dagger_Ratcatcher_side.png",
+        "back": "Previews/AEW_Dagger_Ratcatcher_back.png",
+        "hero": "Previews/AEW_Dagger_Ratcatcher_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Dagger.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "短宽刃和柄尾小环比例合理，补入刃茎后护手上方闭合，侧面刀尖已收细。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 648
+      },
+      "fbx_sha256": "eab807f75bf0331b8d1a49138aa6ab55d130e31427fb9f9ebb6a3d50cbb99c07",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Dagger_GlassThorn",
+      "display_name": "琉刺",
+      "category": "Dagger",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Dagger_GlassThorn_front.png",
+        "side": "Previews/AEW_Dagger_GlassThorn_side.png",
+        "back": "Previews/AEW_Dagger_GlassThorn_back.png",
+        "hero": "Previews/AEW_Dagger_GlassThorn_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Dagger.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "青色晶刃由金属包根承托，金护手与蓝柄分区清楚，三视图均有真实厚度。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 436
+      },
+      "fbx_sha256": "cdf2a517301c5fed9391756cab994eb96bbec8b946457bcb94bf3d4d55f20625",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Dagger_RavenBill",
+      "display_name": "鸦喙",
+      "category": "Dagger",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Dagger_RavenBill_front.png",
+        "side": "Previews/AEW_Dagger_RavenBill_side.png",
+        "back": "Previews/AEW_Dagger_RavenBill_back.png",
+        "hero": "Previews/AEW_Dagger_RavenBill_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Dagger.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "前弯黑刃与骨白握柄形成鸦喙轮廓，窄刃茎连接护手，背面刃形保持非对称。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 408
+      },
+      "fbx_sha256": "e29ed7b1bdb57fc2a1acc2859d01fca73360f1f90d33621af5456c9bb1e82982",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Dagger_CopperMercy",
+      "display_name": "铜赦",
+      "category": "Dagger",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Dagger_CopperMercy_front.png",
+        "side": "Previews/AEW_Dagger_CopperMercy_side.png",
+        "back": "Previews/AEW_Dagger_CopperMercy_back.png",
+        "hero": "Previews/AEW_Dagger_CopperMercy_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Dagger.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "圆钝多边尖、白布握把与铜色颈套区分于战斗匕首，原有刃柄细缝已封闭。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 344
+      },
+      "fbx_sha256": "8dbe8840e0ac0e083af2c5288ea25b54c695d5fcef23f882a0ab1841ae8a54b2",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Dagger_OathShiver",
+      "display_name": "寒约",
+      "category": "Dagger",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Dagger_OathShiver_front.png",
+        "side": "Previews/AEW_Dagger_OathShiver_side.png",
+        "back": "Previews/AEW_Dagger_OathShiver_back.png",
+        "hero": "Previews/AEW_Dagger_OathShiver_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Dagger.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "三棱窄刃配冰蓝嵌线与圆盘尾，尖端双向收束，护手到刃身为连续连接。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 452
+      },
+      "fbx_sha256": "3775bc7b7a7639957fe05ac1233abf42ea9a67e7913b2b782c29d11b4e15a242",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Staff_LanternRoot",
+      "display_name": "根灯",
+      "category": "Staff",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Staff_LanternRoot_front.png",
+        "side": "Previews/AEW_Staff_LanternRoot_side.png",
+        "back": "Previews/AEW_Staff_LanternRoot_back.png",
+        "hero": "Previews/AEW_Staff_LanternRoot_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Staff.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "分叉木首悬挂有完整笼框的铜灯，绿芯下方有托座；侧视可见框架和杖身厚度。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 1000
+      },
+      "fbx_sha256": "99d7e30d67e9080a10387ef17b5c01cfd7011d1da278ef7cfb07de40c6c8897f",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Staff_TideCrook",
+      "display_name": "潮牧",
+      "category": "Staff",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Staff_TideCrook_front.png",
+        "side": "Previews/AEW_Staff_TideCrook_side.png",
+        "back": "Previews/AEW_Staff_TideCrook_back.png",
+        "hero": "Previews/AEW_Staff_TideCrook_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Staff.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "偏心牧钩包住蓝晶，晶体有下方铜托，长木杆保持自然微弯，背面未见断裂。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 436
+      },
+      "fbx_sha256": "24f5c4757fefbec37fe870c0aedaf00bce533d1a60a01024e02eb65b8c8fd956",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Staff_FungalCenser",
+      "display_name": "菌香",
+      "category": "Staff",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Staff_FungalCenser_front.png",
+        "side": "Previews/AEW_Staff_FungalCenser_side.png",
+        "back": "Previews/AEW_Staff_FungalCenser_back.png",
+        "hero": "Previews/AEW_Staff_FungalCenser_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Staff.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "赤红伞盖有封闭下表面与中心杆，三个孢囊由细杆悬挂，浅斑点嵌入盖面。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 556
+      },
+      "fbx_sha256": "248de16797e8c263615c3ca64c03dbf904fe8a00814f229fed09d11ea4e34e7f",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Staff_StarCage",
+      "display_name": "星囚",
+      "category": "Staff",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Staff_StarCage_front.png",
+        "side": "Previews/AEW_Staff_StarCage_side.png",
+        "back": "Previews/AEW_Staff_StarCage_back.png",
+        "hero": "Previews/AEW_Staff_StarCage_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Staff.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "紫晶位于八角铜笼中并有实体底座，笼臂接回杖杆，深灰杆在三视图可辨。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 824
+      },
+      "fbx_sha256": "5b77874ea4d65046feccb9d17f8ebd7c50146e4a829a0e580b50079f44dac375",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Staff_StormFork",
+      "display_name": "雷枝",
+      "category": "Staff",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Staff_StormFork_front.png",
+        "side": "Previews/AEW_Staff_StormFork_side.png",
+        "back": "Previews/AEW_Staff_StormFork_back.png",
+        "hero": "Previews/AEW_Staff_StormFork_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Staff.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "高低不同的双叉包围琥珀核，核下有铜座支撑；叉尖与杖杆没有游离片。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 420
+      },
+      "fbx_sha256": "b7d6c664431a3a86e3c8c94104a9937099679b62bdf8622ca261897b61b6855d",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Scope_SurveyorGlass",
+      "display_name": "测岭镜",
+      "category": "Scope",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Scope_SurveyorGlass_front.png",
+        "side": "Previews/AEW_Scope_SurveyorGlass_side.png",
+        "back": "Previews/AEW_Scope_SurveyorGlass_back.png",
+        "hero": "Previews/AEW_Scope_SurveyorGlass_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Scope.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "长铜镜筒两端口径不同，双安装脚接到底轨；侧面镜片和环口保留清楚层次。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 344
+      },
+      "fbx_sha256": "7afb623643de5f7a3a8e2c14da38982bcfd6658bda285381ccf544c85e163398",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Scope_MoonPrism",
+      "display_name": "月棱镜",
+      "category": "Scope",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Scope_MoonPrism_front.png",
+        "side": "Previews/AEW_Scope_MoonPrism_side.png",
+        "back": "Previews/AEW_Scope_MoonPrism_back.png",
+        "hero": "Previews/AEW_Scope_MoonPrism_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Scope.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "短棱镜壳区别于长筒，圆物镜和目镜与壳体连接，双脚底轨均没有悬浮。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 312
+      },
+      "fbx_sha256": "08b35e7bcc7acc4f64fba77cb458860d0496d731413112554550e0637708020f",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Scope_OwlEye",
+      "display_name": "鸮眼",
+      "category": "Scope",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Scope_OwlEye_front.png",
+        "side": "Previews/AEW_Scope_OwlEye_side.png",
+        "back": "Previews/AEW_Scope_OwlEye_back.png",
+        "hero": "Previews/AEW_Scope_OwlEye_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Scope.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "宽物镜和双层骨色护圈形成鸮眼特征，暗筒体与脚架连接，前后口径区别明确。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 432
+      },
+      "fbx_sha256": "61009a44e4e92a5d92d72204d0cfca9574a82b134c28be96075b5c92189305ed",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Scope_AmberDial",
+      "display_name": "琥珀刻",
+      "category": "Scope",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Scope_AmberDial_front.png",
+        "side": "Previews/AEW_Scope_AmberDial_side.png",
+        "back": "Previews/AEW_Scope_AmberDial_back.png",
+        "hero": "Previews/AEW_Scope_AmberDial_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Scope.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "琥珀镜片、红铜筒与侧调节轮均可见；侧轮连接筒体，安装面保持平整。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 388
+      },
+      "fbx_sha256": "14ce2649363395a6fb3ec42e8ec0ade66cb72df53f10327609713f90ee926e19",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Scope_PilgrimMonocle",
+      "display_name": "行僧独眼",
+      "category": "Scope",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Scope_PilgrimMonocle_front.png",
+        "side": "Previews/AEW_Scope_PilgrimMonocle_side.png",
+        "back": "Previews/AEW_Scope_PilgrimMonocle_back.png",
+        "hero": "Previews/AEW_Scope_PilgrimMonocle_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Scope.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "白陶短筒位于开放铜架内，铜架两端已延伸到底座，三视图未见游离保护架。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 400
+      },
+      "fbx_sha256": "5898e01cc1c64728ec49ad8e699b624493750ee93c6e7967752e4dac4ab594a7",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Suppressor_QuietBell",
+      "display_name": "静钟",
+      "category": "Suppressor",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Suppressor_QuietBell_front.png",
+        "side": "Previews/AEW_Suppressor_QuietBell_side.png",
+        "back": "Previews/AEW_Suppressor_QuietBell_back.png",
+        "hero": "Previews/AEW_Suppressor_QuietBell_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Suppressor.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "钟形渐扩外壳与收束安装端明确，正面暗孔居中，侧面轮廓连续。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 212
+      },
+      "fbx_sha256": "3056e11ed9ce8833d836633d390273707618d2ca3e8082c7b3faea56995c30e7",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Suppressor_AshSleeve",
+      "display_name": "灰衣",
+      "category": "Suppressor",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Suppressor_AshSleeve_front.png",
+        "side": "Previews/AEW_Suppressor_AshSleeve_side.png",
+        "back": "Previews/AEW_Suppressor_AshSleeve_back.png",
+        "hero": "Previews/AEW_Suppressor_AshSleeve_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Suppressor.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "长布套与三条浅色束带区分清楚，铁端盖连接筒体，后部铜安装端不偏轴。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 344
+      },
+      "fbx_sha256": "1cc1ec8eed5b54e7f363b80f4066de9a1ac92eb0dd77a1d239ba9c3a6f27053d",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Suppressor_ReedWhisper",
+      "display_name": "苇语",
+      "category": "Suppressor",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Suppressor_ReedWhisper_front.png",
+        "side": "Previews/AEW_Suppressor_ReedWhisper_side.png",
+        "back": "Previews/AEW_Suppressor_ReedWhisper_back.png",
+        "hero": "Previews/AEW_Suppressor_ReedWhisper_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Suppressor.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "分节绿铜筒与浅陶环保持均匀节奏，前后视同轴，侧面节圈没有离开壳体。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 344
+      },
+      "fbx_sha256": "ef395720d9ce47218a7210e37ddbaaac5c6fcb870b28991e48f8c99662386c64",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Suppressor_GraveHush",
+      "display_name": "墓息",
+      "category": "Suppressor",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Suppressor_GraveHush_front.png",
+        "side": "Previews/AEW_Suppressor_GraveHush_side.png",
+        "back": "Previews/AEW_Suppressor_GraveHush_back.png",
+        "hero": "Previews/AEW_Suppressor_GraveHush_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Suppressor.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "短宽黑灰外壳与骨白双侧板结构清楚，侧板紧贴外壁，端口与安装端均居中。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 236
+      },
+      "fbx_sha256": "6dbfe4be81ea358e975127a604938372bc47bcdf46716a0a2f22115d787d01b7",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    },
+    {
+      "id": "AEW_Suppressor_StarBaffle",
+      "display_name": "星隔",
+      "category": "Suppressor",
+      "reviewer": "Codex weapon_assets agent",
+      "method": "Personally opened all 11 final category sheets containing 55 x 4 rendered views after geometry revision 2.",
+      "views": {
+        "front": "Previews/AEW_Suppressor_StarBaffle_front.png",
+        "side": "Previews/AEW_Suppressor_StarBaffle_side.png",
+        "back": "Previews/AEW_Suppressor_StarBaffle_back.png",
+        "hero": "Previews/AEW_Suppressor_StarBaffle_hero.png"
+      },
+      "contact_sheet": "Previews/Review_Suppressor.jpg",
+      "status": "passed_static_visual_review",
+      "observation_zh": "八角细长壳与紫色纵缝形成独立识别，铜端圈厚度清楚，正背面闭合。",
+      "mesh_checks": {
+        "nonmanifold_edges": 0,
+        "degenerate_faces": 0,
+        "uv_layers": 1,
+        "triangles": 220
+      },
+      "fbx_sha256": "84c3c1637df68016272ed1b138f6a6af7bdcc1b3550a5383e7641eeb2a922e56",
+      "limits": "仅本轮 512 px 静态三视图与斜视审查；不是角色动作、手指穿插、装备挂点或 Unity 材质的运行时验收。"
+    }
+  ],
+  "revision3_scope": {
+    "rechecked_assets": [
+      "AEW_Sword_DragonTithe",
+      "AEW_Sword_VeteranRemnant",
+      "AEW_Sword_MarshHeron",
+      "AEW_Sword_EclipseVow",
+      "AEW_Sword_PilgrimFlame",
+      "AEW_Greatsword_KilnBreaker",
+      "AEW_Greatsword_GraveBell",
+      "AEW_Greatsword_DragonRib",
+      "AEW_Greatsword_TideAnchor",
+      "AEW_Greatsword_ThornCrown"
+    ],
+    "changed_assets": [
+      "AEW_Sword_VeteranRemnant",
+      "AEW_Sword_MarshHeron",
+      "AEW_Sword_EclipseVow",
+      "AEW_Greatsword_GraveBell",
+      "AEW_Greatsword_TideAnchor"
+    ],
+    "rendered_views": 20,
+    "materials_unchanged": true,
+    "unchanged_fbx_count": 50
+  }
+}

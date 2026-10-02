@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "name": "MapAreaMineOpeningTable",
+  "description": "坍塌井口直接移除上层地坪；保持下层真实建筑和导航，禁止垂直跳落。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定编号",
+      "min": 1
+    },
+    {
+      "name": "profileId",
+      "type": "int",
+      "description": "矿井模板",
+      "ref": "MapAreaMineTable"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "坍塌名称"
+    },
+    {
+      "name": "layer",
+      "type": "int",
+      "description": "移除地坪的层"
+    },
+    {
+      "name": "q",
+      "type": "int",
+      "description": "相对轴向q"
+    },
+    {
+      "name": "r",
+      "type": "int",
+      "description": "相对轴向r"
+    },
+    {
+      "name": "radius",
+      "type": "int",
+      "description": "空洞半径",
+      "min": 2
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "profileId": 1,
+      "name": "上层主矿井坍塌",
+      "layer": 2,
+      "q": -4,
+      "r": 0,
+      "radius": 3
+    },
+    {
+      "id": 2,
+      "profileId": 1,
+      "name": "中层运输井坍塌",
+      "layer": 1,
+      "q": 4,
+      "r": 0,
+      "radius": 3
+    }
+  ]
+}
+

@@ -12,8 +12,8 @@ local data={WearableCount=1,WeaponCount=0,MagazineCount=0,StackCount=0,
     CanWear=function() return true end,
     Grid={Find=function() return nil end}}
 local stats=require('Game.Battle.CombatStats')(config,data)
-local actor={Id=1,Team=1,Growth=EmptyGrowth(),TemplateId=1,TraitCount=0}
-local other={Id=2,Team=1,Growth=EmptyGrowth(),TemplateId=1,TraitCount=0}
+local actor={Id=1,Team=1,Growth=EmptyGrowth(),Effects={Count=0},TemplateId=1,TraitCount=0}
+local other={Id=2,Team=1,Growth=EmptyGrowth(),Effects={Count=0},TemplateId=1,TraitCount=0}
 local base=require('Game.Battle.CombatStats')(config)
 assert(stats:Get(actor,'strength')==base:Get(actor,'strength')+2)
 assert(stats:Get(other,'strength')==base:Get(other,'strength'))

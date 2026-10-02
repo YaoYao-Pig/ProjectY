@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "EquipmentLootTable",
-  "description": "每个搜刮点只领取一次；物品与数量按顺序对应。",
+  "description": "容器表现、交互、耐久与默认掉落池；打开、破坏和取空独立记录。",
   "key": "id",
   "fields": [
     {
@@ -53,6 +53,119 @@
       "description": "随机池 ID；0 使用固定 itemIds/counts",
       "min": 0,
       "default": 0
+    },
+    {
+      "name": "interaction",
+      "type": "enum",
+      "description": "打开、搜刮、必须打碎或装备工具后开启",
+      "default": "open",
+      "values": [
+        "open",
+        "search",
+        "break",
+        "tool"
+      ]
+    },
+    {
+      "name": "toolTag",
+      "type": "string",
+      "description": "tool 交互所需的已装备工具标签，其他方式为空",
+      "default": ""
+    },
+    {
+      "name": "maxDurability",
+      "type": "int",
+      "description": "最大耐久；0 为不可破坏",
+      "default": 0,
+      "min": 0
+    },
+    {
+      "name": "structuralDefense",
+      "type": "int",
+      "description": "结构防御，代入技能伤害公式的 defense",
+      "default": 0,
+      "min": 0
+    },
+    {
+      "name": "blocksMovement",
+      "type": "bool",
+      "description": "完整/开启容器占地阻挡；破坏后清除",
+      "default": false
+    },
+    {
+      "name": "blocksSight",
+      "type": "bool",
+      "description": "完整容器是否阻挡视线",
+      "default": false
+    },
+    {
+      "name": "brokenAssetId",
+      "type": "int",
+      "description": "破坏后残骸模型，0 为不保留残骸",
+      "default": 0,
+      "min": 0
+    },
+    {
+      "name": "emptyAssetId",
+      "type": "int",
+      "description": "取空后模型，0 沿用开启模型",
+      "default": 0,
+      "min": 0
+    },
+    {
+      "name": "modelScale",
+      "type": "float",
+      "description": "模型等比缩放",
+      "default": 1,
+      "min": 0.01
+    },
+    {
+      "name": "footprintQ",
+      "type": "int[]",
+      "description": "占地轴向 q，首项为锚点 0",
+      "default": [
+        0
+      ]
+    },
+    {
+      "name": "footprintR",
+      "type": "int[]",
+      "description": "占地轴向 r，与 q 成对",
+      "default": [
+        0
+      ]
+    },
+    {
+      "name": "displayContents",
+      "type": "enum",
+      "description": "开放式容器上显示剩余真实物品",
+      "default": "none",
+      "values": [
+        "none",
+        "rack",
+        "surface"
+      ]
+    },
+    {
+      "name": "displayHeight",
+      "type": "float",
+      "description": "开放式容器物品显示高度（模型局部米）",
+      "default": 0.9,
+      "min": 0
+    },
+    {
+      "name": "displayItemScale",
+      "type": "float",
+      "description": "开放式容器展示物品的模型缩放",
+      "default": 0.6,
+      "min": 0.01
+    },
+    {
+      "name": "interactionRounds",
+      "type": "int",
+      "description": "首次工具开启消耗的探索回合",
+      "default": 0,
+      "min": 0
     }
   ],
   "rows": [
@@ -74,7 +187,8 @@
         24,
         1
       ],
-      "poolId": 0
+      "poolId": 0,
+      "maxDurability": 45
     },
     {
       "id": 2,
@@ -112,7 +226,8 @@
       "openedAssetId": 8,
       "itemIds": [],
       "counts": [],
-      "poolId": 1
+      "poolId": 1,
+      "maxDurability": 45
     },
     {
       "id": 11,
@@ -122,7 +237,8 @@
       "openedAssetId": 8,
       "itemIds": [],
       "counts": [],
-      "poolId": 2
+      "poolId": 2,
+      "maxDurability": 45
     },
     {
       "id": 100,
@@ -143,6 +259,280 @@
       "itemIds": [],
       "counts": [],
       "poolId": 4
+    },
+    {
+      "id": 12,
+      "name": "勘探工具箱",
+      "kind": "chest",
+      "assetId": 7,
+      "openedAssetId": 8,
+      "itemIds": [
+        70,
+        71,
+        72,
+        73,
+        74,
+        81,
+        82,
+        83
+      ],
+      "counts": [
+        1,
+        1,
+        1,
+        1,
+        1,
+        30,
+        10,
+        6
+      ],
+      "poolId": 0,
+      "maxDurability": 45
+    },
+    {
+      "id": 40,
+      "name": "水密航海补给匣",
+      "kind": "chest",
+      "assetId": 7,
+      "openedAssetId": 8,
+      "itemIds": [],
+      "counts": [],
+      "poolId": 1,
+      "maxDurability": 45
+    },
+    {
+      "id": 200,
+      "name": "陶罐",
+      "kind": "chest",
+      "assetId": 200,
+      "openedAssetId": 200,
+      "itemIds": [],
+      "counts": [],
+      "poolId": 2,
+      "interaction": "break",
+      "toolTag": "",
+      "maxDurability": 12,
+      "structuralDefense": 0,
+      "blocksMovement": true,
+      "blocksSight": false,
+      "brokenAssetId": 0,
+      "emptyAssetId": 0,
+      "modelScale": 3,
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "displayContents": "none",
+      "displayHeight": 0.9,
+      "displayItemScale": 0.6,
+      "interactionRounds": 0
+    },
+    {
+      "id": 201,
+      "name": "木箱",
+      "kind": "chest",
+      "assetId": 201,
+      "openedAssetId": 201,
+      "itemIds": [],
+      "counts": [],
+      "poolId": 1,
+      "interaction": "open",
+      "toolTag": "",
+      "maxDurability": 30,
+      "structuralDefense": 0,
+      "blocksMovement": true,
+      "blocksSight": false,
+      "brokenAssetId": 0,
+      "emptyAssetId": 0,
+      "modelScale": 1,
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "displayContents": "none",
+      "displayHeight": 0.9,
+      "displayItemScale": 0.6,
+      "interactionRounds": 0
+    },
+    {
+      "id": 202,
+      "name": "板条箱",
+      "kind": "chest",
+      "assetId": 202,
+      "openedAssetId": 202,
+      "itemIds": [],
+      "counts": [],
+      "poolId": 1,
+      "interaction": "tool",
+      "toolTag": "crowbar",
+      "maxDurability": 40,
+      "structuralDefense": 0,
+      "blocksMovement": true,
+      "blocksSight": false,
+      "brokenAssetId": 0,
+      "emptyAssetId": 0,
+      "modelScale": 1,
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "displayContents": "none",
+      "displayHeight": 0.9,
+      "displayItemScale": 0.6,
+      "interactionRounds": 1
+    },
+    {
+      "id": 203,
+      "name": "宝箱",
+      "kind": "chest",
+      "assetId": 7,
+      "openedAssetId": 8,
+      "itemIds": [],
+      "counts": [],
+      "poolId": 1,
+      "interaction": "open",
+      "toolTag": "",
+      "maxDurability": 60,
+      "structuralDefense": 0,
+      "blocksMovement": true,
+      "blocksSight": false,
+      "brokenAssetId": 0,
+      "emptyAssetId": 0,
+      "modelScale": 1,
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "displayContents": "none",
+      "displayHeight": 0.9,
+      "displayItemScale": 0.6,
+      "interactionRounds": 0
+    },
+    {
+      "id": 204,
+      "name": "首领奖励宝箱",
+      "kind": "chest",
+      "assetId": 7,
+      "openedAssetId": 8,
+      "itemIds": [],
+      "counts": [],
+      "poolId": 5,
+      "interaction": "open",
+      "toolTag": "",
+      "maxDurability": 100,
+      "structuralDefense": 0,
+      "blocksMovement": true,
+      "blocksSight": false,
+      "brokenAssetId": 0,
+      "emptyAssetId": 0,
+      "modelScale": 1,
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "displayContents": "none",
+      "displayHeight": 0.9,
+      "displayItemScale": 0.6,
+      "interactionRounds": 0
+    },
+    {
+      "id": 205,
+      "name": "中世纪武器架",
+      "kind": "chest",
+      "assetId": 205,
+      "openedAssetId": 205,
+      "itemIds": [],
+      "counts": [],
+      "poolId": 6,
+      "interaction": "search",
+      "toolTag": "",
+      "maxDurability": 45,
+      "structuralDefense": 0,
+      "blocksMovement": true,
+      "blocksSight": false,
+      "brokenAssetId": 0,
+      "emptyAssetId": 0,
+      "modelScale": 1,
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ],
+      "displayContents": "rack",
+      "displayHeight": 0.9,
+      "displayItemScale": 0.6,
+      "interactionRounds": 0
+    },
+    {
+      "id": 206,
+      "name": "补给桌",
+      "kind": "chest",
+      "assetId": 206,
+      "openedAssetId": 206,
+      "itemIds": [],
+      "counts": [],
+      "poolId": 2,
+      "interaction": "search",
+      "toolTag": "",
+      "maxDurability": 40,
+      "structuralDefense": 0,
+      "blocksMovement": true,
+      "blocksSight": false,
+      "brokenAssetId": 0,
+      "emptyAssetId": 0,
+      "modelScale": 1,
+      "footprintQ": [
+        0,
+        1
+      ],
+      "footprintR": [
+        0,
+        0
+      ],
+      "displayContents": "surface",
+      "displayHeight": 0.9,
+      "displayItemScale": 0.6,
+      "interactionRounds": 0
+    },
+    {
+      "id": 207,
+      "name": "上锁宝箱",
+      "kind": "chest",
+      "assetId": 7,
+      "openedAssetId": 8,
+      "itemIds": [],
+      "counts": [],
+      "poolId": 1,
+      "interaction": "tool",
+      "toolTag": "crowbar",
+      "interactionRounds": 1,
+      "maxDurability": 65,
+      "structuralDefense": 0,
+      "blocksMovement": true,
+      "blocksSight": false,
+      "brokenAssetId": 0,
+      "emptyAssetId": 0,
+      "modelScale": 1,
+      "displayContents": "none",
+      "displayHeight": 0.9,
+      "displayItemScale": 0.6,
+      "footprintQ": [
+        0
+      ],
+      "footprintR": [
+        0
+      ]
     }
   ]
 }

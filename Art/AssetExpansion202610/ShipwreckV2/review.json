@@ -1,0 +1,226 @@
+[
+  {
+    "name": "S2_Hull_Lower",
+    "title": "三倍船体·下舱外壳",
+    "front": "下舱尖艏与宽船腹成形",
+    "side": "下船壳保持独立高度带；舵已移入本分件并连接艉板",
+    "back": "内部中空，周界窄带外侧完整，需与算法底板组合",
+    "result": "通过分件静态三视图审核；实际层间通行与剖切由生成预览另验",
+    "views": [
+      "Previews/S2_Hull_Lower_front.png",
+      "Previews/S2_Hull_Lower_side.png",
+      "Previews/S2_Hull_Lower_back.png",
+      "Previews/S2_Hull_Lower_hero.png"
+    ]
+  },
+  {
+    "name": "S2_Hull_MainSides",
+    "title": "主甲板分层船舷",
+    "front": "主甲板船舷与左侧破口明确",
+    "side": "2.25–5.2米高度带可独立剖切",
+    "back": "不含整块楼板，中央楼梯井不会被模型覆盖",
+    "result": "通过分件静态三视图审核；实际层间通行与剖切由生成预览另验",
+    "views": [
+      "Previews/S2_Hull_MainSides_front.png",
+      "Previews/S2_Hull_MainSides_side.png",
+      "Previews/S2_Hull_MainSides_back.png",
+      "Previews/S2_Hull_MainSides_hero.png"
+    ]
+  },
+  {
+    "name": "S2_Forecastle_Sides",
+    "title": "抬高船艏舷墙",
+    "front": "船艏两侧向前收束",
+    "side": "高船艏7.2米平台对应舷墙，保留2.1米窄边带",
+    "back": "斜视图已放宽构图，完整展示船艏边界",
+    "result": "通过分件静态三视图审核；实际层间通行与剖切由生成预览另验",
+    "views": [
+      "Previews/S2_Forecastle_Sides_front.png",
+      "Previews/S2_Forecastle_Sides_side.png",
+      "Previews/S2_Forecastle_Sides_back.png",
+      "Previews/S2_Forecastle_Sides_hero.png"
+    ]
+  },
+  {
+    "name": "S2_Aftcastle_Sides",
+    "title": "高艉楼外侧船壳",
+    "front": "高艉楼侧墙和后窗可辨",
+    "side": "仅含高处结构；舵已拆到下船壳，不留孤立低处附件",
+    "back": "后墙闭合，前面开放供算法平台与楼梯衔接",
+    "result": "通过分件静态三视图审核；实际层间通行与剖切由生成预览另验",
+    "views": [
+      "Previews/S2_Aftcastle_Sides_front.png",
+      "Previews/S2_Aftcastle_Sides_side.png",
+      "Previews/S2_Aftcastle_Sides_back.png",
+      "Previews/S2_Aftcastle_Sides_hero.png"
+    ]
+  },
+  {
+    "name": "S2_MainDeck_Trim",
+    "title": "主甲板周界木带",
+    "front": "狭窄周界条带，不是实心甲板",
+    "side": "顶4.02米，避免与生成地板共面闪烁",
+    "back": "保留舷侧破口；不跨过船中心",
+    "result": "通过分件静态三视图审核；实际层间通行与剖切由生成预览另验",
+    "views": [
+      "Previews/S2_MainDeck_Trim_front.png",
+      "Previews/S2_MainDeck_Trim_side.png",
+      "Previews/S2_MainDeck_Trim_back.png",
+      "Previews/S2_MainDeck_Trim_hero.png"
+    ]
+  },
+  {
+    "name": "S2_Partition_Solid",
+    "title": "船舱实木隔墙",
+    "front": "实木板与粗框架可辨",
+    "side": "板厚及框条均有实体",
+    "back": "适合作为模块化舱室隔墙",
+    "result": "通过分件静态三视图审核；实际层间通行与剖切由生成预览另验",
+    "views": [
+      "Previews/S2_Partition_Solid_front.png",
+      "Previews/S2_Partition_Solid_side.png",
+      "Previews/S2_Partition_Solid_back.png",
+      "Previews/S2_Partition_Solid_hero.png"
+    ]
+  },
+  {
+    "name": "S2_Partition_Door",
+    "title": "船舱通行门墙",
+    "front": "净宽约2.26米的真实门洞",
+    "side": "门框厚度完整，无假黑门贴片",
+    "back": "门洞上下贯通；导航不得用整包围盒封洞",
+    "result": "通过分件静态三视图审核；实际层间通行与剖切由生成预览另验",
+    "views": [
+      "Previews/S2_Partition_Door_front.png",
+      "Previews/S2_Partition_Door_side.png",
+      "Previews/S2_Partition_Door_back.png",
+      "Previews/S2_Partition_Door_hero.png"
+    ]
+  },
+  {
+    "name": "S2_DoorFrame_Wide",
+    "title": "货舱双人宽门框",
+    "front": "净宽约3.46米的宽通行框",
+    "side": "头梁和双柱有厚度",
+    "back": "门框背面也可辨，无单面消失",
+    "result": "通过分件静态三视图审核；实际层间通行与剖切由生成预览另验",
+    "views": [
+      "Previews/S2_DoorFrame_Wide_front.png",
+      "Previews/S2_DoorFrame_Wide_side.png",
+      "Previews/S2_DoorFrame_Wide_back.png",
+      "Previews/S2_DoorFrame_Wide_hero.png"
+    ]
+  },
+  {
+    "name": "S2_HammockRack",
+    "title": "船员双吊床",
+    "front": "双吊床与悬绳形成生活舱识别点",
+    "side": "枕头已按布床切线贴合，取消初版悬空间隔",
+    "back": "弧面布床闭合有厚度；斜视复看贴合正常",
+    "result": "通过分件静态三视图审核；实际层间通行与剖切由生成预览另验",
+    "views": [
+      "Previews/S2_HammockRack_front.png",
+      "Previews/S2_HammockRack_side.png",
+      "Previews/S2_HammockRack_back.png",
+      "Previews/S2_HammockRack_hero.png"
+    ]
+  },
+  {
+    "name": "S2_GalleyHearth",
+    "title": "船用石炉灶",
+    "front": "石炉、锅与烟管区分厨房设施",
+    "side": "锅把、炉体与烟管连接稳定",
+    "back": "背部完整，炉灶保持人物尺度",
+    "result": "通过分件静态三视图审核；实际层间通行与剖切由生成预览另验",
+    "views": [
+      "Previews/S2_GalleyHearth_front.png",
+      "Previews/S2_GalleyHearth_side.png",
+      "Previews/S2_GalleyHearth_back.png",
+      "Previews/S2_GalleyHearth_hero.png"
+    ]
+  },
+  {
+    "name": "S2_MessTable",
+    "title": "船员长桌与双凳",
+    "front": "长桌与两侧长凳有主次",
+    "side": "桌腿接触桌板，坐凳分离留出就坐关系",
+    "back": "桌面支撑范围单独记录，不把凳子bounds当桌面",
+    "result": "通过分件静态三视图审核；实际层间通行与剖切由生成预览另验",
+    "views": [
+      "Previews/S2_MessTable_front.png",
+      "Previews/S2_MessTable_side.png",
+      "Previews/S2_MessTable_back.png",
+      "Previews/S2_MessTable_hero.png"
+    ]
+  },
+  {
+    "name": "S2_CargoShelves",
+    "title": "分层货舱架",
+    "front": "两层货箱明确支撑在搁板",
+    "side": "后斜撑与立柱接合",
+    "back": "箱体与搁板没有悬浮间隔",
+    "result": "通过分件静态三视图审核；实际层间通行与剖切由生成预览另验",
+    "views": [
+      "Previews/S2_CargoShelves_front.png",
+      "Previews/S2_CargoShelves_side.png",
+      "Previews/S2_CargoShelves_back.png",
+      "Previews/S2_CargoShelves_hero.png"
+    ]
+  },
+  {
+    "name": "S2_CaptainDesk",
+    "title": "船长抽屉海图桌",
+    "front": "抽屉、铜环和后挡体现船长桌",
+    "side": "桌腿保持真实高度，不随船体扩大",
+    "back": "桌面安全矩形避开后挡，供小物摆放",
+    "result": "通过分件静态三视图审核；实际层间通行与剖切由生成预览另验",
+    "views": [
+      "Previews/S2_CaptainDesk_front.png",
+      "Previews/S2_CaptainDesk_side.png",
+      "Previews/S2_CaptainDesk_back.png",
+      "Previews/S2_CaptainDesk_hero.png"
+    ]
+  },
+  {
+    "name": "S2_WeaponRack",
+    "title": "登船武具架",
+    "front": "五个挂钩与木架清楚",
+    "side": "斜立柱由稳定双脚支撑",
+    "back": "背部连接完整，整件保留武具展示空位",
+    "result": "通过分件静态三视图审核；实际层间通行与剖切由生成预览另验",
+    "views": [
+      "Previews/S2_WeaponRack_front.png",
+      "Previews/S2_WeaponRack_side.png",
+      "Previews/S2_WeaponRack_back.png",
+      "Previews/S2_WeaponRack_hero.png"
+    ]
+  },
+  {
+    "name": "S2_PrisonCage",
+    "title": "货舱铁栅笼",
+    "front": "铁栅与铜锁具可辨",
+    "side": "立柱、上下横梁和底板接合",
+    "back": "四面铁栅完整，作为不可进入陈设",
+    "result": "通过分件静态三视图审核；实际层间通行与剖切由生成预览另验",
+    "views": [
+      "Previews/S2_PrisonCage_front.png",
+      "Previews/S2_PrisonCage_side.png",
+      "Previews/S2_PrisonCage_back.png",
+      "Previews/S2_PrisonCage_hero.png"
+    ]
+  },
+  {
+    "name": "S2_Mast_Tall",
+    "title": "远航残帆高桅",
+    "front": "帆面再次宽高各翻倍，现52.8×23.3米，整船远景醒目",
+    "side": "约41.2米高桅与横桁相接，帆底高8米；基座原尺寸",
+    "back": "帆有双面厚度；Unity全船及近景未裁掉帆顶，宽横桁自然伸出船舷",
+    "result": "通过分件静态三视图审核；实际层间通行与剖切由生成预览另验",
+    "views": [
+      "Previews/S2_Mast_Tall_front.png",
+      "Previews/S2_Mast_Tall_side.png",
+      "Previews/S2_Mast_Tall_back.png",
+      "Previews/S2_Mast_Tall_hero.png"
+    ]
+  }
+]

@@ -1,0 +1,198 @@
+{
+  "version": 1,
+  "name": "MapAreaShipwreckStairTable",
+  "description": "双向真实梯道；端点属于两层平格，中间格独立身份，逐边高程连续。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "编号",
+      "min": 1
+    },
+    {
+      "name": "profileId",
+      "type": "int",
+      "description": "模板",
+      "ref": "MapAreaShipwreckTable"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "梯道名称"
+    },
+    {
+      "name": "fromLayer",
+      "type": "int",
+      "description": "起点层"
+    },
+    {
+      "name": "toLayer",
+      "type": "int",
+      "description": "终点层"
+    },
+    {
+      "name": "bottomQ",
+      "type": "int",
+      "description": "低端落脚相对q"
+    },
+    {
+      "name": "bottomR",
+      "type": "int",
+      "description": "低端落脚相对r"
+    },
+    {
+      "name": "topQ",
+      "type": "int",
+      "description": "高端落脚相对q"
+    },
+    {
+      "name": "topR",
+      "type": "int",
+      "description": "高端落脚相对r"
+    },
+    {
+      "name": "q",
+      "type": "int[]",
+      "description": "从低到高梯格q"
+    },
+    {
+      "name": "r",
+      "type": "int[]",
+      "description": "从低到高梯格r"
+    },
+    {
+      "name": "edges",
+      "type": "float[]",
+      "description": "绝对入口/出口边高，N+1个"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "profileId": 1,
+      "name": "后货舱横梯",
+      "fromLayer": 0,
+      "toLayer": 1,
+      "bottomQ": 1,
+      "bottomR": -8,
+      "topQ": 7,
+      "topR": -8,
+      "q": [
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "r": [
+        -8,
+        -8,
+        -8,
+        -8,
+        -8
+      ],
+      "edges": [
+        0,
+        0.8,
+        1.6,
+        2.4,
+        3.2,
+        4
+      ]
+    },
+    {
+      "id": 2,
+      "profileId": 1,
+      "name": "前货舱横梯",
+      "fromLayer": 0,
+      "toLayer": 1,
+      "bottomQ": -1,
+      "bottomR": 8,
+      "topQ": -7,
+      "topR": 8,
+      "q": [
+        -2,
+        -3,
+        -4,
+        -5,
+        -6
+      ],
+      "r": [
+        8,
+        8,
+        8,
+        8,
+        8
+      ],
+      "edges": [
+        0,
+        0.8,
+        1.6,
+        2.4,
+        3.2,
+        4
+      ]
+    },
+    {
+      "id": 3,
+      "profileId": 1,
+      "name": "船艏高台梯",
+      "fromLayer": 1,
+      "toLayer": 2,
+      "bottomQ": -3,
+      "bottomR": 14,
+      "topQ": -3,
+      "topR": 19,
+      "q": [
+        -3,
+        -3,
+        -3,
+        -3
+      ],
+      "r": [
+        15,
+        16,
+        17,
+        18
+      ],
+      "edges": [
+        4,
+        4.8,
+        5.6,
+        6.4,
+        7.2
+      ]
+    },
+    {
+      "id": 4,
+      "profileId": 1,
+      "name": "艉楼高台梯",
+      "fromLayer": 1,
+      "toLayer": 2,
+      "bottomQ": 3,
+      "bottomR": -14,
+      "topQ": 3,
+      "topR": -19,
+      "q": [
+        3,
+        3,
+        3,
+        3
+      ],
+      "r": [
+        -15,
+        -16,
+        -17,
+        -18
+      ],
+      "edges": [
+        4,
+        4.8,
+        5.6,
+        6.4,
+        7.2
+      ]
+    }
+  ]
+}

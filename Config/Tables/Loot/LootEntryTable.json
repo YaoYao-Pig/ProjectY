@@ -40,6 +40,13 @@
       "type": "int",
       "description": "最大数量",
       "min": 1
+    },
+    {
+      "name": "weight",
+      "type": "int",
+      "description": "weighted 池中的相对权重；0 不参与抽取",
+      "default": 1,
+      "min": 0
     }
   ],
   "rows": [
@@ -178,6 +185,42 @@
       "chance": 10,
       "minCount": 1,
       "maxCount": 1
+    },
+    {
+      "id": 200,
+      "poolId": 5,
+      "itemId": 40,
+      "chance": 100,
+      "minCount": 1,
+      "maxCount": 1,
+      "weight": 3
+    },
+    {
+      "id": 201,
+      "poolId": 5,
+      "itemId": 46,
+      "chance": 100,
+      "minCount": 1,
+      "maxCount": 1,
+      "weight": 2
+    },
+    {
+      "id": 202,
+      "poolId": 6,
+      "itemId": 40,
+      "chance": 100,
+      "minCount": 1,
+      "maxCount": 1,
+      "weight": 3
+    },
+    {
+      "id": 203,
+      "poolId": 6,
+      "itemId": 46,
+      "chance": 100,
+      "minCount": 1,
+      "maxCount": 1,
+      "weight": 2
     }
   ]
 }

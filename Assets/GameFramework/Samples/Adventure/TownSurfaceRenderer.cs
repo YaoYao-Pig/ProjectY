@@ -8,14 +8,40 @@ namespace ProjectY.Samples
     /// <summary>按 Lua 给定的顶点高度绘制台地、台阶、坡道和悬空桥面；不推导导航规则。</summary>
     public sealed class TownSurfaceRenderer : IDisposable
     {
-        private sealed class CellMesh { public int Start, Count; public Bounds Bounds; }
+        private sealed class CellMesh { public int Start, Count, PickCount; public Bounds Bounds; }
+        private struct SpatialNode
+        {
+            public Bounds Bounds;
+            public int Left, Right, Start, Count;
+        }
+        private sealed class CellAxisComparer : IComparer<int>
+        {
+            private readonly List<CellMesh> cells;
+            private readonly int axis;
+            public CellAxisComparer(List<CellMesh> cells, int axis) { this.cells = cells; this.axis = axis; }
+            public int Compare(int a, int b)
+            {
+                var order = cells[a].Bounds.center[axis].CompareTo(cells[b].Bounds.center[axis]);
+                return order == 0 ? a.CompareTo(b) : order;
+            }
+        }
         private readonly List<Vector3> vertices = new List<Vector3>();
         private readonly List<int> triangles = new List<int>();
+        private readonly List<int> triangleNeighbors = new List<int>();
+        private int occludingNeighbor = -1;
         private readonly List<Color> colors = new List<Color>();
         private readonly List<Vector4> patterns = new List<Vector4>();
         private readonly List<Vector4> finishes = new List<Vector4>();
         private MapAreaViewData.Surface activeSurface;
         private readonly List<CellMesh> cells = new List<CellMesh>();
+        private int[] spatialCells;
+        private int[] raycastCandidates;
+        private SpatialNode[] spatialNodes;
+        private readonly List<int> displayedTriangles = new List<int>();
+        private readonly bool[] shown;
+        private readonly float[] brightness;
+        private readonly Color[] displayedColors;
+        private readonly Vector4[] displayedFinishes;
         private readonly Mesh mesh;
         private readonly Material material;
         private static readonly Vector3[] Corners = MakeCorners();
@@ -27,39 +53,233 @@ namespace ProjectY.Samples
             for (var i = 0; i < 6; i++) { var angle = (30 + 60 * i) * Mathf.Deg2Rad; values[i] = new Vector3(Mathf.Cos(angle), 0, Mathf.Sin(angle)); }
             return values;
         }
-        public TownSurfaceRenderer(Shader shader, MapAreaViewData map)
+        public TownSurfaceRenderer(Shader shader, MapAreaViewData map, Func<MapAreaViewData.Cell, bool> include = null)
         {
+            shown = new bool[map.Cells.Length]; brightness = new float[map.Cells.Length];
             material = new Material(shader) { name = "Town_Surface" }; material.SetFloat("_UseVertexColor", 1); material.SetFloat("_UseSurfacePattern", 1);
+            var boundaryPatches = new Dictionary<int, List<MapAreaViewData.FloorBoundaryPatch>>();
+            var boundaryBuckets = new Dictionary<Vector2Int, List<MapAreaViewData.FloorBoundaryPatch>>();
+            foreach (var patch in map.FloorBoundaryPatches)
+            {
+                if (!boundaryPatches.TryGetValue(patch.OwnerIndex, out var group))
+                    boundaryPatches.Add(patch.OwnerIndex, group = new List<MapAreaViewData.FloorBoundaryPatch>());
+                group.Add(patch);
+                var bounds = new Bounds(patch.Points[0], Vector3.zero);
+                foreach (var point in patch.Points) bounds.Encapsulate(point);
+                var min = BoundaryBucket(bounds.min, map.Radius); var max = BoundaryBucket(bounds.max, map.Radius);
+                for (var x = min.x; x <= max.x; x++) for (var z = min.y; z <= max.y; z++)
+                {
+                    var key = new Vector2Int(x, z);
+                    if (!boundaryBuckets.TryGetValue(key, out var bucket))
+                        boundaryBuckets.Add(key, bucket = new List<MapAreaViewData.FloorBoundaryPatch>());
+                    bucket.Add(patch);
+                }
+            }
             foreach (var cell in map.Cells)
             {
                 var start = triangles.Count; var points = new Vector3[6];
-                for (var i = 0; i < 6; i++) { points[i] = cell.Position + Corners[i] * map.Radius; points[i].y = cell.Corners[i]; }
+                if (include != null && !include(cell)) { cells.Add(new CellMesh()); continue; }
+                shown[cells.Count] = true; brightness[cells.Count] = 1;
+                var groundOffset = cell.ConstructionKind == null ? 0 : cell.GroundHeight - cell.Position.y;
+                var center = cell.Position + Vector3.up * groundOffset;
+                for (var i = 0; i < 6; i++) { points[i] = center + Corners[i] * map.Radius; points[i].y = cell.Corners[i] + groundOffset; }
                 var color = cell.Color;
                 if (QualitySettings.activeColorSpace == ColorSpace.Linear) color = color.linear;
                 for (var i = 0; i < 6; i++)
                 {
                     var j = (i + 1) % 6;
                     activeSurface = map.Surfaces[cell.SurfaceId];
-                    Top(new[] { cell.Position, points[j], points[i] }, cell.StairRise, color);
-                    var bottom = cell.Layer == 0 ? -.4f : cell.Position.y - cell.DeckThickness;
+                    Top(new[] { center, points[j], points[i] }, cell.StairRise, color);
+                    var bottom = cell.Layer == 0 && cell.DeckThickness <= 0 ? Mathf.Min(-.4f, center.y - .4f) : Mathf.Min(cell.Corners) + groundOffset - cell.DeckThickness;
                     activeSurface = map.Surfaces[cell.SideSurfaceId];
                     var sideColor = QualitySettings.activeColorSpace == ColorSpace.Linear ? activeSurface.Color.linear : activeSurface.Color;
+                    occludingNeighbor = SharedGroundNeighbor(map, cell, i);
                     Edge(points[i], points[j], bottom, cell.StairRise, sideColor);
+                    occludingNeighbor = -1;
                     if (cell.Layer > 0)
                         Triangle(new Vector3(cell.Position.x, bottom, cell.Position.z), new Vector3(points[i].x, bottom, points[i].z), new Vector3(points[j].x, bottom, points[j].z), color * .65f);
                 }
+                // Upper interiors have real railings at closed navigation edges, leaving stair mouths open.
+                if (cell.InteriorId > 0 && cell.Layer > 0)
+                {
+                    activeSurface = map.Surfaces[cell.SideSurfaceId];
+                    for (var i = 0; i < 6; i++)
+                    {
+                        var direction = (5 - i + 6) % 6;
+                        if ((cell.WalkMask & (1 << direction)) != 0) continue;
+                        if (BoundaryCoversEdge(map, boundaryBuckets, cell, points[i], points[(i + 1) % 6])) continue;
+                        var a = Vector3.Lerp(points[i], cell.Position, .035f);
+                        var b = Vector3.Lerp(points[(i + 1) % 6], cell.Position, .035f);
+                        a.y = Step(a.y, cell.StairRise); b.y = Step(b.y, cell.StairRise);
+                        Rail(a, b, color * .65f);
+                    }
+                }
+                var pickCount = triangles.Count - start;
+                if (boundaryPatches.TryGetValue(cells.Count, out var patches))
+                    foreach (var patch in patches) Boundary(patch, map, cell, color);
                 var bounds = new Bounds(cell.Position, Vector3.zero);
                 for (var i = start; i < triangles.Count; i++) bounds.Encapsulate(vertices[triangles[i]]);
-                cells.Add(new CellMesh { Start = start, Count = triangles.Count - start, Bounds = bounds });
+                cells.Add(new CellMesh { Start = start, Count = triangles.Count - start, PickCount = pickCount, Bounds = bounds });
             }
             mesh = new Mesh { name = "Town_TerracesAndDecks", indexFormat = IndexFormat.UInt32 };
             mesh.SetVertices(vertices); mesh.SetTriangles(triangles, 0); mesh.SetColors(colors); mesh.SetUVs(1, patterns); mesh.SetUVs(2, finishes); mesh.RecalculateNormals(); mesh.RecalculateBounds();
+            displayedColors = colors.ToArray(); displayedFinishes = finishes.ToArray();
+            RebuildTriangles();
+            BuildSpatialIndex();
+        }
+        // Only the outer straight cut is exposed. Keep stairwell railings; remove the
+        // old zigzag railing where a cut hex continues the slab towards a wall.
+        private static Vector2Int BoundaryBucket(Vector3 point, float radius) =>
+            new Vector2Int(Mathf.FloorToInt(point.x / (radius * 2)), Mathf.FloorToInt(point.z / (radius * 2)));
+        private static bool BoundaryCoversEdge(MapAreaViewData map, Dictionary<Vector2Int, List<MapAreaViewData.FloorBoundaryPatch>> buckets,
+            MapAreaViewData.Cell cell, Vector3 a, Vector3 b)
+        {
+            var middle = (a + b) * .5f;
+            var point = middle + new Vector3(middle.x - cell.Position.x, 0, middle.z - cell.Position.z).normalized * .005f;
+            if (!buckets.TryGetValue(BoundaryBucket(point, map.Radius), out var patches)) return false;
+            foreach (var patch in patches)
+            {
+                var owner = map.Cells[patch.OwnerIndex];
+                if (owner.Layer != cell.Layer || owner.InteriorId != cell.InteriorId || Mathf.Abs(patch.Points[0].y - point.y) > .001f) continue;
+                var inside = true;
+                for (var i = 0; i < patch.Points.Length; i++)
+                {
+                    var p = patch.Points[i]; var next = patch.Points[(i + 1) % patch.Points.Length];
+                    if ((next.x - p.x) * (point.z - p.z) - (next.z - p.z) * (point.x - p.x) < -.0001f) { inside = false; break; }
+                }
+                if (inside) return true;
+            }
+            return false;
+        }
+        private void Boundary(MapAreaViewData.FloorBoundaryPatch patch, MapAreaViewData map, MapAreaViewData.Cell owner, Color color)
+        {
+            var points = patch.Points; var down = Vector3.down * patch.Thickness;
+            activeSurface = map.Surfaces[owner.SurfaceId];
+            for (var i = 1; i + 1 < points.Length; i++)
+            {
+                Triangle(points[0], points[i + 1], points[i], color);
+                Triangle(points[0] + down, points[i] + down, points[i + 1] + down, color * .65f);
+            }
+            activeSurface = map.Surfaces[owner.SideSurfaceId];
+            var sideColor = QualitySettings.activeColorSpace == ColorSpace.Linear ? activeSurface.Color.linear : activeSurface.Color;
+            for (var i = 0; i < points.Length; i++)
+                Edge(points[i], points[(i + 1) % points.Length], points[i].y - patch.Thickness, 0, sideColor);
+        }
+        // Geometry and cell bounds remain static until construction rebuilds this renderer.
+        // Fog/cutaway changes only affect leaf filtering; they never require rebuilding the tree.
+        private void BuildSpatialIndex()
+        {
+            var count = 0;
+            for (var i = 0; i < cells.Count; i++) if (cells[i].Count > 0) count++;
+            spatialCells = new int[count];
+            raycastCandidates = new int[count];
+            for (int i = 0, next = 0; i < cells.Count; i++) if (cells[i].Count > 0) spatialCells[next++] = i;
+            var nodes = new List<SpatialNode>(Math.Max(1, count / 2));
+            if (count > 0)
+            {
+                var comparers = new[] { new CellAxisComparer(cells, 0), new CellAxisComparer(cells, 1), new CellAxisComparer(cells, 2) };
+                BuildSpatialNode(nodes, comparers, 0, count);
+            }
+            spatialNodes = nodes.ToArray();
+        }
+        private int BuildSpatialNode(List<SpatialNode> nodes, CellAxisComparer[] comparers, int start, int count)
+        {
+            var bounds = cells[spatialCells[start]].Bounds;
+            for (var i = start + 1; i < start + count; i++) bounds.Encapsulate(cells[spatialCells[i]].Bounds);
+            // Bounds stores center/extents as floats; keep shared-corner rays inside
+            // the broad phase despite rounding when distant cell bounds are merged.
+            bounds.Expand(.002f);
+            var index = nodes.Count; nodes.Add(default(SpatialNode));
+            if (count <= 8)
+                nodes[index] = new SpatialNode { Bounds = bounds, Start = start, Count = count };
+            else
+            {
+                var size = bounds.size; var axis = size.x >= size.y && size.x >= size.z ? 0 : size.y >= size.z ? 1 : 2;
+                Array.Sort(spatialCells, start, count, comparers[axis]);
+                var half = count / 2;
+                var left = BuildSpatialNode(nodes, comparers, start, half);
+                var right = BuildSpatialNode(nodes, comparers, start + half, count - half);
+                nodes[index] = new SpatialNode { Bounds = bounds, Left = left, Right = right };
+            }
+            return index;
+        }
+        private static int SharedGroundNeighbor(MapAreaViewData map, MapAreaViewData.Cell cell, int edge)
+        {
+            if (cell.Layer != 0 || cell.Neighbors == null || cell.Neighbors.Length != 6) return -1;
+            var direction = (5 - edge + 6) % 6; var index = cell.Neighbors[direction];
+            if (index < 0) return -1;
+            var other = map.Cells[index];
+            if (other.Layer != 0 || other.Kind == "wall" || cell.ConstructionKind != null || other.ConstructionKind != null) return -1;
+            // These faces are buried between touching tiles. Drawing both casts dotted self-shadows on the steps.
+            return Mathf.Abs(cell.Corners[edge] - other.Corners[(edge + 4) % 6]) < .001f
+                && Mathf.Abs(cell.Corners[(edge + 1) % 6] - other.Corners[(edge + 3) % 6]) < .001f ? index : -1;
+        }
+        private void Rail(Vector3 a, Vector3 b, Color color)
+        {
+            var side = Vector3.Cross((b - a).normalized, Vector3.up).normalized * .065f;
+            Beam(a + Vector3.up * .78f, b + Vector3.up * .78f, side, .10f, color);
+            var middle = Vector3.Lerp(a, b, .5f);
+            foreach (var point in new[] { a, middle, b })
+                Beam(point + Vector3.up * .38f - side, point + Vector3.up * .38f + side, (b - a).normalized * .055f, .80f, color);
+        }
+        private void Beam(Vector3 a, Vector3 b, Vector3 side, float height, Color color)
+        {
+            var up = Vector3.up * (height * .5f);
+            var p = new[] { a - side - up, a + side - up, b + side - up, b - side - up,
+                a - side + up, a + side + up, b + side + up, b - side + up };
+            Quad(p[0], p[1], p[5], p[4], color); Quad(p[1], p[2], p[6], p[5], color);
+            Quad(p[2], p[3], p[7], p[6], color); Quad(p[3], p[0], p[4], p[7], color);
+            Quad(p[4], p[5], p[6], p[7], color); Quad(p[3], p[2], p[1], p[0], color);
+        }
+        private void Quad(Vector3 a, Vector3 b, Vector3 c, Vector3 d, Color color)
+        { Triangle(a, b, c, color); Triangle(a, c, d, color); }
+        // Keep the static geometry; only rebuild its index list when fog or the viewed storey changes.
+        public void SetVisibility(bool[] selected, bool[] lit = null)
+        {
+            var geometryChanged = false; var colorsChanged = false;
+            for (var i = 0; i < cells.Count; i++)
+            {
+                var cell = cells[i]; if (cell.Count == 0) continue;
+                geometryChanged |= shown[i] != selected[i]; shown[i] = selected[i];
+                var value = lit == null || lit[i] ? 1f : .3f;
+                if (brightness[i] == value) continue;
+                brightness[i] = value; colorsChanged = true;
+                for (var offset = cell.Start; offset < cell.Start + cell.Count; offset++)
+                {
+                    displayedColors[offset] = FogColor(colors[offset], value);
+                    var finish = finishes[offset]; var detail = FogColor(new Color(finish.x, finish.y, finish.z, 1), value);
+                    displayedFinishes[offset] = new Vector4(detail.r, detail.g, detail.b, finish.w);
+                }
+            }
+            if (geometryChanged)
+                RebuildTriangles();
+            if (colorsChanged) { mesh.SetColors(displayedColors); mesh.SetUVs(2, displayedFinishes); }
+        }
+        private void RebuildTriangles()
+        {
+            displayedTriangles.Clear();
+            for (var i = 0; i < cells.Count; i++) if (shown[i])
+                for (var offset = cells[i].Start; offset < cells[i].Start + cells[i].Count; offset += 3)
+                {
+                    var neighbor = triangleNeighbors[offset / 3];
+                    // When fog hides the neighboring surface, restore its exposed side to keep the ground closed.
+                    if (neighbor >= 0 && shown[neighbor]) continue;
+                    displayedTriangles.Add(triangles[offset]); displayedTriangles.Add(triangles[offset + 1]); displayedTriangles.Add(triangles[offset + 2]);
+                }
+            mesh.SetTriangles(displayedTriangles, 0, false);
+        }
+        private static Color FogColor(Color color, float amount)
+        {
+            var linear = QualitySettings.activeColorSpace == ColorSpace.Linear;
+            if (linear) color = color.gamma;
+            color *= amount; if (linear) color = color.linear; color.a = 1; return color;
         }
         private void Triangle(Vector3 a, Vector3 b, Vector3 c, Color color)
         {
             if (Vector3.Cross(b - a, c - a).sqrMagnitude < .00000001f) return;
             var index = vertices.Count; vertices.Add(a); vertices.Add(b); vertices.Add(c);
             colors.Add(color); colors.Add(color); colors.Add(color); triangles.Add(index); triangles.Add(index + 1); triangles.Add(index + 2);
+            triangleNeighbors.Add(occludingNeighbor);
             var detail = QualitySettings.activeColorSpace == ColorSpace.Linear ? activeSurface.DetailColor.linear : activeSurface.DetailColor;
             for (var i = 0; i < 3; i++) { patterns.Add(activeSurface.Pattern); finishes.Add(new Vector4(detail.r, detail.g, detail.b, activeSurface.Smoothness)); }
         }
@@ -186,14 +406,43 @@ namespace ProjectY.Samples
         public float Raycast(Ray ray, float limit, out int index)
         {
             index = -1;
-            for (var i = 0; i < cells.Count; i++)
+            var count = 0;
+            if (spatialNodes.Length > 0 && spatialNodes[0].Bounds.IntersectRay(ray, out var near) && near <= limit)
+                CollectRaycastCandidates(0, ray, limit, ref count);
+            // Preserve the original ascending cell scan, including its dynamic
+            // Bounds limit and strict triangle comparison at shared boundaries.
+            Array.Sort(raycastCandidates, 0, count);
+            for (var i = 0; i < count; i++)
             {
-                var cell = cells[i]; if (!cell.Bounds.IntersectRay(ray, out var near) || near > limit) continue;
+                var cellIndex = raycastCandidates[i]; var cell = cells[cellIndex];
+                if (!shown[cellIndex] || !cell.Bounds.IntersectRay(ray, out var cellNear) || cellNear > limit) continue;
                 for (var offset = cell.Start; offset < cell.Start + cell.Count; offset += 3)
-                    if (Hit(ray, vertices[triangles[offset]], vertices[triangles[offset + 1]], vertices[triangles[offset + 2]], out var distance) && distance < limit)
-                    { limit = distance; index = i; }
+                    if ((triangleNeighbors[offset / 3] < 0 || !shown[triangleNeighbors[offset / 3]]) &&
+                        Hit(ray, vertices[triangles[offset]], vertices[triangles[offset + 1]], vertices[triangles[offset + 2]], out var distance) && distance < limit)
+                    { limit = distance; index = offset < cell.Start + cell.PickCount ? cellIndex : -1; }
             }
             return limit;
+        }
+        private void CollectRaycastCandidates(int nodeIndex, Ray ray, float initialLimit, ref int count)
+        {
+            var node = spatialNodes[nodeIndex];
+            if (node.Count > 0)
+            {
+                for (var i = node.Start; i < node.Start + node.Count; i++)
+                {
+                    var cellIndex = spatialCells[i]; var cell = cells[cellIndex];
+                    if (shown[cellIndex] && cell.Bounds.IntersectRay(ray, out var near) && near <= initialLimit)
+                        raycastCandidates[count++] = cellIndex;
+                }
+                return;
+            }
+            // The initial limit is immutable during collection. Pruning with a
+            // hit from a differently ordered subtree changes floating-point ties.
+            // Both the candidate buffer and the balanced traversal stack are reused.
+            if (spatialNodes[node.Left].Bounds.IntersectRay(ray, out var leftNear) && leftNear <= initialLimit)
+                CollectRaycastCandidates(node.Left, ray, initialLimit, ref count);
+            if (spatialNodes[node.Right].Bounds.IntersectRay(ray, out var rightNear) && rightNear <= initialLimit)
+                CollectRaycastCandidates(node.Right, ray, initialLimit, ref count);
         }
         public void Draw(Camera camera) => Graphics.DrawMesh(mesh, Matrix4x4.identity, material, 0, camera, 0, null, ShadowCastingMode.On, true, null, LightProbeUsage.Off);
         private static void Destroy(UnityEngine.Object value) { if (Application.isPlaying) UnityEngine.Object.Destroy(value); else UnityEngine.Object.DestroyImmediate(value); }

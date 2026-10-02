@@ -47,7 +47,7 @@ function Draft:ctor(generator, random)
     self.noiseScale = generator.noiseScale; self.cellLimit = generator.cellLimit
     self.blendWidth = generator.blendWidth
     self.infrastructure = generator.infrastructure
-    self.hydrology = generator.hydrology; self.visuals = generator.visuals
+    self.hydrology = generator.hydrology; self.visuals = generator.visuals; self.waterSites = generator.waterSites
     self.terrain = {}; self.frontier = {}; self.frontierByKey = {}
     self.enemyConfigs = generator.enemyConfigs; self.buildingConfigs = generator.buildingConfigs
     for regionType in pairs(generator.regionTypes) do self.map.regionsByType[regionType] = {} end
@@ -188,6 +188,7 @@ function Draft:Build()
     self.hydrology:Build(map)
     self.infrastructure:Build(map)
     self.visuals:Build(map)
+    self.waterSites:Build(map)
     for _, cell in ipairs(map.cells) do
         for direction = 1, 6 do
             local q, r = HexGrid.Neighbor(cell.q, cell.r, direction)
@@ -260,6 +261,7 @@ function Generator:ctor(config)
     self.infrastructure = Infrastructure(config, self.regionTypes)
     self.hydrology = Hydrology(config)
     self.visuals = Visuals(config, self.regionTypes)
+    self.waterSites = require('Game.Map.MapWaterSites')(config)
 end
 -- 地貌扩展点：每种枚举分别绑定生成转换器与查询实例类。
 function Generator:RegisterRegion(regionType, convertType, instanceType)

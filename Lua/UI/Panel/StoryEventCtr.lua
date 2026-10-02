@@ -21,6 +21,7 @@ function Event:Refresh()
     if data.Phase=='event' then for _,id in ipairs(event.choiceIds) do
         local row=events.choices:Get(id);local ok,reason=events:CanChoose(id)
         local rewards={}
+        if row.obstacleAction~='' then rewards[#rewards+1]=self.adventure.obstacles:ChoiceDetails(row.obstacleAction) end
         if row.costCoins>0 then rewards[#rewards+1]='消耗 '..row.costCoins..' 金币' end
         for i,itemId in ipairs(row.itemIds) do rewards[#rewards+1]=events.equipment.rules.items:Get(itemId).name..' ×'..row.itemCounts[i] end
         if row.experience>0 then rewards[#rewards+1]='经验 +'..row.experience end

@@ -8,7 +8,7 @@ function Map:ctor(seed, radius)
     self.borders = {}; self.bordersByPair = {}; self.waterBodies = {}
     self.towns = {}; self.buildings = {}; self.roads = {}; self.roadNetworks = {}
     self.rivers = {}; self.waterfalls = {}; self.decorations = {}; self.assets = {}; self.biomes = {}
-    self.siteProfiles = {}; self.siteDiagnostics = {}
+    self.siteProfiles = {}; self.siteDiagnostics = {}; self.waterSites = {}
 end
 function Map:GetCells() return self.cells end
 function Map:GetRegions() return self.regions end
@@ -18,6 +18,7 @@ function Map:GetWaterBodies() return self.waterBodies end
 function Map:GetRivers() return self.rivers end
 function Map:GetWaterfalls() return self.waterfalls end
 function Map:GetDecorations() return self.decorations end
+function Map:GetWaterSites() return self.waterSites end
 -- 生成期的静态占地与道路布局；不代表玩法实体或运行时通行规则。
 function Map:GetTowns() return self.towns end
 function Map:GetBuildings() return self.buildings end

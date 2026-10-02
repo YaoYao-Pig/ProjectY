@@ -1,0 +1,20 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaObstacleTableRow
+---@field id number 障碍规则 ID
+---@field areaId number 生成的小地图
+---@field name string 障碍名称
+---@field count number 每地点生成数量
+---@field minDistance number 距入口最少寻路格数
+---@field spacing number 障碍中心之间最小格距
+---@field seedSalt number 独立随机流种子盐
+---@field blocksMovement boolean 是否暂时阻止通行
+---@field assetId number 障碍模型
+---@field toolTag string 适用的已装备武器标签
+---@field eventId number 交互事件
+---@field manualDamage number 徒手执行者扣血，至少保留 1 生命
+---@field manualRounds number 徒手消耗探索回合
+---@field toolRounds number 工具消耗探索回合
+---@field manualChance number 徒手成功率百分比
+---@field toolChance number 工具成功率百分比
+---@field lootTableId number 处理后出现的战利品容器；0 为无掉落
+return {["name"]="MapAreaObstacleTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\233\154\156\231\162\141\232\167\132\229\136\153 ID",["min"]=1},{["name"]="areaId",["type"]="int",["description"]="\231\148\159\230\136\144\231\154\132\229\176\143\229\156\176\229\155\190",["ref"]="MapAreaTable"},{["name"]="name",["type"]="text",["description"]="\233\154\156\231\162\141\229\144\141\231\167\176"},{["name"]="count",["type"]="int",["description"]="\230\175\143\229\156\176\231\130\185\231\148\159\230\136\144\230\149\176\233\135\143",["min"]=0,["max"]=8},{["name"]="minDistance",["type"]="int",["description"]="\232\183\157\229\133\165\229\143\163\230\156\128\229\176\145\229\175\187\232\183\175\230\160\188\230\149\176",["min"]=1},{["name"]="spacing",["type"]="int",["description"]="\233\154\156\231\162\141\228\184\173\229\191\131\228\185\139\233\151\180\230\156\128\229\176\143\230\160\188\232\183\157",["min"]=1},{["name"]="seedSalt",["type"]="int",["description"]="\231\139\172\231\171\139\233\154\143\230\156\186\230\181\129\231\167\141\229\173\144\231\155\144",["min"]=1},{["name"]="blocksMovement",["type"]="bool",["description"]="\230\152\175\229\144\166\230\154\130\230\151\182\233\152\187\230\173\162\233\128\154\232\161\140"},{["name"]="assetId",["type"]="int",["description"]="\233\154\156\231\162\141\230\168\161\229\158\139",["ref"]="EquipmentAssetTable"},{["name"]="toolTag",["type"]="string",["description"]="\233\128\130\231\148\168\231\154\132\229\183\178\232\163\133\229\164\135\230\173\166\229\153\168\230\160\135\231\173\190",["ref"]="EquipmentWeaponTagTable"},{["name"]="eventId",["type"]="int",["description"]="\228\186\164\228\186\146\228\186\139\228\187\182",["ref"]="AdventureEventTable"},{["name"]="manualDamage",["type"]="int",["description"]="\229\190\146\230\137\139\230\137\167\232\161\140\232\128\133\230\137\163\232\161\128\239\188\140\232\135\179\229\176\145\228\191\157\231\149\153 1 \231\148\159\229\145\189",["min"]=0},{["name"]="manualRounds",["type"]="int",["description"]="\229\190\146\230\137\139\230\182\136\232\128\151\230\142\162\231\180\162\229\155\158\229\144\136",["min"]=0},{["name"]="toolRounds",["type"]="int",["description"]="\229\183\165\229\133\183\230\182\136\232\128\151\230\142\162\231\180\162\229\155\158\229\144\136",["min"]=0},{["name"]="manualChance",["type"]="int",["description"]="\229\190\146\230\137\139\230\136\144\229\138\159\231\142\135\231\153\190\229\136\134\230\175\148",["min"]=0,["max"]=100},{["name"]="toolChance",["type"]="int",["description"]="\229\183\165\229\133\183\230\136\144\229\138\159\231\142\135\231\153\190\229\136\134\230\175\148",["min"]=0,["max"]=100},{["name"]="lootTableId",["type"]="int",["description"]="\229\164\132\231\144\134\229\144\142\229\135\186\231\142\176\231\154\132\230\136\152\229\136\169\229\147\129\229\174\185\229\153\168\239\188\1550 \228\184\186\230\151\160\230\142\137\232\144\189",["min"]=0}},["fingerprint"]="372e7355d1cfc439a877091853ce36f1bcbf64b0d5cb84e331932b396c9fa8e4"}

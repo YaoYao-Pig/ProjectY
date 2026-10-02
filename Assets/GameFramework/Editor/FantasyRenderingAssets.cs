@@ -47,6 +47,7 @@ namespace ProjectY.Editor
                 AssetDatabase.CreateAsset(pipeline, PipelinePath);
             }
             CreateProfile();
+            PixelArtRenderingAssets.Install();
             int converted = ConvertMaterials();
             GraphicsSettings.defaultRenderPipeline = pipeline;
             int level = QualitySettings.GetQualityLevel();
@@ -60,6 +61,7 @@ namespace ProjectY.Editor
             }
             finally { QualitySettings.SetQualityLevel(level, false); }
             AssetDatabase.SaveAssetIfDirty(pipeline);
+            WorldVisualStyleAssets.Install();
             Debug.Log("URP 14 warm fantasy ready; converted " + converted + " materials. World renderer=0, preview renderer=1. No scene was saved.");
         }
 

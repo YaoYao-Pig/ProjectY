@@ -7,14 +7,21 @@ end}})
 local generator=require('Game.MapArea.MapAreaGenerator')(config)
 generator:Register(2,require('Game.MapArea.TownGenerator'),'MapAreaTownTable','MapAreaTownThemeTable')
 local squad=require('Game.MapArea.SquadMovement')
+local lots=config:GetTable('MapAreaTownLotTable');local definitions=config:GetTable('MapAreaTownInteriorTable')
+local assetLots={};for _,lot in ipairs(lots:All()) do if definitions:Find(lot.id) then assetLots[lot.assetId]=lot end end
 for _,areaId in ipairs({2,6}) do
     local area=generator:Generate(areaId,20260924,11,{regionId=1,regionType=1,regionConfigId=1,q=0,r=0,height=1,biomeWeights={{regionType=1,weight=1}}})
     local expected=0
-    for _,facility in ipairs(area.facilities) do
-        local definition=config:GetTable('MapAreaTownFacilityTable'):Get(facility.configId)
-        if config:GetTable('MapAreaTownInteriorTable'):Find(definition.lotIds[1]) then expected=expected+1 end
+    for _,prop in ipairs(area.props) do
+        if not prop.cutaway and assetLots[prop.assetId] then
+            assert(prop.interiorId and area.interiors[prop.interiorId].lotId==assetLots[prop.assetId].id,'Placed building has no interior')
+            expected=expected+1
+        end
     end
     assert(#area.interiors==expected,'Required building interiors missing')
+    if area.roadPaths then for _,road in ipairs(area.roadPaths) do for _,index in ipairs(road.cells) do
+        assert(not area.cells[index].interiorId,'Royal public road crosses a private interior')
+    end end end
     local surfaces=config:GetTable('MapAreaSurfaceTable')
     local kinds={}
     for _,cell in ipairs(area.cells) do surfaces:Get(cell.surfaceId);surfaces:Get(cell.sideSurfaceId);kinds[cell.surfaceId]=true end
@@ -34,12 +41,23 @@ for _,areaId in ipairs({2,6}) do
         assert(positions[1]==index)
     end
     for _,room in ipairs(area.interiors) do
+        local lot=lots:Get(room.lotId)
         local covers,structures=0,0
         for _,prop in ipairs(area.props) do if prop.interiorId==room.id then
-            assert(prop.scaleX==1 and prop.scaleY==1 and prop.scaleZ==1,'Buildings must remain meter scale')
+            assert(prop.scaleX==lot.scale and prop.scaleY==lot.scale and prop.scaleZ==lot.scale,'Buildings must use their authored meter scale')
             if prop.cutaway then covers=covers+1 else structures=structures+1 end
         end end
         assert(covers==1 and structures==1,'A building needs one persistent structure and one removable cover')
+        local allowedEdges={}
+        for _,portal in ipairs(room.portals) do
+            allowedEdges[portal.insideIndex..':'..portal.outsideIndex]=true
+            assert(area.cells[portal.insideIndex].interiorId==room.id and not area.cells[portal.outsideIndex].interiorId)
+            assert(area:CanStep(area.cells[portal.outsideIndex],area.cells[portal.insideIndex]),'Configured door is disconnected')
+        end
+        local public=function(cell)return not cell.interiorId end
+        for _,index in ipairs(room.doorIndices) do
+            assert(area.cells[index].reserved and area:FindPath(area.entryIndex,index,public),'A building entrance has no protected public approach')
+        end
         local portalEdges=0
         for _,index in ipairs(room.cells) do
             local cell=area.cells[index];assert(cell.interiorId==room.id and not cell.blocked)
@@ -47,12 +65,17 @@ for _,areaId in ipairs({2,6}) do
             for _,nextIndex in ipairs(cell.neighbors) do
                 local other=area.cells[nextIndex]
                 if other and other.interiorId~=room.id and area:CanStep(cell,other) then
-                    assert(nextIndex==room.doorIndex,'Walking through a side wall or window')
+                    assert(allowedEdges[index..':'..nextIndex],'Walking through a side wall or window')
                     assert(area:CanStep(other,cell),'Door must work in both directions');portalEdges=portalEdges+1
                 end
             end
         end
-        assert(portalEdges>=1)
+        assert(portalEdges==#room.portals and portalEdges>=1)
+        local definition=definitions:Get(room.lotId)
+        if #definition.doorQ>0 then
+            assert(portalEdges==#definition.doorQ,'Explicit portal count differs')
+            for _,portal in ipairs(room.portals) do travel(portal.outsideIndex);travel(portal.insideIndex);travel(portal.outsideIndex) end
+        end
         travel(room.serviceIndex);assert(area.cells[positions[1]].interiorId==room.id)
         travel(area.entryIndex)
         for _,index in ipairs(positions) do assert(not area.cells[index].interiorId,'Follower remained indoors after leaving') end

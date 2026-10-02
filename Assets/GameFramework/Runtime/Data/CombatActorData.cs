@@ -83,8 +83,10 @@ namespace ProjectY.Data
         {
             if (HP == 0 || points < 1) throw new InvalidOperationException("Invalid actor turn.");
             AP = points; Moved = false; MainUsed = false; Guard = 0;
-            foreach (var id in new List<int>(cooldowns.Keys)) SetCooldown(id, Math.Max(0, cooldowns[id] - 1));
+            AdvanceSkillCooldowns();
         }
+        internal void AdvanceSkillCooldowns()
+        {foreach(var id in new List<int>(cooldowns.Keys))SetCooldown(id,Math.Max(0,cooldowns[id]-1));}
         public void Move(int q, int r, int cost)
         {
             if (HP == 0 || Moved || cost < 0 || AP < cost) throw new InvalidOperationException("Invalid move budget.");
@@ -98,6 +100,11 @@ namespace ProjectY.Data
                 throw new InvalidOperationException("Invalid action budget.");
             AP -= cost;
             if (kind == "main") MainUsed = true;
+        }
+        internal int ApplyExertion(int amount)
+        {
+            if(amount<0||HP==0)throw new ArgumentOutOfRangeException(nameof(amount));
+            var applied=Math.Min(amount,HP-1);HP-=applied;return applied;
         }
         public int Damage(int amount)
         {

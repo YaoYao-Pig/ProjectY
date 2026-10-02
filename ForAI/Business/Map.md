@@ -22,12 +22,13 @@
 - 六边形采用尖顶轴坐标 `(q,r)`，Unity 平面为 XZ，顶面高度为 Y。`FindCellAtWorld(x,z)` 忽略 Y，将点取整到最近格子中心；不等同于柱体射线检测。`FindCell`/`FindCellAtWorld` 越界返回 nil，`GetCell`/`GetRegion` 缺失报错；已声明但未生成的类型查询返回空集合，未知类型报错。
 - Border 按相邻的**实例**聚合，每条共享六边形边仅记录一次，保存两侧 cell 与 B-A 高差；同类型实例仍有 Border，地图外缘不计为 Border。Region 提供 cells、neighborIds、borders 查询。
 - `MapEnemyTable`/`MapBuildingTable` 的 regions 为 enum[]，候选查询与生成实体分开；敌人表仍为空。地牢、民居、工坊、集会厅、城堡、隐居矮屋为建筑 ID 1–6，分别由对应聚落样式引用后参与静态布局。
-- `MapInfrastructure` 通过 MapTownTable.placementStage/connectRoad/generateStreets 分阶段布局：BeforeRoads 普通聚落与街道 → 城际道路 → AfterRoads 偏远地点。AfterRoads 禁止接路/铺街；地牢只是引用该策略的配置，不按建筑 ID 特判。原有完整占地、干燥、建筑地貌、maxGroundDelta、必需地标、数量/间距/试排预算仍生效，失败整批放弃，不整平原地面。所有样式 maxCount 之和最多 16；空表关闭聚落生成。
+- `MapInfrastructure` 通过 MapTownTable.placementStage/connectRoad/generateStreets 分阶段布局：BeforeRoads 普通聚落与街道 → 城际道路 → AfterRoads 偏远地点。AfterRoads 禁止接路/铺街；地牢只是引用该策略的配置，不按建筑 ID 特判。原有完整占地、干燥、建筑地貌、maxGroundDelta、必需地标、数量/间距/试排预算仍生效，失败整批放弃，不整平原地面。所有样式 maxCount 之和最多 18（包含最多两处矿井）；空表关闭聚落生成。
 - `MapSiteSelection` 读取 MapTownTable.siteProfileIds → MapSiteProfileTable / MapSiteRuleTable：硬区间过滤、分段线性曲线加权评分、方案权重与分数指数抽样，再试排真实建筑。海拔与局部可建面积独立，高山台地允许城市。取水代价沿满足坡度限制的干地传播，悬崖下的近水不等于可接近；水域/道路/聚落净距为直线六边形距离。距离在 distanceCap 截断，无来源/不可达也取截断值；道路、聚落、水域硬净距还检查完整占地与入口。地牢当前规则为距路 ≥8、距普通聚落实际建筑/中心/街道 ≥12，数值在规则表中。
 - 隐居群落为城镇样式 5：AfterRoads、无城际道路/内部街道，方案 501 独立配置并沿用地牢的上述净距；每处 3–5 栋矮屋，最多 3 处。它与地牢同属 remote，不计入普通聚落的文明距离来源，彼此仍遵守样式间距。各样式竞争有限候选，不保证小地图同时生成两种偏远地点；不足时保留淘汰诊断，不放宽净距。模型映射见 [地图资源](MapArt.md)。
 - 城镇样式的 `groundColor` 使用 `#RRGGBB`，随 town 一起输出，负责大地图实际建筑占地的统一底色；城镇搜索半径内的空闲地面不因着色而变成建筑占地。town.id/configId 分别保留实例与样式身份；队伍通过 [MapArea](MapArea.md) 进入对应城镇。最高档[王城](RoyalTown.md)为独立样式 6，尚无城市等级升级玩法。
 - `MapPathfinder` 提供生成期 Dijkstra；道路按近邻优先连接可达城镇并复用已铺路段。Catalog `RoadMaxStep` 限制邻格高差、`RoadSlopeCost` 控制坡度代价；禁止经过水格和建筑占地，不生成桥梁。路径不可达时保留多个 `roadNetworks`，不假造连接。这些规则只服务布局预览，不接入运行时寻路或玩法通行。
 - Map 的 GetTowns/GetBuildings/GetRoads/GetRoadNetworks 返回只读布局。town.role=settlement/remote；偏远地点 roadNetworkId 缺省且 roadIds 为空。建筑保存完整 cells、entrance、baseHeight；道路保存有序 cells、street/road 及端点。格子 townId/buildingId/roadIds 反查，Region 返回所属布局；所有查询共享原格子身份。town.siteProfileId/siteScore/siteMetrics 记录选址，map.siteDiagnostics 记录各样式数量及淘汰统计，cell.siteScores 保存方案开始时的评分热力图。
+- `GetWaterSites()` 返回开阔水域中的只读可访问地点，使用独立概率、面积、深度与净距规则；入口及装饰均位于真实水面。当前接入 [Shipwreck 沉船遗址](Shipwreck.md)，其选址不占用干地聚落流程。
 - `MapAssetTable` 是资源 ID、Unity 路径、基准高度、适配占地及 Web 轮廓的唯一配置；`MapBuildingTable.assetId/platformAssetId` 绑定完整建筑与平台，半径须匹配。`MapBiomeTable` 按地貌枚举配置底块、水面、混合底色与装饰资源、密度/坡度/缩放。`MapVisuals` 用独立位置噪声撒装饰，避开水域、建筑与道路；边界按 biomeWeights 混色并降低外来地貌装饰密度。格子输出 terrainAssetId/waterAssetId/groundColor，`GetDecorations()` 输出 cell/assetId/scale/yaw；渲染器不重新抽样。
 - Map 及嵌套布局、索引、Region/Border 为只读代理，查询返回的格子保持对象身份；`GetNeighbors` 生成调用方自己的列表。快照可由调用方持有，MapSystem 退出不改写已返回的快照。生成完成释放选址草稿和分析缓存；紧凑地图的直线净距用完整包围盒距离变换，稀疏坐标用空间树，两者均穿过缺格计算直线六边形距离。
 

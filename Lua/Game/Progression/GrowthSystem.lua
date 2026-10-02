@@ -75,6 +75,7 @@ function Growth:Learn(actorId, skillId)
     local found = false
     for i=0,actor.Growth.OfferCount-1 do if actor.Growth:GetOfferAt(i)==skillId then found=true end end
     if not found then return false, '此技能不在当前学习候选中' end
+    if not self.rules.atlas:Prerequisites(skillId,self.rules.atlas:Owned(actor,self.stats)) then return false,'尚未满足技能前置' end
     actor.Growth:LearnOffer(skillId)
     self.chronicle:Record('growth',actor,'主动技能','学会「'..self.rules.skills:Get(skillId).name..'」。','旅途中',false)
     self:PrepareOffers(actor)

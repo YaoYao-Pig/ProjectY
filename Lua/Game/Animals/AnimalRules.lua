@@ -42,21 +42,28 @@ function Rules:Species(actor)
     local mount=actor.MountedAnimal
     return self.byUnit[mount and mount.TemplateId or actor.TemplateId]
 end
-function Rules:Cells(actor,board,q,r)
-    local species=self:Species(actor);q=q or actor.Q;r=r or actor.R
-    if not species then return {board:Find(q,r)} end
+-- 显式楼层用于探索占格；省略时保留棋盘默认层（战斗窗口可能从桥面创建）。
+function Rules:Cells(actor,board,q,r,layer)
+    return self:CellsForSpecies(self:Species(actor),board,q or actor.Q,r or actor.R,layer)
+end
+-- 同一次规划内物种不会改变，允许调用方复用已查询的占地定义。
+function Rules:CellsForSpecies(species,board,q,r,layer)
+    if not species then return {board:Find(q,r,layer)} end
     local cells={}
     for i,dq in ipairs(species.footprintQ) do
-        local cell=board:Find(q+dq,r+species.footprintR[i]);if not cell then return nil end
+        local cell=board:Find(q+dq,r+species.footprintR[i],layer);if not cell then return nil end
         cells[#cells+1]=cell
     end
     return cells
 end
 function Rules:CanPlace(actor,board,q,r,occupied,allowed)
     local cells=self:Cells(actor,board,q,r);if not cells or #cells==0 then return false end
+    local modified=false
     for _,cell in ipairs(cells) do
         if cell.blocked or (occupied and occupied[Hex.Key(cell.q,cell.r)]) or (allowed and not allowed(cell)) then return false end
+        modified=modified or cell.constructionSurface==true
     end
+    if modified and #cells>1 then for _,cell in ipairs(cells) do if math.abs(cell.height-cells[1].height)>.05 then return false end end end
     return true
 end
 function Rules:Occupy(actor,board,occupied)

@@ -60,5 +60,7 @@
 ---@field HistoryRows CS.UnityEngine.RectTransform
 ---@field HistoryRowsScroll CS.UnityEngine.UI.ScrollRect
 ---@field Hint CS.UnityEngine.UI.Text
+---@field Atlas CS.UnityEngine.UI.Button
+---@field AtlasText CS.UnityEngine.UI.Text
 local View = {}
 return View

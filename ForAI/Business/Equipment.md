@@ -15,6 +15,7 @@
 - 初始九把未装备武器（含长弓）、两只满弹匣、散装弹药和七件未穿戴防具（含盾牌）由 EquipmentDemoTable 配置。地牢入口附近按可达路径距离放置宝箱、地面符文和弹药；靠近一格后通过侧栏或 `E` 搜刮。宝箱含推进器，打开后同一远征重复进入不刷新。搜刮记录归 MapAreaStateData，战斗中禁止搜刮、换装和改装。
 - 配件也可在城镇铁匠服务台按 E 购买；商店供应散装弹药和实体满弹匣。价格、数量与物品由[事件选项](Adventure.md)配置，共用 `CanGrant/Grant` 容量检查和唯一库存；背包不足或金币不足不扣费。成功搜刮/购买进入游戏内【获得】日志。
 - EquipmentCategoryTable 定义种类；EquipmentWeaponTable 关联种类、level、damageMultiplier、requirementId、技能及持握模板。工坊列表按种类/等级排序，用左右箭头筛选。单手剑、大剑、双手巨剑各两档、六把独立模型；单手剑/大剑没有改装槽，巨剑只有剑脊推进器槽。推进器作为通用组件复用 EquipmentRuneTable，匹配 thruster 槽与 slash 技能组，当前提高劈砍伤害 35%，不额外消耗 AP。
+- 武器 `tagIds` 按展示顺序引用 EquipmentWeaponTagTable 的稳定字符串 ID；同一武器可有多个标签，和分类筛选、持握 `kind/hands` 独立。`EquipmentRules:WeaponTags(itemId)` 返回标签行，`HasWeaponTag(itemId,tagId)` 查询单个标签；未知或重复标签报错。工坊详情顶部通过 EquipmentTag Widget 逐个展示并自动换行，切换武器时复用并隐藏多余标签。现有大剑/巨剑包含“双手剑”，巨剑另有“巨剑”标签；标签的工具分类、清障和开锁见[工具武器与临时障碍](ToolWeapons.md)。
 - 工坊用 `EquipmentRules:PreviewWeapon` 建立所选单件武器的只读查询上下文，技能和动作不混入角色真实副手/盾牌；属性要求仍读取所选角色当前属性，符文继续读取所选武器实例。浏览不修改装备所有权、背包或 Revision，实际装备仍走 HandAllowed 的双手冲突检查。回归：`python -B Tools/Tests/run_lua.py Tools/Tests/equipment_workbench_preview.lua`，覆盖持盾/双持时浏览所有武器及直接预览副手实例。
 - 属性要求是软门槛：可照常装备，解析技能时通过 CombatStats.Get 读取含特质和穿戴装备加成的当前属性。EquipmentRequirementTable 配属性 ID/需求值、每点缺口惩罚及上下限，EquipmentAttributeTable 映射属性名。当前每少一点属性伤害减 8%（最低保留 35%）、命中减 3 个百分点（最多减 40）；仅作用于该武器授予的技能，保留职业治疗/防御。伤害按基础技能 × 武器倍率 × 需求系数 × 组件倍率结算；工坊显示当前/需求和实际削弱。
 - 散射头石使敌方法术最多选三名合法目标；追加目标位于主目标两格内，仍须满足施法者射程和视线，按距离/实例 ID 稳定选择，每目标 70% 伤害。精准杆石增加射程 2、命中 20 个百分点、伤害 25%、法术 CD 1。倍率相乘，其余加算；数值全部来自表。
@@ -23,11 +24,14 @@
 - 外观沿用低多边形纯色材质。八个武器 Prefab 显式绑定零个或多个挂点，EquipmentAssetCatalog 序列化资源和物品 Sprite。物品图标由[模型图标管线](Inventory.md)生成或手工指定；技能 BattleIconTable.spritePath 空字符串表示留白。[持武模组与握点](EquipmentMotion.md)按双手装备匹配模组，EquipmentPoseTable 提供基准姿势，EquipmentGripTable 配每件武器的本地握点；公共棋子已使用 [Humanoid 动画与握点求解](PawnAnimation.md)，无动画绑定的外观保留原刚体显示。动画时长和轨迹由 PawnAnimations.asset 调整，装备规则仍使用同一份物品/技能表。
 - 配置在 `Config/Tables/Equipment/` 十四张表及 Adventure 的 CombatSkill/CombatEffect 表。修改后通过 ConfigEditor 导表；新增资源/挂点/图标执行 Edit Mode 菜单 `Project Y/装备/同步模型与改装界面`，需要当前 AdventureDemo。同步会定向补齐旧工坊的引线、分类按钮、属性文本和行 Layout 绑定，并保留其余人工布局。不得编辑 Prefab/importer YAML 或生成的 xLua 包装器。
 - 最小验证：`equipment_integration.lua` 覆盖搜刮/符文/散射/CD/弹药与实际 Panel/Widget；`equipment_melee_integration.lua` 覆盖分类/两档武器、软门槛与特质、推进器合法性、伤害结算和筛选/空槽 UI，均在独立 Edit Mode LuaEnv 注入真实 FrameworkServices。`equipment_preview.lua` 是截图夹具，初始化后必须 Shutdown 并清除辅助全局函数。基础回归为 adventure_core.lua、battle_hud_core.lua；不自动进入 Play 或跑全量测试。
+- 标签 UI 单独同步入口为 `Project Y/装备/同步武器标签界面`（`EquipmentAssets.SyncWeaponTagsUI`），只注册标签 Widget 并更新工坊绑定；全量装备资源同步也会包含它。标签数据回归复用 `equipment_workbench_preview.lua`，实际 Widget 的多标签→单标签→多标签切换复用 `equipment_melee_integration.lua`。
 
 ## 关键入口
 
+- [十月物品与武器资产库](../../Art/AssetExpansion202610/README.md) / [可浏览档案](../../Art/AssetExpansion202610/gallery.html)：45 武器、10 枪械配件、10 食物、医疗/药水/护甲/戒指/符文各 5 件；独立 FBX、Prefab、原始模型、参考与原创背景。尚未写入物品配表、掉落、持握或插槽配置；刚性护甲和指饰的角色适配须在接入时另行检查。
 - [权威库存](../../Assets/GameFramework/Runtime/Data/EquipmentData.cs) / [装备命令](../../Lua/Game/Equipment/EquipmentSystem.lua) / [技能与外观解析](../../Lua/Game/Equipment/EquipmentRules.lua)。
 - [工坊控制器](../../Lua/UI/Panel/EquipmentWorkbenchCtr.lua) / [行 Widget](../../Lua/UI/Widget/EquipmentRow.lua) / [3D 预览](../../Assets/GameFramework/Runtime/UI/EquipmentWorkbenchView.cs)。
+- [武器标签表](../../Config/Tables/Equipment/EquipmentWeaponTagTable.json) / [标签 Widget](../../Lua/UI/Widget/EquipmentTag.lua)。
 - [人物姿态与动作](../../Assets/GameFramework/Samples/Adventure/PawnEquipmentView.cs) / [武器挂点](../../Assets/GameFramework/Samples/Adventure/WeaponModelView.cs) / [资源同步](../../Assets/GameFramework/Editor/EquipmentAssets.cs)。
 - [配置源](../../Config/Tables/Equipment/) / [法杖与枪源](../../Art/EquipmentDemo/Source/EquipmentDemo.blend) / [近战与推进器源](../../Art/EquipmentDemo/Source/EquipmentMelee.blend) / [制作脚本](../../Art/EquipmentDemo/Scripts/) / [Unity 资源](../../Assets/DynamicAsset/EquipmentDemo/) / [预览](../../Art/EquipmentDemo/Previews/)。
 - [装备集成](../../Tools/Tests/equipment_integration.lua) / [近战集成](../../Tools/Tests/equipment_melee_integration.lua) / [预览夹具](../../Tools/Tests/equipment_preview.lua) / [当前检查记录](../../Art/EquipmentDemo/Integration/validation.md)；战斗生命周期见[战斗](Battle.md)，地图持久性见[MapArea](MapArea.md)。

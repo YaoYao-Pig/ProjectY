@@ -1,0 +1,166 @@
+{
+  "groups": {
+    "Terrain": {
+      "models": 36,
+      "categories": {
+        "hex_tile": 15,
+        "decoration": 21
+      },
+      "triangles": 9582,
+      "unity_checks_passed": 36,
+      "three_view_sets": 36,
+      "hero_views": 36,
+      "model_files": 36,
+      "reference_links_per_asset": [
+        2
+      ]
+    },
+    "Dungeon": {
+      "models": 20,
+      "categories": {
+        "vessel": 6,
+        "storage": 6,
+        "archive": 2,
+        "ritual": 3,
+        "prison": 1,
+        "ruin": 2
+      },
+      "triangles": 10692,
+      "unity_checks_passed": 20,
+      "three_view_sets": 20,
+      "hero_views": 20,
+      "model_files": 20,
+      "reference_links_per_asset": [
+        2
+      ]
+    },
+    "Items": {
+      "models": 35,
+      "categories": {
+        "food": 10,
+        "medical": 5,
+        "potion": 5,
+        "armor": 5,
+        "ring": 5,
+        "rune": 5
+      },
+      "triangles": 17674,
+      "unity_checks_passed": 35,
+      "three_view_sets": 35,
+      "hero_views": 35,
+      "model_files": 35,
+      "reference_links_per_asset": [
+        2
+      ]
+    },
+    "Weapons": {
+      "models": 55,
+      "categories": {
+        "Sword": 5,
+        "Greatsword": 5,
+        "Bow": 5,
+        "Crossbow": 5,
+        "Longgun": 5,
+        "Pistol": 5,
+        "Shield": 5,
+        "Dagger": 5,
+        "Staff": 5,
+        "Scope": 5,
+        "Suppressor": 5
+      },
+      "triangles": 29816,
+      "unity_checks_passed": 55,
+      "three_view_sets": 55,
+      "hero_views": 55,
+      "model_files": 55,
+      "reference_links_per_asset": [
+        2
+      ]
+    },
+    "Shipwreck": {
+      "models": 19,
+      "categories": {
+        "world_marker": 2,
+        "ship_structure": 6,
+        "ship_dressing": 11
+      },
+      "triangles": 14188,
+      "unity_checks_passed": 19,
+      "three_view_sets": 19,
+      "hero_views": 19,
+      "model_files": 19,
+      "reference_links_per_asset": [
+        3
+      ]
+    },
+    "ShipwreckV2": {
+      "models": 16,
+      "categories": {
+        "ship_multilevel_structure": 5,
+        "ship_interior_furniture": 11
+      },
+      "triangles": 15516,
+      "unity_checks_passed": 16,
+      "three_view_sets": 16,
+      "hero_views": 16,
+      "model_files": 16,
+      "reference_links_per_asset": [
+        3
+      ]
+    },
+    "ShipwreckProps": {
+      "models": 20,
+      "categories": {
+        "navigation": 7,
+        "domestic": 7,
+        "repair": 5,
+        "medical": 1
+      },
+      "triangles": 9164,
+      "unity_checks_passed": 20,
+      "three_view_sets": 20,
+      "hero_views": 20,
+      "model_files": 20,
+      "reference_links_per_asset": [
+        2
+      ]
+    },
+    "ShipwreckWeapons": {
+      "models": 10,
+      "categories": {
+        "Cutlass": 1,
+        "BoardingBlade": 1,
+        "Warhammer": 1,
+        "TwoHandedAxe": 1,
+        "Harpoon": 1,
+        "Dagger": 1,
+        "Crossbow": 1,
+        "Bow": 1,
+        "Staff": 1,
+        "Pistol": 1
+      },
+      "triangles": 10400,
+      "unity_checks_passed": 10,
+      "three_view_sets": 10,
+      "hero_views": 10,
+      "model_files": 10,
+      "reference_links_per_asset": [
+        2
+      ]
+    }
+  },
+  "limitations": [
+    "Initial four groups remain standalone; Shipwreck is registered and integrated.",
+    "Static armor and rings have no character-fit/animation validation.",
+    "Dungeon textures retain nonzero periodic-edge residuals."
+  ],
+  "models": 211,
+  "textures": 6,
+  "icons": 120,
+  "model_review_images": 844,
+  "archived_reference_images": 77,
+  "long_background_count": 90,
+  "shortest_long_background_han_characters": 124,
+  "result": "passed_asset_pack_checks",
+  "validation_scope": "Files, per-model geometry reports, visual review records, Unity importer bounds/transforms/material checks; no gameplay test suite."
+}

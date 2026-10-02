@@ -42,13 +42,22 @@ function Model.Build(adventure)
     elseif data.Areas.ActiveSiteId>0 then
         local areas=adventure.areas;local area,state=areas:ActiveLayout(),data.Areas.Active
         model.town=area.areaType==areas.townType;model.title=area.name
-        model.subtitle=model.town and 'E 交互 · V 切换视角 · 空格停止' or '左键移动 · E 搜刮 · 空格停止'
+        model.subtitle=model.town and 'E 交互 · V 切换视角 · 空格停止' or '左键移动／处理障碍 · E 交互 · 空格停止'
         if data.Phase=='area' then
-            if data.ResultText~='' then model.rows[#model.rows+1]={title='战斗结果',body=data.ResultText,command='snapshot',available=false} end
+            if data.ResultText~='' then model.rows[#model.rows+1]={title='最近结果',body=data.ResultText,command='snapshot',available=false} end
             model.rows[#model.rows+1]={title='定位小队并跟随',body='从全图视角回到同行者身边',command='hud_follow'}
             for _,loot in ipairs(adventure.equipment:LootSnapshot(areas)) do if not loot.looted then
-                model.rows[#model.rows+1]={title='搜刮 · '..loot.name,body='靠近后领取到共享背包',command='area_loot',a=loot.id}
+                model.rows[#model.rows+1]={title=(loot.canSearch and '搜刮 · ' or '容器 · ')..loot.name,
+                    body=loot.canSearch and '靠近后搜索物品，拖入共享背包' or ('耐久 '..loot.durability..'/'..loot.maxDurability..' · 选择伤害技能攻击；锁定容器须先清除守卫'),
+                    command='area_loot',a=loot.id,available=loot.canSearch}
             end end
+            for _,obstacle in ipairs(adventure.obstacles:Snapshot()) do
+                model.rows[#model.rows+1]={title='处理 · '..obstacle.name,body='走近后选择工具或徒手处理',command='area_move_cell',a=obstacle.cells[1]}
+                local row=adventure.obstacles.data:Get(state.SiteId,obstacle.id)
+                if not model.interaction and adventure.obstacles:Near(row) then
+                    model.interaction={title=obstacle.name,body='已装备的工具可以帮助处理',caption='处理  [E]',command='area_obstacle',a=obstacle.id}
+                end
+            end
             if model.town then for _,site in ipairs(area.facilities) do
                 model.rows[#model.rows+1]={title='前往 · '..site.name,body='到达服务点附近后按 E',command='area_move_cell',a=site.entryIndex}
             end end
@@ -88,6 +97,7 @@ function Model.Build(adventure)
         for _,unit in ipairs(adventure.battle:Units()) do if unit.HP>0 then local row=actor(unit);row.screen=true;model.health[#model.health+1]=row end end
     end
     if data.Phase=='map' or data.Phase=='area' then
+        model.menu[#model.menu+1]={title='技艺图谱',body='按领域与技法浏览技能、效果和前置关系',command='hud_skill_atlas',available=true}
         if adventure.narrative then
             if data.Phase=='map' then model.menu[#model.menu+1]={title='新建叙事示例 · 三人远征',body='重开地图，预留一个招募位置；不会覆盖磁盘存档',command='start_story',available=true} end
         end

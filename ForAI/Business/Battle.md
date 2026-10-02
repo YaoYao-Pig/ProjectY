@@ -9,6 +9,8 @@
 ## 正文
 
 - [森林动物与骑乘](Animals.md)扩展中立动物、驯服、完整多格占位、坐骑受伤及骑兵地格技能；`CanUseSkillAt/TrySkillAt/SkillCells` 处理地格目标，角色目标仍使用 `CanUseSkill/TrySkill`。
+- [巧匠营造](Construction.md)复用地格技能入口；动态工事/坑沟投影影响移动代价、通行和射线，单格高台影响站位与远程射程。`ConstructionTable` 定义的技能允许空 `effectIds` 并走施工处理器；其他技能仍必须有战斗效果。静态棋盘与普通格移动规则保持原契约。
+- [容器攻击](Loot.md)通过 `skill_container` 接入普通攻击/适用伤害技能，共用预算和公式；容器不加入角色列表，原角色目标入口仍用 `TrySkill`。技能栏可用性同时检查容器目标，范围攻击在原目标限额内波及容器。
 
 - 来源：[战斗总览](https://my.feishu.cn/wiki/XvPvw2sk2ih7BTkAonGcjmR7nlg)、[技能](https://my.feishu.cn/wiki/Gyb1wnuCJisBbfkc7o1crZmmn4e)。文档未定义的数值与顺序是用户授权的 demo 规则。
 - `BattleSystem` 依赖 Config，引用 `services.Adventure.Battle`。C# `BattleData/CombatActorData` 保存唯一可变状态；Lua 只持有配置、战场静态布局、规则与临时查询结果。队伍进入战斗时共享角色实例，生命与特质跨遭遇保留。

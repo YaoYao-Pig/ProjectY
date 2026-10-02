@@ -23,7 +23,7 @@
     {
       "name": "previewShape",
       "type": "string",
-      "description": "Web 轮廓：terrain/platform/water/mountain/house/workshop/hall/castle/dungeon/tree/conifer/snowpine/cottage（矮小隐居房屋）"
+      "description": "Web 轮廓：terrain/platform/water/mountain/house/workshop/hall/castle/dungeon/mine/tree/conifer/snowpine/cottage"
     },
     {
       "name": "previewColor",
@@ -1171,6 +1171,36 @@
       "tintMaterial": "M_MapLP_RockDark"
     },
     {
+      "id": 113,
+      "name": "乡村风车磨坊",
+      "prefabPath": "Assets/DynamicAsset/TownStylized/Models/Town_Windmill.fbx",
+      "previewShape": "workshop",
+      "previewColor": "#c9b994",
+      "referenceHeight": 7.17005,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 114,
+      "name": "木构谷仓与草捆",
+      "prefabPath": "Assets/DynamicAsset/TownStylized/Models/Town_Granary.fbx",
+      "previewShape": "house",
+      "previewColor": "#8c7558",
+      "referenceHeight": 4.595,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 115,
+      "name": "围栏麦田与稻草人",
+      "prefabPath": "Assets/DynamicAsset/TownStylized/Models/Town_WheatGarden.fbx",
+      "previewShape": "rock",
+      "previewColor": "#b7a16a",
+      "referenceHeight": 1.9,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
       "id": 201,
       "name": "ForestOak",
       "prefabPath": "Assets/DynamicAsset/ForestAnimals/Models/ForestOak.fbx",
@@ -1209,6 +1239,686 @@
       "referenceHeight": 1,
       "footprintRadius": 0,
       "tintMaterial": "M_MapLP_ForestGround"
+    },
+    {
+      "id": 600,
+      "name": "SW_Map_WreckMarker",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Shipwreck/Prefabs/SW_Map_WreckMarker.prefab",
+      "previewShape": "shipwreck",
+      "previewColor": "#766450",
+      "referenceHeight": 0.5623040795326233,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 601,
+      "name": "SW_Map_AbandonedCog",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Shipwreck/Prefabs/SW_Map_AbandonedCog.prefab",
+      "previewShape": "shipwreck",
+      "previewColor": "#766450",
+      "referenceHeight": 0.5623040795326233,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 602,
+      "name": "SW_Hull_CogWreck",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Shipwreck/Prefabs/SW_Hull_CogWreck.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 5.015000343322754,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 603,
+      "name": "SW_Deck_Cog",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Shipwreck/Prefabs/SW_Deck_Cog.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.24986404180526733,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 604,
+      "name": "SW_SternCastle",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Shipwreck/Prefabs/SW_SternCastle.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 4.510000228881836,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 605,
+      "name": "SW_BowRibs",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Shipwreck/Prefabs/SW_BowRibs.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 1.912329077720642,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 606,
+      "name": "SW_Mast_BrokenSquare",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Shipwreck/Prefabs/SW_Mast_BrokenSquare.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 7.497742176055908,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 607,
+      "name": "SW_Mast_Fallen",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Shipwreck/Prefabs/SW_Mast_Fallen.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 7.012269020080566,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 608,
+      "name": "SW_Rail_Broken",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Shipwreck/Prefabs/SW_Rail_Broken.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 1.148328185081482,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 609,
+      "name": "SW_Hatch_Collapsed",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Shipwreck/Prefabs/SW_Hatch_Collapsed.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.35991156101226807,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 610,
+      "name": "SW_Capstan",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Shipwreck/Prefabs/SW_Capstan.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 1.1200000047683716,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 611,
+      "name": "SW_Anchor_Rusted",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Shipwreck/Prefabs/SW_Anchor_Rusted.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 1.7757564783096313,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 612,
+      "name": "SW_Cargo_SaltCrates",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Shipwreck/Prefabs/SW_Cargo_SaltCrates.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 1.497499942779541,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 613,
+      "name": "SW_Cargo_WetBarrels",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Shipwreck/Prefabs/SW_Cargo_WetBarrels.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 1.2074999809265137,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 614,
+      "name": "SW_Rope_Coil",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Shipwreck/Prefabs/SW_Rope_Coil.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.08349338918924332,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 615,
+      "name": "SW_Bell_BrokenFrame",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Shipwreck/Prefabs/SW_Bell_BrokenFrame.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 1.8899999856948853,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 616,
+      "name": "SW_Drift_Planks",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Shipwreck/Prefabs/SW_Drift_Planks.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.27997592091560364,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 617,
+      "name": "SW_Boat_BrokenDinghy",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Shipwreck/Prefabs/SW_Boat_BrokenDinghy.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.6519500017166138,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 618,
+      "name": "SW_Gangplank",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Shipwreck/Prefabs/SW_Gangplank.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.28999999165534973,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 700,
+      "name": "联排A可剖切上盖",
+      "prefabPath": "Assets/DynamicAsset/TownOpenBuildings/Models/WalkTown_RowA_Cover.fbx",
+      "previewShape": "hall",
+      "previewColor": "#c7b69a",
+      "referenceHeight": 1,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 701,
+      "name": "联排B可剖切上盖",
+      "prefabPath": "Assets/DynamicAsset/TownOpenBuildings/Models/WalkTown_RowB_Cover.fbx",
+      "previewShape": "hall",
+      "previewColor": "#c7b69a",
+      "referenceHeight": 1,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 702,
+      "name": "联排C可剖切上盖",
+      "prefabPath": "Assets/DynamicAsset/TownOpenBuildings/Models/WalkTown_RowC_Cover.fbx",
+      "previewShape": "hall",
+      "previewColor": "#c7b69a",
+      "referenceHeight": 1,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 703,
+      "name": "双塔门楼可剖切上盖",
+      "prefabPath": "Assets/DynamicAsset/TownOpenBuildings/Models/Royal_Gatehouse_Cover.fbx",
+      "previewShape": "castle",
+      "previewColor": "#c9b994",
+      "referenceHeight": 1,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 704,
+      "name": "花园亭可剖切上盖",
+      "prefabPath": "Assets/DynamicAsset/TownOpenBuildings/Models/Royal_Pavilion_Cover.fbx",
+      "previewShape": "castle",
+      "previewColor": "#c9b994",
+      "referenceHeight": 1,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 705,
+      "name": "风车磨坊可剖切上盖",
+      "prefabPath": "Assets/DynamicAsset/TownOpenBuildings/Models/Town_Windmill_Cover.fbx",
+      "previewShape": "workshop",
+      "previewColor": "#c9b994",
+      "referenceHeight": 7.17005,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 706,
+      "name": "谷仓可剖切上盖",
+      "prefabPath": "Assets/DynamicAsset/TownOpenBuildings/Models/Town_Granary_Cover.fbx",
+      "previewShape": "house",
+      "previewColor": "#8c7558",
+      "referenceHeight": 4.595,
+      "footprintRadius": 1,
+      "tintMaterial": ""
+    },
+    {
+      "id": 800,
+      "name": "S2_Hull_Lower",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckV2/Prefabs/S2_Hull_Lower.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 5.56000042,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 801,
+      "name": "S2_Hull_MainSides",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckV2/Prefabs/S2_Hull_MainSides.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 3.17,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 802,
+      "name": "S2_Forecastle_Sides",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckV2/Prefabs/S2_Forecastle_Sides.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 4.11,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 803,
+      "name": "S2_Aftcastle_Sides",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckV2/Prefabs/S2_Aftcastle_Sides.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 3.4199996,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 804,
+      "name": "S2_MainDeck_Trim",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckV2/Prefabs/S2_MainDeck_Trim.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.269999981,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 805,
+      "name": "S2_Partition_Solid",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckV2/Prefabs/S2_Partition_Solid.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 2.76499987,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 806,
+      "name": "S2_Partition_Door",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckV2/Prefabs/S2_Partition_Door.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 2.965,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 807,
+      "name": "S2_DoorFrame_Wide",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckV2/Prefabs/S2_DoorFrame_Wide.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 3.115,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 808,
+      "name": "S2_HammockRack",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckV2/Prefabs/S2_HammockRack.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 1.86999989,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 809,
+      "name": "S2_GalleyHearth",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckV2/Prefabs/S2_GalleyHearth.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 2.74,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 810,
+      "name": "S2_MessTable",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckV2/Prefabs/S2_MessTable.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.879,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 811,
+      "name": "S2_CargoShelves",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckV2/Prefabs/S2_CargoShelves.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 2.25,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 812,
+      "name": "S2_CaptainDesk",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckV2/Prefabs/S2_CaptainDesk.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.950000048,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 813,
+      "name": "S2_WeaponRack",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckV2/Prefabs/S2_WeaponRack.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 1.85863626,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 814,
+      "name": "S2_PrisonCage",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckV2/Prefabs/S2_PrisonCage.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 2.49500012,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 815,
+      "name": "S2_Mast_Tall",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckV2/Prefabs/S2_Mast_Tall.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 41.217281341552734,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 830,
+      "name": "SWP_MarinerCompass",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckProps/Prefabs/SWP_MarinerCompass.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.06499999761581421,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 831,
+      "name": "SWP_FoldedSeaChart",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckProps/Prefabs/SWP_FoldedSeaChart.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.019999999552965164,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 832,
+      "name": "SWP_CaptainsLog",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckProps/Prefabs/SWP_CaptainsLog.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.10599999874830246,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 833,
+      "name": "SWP_WatchHourglass",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckProps/Prefabs/SWP_WatchHourglass.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.27799999713897705,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 834,
+      "name": "SWP_BrassSpyglass",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckProps/Prefabs/SWP_BrassSpyglass.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.11400000005960464,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 835,
+      "name": "SWP_CabinLantern",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckProps/Prefabs/SWP_CabinLantern.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.41200000047683716,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 836,
+      "name": "SWP_LeatherFlask",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckProps/Prefabs/SWP_LeatherFlask.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.2720000147819519,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 837,
+      "name": "SWP_WoodenMug",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckProps/Prefabs/SWP_WoodenMug.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.15700000524520874,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 838,
+      "name": "SWP_CoarseBowl",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckProps/Prefabs/SWP_CoarseBowl.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.09799999743700027,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 839,
+      "name": "SWP_WoodenPlate",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckProps/Prefabs/SWP_WoodenPlate.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.04600000008940697,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 840,
+      "name": "SWP_CanvasRepairRoll",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckProps/Prefabs/SWP_CanvasRepairRoll.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.14800000190734863,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 841,
+      "name": "SWP_SewingKit",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckProps/Prefabs/SWP_SewingKit.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.20324303209781647,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 842,
+      "name": "SWP_RopeKnot",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckProps/Prefabs/SWP_RopeKnot.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.033584993332624435,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 843,
+      "name": "SWP_WoodenPulley",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckProps/Prefabs/SWP_WoodenPulley.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.1379999965429306,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 844,
+      "name": "SWP_IronNailBox",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckProps/Prefabs/SWP_IronNailBox.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.07800000160932541,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 845,
+      "name": "SWP_WaxSealedLetter",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckProps/Prefabs/SWP_WaxSealedLetter.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.027899999171495438,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 846,
+      "name": "SWP_DrawstringPurse",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckProps/Prefabs/SWP_DrawstringPurse.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.1850000023841858,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 847,
+      "name": "SWP_SpiceJar",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckProps/Prefabs/SWP_SpiceJar.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.20000000298023224,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 848,
+      "name": "SWP_BandageParcel",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckProps/Prefabs/SWP_BandageParcel.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.16258063912391663,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 849,
+      "name": "SWP_BentWoodPipe",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckProps/Prefabs/SWP_BentWoodPipe.prefab",
+      "previewShape": "decoration",
+      "previewColor": "#766450",
+      "referenceHeight": 0.09595824778079987,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 900,
+      "name": "Mine_Entrance",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Mine/Prefabs/Mine_Entrance.prefab",
+      "previewShape": "mine",
+      "previewColor": "#826d54",
+      "referenceHeight": 1.6,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 901,
+      "name": "Mine_TimberSupport",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Mine/Prefabs/Mine_TimberSupport.prefab",
+      "previewShape": "prop",
+      "previewColor": "#74604a",
+      "referenceHeight": 3.0,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 902,
+      "name": "Mine_Rail",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Mine/Prefabs/Mine_Rail.prefab",
+      "previewShape": "prop",
+      "previewColor": "#776657",
+      "referenceHeight": 0.145,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 903,
+      "name": "Mine_Cart",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Mine/Prefabs/Mine_Cart.prefab",
+      "previewShape": "prop",
+      "previewColor": "#72624e",
+      "referenceHeight": 1.02,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 904,
+      "name": "Mine_OreCluster",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Mine/Prefabs/Mine_OreCluster.prefab",
+      "previewShape": "prop",
+      "previewColor": "#638a85",
+      "referenceHeight": 1.2,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 905,
+      "name": "Mine_Workstation",
+      "prefabPath": "Assets/DynamicAsset/AssetExpansion202610/Mine/Prefabs/Mine_Workstation.prefab",
+      "previewShape": "prop",
+      "previewColor": "#877258",
+      "referenceHeight": 1.81,
+      "footprintRadius": 0,
+      "tintMaterial": ""
     }
   ]
 }

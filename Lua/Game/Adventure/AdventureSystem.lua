@@ -17,12 +17,19 @@ function Adventure:OnInit(context)
     self.data, self.player = context.services.Adventure, context.services.Player
     self.areas = context.systems:Get('MapArea')
     self.equipment = context.systems:Get('Equipment')
+    self.obstacles=require('Game.MapArea.ObstacleInteractions').New(config,self)
+    self.areas.obstacles=self.obstacles
+    self.construction=require('Game.Battle.Construction').New(config,self)
+    self.battle.construction=self.construction;self.areas.construction=self.construction
+    self.containerCombat=require('Game.Loot.ContainerCombat').New(self)
+    self.battle.containerCombat=self.containerCombat
     self.explorationEvents = require('Game.Adventure.ExplorationEvents').New(config,self)
     self.characterSkills=require('Game.Adventure.CharacterSkills').New(self)
     assert(self.recipe.maxPartySize<=4 and #self.recipe.partyIds > 0 and #self.recipe.partyIds <= self.recipe.maxPartySize, 'Invalid demo party size')
     assert(#self.recipe.buildingIds == #self.recipe.buildingEventIds, 'Building event mapping differs')
 end
 function Adventure:Start(seed,recipeId)
+    self.equipment.worldLoot.session:Close()
     self.recipe = self.config:GetTable('AdventureDemoTable'):Get(recipeId or 1)
     seed = seed or self.recipe.seed
     local map = self.mapSystem:Generate(seed, self.recipe.regionIds)
@@ -62,7 +69,7 @@ function Adventure:Start(seed,recipeId)
         local eventId = mapping[building.configId]
         if eventId and not areaTowns[building.townId] and #sites < 10 then addSite(eventId, building.cell) end
     end
-    self.areas:Clear();self.data:Reset(seed)
+    self.areas:Clear();self.construction.data:Clear();self.data:Reset(seed)
     self.map, self.sites = map, sites
     for i, id in ipairs(self.recipe.partyIds) do
         local actor = self.data:AddPartyActor(i, id)
@@ -80,7 +87,7 @@ function Adventure:Visit(siteId)
     if not site then return false, '未知地点' end
     if self.areas:AreaId(site) then
         local ok,reason=self.areas:Enter(site,self.data.Seed)
-        if ok then self.equipment:InitializeLoot(self.areas);self.explorationEvents:Try('enter',0) end
+        if ok then self.equipment:InitializeLoot(self.areas);self.obstacles:Initialize();self.explorationEvents:Try('enter',0) end
         return ok,reason
     end
     local ok,reason = self.events:Begin(site)
@@ -97,19 +104,12 @@ end
 function Adventure:AreaCommand(command,a,b)
     if self.narrative and self.narrative.data.DialogueOpen then return false,'请先结束当前对话' end
     if command=='area_tame' then return self.areas:Tame(a,b) end
+    if command=='area_obstacle' then return self.obstacles:Begin(a) end
     if command=='area_loot' then
-        local ok,reason=self.equipment:Loot(self.areas,a)
-        if ok then
-            local loot=self.data.Areas.Active:GetLootAt(a-1);local row=self.equipment.loot:Get(loot.TableId)
-            local ids,counts=self.equipment:LootContents(loot)
-            local items={};for i,id in ipairs(ids) do items[#items+1]=self.equipment.rules.items:Get(id).name..' ×'..counts[i] end
-            self.growth.chronicle:Record('loot',nil,loot.Name,#items>0 and table.concat(items,'、') or '打开了一个空箱子。',self.areas:ActiveLayout().name,true)
-            self.explorationEvents:Try('loot',loot.TableId)
-        end
-        return ok,reason
+        return self.equipment:Loot(self.areas,a)
     end
-    if command=='area_move' then return self.areas:MoveTo(a,b) end
-    if command=='area_move_cell' then return self.areas:MoveToIndex(a) end
+    if command=='area_move' then local cell=self.areas:ActiveLayout():Find(a,b);return self.obstacles:MoveTo(cell and cell.index or 0) end
+    if command=='area_move_cell' then return self.obstacles:MoveTo(a) end
     if command=='area_walk' then return self.areas:Walk(a) end
     if command=='area_interact' then
         local ok,reason=self.areas:Interact(a,b)
@@ -125,12 +125,36 @@ function Adventure:AreaCommand(command,a,b)
         return ok,reason
     end
     if command=='area_close' then return self.areas:CloseInteraction() end
-    if command=='area_stop' then return self.areas:Stop() end
-    if command=='area_leave' then return self.areas:Leave() end
+    if command=='area_stop' then self.obstacles.data:Cancel();return self.areas:Stop() end
+    if command=='area_leave' then self.obstacles.data:Cancel();return self.areas:Leave() end
     error('Unknown MapArea command: '..tostring(command))
 end
+function Adventure:TakeLoot(key,x,y,rotated)
+    local ok,reason,containerId=self.equipment.worldLoot:Take(self.areas,key,x,y,rotated)
+    if ok then
+        local container=self.equipment.worldLoot.session.Area:GetLootAt(containerId-1)
+        self.growth.chronicle:Record('loot',nil,container.Name,reason,self.areas:ActiveLayout().name,true)
+    end
+    return ok,reason
+end
+function Adventure:CloseLoot()
+    local session=self.equipment.worldLoot.session;local state=session.Area;local completed={}
+    if state then
+        for i=0,state.LootCount-1 do
+            local container=state:GetLootAt(i)
+            if session:Contains(container.Id) and container.Looted then completed[#completed+1]=container end
+        end
+    end
+    session:Close()
+    if state and self.data.Phase=='area' and state==self.data.Areas.Active then
+        for _,container in ipairs(completed) do
+            if container.ItemCount==0 then self.growth.chronicle:Record('loot',nil,container.Name,'打开了一个空箱子。',self.areas:ActiveLayout().name,true) end
+            self.explorationEvents:Try('loot',container.TableId)
+        end
+    end
+end
 function Adventure:Choose(choiceId)
-    local ok, choice = self.events:Choose(choiceId)
+    local ok, choice, resultText = self.events:Choose(choiceId)
     if not ok then return false, choice end
     if #choice.encounterIds == 1 then
         local site=assert(self.sites[self.data.SiteId]);local cell=self.map:GetCell(site.q,site.r)
@@ -141,7 +165,7 @@ function Adventure:Choose(choiceId)
         self.equipment:InitializeLoot(self.areas)
         self.areas:StartBattle(self.battle,self.data.Areas.Active:GetEncounterAt(0))
     else
-        self.data:Complete(self.events:Text(choice.result))
+        self.data:Complete(resultText or self.events:Text(choice.result))
     end
     return true
 end
@@ -163,18 +187,22 @@ function Adventure:SettleBattle()
         end
     end
     if self.data.AreaEncounterId>0 then
+        local firstLoot=self.areas.data.Active.LootCount
         local dropped=self.equipment:GenerateEnemyDrops(self.areas,self.battle)
         local message
         if result=='victory' then
             local encounter=self.battle.encounters:Get(self.data.Battle.EncounterId)
             self.player:AddCoins(encounter.rewardCoins);self.events:AwardTraits(encounter.rewardTraitIds)
             message='敌群已击败，获得 '..encounter.rewardCoins..' 金币。可以继续探索。'
-            if dropped>0 then message=message..' 地面留下 '..dropped..' 份战利品。' end
+            if dropped>0 then message=message..' 发现 '..dropped..' 份战利品，请搜索并拖入背包。' end
         elseif result=='defeat' then message='小队全员倒地，已撤回大地图，请到营地休整。'
         else message='战斗时间耗尽，已撤回大地图。敌人的伤势保留。' end
         self.areas:RestoreAfterBattle(self.battle)
         self.data:FinishAreaBattle(message);self.battle.board=nil
-        if result=='victory' then self.explorationEvents:Try('victory',encounter.id) end
+        if result=='victory' then
+            self.equipment.worldLoot:OpenBattle(self.areas,firstLoot,message)
+            self.explorationEvents:Try('victory',encounter.id)
+        end
         return
     end
     if result == 'victory' then
@@ -200,6 +228,7 @@ function Adventure:BattleCommand(command, a, b)
         if not cell then return false,'无效地格' end
         ok,reason=self.battle:TryMove(cell.q,cell.r)
     elseif command == 'skill' then ok, reason = self.battle:TrySkill(a, b)
+    elseif command == 'skill_container' then ok,reason=self.containerCombat:Battle(self.battle,a,b)
     elseif command == 'skill_cell' then
         local cell=self.battle.board.cells[b]
         if self.data.AreaEncounterId>0 then cell=self.areas:ActiveLayout().cells[b] end
@@ -215,17 +244,19 @@ function Adventure:BattleCommand(command, a, b)
     return ok, reason
 end
 function Adventure:Tick()
+    if self.equipment.worldLoot.session.Active then return end
     if self.data.Phase=='battle' and self.data.Battle.Winner~='' then self:SettleBattle();return end
     if self.data.Phase~='area' then return end
     if self.narrative and self.narrative.data.DialogueOpen then return end
     if self.context.services.UI.IsWorldPaused then return end
     local group=self.areas:FindEncounter()
     if group then self.areas:StartBattle(self.battle,group);self:SettleBattle()
-    else self.explorationEvents:Try('explore',0) end
+    elseif not self.obstacles:TryRequested() then self.explorationEvents:Try('explore',0) end
 end
 function Adventure:ReturnToMap()
     if self.data.Phase ~= 'result' then return false, '请先完成事件或战斗' end
     self.data:ReturnToMap(); self.battle.board = nil
+    if self.data.Phase=='area' then self.areas:RefreshLivingSquad() end
     return true
 end
 function Adventure:MapSnapshot() return require('Game.Map.MapRenderSnapshot')(assert(self.map, 'Start an adventure first')) end
@@ -249,13 +280,22 @@ function Adventure:Snapshot()
         local areaId=self.areas:AreaId(site)
         if areaId then available,reason=self.areas:CanEnter(site)
         else available,reason=self.events:CanVisit(site) end
+        local kind='event'
+        if areaId then
+            local areaType=self.areas.generator.definitions:Get(areaId).areaType
+            kind=areaType==self.areas.shipwreckType and 'shipwreck' or (areaType==self.areas.townType and 'town' or 'dungeon')
+        end
         result.sites[#result.sites + 1] = {id = site.id, name = site.name, x = site.x, y = site.y, z = site.z,
             available = available, visited = self.data:HasVisited(site.id),areaConfigId=areaId or 0,reason=reason or '',
-            kind=areaId and (self.areas.generator.definitions:Get(areaId).areaType==self.areas.townType and 'town' or 'dungeon') or 'event'}
+            kind=kind}
     end
     if self.data.Areas.ActiveSiteId>0 then
         result.area=self.areas:Snapshot(self.data.Phase=='battle' and self.battle or nil)
         result.area.loot=self.equipment:LootSnapshot(self.areas)
+        result.area.obstacles=self.obstacles:Snapshot()
+        result.area.constructions=self.construction:Snapshot()
+        result.area.constructionRevision=self.construction.data.Revision
+        result.area.containerRevision=CS.ProjectY.Data.ContainerState.Revision(self.data.Areas.Active)
     end
     if self.data.Phase == 'event' then
         local event = self.events.events:Get(self.data.EventId)
@@ -283,7 +323,8 @@ function Adventure:Snapshot()
                 local targetCells={}
                 for _,cell in ipairs(self.battle:SkillCells(id)) do targetCells[#targetCells+1]=cell.index or 0 end
                 result.skills[#result.skills + 1] = {id = id, name = skill.name, description = skill.description,
-                    cost = skill.cost, action = skill.action, targets = targets,targetCells=targetCells}
+                    cost = skill.cost, action = skill.action, targets = targets,targetCells=targetCells,
+                    containerTargets=self.containerCombat:Targets(self.battle:Active(),id,self.battle)}
             end
         end
         for i = 0, self.data.Battle.LogCount - 1 do result.logs[#result.logs + 1] = self.data.Battle:GetLogAt(i) end
@@ -291,6 +332,8 @@ function Adventure:Snapshot()
     return result
 end
 function Adventure:OnShutdown()
+    if self.battle then self.battle.containerCombat=nil end
+    if self.construction then self.construction.data:Clear();self.battle.construction=nil;self.areas.construction=nil end
     self.map = nil; self.sites = nil
     -- 配方或依赖读取失败时可能尚未取得会话数据，仍须允许启动回滚。
     if self.data then self.data:Reset(0); self.data = nil end

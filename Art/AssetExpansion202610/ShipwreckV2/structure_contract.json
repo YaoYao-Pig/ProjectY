@@ -1,0 +1,320 @@
+{
+  "units": "meters",
+  "group": "ShipwreckV2",
+  "source_to_unity": "(-BlenderX, BlenderZ, -BlenderY)",
+  "ship_origin": "world centre of hull; all long hull sections share XZ origin and absolute source heights",
+  "old_dimensions": {
+    "length": 33,
+    "beam": 12.2,
+    "walkable_cells": 25
+  },
+  "new_dimensions": {
+    "length": 99,
+    "beam": 36.6
+  },
+  "stations_unity_z_halfwidth": [
+    [
+      -45,
+      11.1
+    ],
+    [
+      -30,
+      15
+    ],
+    [
+      -9,
+      18.3
+    ],
+    [
+      15,
+      17.4
+    ],
+    [
+      33,
+      13.5
+    ],
+    [
+      45,
+      7.8
+    ],
+    [
+      54,
+      0.75
+    ]
+  ],
+  "water_height": -1.15,
+  "decks": [
+    {
+      "layer": 0,
+      "name": "下层货舱与船员生活舱",
+      "height": 0,
+      "minZ": -36,
+      "maxZ": 39,
+      "hull_width_factor": 0.82
+    },
+    {
+      "layer": 1,
+      "name": "主甲板",
+      "height": 4.0,
+      "minZ": -45,
+      "maxZ": 54,
+      "hull_width_factor": 0.96
+    },
+    {
+      "layer": 2,
+      "name": "抬高船艏与艉楼平台",
+      "height": 7.2,
+      "regions": [
+        [
+          -43.5,
+          -27
+        ],
+        [
+          27,
+          52
+        ]
+      ],
+      "hull_width_factor": 0.92
+    }
+  ],
+  "floor_geometry": "Navigation-generated thin decks and stairs, using existing TownSurfaceRenderer contracts. No full opaque FBX deck. Hull trim stays outside walkable boundary.",
+  "head_clearance": {
+    "lower_to_main": 4.0,
+    "main_to_forecastle": 3.2,
+    "minimum_passage": 2.0
+  },
+  "nav_margin": 0.4,
+  "lower_stair_bands": [
+    {
+      "z": -12,
+      "direction": "X",
+      "rise": 4.0,
+      "cells": 5
+    },
+    {
+      "z": 12,
+      "direction": "X",
+      "rise": 4.0,
+      "cells": 5
+    }
+  ],
+  "upper_stair_bands": [
+    {
+      "fromZ": 21,
+      "toZ": 28.5,
+      "rise": 3.2,
+      "cells": 4
+    },
+    {
+      "fromZ": -21,
+      "toZ": -28.5,
+      "rise": 3.2,
+      "cells": 4
+    }
+  ],
+  "cutaway_requirement": "When leader enters the lower hold, hide covering main/upper deck cells and upper hull segments, including upper-layer props. Preserve stairs and navigation/index/picking. On main deck keep exposed forecastle/aftercastle visible where not directly concealing an occupied interior. Reuse existing building-floor cutaway semantics; do not globally hide all raised exterior decks whenever leader is on main deck.",
+  "structure_assets": [
+    {
+      "id": 800,
+      "name": "S2_Hull_Lower",
+      "height_range": [
+        -3,
+        2.25
+      ],
+      "cameraObstacle": false,
+      "visibility": "always"
+    },
+    {
+      "id": 801,
+      "name": "S2_Hull_MainSides",
+      "height_range": [
+        2.25,
+        5.2
+      ],
+      "cameraObstacle": false,
+      "visibility": "hide in lower hold"
+    },
+    {
+      "id": 802,
+      "name": "S2_Forecastle_Sides",
+      "height_range": [
+        5.2,
+        8.4
+      ],
+      "cameraObstacle": false,
+      "visibility": "hide in lower hold"
+    },
+    {
+      "id": 803,
+      "name": "S2_Aftcastle_Sides",
+      "height_range": [
+        5.2,
+        8.4
+      ],
+      "cameraObstacle": false,
+      "visibility": "hide in lower hold"
+    },
+    {
+      "id": 804,
+      "name": "S2_MainDeck_Trim",
+      "height_range": [
+        3.75,
+        4.05
+      ],
+      "cameraObstacle": false,
+      "visibility": "hide in lower hold"
+    },
+    {
+      "id": 805,
+      "name": "S2_Partition_Solid",
+      "dimensions": [
+        5.2,
+        2.6,
+        0.25
+      ],
+      "origin": "bottom centre",
+      "visibility": "local layer"
+    },
+    {
+      "id": 806,
+      "name": "S2_Partition_Door",
+      "dimensions": [
+        5.2,
+        2.8,
+        0.25
+      ],
+      "door": {
+        "x": [
+          -1.2,
+          1.2
+        ],
+        "y": [
+          0,
+          2.45
+        ]
+      },
+      "origin": "bottom centre",
+      "visibility": "local layer"
+    },
+    {
+      "id": 807,
+      "name": "S2_DoorFrame_Wide",
+      "dimensions": [
+        4.8,
+        2.9,
+        0.35
+      ],
+      "door": {
+        "x": [
+          -1.8,
+          1.8
+        ],
+        "y": [
+          0,
+          2.6
+        ]
+      },
+      "origin": "bottom centre",
+      "visibility": "local layer"
+    },
+    {
+      "id": 808,
+      "name": "S2_HammockRack",
+      "approx_dimensions": [
+        3.2,
+        1.85,
+        3.0
+      ],
+      "origin": "bottom centre",
+      "visibility": "local layer"
+    },
+    {
+      "id": 809,
+      "name": "S2_GalleyHearth",
+      "approx_dimensions": [
+        2.2,
+        2.8,
+        1.3
+      ],
+      "origin": "bottom centre",
+      "visibility": "local layer"
+    },
+    {
+      "id": 810,
+      "name": "S2_MessTable",
+      "approx_dimensions": [
+        3.4,
+        0.85,
+        2.8
+      ],
+      "origin": "bottom centre",
+      "visibility": "local layer"
+    },
+    {
+      "id": 811,
+      "name": "S2_CargoShelves",
+      "approx_dimensions": [
+        2.8,
+        2.3,
+        1.0
+      ],
+      "origin": "bottom centre",
+      "visibility": "local layer"
+    },
+    {
+      "id": 812,
+      "name": "S2_CaptainDesk",
+      "approx_dimensions": [
+        2.2,
+        0.9,
+        1.0
+      ],
+      "origin": "bottom centre",
+      "visibility": "local layer"
+    },
+    {
+      "id": 813,
+      "name": "S2_WeaponRack",
+      "approx_dimensions": [
+        2.3,
+        1.9,
+        0.85
+      ],
+      "origin": "bottom centre",
+      "visibility": "local layer"
+    },
+    {
+      "id": 814,
+      "name": "S2_PrisonCage",
+      "approx_dimensions": [
+        3.0,
+        2.5,
+        3.0
+      ],
+      "origin": "bottom centre",
+      "visibility": "local layer"
+    },
+    {
+      "id": 815,
+      "name": "S2_Mast_Tall",
+      "approx_dimensions": [
+        56.817,
+        41.217,
+        1.902
+      ],
+      "origin": "bottom centre",
+      "visibility": "hide in lower hold",
+      "sail_dimensions": [
+        52.8,
+        23.3
+      ],
+      "minimum_sail_height": 8.0
+    }
+  ],
+  "furniture_notes": "dimensions arrays are Unity X,Y,Z. Use final manifest bounds, not estimates. Arrange partitions to leave 3.6m central passages and doors, plus side access; collision only on solid posts/walls, never door opening. Rooms should include bow stores, crew berths, galley/mess, cargo/armory and captain area. Avoid filling deck with same tiny prop repeated.",
+  "props_reserved_ids": [
+    830,
+    849
+  ],
+  "weapons_are_library_assets": "10 new ShipwreckWeapons assets, no new combat configuration required this turn"
+}

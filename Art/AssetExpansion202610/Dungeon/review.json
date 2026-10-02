@@ -1,0 +1,604 @@
+[
+  {
+    "name": "DG_Urn_TallKeeper",
+    "result": "pass_after_visual_review",
+    "reviewed_by": "Codex dungeon asset agent",
+    "date": "2026-10-01",
+    "views": {
+      "front": {
+        "path": "Previews/DG_Urn_TallKeeper_front.png",
+        "observation": "长身、窄颈、封盖比例明确；修后铜箍连续，不再露出三角切口。"
+      },
+      "side": {
+        "path": "Previews/DG_Urn_TallKeeper_side.png",
+        "observation": "轮廓对称，底座接地，颈与盖衔接完整。"
+      },
+      "back": {
+        "path": "Previews/DG_Urn_TallKeeper_back.png",
+        "observation": "背面封闭完整，三道铜箍与前面一致。"
+      }
+    },
+    "hero": "Previews/DG_Urn_TallKeeper_hero.png",
+    "geometry": {
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "triangles": 812
+    },
+    "style": "项目低多边形硬边、共享哑光自然色；检查了轮廓、功能结构、正侧背厚度与接地。",
+    "limitations": "Blender源几何和四向图已审；Unity导入、项目内放置、碰撞及随机池由主代理单独记录。",
+    "repair_record": {
+      "before": "Previews/BeforeFix/DG_Urn_TallKeeper_hero.png",
+      "after": "Previews/DG_Urn_TallKeeper_hero.png",
+      "issue": "环带与斜面相交形成锯齿",
+      "resolution": "环带按主体纵剖面插值并匹配多边形分段"
+    }
+  },
+  {
+    "name": "DG_Amphora_TwinHandle",
+    "result": "pass_after_visual_review",
+    "reviewed_by": "Codex dungeon asset agent",
+    "date": "2026-10-01",
+    "views": {
+      "front": {
+        "path": "Previews/DG_Amphora_TwinHandle_front.png",
+        "observation": "双耳轮廓完整，手把两端接入肩颈，口沿厚度明确。"
+      },
+      "side": {
+        "path": "Previews/DG_Amphora_TwinHandle_side.png",
+        "observation": "侧面可辨手把厚度，底部陶环已改为贴合斜腹。"
+      },
+      "back": {
+        "path": "Previews/DG_Amphora_TwinHandle_back.png",
+        "observation": "双耳后侧无缺面，瓶身封闭且内口保留。"
+      }
+    },
+    "hero": "Previews/DG_Amphora_TwinHandle_hero.png",
+    "geometry": {
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "triangles": 608
+    },
+    "style": "项目低多边形硬边、共享哑光自然色；检查了轮廓、功能结构、正侧背厚度与接地。",
+    "limitations": "Blender源几何和四向图已审；Unity导入、项目内放置、碰撞及随机池由主代理单独记录。",
+    "repair_record": {
+      "before": "Previews/BeforeFix/DG_Amphora_TwinHandle_hero.png",
+      "after": "Previews/DG_Amphora_TwinHandle_hero.png",
+      "issue": "环带与斜面相交形成锯齿",
+      "resolution": "环带按主体纵剖面插值并匹配多边形分段"
+    }
+  },
+  {
+    "name": "DG_Jar_SquatMoss",
+    "result": "pass_after_visual_review",
+    "reviewed_by": "Codex dungeon asset agent",
+    "date": "2026-10-01",
+    "views": {
+      "front": {
+        "path": "Previews/DG_Jar_SquatMoss_front.png",
+        "observation": "矮腹青釉与长罐区别明确，小耳位置均衡。"
+      },
+      "side": {
+        "path": "Previews/DG_Jar_SquatMoss_side.png",
+        "observation": "短颈和腹部连接自然，修后底部装饰环无锯齿。"
+      },
+      "back": {
+        "path": "Previews/DG_Jar_SquatMoss_back.png",
+        "observation": "背面口沿及厚壁正常，材质安静。"
+      }
+    },
+    "hero": "Previews/DG_Jar_SquatMoss_hero.png",
+    "geometry": {
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "triangles": 644
+    },
+    "style": "项目低多边形硬边、共享哑光自然色；检查了轮廓、功能结构、正侧背厚度与接地。",
+    "limitations": "Blender源几何和四向图已审；Unity导入、项目内放置、碰撞及随机池由主代理单独记录。",
+    "repair_record": {
+      "before": "Previews/BeforeFix/DG_Jar_SquatMoss_hero.png",
+      "after": "Previews/DG_Jar_SquatMoss_hero.png",
+      "issue": "环带与斜面相交形成锯齿",
+      "resolution": "环带按主体纵剖面插值并匹配多边形分段"
+    }
+  },
+  {
+    "name": "DG_Pot_ThreeLegCook",
+    "result": "pass_after_visual_review",
+    "reviewed_by": "Codex dungeon asset agent",
+    "date": "2026-10-01",
+    "views": {
+      "front": {
+        "path": "Previews/DG_Pot_ThreeLegCook_front.png",
+        "observation": "三足支撑与金属锅身可辨，两个锅耳没有漂浮。"
+      },
+      "side": {
+        "path": "Previews/DG_Pot_ThreeLegCook_side.png",
+        "observation": "侧面第三支脚可见，锅底离地符合烹煮功能。"
+      },
+      "back": {
+        "path": "Previews/DG_Pot_ThreeLegCook_back.png",
+        "observation": "后脚落地、环口和内壁完整；斜俯视能看见实心锅底。"
+      }
+    },
+    "hero": "Previews/DG_Pot_ThreeLegCook_hero.png",
+    "geometry": {
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "triangles": 536
+    },
+    "style": "项目低多边形硬边、共享哑光自然色；检查了轮廓、功能结构、正侧背厚度与接地。",
+    "limitations": "Blender源几何和四向图已审；Unity导入、项目内放置、碰撞及随机池由主代理单独记录。"
+  },
+  {
+    "name": "DG_Urn_HexReliquary",
+    "result": "pass_after_visual_review",
+    "reviewed_by": "Codex dungeon asset agent",
+    "date": "2026-10-01",
+    "views": {
+      "front": {
+        "path": "Previews/DG_Urn_HexReliquary_front.png",
+        "observation": "六棱石匣与陶器有明显剪影差，三道金属束带整齐。"
+      },
+      "side": {
+        "path": "Previews/DG_Urn_HexReliquary_side.png",
+        "observation": "侧棱硬边清楚，盖有厚度且与匣口重叠支撑。"
+      },
+      "back": {
+        "path": "Previews/DG_Urn_HexReliquary_back.png",
+        "observation": "背面构造闭合，未见缺面或错位。"
+      }
+    },
+    "hero": "Previews/DG_Urn_HexReliquary_hero.png",
+    "geometry": {
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "triangles": 376
+    },
+    "style": "项目低多边形硬边、共享哑光自然色；检查了轮廓、功能结构、正侧背厚度与接地。",
+    "limitations": "Blender源几何和四向图已审；Unity导入、项目内放置、碰撞及随机池由主代理单独记录。"
+  },
+  {
+    "name": "DG_Urn_BrokenOpen",
+    "result": "pass_after_visual_review",
+    "reviewed_by": "Codex dungeon asset agent",
+    "date": "2026-10-01",
+    "views": {
+      "front": {
+        "path": "Previews/DG_Urn_BrokenOpen_front.png",
+        "observation": "破口不对称有意为之，底旁碎片全部接地。"
+      },
+      "side": {
+        "path": "Previews/DG_Urn_BrokenOpen_side.png",
+        "observation": "断面保留壁厚，口沿无单面薄片。"
+      },
+      "back": {
+        "path": "Previews/DG_Urn_BrokenOpen_back.png",
+        "observation": "背面保持完整腹部，俯视破口内壁可读。"
+      }
+    },
+    "hero": "Previews/DG_Urn_BrokenOpen_hero.png",
+    "geometry": {
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "triangles": 446
+    },
+    "style": "项目低多边形硬边、共享哑光自然色；检查了轮廓、功能结构、正侧背厚度与接地。",
+    "limitations": "Blender源几何和四向图已审；Unity导入、项目内放置、碰撞及随机池由主代理单独记录。"
+  },
+  {
+    "name": "DG_Barrel_Ironbound",
+    "result": "pass_after_visual_review",
+    "reviewed_by": "Codex dungeon asset agent",
+    "date": "2026-10-01",
+    "views": {
+      "front": {
+        "path": "Previews/DG_Barrel_Ironbound_front.png",
+        "observation": "木板分片和桶腹弧度可辨，修后铁箍边缘连续。"
+      },
+      "side": {
+        "path": "Previews/DG_Barrel_Ironbound_side.png",
+        "observation": "上下收分对称，桶箍贴合木板而无穿出尖角。"
+      },
+      "back": {
+        "path": "Previews/DG_Barrel_Ironbound_back.png",
+        "observation": "背面铁箍同样完整，俯视木板封盖无漏底。"
+      }
+    },
+    "hero": "Previews/DG_Barrel_Ironbound_hero.png",
+    "geometry": {
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "triangles": 1064
+    },
+    "style": "项目低多边形硬边、共享哑光自然色；检查了轮廓、功能结构、正侧背厚度与接地。",
+    "limitations": "Blender源几何和四向图已审；Unity导入、项目内放置、碰撞及随机池由主代理单独记录。",
+    "repair_record": {
+      "before": "Previews/BeforeFix/DG_Barrel_Ironbound_hero.png",
+      "after": "Previews/DG_Barrel_Ironbound_hero.png",
+      "issue": "环带与斜面相交形成锯齿",
+      "resolution": "环带按主体纵剖面插值并匹配多边形分段"
+    }
+  },
+  {
+    "name": "DG_Barrel_BurstCache",
+    "result": "pass_after_visual_review",
+    "reviewed_by": "Codex dungeon asset agent",
+    "date": "2026-10-01",
+    "views": {
+      "front": {
+        "path": "Previews/DG_Barrel_BurstCache_front.png",
+        "observation": "缺失桶板露出内部，散落木条与小瓶形成明确破损状态。"
+      },
+      "side": {
+        "path": "Previews/DG_Barrel_BurstCache_side.png",
+        "observation": "修后桶箍不再穿出锯齿；缺口和内壁厚度正常。"
+      },
+      "back": {
+        "path": "Previews/DG_Barrel_BurstCache_back.png",
+        "observation": "背面桶壁保留，俯视敞口与碎物分离清楚。"
+      }
+    },
+    "hero": "Previews/DG_Barrel_BurstCache_hero.png",
+    "geometry": {
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "triangles": 1088
+    },
+    "style": "项目低多边形硬边、共享哑光自然色；检查了轮廓、功能结构、正侧背厚度与接地。",
+    "limitations": "Blender源几何和四向图已审；Unity导入、项目内放置、碰撞及随机池由主代理单独记录。",
+    "repair_record": {
+      "before": "Previews/BeforeFix/DG_Barrel_BurstCache_hero.png",
+      "after": "Previews/DG_Barrel_BurstCache_hero.png",
+      "issue": "环带与斜面相交形成锯齿",
+      "resolution": "环带按主体纵剖面插值并匹配多边形分段"
+    }
+  },
+  {
+    "name": "DG_Crate_OpenSupplies",
+    "result": "pass_after_visual_review",
+    "reviewed_by": "Codex dungeon asset agent",
+    "date": "2026-10-01",
+    "views": {
+      "front": {
+        "path": "Previews/DG_Crate_OpenSupplies_front.png",
+        "observation": "横板与立柱有明确承重关系，板间可见物资。"
+      },
+      "side": {
+        "path": "Previews/DG_Crate_OpenSupplies_side.png",
+        "observation": "短边封板和立柱接齐，底板接地。"
+      },
+      "back": {
+        "path": "Previews/DG_Crate_OpenSupplies_back.png",
+        "observation": "背板完整，斜俯视看到敞口瓶及账册。"
+      }
+    },
+    "hero": "Previews/DG_Crate_OpenSupplies_hero.png",
+    "geometry": {
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "triangles": 624
+    },
+    "style": "项目低多边形硬边、共享哑光自然色；检查了轮廓、功能结构、正侧背厚度与接地。",
+    "limitations": "Blender源几何和四向图已审；Unity导入、项目内放置、碰撞及随机池由主代理单独记录。"
+  },
+  {
+    "name": "DG_Shelf_ScrollArchive",
+    "result": "pass_after_visual_review",
+    "reviewed_by": "Codex dungeon asset agent",
+    "date": "2026-10-01",
+    "views": {
+      "front": {
+        "path": "Previews/DG_Shelf_ScrollArchive_front.png",
+        "observation": "书本、卷轴与横放账册分三层；修后卷轴落到架板。"
+      },
+      "side": {
+        "path": "Previews/DG_Shelf_ScrollArchive_side.png",
+        "observation": "架板厚度和侧板完整，无悬空卷轴。"
+      },
+      "back": {
+        "path": "Previews/DG_Shelf_ScrollArchive_back.png",
+        "observation": "背板闭合、四层架板均连接侧柱。"
+      }
+    },
+    "hero": "Previews/DG_Shelf_ScrollArchive_hero.png",
+    "geometry": {
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "triangles": 468
+    },
+    "style": "项目低多边形硬边、共享哑光自然色；检查了轮廓、功能结构、正侧背厚度与接地。",
+    "limitations": "Blender源几何和四向图已审；Unity导入、项目内放置、碰撞及随机池由主代理单独记录。",
+    "repair_record": {
+      "before": "Previews/BeforeFix/DG_Shelf_ScrollArchive_hero.png",
+      "after": "Previews/DG_Shelf_ScrollArchive_hero.png",
+      "issue": "卷轴离架板悬空约6cm",
+      "resolution": "卷轴底面下移至架板顶面"
+    }
+  },
+  {
+    "name": "DG_Shelf_CandleSconce",
+    "result": "pass_after_visual_review",
+    "reviewed_by": "Codex dungeon asset agent",
+    "date": "2026-10-01",
+    "views": {
+      "front": {
+        "path": "Previews/DG_Shelf_CandleSconce_front.png",
+        "observation": "四根残烛高度错落，灯芯和滴蜡可辨。"
+      },
+      "side": {
+        "path": "Previews/DG_Shelf_CandleSconce_side.png",
+        "observation": "斜铁托连接壁板与承台，壁挂结构完整。"
+      },
+      "back": {
+        "path": "Previews/DG_Shelf_CandleSconce_back.png",
+        "observation": "背面壁板与铁托没有缺面；原点为包围盒底部，安装高度由使用方设定。"
+      }
+    },
+    "hero": "Previews/DG_Shelf_CandleSconce_hero.png",
+    "geometry": {
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "triangles": 520
+    },
+    "style": "项目低多边形硬边、共享哑光自然色；检查了轮廓、功能结构、正侧背厚度与接地。",
+    "limitations": "Blender源几何和四向图已审；Unity导入、项目内放置、碰撞及随机池由主代理单独记录。"
+  },
+  {
+    "name": "DG_Candles_OfferingCluster",
+    "result": "pass_after_visual_review",
+    "reviewed_by": "Codex dungeon asset agent",
+    "date": "2026-10-01",
+    "views": {
+      "front": {
+        "path": "Previews/DG_Candles_OfferingCluster_front.png",
+        "observation": "蜡烛高低错落并立于共同石托。"
+      },
+      "side": {
+        "path": "Previews/DG_Candles_OfferingCluster_side.png",
+        "observation": "侧面前后蜡烛有层次，没有悬空根部。"
+      },
+      "back": {
+        "path": "Previews/DG_Candles_OfferingCluster_back.png",
+        "observation": "背面保持完整石托和烛体，蜡滴有厚度。"
+      }
+    },
+    "hero": "Previews/DG_Candles_OfferingCluster_hero.png",
+    "geometry": {
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "triangles": 564
+    },
+    "style": "项目低多边形硬边、共享哑光自然色；检查了轮廓、功能结构、正侧背厚度与接地。",
+    "limitations": "Blender源几何和四向图已审；Unity导入、项目内放置、碰撞及随机池由主代理单独记录。"
+  },
+  {
+    "name": "DG_Post_Shackles",
+    "result": "pass_after_visual_review",
+    "reviewed_by": "Codex dungeon asset agent",
+    "date": "2026-10-01",
+    "views": {
+      "front": {
+        "path": "Previews/DG_Post_Shackles_front.png",
+        "observation": "柱、铁箍与两只拘束环容易识别。"
+      },
+      "side": {
+        "path": "Previews/DG_Post_Shackles_side.png",
+        "observation": "侧面吊杆与腕环连通，底座承托木柱。"
+      },
+      "back": {
+        "path": "Previews/DG_Post_Shackles_back.png",
+        "observation": "背面木柱和铁箍封闭；腕环为真实中空环体。"
+      }
+    },
+    "hero": "Previews/DG_Post_Shackles_hero.png",
+    "geometry": {
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "triangles": 296
+    },
+    "style": "项目低多边形硬边、共享哑光自然色；检查了轮廓、功能结构、正侧背厚度与接地。",
+    "limitations": "Blender源几何和四向图已审；Unity导入、项目内放置、碰撞及随机池由主代理单独记录。"
+  },
+  {
+    "name": "DG_Rack_MinerTools",
+    "result": "pass_after_visual_review",
+    "reviewed_by": "Codex dungeon asset agent",
+    "date": "2026-10-01",
+    "views": {
+      "front": {
+        "path": "Previews/DG_Rack_MinerTools_front.png",
+        "observation": "镐头与铲片有区别，木架留足空隙。"
+      },
+      "side": {
+        "path": "Previews/DG_Rack_MinerTools_side.png",
+        "observation": "工具靠在架子前方，两侧地脚承托稳定。"
+      },
+      "back": {
+        "path": "Previews/DG_Rack_MinerTools_back.png",
+        "observation": "横撑接上竖柱，镐柄与镐头相接。"
+      }
+    },
+    "hero": "Previews/DG_Rack_MinerTools_hero.png",
+    "geometry": {
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "triangles": 172
+    },
+    "style": "项目低多边形硬边、共享哑光自然色；检查了轮廓、功能结构、正侧背厚度与接地。",
+    "limitations": "Blender源几何和四向图已审；Unity导入、项目内放置、碰撞及随机池由主代理单独记录。"
+  },
+  {
+    "name": "DG_Bucket_RopeWell",
+    "result": "pass_after_visual_review",
+    "reviewed_by": "Codex dungeon asset agent",
+    "date": "2026-10-01",
+    "views": {
+      "front": {
+        "path": "Previews/DG_Bucket_RopeWell_front.png",
+        "observation": "桶口和高提梁可辨，盘绳与桶分开但均接地。"
+      },
+      "side": {
+        "path": "Previews/DG_Bucket_RopeWell_side.png",
+        "observation": "提梁连接桶两侧，桶底有封闭厚度。"
+      },
+      "back": {
+        "path": "Previews/DG_Bucket_RopeWell_back.png",
+        "observation": "后部无缺面，斜俯视内壁与桶底完整。"
+      }
+    },
+    "hero": "Previews/DG_Bucket_RopeWell_hero.png",
+    "geometry": {
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "triangles": 1096
+    },
+    "style": "项目低多边形硬边、共享哑光自然色；检查了轮廓、功能结构、正侧背厚度与接地。",
+    "limitations": "Blender源几何和四向图已审；Unity导入、项目内放置、碰撞及随机池由主代理单独记录。"
+  },
+  {
+    "name": "DG_Debris_MossMasonry",
+    "result": "pass_after_visual_review",
+    "reviewed_by": "Codex dungeon asset agent",
+    "date": "2026-10-01",
+    "views": {
+      "front": {
+        "path": "Previews/DG_Debris_MossMasonry_front.png",
+        "observation": "四块砌石构成有层次碎堆，苔在上表面。"
+      },
+      "side": {
+        "path": "Previews/DG_Debris_MossMasonry_side.png",
+        "observation": "低矮堆体适合墙边散布，根条跨在后方。"
+      },
+      "back": {
+        "path": "Previews/DG_Debris_MossMasonry_back.png",
+        "observation": "背侧根条有厚度，未见漏底；这是单件陈设，不负责通行判定。"
+      }
+    },
+    "hero": "Previews/DG_Debris_MossMasonry_hero.png",
+    "geometry": {
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "triangles": 356
+    },
+    "style": "项目低多边形硬边、共享哑光自然色；检查了轮廓、功能结构、正侧背厚度与接地。",
+    "limitations": "Blender源几何和四向图已审；Unity导入、项目内放置、碰撞及随机池由主代理单独记录。"
+  },
+  {
+    "name": "DG_Marker_BrokenPilgrim",
+    "result": "pass_after_visual_review",
+    "reviewed_by": "Codex dungeon asset agent",
+    "date": "2026-10-01",
+    "views": {
+      "front": {
+        "path": "Previews/DG_Marker_BrokenPilgrim_front.png",
+        "observation": "断角墓板和日轮标记可辨，左右残烛有区别。"
+      },
+      "side": {
+        "path": "Previews/DG_Marker_BrokenPilgrim_side.png",
+        "observation": "石板厚度与独立底座清楚，标记贴于正面。"
+      },
+      "back": {
+        "path": "Previews/DG_Marker_BrokenPilgrim_back.png",
+        "observation": "背面保留素石面和小片苔色，未出现前后反贴。"
+      }
+    },
+    "hero": "Previews/DG_Marker_BrokenPilgrim_hero.png",
+    "geometry": {
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "triangles": 322
+    },
+    "style": "项目低多边形硬边、共享哑光自然色；检查了轮廓、功能结构、正侧背厚度与接地。",
+    "limitations": "Blender源几何和四向图已审；Unity导入、项目内放置、碰撞及随机池由主代理单独记录。"
+  },
+  {
+    "name": "DG_Lectern_ForgottenLedger",
+    "result": "pass_after_visual_review",
+    "reviewed_by": "Codex dungeon asset agent",
+    "date": "2026-10-01",
+    "views": {
+      "front": {
+        "path": "Previews/DG_Lectern_ForgottenLedger_front.png",
+        "observation": "打开的账册、斜面阅读台与中央柱组成完整讲台。"
+      },
+      "side": {
+        "path": "Previews/DG_Lectern_ForgottenLedger_side.png",
+        "observation": "书页V形内脊贴近台面，抬起外沿保留厚度；台面接入支柱。"
+      },
+      "back": {
+        "path": "Previews/DG_Lectern_ForgottenLedger_back.png",
+        "observation": "背面无缺面，中央柱与宽底座衔接。"
+      }
+    },
+    "hero": "Previews/DG_Lectern_ForgottenLedger_hero.png",
+    "geometry": {
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "triangles": 72
+    },
+    "style": "项目低多边形硬边、共享哑光自然色；检查了轮廓、功能结构、正侧背厚度与接地。",
+    "limitations": "Blender源几何和四向图已审；Unity导入、项目内放置、碰撞及随机池由主代理单独记录。"
+  },
+  {
+    "name": "DG_Stool_SackRest",
+    "result": "pass_after_visual_review",
+    "reviewed_by": "Codex dungeon asset agent",
+    "date": "2026-10-01",
+    "views": {
+      "front": {
+        "path": "Previews/DG_Stool_SackRest_front.png",
+        "observation": "三脚凳支持布袋；修后收口增加布结两耳，避免误认陶罐。"
+      },
+      "side": {
+        "path": "Previews/DG_Stool_SackRest_side.png",
+        "observation": "侧面三脚支撑完整，布袋下端落在凳面。"
+      },
+      "back": {
+        "path": "Previews/DG_Stool_SackRest_back.png",
+        "observation": "背面布结可辨、底脚接地；无额外悬浮碎片。"
+      }
+    },
+    "hero": "Previews/DG_Stool_SackRest_hero.png",
+    "geometry": {
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "triangles": 306
+    },
+    "style": "项目低多边形硬边、共享哑光自然色；检查了轮廓、功能结构、正侧背厚度与接地。",
+    "limitations": "Blender源几何和四向图已审；Unity导入、项目内放置、碰撞及随机池由主代理单独记录。",
+    "repair_record": {
+      "before": "Previews/BeforeFix/DG_Stool_SackRest_hero.png",
+      "after": "Previews/DG_Stool_SackRest_hero.png",
+      "issue": "布袋收口过于像陶罐盖",
+      "resolution": "添加收束布结的两个折角"
+    }
+  },
+  {
+    "name": "DG_Grate_RubbleDrain",
+    "result": "pass_after_visual_review",
+    "reviewed_by": "Codex dungeon asset agent",
+    "date": "2026-10-01",
+    "views": {
+      "front": {
+        "path": "Previews/DG_Grate_RubbleDrain_front.png",
+        "observation": "铁栅落在厚石框内，碎石均在框边。"
+      },
+      "side": {
+        "path": "Previews/DG_Grate_RubbleDrain_side.png",
+        "observation": "侧面厚度明确，栅格未穿出石框。"
+      },
+      "back": {
+        "path": "Previews/DG_Grate_RubbleDrain_back.png",
+        "observation": "背面构造一致，俯视孔隙真实存在。"
+      }
+    },
+    "hero": "Previews/DG_Grate_RubbleDrain_hero.png",
+    "geometry": {
+      "nonmanifold_edges": 0,
+      "degenerate_faces": 0,
+      "triangles": 322
+    },
+    "style": "项目低多边形硬边、共享哑光自然色；检查了轮廓、功能结构、正侧背厚度与接地。",
+    "limitations": "Blender源几何和四向图已审；Unity导入、项目内放置、碰撞及随机池由主代理单独记录。"
+  }
+]

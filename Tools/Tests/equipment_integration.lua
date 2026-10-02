@@ -25,7 +25,8 @@ local ok,err=xpcall(function()
         for i=0,2 do
             local loot=state:GetLootAt(i);assert(area:FindPath(area.entryIndex,loot.CellIndex))
             state:DeployMembers({party[1].Id},{loot.CellIndex});areas:RevealSquad(area,state)
-            assert(eq:Loot(areas,loot.Id));local count=inventory:CountItem(31)
+            assert(eq:Loot(areas,loot.Id));assert(loadfile('Tools/Tests/loot_helpers.lua'))().TakeAll(eq,areas);eq.worldLoot.session:Close()
+            local count=inventory:CountItem(31)
             assert(not eq:Loot(areas,loot.Id));assert(inventory:CountItem(31)==count)
         end
         assert(inventory:CountItem(11)==1 and inventory:CountItem(12)==1 and inventory:CountItem(13)==1 and inventory.MagazineCount==3)

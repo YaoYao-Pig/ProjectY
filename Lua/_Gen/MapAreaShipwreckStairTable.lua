@@ -1,0 +1,15 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaShipwreckStairTableRow
+---@field id number 编号
+---@field profileId number 模板
+---@field name string 梯道名称
+---@field fromLayer number 起点层
+---@field toLayer number 终点层
+---@field bottomQ number 低端落脚相对q
+---@field bottomR number 低端落脚相对r
+---@field topQ number 高端落脚相对q
+---@field topR number 高端落脚相对r
+---@field q number[] 从低到高梯格q
+---@field r number[] 从低到高梯格r
+---@field edges number[] 绝对入口/出口边高，N+1个
+return {["name"]="MapAreaShipwreckStairTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\188\150\229\143\183",["min"]=1},{["name"]="profileId",["type"]="int",["description"]="\230\168\161\230\157\191",["ref"]="MapAreaShipwreckTable"},{["name"]="name",["type"]="string",["description"]="\230\162\175\233\129\147\229\144\141\231\167\176"},{["name"]="fromLayer",["type"]="int",["description"]="\232\181\183\231\130\185\229\177\130"},{["name"]="toLayer",["type"]="int",["description"]="\231\187\136\231\130\185\229\177\130"},{["name"]="bottomQ",["type"]="int",["description"]="\228\189\142\231\171\175\232\144\189\232\132\154\231\155\184\229\175\185q"},{["name"]="bottomR",["type"]="int",["description"]="\228\189\142\231\171\175\232\144\189\232\132\154\231\155\184\229\175\185r"},{["name"]="topQ",["type"]="int",["description"]="\233\171\152\231\171\175\232\144\189\232\132\154\231\155\184\229\175\185q"},{["name"]="topR",["type"]="int",["description"]="\233\171\152\231\171\175\232\144\189\232\132\154\231\155\184\229\175\185r"},{["name"]="q",["type"]="int[]",["description"]="\228\187\142\228\189\142\229\136\176\233\171\152\230\162\175\230\160\188q"},{["name"]="r",["type"]="int[]",["description"]="\228\187\142\228\189\142\229\136\176\233\171\152\230\162\175\230\160\188r"},{["name"]="edges",["type"]="float[]",["description"]="\231\187\157\229\175\185\229\133\165\229\143\163/\229\135\186\229\143\163\232\190\185\233\171\152\239\188\140N+1\228\184\170"}},["fingerprint"]="d487347919cbb60dd6b94d2abcfc5bc7c1fc8103a0ee6bbad9645274f53161e5"}

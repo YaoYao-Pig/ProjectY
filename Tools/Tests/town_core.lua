@@ -42,7 +42,7 @@ print('PASS seeded block variation and Region themes')
 local area=make(2,2,20260924)
 local deck
 for _,cell in ipairs(area.cells) do
-    if cell.layer==1 then deck=cell end
+    if cell.layer==1 and cell.kind=='bridge' then deck=cell end
     for direction,index in ipairs(cell.neighbors) do
         local nextCell=area.cells[index]
         if area:CanStep(cell,nextCell) and not cell.blocked then

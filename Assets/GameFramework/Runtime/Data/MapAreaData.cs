@@ -8,16 +8,39 @@ namespace ProjectY.Data
     public sealed class MapAreaLootData
     {
         private int[] itemIds, counts;
+        internal LootItemData[] SearchItems;
+        internal bool Opened;
         public int Id { get; }
         public int CellIndex { get; }
         public int TableId { get; }
         public bool Looted { get; internal set; }
+        internal ContainerState Physical { get; }
+        public bool CanSearch => Physical.CanSearch;
         public string Name { get; private set; }
         public bool ContentsReady => itemIds!=null;
         public int ItemCount => itemIds==null?throw new InvalidOperationException("Loot contents are not initialized."):itemIds.Length;
         public int GetItemIdAt(int index) => itemIds[index];
-        public int GetCountAt(int index) => counts[index];
-        internal MapAreaLootData(int id,int cell,int table) {Id=id;CellIndex=cell;TableId=table;}
+        public int GetCountAt(int index)
+        {
+            if(SearchItems==null) return counts[index];
+            int count=0;
+            foreach(var item in SearchItems) if(item.SourceIndex==index) count+=item.Count;
+            return count;
+        }
+        internal void PrepareSearch(string[] kinds)
+        {
+            if(!ContentsReady || kinds.Length!=itemIds.Length) throw new ArgumentException("Loot kinds differ from contents.");
+            if(SearchItems!=null) return;
+            var entries=new List<LootItemData>();
+            for(int i=0;i<itemIds.Length;i++)
+            {
+                bool instance=kinds[i]=="weapon" || kinds[i]=="magazine" || kinds[i]=="wearable";
+                for(int j=0;j<(instance?counts[i]:1);j++)
+                    entries.Add(new LootItemData(this,entries.Count,i,itemIds[i],instance?1:counts[i],kinds[i]));
+            }
+            SearchItems=entries.ToArray();counts=null;
+        }
+        internal MapAreaLootData(int id,int cell,int table) {Id=id;CellIndex=cell;TableId=table;Physical=new ContainerState(cell);}
         internal MapAreaLootData(int id,int cell,int table,string name,int[] ids,int[] amounts):this(id,cell,table) {SetContents(name,ids,amounts);}
         public void SetContents(string name,int[] ids,int[] amounts)
         {
@@ -75,6 +98,21 @@ namespace ProjectY.Data
         public bool LootInitialized { get; private set; }
         public int LootCount => loot.Count;
         public MapAreaLootData GetLootAt(int index) => loot[index];
+        internal int ContainerRevision { get; private set; }
+        public void ConfigureContainer(int id,int durability,bool requiresBreaking,int encounter,int rotation,int[] cells)
+        {
+            if(id<1 || id>loot.Count || encounter<0 || encounter>encounters.Count)throw new ArgumentException("Unknown container or encounter.");
+            foreach(var cell in cells)CheckCell(cell);
+            loot[id-1].Physical.Configure(durability,requiresBreaking,encounter,rotation,cells);Revision++;ContainerRevision++;
+        }
+        public void UnlockContainer(int id)
+        {
+            var row=loot[id-1].Physical;
+            if(row.UnlockEncounterId>0 && !encounters[row.UnlockEncounterId-1].Defeated)throw new InvalidOperationException("Container encounter is not cleared.");
+            if(row.Unlock())Revision++;
+        }
+        public int DamageContainer(int id,int amount)
+        {int actual=loot[id-1].Physical.Damage(amount);if(actual>0){Revision++;ContainerRevision++;}return actual;}
         // 原固定配方 API 保留；Lua 在首次访问时物化固定内容。随机生成使用下面的完整重载。
         public void AddLoot(int cellIndex,int tableId)
         {

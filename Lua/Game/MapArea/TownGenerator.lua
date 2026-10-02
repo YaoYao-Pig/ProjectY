@@ -79,8 +79,8 @@ function Town.Generate(area,row,random,config)
         if not buildings:CanFit(lot,q,r,rotation,height,function(cell)return not bridgeAccess[cell.index] and not cell.reserved and (allowReserved or not reserved[cell.index])end) then lastPlacementFailure='invalid interior';return nil end
         local id=#area.props+1
         for _,index in ipairs(cells) do local cell=area.cells[index];cell.blocked=true;cell.blocksSight=true;cell.obstacleId=id;area.walkableCount=area.walkableCount-1 end
-        local reachable=Geometry.Reachable(area,area.entryIndex);local seen={};for _,index in ipairs(reachable) do seen[index]=true end
-        local gardens={};local cutsStreet=false
+        local reachable,seen,connected=buildings:Reachable(lot,q,r,rotation)
+        local gardens={};local cutsStreet=not connected
         for _,cell in ipairs(area.cells) do if not cell.blocked and not seen[cell.index] then
             if reserved[cell.index] or cell.kind~='garden' then cutsStreet=true else gardens[#gardens+1]=cell end
         end end
@@ -152,6 +152,10 @@ function Town.Generate(area,row,random,config)
         if door then homes=homes+lot.houseUnits;doors[#doors+1]=door end
     end
     assert(homes==row.houseCount,'Town presets cannot fit configured residential groups: '..homes..'/'..row.houseCount)
+    local knownDoors={};for _,door in ipairs(doors) do knownDoors[door.index]=true end
+    for _,room in ipairs(area.interiors) do for _,index in ipairs(room.doorIndices) do
+        if not knownDoors[index] then doors[#doors+1]=area.cells[index];knownDoors[index]=true end
+    end end
     -- 门前和必要坡道不摆摊；宽街两侧的小设施可以进入街道保留带，但不得断开任何层。
     local doorClear={}
     for _,door in ipairs(doors) do Geometry.Disk(door.q,door.r,1,function(q,r)local cell=area:Find(q,r);if cell then doorClear[cell.index]=true end end) end
@@ -173,7 +177,7 @@ function Town.Generate(area,row,random,config)
         local q,r={},{ };Geometry.Disk(0,0,1,function(x,y)q[#q+1]=x;r[#r+1]=y end)
         if place({assetId=area.theme.treeAssetId,scale=area.theme.treeScale,scaleMode='grid',footprintQ=q,footprintR=r,entryQ=0,entryR=2},cell.q,cell.r,0) then trees=trees+1 end
     end
-    require('Game.MapArea.TownDressing').Apply(area,row,random,config,doors)
+    require('Game.MapArea.TownDressing').Apply(area,row,random,config,doors,buildings)
     local queue,distance=Geometry.Reachable(area,area.entryIndex)
     assert(#queue==area.walkableCount,'Town street layers must stay connected');area.goalDistance=distance[area.goalIndex]
     require('Game.MapArea.TownResidents').Populate(area,row,config,doors)

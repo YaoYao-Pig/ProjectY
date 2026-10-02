@@ -1,0 +1,21 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaShipwreckTableRow
+---@field id number 模板编号
+---@field deckZ number[] Unity Z船壳剖面
+---@field deckHalfWidth number[] 对应船壳半宽
+---@field navMargin number 六角顶点外安全内缩
+---@field gapMinZ number 主甲板左舷破口Z起点
+---@field gapMaxZ number 主甲板破口Z终点
+---@field gapMaxX number 主甲板破口X上界
+---@field waterHeight number 外部水位
+---@field entryX number 主甲板入口相对X
+---@field entryZ number 主甲板入口相对Z
+---@field entryLayer number 入口楼层
+---@field goalRoomId number 最远目标房间编号
+---@field deckSurfaceId number 生成木板材质
+---@field waterSurfaceId number 外部水面材质
+---@field deckThickness number 薄木楼板厚度
+---@field stairRise number 可见踏步高度
+---@field minimumClearance number 下层开放通路板底净高
+---@field minWalkableCells number 陈设后最低可走面积
+return {["name"]="MapAreaShipwreckTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\230\168\161\230\157\191\231\188\150\229\143\183",["min"]=1},{["name"]="deckZ",["type"]="float[]",["description"]="Unity Z\232\136\185\229\163\179\229\137\150\233\157\162"},{["name"]="deckHalfWidth",["type"]="float[]",["description"]="\229\175\185\229\186\148\232\136\185\229\163\179\229\141\138\229\174\189"},{["name"]="navMargin",["type"]="float",["description"]="\229\133\173\232\167\146\233\161\182\231\130\185\229\164\150\229\174\137\229\133\168\229\134\133\231\188\169",["min"]=0},{["name"]="gapMinZ",["type"]="float",["description"]="\228\184\187\231\148\178\230\157\191\229\183\166\232\136\183\231\160\180\229\143\163Z\232\181\183\231\130\185"},{["name"]="gapMaxZ",["type"]="float",["description"]="\228\184\187\231\148\178\230\157\191\231\160\180\229\143\163Z\231\187\136\231\130\185"},{["name"]="gapMaxX",["type"]="float",["description"]="\228\184\187\231\148\178\230\157\191\231\160\180\229\143\163X\228\184\138\231\149\140"},{["name"]="waterHeight",["type"]="float",["description"]="\229\164\150\233\131\168\230\176\180\228\189\141"},{["name"]="entryX",["type"]="float",["description"]="\228\184\187\231\148\178\230\157\191\229\133\165\229\143\163\231\155\184\229\175\185X"},{["name"]="entryZ",["type"]="float",["description"]="\228\184\187\231\148\178\230\157\191\229\133\165\229\143\163\231\155\184\229\175\185Z"},{["name"]="entryLayer",["type"]="int",["description"]="\229\133\165\229\143\163\230\165\188\229\177\130"},{["name"]="goalRoomId",["type"]="int",["description"]="\230\156\128\232\191\156\231\155\174\230\160\135\230\136\191\233\151\180\231\188\150\229\143\183"},{["name"]="deckSurfaceId",["type"]="int",["description"]="\231\148\159\230\136\144\230\156\168\230\157\191\230\157\144\232\180\168",["ref"]="MapAreaSurfaceTable"},{["name"]="waterSurfaceId",["type"]="int",["description"]="\229\164\150\233\131\168\230\176\180\233\157\162\230\157\144\232\180\168",["ref"]="MapAreaSurfaceTable"},{["name"]="deckThickness",["type"]="float",["description"]="\232\150\132\230\156\168\230\165\188\230\157\191\229\142\154\229\186\166",["min"]=0.05},{["name"]="stairRise",["type"]="float",["description"]="\229\143\175\232\167\129\232\184\143\230\173\165\233\171\152\229\186\166",["min"]=0.05},{["name"]="minimumClearance",["type"]="float",["description"]="\228\184\139\229\177\130\229\188\128\230\148\190\233\128\154\232\183\175\230\157\191\229\186\149\229\135\128\233\171\152",["min"]=1.9},{["name"]="minWalkableCells",["type"]="int",["description"]="\233\153\136\232\174\190\229\144\142\230\156\128\228\189\142\229\143\175\232\181\176\233\157\162\231\167\175",["min"]=100}},["fingerprint"]="a369edbd4c04c4abcbb5a4de01f25e53749f7806a42c453708ba6f4e20a7da75"}

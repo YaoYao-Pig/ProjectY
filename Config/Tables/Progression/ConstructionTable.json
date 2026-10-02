@@ -1,0 +1,275 @@
+{
+  "version": 1,
+  "name": "ConstructionTable",
+  "description": "巧匠造物与挖掘；结构和材料的初始数值均可调整。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "对应技能 ID",
+      "ref": "CombatSkillTable"
+    },
+    {
+      "name": "kind",
+      "type": "enum",
+      "description": "施工类型",
+      "values": [
+        "fence",
+        "wall",
+        "platform",
+        "pit",
+        "trench",
+        "demolish"
+      ]
+    },
+    {
+      "name": "maxHP",
+      "type": "int",
+      "description": "结构基础耐久；地形为 0",
+      "min": 0
+    },
+    {
+      "name": "hpPerCrafting",
+      "type": "int",
+      "description": "每点巧匠增加的耐久",
+      "min": 0
+    },
+    {
+      "name": "height",
+      "type": "float",
+      "description": "相对原地面高度，米"
+    },
+    {
+      "name": "moveExtra",
+      "type": "int",
+      "description": "额外移动距离；平台上下生效，坑沟进入生效",
+      "min": 0
+    },
+    {
+      "name": "rangeBonus",
+      "type": "int",
+      "description": "站立者对低处目标的远程攻击射程增量",
+      "min": 0
+    },
+    {
+      "name": "blocksMovement",
+      "type": "bool",
+      "description": "是否阻挡通行"
+    },
+    {
+      "name": "blocksSight",
+      "type": "bool",
+      "description": "是否阻挡射线"
+    },
+    {
+      "name": "itemIds",
+      "type": "int[]",
+      "description": "施工消耗的共享背包材料",
+      "ref": "EquipmentItemTable"
+    },
+    {
+      "name": "itemCounts",
+      "type": "int[]",
+      "description": "对应材料数量"
+    },
+    {
+      "name": "toolTag",
+      "type": "string",
+      "description": "要求角色实际装备的工具标签；空串不要求"
+    },
+    {
+      "name": "diggableSurfaces",
+      "type": "int[]",
+      "description": "允许挖掘的泥土、草地表面",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "demolitionBase",
+      "type": "int",
+      "description": "破坏工事的基础结构伤害",
+      "min": 0
+    },
+    {
+      "name": "demolitionStrength",
+      "type": "int",
+      "description": "每点力量增加的结构伤害",
+      "min": 0
+    },
+    {
+      "name": "workRounds",
+      "type": "int",
+      "description": "探索时破坏工事消耗的世界回合",
+      "min": 1,
+      "default": 1
+    }
+  ],
+  "rows": [
+    {
+      "id": 301,
+      "kind": "fence",
+      "maxHP": 30,
+      "hpPerCrafting": 2,
+      "height": 0.8,
+      "moveExtra": 0,
+      "rangeBonus": 0,
+      "blocksMovement": true,
+      "blocksSight": false,
+      "itemIds": [
+        81
+      ],
+      "itemCounts": [
+        2
+      ],
+      "toolTag": "",
+      "diggableSurfaces": [],
+      "demolitionBase": 8,
+      "demolitionStrength": 2,
+      "workRounds": 1
+    },
+    {
+      "id": 302,
+      "kind": "wall",
+      "maxHP": 65,
+      "hpPerCrafting": 2,
+      "height": 1.8,
+      "moveExtra": 0,
+      "rangeBonus": 0,
+      "blocksMovement": true,
+      "blocksSight": true,
+      "itemIds": [
+        81,
+        83
+      ],
+      "itemCounts": [
+        4,
+        1
+      ],
+      "toolTag": "",
+      "diggableSurfaces": [],
+      "demolitionBase": 8,
+      "demolitionStrength": 2,
+      "workRounds": 1
+    },
+    {
+      "id": 303,
+      "kind": "platform",
+      "maxHP": 35,
+      "hpPerCrafting": 2,
+      "height": 0.65,
+      "moveExtra": 1,
+      "rangeBonus": 0,
+      "blocksMovement": false,
+      "blocksSight": false,
+      "itemIds": [
+        81,
+        82
+      ],
+      "itemCounts": [
+        3,
+        1
+      ],
+      "toolTag": "",
+      "diggableSurfaces": [],
+      "demolitionBase": 8,
+      "demolitionStrength": 2,
+      "workRounds": 1
+    },
+    {
+      "id": 304,
+      "kind": "platform",
+      "maxHP": 60,
+      "hpPerCrafting": 2,
+      "height": 1.4,
+      "moveExtra": 1,
+      "rangeBonus": 1,
+      "blocksMovement": false,
+      "blocksSight": false,
+      "itemIds": [
+        81,
+        82,
+        83
+      ],
+      "itemCounts": [
+        6,
+        2,
+        1
+      ],
+      "toolTag": "",
+      "diggableSurfaces": [],
+      "demolitionBase": 8,
+      "demolitionStrength": 2,
+      "workRounds": 1
+    },
+    {
+      "id": 305,
+      "kind": "pit",
+      "maxHP": 0,
+      "hpPerCrafting": 0,
+      "height": -0.25,
+      "moveExtra": 1,
+      "rangeBonus": 0,
+      "blocksMovement": false,
+      "blocksSight": false,
+      "itemIds": [],
+      "itemCounts": [],
+      "toolTag": "shovel",
+      "diggableSurfaces": [
+        1,
+        3,
+        7,
+        8,
+        17,
+        201,
+        202
+      ],
+      "demolitionBase": 8,
+      "demolitionStrength": 2,
+      "workRounds": 1
+    },
+    {
+      "id": 306,
+      "kind": "trench",
+      "maxHP": 0,
+      "hpPerCrafting": 0,
+      "height": -0.55,
+      "moveExtra": 2,
+      "rangeBonus": 0,
+      "blocksMovement": false,
+      "blocksSight": false,
+      "itemIds": [],
+      "itemCounts": [],
+      "toolTag": "shovel",
+      "diggableSurfaces": [
+        1,
+        3,
+        7,
+        8,
+        17,
+        201,
+        202
+      ],
+      "demolitionBase": 8,
+      "demolitionStrength": 2,
+      "workRounds": 1
+    },
+    {
+      "id": 307,
+      "kind": "demolish",
+      "maxHP": 0,
+      "hpPerCrafting": 0,
+      "height": 0,
+      "moveExtra": 0,
+      "rangeBonus": 0,
+      "blocksMovement": false,
+      "blocksSight": false,
+      "itemIds": [],
+      "itemCounts": [],
+      "toolTag": "",
+      "diggableSurfaces": [],
+      "demolitionBase": 8,
+      "demolitionStrength": 2,
+      "workRounds": 1
+    }
+  ]
+}

@@ -1,0 +1,885 @@
+[
+  {
+    "name": "AE_Hex_Swamp_Peat",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "泥炭沼地正面边缘与底边水平，侧壁无缺口。",
+    "side_review_zh": "侧面精确六角柱边界，无倒角缝隙或随机偏移。",
+    "back_review_zh": "背面与正面厚度一致；俯视修正后的连续偏置色块无放射风车花纹。",
+    "images": {
+      "front": "Previews/AE_Hex_Swamp_Peat_front.png",
+      "side": "Previews/AE_Hex_Swamp_Peat_side.png",
+      "back": "Previews/AE_Hex_Swamp_Peat_back.png",
+      "hero": "Previews/AE_Hex_Swamp_Peat_hero.png",
+      "top": "Previews/AE_Hex_Swamp_Peat_top.png"
+    },
+    "contact_sheet": "Previews/review_sheet_01.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Hex_Swamp_Moss",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "苔毯沼地正面边缘与底边水平，侧壁无缺口。",
+    "side_review_zh": "侧面精确六角柱边界，无倒角缝隙或随机偏移。",
+    "back_review_zh": "背面与正面厚度一致；俯视修正后的连续偏置色块无放射风车花纹。",
+    "images": {
+      "front": "Previews/AE_Hex_Swamp_Moss_front.png",
+      "side": "Previews/AE_Hex_Swamp_Moss_side.png",
+      "back": "Previews/AE_Hex_Swamp_Moss_back.png",
+      "hero": "Previews/AE_Hex_Swamp_Moss_hero.png",
+      "top": "Previews/AE_Hex_Swamp_Moss_top.png"
+    },
+    "contact_sheet": "Previews/review_sheet_01.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Hex_Swamp_Silt",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "沉积淤土正面边缘与底边水平，侧壁无缺口。",
+    "side_review_zh": "侧面精确六角柱边界，无倒角缝隙或随机偏移。",
+    "back_review_zh": "背面与正面厚度一致；俯视修正后的连续偏置色块无放射风车花纹。",
+    "images": {
+      "front": "Previews/AE_Hex_Swamp_Silt_front.png",
+      "side": "Previews/AE_Hex_Swamp_Silt_side.png",
+      "back": "Previews/AE_Hex_Swamp_Silt_back.png",
+      "hero": "Previews/AE_Hex_Swamp_Silt_hero.png",
+      "top": "Previews/AE_Hex_Swamp_Silt_top.png"
+    },
+    "contact_sheet": "Previews/review_sheet_01.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Hex_DarkForest_Loam",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "暗林腐殖土正面边缘与底边水平，侧壁无缺口。",
+    "side_review_zh": "侧面精确六角柱边界，无倒角缝隙或随机偏移。",
+    "back_review_zh": "背面与正面厚度一致；俯视修正后的连续偏置色块无放射风车花纹。",
+    "images": {
+      "front": "Previews/AE_Hex_DarkForest_Loam_front.png",
+      "side": "Previews/AE_Hex_DarkForest_Loam_side.png",
+      "back": "Previews/AE_Hex_DarkForest_Loam_back.png",
+      "hero": "Previews/AE_Hex_DarkForest_Loam_hero.png",
+      "top": "Previews/AE_Hex_DarkForest_Loam_top.png"
+    },
+    "contact_sheet": "Previews/review_sheet_01.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Hex_DarkForest_Rootsoil",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "盘根暗土正面边缘与底边水平，侧壁无缺口。",
+    "side_review_zh": "侧面精确六角柱边界，无倒角缝隙或随机偏移。",
+    "back_review_zh": "背面与正面厚度一致；俯视修正后的连续偏置色块无放射风车花纹。",
+    "images": {
+      "front": "Previews/AE_Hex_DarkForest_Rootsoil_front.png",
+      "side": "Previews/AE_Hex_DarkForest_Rootsoil_side.png",
+      "back": "Previews/AE_Hex_DarkForest_Rootsoil_back.png",
+      "hero": "Previews/AE_Hex_DarkForest_Rootsoil_hero.png",
+      "top": "Previews/AE_Hex_DarkForest_Rootsoil_top.png"
+    },
+    "contact_sheet": "Previews/review_sheet_01.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Hex_DarkForest_Blight",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "衰败灰紫土正面边缘与底边水平，侧壁无缺口。",
+    "side_review_zh": "侧面精确六角柱边界，无倒角缝隙或随机偏移。",
+    "back_review_zh": "背面与正面厚度一致；俯视修正后的连续偏置色块无放射风车花纹。",
+    "images": {
+      "front": "Previews/AE_Hex_DarkForest_Blight_front.png",
+      "side": "Previews/AE_Hex_DarkForest_Blight_side.png",
+      "back": "Previews/AE_Hex_DarkForest_Blight_back.png",
+      "hero": "Previews/AE_Hex_DarkForest_Blight_hero.png",
+      "top": "Previews/AE_Hex_DarkForest_Blight_top.png"
+    },
+    "contact_sheet": "Previews/review_sheet_01.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Hex_Lava_Crust",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "冷却熔岩壳正面边缘与底边水平，侧壁无缺口。",
+    "side_review_zh": "侧面精确六角柱边界，无倒角缝隙或随机偏移。",
+    "back_review_zh": "背面与正面厚度一致；俯视修正后的连续偏置色块无放射风车花纹。",
+    "images": {
+      "front": "Previews/AE_Hex_Lava_Crust_front.png",
+      "side": "Previews/AE_Hex_Lava_Crust_side.png",
+      "back": "Previews/AE_Hex_Lava_Crust_back.png",
+      "hero": "Previews/AE_Hex_Lava_Crust_hero.png",
+      "top": "Previews/AE_Hex_Lava_Crust_top.png"
+    },
+    "contact_sheet": "Previews/review_sheet_02.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Hex_Lava_Cinder",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "暗红余烬土正面边缘与底边水平，侧壁无缺口。",
+    "side_review_zh": "侧面精确六角柱边界，无倒角缝隙或随机偏移。",
+    "back_review_zh": "背面与正面厚度一致；俯视修正后的连续偏置色块无放射风车花纹。",
+    "images": {
+      "front": "Previews/AE_Hex_Lava_Cinder_front.png",
+      "side": "Previews/AE_Hex_Lava_Cinder_side.png",
+      "back": "Previews/AE_Hex_Lava_Cinder_back.png",
+      "hero": "Previews/AE_Hex_Lava_Cinder_hero.png",
+      "top": "Previews/AE_Hex_Lava_Cinder_top.png"
+    },
+    "contact_sheet": "Previews/review_sheet_02.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Hex_Lava_Scoria",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "黑色火山渣正面边缘与底边水平，侧壁无缺口。",
+    "side_review_zh": "侧面精确六角柱边界，无倒角缝隙或随机偏移。",
+    "back_review_zh": "背面与正面厚度一致；俯视修正后的连续偏置色块无放射风车花纹。",
+    "images": {
+      "front": "Previews/AE_Hex_Lava_Scoria_front.png",
+      "side": "Previews/AE_Hex_Lava_Scoria_side.png",
+      "back": "Previews/AE_Hex_Lava_Scoria_back.png",
+      "hero": "Previews/AE_Hex_Lava_Scoria_hero.png",
+      "top": "Previews/AE_Hex_Lava_Scoria_top.png"
+    },
+    "contact_sheet": "Previews/review_sheet_02.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Hex_Volcano_Ash",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "火山灰原正面边缘与底边水平，侧壁无缺口。",
+    "side_review_zh": "侧面精确六角柱边界，无倒角缝隙或随机偏移。",
+    "back_review_zh": "背面与正面厚度一致；俯视修正后的连续偏置色块无放射风车花纹。",
+    "images": {
+      "front": "Previews/AE_Hex_Volcano_Ash_front.png",
+      "side": "Previews/AE_Hex_Volcano_Ash_side.png",
+      "back": "Previews/AE_Hex_Volcano_Ash_back.png",
+      "hero": "Previews/AE_Hex_Volcano_Ash_hero.png",
+      "top": "Previews/AE_Hex_Volcano_Ash_top.png"
+    },
+    "contact_sheet": "Previews/review_sheet_02.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Hex_Volcano_Tuff",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "凝灰岩层正面边缘与底边水平，侧壁无缺口。",
+    "side_review_zh": "侧面精确六角柱边界，无倒角缝隙或随机偏移。",
+    "back_review_zh": "背面与正面厚度一致；俯视修正后的连续偏置色块无放射风车花纹。",
+    "images": {
+      "front": "Previews/AE_Hex_Volcano_Tuff_front.png",
+      "side": "Previews/AE_Hex_Volcano_Tuff_side.png",
+      "back": "Previews/AE_Hex_Volcano_Tuff_back.png",
+      "hero": "Previews/AE_Hex_Volcano_Tuff_hero.png",
+      "top": "Previews/AE_Hex_Volcano_Tuff_top.png"
+    },
+    "contact_sheet": "Previews/review_sheet_02.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Hex_Volcano_Sulphur",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "硫华热土正面边缘与底边水平，侧壁无缺口。",
+    "side_review_zh": "侧面精确六角柱边界，无倒角缝隙或随机偏移。",
+    "back_review_zh": "背面与正面厚度一致；俯视修正后的连续偏置色块无放射风车花纹。",
+    "images": {
+      "front": "Previews/AE_Hex_Volcano_Sulphur_front.png",
+      "side": "Previews/AE_Hex_Volcano_Sulphur_side.png",
+      "back": "Previews/AE_Hex_Volcano_Sulphur_back.png",
+      "hero": "Previews/AE_Hex_Volcano_Sulphur_hero.png",
+      "top": "Previews/AE_Hex_Volcano_Sulphur_top.png"
+    },
+    "contact_sheet": "Previews/review_sheet_02.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Hex_Mushroom_Mycelium",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "灰紫菌丝土正面边缘与底边水平，侧壁无缺口。",
+    "side_review_zh": "侧面精确六角柱边界，无倒角缝隙或随机偏移。",
+    "back_review_zh": "背面与正面厚度一致；俯视修正后的连续偏置色块无放射风车花纹。",
+    "images": {
+      "front": "Previews/AE_Hex_Mushroom_Mycelium_front.png",
+      "side": "Previews/AE_Hex_Mushroom_Mycelium_side.png",
+      "back": "Previews/AE_Hex_Mushroom_Mycelium_back.png",
+      "hero": "Previews/AE_Hex_Mushroom_Mycelium_hero.png",
+      "top": "Previews/AE_Hex_Mushroom_Mycelium_top.png"
+    },
+    "contact_sheet": "Previews/review_sheet_03.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Hex_Mushroom_Sporebed",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "淡色孢子床正面边缘与底边水平，侧壁无缺口。",
+    "side_review_zh": "侧面精确六角柱边界，无倒角缝隙或随机偏移。",
+    "back_review_zh": "背面与正面厚度一致；俯视修正后的连续偏置色块无放射风车花纹。",
+    "images": {
+      "front": "Previews/AE_Hex_Mushroom_Sporebed_front.png",
+      "side": "Previews/AE_Hex_Mushroom_Sporebed_side.png",
+      "back": "Previews/AE_Hex_Mushroom_Sporebed_back.png",
+      "hero": "Previews/AE_Hex_Mushroom_Sporebed_hero.png",
+      "top": "Previews/AE_Hex_Mushroom_Sporebed_top.png"
+    },
+    "contact_sheet": "Previews/review_sheet_03.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Hex_Mushroom_OldGrowth",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "陈年菌毯正面边缘与底边水平，侧壁无缺口。",
+    "side_review_zh": "侧面精确六角柱边界，无倒角缝隙或随机偏移。",
+    "back_review_zh": "背面与正面厚度一致；俯视修正后的连续偏置色块无放射风车花纹。",
+    "images": {
+      "front": "Previews/AE_Hex_Mushroom_OldGrowth_front.png",
+      "side": "Previews/AE_Hex_Mushroom_OldGrowth_side.png",
+      "back": "Previews/AE_Hex_Mushroom_OldGrowth_back.png",
+      "hero": "Previews/AE_Hex_Mushroom_OldGrowth_hero.png",
+      "top": "Previews/AE_Hex_Mushroom_OldGrowth_top.png"
+    },
+    "contact_sheet": "Previews/review_sheet_03.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Swamp_RootWillow",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "正面三叉树冠与五向板根清楚，垂枝没有悬空断接。",
+    "side_review_zh": "侧面保持枝干连接，冠层厚度足够；后方冠层部分自然遮挡。",
+    "back_review_zh": "背面能读到主干的偏转，未见额外树枝穿出树冠顶面。",
+    "images": {
+      "front": "Previews/AE_Swamp_RootWillow_front.png",
+      "side": "Previews/AE_Swamp_RootWillow_side.png",
+      "back": "Previews/AE_Swamp_RootWillow_back.png",
+      "hero": "Previews/AE_Swamp_RootWillow_hero.png"
+    },
+    "contact_sheet": "Previews/review_sheet_03.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Swamp_ReedCattails",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "七株香蒲错落，叶片有厚度，主轮廓不混成实心块。",
+    "side_review_zh": "侧面保留前后层次，部分叶交叠是植物丛的设计组成。",
+    "back_review_zh": "背面蒲头高度仍有节奏，无单面叶片消失。",
+    "images": {
+      "front": "Previews/AE_Swamp_ReedCattails_front.png",
+      "side": "Previews/AE_Swamp_ReedCattails_side.png",
+      "back": "Previews/AE_Swamp_ReedCattails_back.png",
+      "hero": "Previews/AE_Swamp_ReedCattails_hero.png"
+    },
+    "contact_sheet": "Previews/review_sheet_03.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Swamp_Rotwood",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "横卧树干与少量苔片、折枝形成简明剪影。",
+    "side_review_zh": "端口真实镂空，厚树皮与心材断面连续；未使用黑片假洞。",
+    "back_review_zh": "背面折枝方向正确，苔层贴附树皮，没有漂浮大片。",
+    "images": {
+      "front": "Previews/AE_Swamp_Rotwood_front.png",
+      "side": "Previews/AE_Swamp_Rotwood_side.png",
+      "back": "Previews/AE_Swamp_Rotwood_back.png",
+      "hero": "Previews/AE_Swamp_Rotwood_hero.png"
+    },
+    "contact_sheet": "Previews/review_sheet_03.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Swamp_WitchesStump",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "断口有大小高低变化，扇菌没有平均分布。",
+    "side_review_zh": "侧面三层菌架与根脚均可见，内壁不会从侧面漏空。",
+    "back_review_zh": "背面两条粗根提供稳定支撑，断口厚度一致。",
+    "images": {
+      "front": "Previews/AE_Swamp_WitchesStump_front.png",
+      "side": "Previews/AE_Swamp_WitchesStump_side.png",
+      "back": "Previews/AE_Swamp_WitchesStump_back.png",
+      "hero": "Previews/AE_Swamp_WitchesStump_hero.png"
+    },
+    "contact_sheet": "Previews/review_sheet_04.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_DarkForest_AncientOak",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "钩形大枝疏密分明，残叶稀疏，辨识为老树。",
+    "side_review_zh": "侧向剪影窄是枝系朝向造成，主干保持完整厚度。",
+    "back_review_zh": "背面偏心主干和折枝有连贯受力关系，无断裂飘浮。",
+    "images": {
+      "front": "Previews/AE_DarkForest_AncientOak_front.png",
+      "side": "Previews/AE_DarkForest_AncientOak_side.png",
+      "back": "Previews/AE_DarkForest_AncientOak_back.png",
+      "hero": "Previews/AE_DarkForest_AncientOak_hero.png"
+    },
+    "contact_sheet": "Previews/review_sheet_04.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_DarkForest_ThornArch",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "中央拱形负空间完整，两股荆棘顶端交织。",
+    "side_review_zh": "侧面显示藤蔓厚度和刺长，设计用于片状林缘构件。",
+    "back_review_zh": "背面仍可读到拱门，荆刺朝外，无无意封堵。",
+    "images": {
+      "front": "Previews/AE_DarkForest_ThornArch_front.png",
+      "side": "Previews/AE_DarkForest_ThornArch_side.png",
+      "back": "Previews/AE_DarkForest_ThornArch_back.png",
+      "hero": "Previews/AE_DarkForest_ThornArch_hero.png"
+    },
+    "contact_sheet": "Previews/review_sheet_04.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_DarkForest_CrowPine",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "四层针叶冠比例递减，裙边暗色确保层次可读。",
+    "side_review_zh": "偏心冠层不成为完全规则圆锥，主干接根。",
+    "back_review_zh": "背面同样完整，叶冠未出现漏面。",
+    "images": {
+      "front": "Previews/AE_DarkForest_CrowPine_front.png",
+      "side": "Previews/AE_DarkForest_CrowPine_side.png",
+      "back": "Previews/AE_DarkForest_CrowPine_back.png",
+      "hero": "Previews/AE_DarkForest_CrowPine_hero.png"
+    },
+    "contact_sheet": "Previews/review_sheet_04.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_DarkForest_RootTangle",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "盘根越过石块，中央斜断桩与低横向轮廓区别于树。",
+    "side_review_zh": "侧面根须回落地表，岩石嵌在根团内是有意包裹。",
+    "back_review_zh": "背面能看到石块与粗根的空间关系，未见不明突片。",
+    "images": {
+      "front": "Previews/AE_DarkForest_RootTangle_front.png",
+      "side": "Previews/AE_DarkForest_RootTangle_side.png",
+      "back": "Previews/AE_DarkForest_RootTangle_back.png",
+      "hero": "Previews/AE_DarkForest_RootTangle_hero.png"
+    },
+    "contact_sheet": "Previews/review_sheet_04.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Lava_BasaltOrgan",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "五根玄武岩柱高低错落，节理带与竖线可辨。",
+    "side_review_zh": "双排柱群有厚度，窄暗缝为节理而非漏面。",
+    "back_review_zh": "背面柱顶高度仍有层次，平台顶面封闭。",
+    "images": {
+      "front": "Previews/AE_Lava_BasaltOrgan_front.png",
+      "side": "Previews/AE_Lava_BasaltOrgan_side.png",
+      "back": "Previews/AE_Lava_BasaltOrgan_back.png",
+      "hero": "Previews/AE_Lava_BasaltOrgan_hero.png"
+    },
+    "contact_sheet": "Previews/review_sheet_04.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Lava_ObsidianBlades",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "四片斜向断刃大小分明，灰紫大面降低纯黑丢形。",
+    "side_review_zh": "侧面仍有不同倾角，避免纸片状晶体。",
+    "back_review_zh": "背面断面结构成立，无翻转法线造成的透明洞。",
+    "images": {
+      "front": "Previews/AE_Lava_ObsidianBlades_front.png",
+      "side": "Previews/AE_Lava_ObsidianBlades_side.png",
+      "back": "Previews/AE_Lava_ObsidianBlades_back.png",
+      "hero": "Previews/AE_Lava_ObsidianBlades_hero.png"
+    },
+    "contact_sheet": "Previews/review_sheet_05.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Lava_Fumarole",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "矮锥与两侧碎石构成开口喷气孔剪影。",
+    "side_review_zh": "侧面呈厚实火口壁，顶缘有有限破损。",
+    "back_review_zh": "背面轮廓闭合；补看俯视确认内壁下降到熔岩喉口。",
+    "images": {
+      "front": "Previews/AE_Lava_Fumarole_front.png",
+      "side": "Previews/AE_Lava_Fumarole_side.png",
+      "back": "Previews/AE_Lava_Fumarole_back.png",
+      "hero": "Previews/AE_Lava_Fumarole_hero.png",
+      "top": "Previews/AE_Lava_Fumarole_top.png"
+    },
+    "contact_sheet": "Previews/review_sheet_05.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Lava_MagmaRift",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "修正后岩板与熔岩床均贴地，旧版橙色圆管已移除。",
+    "side_review_zh": "侧面显示统一厚底和高低不同岩板，无悬空横线。",
+    "back_review_zh": "背面裂口仍与正面相通，斜俯视可读到分支熔岩。",
+    "images": {
+      "front": "Previews/AE_Lava_MagmaRift_front.png",
+      "side": "Previews/AE_Lava_MagmaRift_side.png",
+      "back": "Previews/AE_Lava_MagmaRift_back.png",
+      "hero": "Previews/AE_Lava_MagmaRift_hero.png"
+    },
+    "contact_sheet": "Previews/review_sheet_05.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Volcano_CinderCone",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "高而收束的火山锥与矮喷气孔有明显差异。",
+    "side_review_zh": "侧面地层色面延续，锥体不悬空。",
+    "back_review_zh": "背面非对称碎口完整；俯视确认真实凹腔与深色熔岩底。",
+    "images": {
+      "front": "Previews/AE_Volcano_CinderCone_front.png",
+      "side": "Previews/AE_Volcano_CinderCone_side.png",
+      "back": "Previews/AE_Volcano_CinderCone_back.png",
+      "hero": "Previews/AE_Volcano_CinderCone_hero.png",
+      "top": "Previews/AE_Volcano_CinderCone_top.png"
+    },
+    "contact_sheet": "Previews/review_sheet_05.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Volcano_BrokenCrater",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "一侧坍塌较低，碎片方向与缺口呼应。",
+    "side_review_zh": "侧面明显见到坡度高低差，不是缩小的完整火山锥。",
+    "back_review_zh": "背面轮廓连续；俯视可见降低的鞍部，未漏底。",
+    "images": {
+      "front": "Previews/AE_Volcano_BrokenCrater_front.png",
+      "side": "Previews/AE_Volcano_BrokenCrater_side.png",
+      "back": "Previews/AE_Volcano_BrokenCrater_back.png",
+      "hero": "Previews/AE_Volcano_BrokenCrater_hero.png",
+      "top": "Previews/AE_Volcano_BrokenCrater_top.png"
+    },
+    "contact_sheet": "Previews/review_sheet_05.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Volcano_SulphurChimney",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "双烟囱一高一低，浅黄色矿层区别于灰色玄武岩。",
+    "side_review_zh": "侧面双柱有前后关系，底部沉积块承接高柱。",
+    "back_review_zh": "背面完整，补看俯视确认两个独立凹喉。",
+    "images": {
+      "front": "Previews/AE_Volcano_SulphurChimney_front.png",
+      "side": "Previews/AE_Volcano_SulphurChimney_side.png",
+      "back": "Previews/AE_Volcano_SulphurChimney_back.png",
+      "hero": "Previews/AE_Volcano_SulphurChimney_hero.png",
+      "top": "Previews/AE_Volcano_SulphurChimney_top.png"
+    },
+    "contact_sheet": "Previews/review_sheet_05.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Volcano_AshSpire",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "三座偏斜尖塔与水平退台形成风蚀层理。",
+    "side_review_zh": "侧面尖峰厚度充分，台地边缘没有纸片面。",
+    "back_review_zh": "背面大块暖灰与冷灰转折可读，纹理密度不过量。",
+    "images": {
+      "front": "Previews/AE_Volcano_AshSpire_front.png",
+      "side": "Previews/AE_Volcano_AshSpire_side.png",
+      "back": "Previews/AE_Volcano_AshSpire_back.png",
+      "hero": "Previews/AE_Volcano_AshSpire_hero.png"
+    },
+    "contact_sheet": "Previews/review_sheet_06.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Mushroom_RedParasol",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "红色鼓伞、米白斑和弯菌柄辨识明确。",
+    "side_review_zh": "侧面伞盖厚、下缘有菌褶色带，菌柄不穿出盖顶。",
+    "back_review_zh": "背面斑块不完全对称，根须贴地；与既有民居同框尺度相称。",
+    "images": {
+      "front": "Previews/AE_Mushroom_RedParasol_front.png",
+      "side": "Previews/AE_Mushroom_RedParasol_side.png",
+      "back": "Previews/AE_Mushroom_RedParasol_back.png",
+      "hero": "Previews/AE_Mushroom_RedParasol_hero.png"
+    },
+    "contact_sheet": "Previews/review_sheet_06.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Mushroom_BrownCanopy",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "宽平褐伞与幼菌形成母子关系，区别于红色鼓伞。",
+    "side_review_zh": "侧面幼菌保持独立菌柄，伞盖未与母伞穿插。",
+    "back_review_zh": "背面菌柄弯曲方向合理，幼菌部分被母柄遮挡是自然层次。",
+    "images": {
+      "front": "Previews/AE_Mushroom_BrownCanopy_front.png",
+      "side": "Previews/AE_Mushroom_BrownCanopy_side.png",
+      "back": "Previews/AE_Mushroom_BrownCanopy_back.png",
+      "hero": "Previews/AE_Mushroom_BrownCanopy_hero.png"
+    },
+    "contact_sheet": "Previews/review_sheet_06.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Mushroom_IndigoLantern",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "三株铃盖菌高低不同，青色下缘与灰蓝顶部清楚。",
+    "side_review_zh": "侧向菌丛仍有前后层次，所有盖下均有菌柄支撑。",
+    "back_review_zh": "背面无盖柄错位，作为奇幻小型菌群不冒充真实物种。",
+    "images": {
+      "front": "Previews/AE_Mushroom_IndigoLantern_front.png",
+      "side": "Previews/AE_Mushroom_IndigoLantern_side.png",
+      "back": "Previews/AE_Mushroom_IndigoLantern_back.png",
+      "hero": "Previews/AE_Mushroom_IndigoLantern_hero.png"
+    },
+    "contact_sheet": "Previews/review_sheet_06.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Mushroom_ShelfColony",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "沿老桩四层菌架交替伸出，扇形厚度清楚。",
+    "side_review_zh": "侧面大菌架没有完全遮住老桩，仍能辨识主体。",
+    "back_review_zh": "背面菌架方向有变化；桩顶凹口与菌架根部的交接为有意生长。",
+    "images": {
+      "front": "Previews/AE_Mushroom_ShelfColony_front.png",
+      "side": "Previews/AE_Mushroom_ShelfColony_side.png",
+      "back": "Previews/AE_Mushroom_ShelfColony_back.png",
+      "hero": "Previews/AE_Mushroom_ShelfColony_hero.png"
+    },
+    "contact_sheet": "Previews/review_sheet_06.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  },
+  {
+    "name": "AE_Mushroom_PuffballNest",
+    "reviewer": "terrain_assets agent — direct image inspection",
+    "reviewed_on": "2026-10-01",
+    "status": "pass",
+    "front_review_zh": "六枚梨形孢子囊大小错落，区别于带柄蘑菇。",
+    "side_review_zh": "侧面群体轮廓低矮，底部齐平，囊体之间相邻不穿插。",
+    "back_review_zh": "背面材质连续，斜俯视可辨每个顶部小孔标记。",
+    "images": {
+      "front": "Previews/AE_Mushroom_PuffballNest_front.png",
+      "side": "Previews/AE_Mushroom_PuffballNest_side.png",
+      "back": "Previews/AE_Mushroom_PuffballNest_back.png",
+      "hero": "Previews/AE_Mushroom_PuffballNest_hero.png"
+    },
+    "contact_sheet": "Previews/review_sheet_06.png",
+    "criteria": {
+      "visible_alignment": "pass",
+      "unintended_visible_interpenetration": "none observed in reviewed views",
+      "closed_mesh_components": true,
+      "project_style": "flat normals, matte solid colors, large readable forms",
+      "aesthetic_assessment": "suitable for current Project Y low-poly map family"
+    },
+    "scope": "Static asset views; excludes arbitrary gameplay placement, runtime lighting and collision."
+  }
+]

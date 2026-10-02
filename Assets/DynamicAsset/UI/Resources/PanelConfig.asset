@@ -442,3 +442,81 @@ MonoBehaviour:
     PauseWorldOnOpen: 0
     CloseOnSceneChange: 1
     Prefab: {fileID: 3698062879405384698, guid: 4c115278672f78746aa1a1b14f1d22fa, type: 3}
+  - Name: EquipmentTag
+    Module: Equipment
+    Kind: 1
+    Layer: Popup
+    Modal: 0
+    ModalDimAlpha: 0.65
+    Cache: 1
+    CloseOnBack: 1
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 3124713616506535677, guid: a98ce94057ac5ce4e94c07a72caabc33, type: 3}
+  - Name: Loot
+    Module: Equipment
+    Kind: 0
+    Layer: Popup
+    Modal: 1
+    ModalDimAlpha: 0.65
+    Cache: 1
+    CloseOnBack: 1
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 1
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 7856716123253723997, guid: b91523177d00ccf4aa3b7712da80b2d2, type: 3}
+  - Name: SkillAtlasCategory
+    Module: Progression
+    Kind: 1
+    Layer: Popup
+    Modal: 0
+    ModalDimAlpha: 0.65
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 7744360938834110634, guid: d74ce64fd35795e418b4d5512200dea0, type: 3}
+  - Name: SkillAtlasNode
+    Module: Progression
+    Kind: 1
+    Layer: Popup
+    Modal: 0
+    ModalDimAlpha: 0.65
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 1341258843902109106, guid: 3a7a19dd8fa35db42bf46b8e4b4c991d, type: 3}
+  - Name: SkillAtlasEdge
+    Module: Progression
+    Kind: 1
+    Layer: Popup
+    Modal: 0
+    ModalDimAlpha: 0.65
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 8230810435814019361, guid: 3ab5ddac1c2e2384ab93857a82ca20a0, type: 3}
+  - Name: SkillAtlas
+    Module: Progression
+    Kind: 0
+    Layer: Popup
+    Modal: 1
+    ModalDimAlpha: 0.65
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 1
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 7759441491784022274, guid: 9ad16cb904d7b4d45bd7f4276aa86725, type: 3}

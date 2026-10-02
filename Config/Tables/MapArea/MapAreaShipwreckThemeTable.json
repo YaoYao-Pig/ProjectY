@@ -1,0 +1,155 @@
+{
+  "version": 1,
+  "name": "MapAreaShipwreckThemeTable",
+  "description": "沉船海雾与湿木主题；所有来源地貌均使用完整固定船模板。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "regionType",
+      "type": "enum",
+      "description": "适用大地图地貌",
+      "enumRef": "Map.E_MapRegion"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "环境主题"
+    },
+    {
+      "name": "floorColor",
+      "type": "string",
+      "description": "地面纯色 #RRGGBB"
+    },
+    {
+      "name": "wallColor",
+      "type": "string",
+      "description": "墙体纯色 #RRGGBB"
+    },
+    {
+      "name": "wallHeight",
+      "type": "float",
+      "description": "墙体高度",
+      "min": 0.5,
+      "max": 5
+    },
+    {
+      "name": "roomRadiusScale",
+      "type": "float",
+      "description": "房间尺寸倍率",
+      "min": 0.6,
+      "max": 1.4
+    },
+    {
+      "name": "windingScale",
+      "type": "float",
+      "description": "走廊曲折倍率",
+      "min": 0,
+      "max": 2
+    },
+    {
+      "name": "heightNoise",
+      "type": "float",
+      "description": "地面小幅起伏，不改变可通行性",
+      "min": 0,
+      "max": 0.25
+    },
+    {
+      "name": "assetId",
+      "type": "int",
+      "description": "地面与墙体柱模型",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "surfaceProfileId",
+      "type": "int",
+      "description": "地牢基础材质与地貌覆盖",
+      "ref": "MapAreaDungeonSurfaceTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "regionType": 1,
+      "name": "暮潮与湿木",
+      "floorColor": "#766450",
+      "wallColor": "#315963",
+      "wallHeight": 0.5,
+      "roomRadiusScale": 1,
+      "windingScale": 1,
+      "heightNoise": 0,
+      "assetId": 204,
+      "surfaceProfileId": 1
+    },
+    {
+      "id": 2,
+      "regionType": 2,
+      "name": "暮潮与湿木",
+      "floorColor": "#766450",
+      "wallColor": "#315963",
+      "wallHeight": 0.5,
+      "roomRadiusScale": 1,
+      "windingScale": 1,
+      "heightNoise": 0,
+      "assetId": 204,
+      "surfaceProfileId": 2
+    },
+    {
+      "id": 3,
+      "regionType": 3,
+      "name": "暮潮与湿木",
+      "floorColor": "#766450",
+      "wallColor": "#315963",
+      "wallHeight": 0.5,
+      "roomRadiusScale": 1,
+      "windingScale": 1,
+      "heightNoise": 0,
+      "assetId": 204,
+      "surfaceProfileId": 3
+    },
+    {
+      "id": 4,
+      "regionType": 4,
+      "name": "暮潮与湿木",
+      "floorColor": "#766450",
+      "wallColor": "#315963",
+      "wallHeight": 0.5,
+      "roomRadiusScale": 1,
+      "windingScale": 1,
+      "heightNoise": 0,
+      "assetId": 204,
+      "surfaceProfileId": 4
+    },
+    {
+      "id": 5,
+      "regionType": 5,
+      "name": "暮潮与湿木",
+      "floorColor": "#766450",
+      "wallColor": "#315963",
+      "wallHeight": 0.5,
+      "roomRadiusScale": 1,
+      "windingScale": 1,
+      "heightNoise": 0,
+      "assetId": 204,
+      "surfaceProfileId": 5
+    },
+    {
+      "id": 6,
+      "regionType": 6,
+      "name": "暮潮与湿木",
+      "floorColor": "#766450",
+      "wallColor": "#315963",
+      "wallHeight": 0.5,
+      "roomRadiusScale": 1,
+      "windingScale": 1,
+      "heightNoise": 0,
+      "assetId": 204,
+      "surfaceProfileId": 6
+    }
+  ]
+}

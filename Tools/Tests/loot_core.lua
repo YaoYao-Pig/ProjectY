@@ -35,7 +35,12 @@ for _,areaId in ipairs({1,20}) do
     local area=generator:Generate(areaId,412,9,{regionId=5,regionConfigId=5,regionType=5,q=0,r=0,height=0,biomeWeights={{regionType=5,weight=1}}})
     local plans=Chest.Plan(area,config:GetTable('MapAreaChestRuleTable'):All(),{[area.entryIndex]=true})
     local again=Chest.Plan(area,config:GetTable('MapAreaChestRuleTable'):All(),{[area.entryIndex]=true})
-    local _,distance=Chest.Distances(area);assert(#plans>=2 and #plans<=4)
+    local _,distance=Chest.Distances(area)
+    local minimum,maximum=0,0
+    for _,rule in ipairs(config:GetTable('MapAreaChestRuleTable'):All()) do if rule.areaId==areaId then
+        minimum=minimum+(rule.spawnChance==100 and rule.minCount or 0);maximum=maximum+rule.maxCount
+    end end
+    assert(#plans>=minimum and #plans<=maximum)
     local props={};for _,prop in ipairs(area.props) do for _,index in ipairs(prop.cells) do props[index]=true end end
     for i,plan in ipairs(plans) do
         assert(plan.cellIndex==again[i].cellIndex and distance[plan.cellIndex] and not area.cells[plan.cellIndex].blocked)

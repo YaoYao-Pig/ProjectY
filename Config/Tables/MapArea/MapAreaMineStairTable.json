@@ -1,0 +1,217 @@
+{
+  "version": 1,
+  "name": "MapAreaMineStairTable",
+  "description": "两端双通路木阶；明确轴向邻接，不生成跨层跳边。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定编号",
+      "min": 1
+    },
+    {
+      "name": "profileId",
+      "type": "int",
+      "description": "矿井模板",
+      "ref": "MapAreaMineTable"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "木阶名称"
+    },
+    {
+      "name": "fromLayer",
+      "type": "int",
+      "description": "低层"
+    },
+    {
+      "name": "toLayer",
+      "type": "int",
+      "description": "高层"
+    },
+    {
+      "name": "bottomQ",
+      "type": "int",
+      "description": "低端q"
+    },
+    {
+      "name": "bottomR",
+      "type": "int",
+      "description": "低端r"
+    },
+    {
+      "name": "topQ",
+      "type": "int",
+      "description": "高端q"
+    },
+    {
+      "name": "topR",
+      "type": "int",
+      "description": "高端r"
+    },
+    {
+      "name": "q",
+      "type": "int[]",
+      "description": "梯格q"
+    },
+    {
+      "name": "r",
+      "type": "int[]",
+      "description": "梯格r"
+    },
+    {
+      "name": "edges",
+      "type": "float[]",
+      "description": "逐边高度"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "profileId": 1,
+      "name": "深层北木阶",
+      "fromLayer": 0,
+      "toLayer": 1,
+      "bottomQ": -1,
+      "bottomR": -6,
+      "topQ": 6,
+      "topR": -6,
+      "q": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "r": [
+        -6,
+        -6,
+        -6,
+        -6,
+        -6,
+        -6
+      ],
+      "edges": [
+        0,
+        0.8333333333333334,
+        1.6666666666666667,
+        2.5,
+        3.3333333333333335,
+        4.166666666666667,
+        5
+      ]
+    },
+    {
+      "id": 2,
+      "profileId": 1,
+      "name": "深层南木阶",
+      "fromLayer": 0,
+      "toLayer": 1,
+      "bottomQ": 1,
+      "bottomR": 6,
+      "topQ": -6,
+      "topR": 6,
+      "q": [
+        0,
+        -1,
+        -2,
+        -3,
+        -4,
+        -5
+      ],
+      "r": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "edges": [
+        0,
+        0.8333333333333334,
+        1.6666666666666667,
+        2.5,
+        3.3333333333333335,
+        4.166666666666667,
+        5
+      ]
+    },
+    {
+      "id": 3,
+      "profileId": 1,
+      "name": "上层北木阶",
+      "fromLayer": 1,
+      "toLayer": 2,
+      "bottomQ": -1,
+      "bottomR": -6,
+      "topQ": 6,
+      "topR": -6,
+      "q": [
+        0,
+        1,
+        2,
+        3,
+        4,
+        5
+      ],
+      "r": [
+        -6,
+        -6,
+        -6,
+        -6,
+        -6,
+        -6
+      ],
+      "edges": [
+        5,
+        5.833333333333333,
+        6.666666666666667,
+        7.5,
+        8.333333333333334,
+        9.166666666666668,
+        10
+      ]
+    },
+    {
+      "id": 4,
+      "profileId": 1,
+      "name": "上层南木阶",
+      "fromLayer": 1,
+      "toLayer": 2,
+      "bottomQ": 1,
+      "bottomR": 6,
+      "topQ": -6,
+      "topR": 6,
+      "q": [
+        0,
+        -1,
+        -2,
+        -3,
+        -4,
+        -5
+      ],
+      "r": [
+        6,
+        6,
+        6,
+        6,
+        6,
+        6
+      ],
+      "edges": [
+        5,
+        5.833333333333333,
+        6.666666666666667,
+        7.5,
+        8.333333333333334,
+        9.166666666666668,
+        10
+      ]
+    }
+  ]
+}
+

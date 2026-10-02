@@ -1,0 +1,52 @@
+{
+  "passed": true,
+  "scope": "offline targeted checks only; native Unity execution recorded separately",
+  "commands": [
+    "python -B Tools/Tests/run_lua.py Tools/Tests/shipwreck_v2.lua",
+    "python -B Tools/Tests/run_lua.py Tools/Tests/town_floors.lua",
+    "python -B Tools/Tests/run_lua.py Tools/Tests/maparea_snapshot.lua",
+    "python -B Tools/Tests/run_lua.py Tools/Tests/loot_core.lua"
+  ],
+  "default_world_seed": 20260921,
+  "site_point_id": 300010,
+  "cells": 6299,
+  "walkable_cells": 1595,
+  "walkable_by_layer": {
+    "0": 505,
+    "1": 832,
+    "2": 258
+  },
+  "rooms": 9,
+  "stair_runs": 4,
+  "default_prop_instances": 83,
+  "dressing_asset_types": 20,
+  "loot_counts_by_layer": {
+    "0": [
+      3,
+      4
+    ],
+    "1": [
+      2,
+      3
+    ],
+    "2": [
+      1,
+      2
+    ]
+  },
+  "verified": [
+    "full hex inset and main-deck breach",
+    "bidirectional layer edges and matching corner heights",
+    "minimum 2m underside clearance",
+    "four-member room/stair round trips",
+    "furniture bounds do not overlap",
+    "table items use measured support heights and bounds",
+    "old town floors preserve runtime actor footprint",
+    "same default world site preserved",
+    "snapshot arrays and configuration-based loot counts"
+  ],
+  "notes": [
+    "Loot regression count assertion now accounts for the pre-existing extra forest supply rule.",
+    "No Editor, Play, compile or Refresh started by this subagent."
+  ]
+}

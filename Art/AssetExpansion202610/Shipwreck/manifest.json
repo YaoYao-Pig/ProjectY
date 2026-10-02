@@ -1,0 +1,1328 @@
+[
+  {
+    "title": "暮潮号沉船标识",
+    "category": "world_marker",
+    "design_zh": "水线原点；33米小地图船体缩制成约1.8米的大地图标識",
+    "origin": "deck plane / waterline; Blender -Y bow, +Z up; 1 unit = 1 m",
+    "references": [
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim - Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "References/skyrim_icerunner.png",
+        "study": "完整船艏船艉的剪影、风化木壳、折断桅杆与海岸遗物；不照搬船体"
+      },
+      {
+        "id": "witcher_skellige",
+        "work": "The Witcher 3: Wild Hunt — Skellige wreck",
+        "page": "https://www.nexusmods.com/witcher3/images/37479",
+        "image": "https://staticdelivery.nexusmods.com/images/952/26457784-1699556048.png",
+        "local": "References/witcher_skellige.png",
+        "study": "水线附近船体残骸、偏置损坏、较低甲板与高艉楼的层次"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "References/sot_sunken.png",
+        "study": "断裂木板、船肋、船用桶箱及低多边形大块面可读性；不采用其近世火炮"
+      }
+    ],
+    "history_reference": {
+      "title": "German Historical Museum — Cog",
+      "url": "https://www.dhm.de/mediathek/en/ship-types/milestones-in-the-history-of-european-shipbuilding/04-cog/",
+      "motif": "single square mast, broad merchant hull and raised castles; fantasy game scale rather than archaeological replica"
+    },
+    "literature_reference": {
+      "title": "William Morris — The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "river trade, cargo convoys and uncertain travel; no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_revision_2",
+    "name": "SW_Map_WreckMarker",
+    "dimensions_blender_xyz": [
+      0.6056344509124756,
+      1.6326799392700195,
+      0.5623040795326233
+    ],
+    "triangles": 2684,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWWood",
+      "M_MapLP_SWDark",
+      "M_MapLP_SWTar",
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWEnd",
+      "M_MapLP_SWPale",
+      "M_MapLP_SWDeckWet",
+      "M_MapLP_SWDeck",
+      "M_MapLP_SWIron",
+      "M_MapLP_SWCloth"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Shipwreck\\Staging\\SW_Map_WreckMarker.fbx",
+      "bytes": 104604,
+      "object": "SW_Map_WreckMarker",
+      "mesh": "SW_Map_WreckMarker_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Registered in MapAssetTable 600-618; Shipwreck area 40 and open-water sites integrated. Optional dressing pieces remain available for additional templates."
+  },
+  {
+    "title": "废弃商船标识",
+    "category": "world_marker",
+    "design_zh": "完整高艉楼与残帆识别点",
+    "origin": "deck plane / waterline; Blender -Y bow, +Z up; 1 unit = 1 m",
+    "references": [
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim - Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "References/skyrim_icerunner.png",
+        "study": "完整船艏船艉的剪影、风化木壳、折断桅杆与海岸遗物；不照搬船体"
+      },
+      {
+        "id": "witcher_skellige",
+        "work": "The Witcher 3: Wild Hunt — Skellige wreck",
+        "page": "https://www.nexusmods.com/witcher3/images/37479",
+        "image": "https://staticdelivery.nexusmods.com/images/952/26457784-1699556048.png",
+        "local": "References/witcher_skellige.png",
+        "study": "水线附近船体残骸、偏置损坏、较低甲板与高艉楼的层次"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "References/sot_sunken.png",
+        "study": "断裂木板、船肋、船用桶箱及低多边形大块面可读性；不采用其近世火炮"
+      }
+    ],
+    "history_reference": {
+      "title": "German Historical Museum — Cog",
+      "url": "https://www.dhm.de/mediathek/en/ship-types/milestones-in-the-history-of-european-shipbuilding/04-cog/",
+      "motif": "single square mast, broad merchant hull and raised castles; fantasy game scale rather than archaeological replica"
+    },
+    "literature_reference": {
+      "title": "William Morris — The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "river trade, cargo convoys and uncertain travel; no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_revision_2",
+    "name": "SW_Map_AbandonedCog",
+    "dimensions_blender_xyz": [
+      0.6056344509124756,
+      1.6326799392700195,
+      0.5623040795326233
+    ],
+    "triangles": 2444,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWWood",
+      "M_MapLP_SWDark",
+      "M_MapLP_SWTar",
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWEnd",
+      "M_MapLP_SWPale",
+      "M_MapLP_SWDeckWet",
+      "M_MapLP_SWDeck",
+      "M_MapLP_SWIron",
+      "M_MapLP_SWCloth"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Shipwreck\\Staging\\SW_Map_AbandonedCog.fbx",
+      "bytes": 95932,
+      "object": "SW_Map_AbandonedCog",
+      "mesh": "SW_Map_AbandonedCog_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Registered in MapAssetTable 600-618; Shipwreck area 40 and open-water sites integrated. Optional dressing pieces remain available for additional templates."
+  },
+  {
+    "title": "暮潮号破损船壳",
+    "category": "ship_structure",
+    "design_zh": "船壳围住开放甲板，不封闭内部；甲板高度0，船底负高度",
+    "origin": "deck plane / waterline; Blender -Y bow, +Z up; 1 unit = 1 m",
+    "references": [
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim - Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "References/skyrim_icerunner.png",
+        "study": "完整船艏船艉的剪影、风化木壳、折断桅杆与海岸遗物；不照搬船体"
+      },
+      {
+        "id": "witcher_skellige",
+        "work": "The Witcher 3: Wild Hunt — Skellige wreck",
+        "page": "https://www.nexusmods.com/witcher3/images/37479",
+        "image": "https://staticdelivery.nexusmods.com/images/952/26457784-1699556048.png",
+        "local": "References/witcher_skellige.png",
+        "study": "水线附近船体残骸、偏置损坏、较低甲板与高艉楼的层次"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "References/sot_sunken.png",
+        "study": "断裂木板、船肋、船用桶箱及低多边形大块面可读性；不采用其近世火炮"
+      }
+    ],
+    "history_reference": {
+      "title": "German Historical Museum — Cog",
+      "url": "https://www.dhm.de/mediathek/en/ship-types/milestones-in-the-history-of-european-shipbuilding/04-cog/",
+      "motif": "single square mast, broad merchant hull and raised castles; fantasy game scale rather than archaeological replica"
+    },
+    "literature_reference": {
+      "title": "William Morris — The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "river trade, cargo convoys and uncertain travel; no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_revision_2",
+    "name": "SW_Hull_CogWreck",
+    "dimensions_blender_xyz": [
+      12.35988712310791,
+      33.31999969482422,
+      5.015000343322754
+    ],
+    "triangles": 1476,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWWood",
+      "M_MapLP_SWDark",
+      "M_MapLP_SWTar",
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWEnd",
+      "M_MapLP_SWPale"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Shipwreck\\Staging\\SW_Hull_CogWreck.fbx",
+      "bytes": 65676,
+      "object": "SW_Hull_CogWreck",
+      "mesh": "SW_Hull_CogWreck_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Registered in MapAssetTable 600-618; Shipwreck area 40 and open-water sites integrated. Optional dressing pieces remain available for additional templates."
+  },
+  {
+    "title": "暮潮号连续甲板",
+    "category": "ship_structure",
+    "design_zh": "连续无六边形缝木甲板，顶高0；导航按内缩轮廓生成",
+    "origin": "deck plane / waterline; Blender -Y bow, +Z up; 1 unit = 1 m",
+    "references": [
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim - Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "References/skyrim_icerunner.png",
+        "study": "完整船艏船艉的剪影、风化木壳、折断桅杆与海岸遗物；不照搬船体"
+      },
+      {
+        "id": "witcher_skellige",
+        "work": "The Witcher 3: Wild Hunt — Skellige wreck",
+        "page": "https://www.nexusmods.com/witcher3/images/37479",
+        "image": "https://staticdelivery.nexusmods.com/images/952/26457784-1699556048.png",
+        "local": "References/witcher_skellige.png",
+        "study": "水线附近船体残骸、偏置损坏、较低甲板与高艉楼的层次"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "References/sot_sunken.png",
+        "study": "断裂木板、船肋、船用桶箱及低多边形大块面可读性；不采用其近世火炮"
+      }
+    ],
+    "history_reference": {
+      "title": "German Historical Museum — Cog",
+      "url": "https://www.dhm.de/mediathek/en/ship-types/milestones-in-the-history-of-european-shipbuilding/04-cog/",
+      "motif": "single square mast, broad merchant hull and raised castles; fantasy game scale rather than archaeological replica"
+    },
+    "literature_reference": {
+      "title": "William Morris — The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "river trade, cargo convoys and uncertain travel; no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_revision_2",
+    "name": "SW_Deck_Cog",
+    "dimensions_blender_xyz": [
+      11.720000267028809,
+      33.0,
+      0.24986404180526733
+    ],
+    "triangles": 432,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWDeckWet",
+      "M_MapLP_SWDeck",
+      "M_MapLP_SWEnd"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Shipwreck\\Staging\\SW_Deck_Cog.fbx",
+      "bytes": 27068,
+      "object": "SW_Deck_Cog",
+      "mesh": "SW_Deck_Cog_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Registered in MapAssetTable 600-618; Shipwreck area 40 and open-water sites integrated. Optional dressing pieces remain available for additional templates."
+  },
+  {
+    "title": "封闭船长艉楼",
+    "category": "ship_structure",
+    "design_zh": "后部高艉楼；内部不开放、占地阻挡",
+    "origin": "deck plane / waterline; Blender -Y bow, +Z up; 1 unit = 1 m",
+    "references": [
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim - Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "References/skyrim_icerunner.png",
+        "study": "完整船艏船艉的剪影、风化木壳、折断桅杆与海岸遗物；不照搬船体"
+      },
+      {
+        "id": "witcher_skellige",
+        "work": "The Witcher 3: Wild Hunt — Skellige wreck",
+        "page": "https://www.nexusmods.com/witcher3/images/37479",
+        "image": "https://staticdelivery.nexusmods.com/images/952/26457784-1699556048.png",
+        "local": "References/witcher_skellige.png",
+        "study": "水线附近船体残骸、偏置损坏、较低甲板与高艉楼的层次"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "References/sot_sunken.png",
+        "study": "断裂木板、船肋、船用桶箱及低多边形大块面可读性；不采用其近世火炮"
+      }
+    ],
+    "history_reference": {
+      "title": "German Historical Museum — Cog",
+      "url": "https://www.dhm.de/mediathek/en/ship-types/milestones-in-the-history-of-european-shipbuilding/04-cog/",
+      "motif": "single square mast, broad merchant hull and raised castles; fantasy game scale rather than archaeological replica"
+    },
+    "literature_reference": {
+      "title": "William Morris — The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "river trade, cargo convoys and uncertain travel; no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_revision_2",
+    "name": "SW_SternCastle",
+    "dimensions_blender_xyz": [
+      5.800000190734863,
+      5.819999694824219,
+      4.510000228881836
+    ],
+    "triangles": 344,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWWood",
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWEnd",
+      "M_MapLP_SWDark",
+      "M_MapLP_SWPale",
+      "M_MapLP_SWTar",
+      "M_MapLP_SWIron"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Shipwreck\\Staging\\SW_SternCastle.fbx",
+      "bytes": 28860,
+      "object": "SW_SternCastle",
+      "mesh": "SW_SternCastle_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Registered in MapAssetTable 600-618; Shipwreck area 40 and open-water sites integrated. Optional dressing pieces remain available for additional templates."
+  },
+  {
+    "title": "暴露船艏肋骨",
+    "category": "ship_structure",
+    "design_zh": "折断木肋组合，放置于船艏不可达边缘",
+    "origin": "deck plane / waterline; Blender -Y bow, +Z up; 1 unit = 1 m",
+    "references": [
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim - Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "References/skyrim_icerunner.png",
+        "study": "完整船艏船艉的剪影、风化木壳、折断桅杆与海岸遗物；不照搬船体"
+      },
+      {
+        "id": "witcher_skellige",
+        "work": "The Witcher 3: Wild Hunt — Skellige wreck",
+        "page": "https://www.nexusmods.com/witcher3/images/37479",
+        "image": "https://staticdelivery.nexusmods.com/images/952/26457784-1699556048.png",
+        "local": "References/witcher_skellige.png",
+        "study": "水线附近船体残骸、偏置损坏、较低甲板与高艉楼的层次"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "References/sot_sunken.png",
+        "study": "断裂木板、船肋、船用桶箱及低多边形大块面可读性；不采用其近世火炮"
+      }
+    ],
+    "history_reference": {
+      "title": "German Historical Museum — Cog",
+      "url": "https://www.dhm.de/mediathek/en/ship-types/milestones-in-the-history-of-european-shipbuilding/04-cog/",
+      "motif": "single square mast, broad merchant hull and raised castles; fantasy game scale rather than archaeological replica"
+    },
+    "literature_reference": {
+      "title": "William Morris — The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "river trade, cargo convoys and uncertain travel; no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_revision_2",
+    "name": "SW_BowRibs",
+    "dimensions_blender_xyz": [
+      5.453301429748535,
+      4.300000190734863,
+      1.912329077720642
+    ],
+    "triangles": 228,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWEnd",
+      "M_MapLP_SWWood",
+      "M_MapLP_SWPlank"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Shipwreck\\Staging\\SW_BowRibs.fbx",
+      "bytes": 24380,
+      "object": "SW_BowRibs",
+      "mesh": "SW_BowRibs_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Registered in MapAssetTable 600-618; Shipwreck area 40 and open-water sites integrated. Optional dressing pieces remain available for additional templates."
+  },
+  {
+    "title": "断桅与残方帆",
+    "category": "ship_structure",
+    "design_zh": "单桅方帆，断口浅色木芯；最低帆缘高于3米",
+    "origin": "deck plane / waterline; Blender -Y bow, +Z up; 1 unit = 1 m",
+    "references": [
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim - Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "References/skyrim_icerunner.png",
+        "study": "完整船艏船艉的剪影、风化木壳、折断桅杆与海岸遗物；不照搬船体"
+      },
+      {
+        "id": "witcher_skellige",
+        "work": "The Witcher 3: Wild Hunt — Skellige wreck",
+        "page": "https://www.nexusmods.com/witcher3/images/37479",
+        "image": "https://staticdelivery.nexusmods.com/images/952/26457784-1699556048.png",
+        "local": "References/witcher_skellige.png",
+        "study": "水线附近船体残骸、偏置损坏、较低甲板与高艉楼的层次"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "References/sot_sunken.png",
+        "study": "断裂木板、船肋、船用桶箱及低多边形大块面可读性；不采用其近世火炮"
+      }
+    ],
+    "history_reference": {
+      "title": "German Historical Museum — Cog",
+      "url": "https://www.dhm.de/mediathek/en/ship-types/milestones-in-the-history-of-european-shipbuilding/04-cog/",
+      "motif": "single square mast, broad merchant hull and raised castles; fantasy game scale rather than archaeological replica"
+    },
+    "literature_reference": {
+      "title": "William Morris — The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "river trade, cargo convoys and uncertain travel; no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_revision_2",
+    "name": "SW_Mast_BrokenSquare",
+    "dimensions_blender_xyz": [
+      7.114972114562988,
+      0.9510565400123596,
+      7.497742176055908
+    ],
+    "triangles": 204,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWWood",
+      "M_MapLP_SWTar",
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWCloth",
+      "M_MapLP_SWDark",
+      "M_MapLP_SWEnd"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Shipwreck\\Staging\\SW_Mast_BrokenSquare.fbx",
+      "bytes": 27996,
+      "object": "SW_Mast_BrokenSquare",
+      "mesh": "SW_Mast_BrokenSquare_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Registered in MapAssetTable 600-618; Shipwreck area 40 and open-water sites integrated. Optional dressing pieces remain available for additional templates."
+  },
+  {
+    "title": "横卧桅杆残骸",
+    "category": "ship_dressing",
+    "design_zh": "横卧倒桅，按完整外形阻挡，不跨主通道",
+    "origin": "deck plane / waterline; Blender -Y bow, +Z up; 1 unit = 1 m",
+    "references": [
+      {
+        "id": "witcher_skellige",
+        "work": "The Witcher 3: Wild Hunt — Skellige wreck",
+        "page": "https://www.nexusmods.com/witcher3/images/37479",
+        "image": "https://staticdelivery.nexusmods.com/images/952/26457784-1699556048.png",
+        "local": "References/witcher_skellige.png",
+        "study": "水线附近船体残骸、偏置损坏、较低甲板与高艉楼的层次"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "References/sot_sunken.png",
+        "study": "断裂木板、船肋、船用桶箱及低多边形大块面可读性；不采用其近世火炮"
+      },
+      {
+        "id": "sot_supplies",
+        "work": "Sea of Thieves — Pirate Academy supplies",
+        "page": "https://www.seaofthieves.com/pirate-academy/guide/supplies",
+        "image": "https://rare-assets.azureedge.net/compass/0e7624c0761821271f2a73974192068fa3dbffe3.jpg",
+        "local": "References/sot_supplies.png",
+        "study": "船舱货物、桶箍与木框的功能形体，独立陈设留出走道"
+      }
+    ],
+    "history_reference": {
+      "title": "German Historical Museum — Cog",
+      "url": "https://www.dhm.de/mediathek/en/ship-types/milestones-in-the-history-of-european-shipbuilding/04-cog/",
+      "motif": "single square mast, broad merchant hull and raised castles; fantasy game scale rather than archaeological replica"
+    },
+    "literature_reference": {
+      "title": "William Morris — The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "river trade, cargo convoys and uncertain travel; no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_revision_2",
+    "name": "SW_Mast_Fallen",
+    "dimensions_blender_xyz": [
+      7.525792121887207,
+      0.9510565400123596,
+      7.012269020080566
+    ],
+    "triangles": 204,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWWood",
+      "M_MapLP_SWTar",
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWCloth",
+      "M_MapLP_SWDark",
+      "M_MapLP_SWEnd"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Shipwreck\\Staging\\SW_Mast_Fallen.fbx",
+      "bytes": 28396,
+      "object": "SW_Mast_Fallen",
+      "mesh": "SW_Mast_Fallen_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Registered in MapAssetTable 600-618; Shipwreck area 40 and open-water sites integrated. Optional dressing pieces remain available for additional templates."
+  },
+  {
+    "title": "断裂船舷栏杆",
+    "category": "ship_dressing",
+    "design_zh": "完整低栏与参差断柱，沿甲板边缘摆放",
+    "origin": "deck plane / waterline; Blender -Y bow, +Z up; 1 unit = 1 m",
+    "references": [
+      {
+        "id": "witcher_skellige",
+        "work": "The Witcher 3: Wild Hunt — Skellige wreck",
+        "page": "https://www.nexusmods.com/witcher3/images/37479",
+        "image": "https://staticdelivery.nexusmods.com/images/952/26457784-1699556048.png",
+        "local": "References/witcher_skellige.png",
+        "study": "水线附近船体残骸、偏置损坏、较低甲板与高艉楼的层次"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "References/sot_sunken.png",
+        "study": "断裂木板、船肋、船用桶箱及低多边形大块面可读性；不采用其近世火炮"
+      },
+      {
+        "id": "sot_supplies",
+        "work": "Sea of Thieves — Pirate Academy supplies",
+        "page": "https://www.seaofthieves.com/pirate-academy/guide/supplies",
+        "image": "https://rare-assets.azureedge.net/compass/0e7624c0761821271f2a73974192068fa3dbffe3.jpg",
+        "local": "References/sot_supplies.png",
+        "study": "船舱货物、桶箍与木框的功能形体，独立陈设留出走道"
+      }
+    ],
+    "history_reference": {
+      "title": "German Historical Museum — Cog",
+      "url": "https://www.dhm.de/mediathek/en/ship-types/milestones-in-the-history-of-european-shipbuilding/04-cog/",
+      "motif": "single square mast, broad merchant hull and raised castles; fantasy game scale rather than archaeological replica"
+    },
+    "literature_reference": {
+      "title": "William Morris — The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "river trade, cargo convoys and uncertain travel; no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_revision_2",
+    "name": "SW_Rail_Broken",
+    "dimensions_blender_xyz": [
+      3.740000009536743,
+      0.18000000715255737,
+      1.148328185081482
+    ],
+    "triangles": 84,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWWood",
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWEnd",
+      "M_MapLP_SWTar"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Shipwreck\\Staging\\SW_Rail_Broken.fbx",
+      "bytes": 20396,
+      "object": "SW_Rail_Broken",
+      "mesh": "SW_Rail_Broken_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Registered in MapAssetTable 600-618; Shipwreck area 40 and open-water sites integrated. Optional dressing pieces remain available for additional templates."
+  },
+  {
+    "title": "塌陷货舱口",
+    "category": "ship_dressing",
+    "design_zh": "深色有厚度舱底和断盖；整体不可行走",
+    "origin": "deck plane / waterline; Blender -Y bow, +Z up; 1 unit = 1 m",
+    "references": [
+      {
+        "id": "witcher_skellige",
+        "work": "The Witcher 3: Wild Hunt — Skellige wreck",
+        "page": "https://www.nexusmods.com/witcher3/images/37479",
+        "image": "https://staticdelivery.nexusmods.com/images/952/26457784-1699556048.png",
+        "local": "References/witcher_skellige.png",
+        "study": "水线附近船体残骸、偏置损坏、较低甲板与高艉楼的层次"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "References/sot_sunken.png",
+        "study": "断裂木板、船肋、船用桶箱及低多边形大块面可读性；不采用其近世火炮"
+      },
+      {
+        "id": "sot_supplies",
+        "work": "Sea of Thieves — Pirate Academy supplies",
+        "page": "https://www.seaofthieves.com/pirate-academy/guide/supplies",
+        "image": "https://rare-assets.azureedge.net/compass/0e7624c0761821271f2a73974192068fa3dbffe3.jpg",
+        "local": "References/sot_supplies.png",
+        "study": "船舱货物、桶箍与木框的功能形体，独立陈设留出走道"
+      }
+    ],
+    "history_reference": {
+      "title": "German Historical Museum — Cog",
+      "url": "https://www.dhm.de/mediathek/en/ship-types/milestones-in-the-history-of-european-shipbuilding/04-cog/",
+      "motif": "single square mast, broad merchant hull and raised castles; fantasy game scale rather than archaeological replica"
+    },
+    "literature_reference": {
+      "title": "William Morris — The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "river trade, cargo convoys and uncertain travel; no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_revision_2",
+    "name": "SW_Hatch_Collapsed",
+    "dimensions_blender_xyz": [
+      2.4000000953674316,
+      2.799999952316284,
+      0.35991156101226807
+    ],
+    "triangles": 128,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWDark",
+      "M_MapLP_SWPale",
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWIron"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Shipwreck\\Staging\\SW_Hatch_Collapsed.fbx",
+      "bytes": 22348,
+      "object": "SW_Hatch_Collapsed",
+      "mesh": "SW_Hatch_Collapsed_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Registered in MapAssetTable 600-618; Shipwreck area 40 and open-water sites integrated. Optional dressing pieces remain available for additional templates."
+  },
+  {
+    "title": "木质绞盘",
+    "category": "ship_dressing",
+    "design_zh": "四臂绞盘与铁箍，船首缆绳设备",
+    "origin": "deck plane / waterline; Blender -Y bow, +Z up; 1 unit = 1 m",
+    "references": [
+      {
+        "id": "witcher_skellige",
+        "work": "The Witcher 3: Wild Hunt — Skellige wreck",
+        "page": "https://www.nexusmods.com/witcher3/images/37479",
+        "image": "https://staticdelivery.nexusmods.com/images/952/26457784-1699556048.png",
+        "local": "References/witcher_skellige.png",
+        "study": "水线附近船体残骸、偏置损坏、较低甲板与高艉楼的层次"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "References/sot_sunken.png",
+        "study": "断裂木板、船肋、船用桶箱及低多边形大块面可读性；不采用其近世火炮"
+      },
+      {
+        "id": "sot_supplies",
+        "work": "Sea of Thieves — Pirate Academy supplies",
+        "page": "https://www.seaofthieves.com/pirate-academy/guide/supplies",
+        "image": "https://rare-assets.azureedge.net/compass/0e7624c0761821271f2a73974192068fa3dbffe3.jpg",
+        "local": "References/sot_supplies.png",
+        "study": "船舱货物、桶箍与木框的功能形体，独立陈设留出走道"
+      }
+    ],
+    "history_reference": {
+      "title": "German Historical Museum — Cog",
+      "url": "https://www.dhm.de/mediathek/en/ship-types/milestones-in-the-history-of-european-shipbuilding/04-cog/",
+      "motif": "single square mast, broad merchant hull and raised castles; fantasy game scale rather than archaeological replica"
+    },
+    "literature_reference": {
+      "title": "William Morris — The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "river trade, cargo convoys and uncertain travel; no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_revision_2",
+    "name": "SW_Capstan",
+    "dimensions_blender_xyz": [
+      1.899999976158142,
+      1.899999976158142,
+      1.1200000047683716
+    ],
+    "triangles": 1020,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWWood",
+      "M_MapLP_SWPale",
+      "M_MapLP_SWIron"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Shipwreck\\Staging\\SW_Capstan.fbx",
+      "bytes": 41708,
+      "object": "SW_Capstan",
+      "mesh": "SW_Capstan_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Registered in MapAssetTable 600-618; Shipwreck area 40 and open-water sites integrated. Optional dressing pieces remain available for additional templates."
+  },
+  {
+    "title": "铁锈双爪锚",
+    "category": "ship_dressing",
+    "design_zh": "横木锚杆、双爪和吊环，保留中世纪船用轮廓",
+    "origin": "deck plane / waterline; Blender -Y bow, +Z up; 1 unit = 1 m",
+    "references": [
+      {
+        "id": "witcher_skellige",
+        "work": "The Witcher 3: Wild Hunt — Skellige wreck",
+        "page": "https://www.nexusmods.com/witcher3/images/37479",
+        "image": "https://staticdelivery.nexusmods.com/images/952/26457784-1699556048.png",
+        "local": "References/witcher_skellige.png",
+        "study": "水线附近船体残骸、偏置损坏、较低甲板与高艉楼的层次"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "References/sot_sunken.png",
+        "study": "断裂木板、船肋、船用桶箱及低多边形大块面可读性；不采用其近世火炮"
+      },
+      {
+        "id": "sot_supplies",
+        "work": "Sea of Thieves — Pirate Academy supplies",
+        "page": "https://www.seaofthieves.com/pirate-academy/guide/supplies",
+        "image": "https://rare-assets.azureedge.net/compass/0e7624c0761821271f2a73974192068fa3dbffe3.jpg",
+        "local": "References/sot_supplies.png",
+        "study": "船舱货物、桶箍与木框的功能形体，独立陈设留出走道"
+      }
+    ],
+    "history_reference": {
+      "title": "German Historical Museum — Cog",
+      "url": "https://www.dhm.de/mediathek/en/ship-types/milestones-in-the-history-of-european-shipbuilding/04-cog/",
+      "motif": "single square mast, broad merchant hull and raised castles; fantasy game scale rather than archaeological replica"
+    },
+    "literature_reference": {
+      "title": "William Morris — The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "river trade, cargo convoys and uncertain travel; no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_revision_2",
+    "name": "SW_Anchor_Rusted",
+    "dimensions_blender_xyz": [
+      1.399999976158142,
+      0.19999998807907104,
+      1.7757564783096313
+    ],
+    "triangles": 312,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWIron",
+      "M_MapLP_SWWood",
+      "M_MapLP_SWRust"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Shipwreck\\Staging\\SW_Anchor_Rusted.fbx",
+      "bytes": 25852,
+      "object": "SW_Anchor_Rusted",
+      "mesh": "SW_Anchor_Rusted_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Registered in MapAssetTable 600-618; Shipwreck area 40 and open-water sites integrated. Optional dressing pieces remain available for additional templates."
+  },
+  {
+    "title": "潮湿盐货箱垛",
+    "category": "ship_dressing",
+    "design_zh": "三只木箱形成完整货垛，侧面盐封标签",
+    "origin": "deck plane / waterline; Blender -Y bow, +Z up; 1 unit = 1 m",
+    "references": [
+      {
+        "id": "witcher_skellige",
+        "work": "The Witcher 3: Wild Hunt — Skellige wreck",
+        "page": "https://www.nexusmods.com/witcher3/images/37479",
+        "image": "https://staticdelivery.nexusmods.com/images/952/26457784-1699556048.png",
+        "local": "References/witcher_skellige.png",
+        "study": "水线附近船体残骸、偏置损坏、较低甲板与高艉楼的层次"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "References/sot_sunken.png",
+        "study": "断裂木板、船肋、船用桶箱及低多边形大块面可读性；不采用其近世火炮"
+      },
+      {
+        "id": "sot_supplies",
+        "work": "Sea of Thieves — Pirate Academy supplies",
+        "page": "https://www.seaofthieves.com/pirate-academy/guide/supplies",
+        "image": "https://rare-assets.azureedge.net/compass/0e7624c0761821271f2a73974192068fa3dbffe3.jpg",
+        "local": "References/sot_supplies.png",
+        "study": "船舱货物、桶箍与木框的功能形体，独立陈设留出走道"
+      }
+    ],
+    "history_reference": {
+      "title": "German Historical Museum — Cog",
+      "url": "https://www.dhm.de/mediathek/en/ship-types/milestones-in-the-history-of-european-shipbuilding/04-cog/",
+      "motif": "single square mast, broad merchant hull and raised castles; fantasy game scale rather than archaeological replica"
+    },
+    "literature_reference": {
+      "title": "William Morris — The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "river trade, cargo convoys and uncertain travel; no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_revision_2",
+    "name": "SW_Cargo_SaltCrates",
+    "dimensions_blender_xyz": [
+      2.0900001525878906,
+      1.2999999523162842,
+      1.497499942779541
+    ],
+    "triangles": 336,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWWood",
+      "M_MapLP_SWPale",
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWDark",
+      "M_MapLP_SWCloth"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Shipwreck\\Staging\\SW_Cargo_SaltCrates.fbx",
+      "bytes": 26764,
+      "object": "SW_Cargo_SaltCrates",
+      "mesh": "SW_Cargo_SaltCrates_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Registered in MapAssetTable 600-618; Shipwreck area 40 and open-water sites integrated. Optional dressing pieces remain available for additional templates."
+  },
+  {
+    "title": "湿木桶货组",
+    "category": "ship_dressing",
+    "design_zh": "高低双桶和少量水藻，完整铁箍",
+    "origin": "deck plane / waterline; Blender -Y bow, +Z up; 1 unit = 1 m",
+    "references": [
+      {
+        "id": "witcher_skellige",
+        "work": "The Witcher 3: Wild Hunt — Skellige wreck",
+        "page": "https://www.nexusmods.com/witcher3/images/37479",
+        "image": "https://staticdelivery.nexusmods.com/images/952/26457784-1699556048.png",
+        "local": "References/witcher_skellige.png",
+        "study": "水线附近船体残骸、偏置损坏、较低甲板与高艉楼的层次"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "References/sot_sunken.png",
+        "study": "断裂木板、船肋、船用桶箱及低多边形大块面可读性；不采用其近世火炮"
+      },
+      {
+        "id": "sot_supplies",
+        "work": "Sea of Thieves — Pirate Academy supplies",
+        "page": "https://www.seaofthieves.com/pirate-academy/guide/supplies",
+        "image": "https://rare-assets.azureedge.net/compass/0e7624c0761821271f2a73974192068fa3dbffe3.jpg",
+        "local": "References/sot_supplies.png",
+        "study": "船舱货物、桶箍与木框的功能形体，独立陈设留出走道"
+      }
+    ],
+    "history_reference": {
+      "title": "German Historical Museum — Cog",
+      "url": "https://www.dhm.de/mediathek/en/ship-types/milestones-in-the-history-of-european-shipbuilding/04-cog/",
+      "motif": "single square mast, broad merchant hull and raised castles; fantasy game scale rather than archaeological replica"
+    },
+    "literature_reference": {
+      "title": "William Morris — The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "river trade, cargo convoys and uncertain travel; no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_revision_2",
+    "name": "SW_Cargo_WetBarrels",
+    "dimensions_blender_xyz": [
+      1.9212000370025635,
+      1.0836000442504883,
+      1.2074999809265137
+    ],
+    "triangles": 608,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWWood",
+      "M_MapLP_SWIron",
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWTeal"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Shipwreck\\Staging\\SW_Cargo_WetBarrels.fbx",
+      "bytes": 33804,
+      "object": "SW_Cargo_WetBarrels",
+      "mesh": "SW_Cargo_WetBarrels_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Registered in MapAssetTable 600-618; Shipwreck area 40 and open-water sites integrated. Optional dressing pieces remain available for additional templates."
+  },
+  {
+    "title": "盘绕船缆",
+    "category": "ship_dressing",
+    "design_zh": "粗缆五圈和散开绳尾",
+    "origin": "deck plane / waterline; Blender -Y bow, +Z up; 1 unit = 1 m",
+    "references": [
+      {
+        "id": "witcher_skellige",
+        "work": "The Witcher 3: Wild Hunt — Skellige wreck",
+        "page": "https://www.nexusmods.com/witcher3/images/37479",
+        "image": "https://staticdelivery.nexusmods.com/images/952/26457784-1699556048.png",
+        "local": "References/witcher_skellige.png",
+        "study": "水线附近船体残骸、偏置损坏、较低甲板与高艉楼的层次"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "References/sot_sunken.png",
+        "study": "断裂木板、船肋、船用桶箱及低多边形大块面可读性；不采用其近世火炮"
+      },
+      {
+        "id": "sot_supplies",
+        "work": "Sea of Thieves — Pirate Academy supplies",
+        "page": "https://www.seaofthieves.com/pirate-academy/guide/supplies",
+        "image": "https://rare-assets.azureedge.net/compass/0e7624c0761821271f2a73974192068fa3dbffe3.jpg",
+        "local": "References/sot_supplies.png",
+        "study": "船舱货物、桶箍与木框的功能形体，独立陈设留出走道"
+      }
+    ],
+    "history_reference": {
+      "title": "German Historical Museum — Cog",
+      "url": "https://www.dhm.de/mediathek/en/ship-types/milestones-in-the-history-of-european-shipbuilding/04-cog/",
+      "motif": "single square mast, broad merchant hull and raised castles; fantasy game scale rather than archaeological replica"
+    },
+    "literature_reference": {
+      "title": "William Morris — The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "river trade, cargo convoys and uncertain travel; no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_revision_2",
+    "name": "SW_Rope_Coil",
+    "dimensions_blender_xyz": [
+      1.1920758485794067,
+      0.9279999732971191,
+      0.08349338918924332
+    ],
+    "triangles": 1720,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWPale"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Shipwreck\\Staging\\SW_Rope_Coil.fbx",
+      "bytes": 57356,
+      "object": "SW_Rope_Coil",
+      "mesh": "SW_Rope_Coil_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Registered in MapAssetTable 600-618; Shipwreck area 40 and open-water sites integrated. Optional dressing pieces remain available for additional templates."
+  },
+  {
+    "title": "旧铜船钟",
+    "category": "ship_dressing",
+    "design_zh": "木架铜钟、挂点与钟舌均有实体连接",
+    "origin": "deck plane / waterline; Blender -Y bow, +Z up; 1 unit = 1 m",
+    "references": [
+      {
+        "id": "witcher_skellige",
+        "work": "The Witcher 3: Wild Hunt — Skellige wreck",
+        "page": "https://www.nexusmods.com/witcher3/images/37479",
+        "image": "https://staticdelivery.nexusmods.com/images/952/26457784-1699556048.png",
+        "local": "References/witcher_skellige.png",
+        "study": "水线附近船体残骸、偏置损坏、较低甲板与高艉楼的层次"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "References/sot_sunken.png",
+        "study": "断裂木板、船肋、船用桶箱及低多边形大块面可读性；不采用其近世火炮"
+      },
+      {
+        "id": "sot_supplies",
+        "work": "Sea of Thieves — Pirate Academy supplies",
+        "page": "https://www.seaofthieves.com/pirate-academy/guide/supplies",
+        "image": "https://rare-assets.azureedge.net/compass/0e7624c0761821271f2a73974192068fa3dbffe3.jpg",
+        "local": "References/sot_supplies.png",
+        "study": "船舱货物、桶箍与木框的功能形体，独立陈设留出走道"
+      }
+    ],
+    "history_reference": {
+      "title": "German Historical Museum — Cog",
+      "url": "https://www.dhm.de/mediathek/en/ship-types/milestones-in-the-history-of-european-shipbuilding/04-cog/",
+      "motif": "single square mast, broad merchant hull and raised castles; fantasy game scale rather than archaeological replica"
+    },
+    "literature_reference": {
+      "title": "William Morris — The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "river trade, cargo convoys and uncertain travel; no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_revision_2",
+    "name": "SW_Bell_BrokenFrame",
+    "dimensions_blender_xyz": [
+      1.3799999952316284,
+      0.7599999904632568,
+      1.8899999856948853
+    ],
+    "triangles": 260,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWWood",
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWIron",
+      "M_MapLP_SWBronze",
+      "M_MapLP_SWDark"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Shipwreck\\Staging\\SW_Bell_BrokenFrame.fbx",
+      "bytes": 26092,
+      "object": "SW_Bell_BrokenFrame",
+      "mesh": "SW_Bell_BrokenFrame_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Registered in MapAssetTable 600-618; Shipwreck area 40 and open-water sites integrated. Optional dressing pieces remain available for additional templates."
+  },
+  {
+    "title": "漂积木板",
+    "category": "ship_dressing",
+    "design_zh": "三根交错木板与少量水藻，低矮不挡视线",
+    "origin": "deck plane / waterline; Blender -Y bow, +Z up; 1 unit = 1 m",
+    "references": [
+      {
+        "id": "witcher_skellige",
+        "work": "The Witcher 3: Wild Hunt — Skellige wreck",
+        "page": "https://www.nexusmods.com/witcher3/images/37479",
+        "image": "https://staticdelivery.nexusmods.com/images/952/26457784-1699556048.png",
+        "local": "References/witcher_skellige.png",
+        "study": "水线附近船体残骸、偏置损坏、较低甲板与高艉楼的层次"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "References/sot_sunken.png",
+        "study": "断裂木板、船肋、船用桶箱及低多边形大块面可读性；不采用其近世火炮"
+      },
+      {
+        "id": "sot_supplies",
+        "work": "Sea of Thieves — Pirate Academy supplies",
+        "page": "https://www.seaofthieves.com/pirate-academy/guide/supplies",
+        "image": "https://rare-assets.azureedge.net/compass/0e7624c0761821271f2a73974192068fa3dbffe3.jpg",
+        "local": "References/sot_supplies.png",
+        "study": "船舱货物、桶箍与木框的功能形体，独立陈设留出走道"
+      }
+    ],
+    "history_reference": {
+      "title": "German Historical Museum — Cog",
+      "url": "https://www.dhm.de/mediathek/en/ship-types/milestones-in-the-history-of-european-shipbuilding/04-cog/",
+      "motif": "single square mast, broad merchant hull and raised castles; fantasy game scale rather than archaeological replica"
+    },
+    "literature_reference": {
+      "title": "William Morris — The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "river trade, cargo convoys and uncertain travel; no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_revision_2",
+    "name": "SW_Drift_Planks",
+    "dimensions_blender_xyz": [
+      2.025066375732422,
+      1.3677271604537964,
+      0.27997592091560364
+    ],
+    "triangles": 72,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWTeal"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Shipwreck\\Staging\\SW_Drift_Planks.fbx",
+      "bytes": 18444,
+      "object": "SW_Drift_Planks",
+      "mesh": "SW_Drift_Planks_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Registered in MapAssetTable 600-618; Shipwreck area 40 and open-water sites integrated. Optional dressing pieces remain available for additional templates."
+  },
+  {
+    "title": "破损随船小艇",
+    "category": "ship_dressing",
+    "design_zh": "中空小艇与横座，适合船旁水面散落",
+    "origin": "deck plane / waterline; Blender -Y bow, +Z up; 1 unit = 1 m",
+    "references": [
+      {
+        "id": "witcher_skellige",
+        "work": "The Witcher 3: Wild Hunt — Skellige wreck",
+        "page": "https://www.nexusmods.com/witcher3/images/37479",
+        "image": "https://staticdelivery.nexusmods.com/images/952/26457784-1699556048.png",
+        "local": "References/witcher_skellige.png",
+        "study": "水线附近船体残骸、偏置损坏、较低甲板与高艉楼的层次"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "References/sot_sunken.png",
+        "study": "断裂木板、船肋、船用桶箱及低多边形大块面可读性；不采用其近世火炮"
+      },
+      {
+        "id": "sot_supplies",
+        "work": "Sea of Thieves — Pirate Academy supplies",
+        "page": "https://www.seaofthieves.com/pirate-academy/guide/supplies",
+        "image": "https://rare-assets.azureedge.net/compass/0e7624c0761821271f2a73974192068fa3dbffe3.jpg",
+        "local": "References/sot_supplies.png",
+        "study": "船舱货物、桶箍与木框的功能形体，独立陈设留出走道"
+      }
+    ],
+    "history_reference": {
+      "title": "German Historical Museum — Cog",
+      "url": "https://www.dhm.de/mediathek/en/ship-types/milestones-in-the-history-of-european-shipbuilding/04-cog/",
+      "motif": "single square mast, broad merchant hull and raised castles; fantasy game scale rather than archaeological replica"
+    },
+    "literature_reference": {
+      "title": "William Morris — The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "river trade, cargo convoys and uncertain travel; no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_revision_2",
+    "name": "SW_Boat_BrokenDinghy",
+    "dimensions_blender_xyz": [
+      1.6067852973937988,
+      4.331600189208984,
+      0.6519500017166138
+    ],
+    "triangles": 1512,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWWood",
+      "M_MapLP_SWDark",
+      "M_MapLP_SWTar",
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWEnd",
+      "M_MapLP_SWPale"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Shipwreck\\Staging\\SW_Boat_BrokenDinghy.fbx",
+      "bytes": 66380,
+      "object": "SW_Boat_BrokenDinghy",
+      "mesh": "SW_Boat_BrokenDinghy_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Registered in MapAssetTable 600-618; Shipwreck area 40 and open-water sites integrated. Optional dressing pieces remain available for additional templates."
+  },
+  {
+    "title": "登船木跳板",
+    "category": "ship_structure",
+    "design_zh": "木板顶高0、实体厚0.29；宽2.24长4.8米",
+    "origin": "deck plane / waterline; Blender -Y bow, +Z up; 1 unit = 1 m",
+    "references": [
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim - Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "References/skyrim_icerunner.png",
+        "study": "完整船艏船艉的剪影、风化木壳、折断桅杆与海岸遗物；不照搬船体"
+      },
+      {
+        "id": "witcher_skellige",
+        "work": "The Witcher 3: Wild Hunt — Skellige wreck",
+        "page": "https://www.nexusmods.com/witcher3/images/37479",
+        "image": "https://staticdelivery.nexusmods.com/images/952/26457784-1699556048.png",
+        "local": "References/witcher_skellige.png",
+        "study": "水线附近船体残骸、偏置损坏、较低甲板与高艉楼的层次"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "References/sot_sunken.png",
+        "study": "断裂木板、船肋、船用桶箱及低多边形大块面可读性；不采用其近世火炮"
+      }
+    ],
+    "history_reference": {
+      "title": "German Historical Museum — Cog",
+      "url": "https://www.dhm.de/mediathek/en/ship-types/milestones-in-the-history-of-european-shipbuilding/04-cog/",
+      "motif": "single square mast, broad merchant hull and raised castles; fantasy game scale rather than archaeological replica"
+    },
+    "literature_reference": {
+      "title": "William Morris — The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "river trade, cargo convoys and uncertain travel; no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_revision_2",
+    "name": "SW_Gangplank",
+    "dimensions_blender_xyz": [
+      2.319999933242798,
+      4.800000190734863,
+      0.28999999165534973
+    ],
+    "triangles": 120,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWWood",
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWTar"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Shipwreck\\Staging\\SW_Gangplank.fbx",
+      "bytes": 19292,
+      "object": "SW_Gangplank",
+      "mesh": "SW_Gangplank_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Registered in MapAssetTable 600-618; Shipwreck area 40 and open-water sites integrated. Optional dressing pieces remain available for additional templates."
+  }
+]

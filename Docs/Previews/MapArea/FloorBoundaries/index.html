@@ -1,0 +1,12 @@
+<!doctype html>
+<html lang="zh-CN"><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>直墙与六边形楼板 · 封边检查</title>
+<style>body{margin:0;background:#172630;color:#e6dfcc;font:16px/1.7 system-ui,sans-serif}main{max-width:1500px;margin:auto;padding:32px}h1{font-size:26px}h2{font-size:21px;margin-top:32px}.views{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:16px}figure{margin:0;background:#21323d;border-radius:8px;overflow:hidden}img{width:100%;display:block}figcaption{padding:12px}p{max-width:1000px;color:#c1c9c8}a{color:#c9b888}@media(max-width:850px){.views{grid-template-columns:1fr}}</style>
+<main><h1>直墙与六边形楼板 · 封边检查</h1>
+<p>完整六边形保留可行走区域；墙边使用独立裁切六角块补齐直线。封边不可行走、不可选中，也不会点穿到下层。楼梯井、挑空和船体破口保留。</p>
+<p>定向验证：258 块封边逐块拾取检查通过，原导航逐格一致；已检查楼层剖切和隐藏。仅请求一次项目编译，未进入 Play。</p>
+<h2>建筑二楼</h2><p>共用规则已接入酒馆与公会。薄封边容纳原地板尖角，消除残留的 20 厘米锯齿；审查视图隐藏邻近建筑以展示接缝。</p>
+<div class="views"><figure><a href="town-top.png"><img src="town-top.png" alt="建筑俯视"></a><figcaption>俯视：外墙边界平直，左侧挑空保留。</figcaption></figure><figure><a href="town-front.png"><img src="town-front.png" alt="建筑正面"></a><figcaption>正面：薄楼板连续，楼下通路保留。</figcaption></figure><figure><a href="town-side.png"><img src="town-side.png" alt="建筑侧面"></a><figcaption>侧面：楼梯净空及护栏保持。</figcaption></figure></div>
+<h2>沉船楼板</h2><p>下舱、主甲板、艏艉高台共 242 块封边，连接现有船壳木带及横向墙线。</p>
+<div class="views"><figure><a href="ship-top.png"><img src="ship-top.png" alt="沉船俯视"></a><figcaption>俯视：高台横边平直，两舷连续。</figcaption></figure><figure><a href="ship-front.png"><img src="ship-front.png" alt="沉船正面"></a><figcaption>正面：楼板和船壳边缘衔接。</figcaption></figure><figure><a href="ship-side.png"><img src="ship-side.png" alt="沉船侧面"></a><figcaption>侧面：真实高差与梯口保留。</figcaption></figure></div>
+<p><a href="review.json">逐项三视图审查</a> · <a href="validation.json">原生验证记录</a></p></main></html>

@@ -120,6 +120,18 @@
       "name": "itemCounts",
       "type": "int[]",
       "description": "对应物品数量，正数"
+    },
+    {
+      "name": "obstacleAction",
+      "type": "enum",
+      "description": "临时障碍交互动作；空为普通事件",
+      "values": [
+        "",
+        "tool",
+        "manual",
+        "leave"
+      ],
+      "default": ""
     }
   ],
   "rows": [
@@ -143,7 +155,8 @@
       "potentialPoints": 0,
       "recipient": "subject",
       "itemIds": [],
-      "itemCounts": []
+      "itemCounts": [],
+      "obstacleAction": ""
     },
     {
       "id": 2,
@@ -165,7 +178,8 @@
       "potentialPoints": 0,
       "recipient": "party",
       "itemIds": [],
-      "itemCounts": []
+      "itemCounts": [],
+      "obstacleAction": ""
     },
     {
       "id": 3,
@@ -185,7 +199,8 @@
       "potentialPoints": 0,
       "recipient": "subject",
       "itemIds": [],
-      "itemCounts": []
+      "itemCounts": [],
+      "obstacleAction": ""
     },
     {
       "id": 4,
@@ -207,7 +222,8 @@
       "potentialPoints": 0,
       "recipient": "subject",
       "itemIds": [],
-      "itemCounts": []
+      "itemCounts": [],
+      "obstacleAction": ""
     },
     {
       "id": 5,
@@ -227,7 +243,8 @@
       "potentialPoints": 0,
       "recipient": "subject",
       "itemIds": [],
-      "itemCounts": []
+      "itemCounts": [],
+      "obstacleAction": ""
     },
     {
       "minScouting": 0,
@@ -247,7 +264,8 @@
       "label": "辨认路标",
       "result": "{actor}带着同伴绕过了危险路段。小队获得 25 经验与 6 金币。",
       "itemIds": [],
-      "itemCounts": []
+      "itemCounts": [],
+      "obstacleAction": ""
     },
     {
       "minScouting": 0,
@@ -274,7 +292,8 @@
       "label": "握住同伴的手",
       "result": "{actor}接受了同伴的援手，学会把背后交给别人。余烬留下伤痕，也点亮了新的道路。",
       "itemIds": [],
-      "itemCounts": []
+      "itemCounts": [],
+      "obstacleAction": ""
     },
     {
       "minScouting": 0,
@@ -300,7 +319,8 @@
       "label": "承认自己需要帮助（傲慢）",
       "result": "{actor}放下傲慢，与同伴一起走出倒塌的门廊。",
       "itemIds": [],
-      "itemCounts": []
+      "itemCounts": [],
+      "obstacleAction": ""
     },
     {
       "id": 9,
@@ -320,7 +340,8 @@
       "potentialPoints": 0,
       "recipient": "subject",
       "itemIds": [],
-      "itemCounts": []
+      "itemCounts": [],
+      "obstacleAction": ""
     },
     {
       "id": 10,
@@ -344,7 +365,8 @@
       ],
       "itemCounts": [
         1
-      ]
+      ],
+      "obstacleAction": ""
     },
     {
       "id": 11,
@@ -368,7 +390,8 @@
       ],
       "itemCounts": [
         1
-      ]
+      ],
+      "obstacleAction": ""
     },
     {
       "id": 12,
@@ -392,7 +415,8 @@
       ],
       "itemCounts": [
         1
-      ]
+      ],
+      "obstacleAction": ""
     },
     {
       "id": 13,
@@ -416,7 +440,8 @@
       ],
       "itemCounts": [
         24
-      ]
+      ],
+      "obstacleAction": ""
     },
     {
       "id": 14,
@@ -440,7 +465,8 @@
       ],
       "itemCounts": [
         1
-      ]
+      ],
+      "obstacleAction": ""
     },
     {
       "id": 15,
@@ -460,7 +486,71 @@
       "potentialPoints": 0,
       "recipient": "party",
       "itemIds": [],
-      "itemCounts": []
+      "itemCounts": [],
+      "obstacleAction": ""
+    },
+    {
+      "id": 101,
+      "label": "使用已装备的合适工具",
+      "result": "处理结束。",
+      "minScouting": 0,
+      "costCoins": 0,
+      "rewardCoins": 0,
+      "healParty": false,
+      "traitIds": [],
+      "encounterIds": [],
+      "requiredTraitIds": [],
+      "forbiddenTraitIds": [],
+      "removeTraitIds": [],
+      "unlockTreeIds": [],
+      "experience": 0,
+      "potentialPoints": 0,
+      "recipient": "subject",
+      "itemIds": [],
+      "itemCounts": [],
+      "obstacleAction": "tool"
+    },
+    {
+      "id": 102,
+      "label": "徒手处理",
+      "result": "处理结束。",
+      "minScouting": 0,
+      "costCoins": 0,
+      "rewardCoins": 0,
+      "healParty": false,
+      "traitIds": [],
+      "encounterIds": [],
+      "requiredTraitIds": [],
+      "forbiddenTraitIds": [],
+      "removeTraitIds": [],
+      "unlockTreeIds": [],
+      "experience": 0,
+      "potentialPoints": 0,
+      "recipient": "subject",
+      "itemIds": [],
+      "itemCounts": [],
+      "obstacleAction": "manual"
+    },
+    {
+      "id": 103,
+      "label": "暂时离开",
+      "result": "处理结束。",
+      "minScouting": 0,
+      "costCoins": 0,
+      "rewardCoins": 0,
+      "healParty": false,
+      "traitIds": [],
+      "encounterIds": [],
+      "requiredTraitIds": [],
+      "forbiddenTraitIds": [],
+      "removeTraitIds": [],
+      "unlockTreeIds": [],
+      "experience": 0,
+      "potentialPoints": 0,
+      "recipient": "subject",
+      "itemIds": [],
+      "itemCounts": [],
+      "obstacleAction": "leave"
     }
   ]
 }

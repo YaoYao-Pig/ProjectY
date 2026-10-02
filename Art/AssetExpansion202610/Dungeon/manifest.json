@@ -1,0 +1,1371 @@
+[
+  {
+    "display_name": "守墓人的长颈灰陶罐",
+    "category": "vessel",
+    "design_notes": "Narrow closed ceremonial lid, tapered shoulder, restrained bronze collar.",
+    "reference_ids": [
+      "skyrim_altar",
+      "skyrim_ruunvald"
+    ],
+    "references": [
+      {
+        "id": "skyrim_altar",
+        "work": "The Elder Scrolls V: Skyrim — Ustengrav",
+        "page": "https://www.nexusmods.com/skyrim/images/420366/",
+        "image": "https://staticdelivery.nexusmods.com/images/110/4335198-1399525741.jpg",
+        "notes": "Broad ritual altar, paired tapered urns, warm desaturated earthenware and candle groupings.",
+        "local": "References\\skyrim_altar.jpg",
+        "download_bytes": 124640
+      },
+      {
+        "id": "skyrim_ruunvald",
+        "work": "The Elder Scrolls V: Skyrim — Ruunvald",
+        "page": "https://www.nexusmods.com/skyrim/images/282639",
+        "image": "https://staticdelivery.nexusmods.com/images/110/264238-1376652221.jpg",
+        "notes": "Chunky worn stone, warm wax, broad urn shoulder and subtle low contrast surface wear.",
+        "local": "References\\skyrim_ruunvald.jpg",
+        "download_bytes": 219766
+      }
+    ],
+    "units": "metres",
+    "front_axis_blender": "-Y",
+    "front_axis_unity": "+Z",
+    "pivot": "bottom-center",
+    "shader_recommendation": "Universal Render Pipeline/Lit",
+    "review_status": "blender_three_views_and_hero_reviewed_pass",
+    "footprint_policy": "Asset-only; no collision or gameplay footprint inferred",
+    "name": "DG_Urn_TallKeeper",
+    "dimensions_blender_xyz": [
+      0.7400000095367432,
+      0.7214466333389282,
+      1.3700000047683716
+    ],
+    "triangles": 812,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_DGCeramic",
+      "M_MapLP_DGBronze",
+      "M_MapLP_DGCeramicShade"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Dungeon\\Staging\\DG_Urn_TallKeeper.fbx",
+      "bytes": 39068,
+      "object": "DG_Urn_TallKeeper",
+      "mesh": "DG_Urn_TallKeeper_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "review_file": "review.json",
+    "previews": {
+      "front": "Previews/DG_Urn_TallKeeper_front.png",
+      "side": "Previews/DG_Urn_TallKeeper_side.png",
+      "back": "Previews/DG_Urn_TallKeeper_back.png",
+      "hero": "Previews/DG_Urn_TallKeeper_hero.png"
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "display_name": "双耳运水陶瓶",
+    "category": "vessel",
+    "design_notes": "Two large continuous handles, narrow open neck and pointed shoulder.",
+    "reference_ids": [
+      "ds3_catacombs",
+      "ds3_dungeon"
+    ],
+    "references": [
+      {
+        "id": "ds3_catacombs",
+        "work": "Dark Souls III — Catacombs of Carthus",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/catacombs-of-carthus/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_8.26.jpg",
+        "notes": "Vaulted burial architecture, coherent urn silhouettes, worn stone and restrained earth palette.",
+        "local": "References\\ds3_catacombs.jpg",
+        "download_bytes": 222248
+      },
+      {
+        "id": "ds3_dungeon",
+        "work": "Dark Souls III — Irithyll Dungeon",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/irithyll-dungeon/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_12.12.jpg",
+        "notes": "Damp masonry, low candles, aged timber and edge clutter; retain clear central passage.",
+        "local": "References\\ds3_dungeon.jpg",
+        "download_bytes": 168483
+      }
+    ],
+    "units": "metres",
+    "front_axis_blender": "-Y",
+    "front_axis_unity": "+Z",
+    "pivot": "bottom-center",
+    "shader_recommendation": "Universal Render Pipeline/Lit",
+    "review_status": "blender_three_views_and_hero_reviewed_pass",
+    "footprint_policy": "Asset-only; no collision or gameplay footprint inferred",
+    "name": "DG_Amphora_TwinHandle",
+    "dimensions_blender_xyz": [
+      1.0677356719970703,
+      0.7200000286102295,
+      1.0800000429153442
+    ],
+    "triangles": 608,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_DGCeramicShade",
+      "M_MapLP_DGCeramic"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Dungeon\\Staging\\DG_Amphora_TwinHandle.fbx",
+      "bytes": 34060,
+      "object": "DG_Amphora_TwinHandle",
+      "mesh": "DG_Amphora_TwinHandle_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "review_file": "review.json",
+    "previews": {
+      "front": "Previews/DG_Amphora_TwinHandle_front.png",
+      "side": "Previews/DG_Amphora_TwinHandle_side.png",
+      "back": "Previews/DG_Amphora_TwinHandle_back.png",
+      "hero": "Previews/DG_Amphora_TwinHandle_hero.png"
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "display_name": "青釉矮腹苔罐",
+    "category": "vessel",
+    "design_notes": "Low wide belly, thick open lip, small side handles and muted green glaze.",
+    "reference_ids": [
+      "ds3_catacombs",
+      "skyrim_ruunvald"
+    ],
+    "references": [
+      {
+        "id": "ds3_catacombs",
+        "work": "Dark Souls III — Catacombs of Carthus",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/catacombs-of-carthus/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_8.26.jpg",
+        "notes": "Vaulted burial architecture, coherent urn silhouettes, worn stone and restrained earth palette.",
+        "local": "References\\ds3_catacombs.jpg",
+        "download_bytes": 222248
+      },
+      {
+        "id": "skyrim_ruunvald",
+        "work": "The Elder Scrolls V: Skyrim — Ruunvald",
+        "page": "https://www.nexusmods.com/skyrim/images/282639",
+        "image": "https://staticdelivery.nexusmods.com/images/110/264238-1376652221.jpg",
+        "notes": "Chunky worn stone, warm wax, broad urn shoulder and subtle low contrast surface wear.",
+        "local": "References\\skyrim_ruunvald.jpg",
+        "download_bytes": 219766
+      }
+    ],
+    "units": "metres",
+    "front_axis_blender": "-Y",
+    "front_axis_unity": "+Z",
+    "pivot": "bottom-center",
+    "shader_recommendation": "Universal Render Pipeline/Lit",
+    "review_status": "blender_three_views_and_hero_reviewed_pass",
+    "footprint_policy": "Asset-only; no collision or gameplay footprint inferred",
+    "name": "DG_Jar_SquatMoss",
+    "dimensions_blender_xyz": [
+      1.1211038827896118,
+      0.8189394474029541,
+      0.6499999761581421
+    ],
+    "triangles": 644,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_DGGlaze",
+      "M_MapLP_DGGlazeShade"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Dungeon\\Staging\\DG_Jar_SquatMoss.fbx",
+      "bytes": 33740,
+      "object": "DG_Jar_SquatMoss",
+      "mesh": "DG_Jar_SquatMoss_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "review_file": "review.json",
+    "previews": {
+      "front": "Previews/DG_Jar_SquatMoss_front.png",
+      "side": "Previews/DG_Jar_SquatMoss_side.png",
+      "back": "Previews/DG_Jar_SquatMoss_back.png",
+      "hero": "Previews/DG_Jar_SquatMoss_hero.png"
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "display_name": "三足宿营铁锅",
+    "category": "vessel",
+    "design_notes": "Three stable feet, dark cast iron body and broad hollow cooking mouth.",
+    "reference_ids": [
+      "ds3_dungeon",
+      "ds3_catacombs"
+    ],
+    "references": [
+      {
+        "id": "ds3_dungeon",
+        "work": "Dark Souls III — Irithyll Dungeon",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/irithyll-dungeon/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_12.12.jpg",
+        "notes": "Damp masonry, low candles, aged timber and edge clutter; retain clear central passage.",
+        "local": "References\\ds3_dungeon.jpg",
+        "download_bytes": 168483
+      },
+      {
+        "id": "ds3_catacombs",
+        "work": "Dark Souls III — Catacombs of Carthus",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/catacombs-of-carthus/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_8.26.jpg",
+        "notes": "Vaulted burial architecture, coherent urn silhouettes, worn stone and restrained earth palette.",
+        "local": "References\\ds3_catacombs.jpg",
+        "download_bytes": 222248
+      }
+    ],
+    "units": "metres",
+    "front_axis_blender": "-Y",
+    "front_axis_unity": "+Z",
+    "pivot": "bottom-center",
+    "shader_recommendation": "Universal Render Pipeline/Lit",
+    "review_status": "blender_three_views_and_hero_reviewed_pass",
+    "footprint_policy": "Asset-only; no collision or gameplay footprint inferred",
+    "name": "DG_Pot_ThreeLegCook",
+    "dimensions_blender_xyz": [
+      0.9707293510437012,
+      0.7019481062889099,
+      0.6957466006278992
+    ],
+    "triangles": 536,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_DGIron",
+      "M_MapLP_DGRust"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Dungeon\\Staging\\DG_Pot_ThreeLegCook.fbx",
+      "bytes": 31228,
+      "object": "DG_Pot_ThreeLegCook",
+      "mesh": "DG_Pot_ThreeLegCook_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "review_file": "review.json",
+    "previews": {
+      "front": "Previews/DG_Pot_ThreeLegCook_front.png",
+      "side": "Previews/DG_Pot_ThreeLegCook_side.png",
+      "back": "Previews/DG_Pot_ThreeLegCook_back.png",
+      "hero": "Previews/DG_Pot_ThreeLegCook_hero.png"
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "display_name": "六棱骨灰匣",
+    "category": "vessel",
+    "design_notes": "Hexagonal stone silhouette, raised bronze bands and faceted sealed lid.",
+    "reference_ids": [
+      "skyrim_altar",
+      "skyrim_ruunvald"
+    ],
+    "references": [
+      {
+        "id": "skyrim_altar",
+        "work": "The Elder Scrolls V: Skyrim — Ustengrav",
+        "page": "https://www.nexusmods.com/skyrim/images/420366/",
+        "image": "https://staticdelivery.nexusmods.com/images/110/4335198-1399525741.jpg",
+        "notes": "Broad ritual altar, paired tapered urns, warm desaturated earthenware and candle groupings.",
+        "local": "References\\skyrim_altar.jpg",
+        "download_bytes": 124640
+      },
+      {
+        "id": "skyrim_ruunvald",
+        "work": "The Elder Scrolls V: Skyrim — Ruunvald",
+        "page": "https://www.nexusmods.com/skyrim/images/282639",
+        "image": "https://staticdelivery.nexusmods.com/images/110/264238-1376652221.jpg",
+        "notes": "Chunky worn stone, warm wax, broad urn shoulder and subtle low contrast surface wear.",
+        "local": "References\\skyrim_ruunvald.jpg",
+        "download_bytes": 219766
+      }
+    ],
+    "units": "metres",
+    "front_axis_blender": "-Y",
+    "front_axis_unity": "+Z",
+    "pivot": "bottom-center",
+    "shader_recommendation": "Universal Render Pipeline/Lit",
+    "review_status": "blender_three_views_and_hero_reviewed_pass",
+    "footprint_policy": "Asset-only; no collision or gameplay footprint inferred",
+    "name": "DG_Urn_HexReliquary",
+    "dimensions_blender_xyz": [
+      0.6399999856948853,
+      0.55425626039505,
+      1.100000023841858
+    ],
+    "triangles": 376,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_RockLight",
+      "M_MapLP_DGBronze",
+      "M_MapLP_Rock"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Dungeon\\Staging\\DG_Urn_HexReliquary.fbx",
+      "bytes": 26508,
+      "object": "DG_Urn_HexReliquary",
+      "mesh": "DG_Urn_HexReliquary_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "review_file": "review.json",
+    "previews": {
+      "front": "Previews/DG_Urn_HexReliquary_front.png",
+      "side": "Previews/DG_Urn_HexReliquary_side.png",
+      "back": "Previews/DG_Urn_HexReliquary_back.png",
+      "hero": "Previews/DG_Urn_HexReliquary_hero.png"
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "display_name": "破口祭灰罐",
+    "category": "vessel",
+    "design_notes": "Large intentional chipped opening with real shell thickness and fallen sherds.",
+    "reference_ids": [
+      "skyrim_altar",
+      "ds3_catacombs"
+    ],
+    "references": [
+      {
+        "id": "skyrim_altar",
+        "work": "The Elder Scrolls V: Skyrim — Ustengrav",
+        "page": "https://www.nexusmods.com/skyrim/images/420366/",
+        "image": "https://staticdelivery.nexusmods.com/images/110/4335198-1399525741.jpg",
+        "notes": "Broad ritual altar, paired tapered urns, warm desaturated earthenware and candle groupings.",
+        "local": "References\\skyrim_altar.jpg",
+        "download_bytes": 124640
+      },
+      {
+        "id": "ds3_catacombs",
+        "work": "Dark Souls III — Catacombs of Carthus",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/catacombs-of-carthus/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_8.26.jpg",
+        "notes": "Vaulted burial architecture, coherent urn silhouettes, worn stone and restrained earth palette.",
+        "local": "References\\ds3_catacombs.jpg",
+        "download_bytes": 222248
+      }
+    ],
+    "units": "metres",
+    "front_axis_blender": "-Y",
+    "front_axis_unity": "+Z",
+    "pivot": "bottom-center",
+    "shader_recommendation": "Universal Render Pipeline/Lit",
+    "review_status": "blender_three_views_and_hero_reviewed_pass",
+    "footprint_policy": "Asset-only; no collision or gameplay footprint inferred",
+    "name": "DG_Urn_BrokenOpen",
+    "dimensions_blender_xyz": [
+      1.1682085990905762,
+      0.9667707681655884,
+      0.9399999976158142
+    ],
+    "triangles": 446,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_DGCeramic",
+      "M_MapLP_DGCeramicShade"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Dungeon\\Staging\\DG_Urn_BrokenOpen.fbx",
+      "bytes": 29948,
+      "object": "DG_Urn_BrokenOpen",
+      "mesh": "DG_Urn_BrokenOpen_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "review_file": "review.json",
+    "previews": {
+      "front": "Previews/DG_Urn_BrokenOpen_front.png",
+      "side": "Previews/DG_Urn_BrokenOpen_side.png",
+      "back": "Previews/DG_Urn_BrokenOpen_back.png",
+      "hero": "Previews/DG_Urn_BrokenOpen_hero.png"
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "display_name": "铁箍酒桶",
+    "category": "storage",
+    "design_notes": "Individual curved tapered staves, multiple iron hoops and fitted plank head.",
+    "reference_ids": [
+      "ds3_storage",
+      "ds3_wood"
+    ],
+    "references": [
+      {
+        "id": "ds3_storage",
+        "work": "Dark Souls III — Undead Settlement",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/undead-settlement/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_4.101.jpg",
+        "notes": "Functional timber bracing, barrel/crate storage and clear navigation through clutter.",
+        "local": "References\\ds3_storage.jpg",
+        "download_bytes": 122933
+      },
+      {
+        "id": "ds3_wood",
+        "work": "Dark Souls — the Depths",
+        "page": "https://www.svg.com/842336/tragic-details-you-missed-in-dark-souls/",
+        "image": "https://www.svg.com/img/gallery/tragic-details-you-missed-in-dark-souls/laurentius-hallowing-1650652881.jpg",
+        "notes": "Curved barrel staves, iron hoop bands and discarded timber planks.",
+        "local": "References\\ds3_wood.jpg",
+        "download_bytes": 104795
+      }
+    ],
+    "units": "metres",
+    "front_axis_blender": "-Y",
+    "front_axis_unity": "+Z",
+    "pivot": "bottom-center",
+    "shader_recommendation": "Universal Render Pipeline/Lit",
+    "review_status": "blender_three_views_and_hero_reviewed_pass",
+    "footprint_policy": "Asset-only; no collision or gameplay footprint inferred",
+    "name": "DG_Barrel_Ironbound",
+    "dimensions_blender_xyz": [
+      0.7702966332435608,
+      0.7901062369346619,
+      0.8799999952316284
+    ],
+    "triangles": 1064,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_Timber",
+      "M_MapLP_TimberLight",
+      "M_MapLP_DGIron"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Dungeon\\Staging\\DG_Barrel_Ironbound.fbx",
+      "bytes": 45740,
+      "object": "DG_Barrel_Ironbound",
+      "mesh": "DG_Barrel_Ironbound_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "review_file": "review.json",
+    "previews": {
+      "front": "Previews/DG_Barrel_Ironbound_front.png",
+      "side": "Previews/DG_Barrel_Ironbound_side.png",
+      "back": "Previews/DG_Barrel_Ironbound_back.png",
+      "hero": "Previews/DG_Barrel_Ironbound_hero.png"
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "display_name": "破桶与散落小瓶",
+    "category": "storage",
+    "design_notes": "Missing front staves expose inner volume; separate discarded boards and small jars.",
+    "reference_ids": [
+      "ds3_storage",
+      "ds3_wood"
+    ],
+    "references": [
+      {
+        "id": "ds3_storage",
+        "work": "Dark Souls III — Undead Settlement",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/undead-settlement/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_4.101.jpg",
+        "notes": "Functional timber bracing, barrel/crate storage and clear navigation through clutter.",
+        "local": "References\\ds3_storage.jpg",
+        "download_bytes": 122933
+      },
+      {
+        "id": "ds3_wood",
+        "work": "Dark Souls — the Depths",
+        "page": "https://www.svg.com/842336/tragic-details-you-missed-in-dark-souls/",
+        "image": "https://www.svg.com/img/gallery/tragic-details-you-missed-in-dark-souls/laurentius-hallowing-1650652881.jpg",
+        "notes": "Curved barrel staves, iron hoop bands and discarded timber planks.",
+        "local": "References\\ds3_wood.jpg",
+        "download_bytes": 104795
+      }
+    ],
+    "units": "metres",
+    "front_axis_blender": "-Y",
+    "front_axis_unity": "+Z",
+    "pivot": "bottom-center",
+    "shader_recommendation": "Universal Render Pipeline/Lit",
+    "review_status": "blender_three_views_and_hero_reviewed_pass",
+    "footprint_policy": "Asset-only; no collision or gameplay footprint inferred",
+    "name": "DG_Barrel_BurstCache",
+    "dimensions_blender_xyz": [
+      1.1711881160736084,
+      1.1074711084365845,
+      0.7799999713897705
+    ],
+    "triangles": 1088,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_Timber",
+      "M_MapLP_TimberLight",
+      "M_MapLP_DGIron",
+      "M_MapLP_DGCeramic"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Dungeon\\Staging\\DG_Barrel_BurstCache.fbx",
+      "bytes": 51132,
+      "object": "DG_Barrel_BurstCache",
+      "mesh": "DG_Barrel_BurstCache_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "review_file": "review.json",
+    "previews": {
+      "front": "Previews/DG_Barrel_BurstCache_front.png",
+      "side": "Previews/DG_Barrel_BurstCache_side.png",
+      "back": "Previews/DG_Barrel_BurstCache_back.png",
+      "hero": "Previews/DG_Barrel_BurstCache_hero.png"
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "display_name": "敞口补给木箱",
+    "category": "storage",
+    "design_notes": "Board-built open crate contains visible hollow bottles and ledger.",
+    "reference_ids": [
+      "ds3_storage",
+      "ds3_wood"
+    ],
+    "references": [
+      {
+        "id": "ds3_storage",
+        "work": "Dark Souls III — Undead Settlement",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/undead-settlement/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_4.101.jpg",
+        "notes": "Functional timber bracing, barrel/crate storage and clear navigation through clutter.",
+        "local": "References\\ds3_storage.jpg",
+        "download_bytes": 122933
+      },
+      {
+        "id": "ds3_wood",
+        "work": "Dark Souls — the Depths",
+        "page": "https://www.svg.com/842336/tragic-details-you-missed-in-dark-souls/",
+        "image": "https://www.svg.com/img/gallery/tragic-details-you-missed-in-dark-souls/laurentius-hallowing-1650652881.jpg",
+        "notes": "Curved barrel staves, iron hoop bands and discarded timber planks.",
+        "local": "References\\ds3_wood.jpg",
+        "download_bytes": 104795
+      }
+    ],
+    "units": "metres",
+    "front_axis_blender": "-Y",
+    "front_axis_unity": "+Z",
+    "pivot": "bottom-center",
+    "shader_recommendation": "Universal Render Pipeline/Lit",
+    "review_status": "blender_three_views_and_hero_reviewed_pass",
+    "footprint_policy": "Asset-only; no collision or gameplay footprint inferred",
+    "name": "DG_Crate_OpenSupplies",
+    "dimensions_blender_xyz": [
+      1.0850000381469727,
+      0.7450000047683716,
+      0.699999988079071
+    ],
+    "triangles": 624,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_Timber",
+      "M_MapLP_TimberLight",
+      "M_MapLP_DGCeramic",
+      "M_MapLP_DGPaper",
+      "M_MapLP_DGBook",
+      "M_MapLP_DGCeramicShade"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Dungeon\\Staging\\DG_Crate_OpenSupplies.fbx",
+      "bytes": 34236,
+      "object": "DG_Crate_OpenSupplies",
+      "mesh": "DG_Crate_OpenSupplies_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "review_file": "review.json",
+    "previews": {
+      "front": "Previews/DG_Crate_OpenSupplies_front.png",
+      "side": "Previews/DG_Crate_OpenSupplies_side.png",
+      "back": "Previews/DG_Crate_OpenSupplies_back.png",
+      "hero": "Previews/DG_Crate_OpenSupplies_hero.png"
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "display_name": "残存卷宗架",
+    "category": "archive",
+    "design_notes": "Four timber levels, thick supports, readable books and rolled parchments.",
+    "reference_ids": [
+      "skyrim_library",
+      "skyrim_lectern"
+    ],
+    "references": [
+      {
+        "id": "skyrim_library",
+        "work": "The Elder Scrolls V: Skyrim — Arcanaeum",
+        "page": "https://www.confrerie-des-traducteurs.fr/skyrim/mods/3867",
+        "image": "https://mods.confrerie-des-traducteurs.fr/skyrim/3867/images/big/the_elder_scrolls_v__skyrim_special_edition_screenshot_2023.04.09___15.43.17.64.jpg",
+        "notes": "Library archive shelving, thick leather bindings, warm neutral timber and visible working surfaces.",
+        "local": "References\\skyrim_library.jpg",
+        "download_bytes": 910472
+      },
+      {
+        "id": "skyrim_lectern",
+        "work": "The Elder Scrolls V: Skyrim — Dragonborn",
+        "page": "https://en.m.uesp.net/wiki/Skyrim%3ABlack_Book%3A_The_Sallow_Regent_%28quest%29",
+        "image": "https://images.uesp.net/a/a5/SR-quest-Black_Book_The_Sallow_Regent.jpg",
+        "notes": "Book pedestal has a supported tilted reading surface, readable book thickness and restrained candle groupings.",
+        "local": "References\\skyrim_lectern.jpg",
+        "download_bytes": 621063
+      }
+    ],
+    "units": "metres",
+    "front_axis_blender": "-Y",
+    "front_axis_unity": "+Z",
+    "pivot": "bottom-center",
+    "shader_recommendation": "Universal Render Pipeline/Lit",
+    "review_status": "blender_three_views_and_hero_reviewed_pass",
+    "footprint_policy": "Asset-only; no collision or gameplay footprint inferred",
+    "name": "DG_Shelf_ScrollArchive",
+    "dimensions_blender_xyz": [
+      1.399999976158142,
+      0.46000000834465027,
+      1.5325000286102295
+    ],
+    "triangles": 468,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_Timber",
+      "M_MapLP_TimberLight",
+      "M_MapLP_DGCeramicShade",
+      "M_MapLP_DGBronze",
+      "M_MapLP_DGBook",
+      "M_MapLP_DGPaper"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Dungeon\\Staging\\DG_Shelf_ScrollArchive.fbx",
+      "bytes": 30380,
+      "object": "DG_Shelf_ScrollArchive",
+      "mesh": "DG_Shelf_ScrollArchive_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "review_file": "review.json",
+    "previews": {
+      "front": "Previews/DG_Shelf_ScrollArchive_front.png",
+      "side": "Previews/DG_Shelf_ScrollArchive_side.png",
+      "back": "Previews/DG_Shelf_ScrollArchive_back.png",
+      "hero": "Previews/DG_Shelf_ScrollArchive_hero.png"
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "display_name": "木托壁烛架",
+    "category": "ritual",
+    "design_notes": "Wall-mounted plank with iron support brackets and varied wax heights.",
+    "reference_ids": [
+      "ds3_dungeon",
+      "skyrim_ruunvald"
+    ],
+    "references": [
+      {
+        "id": "ds3_dungeon",
+        "work": "Dark Souls III — Irithyll Dungeon",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/irithyll-dungeon/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_12.12.jpg",
+        "notes": "Damp masonry, low candles, aged timber and edge clutter; retain clear central passage.",
+        "local": "References\\ds3_dungeon.jpg",
+        "download_bytes": 168483
+      },
+      {
+        "id": "skyrim_ruunvald",
+        "work": "The Elder Scrolls V: Skyrim — Ruunvald",
+        "page": "https://www.nexusmods.com/skyrim/images/282639",
+        "image": "https://staticdelivery.nexusmods.com/images/110/264238-1376652221.jpg",
+        "notes": "Chunky worn stone, warm wax, broad urn shoulder and subtle low contrast surface wear.",
+        "local": "References\\skyrim_ruunvald.jpg",
+        "download_bytes": 219766
+      }
+    ],
+    "units": "metres",
+    "front_axis_blender": "-Y",
+    "front_axis_unity": "+Z",
+    "pivot": "bottom-center",
+    "shader_recommendation": "Universal Render Pipeline/Lit",
+    "review_status": "blender_three_views_and_hero_reviewed_pass",
+    "footprint_policy": "Asset-only; no collision or gameplay footprint inferred",
+    "name": "DG_Shelf_CandleSconce",
+    "dimensions_blender_xyz": [
+      0.8600000143051147,
+      0.49000000953674316,
+      0.9800000190734863
+    ],
+    "triangles": 520,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_Timber",
+      "M_MapLP_TimberLight",
+      "M_MapLP_DGIron",
+      "M_MapLP_DGWax"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Dungeon\\Staging\\DG_Shelf_CandleSconce.fbx",
+      "bytes": 32220,
+      "object": "DG_Shelf_CandleSconce",
+      "mesh": "DG_Shelf_CandleSconce_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "review_file": "review.json",
+    "previews": {
+      "front": "Previews/DG_Shelf_CandleSconce_front.png",
+      "side": "Previews/DG_Shelf_CandleSconce_side.png",
+      "back": "Previews/DG_Shelf_CandleSconce_back.png",
+      "hero": "Previews/DG_Shelf_CandleSconce_hero.png"
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "display_name": "供奉残烛台",
+    "category": "ritual",
+    "design_notes": "Low stone tray supports varied melted candles, wax puddles and visible wicks.",
+    "reference_ids": [
+      "skyrim_altar",
+      "skyrim_ruunvald"
+    ],
+    "references": [
+      {
+        "id": "skyrim_altar",
+        "work": "The Elder Scrolls V: Skyrim — Ustengrav",
+        "page": "https://www.nexusmods.com/skyrim/images/420366/",
+        "image": "https://staticdelivery.nexusmods.com/images/110/4335198-1399525741.jpg",
+        "notes": "Broad ritual altar, paired tapered urns, warm desaturated earthenware and candle groupings.",
+        "local": "References\\skyrim_altar.jpg",
+        "download_bytes": 124640
+      },
+      {
+        "id": "skyrim_ruunvald",
+        "work": "The Elder Scrolls V: Skyrim — Ruunvald",
+        "page": "https://www.nexusmods.com/skyrim/images/282639",
+        "image": "https://staticdelivery.nexusmods.com/images/110/264238-1376652221.jpg",
+        "notes": "Chunky worn stone, warm wax, broad urn shoulder and subtle low contrast surface wear.",
+        "local": "References\\skyrim_ruunvald.jpg",
+        "download_bytes": 219766
+      }
+    ],
+    "units": "metres",
+    "front_axis_blender": "-Y",
+    "front_axis_unity": "+Z",
+    "pivot": "bottom-center",
+    "shader_recommendation": "Universal Render Pipeline/Lit",
+    "review_status": "blender_three_views_and_hero_reviewed_pass",
+    "footprint_policy": "Asset-only; no collision or gameplay footprint inferred",
+    "name": "DG_Candles_OfferingCluster",
+    "dimensions_blender_xyz": [
+      0.9399999976158142,
+      0.8939931392669678,
+      0.6200000047683716
+    ],
+    "triangles": 564,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_Rock",
+      "M_MapLP_DGWax",
+      "M_MapLP_Timber"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Dungeon\\Staging\\DG_Candles_OfferingCluster.fbx",
+      "bytes": 33692,
+      "object": "DG_Candles_OfferingCluster",
+      "mesh": "DG_Candles_OfferingCluster_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "review_file": "review.json",
+    "previews": {
+      "front": "Previews/DG_Candles_OfferingCluster_front.png",
+      "side": "Previews/DG_Candles_OfferingCluster_side.png",
+      "back": "Previews/DG_Candles_OfferingCluster_back.png",
+      "hero": "Previews/DG_Candles_OfferingCluster_hero.png"
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "display_name": "废牢拘束柱",
+    "category": "prison",
+    "design_notes": "Timber and iron collar construction with hanging paired metal shackles.",
+    "reference_ids": [
+      "ds3_dungeon",
+      "ds3_catacombs"
+    ],
+    "references": [
+      {
+        "id": "ds3_dungeon",
+        "work": "Dark Souls III — Irithyll Dungeon",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/irithyll-dungeon/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_12.12.jpg",
+        "notes": "Damp masonry, low candles, aged timber and edge clutter; retain clear central passage.",
+        "local": "References\\ds3_dungeon.jpg",
+        "download_bytes": 168483
+      },
+      {
+        "id": "ds3_catacombs",
+        "work": "Dark Souls III — Catacombs of Carthus",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/catacombs-of-carthus/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_8.26.jpg",
+        "notes": "Vaulted burial architecture, coherent urn silhouettes, worn stone and restrained earth palette.",
+        "local": "References\\ds3_catacombs.jpg",
+        "download_bytes": 222248
+      }
+    ],
+    "units": "metres",
+    "front_axis_blender": "-Y",
+    "front_axis_unity": "+Z",
+    "pivot": "bottom-center",
+    "shader_recommendation": "Universal Render Pipeline/Lit",
+    "review_status": "blender_three_views_and_hero_reviewed_pass",
+    "footprint_policy": "Asset-only; no collision or gameplay footprint inferred",
+    "name": "DG_Post_Shackles",
+    "dimensions_blender_xyz": [
+      0.8999999761581421,
+      0.5936373472213745,
+      1.4800000190734863
+    ],
+    "triangles": 296,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_Stone",
+      "M_MapLP_Timber",
+      "M_MapLP_DGIron"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Dungeon\\Staging\\DG_Post_Shackles.fbx",
+      "bytes": 24844,
+      "object": "DG_Post_Shackles",
+      "mesh": "DG_Post_Shackles_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "review_file": "review.json",
+    "previews": {
+      "front": "Previews/DG_Post_Shackles_front.png",
+      "side": "Previews/DG_Post_Shackles_side.png",
+      "back": "Previews/DG_Post_Shackles_back.png",
+      "hero": "Previews/DG_Post_Shackles_hero.png"
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "display_name": "矿工工具架",
+    "category": "storage",
+    "design_notes": "Stable rack holds a continuous pick head and a separate broad shovel blade.",
+    "reference_ids": [
+      "ds3_storage",
+      "ds3_wood"
+    ],
+    "references": [
+      {
+        "id": "ds3_storage",
+        "work": "Dark Souls III — Undead Settlement",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/undead-settlement/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_4.101.jpg",
+        "notes": "Functional timber bracing, barrel/crate storage and clear navigation through clutter.",
+        "local": "References\\ds3_storage.jpg",
+        "download_bytes": 122933
+      },
+      {
+        "id": "ds3_wood",
+        "work": "Dark Souls — the Depths",
+        "page": "https://www.svg.com/842336/tragic-details-you-missed-in-dark-souls/",
+        "image": "https://www.svg.com/img/gallery/tragic-details-you-missed-in-dark-souls/laurentius-hallowing-1650652881.jpg",
+        "notes": "Curved barrel staves, iron hoop bands and discarded timber planks.",
+        "local": "References\\ds3_wood.jpg",
+        "download_bytes": 104795
+      }
+    ],
+    "units": "metres",
+    "front_axis_blender": "-Y",
+    "front_axis_unity": "+Z",
+    "pivot": "bottom-center",
+    "shader_recommendation": "Universal Render Pipeline/Lit",
+    "review_status": "blender_three_views_and_hero_reviewed_pass",
+    "footprint_policy": "Asset-only; no collision or gameplay footprint inferred",
+    "name": "DG_Rack_MinerTools",
+    "dimensions_blender_xyz": [
+      1.294140338897705,
+      0.550000011920929,
+      1.4199999570846558
+    ],
+    "triangles": 172,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_Timber",
+      "M_MapLP_TimberLight",
+      "M_MapLP_DGIron"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Dungeon\\Staging\\DG_Rack_MinerTools.fbx",
+      "bytes": 21884,
+      "object": "DG_Rack_MinerTools",
+      "mesh": "DG_Rack_MinerTools_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "review_file": "review.json",
+    "previews": {
+      "front": "Previews/DG_Rack_MinerTools_front.png",
+      "side": "Previews/DG_Rack_MinerTools_side.png",
+      "back": "Previews/DG_Rack_MinerTools_back.png",
+      "hero": "Previews/DG_Rack_MinerTools_hero.png"
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "display_name": "木水桶与盘绳",
+    "category": "storage",
+    "design_notes": "Open bucket, thin hoop bands, continuous high handle and coiled rope.",
+    "reference_ids": [
+      "ds3_storage",
+      "ds3_wood"
+    ],
+    "references": [
+      {
+        "id": "ds3_storage",
+        "work": "Dark Souls III — Undead Settlement",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/undead-settlement/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_4.101.jpg",
+        "notes": "Functional timber bracing, barrel/crate storage and clear navigation through clutter.",
+        "local": "References\\ds3_storage.jpg",
+        "download_bytes": 122933
+      },
+      {
+        "id": "ds3_wood",
+        "work": "Dark Souls — the Depths",
+        "page": "https://www.svg.com/842336/tragic-details-you-missed-in-dark-souls/",
+        "image": "https://www.svg.com/img/gallery/tragic-details-you-missed-in-dark-souls/laurentius-hallowing-1650652881.jpg",
+        "notes": "Curved barrel staves, iron hoop bands and discarded timber planks.",
+        "local": "References\\ds3_wood.jpg",
+        "download_bytes": 104795
+      }
+    ],
+    "units": "metres",
+    "front_axis_blender": "-Y",
+    "front_axis_unity": "+Z",
+    "pivot": "bottom-center",
+    "shader_recommendation": "Universal Render Pipeline/Lit",
+    "review_status": "blender_three_views_and_hero_reviewed_pass",
+    "footprint_policy": "Asset-only; no collision or gameplay footprint inferred",
+    "name": "DG_Bucket_RopeWell",
+    "dimensions_blender_xyz": [
+      0.9644540548324585,
+      0.5600000023841858,
+      0.8524718880653381
+    ],
+    "triangles": 1096,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_TimberLight",
+      "M_MapLP_DGIron",
+      "M_MapLP_DGCloth"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Dungeon\\Staging\\DG_Bucket_RopeWell.fbx",
+      "bytes": 49660,
+      "object": "DG_Bucket_RopeWell",
+      "mesh": "DG_Bucket_RopeWell_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "review_file": "review.json",
+    "previews": {
+      "front": "Previews/DG_Bucket_RopeWell_front.png",
+      "side": "Previews/DG_Bucket_RopeWell_side.png",
+      "back": "Previews/DG_Bucket_RopeWell_back.png",
+      "hero": "Previews/DG_Bucket_RopeWell_hero.png"
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "display_name": "覆苔倒塌砌石",
+    "category": "ruin",
+    "design_notes": "Large coherent masonry fragments, top-growing moss and a single broken root.",
+    "reference_ids": [
+      "skyrim_moss",
+      "ds3_dungeon"
+    ],
+    "references": [
+      {
+        "id": "skyrim_moss",
+        "work": "The Elder Scrolls V: Skyrim Special Edition — cavern",
+        "page": "https://www.rpgsite.net/news/5038-skyrim-special-edition-pc-comparison",
+        "image": "https://images.rpgsite.net/image/da49c9a1/49949/original/SSE_2016OCT27_06.png",
+        "notes": "Cold damp rock, muted moss and dry readable walking surface; roots kept near walls.",
+        "local": "References\\skyrim_moss.jpg",
+        "download_bytes": 4999490
+      },
+      {
+        "id": "ds3_dungeon",
+        "work": "Dark Souls III — Irithyll Dungeon",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/irithyll-dungeon/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_12.12.jpg",
+        "notes": "Damp masonry, low candles, aged timber and edge clutter; retain clear central passage.",
+        "local": "References\\ds3_dungeon.jpg",
+        "download_bytes": 168483
+      }
+    ],
+    "units": "metres",
+    "front_axis_blender": "-Y",
+    "front_axis_unity": "+Z",
+    "pivot": "bottom-center",
+    "shader_recommendation": "Universal Render Pipeline/Lit",
+    "review_status": "blender_three_views_and_hero_reviewed_pass",
+    "footprint_policy": "Asset-only; no collision or gameplay footprint inferred",
+    "name": "DG_Debris_MossMasonry",
+    "dimensions_blender_xyz": [
+      1.5690797567367554,
+      0.8656514883041382,
+      0.3070000112056732
+    ],
+    "triangles": 356,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_Stone",
+      "M_MapLP_DGMoss",
+      "M_MapLP_Rock",
+      "M_MapLP_Timber"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Dungeon\\Staging\\DG_Debris_MossMasonry.fbx",
+      "bytes": 32268,
+      "object": "DG_Debris_MossMasonry",
+      "mesh": "DG_Debris_MossMasonry_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "review_file": "review.json",
+    "previews": {
+      "front": "Previews/DG_Debris_MossMasonry_front.png",
+      "side": "Previews/DG_Debris_MossMasonry_side.png",
+      "back": "Previews/DG_Debris_MossMasonry_back.png",
+      "hero": "Previews/DG_Debris_MossMasonry_hero.png"
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "display_name": "断角朝圣墓碑",
+    "category": "ritual",
+    "design_notes": "Asymmetric broken grave slab, simple bronze sun mark and candles on stable base.",
+    "reference_ids": [
+      "skyrim_altar",
+      "ds3_catacombs"
+    ],
+    "references": [
+      {
+        "id": "skyrim_altar",
+        "work": "The Elder Scrolls V: Skyrim — Ustengrav",
+        "page": "https://www.nexusmods.com/skyrim/images/420366/",
+        "image": "https://staticdelivery.nexusmods.com/images/110/4335198-1399525741.jpg",
+        "notes": "Broad ritual altar, paired tapered urns, warm desaturated earthenware and candle groupings.",
+        "local": "References\\skyrim_altar.jpg",
+        "download_bytes": 124640
+      },
+      {
+        "id": "ds3_catacombs",
+        "work": "Dark Souls III — Catacombs of Carthus",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/catacombs-of-carthus/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_8.26.jpg",
+        "notes": "Vaulted burial architecture, coherent urn silhouettes, worn stone and restrained earth palette.",
+        "local": "References\\ds3_catacombs.jpg",
+        "download_bytes": 222248
+      }
+    ],
+    "units": "metres",
+    "front_axis_blender": "-Y",
+    "front_axis_unity": "+Z",
+    "pivot": "bottom-center",
+    "shader_recommendation": "Universal Render Pipeline/Lit",
+    "review_status": "blender_three_views_and_hero_reviewed_pass",
+    "footprint_policy": "Asset-only; no collision or gameplay footprint inferred",
+    "name": "DG_Marker_BrokenPilgrim",
+    "dimensions_blender_xyz": [
+      0.8500000238418579,
+      0.6600000262260437,
+      1.0700000524520874
+    ],
+    "triangles": 322,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_Rock",
+      "M_MapLP_Stone",
+      "M_MapLP_DGBronze",
+      "M_MapLP_DGWax",
+      "M_MapLP_Timber",
+      "M_MapLP_DGMoss"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Dungeon\\Staging\\DG_Marker_BrokenPilgrim.fbx",
+      "bytes": 29660,
+      "object": "DG_Marker_BrokenPilgrim",
+      "mesh": "DG_Marker_BrokenPilgrim_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "review_file": "review.json",
+    "previews": {
+      "front": "Previews/DG_Marker_BrokenPilgrim_front.png",
+      "side": "Previews/DG_Marker_BrokenPilgrim_side.png",
+      "back": "Previews/DG_Marker_BrokenPilgrim_back.png",
+      "hero": "Previews/DG_Marker_BrokenPilgrim_hero.png"
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "display_name": "遗忘账册讲台",
+    "category": "archive",
+    "design_notes": "Tilted reading surface, supported central post and thick open pages.",
+    "reference_ids": [
+      "skyrim_lectern",
+      "skyrim_library"
+    ],
+    "references": [
+      {
+        "id": "skyrim_lectern",
+        "work": "The Elder Scrolls V: Skyrim — Dragonborn",
+        "page": "https://en.m.uesp.net/wiki/Skyrim%3ABlack_Book%3A_The_Sallow_Regent_%28quest%29",
+        "image": "https://images.uesp.net/a/a5/SR-quest-Black_Book_The_Sallow_Regent.jpg",
+        "notes": "Book pedestal has a supported tilted reading surface, readable book thickness and restrained candle groupings.",
+        "local": "References\\skyrim_lectern.jpg",
+        "download_bytes": 621063
+      },
+      {
+        "id": "skyrim_library",
+        "work": "The Elder Scrolls V: Skyrim — Arcanaeum",
+        "page": "https://www.confrerie-des-traducteurs.fr/skyrim/mods/3867",
+        "image": "https://mods.confrerie-des-traducteurs.fr/skyrim/3867/images/big/the_elder_scrolls_v__skyrim_special_edition_screenshot_2023.04.09___15.43.17.64.jpg",
+        "notes": "Library archive shelving, thick leather bindings, warm neutral timber and visible working surfaces.",
+        "local": "References\\skyrim_library.jpg",
+        "download_bytes": 910472
+      }
+    ],
+    "units": "metres",
+    "front_axis_blender": "-Y",
+    "front_axis_unity": "+Z",
+    "pivot": "bottom-center",
+    "shader_recommendation": "Universal Render Pipeline/Lit",
+    "review_status": "blender_three_views_and_hero_reviewed_pass",
+    "footprint_policy": "Asset-only; no collision or gameplay footprint inferred",
+    "name": "DG_Lectern_ForgottenLedger",
+    "dimensions_blender_xyz": [
+      0.9200000166893005,
+      0.612500011920929,
+      1.2660000324249268
+    ],
+    "triangles": 72,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_Timber",
+      "M_MapLP_TimberLight",
+      "M_MapLP_DGPaper"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Dungeon\\Staging\\DG_Lectern_ForgottenLedger.fbx",
+      "bytes": 18860,
+      "object": "DG_Lectern_ForgottenLedger",
+      "mesh": "DG_Lectern_ForgottenLedger_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "review_file": "review.json",
+    "previews": {
+      "front": "Previews/DG_Lectern_ForgottenLedger_front.png",
+      "side": "Previews/DG_Lectern_ForgottenLedger_side.png",
+      "back": "Previews/DG_Lectern_ForgottenLedger_back.png",
+      "hero": "Previews/DG_Lectern_ForgottenLedger_hero.png"
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "display_name": "三脚凳与口粮袋",
+    "category": "storage",
+    "design_notes": "Three functional splayed legs support a stool and tied faceted cloth sack.",
+    "reference_ids": [
+      "ds3_wood",
+      "ds3_storage"
+    ],
+    "references": [
+      {
+        "id": "ds3_wood",
+        "work": "Dark Souls — the Depths",
+        "page": "https://www.svg.com/842336/tragic-details-you-missed-in-dark-souls/",
+        "image": "https://www.svg.com/img/gallery/tragic-details-you-missed-in-dark-souls/laurentius-hallowing-1650652881.jpg",
+        "notes": "Curved barrel staves, iron hoop bands and discarded timber planks.",
+        "local": "References\\ds3_wood.jpg",
+        "download_bytes": 104795
+      },
+      {
+        "id": "ds3_storage",
+        "work": "Dark Souls III — Undead Settlement",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/undead-settlement/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_4.101.jpg",
+        "notes": "Functional timber bracing, barrel/crate storage and clear navigation through clutter.",
+        "local": "References\\ds3_storage.jpg",
+        "download_bytes": 122933
+      }
+    ],
+    "units": "metres",
+    "front_axis_blender": "-Y",
+    "front_axis_unity": "+Z",
+    "pivot": "bottom-center",
+    "shader_recommendation": "Universal Render Pipeline/Lit",
+    "review_status": "blender_three_views_and_hero_reviewed_pass",
+    "footprint_policy": "Asset-only; no collision or gameplay footprint inferred",
+    "name": "DG_Stool_SackRest",
+    "dimensions_blender_xyz": [
+      0.7255766987800598,
+      0.6847606897354126,
+      1.1160318851470947
+    ],
+    "triangles": 306,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_TimberLight",
+      "M_MapLP_Timber",
+      "M_MapLP_DGCloth"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Dungeon\\Staging\\DG_Stool_SackRest.fbx",
+      "bytes": 27340,
+      "object": "DG_Stool_SackRest",
+      "mesh": "DG_Stool_SackRest_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "review_file": "review.json",
+    "previews": {
+      "front": "Previews/DG_Stool_SackRest_front.png",
+      "side": "Previews/DG_Stool_SackRest_side.png",
+      "back": "Previews/DG_Stool_SackRest_back.png",
+      "hero": "Previews/DG_Stool_SackRest_hero.png"
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "display_name": "落石排水铁栅",
+    "category": "ruin",
+    "design_notes": "Recessed iron lattice surrounded by thick stone frame, few broken masonry corners.",
+    "reference_ids": [
+      "ds3_dungeon",
+      "skyrim_moss"
+    ],
+    "references": [
+      {
+        "id": "ds3_dungeon",
+        "work": "Dark Souls III — Irithyll Dungeon",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/irithyll-dungeon/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_12.12.jpg",
+        "notes": "Damp masonry, low candles, aged timber and edge clutter; retain clear central passage.",
+        "local": "References\\ds3_dungeon.jpg",
+        "download_bytes": 168483
+      },
+      {
+        "id": "skyrim_moss",
+        "work": "The Elder Scrolls V: Skyrim Special Edition — cavern",
+        "page": "https://www.rpgsite.net/news/5038-skyrim-special-edition-pc-comparison",
+        "image": "https://images.rpgsite.net/image/da49c9a1/49949/original/SSE_2016OCT27_06.png",
+        "notes": "Cold damp rock, muted moss and dry readable walking surface; roots kept near walls.",
+        "local": "References\\skyrim_moss.jpg",
+        "download_bytes": 4999490
+      }
+    ],
+    "units": "metres",
+    "front_axis_blender": "-Y",
+    "front_axis_unity": "+Z",
+    "pivot": "bottom-center",
+    "shader_recommendation": "Universal Render Pipeline/Lit",
+    "review_status": "blender_three_views_and_hero_reviewed_pass",
+    "footprint_policy": "Asset-only; no collision or gameplay footprint inferred",
+    "name": "DG_Grate_RubbleDrain",
+    "dimensions_blender_xyz": [
+      1.4199999570846558,
+      1.2400000095367432,
+      0.23999999463558197
+    ],
+    "triangles": 322,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_Rock",
+      "M_MapLP_DGIron",
+      "M_MapLP_RockDark",
+      "M_MapLP_DGMoss"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Dungeon\\Staging\\DG_Grate_RubbleDrain.fbx",
+      "bytes": 27964,
+      "object": "DG_Grate_RubbleDrain",
+      "mesh": "DG_Grate_RubbleDrain_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "review_file": "review.json",
+    "previews": {
+      "front": "Previews/DG_Grate_RubbleDrain_front.png",
+      "side": "Previews/DG_Grate_RubbleDrain_side.png",
+      "back": "Previews/DG_Grate_RubbleDrain_back.png",
+      "hero": "Previews/DG_Grate_RubbleDrain_hero.png"
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  }
+]

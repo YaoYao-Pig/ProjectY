@@ -1,0 +1,76 @@
+{
+  "version": 1,
+  "name": "EquipmentWeaponTagTable",
+  "description": "武器可同时拥有多个标签；稳定标识供玩法查询，名称供详情标签展示。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string",
+      "description": "标签稳定标识"
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "武器详情显示名称"
+    },
+    {
+      "name": "tool",
+      "type": "bool",
+      "description": "此标签提供探索工具能力",
+      "default": false
+    }
+  ],
+  "rows": [
+    {
+      "id": "staff",
+      "name": "法杖",
+      "tool": false
+    },
+    {
+      "id": "rifle",
+      "name": "步枪",
+      "tool": false
+    },
+    {
+      "id": "sword",
+      "name": "单手剑",
+      "tool": false
+    },
+    {
+      "id": "two_handed_sword",
+      "name": "双手剑",
+      "tool": false
+    },
+    {
+      "id": "greatsword",
+      "name": "巨剑",
+      "tool": false
+    },
+    {
+      "id": "bow",
+      "name": "弓",
+      "tool": false
+    },
+    {
+      "id": "axe",
+      "name": "斧子",
+      "tool": true
+    },
+    {
+      "id": "pickaxe",
+      "name": "镐子",
+      "tool": true
+    },
+    {
+      "id": "shovel",
+      "name": "铲子",
+      "tool": true
+    },
+    {
+      "id": "crowbar",
+      "name": "撬棍",
+      "tool": true
+    }
+  ]
+}

@@ -1,0 +1,11 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class SkillAtlasTableRow
+---@field id number 技能 ID，与战斗技能共用身份
+---@field categoryId number 主要二级分类
+---@field relatedCategoryIds number[] 关联目录，只跳转同一技能
+---@field x number 图谱横坐标
+---@field y number 图谱纵坐标
+---@field prerequisiteIds number[] 前置技能
+---@field prerequisiteMode "all"|"any" 前置满足方式
+---@field tags string[] 搜索标签
+return {["name"]="SkillAtlasTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\230\138\128\232\131\189 ID\239\188\140\228\184\142\230\136\152\230\150\151\230\138\128\232\131\189\229\133\177\231\148\168\232\186\171\228\187\189",["ref"]="CombatSkillTable"},{["name"]="categoryId",["type"]="int",["description"]="\228\184\187\232\166\129\228\186\140\231\186\167\229\136\134\231\177\187",["ref"]="SkillCategoryTable"},{["name"]="relatedCategoryIds",["type"]="int[]",["description"]="\229\133\179\232\129\148\231\155\174\229\189\149\239\188\140\229\143\170\232\183\179\232\189\172\229\144\140\228\184\128\230\138\128\232\131\189",["ref"]="SkillCategoryTable"},{["name"]="x",["type"]="int",["description"]="\229\155\190\232\176\177\230\168\170\229\157\144\230\160\135",["min"]=0},{["name"]="y",["type"]="int",["description"]="\229\155\190\232\176\177\231\186\181\229\157\144\230\160\135",["min"]=0},{["name"]="prerequisiteIds",["type"]="int[]",["description"]="\229\137\141\231\189\174\230\138\128\232\131\189",["ref"]="CombatSkillTable"},{["name"]="prerequisiteMode",["type"]="enum",["description"]="\229\137\141\231\189\174\230\187\161\232\182\179\230\150\185\229\188\143",["values"]={"all","any"}},{["name"]="tags",["type"]="string[]",["description"]="\230\144\156\231\180\162\230\160\135\231\173\190"}},["fingerprint"]="d94b64af5acadbd2d041d7a17e0ea706a683415fcaa88866dd3e3fd7d3d57151"}

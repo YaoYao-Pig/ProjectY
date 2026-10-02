@@ -1,0 +1,44 @@
+{
+  "checks": [
+    {
+      "view": "noon-village",
+      "style": "PixelInk",
+      "sun": 1.1,
+      "skybox": "SolidColor",
+      "reflection": 0.0,
+      "meanBrightness": 114.70549666659733
+    },
+    {
+      "view": "noon-village",
+      "style": "MedievalFantasy",
+      "sun": 3.52000022,
+      "skybox": "Skybox",
+      "reflection": 0.75,
+      "meanBrightness": 155.95569208335971
+    },
+    {
+      "view": "sunset-street",
+      "style": "PixelInk",
+      "sun": 0.8875,
+      "skybox": "SolidColor",
+      "reflection": 0.0,
+      "meanBrightness": 103.37209250007987
+    },
+    {
+      "view": "sunset-street",
+      "style": "MedievalFantasy",
+      "sun": 2.21779585,
+      "skybox": "Skybox",
+      "reflection": 0.582698,
+      "meanBrightness": 137.02845958334507
+    }
+  ],
+  "outputs": [
+    "Docs/Previews/Rendering/daylight-PixelInk-noon-village.png",
+    "Docs/Previews/Rendering/daylight-MedievalFantasy-noon-village.png",
+    "Docs/Previews/Rendering/daylight-PixelInk-sunset-street.png",
+    "Docs/Previews/Rendering/daylight-MedievalFantasy-sunset-street.png"
+  ],
+  "nightSunPreserved": true,
+  "playMode": false
+}

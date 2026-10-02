@@ -1,0 +1,15 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaMineStairTableRow
+---@field id number 稳定编号
+---@field profileId number 矿井模板
+---@field name string 木阶名称
+---@field fromLayer number 低层
+---@field toLayer number 高层
+---@field bottomQ number 低端q
+---@field bottomR number 低端r
+---@field topQ number 高端q
+---@field topR number 高端r
+---@field q number[] 梯格q
+---@field r number[] 梯格r
+---@field edges number[] 逐边高度
+return {["name"]="MapAreaMineStairTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\231\188\150\229\143\183",["min"]=1},{["name"]="profileId",["type"]="int",["description"]="\231\159\191\228\186\149\230\168\161\230\157\191",["ref"]="MapAreaMineTable"},{["name"]="name",["type"]="string",["description"]="\230\156\168\233\152\182\229\144\141\231\167\176"},{["name"]="fromLayer",["type"]="int",["description"]="\228\189\142\229\177\130"},{["name"]="toLayer",["type"]="int",["description"]="\233\171\152\229\177\130"},{["name"]="bottomQ",["type"]="int",["description"]="\228\189\142\231\171\175q"},{["name"]="bottomR",["type"]="int",["description"]="\228\189\142\231\171\175r"},{["name"]="topQ",["type"]="int",["description"]="\233\171\152\231\171\175q"},{["name"]="topR",["type"]="int",["description"]="\233\171\152\231\171\175r"},{["name"]="q",["type"]="int[]",["description"]="\230\162\175\230\160\188q"},{["name"]="r",["type"]="int[]",["description"]="\230\162\175\230\160\188r"},{["name"]="edges",["type"]="float[]",["description"]="\233\128\144\232\190\185\233\171\152\229\186\166"}},["fingerprint"]="f72efb5c27dd2f378e689b8f8de443d97d64fc24acebf3bdb75e67b9773c90f4"}

@@ -1,0 +1,42 @@
+[
+  {
+    "name": "static WASD one cell",
+    "iterations": 12,
+    "totalMs": 67.5892,
+    "perCommandMs": 5.6324333333333341,
+    "constructionLookups": 0,
+    "cells": 16447
+  },
+  {
+    "name": "static click ten cells",
+    "iterations": 3,
+    "totalMs": 152.758,
+    "perCommandMs": 50.919333333333334,
+    "constructionLookups": 0,
+    "cells": 16447
+  },
+  {
+    "name": "static snapshot + C# read",
+    "iterations": 8,
+    "totalMs": 206.4712,
+    "perCommandMs": 25.8089,
+    "constructionLookups": 0,
+    "cells": 16447
+  },
+  {
+    "name": "construction overlay WASD one cell",
+    "iterations": 12,
+    "totalMs": 70.8843,
+    "perCommandMs": 5.907025,
+    "constructionLookups": 12,
+    "cells": 16447
+  },
+  {
+    "name": "construction overlay click ten cells",
+    "iterations": 3,
+    "totalMs": 152.6222,
+    "perCommandMs": 50.874066666666664,
+    "constructionLookups": 0,
+    "cells": 16447
+  }
+]

@@ -1,0 +1,26 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b6d7cac150439a94d996113a7e009609, type: 3}
+  m_Name: WorldVisualStyles
+  m_EditorClassIdentifier: 
+  selected: 1
+  pixelPipeline: {fileID: 11400000, guid: ba14bb18f21f4de4bac2e9013de3d1cf, type: 2}
+  pixelProfile: {fileID: 11400000, guid: c14d8929c29612b49887c17ee4d03d98, type: 2}
+  fantasyPipeline: {fileID: 11400000, guid: d4dbedd270d0f8f46b63fe6d18dce628, type: 2}
+  fantasyProfile: {fileID: 11400000, guid: 417c6c55783a21e4989971d5e8abaabb, type: 2}
+  fantasyLighting:
+    daySunMultiplier: 3.2
+    dayAmbientMultiplier: 0.78
+    reflectionIntensity: 0.75
+    skyLightTint: {r: 0.78, g: 0.9, b: 1, a: 1}
+    skybox: 1
+  fantasySkybox: {fileID: 2100000, guid: 17e960de689611548bb5e3e8bbbc7f9b, type: 2}

@@ -6,7 +6,7 @@ function Rules.New(config, data)
     for key,name in pairs({items='EquipmentItemTable',weapons='EquipmentWeaponTable',runes='EquipmentRuneTable',
         magazines='EquipmentMagazineTable',sockets='EquipmentSocketTable',assets='EquipmentAssetTable',
         poses='EquipmentPoseTable',actions='EquipmentActionTable',skills='CombatSkillTable',effects='CombatEffectTable',
-        categories='EquipmentCategoryTable',requirements='EquipmentRequirementTable',attributes='EquipmentAttributeTable',wearables='EquipmentWearableTable'}) do self[key]=config:GetTable(name) end
+        categories='EquipmentCategoryTable',tags='EquipmentWeaponTagTable',requirements='EquipmentRequirementTable',attributes='EquipmentAttributeTable',wearables='EquipmentWearableTable'}) do self[key]=config:GetTable(name) end
     self.pawnParts=config:GetTable('PawnPartTable');self.pawnTemplates={}
     for _,row in ipairs(config:GetTable('PawnTemplateTable'):All()) do self.pawnTemplates[row.unitId]=row end
     for _,row in ipairs(self.wearables:All()) do
@@ -19,6 +19,11 @@ function Rules.New(config, data)
     for _,weapon in ipairs(self.weapons:All()) do
         assert(self.items:Get(weapon.id).kind=='weapon')
         self.categories:Get(weapon.categoryId)
+        local seenTags={}
+        for _,id in ipairs(weapon.tagIds) do
+            self.tags:Get(id)
+            assert(not seenTags[id],'Duplicate weapon tag: '..weapon.id..'/'..id);seenTags[id]=true
+        end
         local requirement=self.requirements:Get(weapon.requirementId)
         assert(#requirement.attributeIds==#requirement.values,'Weapon requirement arrays differ')
         for _,id in ipairs(weapon.socketIds) do assert(self.sockets:Get(id).weaponItemId==weapon.id,'Weapon/socket mismatch') end
@@ -30,6 +35,20 @@ function Rules.New(config, data)
     end
     for _,magazine in ipairs(self.magazines:All()) do assert(magazine.spawnRounds<=magazine.capacity and self.items:Get(magazine.ammoItemId).kind=='ammo') end
     return self
+end
+function Rules:WeaponTags(itemId)
+    local result={}
+    for _,id in ipairs(self.weapons:Get(itemId).tagIds) do result[#result+1]=self.tags:Get(id) end
+    return result
+end
+function Rules:HasWeaponTag(itemId,tagId)
+    self.tags:Get(tagId)
+    for _,id in ipairs(self.weapons:Get(itemId).tagIds) do if id==tagId then return true end end
+    return false
+end
+function Rules:IsUtilityWeapon(itemId)
+    for _,id in ipairs(self.weapons:Get(itemId).tagIds) do if self.tags:Get(id).tool then return true end end
+    return false
 end
 -- No inventory is required for static config/attribute queries; battle supplies the expedition's real Data.
 function Rules:Weapon(actor) return self.data and actor.Team==1 and self.data:Equipped(actor.Id) or nil end
@@ -104,7 +123,7 @@ end
 function Rules:Skill(actor, id, stats)
     local base=self.skills:Get(id);local result={}
     for _,key in ipairs({'id','name','description','iconId','action','cost','range','target','proficiency','effectIds',
-        'skillGroup','cooldownTurns','hitChance','shots','ammoPerShot','damageScale','actionTemplate','contexts'}) do result[key]=base[key] end
+        'skillGroup','cooldownTurns','hitChance','shots','ammoPerShot','damageScale','actionTemplate','contexts','affectsContainers'}) do result[key]=base[key] end
     result.maxTargets=1;result.splashRadius=0
     local weapon=self:Weapon(actor)
     local off=self:Offhand(actor);local offAttack=off and self.weapons:Get(off.ItemId).offhandSkillId==id

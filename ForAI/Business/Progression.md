@@ -9,6 +9,11 @@
 ## 正文
 
 - 动物亲和与驯服技能方向、骑乘亲密度解锁技能见[森林动物与骑乘](Animals.md)；`skillDirection` 独立于属性分组，生活属性也可按配置参与研习。
+- 巧匠研习、材料施工与高台/挖掘规则见[巧匠营造](Construction.md)。
+- `SkillAtlas` 是独立的暂停世界浏览 Panel，从 HUD 菜单或角色手记进入；顶部一级领域、左侧二级目录、中央主动技能图谱，全局搜索可跳转分类。`SkillDiscipline/SkillCategory/SkillAtlasTable` 定义目录、唯一主归属、关联目录、坐标、标签与 all/any 前置；关联目录不复制技能身份。全部主动技能必须有图谱记录，初始化拒绝循环依赖。
+- 图谱依角色投影已掌握/当前可用、满足研习条件、条件不足或特殊来源；查看、搜索、切队员和重开不产生研习候选、不直接学习。`SkillAtlas` 前置与 `GrowthRules.Draw/GrowthSystem.Learn` 共用查询；被动天赋图仍仅使用 PassiveSkillTable。
+- 选中 Cell 的 Tips 显示效果、AP、距离、冷却、材料/工具、属性与获取途径，前置可点击跳转。浮窗锚定 Cell、贴边翻转并限制在页面内；随滚动更新，Cell 离屏时关闭，空白/关闭按钮/Esc 关闭。`SkillAtlasView` 只负责几何表现，Lua 组件引用全部走 LuaReference。
+- Unity MCP 调用 `SkillAtlasAssets.Create`（菜单“创建技能图谱”）生成并注册本模块 Prefab，重复执行保留布局；同步角色手记的图谱入口绑定。纯 Lua 检查为 `skill_atlas_core.lua`，真实 UI 检查通过 MCP 执行 `Tools/Construction/run_checks.cs`，在 PreviewScene 验证分类、搜索、锚点和缓存生命周期并生成 `Docs/Previews/SkillAtlas/` 图片。
 - 指定队伍槽位升级、按 ID 直接授予技能由独立 [GMSystem](../Tools/GM.md) 提供；正常升级与研习入口保持原规则。
 
 - 来源：[战斗总览](https://my.feishu.cn/wiki/XvPvw2sk2ih7BTkAonGcjmR7nlg)、[游戏玩法](https://my.feishu.cn/wiki/AjNMwkcNHisPnukqnESc78azn0b)、[一些想法](https://my.feishu.cn/wiki/OHZhwsGudiXWfIkywDDcczNunfe)。属性沿用六个一级属性与战斗/生活二级属性；初始数值与升级策略为用户授权的可配置 Demo。
@@ -32,6 +37,7 @@
 ## 关键入口
 
 - [GrowthSystem.lua](../../Lua/Game/Progression/GrowthSystem.lua) / [GrowthRules.lua](../../Lua/Game/Progression/GrowthRules.lua) / [Chronicle.lua](../../Lua/Game/Progression/Chronicle.lua)：命令、规则与记录模板。
+- [SkillAtlas.lua](../../Lua/Game/Progression/SkillAtlas.lua) / [SkillAtlasCtr.lua](../../Lua/UI/Panel/SkillAtlasCtr.lua) / [SkillAtlasView.cs](../../Assets/GameFramework/Runtime/UI/SkillAtlasView.cs) / [SkillAtlasAssets.cs](../../Assets/GameFramework/Editor/SkillAtlasAssets.cs)：图谱规则、控制器、锚定浮窗与可编辑资源。
 - [CharacterGrowthData.cs](../../Assets/GameFramework/Runtime/Data/CharacterGrowthData.cs) / [ChronicleEntryData.cs](../../Assets/GameFramework/Runtime/Data/ChronicleEntryData.cs)：权威状态与不可变经历。
 - [配置目录](../../Config/Tables/Progression/) / [设计与默认规则](../../Docs/StoryGrowth.md)：配表、边界和参考来源。
 - [CharacterGrowthCtr.lua](../../Lua/UI/Panel/CharacterGrowthCtr.lua) / [AdventureUIBridge.lua](../../Lua/UI/AdventureUIBridge.lua) / [StoryGrowthAssets.cs](../../Assets/GameFramework/Editor/StoryGrowthAssets.cs)：UI 接入与资源生成。

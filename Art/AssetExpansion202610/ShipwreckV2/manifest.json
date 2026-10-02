@@ -1,0 +1,1074 @@
+[
+  {
+    "title": "三倍船体·下舱外壳",
+    "category": "ship_multilevel_structure",
+    "map_asset_id": 800,
+    "design_zh": "船底至下舱墙，含周界窄木带；内部不封死",
+    "origin": "hull segments share absolute ship centre / height; furniture bottom centre",
+    "references": [
+      {
+        "id": "sot_lowerdecks",
+        "work": "Sea of Thieves — Galleon lower decks",
+        "page": "https://chitin.link/blog/sea-of-thieves-terms",
+        "image": "https://chitin.link/assets/build/sea_of_thieves_3.D0EuQHiL_ZxbJm9.webp",
+        "local": "References/sot_lowerdecks.png",
+        "study": "两层船舱、梁柱与货物区的组织；借鉴空间功能，不复制模型"
+      },
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim — Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "../Shipwreck/References/skyrim_icerunner.png",
+        "study": "高艉楼、木舷加强条与中世纪幻想船轮廓"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight shipwreck",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "../Shipwreck/References/sot_sunken.png",
+        "study": "损坏舷板、厚木船肋与遗留货舱设施"
+      }
+    ],
+    "literature_reference": {
+      "title": "William Morris: The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "River trade and cargo journeys; original fantasy design."
+    },
+    "review_status": "front_side_back_hero_reviewed_after_revision_2",
+    "name": "S2_Hull_Lower",
+    "dimensions_blender_xyz": [
+      35.51887130737305,
+      101.85790252685547,
+      5.560000419616699
+    ],
+    "triangles": 5388,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWWood",
+      "M_MapLP_S2Cabin",
+      "M_MapLP_SWTar",
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWPale",
+      "M_MapLP_SWDeck",
+      "M_MapLP_SWIron"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckV2\\Staging\\S2_Hull_Lower.fbx",
+      "bytes": 162604,
+      "object": "S2_Hull_Lower",
+      "mesh": "S2_Hull_Lower_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "title": "主甲板分层船舷",
+    "category": "ship_multilevel_structure",
+    "map_asset_id": 801,
+    "design_zh": "下舱视角可剖切，左舷破口Z6–15",
+    "origin": "hull segments share absolute ship centre / height; furniture bottom centre",
+    "references": [
+      {
+        "id": "sot_lowerdecks",
+        "work": "Sea of Thieves — Galleon lower decks",
+        "page": "https://chitin.link/blog/sea-of-thieves-terms",
+        "image": "https://chitin.link/assets/build/sea_of_thieves_3.D0EuQHiL_ZxbJm9.webp",
+        "local": "References/sot_lowerdecks.png",
+        "study": "两层船舱、梁柱与货物区的组织；借鉴空间功能，不复制模型"
+      },
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim — Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "../Shipwreck/References/skyrim_icerunner.png",
+        "study": "高艉楼、木舷加强条与中世纪幻想船轮廓"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight shipwreck",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "../Shipwreck/References/sot_sunken.png",
+        "study": "损坏舷板、厚木船肋与遗留货舱设施"
+      }
+    ],
+    "literature_reference": {
+      "title": "William Morris: The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "River trade and cargo journeys; original fantasy design."
+    },
+    "review_status": "front_side_back_hero_reviewed_after_revision_2",
+    "name": "S2_Hull_MainSides",
+    "dimensions_blender_xyz": [
+      36.79985809326172,
+      99.30000305175781,
+      3.1700000762939453
+    ],
+    "triangles": 3480,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWWood",
+      "M_MapLP_S2Cabin",
+      "M_MapLP_SWTar",
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWPale"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckV2\\Staging\\S2_Hull_MainSides.fbx",
+      "bytes": 105164,
+      "object": "S2_Hull_MainSides",
+      "mesh": "S2_Hull_MainSides_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "title": "抬高船艏舷墙",
+    "category": "ship_multilevel_structure",
+    "map_asset_id": 802,
+    "design_zh": "高平台舷墙和周界窄带，顶层甲板7.2米",
+    "origin": "hull segments share absolute ship centre / height; furniture bottom centre",
+    "references": [
+      {
+        "id": "sot_lowerdecks",
+        "work": "Sea of Thieves — Galleon lower decks",
+        "page": "https://chitin.link/blog/sea-of-thieves-terms",
+        "image": "https://chitin.link/assets/build/sea_of_thieves_3.D0EuQHiL_ZxbJm9.webp",
+        "local": "References/sot_lowerdecks.png",
+        "study": "两层船舱、梁柱与货物区的组织；借鉴空间功能，不复制模型"
+      },
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim — Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "../Shipwreck/References/skyrim_icerunner.png",
+        "study": "高艉楼、木舷加强条与中世纪幻想船轮廓"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight shipwreck",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "../Shipwreck/References/sot_sunken.png",
+        "study": "损坏舷板、厚木船肋与遗留货舱设施"
+      }
+    ],
+    "literature_reference": {
+      "title": "William Morris: The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "River trade and cargo journeys; original fantasy design."
+    },
+    "review_status": "front_side_back_hero_reviewed_after_revision_2",
+    "name": "S2_Forecastle_Sides",
+    "dimensions_blender_xyz": [
+      29.79546546936035,
+      27.21117401123047,
+      4.110000133514404
+    ],
+    "triangles": 900,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWWood",
+      "M_MapLP_S2Cabin",
+      "M_MapLP_SWTar",
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWPale",
+      "M_MapLP_SWDeck",
+      "M_MapLP_SWEnd"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckV2\\Staging\\S2_Forecastle_Sides.fbx",
+      "bytes": 41580,
+      "object": "S2_Forecastle_Sides",
+      "mesh": "S2_Forecastle_Sides_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "title": "高艉楼外侧船壳",
+    "category": "ship_multilevel_structure",
+    "map_asset_id": 803,
+    "design_zh": "高艉楼、舵机与侧窗，保留内部平台",
+    "origin": "hull segments share absolute ship centre / height; furniture bottom centre",
+    "references": [
+      {
+        "id": "sot_lowerdecks",
+        "work": "Sea of Thieves — Galleon lower decks",
+        "page": "https://chitin.link/blog/sea-of-thieves-terms",
+        "image": "https://chitin.link/assets/build/sea_of_thieves_3.D0EuQHiL_ZxbJm9.webp",
+        "local": "References/sot_lowerdecks.png",
+        "study": "两层船舱、梁柱与货物区的组织；借鉴空间功能，不复制模型"
+      },
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim — Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "../Shipwreck/References/skyrim_icerunner.png",
+        "study": "高艉楼、木舷加强条与中世纪幻想船轮廓"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight shipwreck",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "../Shipwreck/References/sot_sunken.png",
+        "study": "损坏舷板、厚木船肋与遗留货舱设施"
+      }
+    ],
+    "literature_reference": {
+      "title": "William Morris: The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "River trade and cargo journeys; original fantasy design."
+    },
+    "review_status": "front_side_back_hero_reviewed_after_revision_2",
+    "name": "S2_Aftcastle_Sides",
+    "dimensions_blender_xyz": [
+      31.140432357788086,
+      18.255525588989258,
+      3.419999599456787
+    ],
+    "triangles": 948,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWWood",
+      "M_MapLP_S2Cabin",
+      "M_MapLP_SWTar",
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWPale",
+      "M_MapLP_SWDeck",
+      "M_MapLP_SWDark"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckV2\\Staging\\S2_Aftcastle_Sides.fbx",
+      "bytes": 41564,
+      "object": "S2_Aftcastle_Sides",
+      "mesh": "S2_Aftcastle_Sides_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "title": "主甲板周界木带",
+    "category": "ship_multilevel_structure",
+    "map_asset_id": 804,
+    "design_zh": "仅2.1米周界填缝，不封楼梯井",
+    "origin": "hull segments share absolute ship centre / height; furniture bottom centre",
+    "references": [
+      {
+        "id": "sot_lowerdecks",
+        "work": "Sea of Thieves — Galleon lower decks",
+        "page": "https://chitin.link/blog/sea-of-thieves-terms",
+        "image": "https://chitin.link/assets/build/sea_of_thieves_3.D0EuQHiL_ZxbJm9.webp",
+        "local": "References/sot_lowerdecks.png",
+        "study": "两层船舱、梁柱与货物区的组织；借鉴空间功能，不复制模型"
+      },
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim — Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "../Shipwreck/References/skyrim_icerunner.png",
+        "study": "高艉楼、木舷加强条与中世纪幻想船轮廓"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight shipwreck",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "../Shipwreck/References/sot_sunken.png",
+        "study": "损坏舷板、厚木船肋与遗留货舱设施"
+      }
+    ],
+    "literature_reference": {
+      "title": "William Morris: The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "River trade and cargo journeys; original fantasy design."
+    },
+    "review_status": "front_side_back_hero_reviewed_after_revision_2",
+    "name": "S2_MainDeck_Trim",
+    "dimensions_blender_xyz": [
+      36.599998474121094,
+      99.0,
+      0.26999998092651367
+    ],
+    "triangles": 684,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWDeck"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckV2\\Staging\\S2_MainDeck_Trim.fbx",
+      "bytes": 29052,
+      "object": "S2_MainDeck_Trim",
+      "mesh": "S2_MainDeck_Trim_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "title": "船舱实木隔墙",
+    "category": "ship_interior_furniture",
+    "map_asset_id": 805,
+    "design_zh": "标准短隔墙，5.2米宽",
+    "origin": "hull segments share absolute ship centre / height; furniture bottom centre",
+    "references": [
+      {
+        "id": "sot_lowerdecks",
+        "work": "Sea of Thieves — Galleon lower decks",
+        "page": "https://chitin.link/blog/sea-of-thieves-terms",
+        "image": "https://chitin.link/assets/build/sea_of_thieves_3.D0EuQHiL_ZxbJm9.webp",
+        "local": "References/sot_lowerdecks.png",
+        "study": "两层船舱、梁柱与货物区的组织；借鉴空间功能，不复制模型"
+      },
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim — Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "../Shipwreck/References/skyrim_icerunner.png",
+        "study": "高艉楼、木舷加强条与中世纪幻想船轮廓"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight shipwreck",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "../Shipwreck/References/sot_sunken.png",
+        "study": "损坏舷板、厚木船肋与遗留货舱设施"
+      }
+    ],
+    "literature_reference": {
+      "title": "William Morris: The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "River trade and cargo journeys; original fantasy design."
+    },
+    "review_status": "front_side_back_hero_reviewed_after_revision_2",
+    "name": "S2_Partition_Solid",
+    "dimensions_blender_xyz": [
+      5.359999656677246,
+      0.35499998927116394,
+      2.7649998664855957
+    ],
+    "triangles": 144,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWWood",
+      "M_MapLP_S2Cabin",
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWTar"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckV2\\Staging\\S2_Partition_Solid.fbx",
+      "bytes": 20892,
+      "object": "S2_Partition_Solid",
+      "mesh": "S2_Partition_Solid_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "title": "船舱通行门墙",
+    "category": "ship_interior_furniture",
+    "map_asset_id": 806,
+    "design_zh": "2.4米净宽，2.45米净高通行口",
+    "origin": "hull segments share absolute ship centre / height; furniture bottom centre",
+    "references": [
+      {
+        "id": "sot_lowerdecks",
+        "work": "Sea of Thieves — Galleon lower decks",
+        "page": "https://chitin.link/blog/sea-of-thieves-terms",
+        "image": "https://chitin.link/assets/build/sea_of_thieves_3.D0EuQHiL_ZxbJm9.webp",
+        "local": "References/sot_lowerdecks.png",
+        "study": "两层船舱、梁柱与货物区的组织；借鉴空间功能，不复制模型"
+      },
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim — Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "../Shipwreck/References/skyrim_icerunner.png",
+        "study": "高艉楼、木舷加强条与中世纪幻想船轮廓"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight shipwreck",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "../Shipwreck/References/sot_sunken.png",
+        "study": "损坏舷板、厚木船肋与遗留货舱设施"
+      }
+    ],
+    "literature_reference": {
+      "title": "William Morris: The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "River trade and cargo journeys; original fantasy design."
+    },
+    "review_status": "front_side_back_hero_reviewed_after_revision_2",
+    "name": "S2_Partition_Door",
+    "dimensions_blender_xyz": [
+      5.359999656677246,
+      0.32249999046325684,
+      2.9649999141693115
+    ],
+    "triangles": 96,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_S2Cabin",
+      "M_MapLP_SWPale",
+      "M_MapLP_SWPlank"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckV2\\Staging\\S2_Partition_Door.fbx",
+      "bytes": 19036,
+      "object": "S2_Partition_Door",
+      "mesh": "S2_Partition_Door_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "title": "货舱双人宽门框",
+    "category": "ship_interior_furniture",
+    "map_asset_id": 807,
+    "design_zh": "3.6米净宽，2.6米净高",
+    "origin": "hull segments share absolute ship centre / height; furniture bottom centre",
+    "references": [
+      {
+        "id": "sot_lowerdecks",
+        "work": "Sea of Thieves — Galleon lower decks",
+        "page": "https://chitin.link/blog/sea-of-thieves-terms",
+        "image": "https://chitin.link/assets/build/sea_of_thieves_3.D0EuQHiL_ZxbJm9.webp",
+        "local": "References/sot_lowerdecks.png",
+        "study": "两层船舱、梁柱与货物区的组织；借鉴空间功能，不复制模型"
+      },
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim — Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "../Shipwreck/References/skyrim_icerunner.png",
+        "study": "高艉楼、木舷加强条与中世纪幻想船轮廓"
+      },
+      {
+        "id": "sot_sunken",
+        "work": "Sea of Thieves — Season Eight shipwreck",
+        "page": "https://news.xbox.com/en-us/2022/11/22/fight-for-your-faction-in-sea-of-thieves-season-eight/",
+        "image": "https://xboxwire.thesourcemediaassets.com/sites/2/2022/11/Wire_SoT_SeasonEight_SunkenShip_1920-e624b8308f37eedf58b8.jpg",
+        "local": "../Shipwreck/References/sot_sunken.png",
+        "study": "损坏舷板、厚木船肋与遗留货舱设施"
+      }
+    ],
+    "literature_reference": {
+      "title": "William Morris: The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "River trade and cargo journeys; original fantasy design."
+    },
+    "review_status": "front_side_back_hero_reviewed_after_revision_2",
+    "name": "S2_DoorFrame_Wide",
+    "dimensions_blender_xyz": [
+      4.960000038146973,
+      0.42750000953674316,
+      3.115000009536743
+    ],
+    "triangles": 96,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_S2Cabin",
+      "M_MapLP_SWPale",
+      "M_MapLP_SWPlank"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckV2\\Staging\\S2_DoorFrame_Wide.fbx",
+      "bytes": 19116,
+      "object": "S2_DoorFrame_Wide",
+      "mesh": "S2_DoorFrame_Wide_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "title": "船员双吊床",
+    "category": "ship_interior_furniture",
+    "map_asset_id": 808,
+    "design_zh": "弧面布床、绑绳与木架，全套真人尺度",
+    "origin": "hull segments share absolute ship centre / height; furniture bottom centre",
+    "references": [
+      {
+        "id": "sot_lowerdecks",
+        "work": "Sea of Thieves — Galleon lower decks",
+        "page": "https://chitin.link/blog/sea-of-thieves-terms",
+        "image": "https://chitin.link/assets/build/sea_of_thieves_3.D0EuQHiL_ZxbJm9.webp",
+        "local": "References/sot_lowerdecks.png",
+        "study": "两层船舱、梁柱与货物区的组织；借鉴空间功能，不复制模型"
+      },
+      {
+        "id": "sot_mapdesk",
+        "work": "Sea of Thieves — captain planning table",
+        "page": "https://www.windowscentral.com/gaming/will-sea-of-thieves-ever-deliver-pve-only-play-for-those-who-hate-pvp",
+        "image": "https://cdn.mos.cms.futurecdn.net/ZVqGmeMU6VuArfLWtoTx6C.png",
+        "local": "References/sot_mapdesk.png",
+        "study": "船长地图桌、航海物件的克制层次与暖木色"
+      },
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim — Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "../Shipwreck/References/skyrim_icerunner.png",
+        "study": "高艉楼、木舷加强条与中世纪幻想船轮廓"
+      }
+    ],
+    "literature_reference": {
+      "title": "William Morris: The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "River trade and cargo journeys; original fantasy design."
+    },
+    "review_status": "front_side_back_hero_reviewed_after_revision_2",
+    "name": "S2_HammockRack",
+    "dimensions_blender_xyz": [
+      2.4000000953674316,
+      2.93999981880188,
+      1.869999885559082
+    ],
+    "triangles": 632,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWWood",
+      "M_MapLP_SWPlank",
+      "M_MapLP_S2Cloth",
+      "M_MapLP_S2Hemp",
+      "M_MapLP_SWCloth"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckV2\\Staging\\S2_HammockRack.fbx",
+      "bytes": 34716,
+      "object": "S2_HammockRack",
+      "mesh": "S2_HammockRack_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "title": "船用石炉灶",
+    "category": "ship_interior_furniture",
+    "map_asset_id": 809,
+    "design_zh": "石炉、锅、火口与金属烟管",
+    "origin": "hull segments share absolute ship centre / height; furniture bottom centre",
+    "references": [
+      {
+        "id": "sot_lowerdecks",
+        "work": "Sea of Thieves — Galleon lower decks",
+        "page": "https://chitin.link/blog/sea-of-thieves-terms",
+        "image": "https://chitin.link/assets/build/sea_of_thieves_3.D0EuQHiL_ZxbJm9.webp",
+        "local": "References/sot_lowerdecks.png",
+        "study": "两层船舱、梁柱与货物区的组织；借鉴空间功能，不复制模型"
+      },
+      {
+        "id": "sot_mapdesk",
+        "work": "Sea of Thieves — captain planning table",
+        "page": "https://www.windowscentral.com/gaming/will-sea-of-thieves-ever-deliver-pve-only-play-for-those-who-hate-pvp",
+        "image": "https://cdn.mos.cms.futurecdn.net/ZVqGmeMU6VuArfLWtoTx6C.png",
+        "local": "References/sot_mapdesk.png",
+        "study": "船长地图桌、航海物件的克制层次与暖木色"
+      },
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim — Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "../Shipwreck/References/skyrim_icerunner.png",
+        "study": "高艉楼、木舷加强条与中世纪幻想船轮廓"
+      }
+    ],
+    "literature_reference": {
+      "title": "William Morris: The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "River trade and cargo journeys; original fantasy design."
+    },
+    "review_status": "front_side_back_hero_reviewed_after_revision_2",
+    "name": "S2_GalleyHearth",
+    "dimensions_blender_xyz": [
+      2.0799999237060547,
+      1.2850000858306885,
+      2.740000009536743
+    ],
+    "triangles": 1064,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_S2Stone",
+      "M_MapLP_SWIron",
+      "M_MapLP_SWDark",
+      "M_MapLP_SWTar"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckV2\\Staging\\S2_GalleyHearth.fbx",
+      "bytes": 45100,
+      "object": "S2_GalleyHearth",
+      "mesh": "S2_GalleyHearth_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "title": "船员长桌与双凳",
+    "category": "ship_interior_furniture",
+    "map_asset_id": 810,
+    "design_zh": "完整用餐设施，桌面0.87米",
+    "origin": "hull segments share absolute ship centre / height; furniture bottom centre",
+    "references": [
+      {
+        "id": "sot_lowerdecks",
+        "work": "Sea of Thieves — Galleon lower decks",
+        "page": "https://chitin.link/blog/sea-of-thieves-terms",
+        "image": "https://chitin.link/assets/build/sea_of_thieves_3.D0EuQHiL_ZxbJm9.webp",
+        "local": "References/sot_lowerdecks.png",
+        "study": "两层船舱、梁柱与货物区的组织；借鉴空间功能，不复制模型"
+      },
+      {
+        "id": "sot_mapdesk",
+        "work": "Sea of Thieves — captain planning table",
+        "page": "https://www.windowscentral.com/gaming/will-sea-of-thieves-ever-deliver-pve-only-play-for-those-who-hate-pvp",
+        "image": "https://cdn.mos.cms.futurecdn.net/ZVqGmeMU6VuArfLWtoTx6C.png",
+        "local": "References/sot_mapdesk.png",
+        "study": "船长地图桌、航海物件的克制层次与暖木色"
+      },
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim — Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "../Shipwreck/References/skyrim_icerunner.png",
+        "study": "高艉楼、木舷加强条与中世纪幻想船轮廓"
+      }
+    ],
+    "literature_reference": {
+      "title": "William Morris: The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "River trade and cargo journeys; original fantasy design."
+    },
+    "review_status": "front_side_back_hero_reviewed_after_revision_2",
+    "support_surfaces": [
+      {
+        "name": "tabletop",
+        "rect_unity_xz": [
+          -1.5,
+          1.5,
+          -0.5,
+          0.5
+        ],
+        "height": 0.87
+      }
+    ],
+    "name": "S2_MessTable",
+    "dimensions_blender_xyz": [
+      3.3499999046325684,
+      2.700000047683716,
+      0.8790000081062317
+    ],
+    "triangles": 168,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWWood",
+      "M_MapLP_SWDark"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckV2\\Staging\\S2_MessTable.fbx",
+      "bytes": 20380,
+      "object": "S2_MessTable",
+      "mesh": "S2_MessTable_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "title": "分层货舱架",
+    "category": "ship_interior_furniture",
+    "map_asset_id": 811,
+    "design_zh": "两层木箱与斜撑，货箱均落在搁板",
+    "origin": "hull segments share absolute ship centre / height; furniture bottom centre",
+    "references": [
+      {
+        "id": "sot_lowerdecks",
+        "work": "Sea of Thieves — Galleon lower decks",
+        "page": "https://chitin.link/blog/sea-of-thieves-terms",
+        "image": "https://chitin.link/assets/build/sea_of_thieves_3.D0EuQHiL_ZxbJm9.webp",
+        "local": "References/sot_lowerdecks.png",
+        "study": "两层船舱、梁柱与货物区的组织；借鉴空间功能，不复制模型"
+      },
+      {
+        "id": "sot_mapdesk",
+        "work": "Sea of Thieves — captain planning table",
+        "page": "https://www.windowscentral.com/gaming/will-sea-of-thieves-ever-deliver-pve-only-play-for-those-who-hate-pvp",
+        "image": "https://cdn.mos.cms.futurecdn.net/ZVqGmeMU6VuArfLWtoTx6C.png",
+        "local": "References/sot_mapdesk.png",
+        "study": "船长地图桌、航海物件的克制层次与暖木色"
+      },
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim — Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "../Shipwreck/References/skyrim_icerunner.png",
+        "study": "高艉楼、木舷加强条与中世纪幻想船轮廓"
+      }
+    ],
+    "literature_reference": {
+      "title": "William Morris: The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "River trade and cargo journeys; original fantasy design."
+    },
+    "review_status": "front_side_back_hero_reviewed_after_revision_2",
+    "name": "S2_CargoShelves",
+    "dimensions_blender_xyz": [
+      2.75,
+      0.8999999761581421,
+      2.25
+    ],
+    "triangles": 612,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWWood",
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWPale",
+      "M_MapLP_SWDark",
+      "M_MapLP_SWTar"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckV2\\Staging\\S2_CargoShelves.fbx",
+      "bytes": 32348,
+      "object": "S2_CargoShelves",
+      "mesh": "S2_CargoShelves_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "title": "船长抽屉海图桌",
+    "category": "ship_interior_furniture",
+    "map_asset_id": 812,
+    "design_zh": "桌面0.89米，海图与航海小物可另摆",
+    "origin": "hull segments share absolute ship centre / height; furniture bottom centre",
+    "references": [
+      {
+        "id": "sot_lowerdecks",
+        "work": "Sea of Thieves — Galleon lower decks",
+        "page": "https://chitin.link/blog/sea-of-thieves-terms",
+        "image": "https://chitin.link/assets/build/sea_of_thieves_3.D0EuQHiL_ZxbJm9.webp",
+        "local": "References/sot_lowerdecks.png",
+        "study": "两层船舱、梁柱与货物区的组织；借鉴空间功能，不复制模型"
+      },
+      {
+        "id": "sot_mapdesk",
+        "work": "Sea of Thieves — captain planning table",
+        "page": "https://www.windowscentral.com/gaming/will-sea-of-thieves-ever-deliver-pve-only-play-for-those-who-hate-pvp",
+        "image": "https://cdn.mos.cms.futurecdn.net/ZVqGmeMU6VuArfLWtoTx6C.png",
+        "local": "References/sot_mapdesk.png",
+        "study": "船长地图桌、航海物件的克制层次与暖木色"
+      },
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim — Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "../Shipwreck/References/skyrim_icerunner.png",
+        "study": "高艉楼、木舷加强条与中世纪幻想船轮廓"
+      }
+    ],
+    "literature_reference": {
+      "title": "William Morris: The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "River trade and cargo journeys; original fantasy design."
+    },
+    "review_status": "front_side_back_hero_reviewed_after_revision_2",
+    "support_surfaces": [
+      {
+        "name": "tabletop",
+        "rect_unity_xz": [
+          -1,
+          1,
+          -0.28,
+          0.42
+        ],
+        "height": 0.89
+      }
+    ],
+    "name": "S2_CaptainDesk",
+    "dimensions_blender_xyz": [
+      2.200000047683716,
+      1.0,
+      0.9500000476837158
+    ],
+    "triangles": 240,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWWood",
+      "M_MapLP_S2Cabin",
+      "M_MapLP_SWPale",
+      "M_MapLP_S2Copper",
+      "M_MapLP_SWTar"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckV2\\Staging\\S2_CaptainDesk.fbx",
+      "bytes": 26220,
+      "object": "S2_CaptainDesk",
+      "mesh": "S2_CaptainDesk_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "title": "登船武具架",
+    "category": "ship_interior_furniture",
+    "map_asset_id": 813,
+    "design_zh": "空挂钩与稳定木脚，沿舱壁陈列",
+    "origin": "hull segments share absolute ship centre / height; furniture bottom centre",
+    "references": [
+      {
+        "id": "sot_lowerdecks",
+        "work": "Sea of Thieves — Galleon lower decks",
+        "page": "https://chitin.link/blog/sea-of-thieves-terms",
+        "image": "https://chitin.link/assets/build/sea_of_thieves_3.D0EuQHiL_ZxbJm9.webp",
+        "local": "References/sot_lowerdecks.png",
+        "study": "两层船舱、梁柱与货物区的组织；借鉴空间功能，不复制模型"
+      },
+      {
+        "id": "sot_mapdesk",
+        "work": "Sea of Thieves — captain planning table",
+        "page": "https://www.windowscentral.com/gaming/will-sea-of-thieves-ever-deliver-pve-only-play-for-those-who-hate-pvp",
+        "image": "https://cdn.mos.cms.futurecdn.net/ZVqGmeMU6VuArfLWtoTx6C.png",
+        "local": "References/sot_mapdesk.png",
+        "study": "船长地图桌、航海物件的克制层次与暖木色"
+      },
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim — Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "../Shipwreck/References/skyrim_icerunner.png",
+        "study": "高艉楼、木舷加强条与中世纪幻想船轮廓"
+      }
+    ],
+    "literature_reference": {
+      "title": "William Morris: The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "River trade and cargo journeys; original fantasy design."
+    },
+    "review_status": "front_side_back_hero_reviewed_after_revision_2",
+    "name": "S2_WeaponRack",
+    "dimensions_blender_xyz": [
+      2.259999990463257,
+      0.809999942779541,
+      1.8586362600326538
+    ],
+    "triangles": 132,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWWood",
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWIron"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckV2\\Staging\\S2_WeaponRack.fbx",
+      "bytes": 20268,
+      "object": "S2_WeaponRack",
+      "mesh": "S2_WeaponRack_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "title": "货舱铁栅笼",
+    "category": "ship_interior_furniture",
+    "map_asset_id": 814,
+    "design_zh": "四面闭合铁栅和锁扣，作为阻挡陈设",
+    "origin": "hull segments share absolute ship centre / height; furniture bottom centre",
+    "references": [
+      {
+        "id": "sot_lowerdecks",
+        "work": "Sea of Thieves — Galleon lower decks",
+        "page": "https://chitin.link/blog/sea-of-thieves-terms",
+        "image": "https://chitin.link/assets/build/sea_of_thieves_3.D0EuQHiL_ZxbJm9.webp",
+        "local": "References/sot_lowerdecks.png",
+        "study": "两层船舱、梁柱与货物区的组织；借鉴空间功能，不复制模型"
+      },
+      {
+        "id": "sot_mapdesk",
+        "work": "Sea of Thieves — captain planning table",
+        "page": "https://www.windowscentral.com/gaming/will-sea-of-thieves-ever-deliver-pve-only-play-for-those-who-hate-pvp",
+        "image": "https://cdn.mos.cms.futurecdn.net/ZVqGmeMU6VuArfLWtoTx6C.png",
+        "local": "References/sot_mapdesk.png",
+        "study": "船长地图桌、航海物件的克制层次与暖木色"
+      },
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim — Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "../Shipwreck/References/skyrim_icerunner.png",
+        "study": "高艉楼、木舷加强条与中世纪幻想船轮廓"
+      }
+    ],
+    "literature_reference": {
+      "title": "William Morris: The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "River trade and cargo journeys; original fantasy design."
+    },
+    "review_status": "front_side_back_hero_reviewed_after_revision_2",
+    "name": "S2_PrisonCage",
+    "dimensions_blender_xyz": [
+      3.0,
+      3.0299999713897705,
+      2.495000123977661
+    ],
+    "triangles": 728,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWIron",
+      "M_MapLP_S2Copper"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckV2\\Staging\\S2_PrisonCage.fbx",
+      "bytes": 31548,
+      "object": "S2_PrisonCage",
+      "mesh": "S2_PrisonCage_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "title": "远航残帆高桅",
+    "category": "ship_interior_furniture",
+    "map_asset_id": 815,
+    "design_zh": "约41.2米断桅、52.8×23.3米大残帆；保留原基座。帆最低8米，绳锚4.2米，整体随下舱剖切。",
+    "origin": "hull segments share absolute ship centre / height; furniture bottom centre",
+    "references": [
+      {
+        "id": "sot_lowerdecks",
+        "work": "Sea of Thieves — Galleon lower decks",
+        "page": "https://chitin.link/blog/sea-of-thieves-terms",
+        "image": "https://chitin.link/assets/build/sea_of_thieves_3.D0EuQHiL_ZxbJm9.webp",
+        "local": "References/sot_lowerdecks.png",
+        "study": "两层船舱、梁柱与货物区的组织；借鉴空间功能，不复制模型"
+      },
+      {
+        "id": "sot_mapdesk",
+        "work": "Sea of Thieves — captain planning table",
+        "page": "https://www.windowscentral.com/gaming/will-sea-of-thieves-ever-deliver-pve-only-play-for-those-who-hate-pvp",
+        "image": "https://cdn.mos.cms.futurecdn.net/ZVqGmeMU6VuArfLWtoTx6C.png",
+        "local": "References/sot_mapdesk.png",
+        "study": "船长地图桌、航海物件的克制层次与暖木色"
+      },
+      {
+        "id": "skyrim_icerunner",
+        "work": "The Elder Scrolls V: Skyrim — Wreck of the Icerunner",
+        "page": "https://skyrim.annathepiper.org/2021/08/13/in-which-merawen-becomes-thane-of-falkreath-and-investigates-for-the-guild/",
+        "image": "https://skyrim.annathepiper.org/files/2023/11/wreck-of-the-icerunner-1024x576.jpeg",
+        "local": "../Shipwreck/References/skyrim_icerunner.png",
+        "study": "高艉楼、木舷加强条与中世纪幻想船轮廓"
+      }
+    ],
+    "literature_reference": {
+      "title": "William Morris: The Sundering Flood, chapter XLIV",
+      "url": "https://www.gutenberg.org/cache/epub/25547/pg25547-images.html",
+      "motif": "River trade and cargo journeys; original fantasy design."
+    },
+    "review_status": "doubled_again_width_height_source_and_unity_overview_checked",
+    "name": "S2_Mast_Tall",
+    "dimensions_blender_xyz": [
+      56.816715240478516,
+      1.9021130800247192,
+      41.217281341552734
+    ],
+    "triangles": 204,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SWWood",
+      "M_MapLP_SWTar",
+      "M_MapLP_SWPlank",
+      "M_MapLP_SWCloth",
+      "M_MapLP_SWDark",
+      "M_MapLP_SWEnd"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckV2\\Staging\\S2_Mast_Tall.fbx",
+      "bytes": 27884,
+      "object": "S2_Mast_Tall",
+      "mesh": "S2_Mast_Tall_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  }
+]

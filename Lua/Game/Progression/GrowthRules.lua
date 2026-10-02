@@ -9,6 +9,7 @@ function Rules.New(config)
         self[key] = config:GetTable(name)
     end
     self.settings = self.rules:Get(1)
+    self.atlas = require('Game.Progression.SkillAtlas').New(config)
     assert(self.settings.directionMin <= self.settings.directionMax, 'Invalid skill direction count')
     self.attributeByCode, self.profileByUnit, self.incoming, self.neighbors = {}, {}, {}, {}
     self.maxLevel = 1
@@ -112,7 +113,8 @@ function Rules:Draw(actor, stats)
                 local value = stats:Get(actor, attribute.code, not self.settings.includeEquipment)
                 local candidates, seen = {}, {}
                 for _, pool in ipairs(self.pools:All()) do
-                    if pool.attributeId == attribute.id and value >= pool.minValue and value <= pool.maxValue and not owned[pool.skillId] then
+                    if pool.attributeId == attribute.id and value >= pool.minValue and value <= pool.maxValue and not owned[pool.skillId]
+                        and self.atlas:Prerequisites(pool.skillId,owned) then
                         assert(not seen[pool.skillId], 'Overlapping rows for same skill/direction'); seen[pool.skillId] = true
                         candidates[#candidates+1] = {id=pool.skillId,weight=self.settings.tierWeight:Evaluate({value=value,tier=pool.tier,weight=pool.weight})}
                     end

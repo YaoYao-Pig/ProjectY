@@ -8,6 +8,7 @@ function Growth:Bind()
     self.appearance=require('Game.Adventure.PawnAppearance').New(self.context.systems:Get('Config'))
     self.view.Style:Prepare();self.nodes,self.edges={},{}
     self:Listen(self.view.Close,function() self:Close() end)
+    self:Listen(self.view.Atlas,function() local demo=self.demo;self:Close();self.context.systems:Get('UI'):Open('SkillAtlas',{demo=demo}) end)
     for i=1,4 do self:Listen(self.view['Party'..i],function() self.actorIndex=i-1;self.historyPage=1;self.selectedNode=nil;self:Refresh() end) end
     for _,key in ipairs({'Overview','Skills','History'}) do self:Listen(self.view[key..'Tab'],function() self.tab=key;self:Refresh() end) end
     self:Listen(self.view.PreviousTree,function() self.treeIndex=self.treeIndex-1;self.selectedNode=nil;self:Refresh() end)

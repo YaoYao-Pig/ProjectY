@@ -29,11 +29,13 @@ namespace ProjectY.Samples
             public readonly MaterialPropertyBlock Properties = new MaterialPropertyBlock();
         }
         private readonly List<Batch> batches = new List<Batch>();
+        private readonly List<int> columnCells = new List<int>();
         private readonly List<PropBatch> propBatches = new List<PropBatch>();
         private sealed class CameraObstacle
         {
             public Bounds Bounds;
             public int InteriorId;
+            public int Layer, CutawayGroup, CutawayLayer;
             public bool Cutaway;
         }
         private readonly List<CameraObstacle> cameraObstacles = new List<CameraObstacle>();
@@ -41,10 +43,16 @@ namespace ProjectY.Samples
         private readonly Material material;
         private readonly Material groundMaterial;
         private readonly Mesh mesh;
-        private readonly TownSurfaceRenderer townSurface;
+        private TownSurfaceRenderer townSurface;
+        private readonly Shader shader;
         private readonly MapAreaViewData map;
         private readonly bool[] known, visible;
+        private readonly bool[] terrainShown;
+        private readonly bool[] terrainCut;
+        private readonly Dictionary<int, int> interiorLayers = new Dictionary<int, int>();
+        private readonly Dictionary<int, int> groupLayers = new Dictionary<int, int>();
         private int revision = -1;
+        private int constructionRevision=-1;
         private bool reveal;
         public Bounds Bounds { get; }
         public readonly List<Bounds> CameraObstacles = new List<Bounds>();
@@ -52,25 +60,30 @@ namespace ProjectY.Samples
         public bool IsInteriorOpen(int id) => id > 0 && openInteriors.Contains(id);
         private void AddCameraObstacle(Bounds bounds, MapAreaViewData.Prop prop)
         {
-            cameraObstacles.Add(new CameraObstacle { Bounds = bounds, InteriorId = prop.InteriorId, Cutaway = prop.Cutaway });
+            cameraObstacles.Add(new CameraObstacle { Bounds = bounds, InteriorId = prop.InteriorId, Cutaway = prop.Cutaway,
+                Layer = prop.Layer, CutawayGroup = prop.CutawayGroup, CutawayLayer = prop.CutawayLayer });
             CameraObstacles.Add(bounds);
         }
         public MapAreaRenderer(Shader shader, GameObject prefab, MapAreaViewData map, Func<MapAreaViewData.Asset, GameObject> resolve)
         {
             if (shader == null || prefab == null || !SystemInfo.supportsInstancing) throw new InvalidOperationException("MapArea 缺少实例渲染资源。");
-            this.map = map;
+            this.map = map; this.shader = shader;
             var filter = prefab.GetComponent<MeshFilter>(); var source = prefab.GetComponent<MeshRenderer>();
             if (filter == null || source == null || filter.sharedMesh == null) throw new InvalidOperationException("MapArea 柱模型缺少 Mesh。");
             if (!Array.Exists(source.sharedMaterials, value => value.name == map.TintMaterial)) throw new InvalidOperationException("MapArea 模型材质与配置不一致。");
             mesh = filter.sharedMesh; material = new Material(shader) { name = "MapArea_探索实例", enableInstancing = true };
             groundMaterial = new Material(shader) { name = "MapArea_地牢材质", enableInstancing = true };
             groundMaterial.SetFloat("_UseSurfacePattern", 2);
-            if (map.IsTown) townSurface = new TownSurfaceRenderer(shader, map);
+            if (map.IsTown || Array.Exists(map.Cells, cell => cell.UsesSurfaceMesh))
+                townSurface = new TownSurfaceRenderer(shader, map, SurfaceCell);
             known = new bool[map.Cells.Length]; visible = new bool[map.Cells.Length];
+            terrainShown = new bool[map.Cells.Length];
+            terrainCut = new bool[map.Cells.Length];
             var bounds = new Bounds(map.Cells[0].Position, Vector3.zero);
             for (var i = 0; i < map.Cells.Length; i++)
             {
                 if (!map.IsTown && i % 1023 == 0) batches.Add(new Batch { Start = i, Count = Math.Min(1023, map.Cells.Length - i) });
+                if (!map.IsTown && map.Cells[i].RenderGround && map.Cells[i].Kind != "void" && !SurfaceCell(map.Cells[i])) columnCells.Add(i);
                 bounds.Encapsulate(map.Cells[i].Position + Vector3.up * map.Cells[i].WallHeight);
             }
             bounds.Expand(map.Radius * 2); Bounds = bounds;
@@ -86,13 +99,13 @@ namespace ProjectY.Samples
                 // GPU 实例没有 Collider；用实际阻挡占地裁切高度包围盒，保留中庭、门洞与桥下空间。
                 foreach (var prop in map.Props)
                 {
-                    if (prop.AssetId != asset.Id) continue;
+                    if (prop.AssetId != asset.Id || !prop.CameraObstacle) continue;
                     var local = propFilter.sharedMesh.bounds;
                     var matrix = Matrix4x4.TRS(prop.Position, Quaternion.Euler(0, prop.Rotation, 0), prop.Scale3);
                     var obstacle = new Bounds(matrix.MultiplyPoint3x4(local.center), Vector3.zero);
                     for (var x = -1; x <= 1; x += 2) for (var y = -1; y <= 1; y += 2) for (var z = -1; z <= 1; z += 2)
                         obstacle.Encapsulate(matrix.MultiplyPoint3x4(local.center + Vector3.Scale(local.extents, new Vector3(x, y, z))));
-                    if (!map.IsTown) { obstacle.Expand(.35f); AddCameraObstacle(obstacle, prop); continue; }
+                    if (!map.IsTown && prop.CutawayGroup == 0) { obstacle.Expand(.35f); AddCameraObstacle(obstacle, prop); continue; }
                     foreach (var index in prop.Cells)
                     {
                         var cell = map.Cells[index];
@@ -126,29 +139,64 @@ namespace ProjectY.Samples
         }
         public void UpdateVisibility(MapAreaViewData.State state, bool revealAll)
         {
-            if (state.Revision == revision && revealAll == reveal) return;
+            if (state.Revision == revision && state.ConstructionRevision==constructionRevision && revealAll == reveal) return;
+            if (townSurface != null && constructionRevision >= 0 && state.ConstructionRevision != constructionRevision)
+            { townSurface.Dispose(); townSurface = new TownSurfaceRenderer(shader, map, SurfaceCell); }
+            constructionRevision=state.ConstructionRevision;
             revision = state.Revision; reveal = revealAll;
-            openInteriors.Clear();
+            openInteriors.Clear(); interiorLayers.Clear(); groupLayers.Clear();
             foreach (var member in state.Members)
             {
-                var id = map.Cells[member.CellIndex].InteriorId;
+                var memberCell = map.Cells[member.CellIndex];
+                if (memberCell.CutawayGroup > 0 && (!groupLayers.TryGetValue(memberCell.CutawayGroup, out var current) || memberCell.Layer > current))
+                    groupLayers[memberCell.CutawayGroup] = memberCell.Layer;
+                var id = memberCell.InteriorId;
                 if (id > 0) openInteriors.Add(id);
+                var floorId = memberCell.CoverInteriorId > 0 ? memberCell.CoverInteriorId : id;
+                if (floorId > 0)
+                {
+                    if (!interiorLayers.TryGetValue(floorId, out var layer) || memberCell.Layer > layer)
+                        interiorLayers[floorId] = memberCell.Layer;
+                }
             }
-            // 镜头持有同一列表引用。隐藏的上盖必须同时退出镜头避障，不能留下看不见的墙。
-            CameraObstacles.Clear();
-            foreach (var obstacle in cameraObstacles)
-                if (!obstacle.Cutaway || !IsInteriorOpen(obstacle.InteriorId)) CameraObstacles.Add(obstacle.Bounds);
             Array.Clear(known, 0, known.Length); Array.Clear(visible, 0, visible.Length);
             foreach (var index in state.Known) known[index] = true;
             foreach (var index in state.Visible) visible[index] = true;
+            // The leader selects the viewed storey in their building. Stairs remain selectable from below.
+            if (state.Members.Length > 0)
+            {
+                var leader = map.Cells[state.Members[0].CellIndex];
+                if (leader.InteriorId > 0) interiorLayers[leader.InteriorId] = leader.Layer;
+                if (leader.CoverInteriorId > 0) interiorLayers[leader.CoverInteriorId] = leader.Layer;
+                if (leader.CutawayGroup > 0) groupLayers[leader.CutawayGroup] = leader.Layer;
+            }
+            // 镜头与绘制使用同一层级剖切，旧城镇上盖继续按室内占格打开。
+            CameraObstacles.Clear();
+            foreach (var obstacle in cameraObstacles)
+                if (!IsCut(obstacle.InteriorId, obstacle.Cutaway, obstacle.Layer, obstacle.CutawayGroup, obstacle.CutawayLayer)) CameraObstacles.Add(obstacle.Bounds);
+            for (var i = 0; i < map.Cells.Length; i++)
+            {
+                var cell = map.Cells[i];
+                var interior = cell.CoverInteriorId > 0 ? cell.CoverInteriorId : cell.InteriorId;
+                var cut = interior > 0 && cell.Layer > 0
+                    && interiorLayers.TryGetValue(interior, out var floor) && cell.Layer > floor
+                    && (cell.Kind != "stairs" || cell.Layer > floor + 1);
+                cut |= cell.CutawayGroup > 0 && groupLayers.TryGetValue(cell.CutawayGroup, out var groupFloor) && cell.CutawayLayer > groupFloor;
+                terrainCut[i] = cut;
+                terrainShown[i] = (map.IsTown || reveal || known[i]) && !cut;
+            }
+            townSurface?.SetVisibility(terrainShown, reveal || map.IsTown ? null : visible);
             foreach (var batch in batches)
             {
                 for (var i = 0; i < batch.Count; i++)
                 {
                     var index = batch.Start + i; var cell = map.Cells[index]; var discovered = reveal || known[index];
-                    var top = discovered ? cell.Position.y + (cell.Kind == "wall" ? cell.WallHeight : 0) : 0;
+                    var top = discovered ? cell.GroundHeight + (cell.Kind == "wall" ? cell.WallHeight : 0) :
+                        cell.CutawayGroup > 0 || cell.Layer > 0 ? cell.Position.y : 0;
                     var position = new Vector3(cell.Position.x, top, cell.Position.z);
-                    batch.Matrices[i] = Matrix4x4.TRS(position, Quaternion.identity, new Vector3(map.Radius, top + .4f, map.Radius));
+                    batch.Matrices[i] = Matrix4x4.TRS(position, Quaternion.identity,
+                        !cell.RenderGround || terrainCut[index] || discovered && SurfaceCell(cell) ? Vector3.zero :
+                        new Vector3(map.Radius, Mathf.Max(.2f, top - ColumnBottom(cell, top)), map.Radius));
                     var color = !discovered ? new Color(.025f, .035f, .045f) : cell.Color;
                     if (discovered && cell.Kind == "entry") color = new Color(.30f, .69f, .61f);
                     if (discovered && cell.Kind == "landmark") color = new Color(.78f, .56f, .25f);
@@ -171,7 +219,7 @@ namespace ProjectY.Samples
                 batch.Count = 0;
                 foreach (var prop in batch.Instances)
                 {
-                    if (prop.Cutaway && IsInteriorOpen(prop.InteriorId)) continue;
+                    if (IsCut(prop.InteriorId, prop.Cutaway, prop.Layer, prop.CutawayGroup, prop.CutawayLayer)) continue;
                     var discovered = reveal; var lit = reveal;
                     foreach (var index in prop.Cells) { discovered |= known[index]; lit |= visible[index]; }
                     if (!discovered) continue;
@@ -183,6 +231,14 @@ namespace ProjectY.Samples
                 batch.Properties.SetColor("_EmissionColor", batch.Emission);
             }
         }
+        private bool SurfaceCell(MapAreaViewData.Cell cell) => cell.RenderGround && (map.IsTown || cell.UsesSurfaceMesh);
+        private bool IsCut(int interiorId, bool cutaway, int layer, int group, int cutawayLayer)
+        {
+            if (group > 0 && groupLayers.TryGetValue(group, out var groupFloor) && cutawayLayer > groupFloor) return true;
+            if (layer >= 0 && interiorLayers.TryGetValue(interiorId, out var floor) && layer > floor) return true;
+            return cutaway && IsInteriorOpen(interiorId);
+        }
+        public bool IsCellShown(int index) => terrainShown[index];
         public void Draw(Camera camera)
         {
             townSurface?.Draw(camera);
@@ -204,16 +260,28 @@ namespace ProjectY.Samples
         }
         public int Pick(Ray ray)
         {
-            if (townSurface != null) { townSurface.Raycast(ray, float.PositiveInfinity, out var index); return index; }
             var best = float.PositiveInfinity; var result = -1;
-            for (var i = 0; i < map.Cells.Length; i++)
+            if (townSurface != null) best = townSurface.Raycast(ray, best, out result);
+            if (map.IsTown) return result;
+            RaycastColumns(ray, best, ref result);
+            return result;
+        }
+        // 分层岩壁只从所属楼板挤出，不能贯穿下面的矿道；绘制与拾取共用底面。
+        private static float ColumnBottom(MapAreaViewData.Cell cell, float top) =>
+            cell.Layer > 0 || cell.CutawayGroup > 0 || cell.DeckThickness > 0
+                ? cell.Position.y - Mathf.Max(.2f, cell.DeckThickness) : -Mathf.Max(1f, -top + .2f);
+        private float RaycastColumns(Ray ray, float best, ref int result)
+        {
+            foreach (var i in columnCells)
             {
-                if (!reveal && !known[i]) continue;
-                var cell = map.Cells[i]; var top = cell.Position.y + (cell.Kind == "wall" ? cell.WallHeight : 0);
+                if (!terrainShown[i]) continue;
+                var cell = map.Cells[i]; var top = cell.Position.y + (cell.Kind == "wall" ? cell.WallHeight : cell.ConstructionHeight);
+                if (!cell.RenderGround || cell.Kind == "void") continue;
+                if (SurfaceCell(cell)) continue;
                 var origin = ray.origin - new Vector3(cell.Position.x, 0, cell.Position.z);
                 var near = 0f; var far = best;
                 if (!Clip(Vector3.up, top, origin, ray.direction, ref near, ref far) ||
-                    !Clip(Vector3.down, .4f, origin, ray.direction, ref near, ref far)) continue;
+                    !Clip(Vector3.down, -ColumnBottom(cell, top), origin, ray.direction, ref near, ref far)) continue;
                 var hit = true;
                 for (var side = 0; side < 6 && hit; side++)
                 {
@@ -222,12 +290,13 @@ namespace ProjectY.Samples
                 }
                 if (hit && near < best) { best = near; result = i; }
             }
-            return result;
+            return best;
         }
         public float TerrainDistance(Ray ray, float distance)
         {
-            if (townSurface == null) return distance;
-            return townSurface.Raycast(ray, distance, out _);
+            if (townSurface != null) distance = townSurface.Raycast(ray, distance, out _);
+            var index = -1;
+            return map.IsTown ? distance : RaycastColumns(ray, distance, ref index);
         }
         public void Dispose()
         {

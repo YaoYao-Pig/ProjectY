@@ -1,0 +1,499 @@
+{
+  "version": 1,
+  "name": "SkillAtlasTable",
+  "description": "主动技能图谱与真实研习前置；坐标只用于显示，不构成额外学习限制。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "技能 ID，与战斗技能共用身份",
+      "ref": "CombatSkillTable"
+    },
+    {
+      "name": "categoryId",
+      "type": "int",
+      "description": "主要二级分类",
+      "ref": "SkillCategoryTable"
+    },
+    {
+      "name": "relatedCategoryIds",
+      "type": "int[]",
+      "description": "关联目录，只跳转同一技能",
+      "ref": "SkillCategoryTable"
+    },
+    {
+      "name": "x",
+      "type": "int",
+      "description": "图谱横坐标",
+      "min": 0
+    },
+    {
+      "name": "y",
+      "type": "int",
+      "description": "图谱纵坐标",
+      "min": 0
+    },
+    {
+      "name": "prerequisiteIds",
+      "type": "int[]",
+      "description": "前置技能",
+      "ref": "CombatSkillTable"
+    },
+    {
+      "name": "prerequisiteMode",
+      "type": "enum",
+      "description": "前置满足方式",
+      "values": [
+        "all",
+        "any"
+      ]
+    },
+    {
+      "name": "tags",
+      "type": "string[]",
+      "description": "搜索标签"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "categoryId": 11,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "sword",
+        "战斗"
+      ]
+    },
+    {
+      "id": 2,
+      "categoryId": 14,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "bow",
+        "战斗"
+      ]
+    },
+    {
+      "id": 3,
+      "categoryId": 21,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "staff",
+        "战斗"
+      ]
+    },
+    {
+      "id": 4,
+      "categoryId": 16,
+      "relatedCategoryIds": [
+        13
+      ],
+      "x": 145,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "sword",
+        "战斗"
+      ]
+    },
+    {
+      "id": 5,
+      "categoryId": 22,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "staff",
+        "战斗"
+      ]
+    },
+    {
+      "id": 6,
+      "categoryId": 21,
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "staff",
+        "战斗"
+      ]
+    },
+    {
+      "id": 7,
+      "categoryId": 15,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "firearms",
+        "战斗"
+      ]
+    },
+    {
+      "id": 8,
+      "categoryId": 15,
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "firearms",
+        "战斗"
+      ]
+    },
+    {
+      "id": 9,
+      "categoryId": 15,
+      "relatedCategoryIds": [],
+      "x": 585,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "firearms",
+        "战斗"
+      ]
+    },
+    {
+      "id": 10,
+      "categoryId": 11,
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "sword",
+        "战斗"
+      ]
+    },
+    {
+      "id": 11,
+      "categoryId": 12,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "greatsword",
+        "战斗"
+      ]
+    },
+    {
+      "id": 12,
+      "categoryId": 12,
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "greatsword",
+        "战斗"
+      ]
+    },
+    {
+      "id": 13,
+      "categoryId": 11,
+      "relatedCategoryIds": [],
+      "x": 585,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "sword",
+        "战斗"
+      ]
+    },
+    {
+      "id": 101,
+      "categoryId": 11,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 242,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "sword",
+        "战斗"
+      ]
+    },
+    {
+      "id": 102,
+      "categoryId": 11,
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 242,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "sword",
+        "战斗"
+      ]
+    },
+    {
+      "id": 103,
+      "categoryId": 21,
+      "relatedCategoryIds": [],
+      "x": 585,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "staff",
+        "战斗"
+      ]
+    },
+    {
+      "id": 104,
+      "categoryId": 21,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 242,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "staff",
+        "战斗"
+      ]
+    },
+    {
+      "id": 105,
+      "categoryId": 14,
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "bow",
+        "战斗"
+      ]
+    },
+    {
+      "id": 106,
+      "categoryId": 14,
+      "relatedCategoryIds": [],
+      "x": 585,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "bow",
+        "战斗"
+      ]
+    },
+    {
+      "id": 107,
+      "categoryId": 22,
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "staff",
+        "战斗"
+      ]
+    },
+    {
+      "id": 108,
+      "categoryId": 16,
+      "relatedCategoryIds": [
+        13
+      ],
+      "x": 365,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "sword",
+        "战斗"
+      ]
+    },
+    {
+      "id": 201,
+      "categoryId": 51,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "animalAffinity",
+        "战斗"
+      ]
+    },
+    {
+      "id": 202,
+      "categoryId": 53,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "unarmed",
+        "战斗"
+      ]
+    },
+    {
+      "id": 203,
+      "categoryId": 53,
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "unarmed",
+        "战斗"
+      ]
+    },
+    {
+      "id": 204,
+      "categoryId": 53,
+      "relatedCategoryIds": [],
+      "x": 585,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "unarmed",
+        "战斗"
+      ]
+    },
+    {
+      "id": 205,
+      "categoryId": 52,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "unarmed",
+        "战斗"
+      ]
+    },
+    {
+      "id": 301,
+      "categoryId": 31,
+      "relatedCategoryIds": [],
+      "x": 230,
+      "y": 90,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "crafting",
+        "战斗"
+      ]
+    },
+    {
+      "id": 302,
+      "categoryId": 31,
+      "relatedCategoryIds": [],
+      "x": 230,
+      "y": 255,
+      "prerequisiteIds": [
+        301
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "crafting",
+        "战斗"
+      ]
+    },
+    {
+      "id": 303,
+      "categoryId": 32,
+      "relatedCategoryIds": [],
+      "x": 230,
+      "y": 90,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "crafting",
+        "战斗"
+      ]
+    },
+    {
+      "id": 304,
+      "categoryId": 32,
+      "relatedCategoryIds": [],
+      "x": 230,
+      "y": 255,
+      "prerequisiteIds": [
+        303
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "crafting",
+        "战斗"
+      ]
+    },
+    {
+      "id": 305,
+      "categoryId": 33,
+      "relatedCategoryIds": [],
+      "x": 230,
+      "y": 90,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "crafting",
+        "战斗"
+      ]
+    },
+    {
+      "id": 306,
+      "categoryId": 33,
+      "relatedCategoryIds": [],
+      "x": 230,
+      "y": 255,
+      "prerequisiteIds": [
+        305
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "crafting",
+        "战斗"
+      ]
+    },
+    {
+      "id": 307,
+      "categoryId": 34,
+      "relatedCategoryIds": [],
+      "x": 230,
+      "y": 90,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "crafting",
+        "战斗"
+      ]
+    }
+  ]
+}

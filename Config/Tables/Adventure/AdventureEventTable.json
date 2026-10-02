@@ -204,6 +204,66 @@
       "illustration": "",
       "actorAttribute": "",
       "logKind": "discovery"
+    },
+    {
+      "id": 101,
+      "name": "坍塌的石块",
+      "description": "碎石堵住了前路。队友装备的镐子可以更快地清理；徒手搬运会受伤。",
+      "repeatable": true,
+      "choiceIds": [
+        101,
+        102,
+        103
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Wayfarers.png",
+      "actorAttribute": "",
+      "logKind": "event"
+    },
+    {
+      "id": 102,
+      "name": "堆积的木箱",
+      "description": "木箱挡住了道路。装备斧子的队友可以拆开木箱，也可以徒手搬走。",
+      "repeatable": true,
+      "choiceIds": [
+        101,
+        102,
+        103
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Wayfarers.png",
+      "actorAttribute": "",
+      "logKind": "event"
+    },
+    {
+      "id": 103,
+      "name": "可疑的土堆",
+      "description": "松动的泥土下也许埋着宝箱。铲子可以加快挖掘，徒手挖掘会擦伤。",
+      "repeatable": true,
+      "choiceIds": [
+        101,
+        102,
+        103
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Wayfarers.png",
+      "actorAttribute": "",
+      "logKind": "event"
+    },
+    {
+      "id": 104,
+      "name": "上锁的箱子",
+      "description": "锁扣锈迹斑斑。撬棍能提高开启的成功率，徒手尝试更容易失败。",
+      "repeatable": true,
+      "choiceIds": [
+        101,
+        102,
+        103
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Wayfarers.png",
+      "actorAttribute": "",
+      "logKind": "event"
     }
   ]
 }

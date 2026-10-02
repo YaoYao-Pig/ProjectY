@@ -149,6 +149,7 @@ namespace ProjectY.Samples
             foreach (var item in map.Decorations)
             {
                 var position = map.Cells[item.Cell].Position;
+                position.y = item.Height;
                 var prefab = prefabs[item.AssetId];
                 var scale = Vector3.one * (item.Scale * map.Radius);
                 Add(prefab, Kind.Decoration, position, scale, Quaternion.Euler(0, item.Yaw, 0));

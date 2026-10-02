@@ -25,7 +25,31 @@ namespace ProjectY.Editor
         {
             var prior = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
             if (prior == null) AssetDatabase.CreateAsset(value, path);
-            else { EditorUtility.CopySerialized(value, prior); UnityEngine.Object.DestroyImmediate(value); EditorUtility.SetDirty(prior); }
+            else
+            {
+                if (value is Mesh source && prior is Mesh target)
+                {
+                    // CopySerialized can retain the old native vertex layout while replacing indices.
+                    // Explicitly rebuild the mesh buffers so topology changes keep the existing GUID safely.
+                    target.Clear(false);
+                    target.indexFormat = source.indexFormat;
+                    target.vertices = source.vertices; target.normals = source.normals;
+                    target.tangents = source.tangents; target.colors32 = source.colors32;
+                    var uv = new List<Vector4>();
+                    for (int channel = 0; channel < 8; channel++)
+                    {
+                        source.GetUVs(channel, uv);
+                        if (uv.Count > 0) target.SetUVs(channel, uv);
+                    }
+                    target.boneWeights = source.boneWeights; target.bindposes = source.bindposes;
+                    target.subMeshCount = source.subMeshCount;
+                    for (int i = 0; i < source.subMeshCount; i++)
+                        target.SetIndices(source.GetIndices(i), source.GetTopology(i), i, false);
+                    target.bounds = source.bounds; target.name = source.name;
+                }
+                else EditorUtility.CopySerialized(value, prior);
+                UnityEngine.Object.DestroyImmediate(value); EditorUtility.SetDirty(prior);
+            }
         }
         private static float MatrixError(Matrix4x4 a, Matrix4x4 b)
         { float error = 0; for (int i = 0; i < 16; i++) error = Mathf.Max(error, Mathf.Abs(a[i] - b[i])); return error; }
@@ -59,6 +83,8 @@ namespace ProjectY.Editor
             var materials = new List<Material>(); var roles = new List<string>();
             foreach (var material in renderer.sharedMaterials)
             {
+                if (!material.name.StartsWith("PC_", StringComparison.Ordinal))
+                    throw new InvalidOperationException("Character material must map to its canonical PC_ role: " + material.name);
                 string role = material.name.Substring("PC_".Length), path = Folder + "/Materials/PC_" + role + ".mat";
                 var external = AssetDatabase.LoadAssetAtPath<Material>(path);
                 if (external == null)

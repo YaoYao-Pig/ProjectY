@@ -5,6 +5,6 @@ return function(command,demo)
         if data.Phase~='map' and data.Phase~='area' then return end
         if data.Phase=='area' then main:Get('MapArea'):Stop() end
         main:Get('UI'):Open('Inventory',{demo=demo})
-    elseif command=='close' then main:Get('UI'):Close('EquipmentWorkbench');main:Get('UI'):Close('Inventory')
+    elseif command=='close' then main:Get('UI'):Close('EquipmentWorkbench');main:Get('UI'):Close('Inventory');main:Get('UI'):Close('Loot')
     else error('Unknown equipment UI command: '..tostring(command)) end
 end

@@ -19,16 +19,20 @@ function Effects:Validate()
         end
     end
 end
+function Effects:Magnitude(row,values,skill)
+    local amount=row.amount:Evaluate(values)
+    assert(amount==math.floor(amount) and math.abs(amount)<=1000000 and (row.kind=='modifier' or amount>=0),'Invalid effect magnitude: '..row.id)
+    if row.kind=='damage' and amount>0 and skill then amount=math.max(1,math.floor(amount*skill.damageScale)) end
+    assert(math.abs(amount)<=1000000,'Scaled effect magnitude exceeds bounds: '..row.id)
+    return amount
+end
 function Effects:Prepare(id,source,target,skill,distance)
     local row=self.definitions:Get(id)
     assert(row.kind=='damage' or row.kind=='heal' or row.kind=='guard' or row.kind=='reload' or row.kind=='modifier','Effect requires a movement/taming ability context: '..id)
     assert(row.kind~='reload' or skill~=nil,'Reload requires the equipment ability transaction')
     local values=self.stats:EffectVariables(source,target,skill)
     values.distance=distance or 0
-    local amount=row.amount:Evaluate(values)
-    assert(amount==math.floor(amount) and math.abs(amount)<=1000000 and (row.kind=='modifier' or amount>=0),'Invalid effect magnitude: '..id)
-    if row.kind=='damage' and amount>0 and skill then amount=math.max(1,math.floor(amount*skill.damageScale)) end
-    assert(math.abs(amount)<=1000000,'Scaled effect magnitude exceeds bounds: '..id)
+    local amount=self:Magnitude(row,values,skill)
     if row.kind=='modifier' then
         local old=row.stacking~='independent' and target.Effects:Find(row.id)
         self.stats:MaximumHP(target,{oldId=old and old.Id,attribute=row.attribute,amount=amount,stacks=old and row.stacking=='stack' and math.min(row.maxStacks,old.Stacks+1) or 1})

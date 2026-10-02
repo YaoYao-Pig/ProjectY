@@ -9,6 +9,7 @@
 ## 正文
 
 - 24 类环境陈设对应 `MapAssetTable` ID 89–112、`MapAreaPropTable` ID 17–40。自然组为倒木、树桩、蕨类、蘑菇、芦苇、野花、石堆、立石；街区组为石井、货车、草垛、柴堆、晾晒架、告示牌、水槽、灯柱；地牢组为碎石、遗骨、破矿车、烛台、锁链柱、矿道木架、覆苔残像、晶簇。完整对照以 `Integration/kit.json` 和源表为准。
+- 城镇/村庄池保留风车磨坊、谷仓与麦田（资源 113–115、陈设 41–43）。风车/谷仓通过 `MapAreaPropTable.buildingLotId` 接到建筑地块 31/32，使用同一个 `TownBuildings` 做门洞、室内、上盖和封墙后连通检查；普通陈设此字段为 0。`TownDressing.Apply` 接收生成器持有的 building builder，原池、数量上限与候选规则保留，新增门口纳入后续避让。建筑当前源见[城镇](TownArea.md)，麦田继续作为环境陈设。
 - 源文件在 `Art/MapDressingLowPoly/Source/MapDressing.blend`，Unity 使用 `Assets/DynamicAsset/MapDressingLowPoly/Models` 的 24 个 FBX，合计 7018 三角形。硬边、纯色、米制、单位根变换，静态导出沿用 [地图资源](MapArt.md) 的轴转换。旧颜色复用共享材质，新增颜色在本目录独立材质中共享；不依赖贴图。
 - 大地图 `MapDecorationRuleTable` 按主导地貌、密度、坡度、缩放及两格内水岸/道路关系筛选。`MapDressing.Build` 在原树木与岩石散布后执行，避开水格、道路、建筑和已有装饰；`clearance` 控制建筑/装饰净距。位置噪声不消耗其他生成阶段的随机序列，陈设只影响显示。Web 使用配置的占位轮廓，不加载 FBX。
 - 城镇 `MapAreaTownTable.dressingProfileId → MapAreaTownDressingTable` 控制物件池、数量上限、间距及临街/临建筑距离。`TownDressing.Apply` 适用于普通镇、村庄、城堡镇、隐居群落与王城；在建筑与街网之后、居民路线之前执行。仅选地面层平坦公共园地，避开室内、入口一格邻域、保留区和坡面。整件试摆后检查可走格全连通，不满足便回滚。

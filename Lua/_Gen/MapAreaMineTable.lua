@@ -1,0 +1,21 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaMineTableRow
+---@field id number 稳定编号
+---@field corridorRadius number 矿道最小半径
+---@field deckThickness number 岩层楼板厚度
+---@field stairRise number 木阶每级高度
+---@field minimumClearance number 开放通路最低净空
+---@field entryLayer number 入口层
+---@field entryQ number 入口相对轴向q
+---@field entryR number 入口相对轴向r
+---@field goalRoomId number 底层目标矿室
+---@field minWalkableCells number 最少连通地格
+---@field wallSurfaceId number 岩壁材质
+---@field stairSurfaceId number 梯道木材
+---@field supportAssetId number 矿道木架
+---@field railAssetId number 矿轨
+---@field cartAssetId number 矿车
+---@field oreAssetId number 矿石簇
+---@field workstationAssetId number 矿井工作台
+---@field oreCountPerLayer number 每层矿石簇数量
+return {["name"]="MapAreaMineTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\231\188\150\229\143\183",["min"]=1},{["name"]="corridorRadius",["type"]="int",["description"]="\231\159\191\233\129\147\230\156\128\229\176\143\229\141\138\229\190\132"},{["name"]="deckThickness",["type"]="float",["description"]="\229\178\169\229\177\130\230\165\188\230\157\191\229\142\154\229\186\166"},{["name"]="stairRise",["type"]="float",["description"]="\230\156\168\233\152\182\230\175\143\231\186\167\233\171\152\229\186\166"},{["name"]="minimumClearance",["type"]="float",["description"]="\229\188\128\230\148\190\233\128\154\232\183\175\230\156\128\228\189\142\229\135\128\231\169\186"},{["name"]="entryLayer",["type"]="int",["description"]="\229\133\165\229\143\163\229\177\130"},{["name"]="entryQ",["type"]="int",["description"]="\229\133\165\229\143\163\231\155\184\229\175\185\232\189\180\229\144\145q"},{["name"]="entryR",["type"]="int",["description"]="\229\133\165\229\143\163\231\155\184\229\175\185\232\189\180\229\144\145r"},{["name"]="goalRoomId",["type"]="int",["description"]="\229\186\149\229\177\130\231\155\174\230\160\135\231\159\191\229\174\164"},{["name"]="minWalkableCells",["type"]="int",["description"]="\230\156\128\229\176\145\232\191\158\233\128\154\229\156\176\230\160\188"},{["name"]="wallSurfaceId",["type"]="int",["description"]="\229\178\169\229\163\129\230\157\144\232\180\168",["ref"]="MapAreaSurfaceTable"},{["name"]="stairSurfaceId",["type"]="int",["description"]="\230\162\175\233\129\147\230\156\168\230\157\144",["ref"]="MapAreaSurfaceTable"},{["name"]="supportAssetId",["type"]="int",["description"]="\231\159\191\233\129\147\230\156\168\230\158\182",["ref"]="MapAssetTable"},{["name"]="railAssetId",["type"]="int",["description"]="\231\159\191\232\189\168",["ref"]="MapAssetTable"},{["name"]="cartAssetId",["type"]="int",["description"]="\231\159\191\232\189\166",["ref"]="MapAssetTable"},{["name"]="oreAssetId",["type"]="int",["description"]="\231\159\191\231\159\179\231\176\135",["ref"]="MapAssetTable"},{["name"]="workstationAssetId",["type"]="int",["description"]="\231\159\191\228\186\149\229\183\165\228\189\156\229\143\176",["ref"]="MapAssetTable"},{["name"]="oreCountPerLayer",["type"]="int",["description"]="\230\175\143\229\177\130\231\159\191\231\159\179\231\176\135\230\149\176\233\135\143"}},["fingerprint"]="d971137863b758e003944dab580c949e09a371d7372ded2636d8e019ae37da2d"}

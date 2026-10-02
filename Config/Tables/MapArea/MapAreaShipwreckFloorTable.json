@@ -1,0 +1,125 @@
+{
+  "version": 1,
+  "name": "MapAreaShipwreckFloorTable",
+  "description": "真实楼层区域，按完整六角内缩后生成薄楼板；楼梯井另外挖出。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "编号",
+      "min": 1
+    },
+    {
+      "name": "profileId",
+      "type": "int",
+      "description": "模板",
+      "ref": "MapAreaShipwreckTable"
+    },
+    {
+      "name": "layer",
+      "type": "int",
+      "description": "楼层身份",
+      "min": 0
+    },
+    {
+      "name": "height",
+      "type": "float",
+      "description": "楼面米制高度"
+    },
+    {
+      "name": "minZ",
+      "type": "float",
+      "description": "起始Z"
+    },
+    {
+      "name": "maxZ",
+      "type": "float",
+      "description": "结束Z"
+    },
+    {
+      "name": "widthFactor",
+      "type": "float",
+      "description": "船壳剖面半宽系数",
+      "min": 0.1,
+      "max": 1
+    },
+    {
+      "name": "boundaryWidthFactor",
+      "type": "float",
+      "min": 0.1,
+      "max": 1,
+      "description": "源模型rim外沿相对船壳的系数，仅用于可视封边"
+    },
+    {
+      "name": "boundaryInset",
+      "type": "float",
+      "min": 0,
+      "description": "源模型rim内延宽度；可视封边止于木带内缘"
+    },
+    {
+      "name": "boundaryMinZ",
+      "type": "float",
+      "description": "真实可视楼板Z起点，与导航安全内缩独立"
+    },
+    {
+      "name": "boundaryMaxZ",
+      "type": "float",
+      "description": "真实可视楼板Z终点；尖艏自动截到内缘宽度零交点"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "profileId": 1,
+      "layer": 0,
+      "height": 0,
+      "minZ": -36,
+      "maxZ": 39,
+      "widthFactor": 0.82,
+      "boundaryWidthFactor": 0.86,
+      "boundaryInset": 2.15,
+      "boundaryMinZ": -36,
+      "boundaryMaxZ": 39
+    },
+    {
+      "id": 2,
+      "profileId": 1,
+      "layer": 1,
+      "height": 4,
+      "minZ": -45,
+      "maxZ": 54,
+      "widthFactor": 0.96,
+      "boundaryWidthFactor": 1,
+      "boundaryInset": 2.1,
+      "boundaryMinZ": -45,
+      "boundaryMaxZ": 54
+    },
+    {
+      "id": 3,
+      "profileId": 1,
+      "layer": 2,
+      "height": 7.2,
+      "minZ": -43.5,
+      "maxZ": -27,
+      "widthFactor": 0.92,
+      "boundaryWidthFactor": 1,
+      "boundaryInset": 2.1,
+      "boundaryMinZ": -45,
+      "boundaryMaxZ": -27
+    },
+    {
+      "id": 4,
+      "profileId": 1,
+      "layer": 2,
+      "height": 7.2,
+      "minZ": 27,
+      "maxZ": 52,
+      "widthFactor": 0.92,
+      "boundaryWidthFactor": 1,
+      "boundaryInset": 2.1,
+      "boundaryMinZ": 27,
+      "boundaryMaxZ": 54
+    }
+  ]
+}

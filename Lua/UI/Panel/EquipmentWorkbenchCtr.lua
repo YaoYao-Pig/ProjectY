@@ -4,7 +4,7 @@ local Workbench=Class('EquipmentWorkbenchCtr',Panel)
 function Workbench:Bind()
     self.system=self.context.systems:Get('Equipment');self.rules=self.system.rules
     self.stats=self.context.systems:Get('Battle').stats
-    self.view.Workbench:Prepare();self.inventory={};self.options={}
+    self.view.Workbench:Prepare();self.inventory={};self.options={};self.tags={}
     self:Listen(self.view.CategoryPrevious,function() self:ChangeCategory(-1) end)
     self:Listen(self.view.CategoryNext,function() self:ChangeCategory(1) end)
     for i=1,4 do local index=i
@@ -72,6 +72,15 @@ function Workbench:Refresh()
         end
     end
     self.view.Title.text=item.name
+    local tags=self.rules:WeaponTags(weapon.ItemId)
+    for i=1,math.max(#self.tags,#tags) do
+        if not self.tags[i] then
+            self.tags[i]=self:CreateWidget('EquipmentTag',self.view.TagSlots)
+            self.tags[i]:Initialize(self.view.Workbench)
+        end
+        self.tags[i]:SetData(tags[i])
+    end
+    self.view.TagSlots.gameObject:SetActive(#tags>0)
     self.view.Subtitle.text=self.rules.categories:Get(definition.categoryId).name..' · Lv.'..definition.level..'\n'..(weapon.OwnerActorId==0 and '共享背包 · 未装备' or ('持有者：'..self.stats:Template(self.system:Actor(weapon.OwnerActorId)).name))
     self.view.EquipText.text='装备给 '..self.stats:Template(actor).name
     self.view.Equip.interactable=not equipped or equipped.Id~=weapon.Id

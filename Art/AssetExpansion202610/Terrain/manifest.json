@@ -1,0 +1,2811 @@
+[
+  {
+    "category": "hex_tile",
+    "biome": "Swamp",
+    "display_name_zh": "泥炭沼地",
+    "design_zh": "精确半径1尖顶六边形，表面为连续偏置沉积斑块，避免放射花纹；边界无倒角、无高差。",
+    "references": [
+      {
+        "id": "swamp_valheim_01",
+        "biome": "Swamp",
+        "work": "Valheim",
+        "page_url": "https://www.gamegrin.com/directory/game/valheim/images",
+        "image_url": "https://www.gamegrin.com/assets/game/valheim/screenshots/valheim-screenshots-13.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\swamp_valheim_01.jpg",
+        "dimensions_px": [
+          1920,
+          1080
+        ],
+        "influence_zh": "扭曲枯木、裸露板根、深褐泥与灰绿植物",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "swamp_valheim_02",
+        "biome": "Swamp",
+        "work": "Valheim",
+        "page_url": "https://scalacube.com/blog/valheim/how-to-find-swamp-valheim",
+        "image_url": "https://res.cloudinary.com/ddbybfkod/image/upload/v1749907478/blogs/Nemanja/how-to-find-swamp-valheim/img1_j7zozv.png",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\swamp_valheim_02.jpg",
+        "dimensions_px": [
+          976,
+          549
+        ],
+        "influence_zh": "湿地疏密关系、枯枝与芦苇的高低对比",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "top center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Hex_Swamp_Peat",
+    "dimensions_blender_xyz": [
+      1.7320507764816284,
+      2.0,
+      1.0
+    ],
+    "triangles": 108,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Peat",
+      "AE_Terrain_PeatLight"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Hex_Swamp_Peat.fbx",
+      "bytes": 18092,
+      "object": "AE_Hex_Swamp_Peat",
+      "mesh": "AE_Hex_Swamp_Peat_StableCaps",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "hex_tile",
+    "biome": "Swamp",
+    "display_name_zh": "苔毯沼地",
+    "design_zh": "精确半径1尖顶六边形，表面为连续偏置沉积斑块，避免放射花纹；边界无倒角、无高差。",
+    "references": [
+      {
+        "id": "swamp_valheim_01",
+        "biome": "Swamp",
+        "work": "Valheim",
+        "page_url": "https://www.gamegrin.com/directory/game/valheim/images",
+        "image_url": "https://www.gamegrin.com/assets/game/valheim/screenshots/valheim-screenshots-13.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\swamp_valheim_01.jpg",
+        "dimensions_px": [
+          1920,
+          1080
+        ],
+        "influence_zh": "扭曲枯木、裸露板根、深褐泥与灰绿植物",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "swamp_valheim_02",
+        "biome": "Swamp",
+        "work": "Valheim",
+        "page_url": "https://scalacube.com/blog/valheim/how-to-find-swamp-valheim",
+        "image_url": "https://res.cloudinary.com/ddbybfkod/image/upload/v1749907478/blogs/Nemanja/how-to-find-swamp-valheim/img1_j7zozv.png",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\swamp_valheim_02.jpg",
+        "dimensions_px": [
+          976,
+          549
+        ],
+        "influence_zh": "湿地疏密关系、枯枝与芦苇的高低对比",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "top center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Hex_Swamp_Moss",
+    "dimensions_blender_xyz": [
+      1.7320507764816284,
+      2.0,
+      1.0
+    ],
+    "triangles": 108,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Peat",
+      "AE_Terrain_Moss",
+      "AE_Terrain_MossDeep"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Hex_Swamp_Moss.fbx",
+      "bytes": 19196,
+      "object": "AE_Hex_Swamp_Moss",
+      "mesh": "AE_Hex_Swamp_Moss_StableCaps",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "hex_tile",
+    "biome": "Swamp",
+    "display_name_zh": "沉积淤土",
+    "design_zh": "精确半径1尖顶六边形，表面为连续偏置沉积斑块，避免放射花纹；边界无倒角、无高差。",
+    "references": [
+      {
+        "id": "swamp_valheim_01",
+        "biome": "Swamp",
+        "work": "Valheim",
+        "page_url": "https://www.gamegrin.com/directory/game/valheim/images",
+        "image_url": "https://www.gamegrin.com/assets/game/valheim/screenshots/valheim-screenshots-13.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\swamp_valheim_01.jpg",
+        "dimensions_px": [
+          1920,
+          1080
+        ],
+        "influence_zh": "扭曲枯木、裸露板根、深褐泥与灰绿植物",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "swamp_valheim_02",
+        "biome": "Swamp",
+        "work": "Valheim",
+        "page_url": "https://scalacube.com/blog/valheim/how-to-find-swamp-valheim",
+        "image_url": "https://res.cloudinary.com/ddbybfkod/image/upload/v1749907478/blogs/Nemanja/how-to-find-swamp-valheim/img1_j7zozv.png",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\swamp_valheim_02.jpg",
+        "dimensions_px": [
+          976,
+          549
+        ],
+        "influence_zh": "湿地疏密关系、枯枝与芦苇的高低对比",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "top center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Hex_Swamp_Silt",
+    "dimensions_blender_xyz": [
+      1.7320507764816284,
+      2.0,
+      1.0
+    ],
+    "triangles": 108,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Peat",
+      "AE_Terrain_Silt",
+      "AE_Terrain_PeatLight"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Hex_Swamp_Silt.fbx",
+      "bytes": 19196,
+      "object": "AE_Hex_Swamp_Silt",
+      "mesh": "AE_Hex_Swamp_Silt_StableCaps",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "hex_tile",
+    "biome": "DarkForest",
+    "display_name_zh": "暗林腐殖土",
+    "design_zh": "精确半径1尖顶六边形，表面为连续偏置沉积斑块，避免放射花纹；边界无倒角、无高差。",
+    "references": [
+      {
+        "id": "dark_elden_01",
+        "biome": "DarkForest",
+        "work": "Elden Ring: Shadow of the Erdtree",
+        "page_url": "https://www.gamepressure.com/elden-ring/how-to-reach-the-abyssal-woods/z0114b8",
+        "image_url": "https://www.gamepressure.com/elden-ring/gfx/word/961246390.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\dark_elden_01.jpg",
+        "dimensions_px": [
+          720,
+          405
+        ],
+        "influence_zh": "深渊森林倾斜古树和钩状枝条",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "dark_elden_02",
+        "biome": "DarkForest",
+        "work": "Elden Ring: Shadow of the Erdtree",
+        "page_url": "https://www.neoseeker.com/elden-ring-shadow-of-the-erdtree/walkthrough/Abyssal_Woods",
+        "image_url": "https://cdn.staticneo.com/ew/b/be/Elden-Ring-SotE_AW-15.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\dark_elden_02.jpg",
+        "dimensions_px": [
+          1600,
+          900
+        ],
+        "influence_zh": "暗林冷灰树干、根部包石与抑制饱和度",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "top center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Hex_DarkForest_Loam",
+    "dimensions_blender_xyz": [
+      1.7320507764816284,
+      2.0,
+      1.0
+    ],
+    "triangles": 108,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_BarkDark",
+      "AE_Terrain_Loam",
+      "AE_Terrain_LoamLight"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Hex_DarkForest_Loam.fbx",
+      "bytes": 19196,
+      "object": "AE_Hex_DarkForest_Loam",
+      "mesh": "AE_Hex_DarkForest_Loam_StableCaps",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "hex_tile",
+    "biome": "DarkForest",
+    "display_name_zh": "盘根暗土",
+    "design_zh": "精确半径1尖顶六边形，表面为连续偏置沉积斑块，避免放射花纹；边界无倒角、无高差。",
+    "references": [
+      {
+        "id": "dark_elden_01",
+        "biome": "DarkForest",
+        "work": "Elden Ring: Shadow of the Erdtree",
+        "page_url": "https://www.gamepressure.com/elden-ring/how-to-reach-the-abyssal-woods/z0114b8",
+        "image_url": "https://www.gamepressure.com/elden-ring/gfx/word/961246390.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\dark_elden_01.jpg",
+        "dimensions_px": [
+          720,
+          405
+        ],
+        "influence_zh": "深渊森林倾斜古树和钩状枝条",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "dark_elden_02",
+        "biome": "DarkForest",
+        "work": "Elden Ring: Shadow of the Erdtree",
+        "page_url": "https://www.neoseeker.com/elden-ring-shadow-of-the-erdtree/walkthrough/Abyssal_Woods",
+        "image_url": "https://cdn.staticneo.com/ew/b/be/Elden-Ring-SotE_AW-15.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\dark_elden_02.jpg",
+        "dimensions_px": [
+          1600,
+          900
+        ],
+        "influence_zh": "暗林冷灰树干、根部包石与抑制饱和度",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "top center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Hex_DarkForest_Rootsoil",
+    "dimensions_blender_xyz": [
+      1.7320507764816284,
+      2.0,
+      1.0
+    ],
+    "triangles": 108,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_BarkDark",
+      "AE_Terrain_Peat",
+      "AE_Terrain_Loam"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Hex_DarkForest_Rootsoil.fbx",
+      "bytes": 19212,
+      "object": "AE_Hex_DarkForest_Rootsoil",
+      "mesh": "AE_Hex_DarkForest_Rootsoil_StableCaps",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "hex_tile",
+    "biome": "DarkForest",
+    "display_name_zh": "衰败灰紫土",
+    "design_zh": "精确半径1尖顶六边形，表面为连续偏置沉积斑块，避免放射花纹；边界无倒角、无高差。",
+    "references": [
+      {
+        "id": "dark_elden_01",
+        "biome": "DarkForest",
+        "work": "Elden Ring: Shadow of the Erdtree",
+        "page_url": "https://www.gamepressure.com/elden-ring/how-to-reach-the-abyssal-woods/z0114b8",
+        "image_url": "https://www.gamepressure.com/elden-ring/gfx/word/961246390.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\dark_elden_01.jpg",
+        "dimensions_px": [
+          720,
+          405
+        ],
+        "influence_zh": "深渊森林倾斜古树和钩状枝条",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "dark_elden_02",
+        "biome": "DarkForest",
+        "work": "Elden Ring: Shadow of the Erdtree",
+        "page_url": "https://www.neoseeker.com/elden-ring-shadow-of-the-erdtree/walkthrough/Abyssal_Woods",
+        "image_url": "https://cdn.staticneo.com/ew/b/be/Elden-Ring-SotE_AW-15.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\dark_elden_02.jpg",
+        "dimensions_px": [
+          1600,
+          900
+        ],
+        "influence_zh": "暗林冷灰树干、根部包石与抑制饱和度",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "top center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Hex_DarkForest_Blight",
+    "dimensions_blender_xyz": [
+      1.7320507764816284,
+      2.0,
+      1.0
+    ],
+    "triangles": 108,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_BarkDark",
+      "AE_Terrain_Blight",
+      "AE_Terrain_LoamLight"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Hex_DarkForest_Blight.fbx",
+      "bytes": 19212,
+      "object": "AE_Hex_DarkForest_Blight",
+      "mesh": "AE_Hex_DarkForest_Blight_StableCaps",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "hex_tile",
+    "biome": "Lava",
+    "display_name_zh": "冷却熔岩壳",
+    "design_zh": "精确半径1尖顶六边形，表面为连续偏置沉积斑块，避免放射花纹；边界无倒角、无高差。",
+    "references": [
+      {
+        "id": "lava_minecraft_01",
+        "biome": "Lava",
+        "work": "Minecraft",
+        "page_url": "https://www.windowscentral.com/minecraft-guide-full-changelog-nether-update",
+        "image_url": "https://cdn.mos.cms.futurecdn.net/rkMyB6S5XQc8HiXAKL29Da.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\lava_minecraft_01.jpg",
+        "dimensions_px": [
+          2048,
+          1152
+        ],
+        "influence_zh": "玄武岩柱与窄熔岩脉的明暗层次",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "lava_minecraft_02",
+        "biome": "Lava",
+        "work": "Minecraft",
+        "page_url": "https://www.windowscentral.com/minecraft-quick-guide-cheat-sheet-everything-new-nether-update",
+        "image_url": "https://cdn.mos.cms.futurecdn.net/b8wSdWNynNFyNsCW4QE7So.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\lava_minecraft_02.jpg",
+        "dimensions_px": [
+          2048,
+          1152
+        ],
+        "influence_zh": "柱状节理、熔岩裂隙与黑石薄壳",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "top center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Hex_Lava_Crust",
+    "dimensions_blender_xyz": [
+      1.7320507764816284,
+      2.0,
+      1.0
+    ],
+    "triangles": 108,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_BasaltDark",
+      "AE_Terrain_Basalt",
+      "AE_Terrain_BasaltLight"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Hex_Lava_Crust.fbx",
+      "bytes": 19196,
+      "object": "AE_Hex_Lava_Crust",
+      "mesh": "AE_Hex_Lava_Crust_StableCaps",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "hex_tile",
+    "biome": "Lava",
+    "display_name_zh": "暗红余烬土",
+    "design_zh": "精确半径1尖顶六边形，表面为连续偏置沉积斑块，避免放射花纹；边界无倒角、无高差。",
+    "references": [
+      {
+        "id": "lava_minecraft_01",
+        "biome": "Lava",
+        "work": "Minecraft",
+        "page_url": "https://www.windowscentral.com/minecraft-guide-full-changelog-nether-update",
+        "image_url": "https://cdn.mos.cms.futurecdn.net/rkMyB6S5XQc8HiXAKL29Da.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\lava_minecraft_01.jpg",
+        "dimensions_px": [
+          2048,
+          1152
+        ],
+        "influence_zh": "玄武岩柱与窄熔岩脉的明暗层次",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "lava_minecraft_02",
+        "biome": "Lava",
+        "work": "Minecraft",
+        "page_url": "https://www.windowscentral.com/minecraft-quick-guide-cheat-sheet-everything-new-nether-update",
+        "image_url": "https://cdn.mos.cms.futurecdn.net/b8wSdWNynNFyNsCW4QE7So.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\lava_minecraft_02.jpg",
+        "dimensions_px": [
+          2048,
+          1152
+        ],
+        "influence_zh": "柱状节理、熔岩裂隙与黑石薄壳",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "top center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Hex_Lava_Cinder",
+    "dimensions_blender_xyz": [
+      1.7320507764816284,
+      2.0,
+      1.0
+    ],
+    "triangles": 108,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_BasaltDark",
+      "AE_Terrain_Cinder",
+      "AE_Terrain_LavaDark"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Hex_Lava_Cinder.fbx",
+      "bytes": 19196,
+      "object": "AE_Hex_Lava_Cinder",
+      "mesh": "AE_Hex_Lava_Cinder_StableCaps",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "hex_tile",
+    "biome": "Lava",
+    "display_name_zh": "黑色火山渣",
+    "design_zh": "精确半径1尖顶六边形，表面为连续偏置沉积斑块，避免放射花纹；边界无倒角、无高差。",
+    "references": [
+      {
+        "id": "lava_minecraft_01",
+        "biome": "Lava",
+        "work": "Minecraft",
+        "page_url": "https://www.windowscentral.com/minecraft-guide-full-changelog-nether-update",
+        "image_url": "https://cdn.mos.cms.futurecdn.net/rkMyB6S5XQc8HiXAKL29Da.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\lava_minecraft_01.jpg",
+        "dimensions_px": [
+          2048,
+          1152
+        ],
+        "influence_zh": "玄武岩柱与窄熔岩脉的明暗层次",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "lava_minecraft_02",
+        "biome": "Lava",
+        "work": "Minecraft",
+        "page_url": "https://www.windowscentral.com/minecraft-quick-guide-cheat-sheet-everything-new-nether-update",
+        "image_url": "https://cdn.mos.cms.futurecdn.net/b8wSdWNynNFyNsCW4QE7So.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\lava_minecraft_02.jpg",
+        "dimensions_px": [
+          2048,
+          1152
+        ],
+        "influence_zh": "柱状节理、熔岩裂隙与黑石薄壳",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "top center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Hex_Lava_Scoria",
+    "dimensions_blender_xyz": [
+      1.7320507764816284,
+      2.0,
+      1.0
+    ],
+    "triangles": 108,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_BasaltDark",
+      "AE_Terrain_Cinder"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Hex_Lava_Scoria.fbx",
+      "bytes": 18108,
+      "object": "AE_Hex_Lava_Scoria",
+      "mesh": "AE_Hex_Lava_Scoria_StableCaps",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "hex_tile",
+    "biome": "Volcano",
+    "display_name_zh": "火山灰原",
+    "design_zh": "精确半径1尖顶六边形，表面为连续偏置沉积斑块，避免放射花纹；边界无倒角、无高差。",
+    "references": [
+      {
+        "id": "volcano_elden_01",
+        "biome": "Volcano",
+        "work": "Elden Ring",
+        "page_url": "https://www.vidaextra.com/guias-y-trucos/truco-secreto-para-acceder-al-interior-volcan-elden-ring-este-proceso-que-debes-seguir",
+        "image_url": "https://i.blogs.es/64f2cc/140322-eldenring-volcan/1200_630.jpeg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\volcano_elden_01.jpg",
+        "dimensions_px": [
+          1200,
+          630
+        ],
+        "influence_zh": "火山内壁层层退台和暗红灼烧边缘",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "volcano_elden_02",
+        "biome": "Volcano",
+        "work": "Elden Ring",
+        "page_url": "https://www.eurogamer.de/elden-ring-gelmir-erreichen-und-betreten-karte-bruecke-haendler-und-alle-personen",
+        "image_url": "https://assetsio.gnwcdn.com/gelmir.jpg?auto=webp&enable=upscale&fit=crop&format=png&height=900&quality=100&width=1200",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\volcano_elden_02.jpg",
+        "dimensions_px": [
+          1200,
+          900
+        ],
+        "influence_zh": "盖利德以外的格密尔尖峰、灰烬和硫黄色矿层",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "top center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Hex_Volcano_Ash",
+    "dimensions_blender_xyz": [
+      1.7320507764816284,
+      2.0,
+      1.0
+    ],
+    "triangles": 108,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Cinder",
+      "AE_Terrain_Ash",
+      "AE_Terrain_AshLight"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Hex_Volcano_Ash.fbx",
+      "bytes": 19196,
+      "object": "AE_Hex_Volcano_Ash",
+      "mesh": "AE_Hex_Volcano_Ash_StableCaps",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "hex_tile",
+    "biome": "Volcano",
+    "display_name_zh": "凝灰岩层",
+    "design_zh": "精确半径1尖顶六边形，表面为连续偏置沉积斑块，避免放射花纹；边界无倒角、无高差。",
+    "references": [
+      {
+        "id": "volcano_elden_01",
+        "biome": "Volcano",
+        "work": "Elden Ring",
+        "page_url": "https://www.vidaextra.com/guias-y-trucos/truco-secreto-para-acceder-al-interior-volcan-elden-ring-este-proceso-que-debes-seguir",
+        "image_url": "https://i.blogs.es/64f2cc/140322-eldenring-volcan/1200_630.jpeg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\volcano_elden_01.jpg",
+        "dimensions_px": [
+          1200,
+          630
+        ],
+        "influence_zh": "火山内壁层层退台和暗红灼烧边缘",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "volcano_elden_02",
+        "biome": "Volcano",
+        "work": "Elden Ring",
+        "page_url": "https://www.eurogamer.de/elden-ring-gelmir-erreichen-und-betreten-karte-bruecke-haendler-und-alle-personen",
+        "image_url": "https://assetsio.gnwcdn.com/gelmir.jpg?auto=webp&enable=upscale&fit=crop&format=png&height=900&quality=100&width=1200",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\volcano_elden_02.jpg",
+        "dimensions_px": [
+          1200,
+          900
+        ],
+        "influence_zh": "盖利德以外的格密尔尖峰、灰烬和硫黄色矿层",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "top center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Hex_Volcano_Tuff",
+    "dimensions_blender_xyz": [
+      1.7320507764816284,
+      2.0,
+      1.0
+    ],
+    "triangles": 108,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Cinder",
+      "AE_Terrain_Tuff",
+      "AE_Terrain_Ash"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Hex_Volcano_Tuff.fbx",
+      "bytes": 19196,
+      "object": "AE_Hex_Volcano_Tuff",
+      "mesh": "AE_Hex_Volcano_Tuff_StableCaps",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "hex_tile",
+    "biome": "Volcano",
+    "display_name_zh": "硫华热土",
+    "design_zh": "精确半径1尖顶六边形，表面为连续偏置沉积斑块，避免放射花纹；边界无倒角、无高差。",
+    "references": [
+      {
+        "id": "volcano_elden_01",
+        "biome": "Volcano",
+        "work": "Elden Ring",
+        "page_url": "https://www.vidaextra.com/guias-y-trucos/truco-secreto-para-acceder-al-interior-volcan-elden-ring-este-proceso-que-debes-seguir",
+        "image_url": "https://i.blogs.es/64f2cc/140322-eldenring-volcan/1200_630.jpeg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\volcano_elden_01.jpg",
+        "dimensions_px": [
+          1200,
+          630
+        ],
+        "influence_zh": "火山内壁层层退台和暗红灼烧边缘",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "volcano_elden_02",
+        "biome": "Volcano",
+        "work": "Elden Ring",
+        "page_url": "https://www.eurogamer.de/elden-ring-gelmir-erreichen-und-betreten-karte-bruecke-haendler-und-alle-personen",
+        "image_url": "https://assetsio.gnwcdn.com/gelmir.jpg?auto=webp&enable=upscale&fit=crop&format=png&height=900&quality=100&width=1200",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\volcano_elden_02.jpg",
+        "dimensions_px": [
+          1200,
+          900
+        ],
+        "influence_zh": "盖利德以外的格密尔尖峰、灰烬和硫黄色矿层",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "top center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Hex_Volcano_Sulphur",
+    "dimensions_blender_xyz": [
+      1.7320507764816284,
+      2.0,
+      1.0
+    ],
+    "triangles": 108,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Cinder",
+      "AE_Terrain_Tuff",
+      "AE_Terrain_Sulphur"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Hex_Volcano_Sulphur.fbx",
+      "bytes": 19196,
+      "object": "AE_Hex_Volcano_Sulphur",
+      "mesh": "AE_Hex_Volcano_Sulphur_StableCaps",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "hex_tile",
+    "biome": "Mushroom",
+    "display_name_zh": "灰紫菌丝土",
+    "design_zh": "精确半径1尖顶六边形，表面为连续偏置沉积斑块，避免放射花纹；边界无倒角、无高差。",
+    "references": [
+      {
+        "id": "mushroom_minecraft_01",
+        "biome": "Mushroom",
+        "work": "Minecraft",
+        "page_url": "https://scalacube.com/blog/minecraft/the-rare-mushroom-field-in-minecraft",
+        "image_url": "https://res.cloudinary.com/ddbybfkod/image/upload/v1710169038/blogs/Roman/the-rare-mushroom-field-in-minecraft/img1_j2iisi.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\mushroom_minecraft_01.jpg",
+        "dimensions_px": [
+          976,
+          549
+        ],
+        "influence_zh": "蘑菇岛红白伞盖与褐色平顶菌盖的轮廓区别",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "mushroom_minecraft_02",
+        "biome": "Mushroom",
+        "work": "Minecraft",
+        "page_url": "https://fr-minecraft.net/biome-14-champs-de-champignons.html",
+        "image_url": "https://fr-minecraft.net/img/biomes/full/MushroomIsland_06.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\mushroom_minecraft_02.jpg",
+        "dimensions_px": [
+          1600,
+          981
+        ],
+        "influence_zh": "灰紫菌丝土与巨型菌柄、成簇低矮蘑菇的尺度对比",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "top center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Hex_Mushroom_Mycelium",
+    "dimensions_blender_xyz": [
+      1.7320507764816284,
+      2.0,
+      1.0
+    ],
+    "triangles": 108,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_MyceliumDark",
+      "AE_Terrain_Mycelium",
+      "AE_Terrain_MyceliumLight"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Hex_Mushroom_Mycelium.fbx",
+      "bytes": 19212,
+      "object": "AE_Hex_Mushroom_Mycelium",
+      "mesh": "AE_Hex_Mushroom_Mycelium_StableCaps",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "hex_tile",
+    "biome": "Mushroom",
+    "display_name_zh": "淡色孢子床",
+    "design_zh": "精确半径1尖顶六边形，表面为连续偏置沉积斑块，避免放射花纹；边界无倒角、无高差。",
+    "references": [
+      {
+        "id": "mushroom_minecraft_01",
+        "biome": "Mushroom",
+        "work": "Minecraft",
+        "page_url": "https://scalacube.com/blog/minecraft/the-rare-mushroom-field-in-minecraft",
+        "image_url": "https://res.cloudinary.com/ddbybfkod/image/upload/v1710169038/blogs/Roman/the-rare-mushroom-field-in-minecraft/img1_j2iisi.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\mushroom_minecraft_01.jpg",
+        "dimensions_px": [
+          976,
+          549
+        ],
+        "influence_zh": "蘑菇岛红白伞盖与褐色平顶菌盖的轮廓区别",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "mushroom_minecraft_02",
+        "biome": "Mushroom",
+        "work": "Minecraft",
+        "page_url": "https://fr-minecraft.net/biome-14-champs-de-champignons.html",
+        "image_url": "https://fr-minecraft.net/img/biomes/full/MushroomIsland_06.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\mushroom_minecraft_02.jpg",
+        "dimensions_px": [
+          1600,
+          981
+        ],
+        "influence_zh": "灰紫菌丝土与巨型菌柄、成簇低矮蘑菇的尺度对比",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "top center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Hex_Mushroom_Sporebed",
+    "dimensions_blender_xyz": [
+      1.7320507764816284,
+      2.0,
+      1.0
+    ],
+    "triangles": 108,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_MyceliumDark",
+      "AE_Terrain_MyceliumLight",
+      "AE_Terrain_StemShadow"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Hex_Mushroom_Sporebed.fbx",
+      "bytes": 19228,
+      "object": "AE_Hex_Mushroom_Sporebed",
+      "mesh": "AE_Hex_Mushroom_Sporebed_StableCaps",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "hex_tile",
+    "biome": "Mushroom",
+    "display_name_zh": "陈年菌毯",
+    "design_zh": "精确半径1尖顶六边形，表面为连续偏置沉积斑块，避免放射花纹；边界无倒角、无高差。",
+    "references": [
+      {
+        "id": "mushroom_minecraft_01",
+        "biome": "Mushroom",
+        "work": "Minecraft",
+        "page_url": "https://scalacube.com/blog/minecraft/the-rare-mushroom-field-in-minecraft",
+        "image_url": "https://res.cloudinary.com/ddbybfkod/image/upload/v1710169038/blogs/Roman/the-rare-mushroom-field-in-minecraft/img1_j2iisi.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\mushroom_minecraft_01.jpg",
+        "dimensions_px": [
+          976,
+          549
+        ],
+        "influence_zh": "蘑菇岛红白伞盖与褐色平顶菌盖的轮廓区别",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "mushroom_minecraft_02",
+        "biome": "Mushroom",
+        "work": "Minecraft",
+        "page_url": "https://fr-minecraft.net/biome-14-champs-de-champignons.html",
+        "image_url": "https://fr-minecraft.net/img/biomes/full/MushroomIsland_06.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\mushroom_minecraft_02.jpg",
+        "dimensions_px": [
+          1600,
+          981
+        ],
+        "influence_zh": "灰紫菌丝土与巨型菌柄、成簇低矮蘑菇的尺度对比",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "top center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Hex_Mushroom_OldGrowth",
+    "dimensions_blender_xyz": [
+      1.7320507764816284,
+      2.0,
+      1.0
+    ],
+    "triangles": 108,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Peat",
+      "AE_Terrain_MyceliumDark",
+      "AE_Terrain_Mycelium"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Hex_Mushroom_OldGrowth.fbx",
+      "bytes": 19212,
+      "object": "AE_Hex_Mushroom_OldGrowth",
+      "mesh": "AE_Hex_Mushroom_OldGrowth_StableCaps",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "decoration",
+    "biome": "Swamp",
+    "display_name_zh": "泥泽垂柳",
+    "design_zh": "五条板根、偏心分叉、三层非对称树冠和稀疏垂枝；轮廓疏密来自手工布置。",
+    "references": [
+      {
+        "id": "swamp_valheim_01",
+        "biome": "Swamp",
+        "work": "Valheim",
+        "page_url": "https://www.gamegrin.com/directory/game/valheim/images",
+        "image_url": "https://www.gamegrin.com/assets/game/valheim/screenshots/valheim-screenshots-13.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\swamp_valheim_01.jpg",
+        "dimensions_px": [
+          1920,
+          1080
+        ],
+        "influence_zh": "扭曲枯木、裸露板根、深褐泥与灰绿植物",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "swamp_valheim_02",
+        "biome": "Swamp",
+        "work": "Valheim",
+        "page_url": "https://scalacube.com/blog/valheim/how-to-find-swamp-valheim",
+        "image_url": "https://res.cloudinary.com/ddbybfkod/image/upload/v1749907478/blogs/Nemanja/how-to-find-swamp-valheim/img1_j7zozv.png",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\swamp_valheim_02.jpg",
+        "dimensions_px": [
+          976,
+          549
+        ],
+        "influence_zh": "湿地疏密关系、枯枝与芦苇的高低对比",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "ground center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Swamp_RootWillow",
+    "dimensions_blender_xyz": [
+      1.7504215240478516,
+      1.3290104866027832,
+      2.2741241455078125
+    ],
+    "triangles": 644,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Bark",
+      "AE_Terrain_BarkLight",
+      "AE_Terrain_MossDeep",
+      "AE_Terrain_Moss"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Swamp_RootWillow.fbx",
+      "bytes": 44012,
+      "object": "AE_Swamp_RootWillow",
+      "mesh": "AE_Swamp_RootWillow",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "decoration",
+    "biome": "Swamp",
+    "display_name_zh": "交错香蒲丛",
+    "design_zh": "七根弯曲香蒲与厚叶体，三种高度、错位叶向；可放在数据控制的水面边。",
+    "references": [
+      {
+        "id": "swamp_valheim_01",
+        "biome": "Swamp",
+        "work": "Valheim",
+        "page_url": "https://www.gamegrin.com/directory/game/valheim/images",
+        "image_url": "https://www.gamegrin.com/assets/game/valheim/screenshots/valheim-screenshots-13.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\swamp_valheim_01.jpg",
+        "dimensions_px": [
+          1920,
+          1080
+        ],
+        "influence_zh": "扭曲枯木、裸露板根、深褐泥与灰绿植物",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "swamp_valheim_02",
+        "biome": "Swamp",
+        "work": "Valheim",
+        "page_url": "https://scalacube.com/blog/valheim/how-to-find-swamp-valheim",
+        "image_url": "https://res.cloudinary.com/ddbybfkod/image/upload/v1749907478/blogs/Nemanja/how-to-find-swamp-valheim/img1_j7zozv.png",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\swamp_valheim_02.jpg",
+        "dimensions_px": [
+          976,
+          549
+        ],
+        "influence_zh": "湿地疏密关系、枯枝与芦苇的高低对比",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "ground center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Swamp_ReedCattails",
+    "dimensions_blender_xyz": [
+      1.1500000953674316,
+      0.7400000095367432,
+      1.1909096240997314
+    ],
+    "triangles": 560,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Reed",
+      "AE_Terrain_ReedLight",
+      "AE_Terrain_Cattail",
+      "AE_Terrain_BarkLight"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Swamp_ReedCattails.fbx",
+      "bytes": 42636,
+      "object": "AE_Swamp_ReedCattails",
+      "mesh": "AE_Swamp_ReedCattails",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "decoration",
+    "biome": "Swamp",
+    "display_name_zh": "中空腐木",
+    "design_zh": "两端真实镂空的厚树皮管壁、浅色断面、折枝和少量苔层；不以黑贴片冒充孔洞。",
+    "references": [
+      {
+        "id": "swamp_valheim_01",
+        "biome": "Swamp",
+        "work": "Valheim",
+        "page_url": "https://www.gamegrin.com/directory/game/valheim/images",
+        "image_url": "https://www.gamegrin.com/assets/game/valheim/screenshots/valheim-screenshots-13.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\swamp_valheim_01.jpg",
+        "dimensions_px": [
+          1920,
+          1080
+        ],
+        "influence_zh": "扭曲枯木、裸露板根、深褐泥与灰绿植物",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "swamp_valheim_02",
+        "biome": "Swamp",
+        "work": "Valheim",
+        "page_url": "https://scalacube.com/blog/valheim/how-to-find-swamp-valheim",
+        "image_url": "https://res.cloudinary.com/ddbybfkod/image/upload/v1749907478/blogs/Nemanja/how-to-find-swamp-valheim/img1_j7zozv.png",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\swamp_valheim_02.jpg",
+        "dimensions_px": [
+          976,
+          549
+        ],
+        "influence_zh": "湿地疏密关系、枯枝与芦苇的高低对比",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "ground center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Swamp_Rotwood",
+    "dimensions_blender_xyz": [
+      1.350000023841858,
+      0.6363866329193115,
+      0.6712658405303955
+    ],
+    "triangles": 254,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Bark",
+      "AE_Terrain_BarkLight",
+      "AE_Terrain_Heartwood",
+      "AE_Terrain_BarkDark",
+      "AE_Terrain_Moss",
+      "AE_Terrain_MossPale"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Swamp_Rotwood.fbx",
+      "bytes": 29404,
+      "object": "AE_Swamp_Rotwood",
+      "mesh": "AE_Swamp_Rotwood",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "decoration",
+    "biome": "Swamp",
+    "display_name_zh": "巫沼朽桩",
+    "design_zh": "破口树桩拥有真实内壁、五条根脚与阶梯木耳，兼具空腔和平台剪影。",
+    "references": [
+      {
+        "id": "swamp_valheim_01",
+        "biome": "Swamp",
+        "work": "Valheim",
+        "page_url": "https://www.gamegrin.com/directory/game/valheim/images",
+        "image_url": "https://www.gamegrin.com/assets/game/valheim/screenshots/valheim-screenshots-13.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\swamp_valheim_01.jpg",
+        "dimensions_px": [
+          1920,
+          1080
+        ],
+        "influence_zh": "扭曲枯木、裸露板根、深褐泥与灰绿植物",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "swamp_valheim_02",
+        "biome": "Swamp",
+        "work": "Valheim",
+        "page_url": "https://scalacube.com/blog/valheim/how-to-find-swamp-valheim",
+        "image_url": "https://res.cloudinary.com/ddbybfkod/image/upload/v1749907478/blogs/Nemanja/how-to-find-swamp-valheim/img1_j7zozv.png",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\swamp_valheim_02.jpg",
+        "dimensions_px": [
+          976,
+          549
+        ],
+        "influence_zh": "湿地疏密关系、枯枝与芦苇的高低对比",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "ground center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Swamp_WitchesStump",
+    "dimensions_blender_xyz": [
+      0.9684498310089111,
+      1.0107122659683228,
+      0.8194936513900757
+    ],
+    "triangles": 440,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Bark",
+      "AE_Terrain_BarkLight",
+      "AE_Terrain_Heartwood",
+      "AE_Terrain_BarkDark",
+      "AE_Terrain_Shelf",
+      "AE_Terrain_ShelfLight"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Swamp_WitchesStump.fbx",
+      "bytes": 35932,
+      "object": "AE_Swamp_WitchesStump",
+      "mesh": "AE_Swamp_WitchesStump",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "decoration",
+    "biome": "DarkForest",
+    "display_name_zh": "钩枝古橡",
+    "design_zh": "粗扭主干、分级钩形枝梢和稀疏残叶，轮廓呈不对称上升节奏。",
+    "references": [
+      {
+        "id": "dark_elden_01",
+        "biome": "DarkForest",
+        "work": "Elden Ring: Shadow of the Erdtree",
+        "page_url": "https://www.gamepressure.com/elden-ring/how-to-reach-the-abyssal-woods/z0114b8",
+        "image_url": "https://www.gamepressure.com/elden-ring/gfx/word/961246390.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\dark_elden_01.jpg",
+        "dimensions_px": [
+          720,
+          405
+        ],
+        "influence_zh": "深渊森林倾斜古树和钩状枝条",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "dark_elden_02",
+        "biome": "DarkForest",
+        "work": "Elden Ring: Shadow of the Erdtree",
+        "page_url": "https://www.neoseeker.com/elden-ring-shadow-of-the-erdtree/walkthrough/Abyssal_Woods",
+        "image_url": "https://cdn.staticneo.com/ew/b/be/Elden-Ring-SotE_AW-15.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\dark_elden_02.jpg",
+        "dimensions_px": [
+          1600,
+          900
+        ],
+        "influence_zh": "暗林冷灰树干、根部包石与抑制饱和度",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "ground center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_DarkForest_AncientOak",
+    "dimensions_blender_xyz": [
+      1.7339714765548706,
+      1.383446455001831,
+      2.7286770343780518
+    ],
+    "triangles": 680,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Bark",
+      "AE_Terrain_BarkLight",
+      "AE_Terrain_AshLeaf",
+      "AE_Terrain_NightLeaf"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_DarkForest_AncientOak.fbx",
+      "bytes": 46268,
+      "object": "AE_DarkForest_AncientOak",
+      "mesh": "AE_DarkForest_AncientOak",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "decoration",
+    "biome": "DarkForest",
+    "display_name_zh": "盘生荆棘拱",
+    "design_zh": "双根藤蔓向内弯曲，外露方向明确的粗刺与中央负空间，可独立旋转。",
+    "references": [
+      {
+        "id": "dark_elden_01",
+        "biome": "DarkForest",
+        "work": "Elden Ring: Shadow of the Erdtree",
+        "page_url": "https://www.gamepressure.com/elden-ring/how-to-reach-the-abyssal-woods/z0114b8",
+        "image_url": "https://www.gamepressure.com/elden-ring/gfx/word/961246390.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\dark_elden_01.jpg",
+        "dimensions_px": [
+          720,
+          405
+        ],
+        "influence_zh": "深渊森林倾斜古树和钩状枝条",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "dark_elden_02",
+        "biome": "DarkForest",
+        "work": "Elden Ring: Shadow of the Erdtree",
+        "page_url": "https://www.neoseeker.com/elden-ring-shadow-of-the-erdtree/walkthrough/Abyssal_Woods",
+        "image_url": "https://cdn.staticneo.com/ew/b/be/Elden-Ring-SotE_AW-15.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\dark_elden_02.jpg",
+        "dimensions_px": [
+          1600,
+          900
+        ],
+        "influence_zh": "暗林冷灰树干、根部包石与抑制饱和度",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "ground center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_DarkForest_ThornArch",
+    "dimensions_blender_xyz": [
+      1.820887804031372,
+      0.26927489042282104,
+      1.3604156970977783
+    ],
+    "triangles": 308,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Bark",
+      "AE_Terrain_BarkLight",
+      "AE_Terrain_BarkDark",
+      "AE_Terrain_NightLeaf"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_DarkForest_ThornArch.fbx",
+      "bytes": 30716,
+      "object": "AE_DarkForest_ThornArch",
+      "mesh": "AE_DarkForest_ThornArch",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "decoration",
+    "biome": "DarkForest",
+    "display_name_zh": "鸦栖黑松",
+    "design_zh": "四层偏心针叶冠，暗绿裙边和歪斜主干；与枯橡、荆棘拱保持体量区别。",
+    "references": [
+      {
+        "id": "dark_elden_01",
+        "biome": "DarkForest",
+        "work": "Elden Ring: Shadow of the Erdtree",
+        "page_url": "https://www.gamepressure.com/elden-ring/how-to-reach-the-abyssal-woods/z0114b8",
+        "image_url": "https://www.gamepressure.com/elden-ring/gfx/word/961246390.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\dark_elden_01.jpg",
+        "dimensions_px": [
+          720,
+          405
+        ],
+        "influence_zh": "深渊森林倾斜古树和钩状枝条",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "dark_elden_02",
+        "biome": "DarkForest",
+        "work": "Elden Ring: Shadow of the Erdtree",
+        "page_url": "https://www.neoseeker.com/elden-ring-shadow-of-the-erdtree/walkthrough/Abyssal_Woods",
+        "image_url": "https://cdn.staticneo.com/ew/b/be/Elden-Ring-SotE_AW-15.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\dark_elden_02.jpg",
+        "dimensions_px": [
+          1600,
+          900
+        ],
+        "influence_zh": "暗林冷灰树干、根部包石与抑制饱和度",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "ground center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_DarkForest_CrowPine",
+    "dimensions_blender_xyz": [
+      1.3469059467315674,
+      1.0001322031021118,
+      2.571242332458496
+    ],
+    "triangles": 380,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Bark",
+      "AE_Terrain_BarkLight",
+      "AE_Terrain_NightLeaf",
+      "AE_Terrain_NightLeafLight"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_DarkForest_CrowPine.fbx",
+      "bytes": 32476,
+      "object": "AE_DarkForest_CrowPine",
+      "mesh": "AE_DarkForest_CrowPine",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "decoration",
+    "biome": "DarkForest",
+    "display_name_zh": "缚石盘根",
+    "design_zh": "横向板根越过半埋石块，末端落地，中央保留折断的斜树桩。",
+    "references": [
+      {
+        "id": "dark_elden_01",
+        "biome": "DarkForest",
+        "work": "Elden Ring: Shadow of the Erdtree",
+        "page_url": "https://www.gamepressure.com/elden-ring/how-to-reach-the-abyssal-woods/z0114b8",
+        "image_url": "https://www.gamepressure.com/elden-ring/gfx/word/961246390.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\dark_elden_01.jpg",
+        "dimensions_px": [
+          720,
+          405
+        ],
+        "influence_zh": "深渊森林倾斜古树和钩状枝条",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "dark_elden_02",
+        "biome": "DarkForest",
+        "work": "Elden Ring: Shadow of the Erdtree",
+        "page_url": "https://www.neoseeker.com/elden-ring-shadow-of-the-erdtree/walkthrough/Abyssal_Woods",
+        "image_url": "https://cdn.staticneo.com/ew/b/be/Elden-Ring-SotE_AW-15.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\dark_elden_02.jpg",
+        "dimensions_px": [
+          1600,
+          900
+        ],
+        "influence_zh": "暗林冷灰树干、根部包石与抑制饱和度",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "ground center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_DarkForest_RootTangle",
+    "dimensions_blender_xyz": [
+      1.420285940170288,
+      1.117417335510254,
+      0.8144466280937195
+    ],
+    "triangles": 350,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Loam",
+      "AE_Terrain_LoamLight",
+      "AE_Terrain_Bark",
+      "AE_Terrain_BarkLight"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_DarkForest_RootTangle.fbx",
+      "bytes": 33180,
+      "object": "AE_DarkForest_RootTangle",
+      "mesh": "AE_DarkForest_RootTangle",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "decoration",
+    "biome": "Lava",
+    "display_name_zh": "玄武岩石琴",
+    "design_zh": "五柱节理沿两排咬合，柱顶高差构成石琴轮廓；暗淡颜色仍能看清表面。",
+    "references": [
+      {
+        "id": "lava_minecraft_01",
+        "biome": "Lava",
+        "work": "Minecraft",
+        "page_url": "https://www.windowscentral.com/minecraft-guide-full-changelog-nether-update",
+        "image_url": "https://cdn.mos.cms.futurecdn.net/rkMyB6S5XQc8HiXAKL29Da.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\lava_minecraft_01.jpg",
+        "dimensions_px": [
+          2048,
+          1152
+        ],
+        "influence_zh": "玄武岩柱与窄熔岩脉的明暗层次",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "lava_minecraft_02",
+        "biome": "Lava",
+        "work": "Minecraft",
+        "page_url": "https://www.windowscentral.com/minecraft-quick-guide-cheat-sheet-everything-new-nether-update",
+        "image_url": "https://cdn.mos.cms.futurecdn.net/b8wSdWNynNFyNsCW4QE7So.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\lava_minecraft_02.jpg",
+        "dimensions_px": [
+          2048,
+          1152
+        ],
+        "influence_zh": "柱状节理、熔岩裂隙与黑石薄壳",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "ground center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Lava_BasaltOrgan",
+    "dimensions_blender_xyz": [
+      1.1259794235229492,
+      0.9299999475479126,
+      1.649999976158142
+    ],
+    "triangles": 220,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Basalt",
+      "AE_Terrain_BasaltLight"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Lava_BasaltOrgan.fbx",
+      "bytes": 22940,
+      "object": "AE_Lava_BasaltOrgan",
+      "mesh": "AE_Lava_BasaltOrgan",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "decoration",
+    "biome": "Lava",
+    "display_name_zh": "黑曜断刃石",
+    "design_zh": "四片不同角度断刃以低多边截面表达玻璃断口，低光泽避免塑料感。",
+    "references": [
+      {
+        "id": "lava_minecraft_01",
+        "biome": "Lava",
+        "work": "Minecraft",
+        "page_url": "https://www.windowscentral.com/minecraft-guide-full-changelog-nether-update",
+        "image_url": "https://cdn.mos.cms.futurecdn.net/rkMyB6S5XQc8HiXAKL29Da.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\lava_minecraft_01.jpg",
+        "dimensions_px": [
+          2048,
+          1152
+        ],
+        "influence_zh": "玄武岩柱与窄熔岩脉的明暗层次",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "lava_minecraft_02",
+        "biome": "Lava",
+        "work": "Minecraft",
+        "page_url": "https://www.windowscentral.com/minecraft-quick-guide-cheat-sheet-everything-new-nether-update",
+        "image_url": "https://cdn.mos.cms.futurecdn.net/b8wSdWNynNFyNsCW4QE7So.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\lava_minecraft_02.jpg",
+        "dimensions_px": [
+          2048,
+          1152
+        ],
+        "influence_zh": "柱状节理、熔岩裂隙与黑石薄壳",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "ground center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Lava_ObsidianBlades",
+    "dimensions_blender_xyz": [
+      1.1570420265197754,
+      0.6743252277374268,
+      1.559999942779541
+    ],
+    "triangles": 208,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Obsidian",
+      "AE_Terrain_ObsidianLight",
+      "AE_Terrain_BasaltDark"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Lava_ObsidianBlades.fbx",
+      "bytes": 25020,
+      "object": "AE_Lava_ObsidianBlades",
+      "mesh": "AE_Lava_ObsidianBlades",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "decoration",
+    "biome": "Lava",
+    "display_name_zh": "余烬喷气孔",
+    "design_zh": "真实凹陷内壁与狭小熔岩喉口，无透明烟雾或固定粒子依赖。",
+    "references": [
+      {
+        "id": "lava_minecraft_01",
+        "biome": "Lava",
+        "work": "Minecraft",
+        "page_url": "https://www.windowscentral.com/minecraft-guide-full-changelog-nether-update",
+        "image_url": "https://cdn.mos.cms.futurecdn.net/rkMyB6S5XQc8HiXAKL29Da.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\lava_minecraft_01.jpg",
+        "dimensions_px": [
+          2048,
+          1152
+        ],
+        "influence_zh": "玄武岩柱与窄熔岩脉的明暗层次",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "lava_minecraft_02",
+        "biome": "Lava",
+        "work": "Minecraft",
+        "page_url": "https://www.windowscentral.com/minecraft-quick-guide-cheat-sheet-everything-new-nether-update",
+        "image_url": "https://cdn.mos.cms.futurecdn.net/b8wSdWNynNFyNsCW4QE7So.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\lava_minecraft_02.jpg",
+        "dimensions_px": [
+          2048,
+          1152
+        ],
+        "influence_zh": "柱状节理、熔岩裂隙与黑石薄壳",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "ground center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Lava_Fumarole",
+    "dimensions_blender_xyz": [
+      1.1860405206680298,
+      1.172548532485962,
+      0.6416687369346619
+    ],
+    "triangles": 304,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Basalt",
+      "AE_Terrain_BasaltLight",
+      "AE_Terrain_BasaltDark",
+      "AE_Terrain_LavaDark",
+      "AE_Terrain_Lava",
+      "AE_Terrain_LavaHot"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Lava_Fumarole.fbx",
+      "bytes": 31484,
+      "object": "AE_Lava_Fumarole",
+      "mesh": "AE_Lava_Fumarole",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "decoration",
+    "biome": "Lava",
+    "display_name_zh": "分岔熔岩裂隙",
+    "design_zh": "厚熔岩床被四块断裂岩板包围，错缝露出分支火脉；平贴地表，无悬空的橙色管线。",
+    "references": [
+      {
+        "id": "lava_minecraft_01",
+        "biome": "Lava",
+        "work": "Minecraft",
+        "page_url": "https://www.windowscentral.com/minecraft-guide-full-changelog-nether-update",
+        "image_url": "https://cdn.mos.cms.futurecdn.net/rkMyB6S5XQc8HiXAKL29Da.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\lava_minecraft_01.jpg",
+        "dimensions_px": [
+          2048,
+          1152
+        ],
+        "influence_zh": "玄武岩柱与窄熔岩脉的明暗层次",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "lava_minecraft_02",
+        "biome": "Lava",
+        "work": "Minecraft",
+        "page_url": "https://www.windowscentral.com/minecraft-quick-guide-cheat-sheet-everything-new-nether-update",
+        "image_url": "https://cdn.mos.cms.futurecdn.net/b8wSdWNynNFyNsCW4QE7So.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\lava_minecraft_02.jpg",
+        "dimensions_px": [
+          2048,
+          1152
+        ],
+        "influence_zh": "柱状节理、熔岩裂隙与黑石薄壳",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "ground center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Lava_MagmaRift",
+    "dimensions_blender_xyz": [
+      1.5,
+      0.8300000429153442,
+      0.23000000417232513
+    ],
+    "triangles": 188,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_LavaDark",
+      "AE_Terrain_Lava",
+      "AE_Terrain_Basalt",
+      "AE_Terrain_BasaltLight",
+      "AE_Terrain_BasaltDark",
+      "AE_Terrain_LavaHot"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Lava_MagmaRift.fbx",
+      "bytes": 25772,
+      "object": "AE_Lava_MagmaRift",
+      "mesh": "AE_Lava_MagmaRift_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "decoration",
+    "biome": "Volcano",
+    "display_name_zh": "不眠灰烬锥",
+    "design_zh": "层状火山锥收束到真实凹口；火口偏碎，熔岩深藏，区别于平地喷气孔。",
+    "references": [
+      {
+        "id": "volcano_elden_01",
+        "biome": "Volcano",
+        "work": "Elden Ring",
+        "page_url": "https://www.vidaextra.com/guias-y-trucos/truco-secreto-para-acceder-al-interior-volcan-elden-ring-este-proceso-que-debes-seguir",
+        "image_url": "https://i.blogs.es/64f2cc/140322-eldenring-volcan/1200_630.jpeg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\volcano_elden_01.jpg",
+        "dimensions_px": [
+          1200,
+          630
+        ],
+        "influence_zh": "火山内壁层层退台和暗红灼烧边缘",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "volcano_elden_02",
+        "biome": "Volcano",
+        "work": "Elden Ring",
+        "page_url": "https://www.eurogamer.de/elden-ring-gelmir-erreichen-und-betreten-karte-bruecke-haendler-und-alle-personen",
+        "image_url": "https://assetsio.gnwcdn.com/gelmir.jpg?auto=webp&enable=upscale&fit=crop&format=png&height=900&quality=100&width=1200",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\volcano_elden_02.jpg",
+        "dimensions_px": [
+          1200,
+          900
+        ],
+        "influence_zh": "盖利德以外的格密尔尖峰、灰烬和硫黄色矿层",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "ground center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Volcano_CinderCone",
+    "dimensions_blender_xyz": [
+      1.6942460536956787,
+      1.6690194606781006,
+      1.4160964488983154
+    ],
+    "triangles": 228,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Cinder",
+      "AE_Terrain_Basalt",
+      "AE_Terrain_Ash",
+      "AE_Terrain_BasaltDark",
+      "AE_Terrain_LavaDark",
+      "AE_Terrain_Lava"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Volcano_CinderCone.fbx",
+      "bytes": 28732,
+      "object": "AE_Volcano_CinderCone",
+      "mesh": "AE_Volcano_CinderCone",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "decoration",
+    "biome": "Volcano",
+    "display_name_zh": "塌口古火山",
+    "design_zh": "一侧火山口降低到四分之一高度形成可见鞍部，底部凝灰碎片呼应坍塌方向。",
+    "references": [
+      {
+        "id": "volcano_elden_01",
+        "biome": "Volcano",
+        "work": "Elden Ring",
+        "page_url": "https://www.vidaextra.com/guias-y-trucos/truco-secreto-para-acceder-al-interior-volcan-elden-ring-este-proceso-que-debes-seguir",
+        "image_url": "https://i.blogs.es/64f2cc/140322-eldenring-volcan/1200_630.jpeg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\volcano_elden_01.jpg",
+        "dimensions_px": [
+          1200,
+          630
+        ],
+        "influence_zh": "火山内壁层层退台和暗红灼烧边缘",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "volcano_elden_02",
+        "biome": "Volcano",
+        "work": "Elden Ring",
+        "page_url": "https://www.eurogamer.de/elden-ring-gelmir-erreichen-und-betreten-karte-bruecke-haendler-und-alle-personen",
+        "image_url": "https://assetsio.gnwcdn.com/gelmir.jpg?auto=webp&enable=upscale&fit=crop&format=png&height=900&quality=100&width=1200",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\volcano_elden_02.jpg",
+        "dimensions_px": [
+          1200,
+          900
+        ],
+        "influence_zh": "盖利德以外的格密尔尖峰、灰烬和硫黄色矿层",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "ground center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Volcano_BrokenCrater",
+    "dimensions_blender_xyz": [
+      1.6735844612121582,
+      1.6486656665802002,
+      0.7301747798919678
+    ],
+    "triangles": 280,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Ash",
+      "AE_Terrain_Cinder",
+      "AE_Terrain_BasaltLight",
+      "AE_Terrain_BasaltDark",
+      "AE_Terrain_LavaDark"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Volcano_BrokenCrater.fbx",
+      "bytes": 30332,
+      "object": "AE_Volcano_BrokenCrater",
+      "mesh": "AE_Volcano_BrokenCrater",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "decoration",
+    "biome": "Volcano",
+    "display_name_zh": "双喉硫华烟囱",
+    "design_zh": "双管矿物烟囱与浅黄色沉积裙边，孔道真实下凹且不依赖后期发光。",
+    "references": [
+      {
+        "id": "volcano_elden_01",
+        "biome": "Volcano",
+        "work": "Elden Ring",
+        "page_url": "https://www.vidaextra.com/guias-y-trucos/truco-secreto-para-acceder-al-interior-volcan-elden-ring-este-proceso-que-debes-seguir",
+        "image_url": "https://i.blogs.es/64f2cc/140322-eldenring-volcan/1200_630.jpeg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\volcano_elden_01.jpg",
+        "dimensions_px": [
+          1200,
+          630
+        ],
+        "influence_zh": "火山内壁层层退台和暗红灼烧边缘",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "volcano_elden_02",
+        "biome": "Volcano",
+        "work": "Elden Ring",
+        "page_url": "https://www.eurogamer.de/elden-ring-gelmir-erreichen-und-betreten-karte-bruecke-haendler-und-alle-personen",
+        "image_url": "https://assetsio.gnwcdn.com/gelmir.jpg?auto=webp&enable=upscale&fit=crop&format=png&height=900&quality=100&width=1200",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\volcano_elden_02.jpg",
+        "dimensions_px": [
+          1200,
+          900
+        ],
+        "influence_zh": "盖利德以外的格密尔尖峰、灰烬和硫黄色矿层",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "ground center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Volcano_SulphurChimney",
+    "dimensions_blender_xyz": [
+      0.9923950433731079,
+      0.7521158456802368,
+      1.4935392141342163
+    ],
+    "triangles": 244,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Tuff",
+      "AE_Terrain_Sulphur",
+      "AE_Terrain_SulphurLight",
+      "AE_Terrain_BasaltDark",
+      "AE_Terrain_LavaDark"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Volcano_SulphurChimney.fbx",
+      "bytes": 28780,
+      "object": "AE_Volcano_SulphurChimney",
+      "mesh": "AE_Volcano_SulphurChimney",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "decoration",
+    "biome": "Volcano",
+    "display_name_zh": "风蚀凝灰尖塔",
+    "design_zh": "三座高低不同、腰部带水平层理的凝灰尖塔，斜顶区别于垂直玄武岩柱。",
+    "references": [
+      {
+        "id": "volcano_elden_01",
+        "biome": "Volcano",
+        "work": "Elden Ring",
+        "page_url": "https://www.vidaextra.com/guias-y-trucos/truco-secreto-para-acceder-al-interior-volcan-elden-ring-este-proceso-que-debes-seguir",
+        "image_url": "https://i.blogs.es/64f2cc/140322-eldenring-volcan/1200_630.jpeg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\volcano_elden_01.jpg",
+        "dimensions_px": [
+          1200,
+          630
+        ],
+        "influence_zh": "火山内壁层层退台和暗红灼烧边缘",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "volcano_elden_02",
+        "biome": "Volcano",
+        "work": "Elden Ring",
+        "page_url": "https://www.eurogamer.de/elden-ring-gelmir-erreichen-und-betreten-karte-bruecke-haendler-und-alle-personen",
+        "image_url": "https://assetsio.gnwcdn.com/gelmir.jpg?auto=webp&enable=upscale&fit=crop&format=png&height=900&quality=100&width=1200",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\volcano_elden_02.jpg",
+        "dimensions_px": [
+          1200,
+          900
+        ],
+        "influence_zh": "盖利德以外的格密尔尖峰、灰烬和硫黄色矿层",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "ground center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Volcano_AshSpire",
+    "dimensions_blender_xyz": [
+      1.0329182147979736,
+      0.6514720916748047,
+      1.309999942779541
+    ],
+    "triangles": 198,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Ash",
+      "AE_Terrain_BasaltLight",
+      "AE_Terrain_Tuff"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Volcano_AshSpire.fbx",
+      "bytes": 24732,
+      "object": "AE_Volcano_AshSpire",
+      "mesh": "AE_Volcano_AshSpire",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "decoration",
+    "biome": "Mushroom",
+    "display_name_zh": "绯冠巨伞",
+    "design_zh": "偏心粗菌柄、鼓起伞盖、少量不规则米白斑块与几何菌褶，非方块复刻。",
+    "references": [
+      {
+        "id": "mushroom_minecraft_01",
+        "biome": "Mushroom",
+        "work": "Minecraft",
+        "page_url": "https://scalacube.com/blog/minecraft/the-rare-mushroom-field-in-minecraft",
+        "image_url": "https://res.cloudinary.com/ddbybfkod/image/upload/v1710169038/blogs/Roman/the-rare-mushroom-field-in-minecraft/img1_j2iisi.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\mushroom_minecraft_01.jpg",
+        "dimensions_px": [
+          976,
+          549
+        ],
+        "influence_zh": "蘑菇岛红白伞盖与褐色平顶菌盖的轮廓区别",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "mushroom_minecraft_02",
+        "biome": "Mushroom",
+        "work": "Minecraft",
+        "page_url": "https://fr-minecraft.net/biome-14-champs-de-champignons.html",
+        "image_url": "https://fr-minecraft.net/img/biomes/full/MushroomIsland_06.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\mushroom_minecraft_02.jpg",
+        "dimensions_px": [
+          1600,
+          981
+        ],
+        "influence_zh": "灰紫菌丝土与巨型菌柄、成簇低矮蘑菇的尺度对比",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "ground center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Mushroom_RedParasol",
+    "dimensions_blender_xyz": [
+      1.5675444602966309,
+      1.4553349018096924,
+      2.1016814708709717
+    ],
+    "triangles": 360,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Stem",
+      "AE_Terrain_StemShadow",
+      "AE_Terrain_GillShadow",
+      "AE_Terrain_Gill",
+      "AE_Terrain_RedcapLight",
+      "AE_Terrain_Redcap",
+      "AE_Terrain_CapSpot"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Mushroom_RedParasol.fbx",
+      "bytes": 34220,
+      "object": "AE_Mushroom_RedParasol",
+      "mesh": "AE_Mushroom_RedParasol",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "decoration",
+    "biome": "Mushroom",
+    "display_name_zh": "赭伞母子菌",
+    "design_zh": "宽而低的褐色伞盖，与小菌形成母子关系；扁冠轮廓区别于红色高鼓伞。",
+    "references": [
+      {
+        "id": "mushroom_minecraft_01",
+        "biome": "Mushroom",
+        "work": "Minecraft",
+        "page_url": "https://scalacube.com/blog/minecraft/the-rare-mushroom-field-in-minecraft",
+        "image_url": "https://res.cloudinary.com/ddbybfkod/image/upload/v1710169038/blogs/Roman/the-rare-mushroom-field-in-minecraft/img1_j2iisi.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\mushroom_minecraft_01.jpg",
+        "dimensions_px": [
+          976,
+          549
+        ],
+        "influence_zh": "蘑菇岛红白伞盖与褐色平顶菌盖的轮廓区别",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "mushroom_minecraft_02",
+        "biome": "Mushroom",
+        "work": "Minecraft",
+        "page_url": "https://fr-minecraft.net/biome-14-champs-de-champignons.html",
+        "image_url": "https://fr-minecraft.net/img/biomes/full/MushroomIsland_06.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\mushroom_minecraft_02.jpg",
+        "dimensions_px": [
+          1600,
+          981
+        ],
+        "influence_zh": "灰紫菌丝土与巨型菌柄、成簇低矮蘑菇的尺度对比",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "ground center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Mushroom_BrownCanopy",
+    "dimensions_blender_xyz": [
+      1.7677717208862305,
+      1.6412293910980225,
+      1.728967308998108
+    ],
+    "triangles": 464,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Stem",
+      "AE_Terrain_StemShadow",
+      "AE_Terrain_GillShadow",
+      "AE_Terrain_Gill",
+      "AE_Terrain_BrowncapLight",
+      "AE_Terrain_Browncap"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Mushroom_BrownCanopy.fbx",
+      "bytes": 37788,
+      "object": "AE_Mushroom_BrownCanopy",
+      "mesh": "AE_Mushroom_BrownCanopy",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "decoration",
+    "biome": "Mushroom",
+    "display_name_zh": "蓝灯铃菌丛",
+    "design_zh": "三株错落铃状菌盖、淡青边与灰紫顶，保持哑光纯色，菌柄曲率各异。",
+    "references": [
+      {
+        "id": "mushroom_minecraft_01",
+        "biome": "Mushroom",
+        "work": "Minecraft",
+        "page_url": "https://scalacube.com/blog/minecraft/the-rare-mushroom-field-in-minecraft",
+        "image_url": "https://res.cloudinary.com/ddbybfkod/image/upload/v1710169038/blogs/Roman/the-rare-mushroom-field-in-minecraft/img1_j2iisi.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\mushroom_minecraft_01.jpg",
+        "dimensions_px": [
+          976,
+          549
+        ],
+        "influence_zh": "蘑菇岛红白伞盖与褐色平顶菌盖的轮廓区别",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "mushroom_minecraft_02",
+        "biome": "Mushroom",
+        "work": "Minecraft",
+        "page_url": "https://fr-minecraft.net/biome-14-champs-de-champignons.html",
+        "image_url": "https://fr-minecraft.net/img/biomes/full/MushroomIsland_06.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\mushroom_minecraft_02.jpg",
+        "dimensions_px": [
+          1600,
+          981
+        ],
+        "influence_zh": "灰紫菌丝土与巨型菌柄、成簇低矮蘑菇的尺度对比",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "ground center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Mushroom_IndigoLantern",
+    "dimensions_blender_xyz": [
+      1.1683125495910645,
+      0.8378875851631165,
+      1.725599765777588
+    ],
+    "triangles": 600,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Stem",
+      "AE_Terrain_StemShadow",
+      "AE_Terrain_GillShadow",
+      "AE_Terrain_Gill",
+      "AE_Terrain_IndigoLight",
+      "AE_Terrain_Indigo"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Mushroom_IndigoLantern.fbx",
+      "bytes": 42716,
+      "object": "AE_Mushroom_IndigoLantern",
+      "mesh": "AE_Mushroom_IndigoLantern",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "decoration",
+    "biome": "Mushroom",
+    "display_name_zh": "腐桩层生菌",
+    "design_zh": "四层方向交替的扇形菌架沿中空老桩生长，拥有宽窄交替的连续剪影。",
+    "references": [
+      {
+        "id": "mushroom_minecraft_01",
+        "biome": "Mushroom",
+        "work": "Minecraft",
+        "page_url": "https://scalacube.com/blog/minecraft/the-rare-mushroom-field-in-minecraft",
+        "image_url": "https://res.cloudinary.com/ddbybfkod/image/upload/v1710169038/blogs/Roman/the-rare-mushroom-field-in-minecraft/img1_j2iisi.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\mushroom_minecraft_01.jpg",
+        "dimensions_px": [
+          976,
+          549
+        ],
+        "influence_zh": "蘑菇岛红白伞盖与褐色平顶菌盖的轮廓区别",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "mushroom_minecraft_02",
+        "biome": "Mushroom",
+        "work": "Minecraft",
+        "page_url": "https://fr-minecraft.net/biome-14-champs-de-champignons.html",
+        "image_url": "https://fr-minecraft.net/img/biomes/full/MushroomIsland_06.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\mushroom_minecraft_02.jpg",
+        "dimensions_px": [
+          1600,
+          981
+        ],
+        "influence_zh": "灰紫菌丝土与巨型菌柄、成簇低矮蘑菇的尺度对比",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "ground center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Mushroom_ShelfColony",
+    "dimensions_blender_xyz": [
+      1.234437346458435,
+      0.9566047191619873,
+      1.1894936561584473
+    ],
+    "triangles": 476,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_Bark",
+      "AE_Terrain_BarkLight",
+      "AE_Terrain_Heartwood",
+      "AE_Terrain_BarkDark",
+      "AE_Terrain_Shelf",
+      "AE_Terrain_ShelfLight",
+      "AE_Terrain_Browncap"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Mushroom_ShelfColony.fbx",
+      "bytes": 38076,
+      "object": "AE_Mushroom_ShelfColony",
+      "mesh": "AE_Mushroom_ShelfColony",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  },
+  {
+    "category": "decoration",
+    "biome": "Mushroom",
+    "display_name_zh": "月尘马勃巢",
+    "design_zh": "六枚闭合梨形孢子囊带暗色顶部孔口，在低矮地表提供完全不同的节奏。",
+    "references": [
+      {
+        "id": "mushroom_minecraft_01",
+        "biome": "Mushroom",
+        "work": "Minecraft",
+        "page_url": "https://scalacube.com/blog/minecraft/the-rare-mushroom-field-in-minecraft",
+        "image_url": "https://res.cloudinary.com/ddbybfkod/image/upload/v1710169038/blogs/Roman/the-rare-mushroom-field-in-minecraft/img1_j2iisi.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\mushroom_minecraft_01.jpg",
+        "dimensions_px": [
+          976,
+          549
+        ],
+        "influence_zh": "蘑菇岛红白伞盖与褐色平顶菌盖的轮廓区别",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      },
+      {
+        "id": "mushroom_minecraft_02",
+        "biome": "Mushroom",
+        "work": "Minecraft",
+        "page_url": "https://fr-minecraft.net/biome-14-champs-de-champignons.html",
+        "image_url": "https://fr-minecraft.net/img/biomes/full/MushroomIsland_06.jpg",
+        "local_file": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\References\\mushroom_minecraft_02.jpg",
+        "dimensions_px": [
+          1600,
+          981
+        ],
+        "influence_zh": "灰紫菌丝土与巨型菌柄、成簇低矮蘑菇的尺度对比",
+        "reviewed": true,
+        "retrieved": "2026-10-01",
+        "rights": "Reference only; original game copyright retained; not shipped as textures."
+      }
+    ],
+    "origin": "ground center",
+    "units": "metres",
+    "front_blender": "-Y",
+    "target_unity_directory": "Assets/DynamicAsset/AssetExpansion202610/Terrain/Models",
+    "literature_reference": {
+      "author": "William Morris",
+      "title": "The Wood Beyond the World",
+      "chapter": "VI–VIII",
+      "url": "https://www.gutenberg.org/cache/epub/3055/pg3055-images.html",
+      "motif_zh": "峭壁前的榛木、荆棘与橡树，以及灰色岩墙里的黑暗裂隙；仅借鉴意象，不复制文字或命名。"
+    },
+    "collision": "visual asset only; gameplay configuration not changed",
+    "name": "AE_Mushroom_PuffballNest",
+    "dimensions_blender_xyz": [
+      1.1052241325378418,
+      0.8234736919403076,
+      0.593999981880188
+    ],
+    "triangles": 576,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "AE_Terrain_StemShadow",
+      "AE_Terrain_Spore",
+      "AE_Terrain_CapSpot",
+      "AE_Terrain_GillShadow"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Terrain\\Staging\\AE_Mushroom_PuffballNest.fbx",
+      "bytes": 37884,
+      "object": "AE_Mushroom_PuffballNest",
+      "mesh": "AE_Mushroom_PuffballNest",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured."
+  }
+]

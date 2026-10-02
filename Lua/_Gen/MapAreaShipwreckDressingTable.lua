@@ -1,0 +1,15 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaShipwreckDressingTableRow
+---@field id number 规则编号
+---@field profileId number 模板
+---@field assetId number 小物模型
+---@field roomIds number[] 可用房间
+---@field placement "floor"|"surface" 地面或真实桌面
+---@field count number 期望数量
+---@field halfX number 实际X半宽
+---@field halfZ number 实际Z半长
+---@field centerX number 模型中心X
+---@field centerZ number 模型中心Z
+---@field baseY number 模型包围盒底Y
+---@field height number 模型高度
+return {["name"]="MapAreaShipwreckDressingTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\232\167\132\229\136\153\231\188\150\229\143\183",["min"]=1},{["name"]="profileId",["type"]="int",["description"]="\230\168\161\230\157\191",["ref"]="MapAreaShipwreckTable"},{["name"]="assetId",["type"]="int",["description"]="\229\176\143\231\137\169\230\168\161\229\158\139",["ref"]="MapAssetTable"},{["name"]="roomIds",["type"]="int[]",["description"]="\229\143\175\231\148\168\230\136\191\233\151\180",["ref"]="MapAreaShipwreckRoomTable"},{["name"]="placement",["type"]="enum",["description"]="\229\156\176\233\157\162\230\136\150\231\156\159\229\174\158\230\161\140\233\157\162",["values"]={"floor","surface"}},{["name"]="count",["type"]="int",["description"]="\230\156\159\230\156\155\230\149\176\233\135\143",["min"]=1},{["name"]="halfX",["type"]="float",["description"]="\229\174\158\233\153\133X\229\141\138\229\174\189",["min"]=0},{["name"]="halfZ",["type"]="float",["description"]="\229\174\158\233\153\133Z\229\141\138\233\149\191",["min"]=0},{["name"]="centerX",["type"]="float",["description"]="\230\168\161\229\158\139\228\184\173\229\191\131X"},{["name"]="centerZ",["type"]="float",["description"]="\230\168\161\229\158\139\228\184\173\229\191\131Z"},{["name"]="baseY",["type"]="float",["description"]="\230\168\161\229\158\139\229\140\133\229\155\180\231\155\146\229\186\149Y"},{["name"]="height",["type"]="float",["description"]="\230\168\161\229\158\139\233\171\152\229\186\166",["min"]=0}},["fingerprint"]="8ff25539bf29248cb8d2ec33d3e7864ad03f298c402ae8ad813e8b4dcad75aeb"}

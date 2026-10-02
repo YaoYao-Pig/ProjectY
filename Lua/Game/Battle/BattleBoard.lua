@@ -61,22 +61,28 @@ function Board.Create(radius, seed, obstacleChance)
     end
     return board
 end
--- BFS 同时返回距离和前驱；占格不跨越，尸体允许通行。
+-- 按移动距离求最短路；工事上下与坑沟附加距离，普通地格仍为 1。
 function Board:Search(q, r, occupied, limit, allowed)
     local root = assert(self:Find(q, r), 'Path origin outside battle board')
-    local queue, distance, previous, head = {root}, {[root] = 0}, {}, 1
-    while head <= #queue do
-        local current = queue[head]; head = head + 1
+    local queue,distance,previous,settled,result={root},{[root]=0},{},{},{}
+    while #queue>0 do
+        local best=1
+        for i=2,#queue do if distance[queue[i]]<distance[queue[best]] then best=i end end
+        local current=table.remove(queue,best)
+        if not settled[current] then
+        settled[current]=true;result[#result+1]=current
         if distance[current] < limit then
             for _, nextCell in ipairs(self:Neighbors(current)) do
-                if distance[nextCell] == nil and not occupied[Hex.Key(nextCell.q, nextCell.r)] and (not allowed or allowed(nextCell)) then
-                    distance[nextCell] = distance[current] + 1
+                local cost=distance[current]+(self.area and self.area.MoveCost and self.area:MoveCost(current,nextCell) or 1)
+                if cost<=limit and (not distance[nextCell] or cost<distance[nextCell]) and not occupied[Hex.Key(nextCell.q, nextCell.r)] and (not allowed or allowed(nextCell)) then
+                    distance[nextCell] = cost
                     previous[nextCell] = current
                     queue[#queue + 1] = nextCell
                 end
             end
         end
+        end
     end
-    return queue, distance, previous
+    return result, distance, previous
 end
 return Board

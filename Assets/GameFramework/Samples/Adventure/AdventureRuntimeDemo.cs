@@ -31,6 +31,8 @@ namespace ProjectY.Samples
         private Func<int, Vector3> squadPosition;
         private AreaCombatRenderer combatRenderer;
         private AreaLootRenderer lootRenderer;
+        private AreaObstacleRenderer obstacleRenderer;
+        private ConstructionRenderer constructionRenderer;
         private bool equipmentOpen;
         private bool growthOpen, storyOpen, gmOpen;
         public Font MainHudFont => mainHud.Font;
@@ -124,7 +126,7 @@ namespace ProjectY.Samples
             if(view==null || view.Phase!="area")return;
             SelectCharacter(actorId);
             if(target=="self") {SendCommand("character_skill",actorId,skillId,actorId);return;}
-            if(target!="unit" && target!="cell")throw new ArgumentException("Unknown character skill target.",nameof(target));
+            if(target!="unit" && target!="cell" && target!="container")throw new ArgumentException("Unknown character skill target.",nameof(target));
             selectedCharacterSkill=skillId;characterSkillTarget=target;view.Error="";BattleHUDRevision++;
         }
         private string characterSkillTarget;
@@ -224,6 +226,7 @@ namespace ProjectY.Samples
         {
             if (fatalError != null) return;
             if(command=="hud_missions"){bootstrap.CallModule("UI.AdventureUIBridge","missions",this);return;}
+            if(command=="hud_skill_atlas"){bootstrap.CallModule("UI.AdventureUIBridge","skill_atlas",this);return;}
             if (command == "load_characters" || command == "start_story")
             {
                 if (view.Phase != "map" && view.Phase != "area") return;
@@ -236,7 +239,7 @@ namespace ProjectY.Samples
             if(command=="hud_follow")
             {
                 if(!HasArea) return;
-                followParty=true;focus=displayedParty;zoom=13*areaLayout.Radius;return;
+                followParty=true;focus=displayedParty;zoom=10*areaLayout.Radius;pitch=50;return;
             }
             try
             {
@@ -302,9 +305,11 @@ namespace ProjectY.Samples
                     return item.prefab;
                 });
                 squadPosition = squadRenderer.Position;
-                explorationRenderer = new ExplorationGridRenderer(areaLayout, explorationGrid);
+                explorationRenderer = new ExplorationGridRenderer(areaLayout, explorationGrid, areaRenderer.IsCellShown);
                 combatRenderer = new AreaCombatRenderer(transform, pawnPrefab, previewShader, ResolvePawnPart);
-                lootRenderer = new AreaLootRenderer(transform,equipmentCatalog);
+                lootRenderer = new AreaLootRenderer(transform,equipmentCatalog,areaRenderer.IsCellShown);
+                obstacleRenderer = new AreaObstacleRenderer(transform,equipmentCatalog);
+                constructionRenderer=new ConstructionRenderer(transform);
                 if (areaLayout.IsTown)
                 {
                     townNpcs = new TownNpcRenderer(transform, pawnPrefab, areaLayout, ResolvePawnPart);
@@ -312,7 +317,7 @@ namespace ProjectY.Samples
                     thirdPerson = true; wasWalking = false;
                 }
                 focus = displayedParty = areaLayout.Cells[value.Area.CellIndex].Position;
-                zoom = 13 * areaLayout.Radius; pitch = 65; yaw = -25;
+                zoom = 10 * areaLayout.Radius; pitch = 50; yaw = -35;
             }
             else if (value.Area == null && HasArea)
             {
@@ -323,6 +328,7 @@ namespace ProjectY.Samples
             float impactDelay=0;
             if (HasArea)
             {
+                areaLayout.ApplyConstruction(view.Area);
                 areaRenderer.UpdateVisibility(view.Area, revealArea);
                 squadRenderer.SetState(view.Area, view.Party, areaLayout, view.Phase == "battle");
                 explorationRenderer.SetState(view.Area, view.Phase == "area");
@@ -331,6 +337,8 @@ namespace ProjectY.Samples
                 squadRenderer.Capture(impactDelay);combatRenderer.Capture(impactDelay);
                 townNpcs?.SetState(view.Area, areaLayout);
                 lootRenderer.Apply(view.Area,areaLayout);
+                obstacleRenderer.Apply(view.Area,areaLayout);
+                constructionRenderer.Apply(view.Area,areaLayout);
             }
             Feedback?.Commit(impactDelay);
             if (enteringBattle) FocusBattle();
@@ -352,6 +360,8 @@ namespace ProjectY.Samples
             explorationRenderer.Dispose();explorationRenderer=null;squadPosition=null;
             combatRenderer.Dispose();combatRenderer=null;
             lootRenderer.Dispose();lootRenderer=null;
+            obstacleRenderer.Dispose();obstacleRenderer=null;
+            constructionRenderer.Dispose();constructionRenderer=null;
             townNpcs?.Dispose();townNpcs=null;townCamera=null;thirdPerson=false;wasWalking=false;
             environment?.SetArea(null);
             areaRenderer.Dispose();areaRenderer=null;areaLayout=null;
@@ -424,7 +434,11 @@ namespace ProjectY.Samples
                 if (view.Phase == "area" && Input.GetKeyDown(KeyCode.Space)) SendCommand("area_stop");
                 if (view.Phase == "area" && Input.GetKeyDown(KeyCode.Escape) && selectedCharacterSkill!=0) CancelCharacterSkill();
                 if(view.Phase=="area"&&!areaLayout.IsTown&&Input.GetKeyDown(KeyCode.E))
-                {var loot=NearestLoot();if(loot!=null) SendCommand("area_loot",loot.Id);}
+                {
+                    var obstacle=NearestObstacle();
+                    if(obstacle!=null)SendCommand("area_obstacle",obstacle.Id);
+                    else {var loot=NearestLoot();if(loot!=null) SendCommand("area_loot",loot.Id);}
+                }
                 if (townCamera != null)
                 {
                     if (Input.GetKeyDown(KeyCode.V)) ToggleTownCamera();
@@ -433,12 +447,19 @@ namespace ProjectY.Samples
                     {
                         NearestInteraction(out var kind, out var id, out _);
                         if (kind != 0) SendCommand("area_interact", kind, id);
+                        else {var loot=NearestLoot();if(loot!=null)SendCommand("area_loot",loot.Id);}
                     }
                     if (thirdPerson)
                     {
                         var pointer = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
                         if (AreaPointerBlocked()) return;
                         townCamera.Orbit();
+                        if(selectedCharacterSkill!=0 && characterSkillTarget=="container" && Input.GetMouseButtonDown(0))
+                        {
+                            var ray=mapCamera.ScreenPointToRay(Input.mousePosition);var id=PickContainer(ray,areaRenderer.Pick(ray));
+                            if(id!=0)SendCommand("character_skill",selectedCharacter,selectedCharacterSkill,id);
+                            return;
+                        }
                         if (view.Area.InteractionKind != 0 || Input.GetKey(KeyCode.Space)) { townCamera.ResetSteering(); wasWalking = false; return; }
                         var direction = townCamera.Direction(areaLayout, view.Area, Time.deltaTime);
                         if (wasWalking && !townCamera.Walking) SendCommand("area_stop");
@@ -469,7 +490,13 @@ namespace ProjectY.Samples
                 if (view.Phase == "area")
                 {
                     if(AreaPointerBlocked())return;
-                    if(selectedCharacterSkill!=0 && characterSkillTarget=="unit")
+                    if(selectedCharacterSkill!=0 && characterSkillTarget=="container")
+                    {
+                        var container=PickContainer(ray,index);
+                        if(container!=0)SendCommand("character_skill",selectedCharacter,selectedCharacterSkill,container);
+                        else {view.Error="请选择要攻击的容器";BattleHUDRevision++;}
+                    }
+                    else if(selectedCharacterSkill!=0 && characterSkillTarget=="unit")
                     {
                         var targetId=PickAreaActor(ray,index);
                         if(targetId!=0)SendCommand("character_skill",selectedCharacter,selectedCharacterSkill,targetId);
@@ -492,10 +519,18 @@ namespace ProjectY.Samples
                         {
                             var targetId=PickAreaActor(ray,index);
                             if(targetId!=0)SendCommand("skill",selectedSkill,targetId);
+                            else {var container=PickContainer(ray,index);if(container!=0)SendCommand("skill_container",selectedSkill,container);}
                         }
                     }
                 }
             }
+        }
+        private int PickContainer(Ray ray,int groundCell)
+        {
+            int id=lootRenderer.Pick(ray);if(id!=0)return id;
+            if(groundCell>=0)foreach(var loot in view.Area.Loots)
+                if(Array.IndexOf(loot.Cells,groundCell)>=0 && areaRenderer.IsCellShown(loot.CellIndex))return loot.Id;
+            return 0;
         }
         private int PickAreaActor(Ray ray,int groundCell)
         {
@@ -586,13 +621,24 @@ namespace ProjectY.Samples
             if (view == null) { GUI.Label(new Rect(22, 22, Screen.width - 44, 200), fatalError ?? "正在准备远征…", textStyle); return; }
             if(view.Phase=="battle"&&!HasArea) DrawBattle();
             else if(view.Phase=="map") DrawSites();
+            if(HasArea && !AreaPointerBlocked())
+            {
+                var id=lootRenderer.Pick(mapCamera.ScreenPointToRay(Input.mousePosition));
+                var loot=Array.Find(view.Area.Loots,row=>row.Id==id);
+                if(loot!=null)
+                {
+                    var label=loot.Name+(loot.MaxDurability>0&&!loot.Destroyed?" · 耐久 "+loot.Durability+"/"+loot.MaxDurability:"");
+                    label+=loot.CanSearch&&!loot.Looted?"\n靠近后 E 搜刮":!loot.Destroyed?"\n选择攻击技能后点击容器":"";
+                    GUI.Label(new Rect(Input.mousePosition.x+16,Screen.height-Input.mousePosition.y+12,300,62),label,textStyle);
+                }
+            }
             if(showEnvironment) DrawEnvironmentWindow();
         }
         public void ToggleTownCamera()
         {
             SendCommand("area_stop"); townCamera.ResetSteering(); wasWalking = false; thirdPerson = !thirdPerson;
             followParty = true; focus = displayedParty;
-            if (!thirdPerson) { zoom = 13 * areaLayout.Radius; pitch = 65; }
+            if (!thirdPerson) { zoom = 10 * areaLayout.Radius; pitch = 50; }
         }
         // 提示使用显示快照，命令仍在 Lua 重新检查距离，不能通过 UI 绕过靠近要求。
         private void NearestInteraction(out int kind, out int id, out string label)
@@ -697,6 +743,8 @@ namespace ProjectY.Samples
             dialogueCamera?.Dispose();dialogueCamera=null;
             environment?.Dispose(); environment = null;
             lootRenderer?.Dispose();lootRenderer=null;
+            obstacleRenderer?.Dispose();obstacleRenderer=null;
+            constructionRenderer?.Dispose();constructionRenderer=null;
             townNpcs?.Dispose(); townNpcs = null;
             squadRenderer?.Dispose(); squadRenderer = null;
             explorationRenderer?.Dispose(); explorationRenderer = null; squadPosition = null;
@@ -708,10 +756,15 @@ namespace ProjectY.Samples
         }
         private bool IsNearLoot(MapAreaViewData.Loot loot)
         {
-            foreach(var member in view.Area.Members) if(areaLayout.StreetDistance(member.CellIndex,loot.CellIndex,1)<=1) return true;
-            return false;
+            return loot.Near;
         }
         private MapAreaViewData.Loot NearestLoot()
-        { foreach(var loot in view.Area.Loots) if(!loot.Looted&&IsNearLoot(loot)) return loot;return null; }
+        { foreach(var loot in view.Area.Loots) if(!loot.Looted&&loot.CanSearch&&IsNearLoot(loot)) return loot;return null; }
+        private MapAreaViewData.Obstacle NearestObstacle()
+        {
+            foreach(var obstacle in view.Area.Obstacles)foreach(var index in obstacle.Cells)foreach(var member in view.Area.Members)
+                if(areaLayout.StreetDistance(member.CellIndex,index,1)<=1)return obstacle;
+            return null;
+        }
     }
 }

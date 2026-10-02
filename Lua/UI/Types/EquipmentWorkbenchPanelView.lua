@@ -36,5 +36,6 @@
 ---@field CategoryNext CS.UnityEngine.UI.Button
 ---@field CategoryText CS.UnityEngine.UI.Text
 ---@field Requirements CS.UnityEngine.UI.Text
+---@field TagSlots CS.UnityEngine.RectTransform
 local View = {}
 return View

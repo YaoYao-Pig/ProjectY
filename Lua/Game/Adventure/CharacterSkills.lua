@@ -18,6 +18,10 @@ function Skills.New(adventure)
             end
             return targets
         end})
+    if adventure.construction then self:Register('construction',{
+        CanUse=function(actor,id)return adventure.construction:CanDismantle(actor,id) end,
+        Use=function(actor,id)return adventure.construction:Dismantle(actor,id) end,
+        Targets=function()return adventure.construction:AreaTargets() end}) end
     return self
 end
 function Skills:Register(effectKind,handler)
@@ -28,6 +32,7 @@ function Skills:Actor(id)
     for i=0,self.adventure.data.PartyCount-1 do local actor=self.adventure.data:GetPartyAt(i);if actor.Id==id then return actor end end
 end
 function Skills:Handler(skill)
+    if #skill.effectIds==0 then return assert(self.handlers[skill.skillGroup],'Life skill group has no registered handler') end
     assert(#skill.effectIds==1,'Life skill handlers require one effect instruction')
     return assert(self.handlers[self.effects:Get(skill.effectIds[1]).kind],'Life skill has no registered effect handler')
 end
@@ -52,6 +57,7 @@ function Skills:CanUse(actorId,skillId,targetId)
         return battle:CanUseSkill(skillId,targetId)
     end
     if self.adventure.data.Phase~='area' then return false,'进入小地图后使用' end
+    if skill.affectsContainers then return self.adventure.containerCombat:CanArea(actor,skillId,targetId) end
     return self:Handler(skill).CanUse(actor,targetId)
 end
 function Skills:Use(actorId,skillId,targetId)
@@ -59,6 +65,7 @@ function Skills:Use(actorId,skillId,targetId)
     if self:Context()=='battle' then
         return self.adventure:BattleCommand(self.skills:Get(skillId).target=='cell' and 'skill_cell' or 'skill',skillId,targetId)
     end
+    if self.skills:Get(skillId).affectsContainers then return self.adventure.containerCombat:Area(self:Actor(actorId),skillId,targetId) end
     return self:Handler(self.skills:Get(skillId)).Use(self:Actor(actorId),targetId)
 end
 function Skills:Rows(actorId,context)
@@ -68,7 +75,8 @@ function Skills:Rows(actorId,context)
         local skill=self.skills:Get(id)
         if Supports(skill,context) then
             local targets={}
-            if context=='life' and self.adventure.data.Phase=='area' then targets=self:Handler(skill).Targets(actor)
+            if context=='life' and self.adventure.data.Phase=='area' then
+                targets=skill.affectsContainers and self.adventure.containerCombat:Targets(actor,id) or self:Handler(skill).Targets(actor)
             elseif context=='battle' then
                 if skill.target=='cell' then for _,cell in ipairs(self.adventure.battle:SkillCells(id)) do targets[#targets+1]=cell.index end
                 else for _,unit in ipairs(self.adventure.battle:Units()) do targets[#targets+1]=unit.Id end end
@@ -83,7 +91,7 @@ function Skills:Rows(actorId,context)
             end
             local labels={};for _,tag in ipairs(skill.contexts) do labels[#labels+1]=tag=='life' and '生活' or '战斗' end
             rows[#rows+1]={id=id,name=skill.name,description=skill.description,contexts=table.concat(labels,' + '),
-                target=skill.target=='self' and 'self' or skill.target=='cell' and 'cell' or 'unit',available=available,reason=reason}
+                target=context=='life' and skill.affectsContainers and 'container' or skill.target=='self' and 'self' or skill.target=='cell' and 'cell' or 'unit',available=available,reason=reason}
         end
     end
     return rows

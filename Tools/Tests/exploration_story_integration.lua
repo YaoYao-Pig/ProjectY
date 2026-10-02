@@ -68,7 +68,9 @@ local ok,err=xpcall(function()
     end
     test('walking to supply chest grants actual components and permits a real installation',function()
         local chest=state:GetLootAt(0);walk(chest.CellIndex,false)
-        assert(adventure:AreaCommand('area_loot',chest.Id));assert(chest.Looted and equipment.data:CountItem(13)==1)
+        assert(adventure:AreaCommand('area_loot',chest.Id))
+        assert(loadfile('Tools/Tests/loot_helpers.lua'))().TakeAll(equipment,areas,function(...) return adventure:TakeLoot(...) end)
+        adventure:CloseLoot();assert(chest.Looted and equipment.data:CountItem(13)==1)
         assert(not adventure:AreaCommand('area_loot',chest.Id));assert(equipment.data:CountItem(13)==1)
         local weapon,socket
         for i=0,equipment.data.WeaponCount-1 do

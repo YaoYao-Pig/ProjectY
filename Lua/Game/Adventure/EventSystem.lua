@@ -83,6 +83,10 @@ function Events:CanChoose(choiceId)
     for _, id in ipairs(self.events:Get(self.data.EventId).choiceIds) do if id == choiceId then member = true; break end end
     if not member then return false, '这个选项不属于当前事件' end
     local choice = self.choices:Get(choiceId)
+    if choice.obstacleAction~='' then
+        local ok,reason=self.context.systems:Get('Adventure').obstacles:CanChoose(choice.obstacleAction)
+        if not ok then return false,reason end
+    end
     return self:CheckRequirements(choice,self:Subject())
 end
 function Events:CheckRequirements(choice,subject)
@@ -116,6 +120,8 @@ function Events:Choose(choiceId)
     assert(self.player.Coins - choice.costCoins + choice.rewardCoins <= 2147483647, 'Coin reward overflow')
     -- 先离开可选择状态；重复提交同一按钮不会重复扣费或发奖。
     self.data:ResolveChoice(choiceId)
+    local resultText
+    if choice.obstacleAction~='' then resultText=self.context.systems:Get('Adventure').obstacles:Resolve(choice.obstacleAction) end
     assert(self.player:TrySpendCoins(choice.costCoins), 'Coins changed during event resolution')
     if choice.healParty then
         for i = 0, self.data.PartyCount - 1 do self.data:GetPartyAt(i):Restore() end
@@ -134,7 +140,7 @@ function Events:Choose(choiceId)
         for i=0,self.data.PartyCount-1 do recipients[#recipients+1]=self.data:GetPartyAt(i) end
     else recipients[1] = self:Subject() end
     local event = self.events:Get(self.data.EventId)
-    self.chronicle:Record(event.logKind,self:Subject(),event.name,choice.result,self.data.EventLocation,true,event.id,choice.id)
+    self.chronicle:Record(event.logKind,self:Subject(),event.name,resultText or choice.result,self.data.EventLocation,true,event.id,choice.id)
     for _, actor in ipairs(recipients) do
         for _, id in ipairs(choice.removeTraitIds) do
             if actor:RemoveTrait(id) then self.chronicle:Record('trait',actor,'特质改变','不再具有「'..self.stats.traits:Get(id).name..'」。',self.data.EventLocation,false,event.id,choice.id) end
@@ -154,6 +160,6 @@ function Events:Choose(choiceId)
         actor:SetMaxHP(self.stats:MaximumHP(actor))
         self.growth:AddExperience(actor,choice.experience,self.data.EventLocation)
     end
-    return true, choice
+    return true, choice, resultText
 end
 return Events

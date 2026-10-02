@@ -46,6 +46,11 @@ namespace ProjectY.Editor
             foreach(var row in assets)
             {
                 AssetDatabase.ImportAsset(row.modelPath,ImportAssetOptions.ForceSynchronousImport);
+                if(Path.GetExtension(row.modelPath).Equals(".prefab",StringComparison.OrdinalIgnoreCase))
+                {
+                    if(AssetDatabase.LoadAssetAtPath<GameObject>(row.modelPath)==null)throw new InvalidOperationException("Missing authored equipment prefab: "+row.modelPath);
+                    continue;
+                }
                 var importer=(ModelImporter)AssetImporter.GetAtPath(row.modelPath);
                 importer.bakeAxisConversion=true;importer.globalScale=1;importer.importAnimation=false;importer.importCameras=false;importer.importLights=false;
                 var obj=AssetDatabase.LoadAssetAtPath<GameObject>(row.modelPath);
@@ -87,6 +92,7 @@ namespace ProjectY.Editor
             catalog.SetEntries(entries.ToArray());
             SyncItemIcons();
             Entry("EquipmentRow",UIKind.Widget,BuildRow);
+            Entry("EquipmentTag",UIKind.Widget,BuildTag);
             Entry("EquipmentWorkbench",UIKind.Panel,root=>BuildPanel(root,catalog));
             PawnAssetMenu.Sync();BattleHUDAssets.SyncIcons();AssetDatabase.SaveAssets();
             Debug.Log("Equipment models, sockets, pawn bindings and workbench ready.");
@@ -104,6 +110,88 @@ namespace ProjectY.Editor
                 icons.Add(new EquipmentAssetCatalog.Icon {Id=item.id,Path=item.iconPath,Sprite=sprite});
             }
             catalog.SetIcons(icons.ToArray());EditorUtility.SetDirty(catalog);
+        }
+        // Targeted additions preserve the existing equipment, scene bindings and authored UI.
+        public static void SyncSelected(int[] itemIds,int[] extraAssetIds)
+        {
+            if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("装备资源同步需要 Edit Mode。");
+            var items=Read<ItemTable>("EquipmentItemTable").rows;var assets=Read<AssetTable>("EquipmentAssetTable").rows;
+            var sockets=Read<SocketTable>("EquipmentSocketTable").rows;var selected=new HashSet<int>(extraAssetIds);
+            foreach(var id in itemIds)
+            {
+                var item=Array.Find(items,x=>x.id==id);
+                if(item==null||item.kind!="weapon")throw new InvalidOperationException("Unknown weapon: "+id);
+                selected.Add(item.assetId);
+            }
+            foreach(var id in selected)
+            {
+                var asset=Array.Find(assets,x=>x.id==id);if(asset==null)throw new InvalidOperationException("Unknown equipment asset: "+id);
+                AssetDatabase.ImportAsset(asset.modelPath,ImportAssetOptions.ForceSynchronousImport);
+                if(Path.GetExtension(asset.modelPath).Equals(".prefab",StringComparison.OrdinalIgnoreCase))
+                {
+                    if(AssetDatabase.LoadAssetAtPath<GameObject>(asset.modelPath)==null)throw new InvalidOperationException("Missing authored equipment prefab: "+asset.modelPath);
+                    continue;
+                }
+                var importer=AssetImporter.GetAtPath(asset.modelPath) as ModelImporter;
+                if(importer==null)throw new InvalidOperationException("Expected static equipment model: "+asset.modelPath);
+                bool changed=!importer.bakeAxisConversion||importer.globalScale!=1||importer.importAnimation||importer.importCameras||importer.importLights;
+                importer.bakeAxisConversion=true;importer.globalScale=1;importer.importAnimation=false;importer.importCameras=false;importer.importLights=false;
+                var remaps=importer.GetExternalObjectMap();var model=AssetDatabase.LoadAssetAtPath<GameObject>(asset.modelPath);
+                foreach(var renderer in model.GetComponentsInChildren<Renderer>(true))foreach(var material in renderer.sharedMaterials)
+                {
+                    if(material==null)throw new InvalidOperationException("Missing equipment material: "+asset.modelPath);
+                    var mapped=AssetDatabase.LoadAssetAtPath<Material>(Root+"/Materials/"+material.name+".mat")??AssetDatabase.LoadAssetAtPath<Material>("Assets/DynamicAsset/MapLowPoly/Materials/"+material.name+".mat");
+                    if(mapped==null)throw new InvalidOperationException("Unknown equipment palette: "+material.name);
+                    var key=new AssetImporter.SourceAssetIdentifier(typeof(Material),material.name);
+                    if(!remaps.TryGetValue(key,out var old)||old!=mapped){importer.AddRemap(key,mapped);changed=true;}
+                }
+                if(changed)importer.SaveAndReimport();
+            }
+            foreach(var id in itemIds)
+            {
+                var item=Array.Find(items,x=>x.id==id);var asset=Array.Find(assets,x=>x.id==item.assetId);
+                var root=new GameObject("Weapon_"+id);
+                try
+                {
+                    var existing=AssetDatabase.LoadAssetAtPath<GameObject>(asset.prefabPath);if(existing!=null)root.transform.localScale=existing.transform.localScale;
+                    var model=(GameObject)PrefabUtility.InstantiatePrefab(AssetDatabase.LoadAssetAtPath<GameObject>(asset.modelPath));model.transform.SetParent(root.transform,false);
+                    var mounts=new List<WeaponModelView.Mount>();
+                    foreach(var socket in sockets)if(socket.weaponItemId==id)
+                    {
+                        var anchor=new GameObject("Socket_"+socket.id).transform;anchor.SetParent(root.transform,false);
+                        anchor.localPosition=new Vector3(socket.position[0],socket.position[1],socket.position[2]);anchor.localRotation=Quaternion.Euler(socket.rotation[0],socket.rotation[1],socket.rotation[2]);
+                        mounts.Add(new WeaponModelView.Mount {Id=socket.id,Anchor=anchor});
+                    }
+                    root.AddComponent<WeaponModelView>().SetMounts(mounts.ToArray());PrefabUtility.SaveAsPrefabAsset(root,asset.prefabPath);
+                }
+                finally {Object.DestroyImmediate(root);}
+            }
+            var catalog=AssetDatabase.LoadAssetAtPath<EquipmentAssetCatalog>(CatalogPath);var entries=new List<EquipmentAssetCatalog.Entry>();
+            foreach(var asset in assets)
+            {
+                var prefab=AssetDatabase.LoadAssetAtPath<GameObject>(asset.prefabPath);if(prefab==null)throw new InvalidOperationException("Missing equipment prefab: "+asset.prefabPath);
+                entries.Add(new EquipmentAssetCatalog.Entry {Id=asset.id,Path=asset.prefabPath,Prefab=prefab});
+            }
+            catalog.SetEntries(entries.ToArray());EditorUtility.SetDirty(catalog);AssetDatabase.SaveAssetIfDirty(catalog);
+            EquipmentIconExporter.ExportItems(itemIds);
+        }
+        [MenuItem("Project Y/装备/同步武器标签界面")]
+        public static void SyncWeaponTagsUI()
+        {
+            if(EditorApplication.isPlayingOrWillChangePlaymode) throw new InvalidOperationException("武器标签界面同步需要 Edit Mode。");
+            var config=PanelAssets.LoadOrCreate();
+            var entry=config.Entries.Find(e=>e.Name=="EquipmentWorkbench");
+            if(entry==null||entry.Prefab==null) throw new InvalidOperationException("请先创建装备工坊。");
+            Entry("EquipmentTag",UIKind.Widget,BuildTag);
+            var root=PrefabUtility.LoadPrefabContents(entry.PrefabPath);
+            try
+            {
+                UpgradeWorkbench(root);
+                var reference=root.GetComponent<LuaReference>();reference.ValidateBindings();
+                PrefabUtility.SaveAsPrefabAsset(root,entry.PrefabPath);LuaViewHints.Export(reference,entry.ViewType);
+            }
+            finally {PrefabUtility.UnloadPrefabContents(root);}
+            EditorUtility.SetDirty(config);AssetDatabase.SaveAssetIfDirty(config);
         }
         private static void Entry(string name,UIKind kind,Action<GameObject> build)
         {
@@ -192,9 +280,27 @@ namespace ProjectY.Editor
                 var requirements=Text("Requirements",content,"",13);requirements.transform.SetAsFirstSibling();requirements.color=new Color(.91f,.75f,.47f);requirements.verticalOverflow=VerticalWrapMode.Overflow;
                 refs.Add(Ref("Requirements",requirements));
             }
+            if(!Array.Exists(reference.GetEditorBindings(),e=>e.Key=="TagSlots"))
+            {
+                var content=reference.GetText("SocketTitle").transform.parent;
+                var tags=Node("WeaponTags",content);tags.SetAsFirstSibling();
+                var grid=tags.gameObject.AddComponent<GridLayoutGroup>();grid.cellSize=new Vector2(90,28);grid.spacing=new Vector2(6,6);
+                grid.childAlignment=TextAnchor.UpperLeft;
+                refs.Add(Ref("TagSlots",tags));
+            }
             var subtitle=reference.GetText("Subtitle");subtitle.rectTransform.sizeDelta=new Vector2(340,48);subtitle.fontSize=12;
             var heading=layout.Heading.GetComponent<Text>();heading.resizeTextForBestFit=true;heading.resizeTextMinSize=14;heading.resizeTextMaxSize=22;
             Bind(root,refs);layout.Labels=root.GetComponentsInChildren<Text>(true);EditorUtility.SetDirty(view);
+        }
+        private static void BuildTag(GameObject root)
+        {
+            var rect=(RectTransform)root.transform;rect.sizeDelta=new Vector2(90,28);
+            Paint(rect,new Color(.18f,.22f,.19f));
+            var label=Text("Label",rect,"",12);label.alignment=TextAnchor.MiddleCenter;label.color=Gold;
+            label.resizeTextForBestFit=true;label.resizeTextMinSize=10;label.resizeTextMaxSize=12;
+            Stretch(label.rectTransform,6,3,6,3);
+            var group=root.GetComponent<CanvasGroup>();group.blocksRaycasts=false;group.interactable=false;
+            Bind(root,new List<LuaReference.Entry> {Ref("Label",label),Ref("Group",group),Ref("Layout",root.AddComponent<LayoutElement>())});
         }
         private static void BuildRow(GameObject root)
         {

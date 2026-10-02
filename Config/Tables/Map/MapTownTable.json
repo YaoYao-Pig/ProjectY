@@ -38,7 +38,7 @@
       "type": "int",
       "min": 0,
       "max": 16,
-      "description": "全图该样式最多城镇数；所有样式上限之和不能超过 16"
+      "description": "全图该样式最多地点数；所有样式上限之和不能超过18"
     },
     {
       "name": "maxPerRegion",
@@ -340,6 +340,37 @@
       "siteProfileIds": [
         201,
         202
+      ]
+    },
+    {
+      "id": 7,
+      "name": "废弃矿井",
+      "groundColor": "#87765e",
+      "regions": [
+        1,
+        2,
+        5,
+        6
+      ],
+      "buildingIds": [
+        7
+      ],
+      "requiredBuildingIds": [
+        7
+      ],
+      "priority": 9,
+      "maxCount": 2,
+      "maxPerRegion": 1,
+      "minSpacing": 10,
+      "radius": 3,
+      "minBuildings": 1,
+      "maxBuildings": 1,
+      "maxGroundDelta": 1.6,
+      "placementStage": "AfterRoads",
+      "connectRoad": false,
+      "generateStreets": false,
+      "siteProfileIds": [
+        401
       ]
     }
   ]

@@ -14,11 +14,13 @@ function Planner:Protect(door)
     self.protected[door.index]=true
     for _,other in ipairs(self.area:Neighbors(door)) do self.protected[other.index]=true end
 end
-function Planner:TryBlock(indices)
+function Planner:TryBlock(indices,lot,q,r,rotation)
     local area=self.area
     for _,index in ipairs(indices) do area.cells[index].blocked=true end
-    local reachable=Geometry.Reachable(area,area.entryIndex)
-    local valid=#reachable==area.walkableCount-#indices
+    local reachable,connected
+    if lot then local distance;reachable,distance,connected=self.buildings:Reachable(lot,q,r,rotation)
+    else reachable=Geometry.Reachable(area,area.entryIndex);connected=true end
+    local valid=connected and #reachable==area.walkableCount-#indices
     if not valid then for _,index in ipairs(indices) do area.cells[index].blocked=false end end
     return valid
 end
@@ -41,7 +43,7 @@ end
 function Planner:Route(start,goal,loop)
     local area,recipe,random=self.area,self.recipe,self.random
     return self.pathfinder:FindPath(start,goal,function(from,to)
-        if from.blocked or not area:CanStep(from,to) then return nil end
+        if from.blocked or from.interiorId or to.interiorId or not area:CanStep(from,to) then return nil end
         local cost=1+random:Noise(to.localQ,to.localR,recipe.roadNoiseScale,733)*recipe.roadNoise
             +math.abs(to.height-from.height)*recipe.roadSlopeCost
         if to.road then cost=cost*(loop and 1.8 or recipe.roadReuse) end
@@ -78,7 +80,7 @@ end
 function Planner:FrontageDistances()
     local sources={};for _,cell in ipairs(self.area.cells) do if cell.road then sources[#sources+1]=cell end end
     return self.pathfinder:Distances(sources,function(from,to)
-        if not from.blocked and self.area:CanStep(from,to) then return 1 end
+        if not from.blocked and not from.interiorId and not to.interiorId and self.area:CanStep(from,to) then return 1 end
     end,self.recipe.frontageDistance)
 end
 function Planner:Candidate(lot,q,r,rotation)
@@ -91,15 +93,17 @@ function Planner:Candidate(lot,q,r,rotation)
         for _,h in ipairs(cell.corners) do if math.abs(h-height)>.01 then return nil end end
         cells[#cells+1]=cell.index
     end
-    local eq,er=Geometry.Rotate(lot.entryQ,lot.entryR,rotation);local door=self.area:Find(q+eq,r+er)
-    if not door or door.blocked or math.abs(door.height-height)>.01 then return nil end
-    for _,index in ipairs(cells) do if index==door.index then return nil end end
+    local doors=self.buildings:Doors(lot,q,r,rotation);if not doors then return nil end
+    local door=doors[1]
     -- 门口不能只剩崖边的单格窄口；服务人员、巡游者和小队需要可错身的前场。
     local occupied={};for _,index in ipairs(cells) do occupied[index]=true end
-    local exits=0;for _,other in ipairs(self.area:Neighbors(door)) do if not occupied[other.index] then exits=exits+1 end end
-    if exits<self.recipe.minimumDoorNeighbors then return nil end
+    for _,entry in ipairs(doors) do
+        if entry.blocked or entry.interiorId or occupied[entry.index] or math.abs(entry.height-height)>.01 then return nil end
+        local exits=0;for _,other in ipairs(self.area:Neighbors(entry)) do if not occupied[other.index] then exits=exits+1 end end
+        if exits<self.recipe.minimumDoorNeighbors then return nil end
+    end
     if not self.buildings:CanFit(lot,q,r,rotation,height,function(cell)return not cell.reserved and not self.protected[cell.index]end) then return nil end
-    return {q=q,r=r,rotation=rotation,cells=cells,height=height,door=door}
+    return {q=q,r=r,rotation=rotation,cells=cells,height=height,door=door,doors=doors}
 end
 function Planner:Place(preset,lot)
     local terrain,recipe=self.terrain,self.recipe;local district=assert(terrain.districts[preset.districtId],'Royal placement district missing')
@@ -132,7 +136,7 @@ function Planner:Place(preset,lot)
     end)
     for i=1,math.min(#candidates,recipe.candidateLimit) do
         local value=candidates[i];self.area.planningDiagnostics.candidateChecks=self.area.planningDiagnostics.candidateChecks+1
-        if self:TryBlock(value.cells) then
+        if self:TryBlock(value.cells,lot,value.q,value.r,value.rotation) then
             local id=#self.area.props+1
             for _,index in ipairs(value.cells) do
                 local cell=self.area.cells[index];cell.blocksSight=true;cell.obstacleId=id
@@ -143,13 +147,15 @@ function Planner:Place(preset,lot)
             self.area.props[id]={id=id,assetId=value.assetId,q=value.q,r=value.r,rotation=value.rotation,scale=value.scale,
                 height=value.height,cells=value.cells,districtId=value.districtId,placementId=value.placementId}
             value.service=self.buildings:Apply(lot,self.area.props[id],value.door)
-            if preset.required or lot.houseUnits>0 then self:Protect(value.door) end
+            if preset.required or lot.houseUnits>0 or self.buildings:Definition(lot) then for _,entry in ipairs(value.doors) do self:Protect(entry) end end
             if lot.houseUnits>0 then
                 self.homes[#self.homes+1]=value
-                local path=assert(self:Route(value.door,self.area.cells[self.area.entryIndex]),'Royal house has no street route')
-                -- 支巷到达现有街网即止，不反复扩宽整条主街。
-                local branch={};for _,cell in ipairs(path) do branch[#branch+1]=cell;if cell.road then break end end
-                self:Paint(branch,recipe.laneRadius,'lane')
+                for _,entry in ipairs(value.doors) do
+                    local path=assert(self:Route(entry,self.area.cells[self.area.entryIndex]),'Royal house has no street route')
+                    -- 每户真门都接入公共街网，支巷到已有街面即止。
+                    local branch={};for _,cell in ipairs(path) do branch[#branch+1]=cell;if cell.road then break end end
+                    self:Paint(branch,recipe.laneRadius,'lane')
+                end
             end
             return value
         end

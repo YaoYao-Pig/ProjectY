@@ -107,6 +107,13 @@
       "type": "string",
       "description": "枪型选择动作匹配规则；非枪为空",
       "default": ""
+    },
+    {
+      "name": "tagIds",
+      "type": "string[]",
+      "description": "按详情显示顺序排列的武器标签，可同时配置多个",
+      "ref": "EquipmentWeaponTagTable",
+      "default": []
     }
   ],
   "rows": [
@@ -139,7 +146,10 @@
       "hands": 2,
       "offhandSkillId": 0,
       "gripId": 1,
-      "gunClass": ""
+      "gunClass": "",
+      "tagIds": [
+        "staff"
+      ]
     },
     {
       "id": 2,
@@ -171,7 +181,10 @@
       "hands": 2,
       "offhandSkillId": 0,
       "gripId": 2,
-      "gunClass": "rifle"
+      "gunClass": "rifle",
+      "tagIds": [
+        "rifle"
+      ]
     },
     {
       "id": 40,
@@ -199,7 +212,10 @@
       "hands": 1,
       "offhandSkillId": 13,
       "gripId": 40,
-      "gunClass": ""
+      "gunClass": "",
+      "tagIds": [
+        "sword"
+      ]
     },
     {
       "id": 41,
@@ -227,7 +243,10 @@
       "hands": 1,
       "offhandSkillId": 13,
       "gripId": 41,
-      "gunClass": ""
+      "gunClass": "",
+      "tagIds": [
+        "sword"
+      ]
     },
     {
       "id": 42,
@@ -255,7 +274,10 @@
       "hands": 2,
       "offhandSkillId": 0,
       "gripId": 42,
-      "gunClass": ""
+      "gunClass": "",
+      "tagIds": [
+        "two_handed_sword"
+      ]
     },
     {
       "id": 43,
@@ -283,7 +305,10 @@
       "hands": 2,
       "offhandSkillId": 0,
       "gripId": 43,
-      "gunClass": ""
+      "gunClass": "",
+      "tagIds": [
+        "two_handed_sword"
+      ]
     },
     {
       "id": 44,
@@ -313,7 +338,11 @@
       "hands": 2,
       "offhandSkillId": 0,
       "gripId": 44,
-      "gunClass": ""
+      "gunClass": "",
+      "tagIds": [
+        "two_handed_sword",
+        "greatsword"
+      ]
     },
     {
       "id": 45,
@@ -343,7 +372,11 @@
       "hands": 2,
       "offhandSkillId": 0,
       "gripId": 45,
-      "gunClass": ""
+      "gunClass": "",
+      "tagIds": [
+        "two_handed_sword",
+        "greatsword"
+      ]
     },
     {
       "id": 46,
@@ -371,7 +404,165 @@
       "hands": 2,
       "offhandSkillId": 0,
       "gripId": 46,
-      "gunClass": ""
+      "gunClass": "",
+      "tagIds": [
+        "bow"
+      ]
+    },
+    {
+      "id": 70,
+      "kind": "melee",
+      "socketIds": [],
+      "skillIds": [
+        10
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 0,
+      "previewRotation": [
+        4,
+        -12,
+        -20
+      ],
+      "previewZoom": 1.15,
+      "categoryId": 7,
+      "level": 1,
+      "damageMultiplier": 0.9,
+      "requirementId": 70,
+      "hands": 1,
+      "offhandSkillId": 13,
+      "gripId": 70,
+      "gunClass": "",
+      "tagIds": [
+        "axe"
+      ]
+    },
+    {
+      "id": 71,
+      "kind": "melee",
+      "socketIds": [],
+      "skillIds": [
+        10
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 0,
+      "previewRotation": [
+        4,
+        -12,
+        -20
+      ],
+      "previewZoom": 1.15,
+      "categoryId": 7,
+      "level": 2,
+      "damageMultiplier": 1.25,
+      "requirementId": 71,
+      "hands": 1,
+      "offhandSkillId": 13,
+      "gripId": 71,
+      "gunClass": "",
+      "tagIds": [
+        "axe"
+      ]
+    },
+    {
+      "id": 72,
+      "kind": "melee",
+      "socketIds": [],
+      "skillIds": [
+        11
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 0,
+      "previewRotation": [
+        4,
+        -12,
+        -20
+      ],
+      "previewZoom": 1.15,
+      "categoryId": 7,
+      "level": 1,
+      "damageMultiplier": 1.05,
+      "requirementId": 72,
+      "hands": 2,
+      "offhandSkillId": 0,
+      "gripId": 72,
+      "gunClass": "",
+      "tagIds": [
+        "pickaxe"
+      ]
+    },
+    {
+      "id": 73,
+      "kind": "melee",
+      "socketIds": [],
+      "skillIds": [
+        11
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 0,
+      "previewRotation": [
+        4,
+        -12,
+        -20
+      ],
+      "previewZoom": 1.15,
+      "categoryId": 7,
+      "level": 1,
+      "damageMultiplier": 0.85,
+      "requirementId": 73,
+      "hands": 2,
+      "offhandSkillId": 0,
+      "gripId": 73,
+      "gunClass": "",
+      "tagIds": [
+        "shovel"
+      ]
+    },
+    {
+      "id": 74,
+      "kind": "melee",
+      "socketIds": [],
+      "skillIds": [
+        10
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 0,
+      "previewRotation": [
+        4,
+        -12,
+        -20
+      ],
+      "previewZoom": 1.15,
+      "categoryId": 7,
+      "level": 1,
+      "damageMultiplier": 0.7,
+      "requirementId": 74,
+      "hands": 1,
+      "offhandSkillId": 13,
+      "gripId": 74,
+      "gunClass": "",
+      "tagIds": [
+        "crowbar"
+      ]
     }
   ]
 }

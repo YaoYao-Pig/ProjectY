@@ -8,7 +8,9 @@
 
 ## 正文
 
-- 世界事件中的战斗改为进入持久 `Battlefield` 小地图，胜利后留场走动拾取；重进该地点不会重复触发已结算事件。敌人概率掉落及满包保留见[宝箱与敌人掉落](Loot.md)。
+- `AdventureChoiceTable.obstacleAction` 将 tool/manual/leave 选项委托给当前[工具障碍交互](ToolWeapons.md)，无匹配障碍上下文时不能执行；仍复用 StoryEvent、选择消费和结果返回流程。清障结果使用实际执行者、消耗与成功状态生成文案并写经历。
+
+- 世界事件中的战斗进入持久 `Battlefield` 小地图，胜利后自动打开背包/战利品结算窗口，关闭后可留场探索剩余掉落；重进该地点不会重复触发已结算事件。搜索、逐件拖拽和满包保留见[宝箱与敌人掉落](Loot.md)。
 
 - 来源：[玩法](https://my.feishu.cn/wiki/EcbNwrZ4Ii0BzykmlTCcceFmnRd)。当前可见策划无独立事件页；本版条件→选择→结果框架和 demo 内容按用户确认的范围实现。
 - `AdventureSystem` 持有一次远征的只读大地图布局和地点定义，调用已有 MapSystem 生成，不修改 MapSystem 的快照契约。营地/野外地点以有限扫描放置；聚落优先经配表映射到 [MapArea 局部地图](MapArea.md)，未映射的建筑仍使用旧事件映射。直接选择目的地进入事件或局部探索，尚无队伍大地图行走、寻路、视野或资源采集。

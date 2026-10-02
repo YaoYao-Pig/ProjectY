@@ -22,7 +22,7 @@ namespace ProjectY.Samples
         public sealed class Site { public int Id, AreaConfigId; public string Name, Reason, Kind; public Vector3 Position; public bool Available, Visited; }
         public sealed class Choice { public int Id; public string Label, Reason; public bool Available; }
         public sealed class Cell { public int Q, R, CellIndex; public bool Blocked; }
-        public sealed class Skill { public int Id, Cost; public string Name, Description, Action; public int[] Targets, TargetCells; }
+        public sealed class Skill { public int Id, Cost; public string Name, Description, Action; public int[] Targets, TargetCells, ContainerTargets; }
         public string Phase, Result, Error, EventTitle, EventText, Encounter;
         public int Coins, Round, ActiveId, Radius;
         public Actor[] Party, Units;
@@ -85,7 +85,7 @@ namespace ProjectY.Samples
                 Reason = row.Get<string>("reason"), Available = row.Get<bool>("available") }),
             Skills = Rows(root, "skills", row => new Skill { Id = row.Get<int>("id"), Cost = row.Get<int>("cost"), Name = row.Get<string>("name"),
                 Action = row.Get<string>("action"), Description = row.Get<string>("description"), Targets = Values<int>(row, "targets"),
-                TargetCells = Values<int>(row,"targetCells") })
+                TargetCells = Values<int>(row,"targetCells"),ContainerTargets=Values<int>(row,"containerTargets") })
         };
         public Actor Active => Array.Find(Units, actor => actor.Id == ActiveId);
         public void RetainPollingFeedback(AdventureViewData previous)

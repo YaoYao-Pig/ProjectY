@@ -1,0 +1,158 @@
+{
+  "version": 1,
+  "name": "SkillCategoryTable",
+  "description": "技能图谱二级目录；一个技能有唯一主要目录，可被其他目录关联。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "分类 ID",
+      "min": 1
+    },
+    {
+      "name": "disciplineId",
+      "type": "int",
+      "description": "所属一级领域",
+      "ref": "SkillDisciplineTable"
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "分类名称"
+    },
+    {
+      "name": "order",
+      "type": "int",
+      "description": "领域内顺序"
+    }
+  ],
+  "rows": [
+    {
+      "id": 11,
+      "disciplineId": 1,
+      "name": "单手剑",
+      "order": 11
+    },
+    {
+      "id": 12,
+      "disciplineId": 1,
+      "name": "双手武器",
+      "order": 12
+    },
+    {
+      "id": 13,
+      "disciplineId": 1,
+      "name": "盾技",
+      "order": 13
+    },
+    {
+      "id": 14,
+      "disciplineId": 1,
+      "name": "弓术",
+      "order": 14
+    },
+    {
+      "id": 15,
+      "disciplineId": 1,
+      "name": "枪械",
+      "order": 15
+    },
+    {
+      "id": 16,
+      "disciplineId": 1,
+      "name": "通用战技",
+      "order": 16
+    },
+    {
+      "id": 21,
+      "disciplineId": 2,
+      "name": "奥术",
+      "order": 21
+    },
+    {
+      "id": 22,
+      "disciplineId": 2,
+      "name": "治疗",
+      "order": 22
+    },
+    {
+      "id": 31,
+      "disciplineId": 3,
+      "name": "筑障",
+      "order": 31
+    },
+    {
+      "id": 32,
+      "disciplineId": 3,
+      "name": "架设",
+      "order": 32
+    },
+    {
+      "id": 33,
+      "disciplineId": 3,
+      "name": "土工",
+      "order": 33
+    },
+    {
+      "id": 34,
+      "disciplineId": 3,
+      "name": "拆除",
+      "order": 34
+    },
+    {
+      "id": 41,
+      "disciplineId": 4,
+      "name": "陷阱",
+      "order": 41
+    },
+    {
+      "id": 42,
+      "disciplineId": 4,
+      "name": "作战装置",
+      "order": 42
+    },
+    {
+      "id": 43,
+      "disciplineId": 4,
+      "name": "拆解",
+      "order": 43
+    },
+    {
+      "id": 51,
+      "disciplineId": 5,
+      "name": "驯服",
+      "order": 51
+    },
+    {
+      "id": 52,
+      "disciplineId": 5,
+      "name": "指挥",
+      "order": 52
+    },
+    {
+      "id": 53,
+      "disciplineId": 5,
+      "name": "骑乘",
+      "order": 53
+    },
+    {
+      "id": 61,
+      "disciplineId": 6,
+      "name": "侦察",
+      "order": 61
+    },
+    {
+      "id": 62,
+      "disciplineId": 6,
+      "name": "追踪",
+      "order": 62
+    },
+    {
+      "id": 63,
+      "disciplineId": 6,
+      "name": "生存",
+      "order": 63
+    }
+  ]
+}

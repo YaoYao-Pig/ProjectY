@@ -13,7 +13,7 @@ namespace ProjectY.Samples
             public Vector3 Position; public Color Color; public bool HasWater; public float WaterLevel;
             public int TerrainAssetId, WaterAssetId; public int[] Neighbors;
         }
-        public sealed class Decoration { public int Cell, AssetId; public float Scale, Yaw; }
+        public sealed class Decoration { public int Cell, AssetId; public float Scale, Yaw, Height; }
         public sealed class Waterfall { public int From, To; public float Drop; }
         public sealed class Town { public string Name; public int Center; public Color GroundColor; }
         public sealed class Building
@@ -101,7 +101,7 @@ namespace ProjectY.Samples
                         Path = row.Get<string>("prefabPath"), ReferenceHeight = row.Get<float>("referenceHeight"),
                         TintMaterial = row.Get<string>("tintMaterial") }),
                     Decorations = ReadArray(root, "decorations", row => new Decoration { Cell = row.Get<int>("cell") - 1,
-                        AssetId = row.Get<int>("assetId"), Scale = row.Get<float>("scale"), Yaw = row.Get<float>("yaw") }),
+                        AssetId = row.Get<int>("assetId"), Scale = row.Get<float>("scale"), Yaw = row.Get<float>("yaw"), Height = row.Get<float>("height") }),
                     Waterfalls = ReadArray(root, "waterfalls", row => new Waterfall { From = row.Get<int>("from") - 1,
                         To = row.Get<int>("to") - 1, Drop = row.Get<float>("drop") }),
                     Cells = ReadArray(root, "cells", ReadCell),

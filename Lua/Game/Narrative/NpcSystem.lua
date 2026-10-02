@@ -94,7 +94,7 @@ function Npcs:PrepareDeployment(recruits)
         local id,index = state:GetMemberIdAt(i),state:GetMemberCellAt(i)
         ids[#ids+1],cells[#cells+1] = id,index
         local actor=adventure.areas:PartyActor(id);local anchor=area.cells[index]
-        for _,part in ipairs(assert(adventure.battle.stats.animals:Cells(actor,area,anchor.q,anchor.r))) do occupied[part.index]=true end
+        for _,part in ipairs(assert(adventure.battle.stats.animals:Cells(actor,area,anchor.q,anchor.r,anchor.layer))) do occupied[part.index]=true end
     end
     for _, recruit in ipairs(recruits) do
         local queue,head,seen = {state.CellIndex},1,{[state.CellIndex]=0}

@@ -1,0 +1,35 @@
+{
+  "date": "2026-10-02",
+  "status": "reviewed",
+  "method": "Unity Edit Mode 实际地图快照与当前渲染器；逐张查看俯视、正面、侧面",
+  "scope": "沉船三层及当前可进入建筑的二楼直墙接缝，共用裁切六角封边；内部完整六角不变",
+  "town": {
+    "images": ["town-top.png", "town-front.png", "town-side.png"],
+    "observations": [
+      "俯视：二楼外侧形成连续直边，左侧挑空保留，未补成实心矩形。",
+      "正面：初版墙线内的0.20米残留齿尖已修正；薄楼板前后边缘平直，底层通道与桌椅保留。",
+      "侧面：楼梯及其护栏连续，上层薄封边没有伸入楼梯格。邻近建筑仅在审查视图中隐藏，便于观察。"
+    ],
+    "boundary": "容纳既有完整六角的墙顶薄檐线：X±7.794228634m、Z±3.75m；相对原7.75/3.55m墙线外延0.04423/0.20m，不增加导航面积"
+  },
+  "ship": {
+    "images": ["ship-top.png", "ship-front.png", "ship-side.png"],
+    "observations": [
+      "俯视：横向平台边缘收齐为直线，两舷封边接至原周界木带。",
+      "正面：甲板及船舱楼板表面连续，新增封边沿用当前木板材质与厚度。",
+      "侧面：主甲板与高台高差保留，楼梯出口开放，未用实心块填充下层空间。"
+    ]
+  },
+  "verification": {
+    "nativeReport": "validation.json",
+    "nativePatchesChecked": 258,
+    "nonSelectable": true,
+    "fullHexSelectionPreserved": true,
+    "fogAndCutawayPreserved": true,
+    "navigationComparedCellByCell": true,
+    "protectedShipBreachAndTownAtrium": true,
+    "projectCompilationRequests": 1,
+    "playModeEntered": false,
+    "fullProjectTestsRun": false
+  }
+}

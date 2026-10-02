@@ -107,7 +107,8 @@ local ok, result = xpcall(function()
             drop=waterfall.drop, riverId=waterfall.riverId, poolCells=cellIndices(waterfall.poolCells) }
     end
     for _, item in ipairs(map:GetDecorations()) do
-        output.decorations[#output.decorations+1] = { id=item.id, cell=indices[item.cell], assetId=item.assetId, scale=item.scale, yaw=item.yaw }
+        output.decorations[#output.decorations+1] = { id=item.id, cell=indices[item.cell], assetId=item.assetId, scale=item.scale, yaw=item.yaw,
+            height=item.height or item.cell.height }
     end
     local roadCount = 0
     for _, road in ipairs(map:GetRoads()) do

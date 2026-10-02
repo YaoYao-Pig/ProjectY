@@ -1,0 +1,59 @@
+---@meta
+-- Generated from LuaReference. Do not edit; never require this file.
+---@class SkillAtlasPanelView
+---@field Root CS.UnityEngine.RectTransform
+---@field Canvas CS.UnityEngine.Canvas
+---@field Panel CS.ProjectY.UI.LuaPanel
+---@field Page CS.UnityEngine.RectTransform
+---@field Style CS.ProjectY.UI.StoryGrowthView
+---@field Geometry CS.ProjectY.UI.SkillAtlasView
+---@field Close CS.UnityEngine.UI.Button
+---@field CloseText CS.UnityEngine.UI.Text
+---@field Party1 CS.UnityEngine.UI.Button
+---@field Party1Text CS.UnityEngine.UI.Text
+---@field Party2 CS.UnityEngine.UI.Button
+---@field Party2Text CS.UnityEngine.UI.Text
+---@field Party3 CS.UnityEngine.UI.Button
+---@field Party3Text CS.UnityEngine.UI.Text
+---@field Party4 CS.UnityEngine.UI.Button
+---@field Party4Text CS.UnityEngine.UI.Text
+---@field Domain1 CS.UnityEngine.UI.Button
+---@field Domain1Text CS.UnityEngine.UI.Text
+---@field Domain2 CS.UnityEngine.UI.Button
+---@field Domain2Text CS.UnityEngine.UI.Text
+---@field Domain3 CS.UnityEngine.UI.Button
+---@field Domain3Text CS.UnityEngine.UI.Text
+---@field Domain4 CS.UnityEngine.UI.Button
+---@field Domain4Text CS.UnityEngine.UI.Text
+---@field Domain5 CS.UnityEngine.UI.Button
+---@field Domain5Text CS.UnityEngine.UI.Text
+---@field Domain6 CS.UnityEngine.UI.Button
+---@field Domain6Text CS.UnityEngine.UI.Text
+---@field Categories CS.UnityEngine.RectTransform
+---@field CategoriesScroll CS.UnityEngine.UI.ScrollRect
+---@field TreeTitle CS.UnityEngine.UI.Text
+---@field Search CS.UnityEngine.UI.InputField
+---@field SearchButton CS.UnityEngine.UI.Button
+---@field SearchButtonText CS.UnityEngine.UI.Text
+---@field ClearSearch CS.UnityEngine.UI.Button
+---@field ClearSearchText CS.UnityEngine.UI.Text
+---@field Graph CS.UnityEngine.RectTransform
+---@field GraphScroll CS.UnityEngine.UI.ScrollRect
+---@field Dismiss CS.UnityEngine.UI.Button
+---@field Empty CS.UnityEngine.UI.Text
+---@field TipTitle CS.UnityEngine.UI.Text
+---@field TipClose CS.UnityEngine.UI.Button
+---@field TipCloseText CS.UnityEngine.UI.Text
+---@field TipPath CS.UnityEngine.UI.Text
+---@field TipBody CS.UnityEngine.RectTransform
+---@field TipBodyScroll CS.UnityEngine.UI.ScrollRect
+---@field TipDetail CS.UnityEngine.UI.Text
+---@field PrerequisiteTitle CS.UnityEngine.UI.Text
+---@field Prerequisites CS.UnityEngine.RectTransform
+---@field PrerequisitesScroll CS.UnityEngine.UI.ScrollRect
+---@field SearchResults CS.UnityEngine.RectTransform
+---@field SearchSummary CS.UnityEngine.UI.Text
+---@field Results CS.UnityEngine.RectTransform
+---@field ResultsScroll CS.UnityEngine.UI.ScrollRect
+local View = {}
+return View

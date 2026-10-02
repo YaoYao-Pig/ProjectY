@@ -1,0 +1,113 @@
+{
+  "version": 1,
+  "name": "MapWaterSiteTable",
+  "description": "开阔等水位水域中的可访问遗址，独立概率抽样；不强制生成。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "规则编号",
+      "min": 1,
+      "max": 999
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "遗址显示名称"
+    },
+    {
+      "name": "areaId",
+      "type": "int",
+      "description": "独立MapArea定义",
+      "ref": "MapAreaTable"
+    },
+    {
+      "name": "assetId",
+      "type": "int",
+      "description": "水面标识",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "minBodyCells",
+      "type": "int",
+      "description": "连通等水位水域最少格数",
+      "min": 7
+    },
+    {
+      "name": "clearRadius",
+      "type": "int",
+      "description": "完整水格圆盘半径",
+      "min": 1,
+      "max": 8
+    },
+    {
+      "name": "minDepth",
+      "type": "float",
+      "description": "圆盘所有水格最小水深",
+      "min": 0
+    },
+    {
+      "name": "chance",
+      "type": "float",
+      "description": "每个合格水体的概率",
+      "min": 0,
+      "max": 1
+    },
+    {
+      "name": "maxCount",
+      "type": "int",
+      "description": "本规则全图数量上限",
+      "min": 0,
+      "max": 10
+    },
+    {
+      "name": "spacing",
+      "type": "int",
+      "description": "所有水域遗址之间最小六角格距",
+      "min": 1
+    },
+    {
+      "name": "scale",
+      "type": "float",
+      "description": "标识相对于大地图格半径的缩放",
+      "min": 0.1
+    },
+    {
+      "name": "seedSalt",
+      "type": "int",
+      "description": "独立随机盐",
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "暮潮号沉船遗址",
+      "areaId": 40,
+      "assetId": 600,
+      "minBodyCells": 37,
+      "clearRadius": 2,
+      "minDepth": 0.35,
+      "chance": 0.75,
+      "maxCount": 2,
+      "spacing": 12,
+      "scale": 0.95,
+      "seedSalt": 91153
+    },
+    {
+      "id": 2,
+      "name": "废弃商船遗址",
+      "areaId": 40,
+      "assetId": 601,
+      "minBodyCells": 37,
+      "clearRadius": 2,
+      "minDepth": 0.35,
+      "chance": 0.55,
+      "maxCount": 1,
+      "spacing": 12,
+      "scale": 0.95,
+      "seedSalt": 93179
+    }
+  ]
+}

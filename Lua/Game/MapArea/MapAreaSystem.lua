@@ -9,13 +9,24 @@ function AreaSystem:PartyActor(id)
     error('Unknown squad actor: '..tostring(id))
 end
 function AreaSystem:SquadFootprint(layout,ids)
-    local actors={};for i,id in ipairs(ids) do actors[i]=self:PartyActor(id) end
+    local animals=self.combatStats.animals;local species,caches,bySpecies={},{},{}
+    for i,id in ipairs(ids) do
+        local row=animals:Species(self:PartyActor(id));species[i]=row
+        local key=row and #row.footprintQ>1 and row or false
+        if not bySpecies[key] then bySpecies[key]={} end
+        caches[i]=bySpecies[key]
+    end
     return function(index,member)
-        local anchor=layout.cells[index]
-        local cells=self.combatStats.animals:Cells(actors[member or 1],layout,anchor.q,anchor.r)
-        if not cells then return nil end
-        local result={};for _,cell in ipairs(cells) do result[#result+1]=cell.index end
-        return result
+        member=member or 1;local cache=caches[member];local result=cache[index]
+        if result~=nil then return result~=false and result or nil end
+        local anchor=assert(layout.cells[index],'Unknown squad footprint anchor');local row=species[member]
+        if not row or #row.footprintQ==1 then result={index}
+        else
+            local cells=animals:CellsForSpecies(row,layout,anchor.q,anchor.r,anchor.layer)
+            if not cells then cache[index]=false;return nil end
+            result={};for _,cell in ipairs(cells) do result[#result+1]=cell.index end
+        end
+        cache[index]=result;return result
     end
 end
 function AreaSystem:OnInit(context)
@@ -34,6 +45,10 @@ function AreaSystem:OnInit(context)
     self.battlefieldType=self.config:GetEnum('MapArea','E_MapAreaType').Battlefield
     self.battlefieldAreaId=self.config:GetConstant('Loot','EventBattlefieldAreaId')
     self.generator:Register(self.battlefieldType,require('Game.MapArea.BattlefieldGenerator'),'MapAreaBattlefieldTable','MapAreaBattlefieldThemeTable')
+    self.shipwreckType=self.config:GetEnum('MapArea','E_MapAreaType').Shipwreck
+    self.generator:Register(self.shipwreckType,require('Game.MapArea.ShipwreckGenerator'),'MapAreaShipwreckTable','MapAreaShipwreckThemeTable')
+    self.generator:Register(self.config:GetEnum('MapArea','E_MapAreaType').Mine,
+        require('Game.MapArea.MineGenerator'),'MapAreaMineTable','MapAreaMineThemeTable')
     assert(self.generator.definitions:Get(self.battlefieldAreaId).areaType==self.battlefieldType,'Invalid event battlefield definition')
     self.appearance=require('Game.Adventure.PawnAppearance').New(self.config)
     self.combatStats=require('Game.Battle.CombatStats')(self.config,context.services.Adventure.Equipment)
@@ -79,6 +94,13 @@ function AreaSystem:Entrances(map)
             end
         end
     end
+    for _,site in ipairs(map:GetWaterSites()) do
+        local cell=site.cell;local region=map:GetRegion(cell.regionId)
+        local x,_,z=map:GetCellWorldPosition(cell.q,cell.r)
+        result[#result+1]={areaConfigId=site.areaId,pointId=site.pointId,name=site.name,
+            q=cell.q,r=cell.r,x=x,y=cell.waterLevel,z=z,source={regionId=region.instanceId,regionConfigId=region.configId,
+            regionType=region.regionType,q=cell.q,r=cell.r,height=cell.waterLevel,biomeWeights=cell.biomeWeights}}
+    end
     return result
 end
 function AreaSystem:CanEnter(site)
@@ -110,6 +132,9 @@ function AreaSystem:Activate(site,worldSeed,fromEvent)
         layout=self.generator:Generate(site.areaConfigId,worldSeed,site.pointId,site.source,decorate)
         self.layouts[site.id]=layout
     end
+    if self.construction and not layout.constructionSite then
+        layout=self.construction:Layout(layout,site.id);self.layouts[site.id]=layout
+    end
     local state=self.data:Enter(site.id,#layout.cells,layout.entryIndex)
     self:InitializeEncounters(layout,state)
     if state.NpcCount==0 then for _,npc in ipairs(layout.npcs) do state:AddNpc(npc.id,npc.spawnIndex) end end
@@ -121,10 +146,11 @@ function AreaSystem:Activate(site,worldSeed,fromEvent)
     for i,id in ipairs(ids) do if not same or state:GetMemberIdAt(i-1)~=id then same=false;break end end
     if not same then
         local enemies=self:EnemyOccupancy(layout,state)
+        local obstacles=self.obstacles and self.obstacles:BlockedCells() or {}
         local shape=self:SquadFootprint(layout,ids)
         local function allowed(cell,member)
             local cells=shape(cell.index,member);if not cells then return false end
-            for _,index in ipairs(cells) do if layout.cells[index].blocked or state:IsNpcOccupied(index) or enemies[index] then return false end end
+            for _,index in ipairs(cells) do if layout.cells[index].blocked or obstacles[index] or state:IsNpcOccupied(index) or enemies[index] then return false end end
             return true
         end
         state:DeployMembers(ids,Squad.Deploy(layout,state.CellIndex,#ids,allowed,shape))
@@ -212,8 +238,8 @@ function AreaSystem:StartBattle(battle,group)
     for _,actor in ipairs(enemies) do radius=math.max(radius,Hex.Distance(center.q,center.r,actor.Q,actor.R)) end
     local board=self:BattleWindow(center.index,radius+rule.battleMargin)
     board.onRoundCompleted=function() state:CompleteWorldRound() end
-    board.allowed=function(cell) return state:IsKnown(cell.index) end
-    board.externalOccupied={}
+    local obstacles=self.obstacles and self.obstacles:BlockedCells() or {}
+    board.allowed=function(cell) return state:IsKnown(cell.index) and not obstacles[cell.index] end
     for index in pairs(self:EnemyOccupancy(area,state,group.Id)) do
         local cell=area.cells[index];board.externalOccupied[Hex.Key(cell.q,cell.r)]=true
     end
@@ -250,7 +276,10 @@ function AreaSystem:RevealSquad(layout,state)
         return
     end
     local cells,seen={},{}
-    for i=0,state.MemberCount-1 do for _,index in ipairs(layout:VisibleFrom(state:GetMemberCellAt(i))) do
+    -- 同一次队伍揭示复用已有营造查询投影，避免每条射线重复跨 C# 查询相同工事版本。
+    local sight=layout.layeredVisibility and layout.NavigationView and layout:NavigationView() or layout
+    local query=sight.layeredVisibility and require('Game.MapArea.LayeredVisibility').NewQuery(sight)
+    for i=0,state.MemberCount-1 do for _,index in ipairs(sight:VisibleFrom(state:GetMemberCellAt(i),query)) do
         if not seen[index] then seen[index]=true;cells[#cells+1]=index end
     end end
     state:Reveal(cells)
@@ -294,7 +323,7 @@ function AreaSystem:CanTame(actorId,animalId)
     local occupied={}
     for i=0,state.MemberCount-1 do if state:GetMemberIdAt(i)~=actorId then
         local member=self:PartyActor(state:GetMemberIdAt(i));local cell=area.cells[state:GetMemberCellAt(i)]
-        for _,part in ipairs(assert(animals:Cells(member,area,cell.q,cell.r))) do occupied[Hex.Key(part.q,part.r)]=true end
+        for _,part in ipairs(assert(animals:Cells(member,area,cell.q,cell.r,cell.layer))) do occupied[Hex.Key(part.q,part.r)]=true end
     end end
     if not animals:CanPlace(target,area,target.Q,target.R,occupied) then return false,'动物占地与队友重叠，暂时无法骑乘' end
     return true
@@ -318,10 +347,13 @@ end
 -- 点击使用完整 cellIndex，桥上与桥下相同 q/r 不会被折叠成同一个目标。
 function AreaSystem:MoveToIndex(index,settle)
     if self.adventure.Phase~='area' then return false,'当前不在探索区域' end
-    local layout,state=self:ActiveLayout(),self.data.Active
+    local liveLayout,state=self:ActiveLayout(),self.data.Active
+    local layout=liveLayout.NavigationView and liveLayout:NavigationView() or liveLayout
     if state.InteractionKind~=0 then return false,'请先关闭交互介绍' end
     local goal=layout.cells[index]
     if not goal or goal.blocked then return false,'墙壁、陈设占地或地图边界不可通行' end
+    local obstacles=self.obstacles and self.obstacles:BlockedCells() or {}
+    if obstacles[index] then return false,'请先处理阻挡道路的障碍' end
     if not state:IsKnown(goal.index) then return false,'请先探索附近可见的地面' end
     if state:IsNpcOccupied(goal.index) then return false,'居民正在经过，请稍候或从旁边绕行' end
     local enemies=self:EnemyOccupancy(layout,state)
@@ -331,7 +363,8 @@ function AreaSystem:MoveToIndex(index,settle)
     if layout.discovery~='open' then
         known={};for i=0,state.KnownCount-1 do known[state:GetKnownAt(i)]=true end
     end
-    local occupied=enemies;for i=0,state.NpcCount-1 do local npc=state:GetNpcAt(i);if npc.Present then occupied[npc.CellIndex]=true end end
+    local occupied=enemies;for cell in pairs(obstacles) do occupied[cell]=true end
+    for i=0,state.NpcCount-1 do local npc=state:GetNpcAt(i);if npc.Present then occupied[npc.CellIndex]=true end end
     local ids={};for i=0,state.MemberCount-1 do ids[#ids+1]=state:GetMemberIdAt(i) end
     local shape=self:SquadFootprint(layout,ids)
     local allowed=function(cell,member)
@@ -347,7 +380,7 @@ function AreaSystem:MoveToIndex(index,settle)
     state:SetSquadRoute(frames)
     -- 城镇先提交一个合法的整队步进，让显示立即开始走；剩余帧仍按原步长推进。
     if layout.areaType==self.townType then
-        self:AdvanceMovement(layout,state,layout.moveStepSeconds)
+        self:AdvanceMovement(liveLayout,state,liveLayout.moveStepSeconds)
     end
     return true
 end
@@ -389,11 +422,12 @@ function AreaSystem:Stop()
 end
 function AreaSystem:Leave()
     if self.adventure.Phase~='area' then return false,'当前不在探索区域' end
+    if self.obstacles then self.obstacles.data:Cancel() end
     self.adventure:LeaveArea();return true
 end
 -- 即时首步与后续 Tick 共用探索回合/效果结算，不能只推进占格而漏掉回合效果。
-function AreaSystem:AdvanceMovement(layout,state,dt)
-    local rounds=state:AdvanceExplorationRounds(dt,self.explorationRoundSeconds,layout.moveStepSeconds)
+function AreaSystem:ResolveWorldRounds(rounds)
+    local state=self.data.Active
     if rounds>0 then
         local effects=self.context.systems:Get('Battle').gameEffects
         local targets={}
@@ -402,16 +436,29 @@ function AreaSystem:AdvanceMovement(layout,state,dt)
             for j=0,group.EnemyCount-1 do local actor=group:GetEnemyAt(j);if actor.AnimalOwnerId==0 then targets[#targets+1]=actor end end
         end
         for _=1,rounds do for _,actor in ipairs(targets) do
+            CS.ProjectY.Data.ContainerState.AdvanceCooldowns(actor)
             effects:TickActor(actor,'turn_start');effects:TickActor(actor,'turn_end')
         end end
         self.context.systems:Get('Equipment'):GenerateActorDrops(self,targets,self.combatStats)
-        local ids,cells={},{}
-        for i=0,state.MemberCount-1 do local id=state:GetMemberIdAt(i)
-            if self:PartyActor(id).HP>0 then ids[#ids+1]=id;cells[#cells+1]=state:GetMemberCellAt(i) end
-        end
-        if #ids==0 then state:Stop();self.adventure:LeaveArea();return end
-        if #ids~=state.MemberCount then state:Stop();state:DeployMembers(ids,cells);self:RevealSquad(layout,state) end
     end
+end
+function AreaSystem:RefreshLivingSquad()
+    local state,layout=self.data.Active,self:ActiveLayout();local ids,cells={},{}
+    for i=0,state.MemberCount-1 do local id=state:GetMemberIdAt(i)
+        if self:PartyActor(id).HP>0 then ids[#ids+1]=id;cells[#cells+1]=state:GetMemberCellAt(i) end
+    end
+    if #ids==0 then state:Stop();self.adventure:LeaveArea();return false end
+    if #ids~=state.MemberCount then state:Stop();state:DeployMembers(ids,cells);self:RevealSquad(layout,state) end
+    return true
+end
+function AreaSystem:SpendWorkRounds(rounds)
+    for _=1,rounds do self.data.Active:CompleteWorldRound() end
+    self:ResolveWorldRounds(rounds)
+end
+function AreaSystem:AdvanceMovement(layout,state,dt)
+    local rounds=state:AdvanceExplorationRounds(dt,self.explorationRoundSeconds,layout.moveStepSeconds)
+    self:ResolveWorldRounds(rounds)
+    if rounds>0 and not self:RefreshLivingSquad() then return end
     if state:Advance(dt,layout.moveStepSeconds) then self:RevealSquad(layout,state) end
 end
 function AreaSystem:Tick(dt)
@@ -424,19 +471,29 @@ function AreaSystem:Tick(dt)
     require('Game.MapArea.TownResidents').Tick(layout,state,dt)
     if self.narrative then self.narrative.npcs:Tick(layout,state,dt) end
 end
-function AreaSystem:Clear() self.layouts={};self.data:Clear() end
+function AreaSystem:Clear() self.layouts={};self.data:Clear();if self.obstacles then self.obstacles.data:Clear() end end
 -- 后续遭遇从当前区域裁取同坐标战场，不另随机一张竞技场，不移动或替换原地形。
 function AreaSystem:BattleWindow(centerIndex,radius)
     local area=self:ActiveLayout();local center=assert(area.cells[centerIndex])
-    return require('Game.Battle.BattleBoard').FromArea(area,center.q,center.r,radius,center.layer)
+    local board=require('Game.Battle.BattleBoard').FromArea(area,center.q,center.r,radius,center.layer)
+    board.externalOccupied={}
+    if self.obstacles then for index in pairs(self.obstacles:BlockedCells()) do
+        local cell=area.cells[index];board.externalOccupied[require('Game.Map.HexGrid').Key(cell.q,cell.r)]=true
+    end end
+    return board
 end
 function AreaSystem:Snapshot(battle)
     local area,state=self:ActiveLayout(),self.data.Active
     local known,visible,route,members,npcs={},{},{},{},{}
+    local knownCount,visibleCount=state.KnownCount,state.VisibleCount
+    local fullVisibilityCount=knownCount==#area.cells and visibleCount==#area.cells and #area.cells or 0
     for i=0,state.NpcCount-1 do local npc=state:GetNpcAt(i);npcs[#npcs+1]={id=npc.Id,cellIndex=npc.CellIndex,present=npc.Present} end
     for i=0,state.MemberCount-1 do members[#members+1]={actorId=state:GetMemberIdAt(i),cellIndex=state:GetMemberCellAt(i)} end
-    for i=0,state.KnownCount-1 do known[#known+1]=state:GetKnownAt(i) end
-    for i=0,state.VisibleCount-1 do visible[#visible+1]=state:GetVisibleAt(i) end
+    -- 全公开区域发送范围，不让每次人物/NPC移动把整张地图逐项搬过 xLua 两次。
+    if fullVisibilityCount==0 then
+        for i=0,knownCount-1 do known[#known+1]=state:GetKnownAt(i) end
+        for i=0,visibleCount-1 do visible[#visible+1]=state:GetVisibleAt(i) end
+    end
     if battle then members=self:BattleMembers(battle) end
     local enemies,defeated,visibleSet={},{},{}
     for _,index in ipairs(visible) do visibleSet[index]=true end
@@ -445,19 +502,19 @@ function AreaSystem:Snapshot(battle)
         local group=state:GetEncounterAt(i);if group.Defeated then cleared=cleared+1 end
         for j=0,group.EnemyCount-1 do
             local actor=group:GetEnemyAt(j);local cell=assert(area:Find(actor.Q,actor.R))
-            if actor.AnimalOwnerId==0 and actor.HP>0 and visibleSet[cell.index] then
+            if actor.AnimalOwnerId==0 and actor.HP>0 and (fullVisibilityCount>0 or visibleSet[cell.index]) then
                 enemies[#enemies+1]=require('Game.Battle.CombatSnapshot')(actor,self.combatStats,self.appearance,area)
-            elseif actor.AnimalOwnerId==0 and actor.HP==0 and visibleSet[cell.index] then
+            elseif actor.AnimalOwnerId==0 and actor.HP==0 and (fullVisibilityCount>0 or visibleSet[cell.index]) then
                 defeated[#defeated+1]=require('Game.Battle.CombatSnapshot')(actor,self.combatStats,self.appearance,area)
             end
         end
     end
     for i=0,state.RemainingSteps-1 do route[#route+1]=state:GetRouteAt(i) end
-    return {name=area.name,theme=area.theme.name,seed=area.seed,cellIndex=members[1] and members[1].cellIndex or state.CellIndex,known=known,visible=visible,npcs=npcs,
+    return {name=area.name,theme=area.theme.name,seed=area.seed,cellIndex=members[1] and members[1].cellIndex or state.CellIndex,known=known,visible=visible,fullVisibilityCount=fullVisibilityCount,npcs=npcs,
         enemies=enemies,defeated=defeated,encounterCount=state.EncounterCount,clearedEncounters=cleared,
         interactionKind=state.InteractionKind,interactionId=state.InteractionId,
         route=route,members=members,revision=state.Revision,entryIndex=area.entryIndex,goalIndex=area.goalIndex,
-        roomCount=#area.rooms,walkableCount=area.walkableCount,knownCount=state.KnownCount,
+        roomCount=#area.rooms,walkableCount=area.walkableCount,knownCount=knownCount,
         sourceRegionId=area.source.regionId,sourceRegionType=area.source.regionType,propCount=#area.props}
 end
 -- xLua 的 LuaTable.Length 使用原始数组长度，不执行只读代理的 __len。
@@ -470,7 +527,10 @@ function AreaSystem:LayoutSnapshot()
     local asset=self.config:GetTable('MapAssetTable'):Get(area.theme.assetId)
     local result={name=area.name,areaType=area.areaType,moveStepSeconds=area.moveStepSeconds,hexRadius=area.hexRadius,cells={},assetId=asset.id,assetPath=asset.prefabPath,tintMaterial=asset.tintMaterial,
         rooms={},props={},propAssets={},corridorWidth=area.corridorRadius*2+1}
-    result.facilities={};result.npcs={};result.surfaces={}
+    result.facilities={};result.npcs={};result.surfaces={};result.floorBoundaryPatches={}
+    for i,patch in ipairs(area.floorBoundaryPatches or {}) do
+        result.floorBoundaryPatches[i]={ownerIndex=patch.ownerIndex,points=snapshotArray(patch.points),height=patch.height,thickness=patch.thickness}
+    end
     for _,row in ipairs(self.config:GetTable('MapAreaSurfaceTable'):All()) do
         result.surfaces[#result.surfaces+1]={id=row.id,pattern=row.pattern,color=row.baseColor,tileMeters=row.tileMeters,
             contrast=row.contrast,jointWidth=row.jointWidth,smoothness=row.smoothness,detailColor=row.detailColor}
@@ -487,10 +547,11 @@ function AreaSystem:LayoutSnapshot()
             if look then result.npcs[i].appearance.customizationJson=look end
         end
     end
-    for i,cell in ipairs(area.cells) do
+    for i,cell in ipairs((area.baseLayout or area).cells) do
         local x,_,z=Hex.ToWorld(cell.q,cell.r,cell.height,area.hexRadius)
         result.cells[i]={q=cell.q,r=cell.r,x=x,z=z,height=cell.height,wallHeight=cell.wallHeight,layer=cell.layer,
-            color=snapshotArray(cell.color),blocked=cell.blocked,kind=cell.kind,roomId=cell.roomId,interiorId=cell.interiorId or 0,walkMask=cell.walkMask,neighbors=snapshotArray(cell.neighbors),
+            color=snapshotArray(cell.color),blocked=cell.blocked,kind=cell.kind,renderGround=cell.renderGround~=false,roomId=cell.roomId,interiorId=cell.interiorId or 0,
+            coverInteriorId=cell.coverInteriorId or 0,cutawayGroup=cell.cutawayGroup or 0,cutawayLayer=cell.cutawayLayer or 0,walkMask=cell.walkMask,neighbors=snapshotArray(cell.neighbors),
             corners=cell.corners and snapshotArray(cell.corners) or {cell.height,cell.height,cell.height,cell.height,cell.height,cell.height},
             deckThickness=cell.deckThickness or 0,stairRise=cell.stairRise or 0,surfaceId=cell.surfaceId or 0,sideSurfaceId=cell.sideSurfaceId or 0}
     end
@@ -498,19 +559,20 @@ function AreaSystem:LayoutSnapshot()
         result.rooms[i]={id=room.id,name=room.name,tier=room.tier,presetId=room.presetId,centerIndex=room.center}
     end
     local used={}
-    for i,prop in ipairs(area.props) do
+    for _,prop in ipairs(area.props) do if not prop.container then
         local top=-math.huge;local cells={}
         for j,index in ipairs(prop.cells) do top=math.max(top,area.cells[index].height);cells[j]=index end
         top=prop.height or top
         local x,_,z=Hex.ToWorld(prop.q,prop.r,top,area.hexRadius);local scale=prop.scale*area.hexRadius
-        result.props[i]={assetId=prop.assetId,x=x,y=top+.015,z=z,rotation=-prop.rotation*60,scale=scale,interiorId=prop.interiorId or 0,cutaway=prop.cutaway==true,
+        result.props[#result.props+1]={assetId=prop.assetId,x=x+(prop.offsetX or 0),y=top+.015,z=z+(prop.offsetZ or 0),rotation=prop.yaw or -prop.rotation*60,scale=scale,
+            interiorId=prop.interiorId or 0,cutaway=prop.cutaway==true,cameraObstacle=prop.cameraObstacle~=false,layer=prop.layer or -1,cutawayGroup=prop.cutawayGroup or 0,cutawayLayer=prop.cutawayLayer or 0,
             scaleX=prop.scaleX or scale,scaleY=prop.scaleY or scale,scaleZ=prop.scaleZ or scale,cells=cells}
         if not used[prop.assetId] then
             used[prop.assetId]=true
             local row=self.config:GetTable('MapAssetTable'):Get(prop.assetId)
             result.propAssets[#result.propAssets+1]={id=row.id,path=row.prefabPath}
         end
-    end
+    end end
     return result
 end
 function AreaSystem:OnShutdown()

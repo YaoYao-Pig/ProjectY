@@ -30,6 +30,7 @@ function Model.Build(battle, adventure)
             for _, target in ipairs(units) do
                 if battle:CanUseSkill(id, target.Id) then available = true; break end
             end
+            if not available and battle.containerCombat then available=#battle.containerCombat:Targets(actor,id,battle)>0 end
             if not available then reason = L.BattleNoTarget end
         end
         local detail=string.format('\n命中 %d%% · 伤害倍率 %.2f · 最多 %d 目标 · CD %d（剩余 %d）',skill.hitChance,skill.damageScale,skill.maxTargets,skill.cooldownTurns,actor:GetCooldown(id))

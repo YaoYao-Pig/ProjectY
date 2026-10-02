@@ -18,7 +18,8 @@ function Battle:OnInit(context)
     self.Changed = Signal(context.log)
     self.gameEffects=require('Game.Battle.GameEffects').New(self.stats,self.effects,function(...) self:Emit(...) end)
     self.gameEffects:Validate()
-    for _, row in ipairs(self.skills:All()) do assert(#row.effectIds > 0, 'Skill needs effects: ' .. row.id) end
+    local construction=config:GetTable('ConstructionTable')
+    for _, row in ipairs(self.skills:All()) do assert(#row.effectIds > 0 or construction:Find(row.id), 'Skill needs effects: ' .. row.id) end
 end
 function Battle:Units()
     local units = {}
@@ -182,7 +183,14 @@ function Battle:TryMove(q, r)
     end
     return false, '无法移动到这里：检查距离、占格、行动点和本回合移动次数'
 end
-function Battle:SkillIds(actor) return self.stats.animals:AddSkills(actor,self.stats.equipment:SkillIds(actor,self.stats:Template(actor))) end
+function Battle:SkillIds(actor)
+    local ids=self.stats.animals:AddSkills(actor,self.stats.equipment:SkillIds(actor,self.stats:Template(actor)))
+    if self.construction then
+        local found=false;for _,id in ipairs(ids) do if id==self.construction.demolitionId then found=true end end
+        if not found then ids[#ids+1]=self.construction.demolitionId end
+    end
+    return ids
+end
 function Battle:Skill(actor,skillId) return self.stats.equipment:Skill(actor,skillId,self.stats) end
 function Battle:SkillBudget(skillId)
     if self.data.Winner ~= '' then return false, '战斗已经结束' end
@@ -198,6 +206,7 @@ function Battle:SkillBudget(skillId)
     if skill.action == 'main' and source.MainUsed then return false, '本回合主要行动已使用' end
     if source.AP < skill.cost then return false, '行动点不足' end
     if skill.cooldownTurns>0 and source:GetCooldown(skillId)>0 then return false,'技能冷却中：'..source:GetCooldown(skillId) end
+    if self.construction and self.construction.definitions:Find(skillId) then return self.construction:Budget(source,skillId) end
     return self.stats.equipment:CheckAmmo(source,skill)
 end
 function Battle:CanUseSkill(skillId, targetId)
@@ -210,7 +219,8 @@ function Battle:CanUseSkill(skillId, targetId)
     if skill.target == 'self' and target.Id ~= source.Id then return false, '只能对自己使用' end
     if skill.target == 'enemy' and target.Team == source.Team then return false, '请选择敌人' end
     if skill.target == 'ally' and target.Team ~= source.Team then return false, '请选择友军' end
-    if self.stats.animals:Distance(source,target,self.board) > skill.range then return false, '目标超出射程' end
+    local rangeBonus=self.construction and self.construction:RangeBonus(self.board,source,target,skill) or 0
+    if self.stats.animals:Distance(source,target,self.board) > skill.range+rangeBonus then return false, '目标超出射程' end
     if skillId==self.stats.animals.rule.tameSkillId then
         local tame,why=self.stats.animals:CanTame(source,target);if not tame then return false,why end
         local occupied=self:Occupied(source.Id)
@@ -256,6 +266,10 @@ function Battle:TrySkill(skillId, targetId)
         end)
         for i=1,math.min(#others,skill.maxTargets-1) do targets[#targets+1]=others[i] end
     end
+    local containerPlans={}
+    if self.containerCombat and skill.affectsContainers and self.board.area then
+        containerPlans=self.containerCombat:Splash(source,skill,self.board:Find(target.Q,target.R),0,skill.maxTargets-#targets,self)
+    end
     local program={}
     -- 先完整校验效果，配置错误不会在扣除行动点后才暴露。
     for _,victim in ipairs(targets) do
@@ -270,6 +284,7 @@ function Battle:TrySkill(skillId, targetId)
     source:RecordAction(skill.actionTemplate,skill.shots,target.Q,target.R)
     for shot=1,skill.shots do
     local impact={shot=shot}
+    if self.containerCombat then self.containerCombat:Apply(containerPlans,source,skill,function()return self.data:RollPercent()end,self) end
     for _, effect in ipairs(program) do
       local target=effect.target
       if target.HP>0 then
@@ -288,6 +303,7 @@ function Battle:CanUseSkillAt(skillId,q,r)
     local source=self:Active();local skill=self:Skill(source,skillId)
     if skill.target~='cell' then return false,'此技能需要角色目标' end
     local cell=self.board:Find(q,r);if not cell then return false,'落点在战场之外' end
+    if self.construction and self.construction.definitions:Find(skillId) then return self.construction:CanUse(self,skill,cell) end
     local landing,why=self.stats.animals:Landing(source,cell,self.board,skillId,self:Occupied(source.Id),self.board.allowed)
     return landing~=nil,why
 end
@@ -301,6 +317,12 @@ function Battle:TrySkillAt(skillId,q,r)
     Hex.CheckCoordinate(q,r)
     local ok,reason=self:CanUseSkillAt(skillId,q,r);if not ok then return false,reason end
     local source=self:Active();local skill=self:Skill(source,skillId)
+    if self.construction and self.construction.definitions:Find(skillId) then
+        self.construction:Apply(self,skill,assert(self.board:Find(q,r)))
+        source:SpendAction(skill.action,skill.cost);source:SetCooldown(skillId,skill.cooldownTurns)
+        source:RecordAction(skill.actionTemplate,skill.shots,q,r)
+        return true
+    end
     source:SpendAction(skill.action,skill.cost);source:SetCooldown(skillId,skill.cooldownTurns)
     source:RelocateWithSkill(q,r,self.stats.animals.bySkill[skillId].movement);source:RecordAction(skill.actionTemplate,skill.shots,q,r)
     self:Emit('moved',self.stats:Template(source).name..' · '..skill.name,source.Id)
@@ -323,7 +345,7 @@ function Battle:StepAI()
     end
     if not attack() then
         local occupied = self:Occupied(actor.Id)
-        local _, _, previous = self.board:Search(actor.Q, actor.R, occupied, #self.board.cells,function(cell)
+        local _, distance, previous = self.board:Search(actor.Q, actor.R, occupied, #self.board.cells*4,function(cell)
             return self.stats.animals:CanPlace(actor,self.board,cell.q,cell.r,occupied)
         end)
         local bestPath
@@ -333,14 +355,33 @@ function Battle:StepAI()
                     if previous[cell] then
                         local path, cursor = {}, cell
                         while previous[cursor] do table.insert(path, 1, cursor); cursor = previous[cursor] end
-                        if not bestPath or #path < #bestPath then bestPath = path end
+                        if not bestPath or distance[cell] < distance[bestPath[#bestPath]] then bestPath = path end
                     end
                 end
             end
         end
         if bestPath then
-            local destination = bestPath[math.min(#bestPath, self.stats.animals:MoveRange(actor,self.stats:Template(actor)))]
-            self:TryMove(destination.q, destination.r)
+            local destination;local range=self.stats.animals:MoveRange(actor,self.stats:Template(actor))
+            for _,cell in ipairs(bestPath) do if distance[cell]<=range then destination=cell end end
+            if destination then self:TryMove(destination.q, destination.r) end
+        elseif self.construction and self.board.area then
+            -- 通路被施工封死时，接近可达的工事边缘并破坏；不会绕过正常行动预算。
+            local best,approach,score
+            for _,cell in ipairs(self.board.cells) do
+                local record=self.construction:Record(self.board.area.constructionSite,cell.index)
+                if record and record.MaxHP>0 then
+                    for _,neighbor in ipairs(self.board:Neighbors(cell)) do
+                        local cost=distance[neighbor]
+                        if cost and (not score or cost<score) then best,approach,score=cell,neighbor,cost end
+                    end
+                end
+            end
+            if best then
+                local cursor=approach;local range=self.stats.animals:MoveRange(actor,self.stats:Template(actor))
+                while previous[cursor] and distance[cursor]>range do cursor=previous[cursor] end
+                if cursor.q~=actor.Q or cursor.r~=actor.R then self:TryMove(cursor.q,cursor.r) end
+                self:TrySkillAt(self.construction.demolitionId,best.q,best.r)
+            end
         end
         attack()
     end

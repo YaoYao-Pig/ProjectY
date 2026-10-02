@@ -1,0 +1,144 @@
+{
+  "version": 1,
+  "name": "MapAreaShipwreckTable",
+  "description": "中型三层科克船模板；船体99米、真实门与家具保持米制。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "模板编号",
+      "min": 1
+    },
+    {
+      "name": "deckZ",
+      "type": "float[]",
+      "description": "Unity Z船壳剖面"
+    },
+    {
+      "name": "deckHalfWidth",
+      "type": "float[]",
+      "description": "对应船壳半宽"
+    },
+    {
+      "name": "navMargin",
+      "type": "float",
+      "description": "六角顶点外安全内缩",
+      "min": 0
+    },
+    {
+      "name": "gapMinZ",
+      "type": "float",
+      "description": "主甲板左舷破口Z起点"
+    },
+    {
+      "name": "gapMaxZ",
+      "type": "float",
+      "description": "主甲板破口Z终点"
+    },
+    {
+      "name": "gapMaxX",
+      "type": "float",
+      "description": "主甲板破口X上界"
+    },
+    {
+      "name": "waterHeight",
+      "type": "float",
+      "description": "外部水位"
+    },
+    {
+      "name": "entryX",
+      "type": "float",
+      "description": "主甲板入口相对X"
+    },
+    {
+      "name": "entryZ",
+      "type": "float",
+      "description": "主甲板入口相对Z"
+    },
+    {
+      "name": "entryLayer",
+      "type": "int",
+      "description": "入口楼层"
+    },
+    {
+      "name": "goalRoomId",
+      "type": "int",
+      "description": "最远目标房间编号"
+    },
+    {
+      "name": "deckSurfaceId",
+      "type": "int",
+      "description": "生成木板材质",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "waterSurfaceId",
+      "type": "int",
+      "description": "外部水面材质",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "deckThickness",
+      "type": "float",
+      "description": "薄木楼板厚度",
+      "min": 0.05
+    },
+    {
+      "name": "stairRise",
+      "type": "float",
+      "description": "可见踏步高度",
+      "min": 0.05
+    },
+    {
+      "name": "minimumClearance",
+      "type": "float",
+      "description": "下层开放通路板底净高",
+      "min": 1.9
+    },
+    {
+      "name": "minWalkableCells",
+      "type": "int",
+      "description": "陈设后最低可走面积",
+      "min": 100
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "deckZ": [
+        -45,
+        -30,
+        -9,
+        15,
+        33,
+        45,
+        54
+      ],
+      "deckHalfWidth": [
+        11.1,
+        15,
+        18.3,
+        17.4,
+        13.5,
+        7.8,
+        0.75
+      ],
+      "navMargin": 0.4,
+      "gapMinZ": 6,
+      "gapMaxZ": 15,
+      "gapMaxX": -8.1,
+      "waterHeight": -1.15,
+      "entryX": 13.8564,
+      "entryZ": -18,
+      "entryLayer": 1,
+      "goalRoomId": 9,
+      "deckSurfaceId": 9,
+      "waterSurfaceId": 40,
+      "deckThickness": 0.24,
+      "stairRise": 0.16,
+      "minimumClearance": 2,
+      "minWalkableCells": 1200
+    }
+  ]
+}

@@ -81,7 +81,8 @@
         "spell",
         "support",
         "slash",
-        "animal"
+        "animal",
+        "construction"
       ]
     },
     {
@@ -136,6 +137,12 @@
       "default": [
         "battle"
       ]
+    },
+    {
+      "name": "affectsContainers",
+      "type": "bool",
+      "description": "允许即时伤害作用于可破坏容器，含范围技能波及",
+      "default": false
     }
   ],
   "rows": [
@@ -160,8 +167,10 @@
       "damageScale": 1,
       "actionTemplate": 4,
       "contexts": [
-        "battle"
-      ]
+        "battle",
+        "life"
+      ],
+      "affectsContainers": true
     },
     {
       "id": 2,
@@ -184,8 +193,10 @@
       "damageScale": 1,
       "actionTemplate": 2,
       "contexts": [
-        "battle"
-      ]
+        "battle",
+        "life"
+      ],
+      "affectsContainers": true
     },
     {
       "id": 3,
@@ -208,8 +219,10 @@
       "damageScale": 1,
       "actionTemplate": 1,
       "contexts": [
-        "battle"
-      ]
+        "battle",
+        "life"
+      ],
+      "affectsContainers": true
     },
     {
       "id": 4,
@@ -280,8 +293,10 @@
       "damageScale": 1,
       "actionTemplate": 1,
       "contexts": [
-        "battle"
-      ]
+        "battle",
+        "life"
+      ],
+      "affectsContainers": true
     },
     {
       "id": 7,
@@ -304,8 +319,10 @@
       "damageScale": 1,
       "actionTemplate": 2,
       "contexts": [
-        "battle"
-      ]
+        "battle",
+        "life"
+      ],
+      "affectsContainers": true
     },
     {
       "id": 8,
@@ -328,8 +345,10 @@
       "damageScale": 0.65,
       "actionTemplate": 2,
       "contexts": [
-        "battle"
-      ]
+        "battle",
+        "life"
+      ],
+      "affectsContainers": true
     },
     {
       "id": 9,
@@ -376,8 +395,10 @@
       "damageScale": 1,
       "actionTemplate": 4,
       "contexts": [
-        "battle"
-      ]
+        "battle",
+        "life"
+      ],
+      "affectsContainers": true
     },
     {
       "id": 11,
@@ -400,8 +421,10 @@
       "damageScale": 1,
       "actionTemplate": 5,
       "contexts": [
-        "battle"
-      ]
+        "battle",
+        "life"
+      ],
+      "affectsContainers": true
     },
     {
       "id": 12,
@@ -424,8 +447,10 @@
       "damageScale": 1,
       "actionTemplate": 6,
       "contexts": [
-        "battle"
-      ]
+        "battle",
+        "life"
+      ],
+      "affectsContainers": true
     },
     {
       "id": 13,
@@ -448,8 +473,10 @@
       "damageScale": 0.7,
       "actionTemplate": 7,
       "contexts": [
-        "battle"
-      ]
+        "battle",
+        "life"
+      ],
+      "affectsContainers": true
     },
     {
       "id": 101,
@@ -472,8 +499,10 @@
       "damageScale": 1.25,
       "actionTemplate": 4,
       "contexts": [
-        "battle"
-      ]
+        "battle",
+        "life"
+      ],
+      "affectsContainers": true
     },
     {
       "id": 102,
@@ -496,8 +525,10 @@
       "damageScale": 1.7,
       "actionTemplate": 5,
       "contexts": [
-        "battle"
-      ]
+        "battle",
+        "life"
+      ],
+      "affectsContainers": true
     },
     {
       "id": 103,
@@ -520,8 +551,10 @@
       "damageScale": 1.25,
       "actionTemplate": 1,
       "contexts": [
-        "battle"
-      ]
+        "battle",
+        "life"
+      ],
+      "affectsContainers": true
     },
     {
       "id": 104,
@@ -544,8 +577,10 @@
       "damageScale": 1.65,
       "actionTemplate": 1,
       "contexts": [
-        "battle"
-      ]
+        "battle",
+        "life"
+      ],
+      "affectsContainers": true
     },
     {
       "id": 105,
@@ -568,8 +603,10 @@
       "damageScale": 1.3,
       "actionTemplate": 2,
       "contexts": [
-        "battle"
-      ]
+        "battle",
+        "life"
+      ],
+      "affectsContainers": true
     },
     {
       "id": 106,
@@ -592,8 +629,10 @@
       "damageScale": 1.7,
       "actionTemplate": 2,
       "contexts": [
-        "battle"
-      ]
+        "battle",
+        "life"
+      ],
+      "affectsContainers": true
     },
     {
       "id": 107,
@@ -761,6 +800,161 @@
       "damageScale": 1,
       "actionTemplate": 0,
       "contexts": [
+        "battle"
+      ]
+    },
+    {
+      "id": 301,
+      "name": "简易栅栏",
+      "description": "消耗木料在相邻空格放置栅栏。阻挡通行，不阻挡射线，双方均可破坏。",
+      "iconId": 4,
+      "action": "main",
+      "cost": 2,
+      "range": 1,
+      "target": "cell",
+      "proficiency": "crafting",
+      "effectIds": [],
+      "skillGroup": "construction",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 4,
+      "contexts": [
+        "battle"
+      ]
+    },
+    {
+      "id": 302,
+      "name": "木墙",
+      "description": "消耗木料与铁件搭建木墙，阻挡通行与视线，双方均可破坏。",
+      "iconId": 4,
+      "action": "main",
+      "cost": 3,
+      "range": 1,
+      "target": "cell",
+      "proficiency": "crafting",
+      "effectIds": [],
+      "skillGroup": "construction",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 4,
+      "contexts": [
+        "battle"
+      ]
+    },
+    {
+      "id": 303,
+      "name": "简易踏台",
+      "description": "搭建可攀登的踏台。上下移动额外消耗 1 格移动距离，拆毁后回落原格。",
+      "iconId": 4,
+      "action": "main",
+      "cost": 2,
+      "range": 1,
+      "target": "cell",
+      "proficiency": "crafting",
+      "effectIds": [],
+      "skillGroup": "construction",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 4,
+      "contexts": [
+        "battle"
+      ]
+    },
+    {
+      "id": 304,
+      "name": "射击高台",
+      "description": "搭建可攀登的高台。站立者对较低目标使用远程攻击时射程 +1；下方不可通行。",
+      "iconId": 4,
+      "action": "main",
+      "cost": 4,
+      "range": 1,
+      "target": "cell",
+      "proficiency": "crafting",
+      "effectIds": [],
+      "skillGroup": "construction",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 4,
+      "contexts": [
+        "battle"
+      ]
+    },
+    {
+      "id": 305,
+      "name": "挖掘浅坑",
+      "description": "装备铲子，在相邻泥土或草地挖浅坑。进入坑格额外消耗 1 格移动距离。",
+      "iconId": 4,
+      "action": "main",
+      "cost": 2,
+      "range": 1,
+      "target": "cell",
+      "proficiency": "crafting",
+      "effectIds": [],
+      "skillGroup": "construction",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 4,
+      "contexts": [
+        "battle"
+      ]
+    },
+    {
+      "id": 306,
+      "name": "开挖壕沟",
+      "description": "装备铲子挖掘较深的单格壕沟。进入壕沟额外消耗 2 格移动距离。",
+      "iconId": 4,
+      "action": "main",
+      "cost": 3,
+      "range": 1,
+      "target": "cell",
+      "proficiency": "crafting",
+      "effectIds": [],
+      "skillGroup": "construction",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 4,
+      "contexts": [
+        "battle"
+      ]
+    },
+    {
+      "id": 307,
+      "name": "破坏工事",
+      "description": "攻击相邻工事，造成力量相关的结构伤害；拆毁高台时站立单位回落原格。",
+      "iconId": 4,
+      "action": "main",
+      "cost": 2,
+      "range": 1,
+      "target": "cell",
+      "proficiency": "crafting",
+      "effectIds": [],
+      "skillGroup": "construction",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 4,
+      "contexts": [
+        "life",
         "battle"
       ]
     }

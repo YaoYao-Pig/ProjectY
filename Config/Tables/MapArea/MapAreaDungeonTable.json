@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "MapAreaDungeonTable",
-  "description": "按功能分区聚合房间，形成主路线与有意义的回路；通道宽度连续变化。",
+  "description": "按功能分区聚合平整房间，形成宽通道、台地楼梯与有意义的回路。",
   "key": "id",
   "fields": [
     {
@@ -160,6 +160,41 @@
       "max": 8
     },
     {
+      "name": "terraceHeight",
+      "type": "float",
+      "description": "地牢每级台地高度（米）；必须是单级台阶高度的整数倍",
+      "min": 0.18,
+      "max": 5
+    },
+    {
+      "name": "terraceCount",
+      "type": "int",
+      "description": "地牢最大爬升台地级数；0 米入口之上追加的高层数量",
+      "min": 1,
+      "max": 4
+    },
+    {
+      "name": "terraceSpacing",
+      "type": "int",
+      "description": "台地重复间隔（通道拓扑格数）；完整房间不累计格数",
+      "min": 4,
+      "max": 30
+    },
+    {
+      "name": "stairLength",
+      "type": "int",
+      "description": "每级台地的楼梯跨度（格）；须小于台地间隔",
+      "min": 2,
+      "max": 15
+    },
+    {
+      "name": "stairRise",
+      "type": "float",
+      "description": "可见楼梯每级台阶高度（米），地形与角色贴地共用",
+      "min": 0.1,
+      "max": 0.3
+    },
+    {
       "name": "basicDressingIds",
       "type": "int[]",
       "description": "小洞穴追加陈设",
@@ -212,6 +247,11 @@
       "corridorWidthScale": 13,
       "chamberChance": 0.65,
       "loopMinHops": 3,
+      "terraceHeight": 2.7,
+      "terraceCount": 2,
+      "terraceSpacing": 12,
+      "stairLength": 5,
+      "stairRise": 0.18,
       "basicDressingIds": [
         17,
         19,

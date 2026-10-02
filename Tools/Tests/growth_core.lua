@@ -31,7 +31,7 @@ test('real pool draw excludes learned/current skills, respects attribute tier ga
     local ids=rules:Draw(a,stats);assert(#ids>=1 and #ids<=3)
     local seen={};for _,id in ipairs(ids) do assert(id~=101 and id~=103 and not seen[id]);seen[id]=true end
     for _,id in ipairs(ids) do assert(id~=102 and id~=104 and id~=106 and id~=108,'High tier leaked below threshold') end
-    stats.equipment.SkillIds=function() return {101,102,103,104,105,106,107,108} end
+    stats.equipment.SkillIds=function() local all={};for _,skill in ipairs(rules.skills:All()) do all[#all+1]=skill.id end;return all end
     assert(#rules:Draw(a,stats)==0)
 end)
 test('talent config rejects disconnected graphs and directed cycles before gameplay',function()

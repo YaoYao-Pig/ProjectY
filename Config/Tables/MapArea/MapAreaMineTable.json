@@ -1,0 +1,129 @@
+{
+  "version": 1,
+  "name": "MapAreaMineTable",
+  "description": "三层矿井；实际薄岩层、坍塌视窗和双向木阶。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定编号",
+      "min": 1
+    },
+    {
+      "name": "corridorRadius",
+      "type": "int",
+      "description": "矿道最小半径"
+    },
+    {
+      "name": "deckThickness",
+      "type": "float",
+      "description": "岩层楼板厚度"
+    },
+    {
+      "name": "stairRise",
+      "type": "float",
+      "description": "木阶每级高度"
+    },
+    {
+      "name": "minimumClearance",
+      "type": "float",
+      "description": "开放通路最低净空"
+    },
+    {
+      "name": "entryLayer",
+      "type": "int",
+      "description": "入口层"
+    },
+    {
+      "name": "entryQ",
+      "type": "int",
+      "description": "入口相对轴向q"
+    },
+    {
+      "name": "entryR",
+      "type": "int",
+      "description": "入口相对轴向r"
+    },
+    {
+      "name": "goalRoomId",
+      "type": "int",
+      "description": "底层目标矿室"
+    },
+    {
+      "name": "minWalkableCells",
+      "type": "int",
+      "description": "最少连通地格"
+    },
+    {
+      "name": "wallSurfaceId",
+      "type": "int",
+      "description": "岩壁材质",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "stairSurfaceId",
+      "type": "int",
+      "description": "梯道木材",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "supportAssetId",
+      "type": "int",
+      "description": "矿道木架",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "railAssetId",
+      "type": "int",
+      "description": "矿轨",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "cartAssetId",
+      "type": "int",
+      "description": "矿车",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "oreAssetId",
+      "type": "int",
+      "description": "矿石簇",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "workstationAssetId",
+      "type": "int",
+      "description": "矿井工作台",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "oreCountPerLayer",
+      "type": "int",
+      "description": "每层矿石簇数量"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "corridorRadius": 2,
+      "deckThickness": 0.35,
+      "stairRise": 0.1666667,
+      "minimumClearance": 2.2,
+      "entryLayer": 2,
+      "entryQ": -16,
+      "entryR": 0,
+      "goalRoomId": 3,
+      "minWalkableCells": 1400,
+      "wallSurfaceId": 21,
+      "stairSurfaceId": 16,
+      "supportAssetId": 901,
+      "railAssetId": 902,
+      "cartAssetId": 903,
+      "oreAssetId": 904,
+      "workstationAssetId": 905,
+      "oreCountPerLayer": 12
+    }
+  ]
+}
+

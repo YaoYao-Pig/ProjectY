@@ -24,6 +24,7 @@ namespace ProjectY.Samples
         }
         private readonly MapAreaViewData layout;
         private readonly Settings settings;
+        private readonly Func<int, bool> isCellShown;
         private readonly Mesh mesh;
         private readonly Mesh hoverMesh, selectedMesh;
         private readonly Material material;
@@ -34,13 +35,14 @@ namespace ProjectY.Samples
         private readonly Vector4[] centers=new Vector4[4];
         private readonly int[] memberCells=new int[4], memberLayers=new int[4];
         private readonly bool[] visible;
-        private int members, revision=-1, visibleCount;
+        private readonly HashSet<int> obstacleCells=new HashSet<int>();
+        private int members, revision=-1, visibleCount,constructionRevision=-1,containerRevision=-1;
         private bool exploring;
         private int hovered=-1, selected=-1, hoverMeshCell=-1, selectedMeshCell=-1;
         public int CellCount => cells.Count;
-        public ExplorationGridRenderer(MapAreaViewData layout,Settings settings)
+        public ExplorationGridRenderer(MapAreaViewData layout,Settings settings,Func<int,bool> isCellShown=null)
         {
-            settings.Validate();this.layout=layout;this.settings=settings;
+            settings.Validate();this.layout=layout;this.settings=settings;this.isCellShown=isCellShown;
             // An explicit Resources asset keeps the shader available in Player builds without Shader.Find/scene searches.
             var shader=Resources.Load<Shader>("Rendering/ExplorationGrid");
             if(shader==null) throw new InvalidOperationException("Missing Rendering/ExplorationGrid shader.");
@@ -55,7 +57,12 @@ namespace ProjectY.Samples
             exploring=isExploring;
             if(!isExploring) return;
             if(state.Members.Length<1 || state.Members.Length>4) throw new InvalidOperationException("Exploration grid requires 1–4 squad members.");
-            bool changed=state.Members.Length!=members || state.Visible.Length!=visibleCount;
+            bool changed=state.Members.Length!=members || state.Visible.Length!=visibleCount || state.ConstructionRevision!=constructionRevision || state.ContainerRevision!=containerRevision;
+            if(state.ContainerRevision!=containerRevision){hoverMeshCell=selectedMeshCell=-1;containerRevision=state.ContainerRevision;}
+            if(state.ConstructionRevision!=constructionRevision){hoverMeshCell=selectedMeshCell=-1;constructionRevision=state.ConstructionRevision;}
+            int previousObstacleCount=obstacleCells.Count;obstacleCells.Clear();
+            foreach(var obstacle in state.Obstacles)if(obstacle.BlocksMovement)foreach(var index in obstacle.Cells)obstacleCells.Add(index);
+            changed|=previousObstacleCount!=obstacleCells.Count;
             for(int i=0;i<state.Members.Length;i++) changed|=memberCells[i]!=state.Members[i].CellIndex;
             if(state.Revision!=revision && !changed)
                 foreach(var index in state.Visible) if(!visible[index]) {changed=true;break;}
@@ -69,7 +76,7 @@ namespace ProjectY.Samples
             float limit=(settings.FadeRadius+2)*layout.Radius*1.7320508f;float limitSquared=limit*limit;
             foreach(var index in state.Visible)
             {
-                var cell=layout.Cells[index];if(cell.Blocked) continue;
+                var cell=layout.Cells[index];if(cell.Blocked||obstacleCells.Contains(index)||(isCellShown!=null&&!isCellShown(index))) continue;
                 bool nearby=false;
                 for(int i=0;i<members&&!nearby;i++)
                 {
@@ -97,7 +104,8 @@ namespace ProjectY.Samples
                 throw new ArgumentOutOfRangeException("Interaction cell is outside the current map.");
             hovered=hoveredCell;selected=selectedCell;
         }
-        private int VisibleInteraction(int index) => index>=0 && visible[index] && !layout.Cells[index].Blocked ? index : -1;
+        private int VisibleInteraction(int index) => index>=0 && visible[index] && !layout.Cells[index].Blocked
+            && (isCellShown==null||isCellShown(index)) ? index : -1;
         private static Color ShaderColor(Color value) => QualitySettings.activeColorSpace==ColorSpace.Linear?value.linear:value;
         // Exposed for deterministic presentation checks, using the same curve as the shader.
         public static float Opacity(float distance,float clearRadius,float fadeRadius)

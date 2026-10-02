@@ -1,0 +1,1800 @@
+[
+  {
+    "slug": "MarinerCompass",
+    "title": "暮潮航海罗盘",
+    "category": "navigation",
+    "placement": "table",
+    "map_asset_id": 830,
+    "origin": "bottom origin, metres; Blender -Y front, Unity +Z front; zero transforms",
+    "intended_use": "tabletop / inventory prop; floor rope and tackle retain real scale",
+    "lore": "旧铜外壳护住象牙色盘面，赤红指针仍指向船员记忆中的北方。掌舵者在浓雾中反复确认的微小方向，如今静伏在潮湿案桌上。",
+    "references": [
+      {
+        "id": "sot_gear",
+        "work": "Sea of Thieves — Season Four",
+        "page": "https://www.seaofthieves.com/season-four",
+        "image": "https://rare-assets.azureedge.net/compass/5ee6cf06463808c6eb84837eb6e7554e14135aaa.jpg",
+        "local": "References/sot_gear.png",
+        "study": "多段铜望远镜、宽罗盘圈、罩灯的明确外轮廓；简化装饰而保留用途"
+      },
+      {
+        "id": "sot_cabin",
+        "work": "Sea of Thieves — Captain’s cabin",
+        "page": "https://www.windowscentral.com/gaming/will-sea-of-thieves-ever-deliver-pve-only-play-for-those-who-hate-pvp",
+        "image": "https://cdn.mos.cms.futurecdn.net/ZVqGmeMU6VuArfLWtoTx6C.png",
+        "local": "References/sot_cabin.png",
+        "study": "航海书册、沙漏、海图、罗盘在桌面上的真实比例关系"
+      }
+    ],
+    "literary_reference": {
+      "work": "Robert Louis Stevenson — Treasure Island",
+      "url": "https://www.gutenberg.org/ebooks/120",
+      "motif": "shipboard provisions, cabin objects, an unfinished voyage; original fiction, no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_after_corrections",
+    "name": "SWP_MarinerCompass",
+    "dimensions_blender_xyz": [
+      0.1679999977350235,
+      0.20899999141693115,
+      0.06499999761581421
+    ],
+    "triangles": 708,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SPBronze",
+      "M_MapLP_SPCream",
+      "M_MapLP_SPIron",
+      "M_MapLP_SPDark",
+      "M_MapLP_SPRed"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckProps\\Staging\\SWP_MarinerCompass.fbx",
+      "bytes": 37500,
+      "object": "SWP_MarinerCompass",
+      "mesh": "SWP_MarinerCompass_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "dimensions_unity_xyz": [
+      0.1679999977350235,
+      0.06499999761581421,
+      0.20899999141693115
+    ],
+    "surface_clearance_m": 0.004,
+    "bounds_unity": {
+      "min": [
+        -0.08399999886751175,
+        0.0,
+        -0.125
+      ],
+      "max": [
+        0.08399999886751175,
+        0.06499999761581421,
+        0.08399999886751175
+      ],
+      "center": [
+        0.0,
+        0.032499998807907104,
+        -0.020500000566244125
+      ],
+      "size": [
+        0.1679999977350235,
+        0.06499999761581421,
+        0.20899999886751175
+      ]
+    },
+    "review_zh": "铜盘、刻度、双色指针完整；正侧背无漏面，hero可辨导航用途。",
+    "lore_han_characters": 52,
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "slug": "FoldedSeaChart",
+    "title": "三折沿岸海图",
+    "category": "navigation",
+    "placement": "table",
+    "map_asset_id": 831,
+    "origin": "bottom origin, metres; Blender -Y front, Unity +Z front; zero transforms",
+    "intended_use": "tabletop / inventory prop; floor rope and tackle retain real scale",
+    "lore": "麻纸沿旧折痕隆起，褪绿的海岸和断续红点仍勾出商路。最后一个记号停在没有名字的浅湾，折回的纸角藏住了船长未说出口的打算。",
+    "references": [
+      {
+        "id": "sot_table",
+        "work": "Sea of Thieves — Quest Table",
+        "page": "https://rarethief.com/sea-of-thieves-how-to-use-the-quest-table/",
+        "image": "https://rarethief.com/wp-content/uploads/2024/01/sea-of-thieves-season-11-quest-table.png",
+        "local": "References/sot_table.png",
+        "study": "厚纸海图、封面书册、书写桌与暖色灯具的航海叙事组合"
+      },
+      {
+        "id": "sot_cabin",
+        "work": "Sea of Thieves — Captain’s cabin",
+        "page": "https://www.windowscentral.com/gaming/will-sea-of-thieves-ever-deliver-pve-only-play-for-those-who-hate-pvp",
+        "image": "https://cdn.mos.cms.futurecdn.net/ZVqGmeMU6VuArfLWtoTx6C.png",
+        "local": "References/sot_cabin.png",
+        "study": "航海书册、沙漏、海图、罗盘在桌面上的真实比例关系"
+      }
+    ],
+    "literary_reference": {
+      "work": "Robert Louis Stevenson — Treasure Island",
+      "url": "https://www.gutenberg.org/ebooks/120",
+      "motif": "shipboard provisions, cabin objects, an unfinished voyage; original fiction, no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_after_corrections",
+    "name": "SWP_FoldedSeaChart",
+    "dimensions_blender_xyz": [
+      0.41999998688697815,
+      0.30000001192092896,
+      0.019999999552965164
+    ],
+    "triangles": 120,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SPPaper",
+      "M_MapLP_SPTeal",
+      "M_MapLP_SPRed"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckProps\\Staging\\SWP_FoldedSeaChart.fbx",
+      "bytes": 20524,
+      "object": "SWP_FoldedSeaChart",
+      "mesh": "SWP_FoldedSeaChart_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "dimensions_unity_xyz": [
+      0.41999998688697815,
+      0.019999999552965164,
+      0.30000001192092896
+    ],
+    "surface_clearance_m": 0.004,
+    "bounds_unity": {
+      "min": [
+        -0.20999999344348907,
+        0.0,
+        -0.15000000596046448
+      ],
+      "max": [
+        0.20999999344348907,
+        0.019999999552965164,
+        0.15000000596046448
+      ],
+      "center": [
+        0.0,
+        0.009999999776482582,
+        0.0
+      ],
+      "size": [
+        0.41999998688697815,
+        0.019999999552965164,
+        0.30000001192092896
+      ]
+    },
+    "review_zh": "三折纸片有厚度，地形色块贴合折面；侧面折线清晰。",
+    "lore_han_characters": 55,
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "slug": "CaptainsLog",
+    "title": "皮封航海日志",
+    "category": "navigation",
+    "placement": "table",
+    "map_asset_id": 832,
+    "origin": "bottom origin, metres; Blender -Y front, Unity +Z front; zero transforms",
+    "intended_use": "tabletop / inventory prop; floor rope and tackle retain real scale",
+    "lore": "厚皮封面用铜箍保护书脊，青灰绑带压住受潮膨起的书页。日志原来逐日记录潮水与分粮，末尾却夹着一张始终没有寄出的家书。",
+    "references": [
+      {
+        "id": "sot_table",
+        "work": "Sea of Thieves — Quest Table",
+        "page": "https://rarethief.com/sea-of-thieves-how-to-use-the-quest-table/",
+        "image": "https://rarethief.com/wp-content/uploads/2024/01/sea-of-thieves-season-11-quest-table.png",
+        "local": "References/sot_table.png",
+        "study": "厚纸海图、封面书册、书写桌与暖色灯具的航海叙事组合"
+      },
+      {
+        "id": "sot_cabin",
+        "work": "Sea of Thieves — Captain’s cabin",
+        "page": "https://www.windowscentral.com/gaming/will-sea-of-thieves-ever-deliver-pve-only-play-for-those-who-hate-pvp",
+        "image": "https://cdn.mos.cms.futurecdn.net/ZVqGmeMU6VuArfLWtoTx6C.png",
+        "local": "References/sot_cabin.png",
+        "study": "航海书册、沙漏、海图、罗盘在桌面上的真实比例关系"
+      }
+    ],
+    "literary_reference": {
+      "work": "Robert Louis Stevenson — Treasure Island",
+      "url": "https://www.gutenberg.org/ebooks/120",
+      "motif": "shipboard provisions, cabin objects, an unfinished voyage; original fiction, no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_after_corrections",
+    "name": "SWP_CaptainsLog",
+    "dimensions_blender_xyz": [
+      0.22599999606609344,
+      0.30000001192092896,
+      0.10599999874830246
+    ],
+    "triangles": 108,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SPLeather",
+      "M_MapLP_SPPaper",
+      "M_MapLP_SPWood",
+      "M_MapLP_SPBronze",
+      "M_MapLP_SPTeal"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckProps\\Staging\\SWP_CaptainsLog.fbx",
+      "bytes": 21580,
+      "object": "SWP_CaptainsLog",
+      "mesh": "SWP_CaptainsLog_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "dimensions_unity_xyz": [
+      0.22599999606609344,
+      0.10599999874830246,
+      0.30000001192092896
+    ],
+    "surface_clearance_m": 0.004,
+    "bounds_unity": {
+      "min": [
+        -0.10999999940395355,
+        0.0,
+        -0.15000000596046448
+      ],
+      "max": [
+        0.11599999666213989,
+        0.10599999874830246,
+        0.15000000596046448
+      ],
+      "center": [
+        0.00299999862909317,
+        0.05299999937415123,
+        0.0
+      ],
+      "size": [
+        0.22599999606609344,
+        0.10599999874830246,
+        0.30000001192092896
+      ]
+    },
+    "review_zh": "封面、纸页、书脊与绑带完整，桌面落点正确。",
+    "lore_han_characters": 53,
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "slug": "WatchHourglass",
+    "title": "值更木架沙漏",
+    "category": "navigation",
+    "placement": "table",
+    "map_asset_id": 833,
+    "origin": "bottom origin, metres; Blender -Y front, Unity +Z front; zero transforms",
+    "intended_use": "tabletop / inventory prop; floor rope and tackle retain real scale",
+    "lore": "四根细柱围住收腰的计时瓶，浅砂凝在最后一次值更之间。船员曾靠它交换夜岗，如今无人再翻转木架，舱外的浪声依旧准时。",
+    "references": [
+      {
+        "id": "sot_cabin",
+        "work": "Sea of Thieves — Captain’s cabin",
+        "page": "https://www.windowscentral.com/gaming/will-sea-of-thieves-ever-deliver-pve-only-play-for-those-who-hate-pvp",
+        "image": "https://cdn.mos.cms.futurecdn.net/ZVqGmeMU6VuArfLWtoTx6C.png",
+        "local": "References/sot_cabin.png",
+        "study": "航海书册、沙漏、海图、罗盘在桌面上的真实比例关系"
+      },
+      {
+        "id": "sot_gear",
+        "work": "Sea of Thieves — Season Four",
+        "page": "https://www.seaofthieves.com/season-four",
+        "image": "https://rare-assets.azureedge.net/compass/5ee6cf06463808c6eb84837eb6e7554e14135aaa.jpg",
+        "local": "References/sot_gear.png",
+        "study": "多段铜望远镜、宽罗盘圈、罩灯的明确外轮廓；简化装饰而保留用途"
+      }
+    ],
+    "literary_reference": {
+      "work": "Robert Louis Stevenson — Treasure Island",
+      "url": "https://www.gutenberg.org/ebooks/120",
+      "motif": "shipboard provisions, cabin objects, an unfinished voyage; original fiction, no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_after_corrections",
+    "name": "SWP_WatchHourglass",
+    "dimensions_blender_xyz": [
+      0.17800000309944153,
+      0.17800000309944153,
+      0.27799999713897705
+    ],
+    "triangles": 424,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SPWood",
+      "M_MapLP_SPBronze",
+      "M_MapLP_SPTeal",
+      "M_MapLP_SPSand"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckProps\\Staging\\SWP_WatchHourglass.fbx",
+      "bytes": 28796,
+      "object": "SWP_WatchHourglass",
+      "mesh": "SWP_WatchHourglass_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "dimensions_unity_xyz": [
+      0.17800000309944153,
+      0.27799999713897705,
+      0.17800000309944153
+    ],
+    "surface_clearance_m": 0.004,
+    "bounds_unity": {
+      "min": [
+        -0.08900000154972076,
+        0.0,
+        -0.08900000154972076
+      ],
+      "max": [
+        0.08900000154972076,
+        0.27799999713897705,
+        0.08900000154972076
+      ],
+      "center": [
+        0.0,
+        0.13899999856948853,
+        0.0
+      ],
+      "size": [
+        0.17800000309944153,
+        0.27799999713897705,
+        0.17800000309944153
+      ]
+    },
+    "review_zh": "四柱与收腰计时体连接，砂色分区不依赖透明材质。",
+    "lore_han_characters": 51,
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "slug": "BrassSpyglass",
+    "title": "皮握铜望远镜",
+    "category": "navigation",
+    "placement": "table",
+    "map_asset_id": 834,
+    "origin": "bottom origin, metres; Blender -Y front, Unity +Z front; zero transforms",
+    "intended_use": "tabletop / inventory prop; floor rope and tackle retain real scale",
+    "lore": "套接铜管已缩回便于携带的长度，旧皮握套留下掌心的暗痕。它看过港口的炊烟，也看过接近的风暴，最后映入镜口的是倾斜海面。",
+    "references": [
+      {
+        "id": "sot_gear",
+        "work": "Sea of Thieves — Season Four",
+        "page": "https://www.seaofthieves.com/season-four",
+        "image": "https://rare-assets.azureedge.net/compass/5ee6cf06463808c6eb84837eb6e7554e14135aaa.jpg",
+        "local": "References/sot_gear.png",
+        "study": "多段铜望远镜、宽罗盘圈、罩灯的明确外轮廓；简化装饰而保留用途"
+      },
+      {
+        "id": "sot_cabin",
+        "work": "Sea of Thieves — Captain’s cabin",
+        "page": "https://www.windowscentral.com/gaming/will-sea-of-thieves-ever-deliver-pve-only-play-for-those-who-hate-pvp",
+        "image": "https://cdn.mos.cms.futurecdn.net/ZVqGmeMU6VuArfLWtoTx6C.png",
+        "local": "References/sot_cabin.png",
+        "study": "航海书册、沙漏、海图、罗盘在桌面上的真实比例关系"
+      }
+    ],
+    "literary_reference": {
+      "work": "Robert Louis Stevenson — Treasure Island",
+      "url": "https://www.gutenberg.org/ebooks/120",
+      "motif": "shipboard provisions, cabin objects, an unfinished voyage; original fiction, no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_after_corrections",
+    "name": "SWP_BrassSpyglass",
+    "dimensions_blender_xyz": [
+      0.4699999988079071,
+      0.11400000005960464,
+      0.11400000005960464
+    ],
+    "triangles": 944,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SPBronze",
+      "M_MapLP_SPLeather",
+      "M_MapLP_SPDark",
+      "M_MapLP_SPTeal"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckProps\\Staging\\SWP_BrassSpyglass.fbx",
+      "bytes": 42524,
+      "object": "SWP_BrassSpyglass",
+      "mesh": "SWP_BrassSpyglass_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "dimensions_unity_xyz": [
+      0.4699999988079071,
+      0.11400000005960464,
+      0.11400000005960464
+    ],
+    "surface_clearance_m": 0.004,
+    "bounds_unity": {
+      "min": [
+        -0.23499999940395355,
+        0.0,
+        -0.05700000002980232
+      ],
+      "max": [
+        0.23499999940395355,
+        0.11400000005960464,
+        0.05700000002980232
+      ],
+      "center": [
+        0.0,
+        0.05700000002980232,
+        0.0
+      ],
+      "size": [
+        0.4699999988079071,
+        0.11400000005960464,
+        0.11400000005960464
+      ]
+    },
+    "review_zh": "套接管层次与握套清楚，宽镜口为放置接触面。",
+    "lore_han_characters": 53,
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "slug": "CabinLantern",
+    "title": "铁罩值夜船灯",
+    "category": "navigation",
+    "placement": "table",
+    "map_asset_id": 835,
+    "origin": "bottom origin, metres; Blender -Y front, Unity +Z front; zero transforms",
+    "intended_use": "tabletop / inventory prop; floor rope and tackle retain real scale",
+    "lore": "铁护条围住暖色灯罩，提环仍能挂上舱梁的木钩。有限的灯油曾照亮深夜缝补的双手；如今它的形状使废船仍像有人等待归来。",
+    "references": [
+      {
+        "id": "sot_gear",
+        "work": "Sea of Thieves — Season Four",
+        "page": "https://www.seaofthieves.com/season-four",
+        "image": "https://rare-assets.azureedge.net/compass/5ee6cf06463808c6eb84837eb6e7554e14135aaa.jpg",
+        "local": "References/sot_gear.png",
+        "study": "多段铜望远镜、宽罗盘圈、罩灯的明确外轮廓；简化装饰而保留用途"
+      },
+      {
+        "id": "sot_table",
+        "work": "Sea of Thieves — Quest Table",
+        "page": "https://rarethief.com/sea-of-thieves-how-to-use-the-quest-table/",
+        "image": "https://rarethief.com/wp-content/uploads/2024/01/sea-of-thieves-season-11-quest-table.png",
+        "local": "References/sot_table.png",
+        "study": "厚纸海图、封面书册、书写桌与暖色灯具的航海叙事组合"
+      }
+    ],
+    "literary_reference": {
+      "work": "Robert Louis Stevenson — Treasure Island",
+      "url": "https://www.gutenberg.org/ebooks/120",
+      "motif": "shipboard provisions, cabin objects, an unfinished voyage; original fiction, no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_after_corrections",
+    "name": "SWP_CabinLantern",
+    "dimensions_blender_xyz": [
+      0.20000000298023224,
+      0.20000000298023224,
+      0.41200000047683716
+    ],
+    "triangles": 592,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SPDark",
+      "M_MapLP_SPSand",
+      "M_MapLP_SPIron",
+      "M_MapLP_SPBronze"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckProps\\Staging\\SWP_CabinLantern.fbx",
+      "bytes": 34124,
+      "object": "SWP_CabinLantern",
+      "mesh": "SWP_CabinLantern_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "dimensions_unity_xyz": [
+      0.20000000298023224,
+      0.41200000047683716,
+      0.20000000298023224
+    ],
+    "surface_clearance_m": 0.004,
+    "bounds_unity": {
+      "min": [
+        -0.10000000149011612,
+        0.0,
+        -0.10000000149011612
+      ],
+      "max": [
+        0.10000000149011612,
+        0.41200000047683716,
+        0.10000000149011612
+      ],
+      "center": [
+        0.0,
+        0.20600000023841858,
+        0.0
+      ],
+      "size": [
+        0.20000000298023224,
+        0.41200000047683716,
+        0.20000000298023224
+      ]
+    },
+    "review_zh": "铁罩、四护条与提环完整连接，使用不透明哑光灯罩。",
+    "lore_han_characters": 52,
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "slug": "LeatherFlask",
+    "title": "皮套船员酒壶",
+    "category": "domestic",
+    "placement": "table",
+    "map_asset_id": 836,
+    "origin": "bottom origin, metres; Blender -Y front, Unity +Z front; zero transforms",
+    "intended_use": "tabletop / inventory prop; floor rope and tackle retain real scale",
+    "lore": "扁腹酒壶收在磨旧皮套中，短木塞牢牢堵住壶口。出航时装入的烈酒常被分成很小的份量，寒冷值夜之后，人人都记得那一点暖意。",
+    "references": [
+      {
+        "id": "skyrim_household",
+        "work": "The Elder Scrolls V: Skyrim — household clutter",
+        "page": "https://www.nexusmods.com/skyrim/mods/112540",
+        "image": "https://staticdelivery.nexusmods.com/mods/110/images/headers/112540_1657828679.jpg",
+        "local": "References/skyrim_household.png",
+        "study": "原游戏木碗、陶碗、容器的宽口与厚边剪影，以及低饱和生活材质"
+      },
+      {
+        "id": "skyrim_tavern",
+        "work": "The Elder Scrolls V: Skyrim — Rustic Clutter visual study",
+        "page": "https://stepmodifications.org/forum/topic/14986-rustic-clutter-collection-special-edition-by-gamwich/",
+        "image": "https://i.postimg.cc/JzQm3b8C/Shot128.png",
+        "local": "References/skyrim_tavern.png",
+        "study": "浅碗、杯、罐的朴素手工体量；只参考形状，不复制模组贴图"
+      }
+    ],
+    "literary_reference": {
+      "work": "Robert Louis Stevenson — Treasure Island",
+      "url": "https://www.gutenberg.org/ebooks/120",
+      "motif": "shipboard provisions, cabin objects, an unfinished voyage; original fiction, no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_after_corrections",
+    "name": "SWP_LeatherFlask",
+    "dimensions_blender_xyz": [
+      0.19200000166893005,
+      0.11135999858379364,
+      0.2720000147819519
+    ],
+    "triangles": 400,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SPLeather",
+      "M_MapLP_SPEnd",
+      "M_MapLP_SPTeal",
+      "M_MapLP_SPBronze"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckProps\\Staging\\SWP_LeatherFlask.fbx",
+      "bytes": 29564,
+      "object": "SWP_LeatherFlask",
+      "mesh": "SWP_LeatherFlask_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "dimensions_unity_xyz": [
+      0.19200000166893005,
+      0.2720000147819519,
+      0.11135999858379364
+    ],
+    "surface_clearance_m": 0.004,
+    "bounds_unity": {
+      "min": [
+        -0.09600000083446503,
+        0.0,
+        -0.05567999929189682
+      ],
+      "max": [
+        0.09600000083446503,
+        0.2720000147819519,
+        0.05567999929189682
+      ],
+      "center": [
+        0.0,
+        0.13600000739097595,
+        0.0
+      ],
+      "size": [
+        0.19200000166893005,
+        0.2720000147819519,
+        0.11135999858379364
+      ]
+    },
+    "review_zh": "皮套扁壶与短塞有明确体积，绑带连续贴合。",
+    "lore_han_characters": 53,
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "slug": "WoodenMug",
+    "title": "铁箍木杯",
+    "category": "domestic",
+    "placement": "table",
+    "map_asset_id": 837,
+    "origin": "bottom origin, metres; Blender -Y front, Unity +Z front; zero transforms",
+    "intended_use": "tabletop / inventory prop; floor rope and tackle retain real scale",
+    "lore": "宽口木杯用两道暗铁箍束紧，粗柄足够戴手套的船员握住。杯底久留苦麦酒气味，杯沿的一处磨平则来自同一位水手多年的习惯。",
+    "references": [
+      {
+        "id": "skyrim_household",
+        "work": "The Elder Scrolls V: Skyrim — household clutter",
+        "page": "https://www.nexusmods.com/skyrim/mods/112540",
+        "image": "https://staticdelivery.nexusmods.com/mods/110/images/headers/112540_1657828679.jpg",
+        "local": "References/skyrim_household.png",
+        "study": "原游戏木碗、陶碗、容器的宽口与厚边剪影，以及低饱和生活材质"
+      },
+      {
+        "id": "skyrim_tavern",
+        "work": "The Elder Scrolls V: Skyrim — Rustic Clutter visual study",
+        "page": "https://stepmodifications.org/forum/topic/14986-rustic-clutter-collection-special-edition-by-gamwich/",
+        "image": "https://i.postimg.cc/JzQm3b8C/Shot128.png",
+        "local": "References/skyrim_tavern.png",
+        "study": "浅碗、杯、罐的朴素手工体量；只参考形状，不复制模组贴图"
+      }
+    ],
+    "literary_reference": {
+      "work": "Robert Louis Stevenson — Treasure Island",
+      "url": "https://www.gutenberg.org/ebooks/120",
+      "motif": "shipboard provisions, cabin objects, an unfinished voyage; original fiction, no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_after_corrections",
+    "name": "SWP_WoodenMug",
+    "dimensions_blender_xyz": [
+      0.19293171167373657,
+      0.12999999523162842,
+      0.15700000524520874
+    ],
+    "triangles": 580,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SPWood",
+      "M_MapLP_SPIron",
+      "M_MapLP_SPEnd"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckProps\\Staging\\SWP_WoodenMug.fbx",
+      "bytes": 32172,
+      "object": "SWP_WoodenMug",
+      "mesh": "SWP_WoodenMug_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "dimensions_unity_xyz": [
+      0.19293171167373657,
+      0.15700000524520874,
+      0.12999999523162842
+    ],
+    "surface_clearance_m": 0.004,
+    "bounds_unity": {
+      "min": [
+        -0.12793171405792236,
+        0.0,
+        -0.06499999761581421
+      ],
+      "max": [
+        0.06499999761581421,
+        0.15700000524520874,
+        0.06499999761581421
+      ],
+      "center": [
+        -0.03146585822105408,
+        0.07850000262260437,
+        0.0
+      ],
+      "size": [
+        0.19293171167373657,
+        0.15700000524520874,
+        0.12999999523162842
+      ]
+    },
+    "review_zh": "修正分段把手缝隙为连续共享顶点管；内壁和杯底闭合。",
+    "lore_han_characters": 53,
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "slug": "CoarseBowl",
+    "title": "青边粗瓷碗",
+    "category": "domestic",
+    "placement": "table",
+    "map_asset_id": 838,
+    "origin": "bottom origin, metres; Blender -Y front, Unity +Z front; zero transforms",
+    "intended_use": "tabletop / inventory prop; floor rope and tackle retain real scale",
+    "lore": "浅色粗瓷留着厚实碗口，青灰窄边是这件日用器唯一的装饰。厨子用它分热粥和炖豆，风浪来时总把它塞进麻布间，以免相互撞碎。",
+    "references": [
+      {
+        "id": "skyrim_household",
+        "work": "The Elder Scrolls V: Skyrim — household clutter",
+        "page": "https://www.nexusmods.com/skyrim/mods/112540",
+        "image": "https://staticdelivery.nexusmods.com/mods/110/images/headers/112540_1657828679.jpg",
+        "local": "References/skyrim_household.png",
+        "study": "原游戏木碗、陶碗、容器的宽口与厚边剪影，以及低饱和生活材质"
+      },
+      {
+        "id": "skyrim_tavern",
+        "work": "The Elder Scrolls V: Skyrim — Rustic Clutter visual study",
+        "page": "https://stepmodifications.org/forum/topic/14986-rustic-clutter-collection-special-edition-by-gamwich/",
+        "image": "https://i.postimg.cc/JzQm3b8C/Shot128.png",
+        "local": "References/skyrim_tavern.png",
+        "study": "浅碗、杯、罐的朴素手工体量；只参考形状，不复制模组贴图"
+      }
+    ],
+    "literary_reference": {
+      "work": "Robert Louis Stevenson — Treasure Island",
+      "url": "https://www.gutenberg.org/ebooks/120",
+      "motif": "shipboard provisions, cabin objects, an unfinished voyage; original fiction, no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_after_corrections",
+    "name": "SWP_CoarseBowl",
+    "dimensions_blender_xyz": [
+      0.2160000056028366,
+      0.2160000056028366,
+      0.09799999743700027
+    ],
+    "triangles": 428,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SPCream",
+      "M_MapLP_SPTeal"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckProps\\Staging\\SWP_CoarseBowl.fbx",
+      "bytes": 27036,
+      "object": "SWP_CoarseBowl",
+      "mesh": "SWP_CoarseBowl_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "dimensions_unity_xyz": [
+      0.2160000056028366,
+      0.09799999743700027,
+      0.2160000056028366
+    ],
+    "surface_clearance_m": 0.004,
+    "bounds_unity": {
+      "min": [
+        -0.1080000028014183,
+        0.0,
+        -0.1080000028014183
+      ],
+      "max": [
+        0.1080000028014183,
+        0.09799999743700027,
+        0.1080000028014183
+      ],
+      "center": [
+        0.0,
+        0.04899999871850014,
+        0.0
+      ],
+      "size": [
+        0.2160000056028366,
+        0.09799999743700027,
+        0.2160000056028366
+      ]
+    },
+    "review_zh": "碗口有壁厚，内腔与底部完整；青灰边线不抢主形。",
+    "lore_han_characters": 53,
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "slug": "WoodenPlate",
+    "title": "浅沿木餐盘",
+    "category": "domestic",
+    "placement": "table",
+    "map_asset_id": 839,
+    "origin": "bottom origin, metres; Blender -Y front, Unity +Z front; zero transforms",
+    "intended_use": "tabletop / inventory prop; floor rope and tackle retain real scale",
+    "lore": "低矮宽沿围出一只朴素木盘，磨亮的内面盛过干面包与盐鱼。餐盘没有刻下姓名，因为船上的日子常把各人的东西渐渐混在一起。",
+    "references": [
+      {
+        "id": "skyrim_household",
+        "work": "The Elder Scrolls V: Skyrim — household clutter",
+        "page": "https://www.nexusmods.com/skyrim/mods/112540",
+        "image": "https://staticdelivery.nexusmods.com/mods/110/images/headers/112540_1657828679.jpg",
+        "local": "References/skyrim_household.png",
+        "study": "原游戏木碗、陶碗、容器的宽口与厚边剪影，以及低饱和生活材质"
+      },
+      {
+        "id": "skyrim_tavern",
+        "work": "The Elder Scrolls V: Skyrim — Rustic Clutter visual study",
+        "page": "https://stepmodifications.org/forum/topic/14986-rustic-clutter-collection-special-edition-by-gamwich/",
+        "image": "https://i.postimg.cc/JzQm3b8C/Shot128.png",
+        "local": "References/skyrim_tavern.png",
+        "study": "浅碗、杯、罐的朴素手工体量；只参考形状，不复制模组贴图"
+      }
+    ],
+    "literary_reference": {
+      "work": "Robert Louis Stevenson — Treasure Island",
+      "url": "https://www.gutenberg.org/ebooks/120",
+      "motif": "shipboard provisions, cabin objects, an unfinished voyage; original fiction, no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_after_corrections",
+    "name": "SWP_WoodenPlate",
+    "dimensions_blender_xyz": [
+      0.3059999942779541,
+      0.3059999942779541,
+      0.04600000008940697
+    ],
+    "triangles": 508,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SPWood",
+      "M_MapLP_SPEnd"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckProps\\Staging\\SWP_WoodenPlate.fbx",
+      "bytes": 28684,
+      "object": "SWP_WoodenPlate",
+      "mesh": "SWP_WoodenPlate_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "dimensions_unity_xyz": [
+      0.3059999942779541,
+      0.04600000008940697,
+      0.3059999942779541
+    ],
+    "surface_clearance_m": 0.004,
+    "bounds_unity": {
+      "min": [
+        -0.15299999713897705,
+        0.0,
+        -0.15299999713897705
+      ],
+      "max": [
+        0.15299999713897705,
+        0.04600000008940697,
+        0.15299999713897705
+      ],
+      "center": [
+        0.0,
+        0.023000000044703484,
+        0.0
+      ],
+      "size": [
+        0.3059999942779541,
+        0.04600000008940697,
+        0.3059999942779541
+      ]
+    },
+    "review_zh": "宽浅餐盘边沿和内底闭合；浅沿区别粗瓷深碗。",
+    "lore_han_characters": 53,
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "slug": "CanvasRepairRoll",
+    "title": "束带修帆卷布",
+    "category": "repair",
+    "placement": "table",
+    "map_asset_id": 840,
+    "origin": "bottom origin, metres; Blender -Y front, Unity +Z front; zero transforms",
+    "intended_use": "tabletop / inventory prop; floor rope and tackle retain real scale",
+    "lore": "厚帆布卷得紧实，一角仍铺在桌面等待裁剪。两道青灰束带保住干燥的内层，足够修补小裂口，也曾临时盖住发烧船员的肩头。",
+    "references": [
+      {
+        "id": "wow_firstaid",
+        "work": "World of Warcraft",
+        "page": "https://www.curseforge.com/wow/addons/profession-leveling-guide",
+        "image": "https://media.forgecdn.net/attachments/288/929/firstaid.png",
+        "study": "卷布与急救耗材的类别语言、可辨认包扎形状",
+        "local": "References/wow_firstaid.png"
+      },
+      {
+        "id": "sot_supplies",
+        "work": "Sea of Thieves — Pirate Academy supplies",
+        "page": "https://www.seaofthieves.com/pirate-academy/guide/supplies",
+        "image": "https://rare-assets.azureedge.net/compass/0e7624c0761821271f2a73974192068fa3dbffe3.jpg",
+        "local": "References/sot_supplies.png",
+        "study": "船舱货物、桶箍与木框的功能形体，独立陈设留出走道"
+      }
+    ],
+    "literary_reference": {
+      "work": "Robert Louis Stevenson — Treasure Island",
+      "url": "https://www.gutenberg.org/ebooks/120",
+      "motif": "shipboard provisions, cabin objects, an unfinished voyage; original fiction, no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_after_corrections",
+    "name": "SWP_CanvasRepairRoll",
+    "dimensions_blender_xyz": [
+      0.3880000114440918,
+      0.28700000047683716,
+      0.14800000190734863
+    ],
+    "triangles": 508,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SPCloth",
+      "M_MapLP_SPTeal",
+      "M_MapLP_SPEnd"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckProps\\Staging\\SWP_CanvasRepairRoll.fbx",
+      "bytes": 29628,
+      "object": "SWP_CanvasRepairRoll",
+      "mesh": "SWP_CanvasRepairRoll_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "dimensions_unity_xyz": [
+      0.3880000114440918,
+      0.14800000190734863,
+      0.28700000047683716
+    ],
+    "surface_clearance_m": 0.004,
+    "bounds_unity": {
+      "min": [
+        -0.1899999976158142,
+        0.0,
+        -0.13199999928474426
+      ],
+      "max": [
+        0.1979999989271164,
+        0.14800000190734863,
+        0.1550000011920929
+      ],
+      "center": [
+        0.0040000006556510925,
+        0.07400000095367432,
+        0.011500000953674316
+      ],
+      "size": [
+        0.3879999965429306,
+        0.14800000190734863,
+        0.28700000047683716
+      ]
+    },
+    "review_zh": "卷布与铺开的布尾相连，两道束带形成主要识别点。",
+    "lore_han_characters": 51,
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "slug": "SewingKit",
+    "title": "船匠针线木盒",
+    "category": "repair",
+    "placement": "table",
+    "map_asset_id": 841,
+    "origin": "bottom origin, metres; Blender -Y front, Unity +Z front; zero transforms",
+    "intended_use": "tabletop / inventory prop; floor rope and tackle retain real scale",
+    "lore": "掀开的浅木盒露出两色线轴和插针软垫，短铜合页没有被盐锈咬断。船匠把它放在顺手的位置，每一处补缀都让旧帆多撑过一程。",
+    "references": [
+      {
+        "id": "wow_firstaid",
+        "work": "World of Warcraft",
+        "page": "https://www.curseforge.com/wow/addons/profession-leveling-guide",
+        "image": "https://media.forgecdn.net/attachments/288/929/firstaid.png",
+        "study": "卷布与急救耗材的类别语言、可辨认包扎形状",
+        "local": "References/wow_firstaid.png"
+      },
+      {
+        "id": "skyrim_smith",
+        "work": "The Elder Scrolls V: Skyrim — Smithing workbench",
+        "page": "https://www.carlsguides.com/skyrim/combat/smithing.php",
+        "image": "https://www.carlsguides.com/skyrim/pictures/smithingworkbench.gif",
+        "local": "References/skyrim_smith.png",
+        "study": "修补工位的木铁组合、夹持与储物用品的功能尺寸"
+      }
+    ],
+    "literary_reference": {
+      "work": "Robert Louis Stevenson — Treasure Island",
+      "url": "https://www.gutenberg.org/ebooks/120",
+      "motif": "shipboard provisions, cabin objects, an unfinished voyage; original fiction, no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_after_corrections",
+    "name": "SWP_SewingKit",
+    "dimensions_blender_xyz": [
+      0.23499999940395355,
+      0.21707767248153687,
+      0.20324303209781647
+    ],
+    "triangles": 344,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SPWood",
+      "M_MapLP_SPEnd",
+      "M_MapLP_SPTeal",
+      "M_MapLP_SPRed",
+      "M_MapLP_SPCloth",
+      "M_MapLP_SPIron",
+      "M_MapLP_SPBronze"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckProps\\Staging\\SWP_SewingKit.fbx",
+      "bytes": 30812,
+      "object": "SWP_SewingKit",
+      "mesh": "SWP_SewingKit_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "dimensions_unity_xyz": [
+      0.23499999940395355,
+      0.20324303209781647,
+      0.21707767248153687
+    ],
+    "surface_clearance_m": 0.004,
+    "bounds_unity": {
+      "min": [
+        -0.11749999970197678,
+        0.0,
+        -0.1410776674747467
+      ],
+      "max": [
+        0.11749999970197678,
+        0.20324303209781647,
+        0.07599999755620956
+      ],
+      "center": [
+        0.0,
+        0.10162151604890823,
+        -0.03253883495926857
+      ],
+      "size": [
+        0.23499999940395355,
+        0.20324303209781647,
+        0.21707766503095627
+      ]
+    },
+    "review_zh": "打开的盒盖和合页连接；线轴、针垫与针可辨；相机包围盒调整后四视图完整。",
+    "lore_han_characters": 53,
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "slug": "RopeKnot",
+    "title": "细缆盘结",
+    "category": "repair",
+    "placement": "floor",
+    "map_asset_id": 842,
+    "origin": "bottom origin, metres; Blender -Y front, Unity +Z front; zero transforms",
+    "intended_use": "tabletop / inventory prop; floor rope and tackle retain real scale",
+    "lore": "几圈短麻缆盘在一起，松开的绳尾绕成不太整齐的结。它可以捆扎木箱、吊起水桶或临时系住舱门，是船员随手保留的小段余料。",
+    "references": [
+      {
+        "id": "sot_rope",
+        "work": "Sea of Thieves — Sail controls",
+        "page": "https://kanobu.ru/news/kak-upravlyat-korablem-v-sea-of-thieves-v-odinochku-i-v-komande-403037/",
+        "image": "https://u.kanobu.ru/editor/images/8/dbf2563c-ee31-4924-86fa-413848c23ed7.png",
+        "local": "References/sot_rope.png",
+        "study": "粗绳卷绕、暗铁缆座与船上绳具的功能轮廓，压低细节保持近景可辨"
+      },
+      {
+        "id": "skyrim_smith",
+        "work": "The Elder Scrolls V: Skyrim — Smithing workbench",
+        "page": "https://www.carlsguides.com/skyrim/combat/smithing.php",
+        "image": "https://www.carlsguides.com/skyrim/pictures/smithingworkbench.gif",
+        "local": "References/skyrim_smith.png",
+        "study": "修补工位的木铁组合、夹持与储物用品的功能尺寸"
+      }
+    ],
+    "literary_reference": {
+      "work": "Robert Louis Stevenson — Treasure Island",
+      "url": "https://www.gutenberg.org/ebooks/120",
+      "motif": "shipboard provisions, cabin objects, an unfinished voyage; original fiction, no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_after_corrections",
+    "name": "SWP_RopeKnot",
+    "dimensions_blender_xyz": [
+      0.24669763445854187,
+      0.2552553415298462,
+      0.033584993332624435
+    ],
+    "triangles": 1072,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SPSand",
+      "M_MapLP_SPDark"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckProps\\Staging\\SWP_RopeKnot.fbx",
+      "bytes": 44972,
+      "object": "SWP_RopeKnot",
+      "mesh": "SWP_RopeKnot_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "dimensions_unity_xyz": [
+      0.24669763445854187,
+      0.033584993332624435,
+      0.2552553415298462
+    ],
+    "surface_clearance_m": 0,
+    "bounds_unity": {
+      "min": [
+        -0.10599999874830246,
+        0.0,
+        -0.10599999874830246
+      ],
+      "max": [
+        0.14069764316082,
+        0.033584993332624435,
+        0.14925535023212433
+      ],
+      "center": [
+        0.017348822206258774,
+        0.016792496666312218,
+        0.021627675741910934
+      ],
+      "size": [
+        0.24669764190912247,
+        0.033584993332624435,
+        0.2552553489804268
+      ]
+    },
+    "review_zh": "盘绳与松结表现为连续折线，实物保持细缆真实尺度。",
+    "lore_han_characters": 52,
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "slug": "WoodenPulley",
+    "title": "木颊双槽滑轮",
+    "category": "repair",
+    "placement": "floor",
+    "map_asset_id": 843,
+    "origin": "bottom origin, metres; Blender -Y front, Unity +Z front; zero transforms",
+    "intended_use": "tabletop / inventory prop; floor rope and tackle retain real scale",
+    "lore": "双木颊护住带槽铁轮，粗吊环留有长期受力的暗痕。船上的重物曾借它轻松越过舷边，如今松弛绳索已不再拉动其中的转轴。",
+    "references": [
+      {
+        "id": "sot_rope",
+        "work": "Sea of Thieves — Sail controls",
+        "page": "https://kanobu.ru/news/kak-upravlyat-korablem-v-sea-of-thieves-v-odinochku-i-v-komande-403037/",
+        "image": "https://u.kanobu.ru/editor/images/8/dbf2563c-ee31-4924-86fa-413848c23ed7.png",
+        "local": "References/sot_rope.png",
+        "study": "粗绳卷绕、暗铁缆座与船上绳具的功能轮廓，压低细节保持近景可辨"
+      },
+      {
+        "id": "skyrim_smith",
+        "work": "The Elder Scrolls V: Skyrim — Smithing workbench",
+        "page": "https://www.carlsguides.com/skyrim/combat/smithing.php",
+        "image": "https://www.carlsguides.com/skyrim/pictures/smithingworkbench.gif",
+        "local": "References/skyrim_smith.png",
+        "study": "修补工位的木铁组合、夹持与储物用品的功能尺寸"
+      }
+    ],
+    "literary_reference": {
+      "work": "Robert Louis Stevenson — Treasure Island",
+      "url": "https://www.gutenberg.org/ebooks/120",
+      "motif": "shipboard provisions, cabin objects, an unfinished voyage; original fiction, no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_after_corrections",
+    "name": "SWP_WoodenPulley",
+    "dimensions_blender_xyz": [
+      0.17000000178813934,
+      0.1777942180633545,
+      0.1379999965429306
+    ],
+    "triangles": 748,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SPWood",
+      "M_MapLP_SPIron",
+      "M_MapLP_SPSand",
+      "M_MapLP_SPBronze"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckProps\\Staging\\SWP_WoodenPulley.fbx",
+      "bytes": 36988,
+      "object": "SWP_WoodenPulley",
+      "mesh": "SWP_WoodenPulley_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "dimensions_unity_xyz": [
+      0.17000000178813934,
+      0.1379999965429306,
+      0.1777942180633545
+    ],
+    "surface_clearance_m": 0,
+    "bounds_unity": {
+      "min": [
+        -0.08500000089406967,
+        0.0,
+        -0.11279422789812088
+      ],
+      "max": [
+        0.08500000089406967,
+        0.1379999965429306,
+        0.06499999761581421
+      ],
+      "center": [
+        0.0,
+        0.0689999982714653,
+        -0.023897115141153336
+      ],
+      "size": [
+        0.17000000178813934,
+        0.1379999965429306,
+        0.1777942255139351
+      ]
+    },
+    "review_zh": "修正吊眼悬空，以实体斜撑接至吊眼下缘；槽轮与双颊稳定连接。",
+    "lore_han_characters": 51,
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "slug": "IronNailBox",
+    "title": "船钉浅木盒",
+    "category": "repair",
+    "placement": "table",
+    "map_asset_id": 844,
+    "origin": "bottom origin, metres; Blender -Y front, Unity +Z front; zero transforms",
+    "intended_use": "tabletop / inventory prop; floor rope and tackle retain real scale",
+    "lore": "短铁钉散在浅木盒里，方钉帽因反复锤击而高低不齐。修补船板时总有人嫌它太少，风平浪静的时候又总有人忘记将盒盖找回来。",
+    "references": [
+      {
+        "id": "skyrim_smith",
+        "work": "The Elder Scrolls V: Skyrim — Smithing workbench",
+        "page": "https://www.carlsguides.com/skyrim/combat/smithing.php",
+        "image": "https://www.carlsguides.com/skyrim/pictures/smithingworkbench.gif",
+        "local": "References/skyrim_smith.png",
+        "study": "修补工位的木铁组合、夹持与储物用品的功能尺寸"
+      },
+      {
+        "id": "sot_supplies",
+        "work": "Sea of Thieves — Pirate Academy supplies",
+        "page": "https://www.seaofthieves.com/pirate-academy/guide/supplies",
+        "image": "https://rare-assets.azureedge.net/compass/0e7624c0761821271f2a73974192068fa3dbffe3.jpg",
+        "local": "References/sot_supplies.png",
+        "study": "船舱货物、桶箍与木框的功能形体，独立陈设留出走道"
+      }
+    ],
+    "literary_reference": {
+      "work": "Robert Louis Stevenson — Treasure Island",
+      "url": "https://www.gutenberg.org/ebooks/120",
+      "motif": "shipboard provisions, cabin objects, an unfinished voyage; original fiction, no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_after_corrections",
+    "name": "SWP_IronNailBox",
+    "dimensions_blender_xyz": [
+      0.23499999940395355,
+      0.13500000536441803,
+      0.07800000160932541
+    ],
+    "triangles": 180,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SPWood",
+      "M_MapLP_SPEnd",
+      "M_MapLP_SPIron"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckProps\\Staging\\SWP_IronNailBox.fbx",
+      "bytes": 23404,
+      "object": "SWP_IronNailBox",
+      "mesh": "SWP_IronNailBox_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "dimensions_unity_xyz": [
+      0.23499999940395355,
+      0.07800000160932541,
+      0.13500000536441803
+    ],
+    "surface_clearance_m": 0.004,
+    "bounds_unity": {
+      "min": [
+        -0.11749999970197678,
+        0.0,
+        -0.06750000268220901
+      ],
+      "max": [
+        0.11749999970197678,
+        0.07800000160932541,
+        0.06750000268220901
+      ],
+      "center": [
+        0.0,
+        0.039000000804662704,
+        0.0
+      ],
+      "size": [
+        0.23499999940395355,
+        0.07800000160932541,
+        0.13500000536441803
+      ]
+    },
+    "review_zh": "浅盒内有独立方帽钉，不依赖贴图或颜色替代几何。",
+    "lore_han_characters": 53,
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "slug": "WaxSealedLetter",
+    "title": "赤蜡封口信件",
+    "category": "navigation",
+    "placement": "table",
+    "map_asset_id": 845,
+    "origin": "bottom origin, metres; Blender -Y front, Unity +Z front; zero transforms",
+    "intended_use": "tabletop / inventory prop; floor rope and tackle retain real scale",
+    "lore": "折好的厚纸被两道细绳约束，深红封蜡遮住接缝。信件始终没有离开船长的案桌，潮气模糊了收件人的名字，却没能松开那一点蜡。",
+    "references": [
+      {
+        "id": "sot_table",
+        "work": "Sea of Thieves — Quest Table",
+        "page": "https://rarethief.com/sea-of-thieves-how-to-use-the-quest-table/",
+        "image": "https://rarethief.com/wp-content/uploads/2024/01/sea-of-thieves-season-11-quest-table.png",
+        "local": "References/sot_table.png",
+        "study": "厚纸海图、封面书册、书写桌与暖色灯具的航海叙事组合"
+      },
+      {
+        "id": "sot_cabin",
+        "work": "Sea of Thieves — Captain’s cabin",
+        "page": "https://www.windowscentral.com/gaming/will-sea-of-thieves-ever-deliver-pve-only-play-for-those-who-hate-pvp",
+        "image": "https://cdn.mos.cms.futurecdn.net/ZVqGmeMU6VuArfLWtoTx6C.png",
+        "local": "References/sot_cabin.png",
+        "study": "航海书册、沙漏、海图、罗盘在桌面上的真实比例关系"
+      }
+    ],
+    "literary_reference": {
+      "work": "Robert Louis Stevenson — Treasure Island",
+      "url": "https://www.gutenberg.org/ebooks/120",
+      "motif": "shipboard provisions, cabin objects, an unfinished voyage; original fiction, no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_after_corrections",
+    "name": "SWP_WaxSealedLetter",
+    "dimensions_blender_xyz": [
+      0.20800000429153442,
+      0.1459999978542328,
+      0.027899999171495438
+    ],
+    "triangles": 112,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SPPaper",
+      "M_MapLP_SPCream",
+      "M_MapLP_SPCloth",
+      "M_MapLP_SPRed",
+      "M_MapLP_SPBronze"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckProps\\Staging\\SWP_WaxSealedLetter.fbx",
+      "bytes": 22108,
+      "object": "SWP_WaxSealedLetter",
+      "mesh": "SWP_WaxSealedLetter_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "dimensions_unity_xyz": [
+      0.20800000429153442,
+      0.027899999171495438,
+      0.1459999978542328
+    ],
+    "surface_clearance_m": 0.004,
+    "bounds_unity": {
+      "min": [
+        -0.10400000214576721,
+        0.0,
+        -0.0729999989271164
+      ],
+      "max": [
+        0.10400000214576721,
+        0.027899999171495438,
+        0.0729999989271164
+      ],
+      "center": [
+        0.0,
+        0.013949999585747719,
+        0.0
+      ],
+      "size": [
+        0.20800000429153442,
+        0.027899999171495438,
+        0.1459999978542328
+      ]
+    },
+    "review_zh": "厚纸、折叠封口、绑绳及封蜡形成不同于海图的剪影。",
+    "lore_han_characters": 53,
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "slug": "DrawstringPurse",
+    "title": "抽绳零钱袋",
+    "category": "domestic",
+    "placement": "table",
+    "map_asset_id": 846,
+    "origin": "bottom origin, metres; Blender -Y front, Unity +Z front; zero transforms",
+    "intended_use": "tabletop / inventory prop; floor rope and tackle retain real scale",
+    "lore": "鼓起的旧皮钱袋收拢在麻绳下，一枚铜钱滚落在旁边。这里装着靠岸后买一餐热饭的打算，也装着水手答应带给孩子的小小礼物。",
+    "references": [
+      {
+        "id": "skyrim_household",
+        "work": "The Elder Scrolls V: Skyrim — household clutter",
+        "page": "https://www.nexusmods.com/skyrim/mods/112540",
+        "image": "https://staticdelivery.nexusmods.com/mods/110/images/headers/112540_1657828679.jpg",
+        "local": "References/skyrim_household.png",
+        "study": "原游戏木碗、陶碗、容器的宽口与厚边剪影，以及低饱和生活材质"
+      },
+      {
+        "id": "sot_table",
+        "work": "Sea of Thieves — Quest Table",
+        "page": "https://rarethief.com/sea-of-thieves-how-to-use-the-quest-table/",
+        "image": "https://rarethief.com/wp-content/uploads/2024/01/sea-of-thieves-season-11-quest-table.png",
+        "local": "References/sot_table.png",
+        "study": "厚纸海图、封面书册、书写桌与暖色灯具的航海叙事组合"
+      }
+    ],
+    "literary_reference": {
+      "work": "Robert Louis Stevenson — Treasure Island",
+      "url": "https://www.gutenberg.org/ebooks/120",
+      "motif": "shipboard provisions, cabin objects, an unfinished voyage; original fiction, no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_after_corrections",
+    "name": "SWP_DrawstringPurse",
+    "dimensions_blender_xyz": [
+      0.16241663694381714,
+      0.14976981282234192,
+      0.1850000023841858
+    ],
+    "triangles": 348,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SPLeather",
+      "M_MapLP_SPCloth",
+      "M_MapLP_SPBronze"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckProps\\Staging\\SWP_DrawstringPurse.fbx",
+      "bytes": 28044,
+      "object": "SWP_DrawstringPurse",
+      "mesh": "SWP_DrawstringPurse_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "dimensions_unity_xyz": [
+      0.16241663694381714,
+      0.1850000023841858,
+      0.14976981282234192
+    ],
+    "surface_clearance_m": 0.004,
+    "bounds_unity": {
+      "min": [
+        -0.09099999815225601,
+        0.0,
+        -0.07484538853168488
+      ],
+      "max": [
+        0.07141663879156113,
+        0.1850000023841858,
+        0.07492441684007645
+      ],
+      "center": [
+        -0.009791679680347443,
+        0.0925000011920929,
+        3.951415419578552e-05
+      ],
+      "size": [
+        0.16241663694381714,
+        0.1850000023841858,
+        0.14976980537176132
+      ]
+    },
+    "review_zh": "袋口扎绳连续，散落铜钱随模型一并占地；相机留白完整。",
+    "lore_han_characters": 53,
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "slug": "SpiceJar",
+    "title": "木盖香料小罐",
+    "category": "domestic",
+    "placement": "table",
+    "map_asset_id": 847,
+    "origin": "bottom origin, metres; Blender -Y front, Unity +Z front; zero transforms",
+    "intended_use": "tabletop / inventory prop; floor rope and tackle retain real scale",
+    "lore": "青灰陶罐套着短木盖，窄纸签只留一块褪红记号。长途航行让同样的盐鱼令人厌倦，而一撮香料能使拥挤船舱短暂想起家中的灶火。",
+    "references": [
+      {
+        "id": "skyrim_household",
+        "work": "The Elder Scrolls V: Skyrim — household clutter",
+        "page": "https://www.nexusmods.com/skyrim/mods/112540",
+        "image": "https://staticdelivery.nexusmods.com/mods/110/images/headers/112540_1657828679.jpg",
+        "local": "References/skyrim_household.png",
+        "study": "原游戏木碗、陶碗、容器的宽口与厚边剪影，以及低饱和生活材质"
+      },
+      {
+        "id": "skyrim_tavern",
+        "work": "The Elder Scrolls V: Skyrim — Rustic Clutter visual study",
+        "page": "https://stepmodifications.org/forum/topic/14986-rustic-clutter-collection-special-edition-by-gamwich/",
+        "image": "https://i.postimg.cc/JzQm3b8C/Shot128.png",
+        "local": "References/skyrim_tavern.png",
+        "study": "浅碗、杯、罐的朴素手工体量；只参考形状，不复制模组贴图"
+      }
+    ],
+    "literary_reference": {
+      "work": "Robert Louis Stevenson — Treasure Island",
+      "url": "https://www.gutenberg.org/ebooks/120",
+      "motif": "shipboard provisions, cabin objects, an unfinished voyage; original fiction, no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_after_corrections",
+    "name": "SWP_SpiceJar",
+    "dimensions_blender_xyz": [
+      0.12999999523162842,
+      0.13181868195533752,
+      0.20000000298023224
+    ],
+    "triangles": 396,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SPTeal",
+      "M_MapLP_SPEnd",
+      "M_MapLP_SPWood",
+      "M_MapLP_SPPaper",
+      "M_MapLP_SPRed",
+      "M_MapLP_SPCloth"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckProps\\Staging\\SWP_SpiceJar.fbx",
+      "bytes": 30860,
+      "object": "SWP_SpiceJar",
+      "mesh": "SWP_SpiceJar_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "dimensions_unity_xyz": [
+      0.12999999523162842,
+      0.20000000298023224,
+      0.13181868195533752
+    ],
+    "surface_clearance_m": 0.004,
+    "bounds_unity": {
+      "min": [
+        -0.06499999761581421,
+        0.0,
+        -0.061818674206733704
+      ],
+      "max": [
+        0.06499999761581421,
+        0.20000000298023224,
+        0.07000000029802322
+      ],
+      "center": [
+        0.0,
+        0.10000000149011612,
+        0.00409066304564476
+      ],
+      "size": [
+        0.12999999523162842,
+        0.20000000298023224,
+        0.13181867450475693
+      ]
+    },
+    "review_zh": "木盖、陶罐和小标签有明确体积，所有细节实体闭合。",
+    "lore_han_characters": 54,
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "slug": "BandageParcel",
+    "title": "草药绑带医疗包",
+    "category": "medical",
+    "placement": "table",
+    "map_asset_id": 848,
+    "origin": "bottom origin, metres; Blender -Y front, Unity +Z front; zero transforms",
+    "intended_use": "tabletop / inventory prop; floor rope and tackle retain real scale",
+    "lore": "麻布包被两道青灰带束紧，顶上别着备用绷带卷。淡绿叶记号说明里面还有干草药，船医曾在狭窄铺位边用它处理绳伤和木刺。",
+    "references": [
+      {
+        "id": "wow_firstaid",
+        "work": "World of Warcraft",
+        "page": "https://www.curseforge.com/wow/addons/profession-leveling-guide",
+        "image": "https://media.forgecdn.net/attachments/288/929/firstaid.png",
+        "study": "卷布与急救耗材的类别语言、可辨认包扎形状",
+        "local": "References/wow_firstaid.png"
+      },
+      {
+        "id": "skyrim_cure",
+        "work": "The Elder Scrolls V: Skyrim",
+        "page": "https://duskworld.ru/skyrim-chronicle/day-5.php",
+        "image": "https://duskworld.ru/images/schronic/screen-76.jpg",
+        "study": "携带式小容器、朴素瓶塞与瓶体比例",
+        "local": "References/skyrim_cure.png"
+      }
+    ],
+    "literary_reference": {
+      "work": "Robert Louis Stevenson — Treasure Island",
+      "url": "https://www.gutenberg.org/ebooks/120",
+      "motif": "shipboard provisions, cabin objects, an unfinished voyage; original fiction, no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_after_corrections",
+    "name": "SWP_BandageParcel",
+    "dimensions_blender_xyz": [
+      0.3199999928474426,
+      0.18599998950958252,
+      0.16258063912391663
+    ],
+    "triangles": 188,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SPCloth",
+      "M_MapLP_SPTeal",
+      "M_MapLP_SPPaper",
+      "M_MapLP_SPCream",
+      "M_MapLP_SPEnd"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckProps\\Staging\\SWP_BandageParcel.fbx",
+      "bytes": 23932,
+      "object": "SWP_BandageParcel",
+      "mesh": "SWP_BandageParcel_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "dimensions_unity_xyz": [
+      0.3199999928474426,
+      0.16258063912391663,
+      0.18599998950958252
+    ],
+    "surface_clearance_m": 0.004,
+    "bounds_unity": {
+      "min": [
+        -0.1599999964237213,
+        0.0,
+        -0.08799999952316284
+      ],
+      "max": [
+        0.1599999964237213,
+        0.16258063912391663,
+        0.09799999743700027
+      ],
+      "center": [
+        0.0,
+        0.08129031956195831,
+        0.004999998956918716
+      ],
+      "size": [
+        0.3199999928474426,
+        0.16258063912391663,
+        0.18599999696016312
+      ]
+    },
+    "review_zh": "软包、绑带和备用卷布可辨；叶形标记为双面实体。",
+    "lore_han_characters": 52,
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  },
+  {
+    "slug": "BentWoodPipe",
+    "title": "弯柄旧木烟斗",
+    "category": "domestic",
+    "placement": "table",
+    "map_asset_id": 849,
+    "origin": "bottom origin, metres; Blender -Y front, Unity +Z front; zero transforms",
+    "intended_use": "tabletop / inventory prop; floor rope and tackle retain real scale",
+    "lore": "粗木斗钵接着一段温润弯柄，旧铜口圈留下暗淡的光。夜更结束后水手常靠着舷板慢慢等待余火熄灭，那短暂安静比烟草更令人眷恋。",
+    "references": [
+      {
+        "id": "lotr_pipe",
+        "work": "The Lord of the Rings — Gandalf pipe, Weta replica",
+        "page": "https://www.moviefigures.co.uk/products/weta-workshop-the-pipe-of-gandalf-the-grey-the-lord-of-the-rings-1-1-scale-collectible-prop-replica",
+        "image": "https://www.moviefigures.co.uk/cdn/shop/files/WetaLordoftheRingsThePipeofGandalftheGrey1_1PropReplica2_1200x1200.jpg?v=1731594351",
+        "local": "References/lotr_pipe.png",
+        "study": "长弯柄与粗烟斗钵形成的非对称剪影，不复制雕纹"
+      },
+      {
+        "id": "lotr_bilbo",
+        "work": "The Lord of the Rings — Hobbiton Weta pipe replica",
+        "page": "https://shop.hobbitontours.com/products/the-pipe-of-gandalf-the-grey",
+        "image": "https://shop.hobbitontours.com/cdn/shop/files/Collectables_Hobbiton_Merchandise-2025-SJP-185.jpg?v=1762209776&width=1080",
+        "local": "References/lotr_bilbo.png",
+        "study": "另一实物视角中的木柄曲线与厚实钵口，日用小器物的温暖旧木材质"
+      }
+    ],
+    "literary_reference": {
+      "work": "Robert Louis Stevenson — Treasure Island",
+      "url": "https://www.gutenberg.org/ebooks/120",
+      "motif": "shipboard provisions, cabin objects, an unfinished voyage; original fiction, no copied prose"
+    },
+    "review_status": "front_side_back_hero_reviewed_after_corrections",
+    "name": "SWP_BentWoodPipe",
+    "dimensions_blender_xyz": [
+      0.3448162078857422,
+      0.08369297534227371,
+      0.09595824778079987
+    ],
+    "triangles": 456,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_SPWood",
+      "M_MapLP_SPLeather",
+      "M_MapLP_SPDark",
+      "M_MapLP_SPBronze"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\ShipwreckProps\\Staging\\SWP_BentWoodPipe.fbx",
+      "bytes": 30908,
+      "object": "SWP_BentWoodPipe",
+      "mesh": "SWP_BentWoodPipe_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "dimensions_unity_xyz": [
+      0.3448162078857422,
+      0.09595824778079987,
+      0.08369297534227371
+    ],
+    "surface_clearance_m": 0.004,
+    "bounds_unity": {
+      "min": [
+        -0.21581622958183289,
+        0.0,
+        -0.041846487671136856
+      ],
+      "max": [
+        0.1289999932050705,
+        0.09595824778079987,
+        0.041846487671136856
+      ],
+      "center": [
+        -0.043408118188381195,
+        0.04797912389039993,
+        0.0
+      ],
+      "size": [
+        0.3448162227869034,
+        0.09595824778079987,
+        0.08369297534227371
+      ]
+    },
+    "review_zh": "弯柄连续无接缝，钵口有内腔和封闭底部。",
+    "lore_han_characters": 55,
+    "integration_status": "Imported and registered; used by the three-storey Shipwreck area 40. Native navigation, cutaway and picking checked."
+  }
+]

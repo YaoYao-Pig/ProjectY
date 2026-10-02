@@ -21,18 +21,32 @@ function Rules.New(config)
     end
     return self
 end
-function Rules:Roll(containerId,seed)
+function Rules:Roll(containerId,seed,poolOverrideId)
     local row=self.containers:Get(containerId);local ids,counts,indices={},{},{}
     local function add(id,count)
         local index=indices[id]
         if not index then index=#ids+1;indices[id]=index;ids[index]=id;counts[index]=0 end
         counts[index]=counts[index]+count
     end
-    if row.poolId==0 then for i,id in ipairs(row.itemIds) do add(id,row.counts[i]) end
+    local poolId=poolOverrideId and poolOverrideId>0 and poolOverrideId or row.poolId
+    if poolId==0 then for i,id in ipairs(row.itemIds) do add(id,row.counts[i]) end
     else
-        local pool=self.pools:Get(row.poolId);local random=Random((seed ~ pool.seedSalt) & 0xffffffff)
-        for _,entry in ipairs(self.entries[row.poolId]) do
-            if random:Integer(1,10000)<=entry.chance*100 then add(entry.itemId,random:Integer(entry.minCount,entry.maxCount)) end
+        local pool=self.pools:Get(poolId);local random=Random((seed ~ pool.seedSalt) & 0xffffffff)
+        local entries=self.entries[poolId]
+        if pool.mode=='weighted' then
+            local total=0;for _,entry in ipairs(entries) do total=total+entry.weight end
+            assert(total>0,'Weighted loot pool has no positive entries: '..poolId)
+            for _=1,pool.drawCount do
+                local roll=random:Integer(1,total)
+                for _,entry in ipairs(entries) do
+                    roll=roll-entry.weight
+                    if roll<=0 then add(entry.itemId,random:Integer(entry.minCount,entry.maxCount));break end
+                end
+            end
+        else
+            for _,entry in ipairs(entries) do
+                if random:Integer(1,10000)<=entry.chance*100 then add(entry.itemId,random:Integer(entry.minCount,entry.maxCount)) end
+            end
         end
     end
     return ids,counts

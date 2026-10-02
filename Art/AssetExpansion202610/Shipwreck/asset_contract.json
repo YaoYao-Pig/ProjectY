@@ -1,0 +1,119 @@
+{
+  "units": "meters",
+  "hull": "SW_Hull_CogWreck",
+  "deck": "SW_Deck_Cog",
+  "deck_height": 0,
+  "water_height": -1.15,
+  "hull_stations_blender_y_half_width": [
+    [
+      -18,
+      0.25
+    ],
+    [
+      -15,
+      2.6
+    ],
+    [
+      -11,
+      4.5
+    ],
+    [
+      -5,
+      5.8
+    ],
+    [
+      3,
+      6.1
+    ],
+    [
+      10,
+      5.0
+    ],
+    [
+      15,
+      3.7
+    ]
+  ],
+  "deck_stations_unity_z_half_width": [
+    [
+      18,
+      0.15
+    ],
+    [
+      15,
+      2.3600000000000003
+    ],
+    [
+      11,
+      4.26
+    ],
+    [
+      5,
+      5.56
+    ],
+    [
+      -3,
+      5.859999999999999
+    ],
+    [
+      -10,
+      4.76
+    ],
+    [
+      -15,
+      3.46
+    ]
+  ],
+  "nav_margin": 0.65,
+  "suggested_hex_radius": 1.0,
+  "deck_missing_blender_xy": {
+    "xmin": 2.7,
+    "ymin": -10,
+    "ymax": -4
+  },
+  "terrain_render": "do not draw a ground column over the continuous deck mesh; water cells blocked and below deck",
+  "recommended_fixed_props": [
+    {
+      "name": "SW_SternCastle",
+      "relative_unity_xz": [
+        0,
+        -12
+      ],
+      "blocks": "full cabin bounds"
+    },
+    {
+      "name": "SW_Mast_BrokenSquare",
+      "relative_unity_xz": [
+        0,
+        1
+      ],
+      "blocks": "mast base only; sail overhead"
+    },
+    {
+      "name": "SW_Hatch_Collapsed",
+      "relative_unity_xz": [
+        2.6,
+        6
+      ],
+      "blocks": "entire hatch"
+    },
+    {
+      "name": "SW_Capstan",
+      "relative_unity_xz": [
+        0,
+        12
+      ],
+      "blocks": "capstan bounds"
+    }
+  ],
+  "note": "Check imported asymmetry before integration. World marker stays within single hex, local scene uses 1:1 metres. No swimmable water or ship simulation implied.",
+  "verified_blender_to_unity": "Unity (X,Y,Z) = Blender (-X,Z,-Y), confirmed against imported asymmetric deck notch.",
+  "deck_missing_unity_xz": {
+    "xmax": -2.7,
+    "zmin": 4,
+    "zmax": 10,
+    "exclude": "x < -2.7 and 4 < z < 10; navigation must include margin and cell corners, ignore decorative splinters"
+  },
+  "unity_prefab_directory": "Assets/DynamicAsset/AssetExpansion202610/Shipwreck/Prefabs",
+  "unity_root_mesh_verified": true
+}

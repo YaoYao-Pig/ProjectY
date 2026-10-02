@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "name": "MapAreaMineFloorTable",
+  "description": "矿井三层地坪；同一轴向坐标允许独立楼板。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定编号",
+      "min": 1
+    },
+    {
+      "name": "profileId",
+      "type": "int",
+      "description": "矿井模板",
+      "ref": "MapAreaMineTable"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "楼层名称"
+    },
+    {
+      "name": "layer",
+      "type": "int",
+      "description": "层身份"
+    },
+    {
+      "name": "height",
+      "type": "float",
+      "description": "地坪高度"
+    },
+    {
+      "name": "surfaceId",
+      "type": "int",
+      "description": "地坪材质",
+      "ref": "MapAreaSurfaceTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "profileId": 1,
+      "name": "深部采掘场",
+      "layer": 0,
+      "height": 0,
+      "surfaceId": 50
+    },
+    {
+      "id": 2,
+      "profileId": 1,
+      "name": "中层运输矿道",
+      "layer": 1,
+      "height": 5,
+      "surfaceId": 51
+    },
+    {
+      "id": 3,
+      "profileId": 1,
+      "name": "上层废弃矿场",
+      "layer": 2,
+      "height": 10,
+      "surfaceId": 52
+    }
+  ]
+}

@@ -12,6 +12,7 @@
 - `GrowthAttributeTable.animalAffinity/charisma` 均为可投入的生活属性，动物亲和可参与主动技能研习；是否参与由 `skillDirection` 决定，不按生活分类排除。`ActiveSkillPoolTable` 配置驯服门槛与权重。成功率由 `AnimalRuleTable` 的 `affinity/charisma/missingHealth/hostile/difficulty` 公式和概率上下限决定；仅敌对动物有伤势加成。
 - `AnimalSpeciesTable.tameRetryTurns` 配失败后的动物重试间隔（首版马/鸡/兔为 3/2/3 回合）；剩余回合保存在动物实例，所有角色共享限制，重新部署和出入战斗不清零。`Config/Catalog.json` 的全局常量 `Global.ExplorationRoundSeconds` 定义探索回合时长（首版 3 秒）：只累计小队执行移动路线的游戏时间，停止、改道、离开区域保留不足一回合的余量，静止和暂停不累计。战斗完成整轮时推进一次区域回合，进入战斗的第一轮不额外推进。
 - `AnimalSpeciesTable` 配战斗模板、可乘骑性、固定轴向占地、骑手髋部位置、骑乘移动格数、初始亲密度与共同战斗收益。首批马、鸡、兔均一格；连续多格占地要求包含原点且不重复，部署、移动、落点和占位检查均检查完整格罩。
+- `AnimalRules:Cells(actor,board,q,r,layer)` 可显式传楼层；探索占地、招募及物件避让从成员锚点透传 `layer`。多格坐骑缺少同层格时拒绝占地，不借用脚下楼层；省略时保持 MapArea 地面层或 BattleBoard 的窗口默认层。
 - `AnimalSkillTable` 根据当前坐骑的物种与亲密度自动开放技能；坐骑死亡后不再提供该物种的技能。马冲击沿六向直线抵达目标前一格，路径不能穿过阻挡，伤害公式可读取实际冲刺 `distance`；鸡飞扑向目标前方跃进一格并攻击；兔跳跃为地格目标，最多三格，落点不能阻挡或被占据。高大视线阻挡限制原地形中的跃迁。
 - 森林是独立 `E_MapAreaType.Forest` 生成策略。`MapAreaForestTable/ThemeTable` 定义林间空地、连通小径、树木密度和地面材质；`MapAreaForestEntranceTable` 在大地图真实森林 Region 创建入口；`MapAreaForestSpawnTable` 独立抽取物种组数、刷新概率与中立比例，哥布林使用限定哥布林的外观池。进入同一地点复用敌群和动物状态，新远征重建。
 - 野生动物沿用区域遭遇实体；中立 Team=0 不主动触发战斗，黄色占地框与血条区别于敌对红色。已驯服动物从独立占格、野外显示和行动顺序中移除，由骑手占地与模型组合展示。驯服是同一个 `CombatSkillTable` 技能，`contexts={life,battle}`；探索中从 [MainHud 角色技能栏](MainHud.md) 选择角色、点击驯服，再点击中立动物；战斗中从技能栏对敌对动物使用。

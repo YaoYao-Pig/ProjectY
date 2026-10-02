@@ -1,0 +1,287 @@
+[
+  {
+    "name": "SW_Map_WreckMarker",
+    "title": "暮潮号沉船标识",
+    "front": "尖艏、断帆与艉楼共同识别沉船",
+    "side": "船体厚度和水线保留，单格占地足够",
+    "back": "艉楼与舵连接；破口同源于大模型",
+    "evidence": [
+      "Previews/SW_Map_WreckMarker_front.png",
+      "Previews/SW_Map_WreckMarker_side.png",
+      "Previews/SW_Map_WreckMarker_back.png",
+      "Previews/SW_Map_WreckMarker_hero.png"
+    ],
+    "result": "通过静态低多边形资产目视审核",
+    "reviewer": "primary agent, actual rendered pixels"
+  },
+  {
+    "name": "SW_Map_AbandonedCog",
+    "title": "废弃商船标识",
+    "front": "完整船舷与残帆区别沉船版本",
+    "side": "高艉楼明显，侧轮廓无现代机械",
+    "back": "闭合艉部，作为较完整废船标识",
+    "evidence": [
+      "Previews/SW_Map_AbandonedCog_front.png",
+      "Previews/SW_Map_AbandonedCog_side.png",
+      "Previews/SW_Map_AbandonedCog_back.png",
+      "Previews/SW_Map_AbandonedCog_hero.png"
+    ],
+    "result": "通过静态低多边形资产目视审核",
+    "reviewer": "primary agent, actual rendered pixels"
+  },
+  {
+    "name": "SW_Hull_CogWreck",
+    "title": "暮潮号破损船壳",
+    "front": "尖艏和船底龙骨可辨",
+    "side": "多段舷板、上缘破口和外侧加强木条连接",
+    "back": "艉板闭合；内部为开放壳体，不是实心障碍盒",
+    "evidence": [
+      "Previews/SW_Hull_CogWreck_front.png",
+      "Previews/SW_Hull_CogWreck_side.png",
+      "Previews/SW_Hull_CogWreck_back.png",
+      "Previews/SW_Hull_CogWreck_hero.png"
+    ],
+    "result": "通过静态低多边形资产目视审核",
+    "reviewer": "primary agent, actual rendered pixels"
+  },
+  {
+    "name": "SW_Deck_Cog",
+    "title": "暮潮号连续甲板",
+    "front": "甲板具有明确尖艏外形",
+    "side": "实体厚度0.18米，导航顶高0",
+    "back": "俯视已核对左舷缺口和连续通道；减弱了初版高对比条纹",
+    "evidence": [
+      "Previews/SW_Deck_Cog_front.png",
+      "Previews/SW_Deck_Cog_side.png",
+      "Previews/SW_Deck_Cog_back.png",
+      "Previews/SW_Deck_Cog_hero.png"
+    ],
+    "result": "通过静态低多边形资产目视审核",
+    "reviewer": "primary agent, actual rendered pixels"
+  },
+  {
+    "name": "SW_SternCastle",
+    "title": "封闭船长艉楼",
+    "front": "封闭舱门与低窄窗明确",
+    "side": "艉舵支架已延伸到后墙，消除悬浮间隔",
+    "back": "栏杆及舵有厚度；舱体为不可进入设施",
+    "evidence": [
+      "Previews/SW_SternCastle_front.png",
+      "Previews/SW_SternCastle_side.png",
+      "Previews/SW_SternCastle_back.png",
+      "Previews/SW_SternCastle_hero.png"
+    ],
+    "result": "通过静态低多边形资产目视审核",
+    "reviewer": "primary agent, actual rendered pixels"
+  },
+  {
+    "name": "SW_BowRibs",
+    "title": "暴露船艏肋骨",
+    "front": "船肋向船艏收窄",
+    "side": "肋骨连接龙骨，端面可见",
+    "back": "背面厚度完整，适合不可达破口边缘",
+    "evidence": [
+      "Previews/SW_BowRibs_front.png",
+      "Previews/SW_BowRibs_side.png",
+      "Previews/SW_BowRibs_back.png",
+      "Previews/SW_BowRibs_hero.png"
+    ],
+    "result": "通过静态低多边形资产目视审核",
+    "reviewer": "primary agent, actual rendered pixels"
+  },
+  {
+    "name": "SW_Mast_BrokenSquare",
+    "title": "断桅与残方帆",
+    "front": "单桅、横桁和破方帆区别木杆",
+    "side": "帆与横桁和拉索相接，桅杆非单面",
+    "back": "残帆背面存在；最低帆边高于甲板3米",
+    "evidence": [
+      "Previews/SW_Mast_BrokenSquare_front.png",
+      "Previews/SW_Mast_BrokenSquare_side.png",
+      "Previews/SW_Mast_BrokenSquare_back.png",
+      "Previews/SW_Mast_BrokenSquare_hero.png"
+    ],
+    "result": "通过静态低多边形资产目视审核",
+    "reviewer": "primary agent, actual rendered pixels"
+  },
+  {
+    "name": "SW_Mast_Fallen",
+    "title": "横卧桅杆残骸",
+    "front": "横卧桅杆和破帆有明确方向",
+    "side": "几何为倾倒后的整体结构",
+    "back": "用于完整占地阻挡，不在主通道上摆放",
+    "evidence": [
+      "Previews/SW_Mast_Fallen_front.png",
+      "Previews/SW_Mast_Fallen_side.png",
+      "Previews/SW_Mast_Fallen_back.png",
+      "Previews/SW_Mast_Fallen_hero.png"
+    ],
+    "result": "通过静态低多边形资产目视审核",
+    "reviewer": "primary agent, actual rendered pixels"
+  },
+  {
+    "name": "SW_Rail_Broken",
+    "title": "断裂船舷栏杆",
+    "front": "断柱高低与缺口清楚",
+    "side": "栏杆厚度统一",
+    "back": "整体横档仍相连，不是无支撑悬空木条",
+    "evidence": [
+      "Previews/SW_Rail_Broken_front.png",
+      "Previews/SW_Rail_Broken_side.png",
+      "Previews/SW_Rail_Broken_back.png",
+      "Previews/SW_Rail_Broken_hero.png"
+    ],
+    "result": "通过静态低多边形资产目视审核",
+    "reviewer": "primary agent, actual rendered pixels"
+  },
+  {
+    "name": "SW_Hatch_Collapsed",
+    "title": "塌陷货舱口",
+    "front": "破舱盖与框架可读",
+    "side": "断板端部连接框缘，有实体黑色舱底",
+    "back": "背面完整；导航必须阻挡整个舱口",
+    "evidence": [
+      "Previews/SW_Hatch_Collapsed_front.png",
+      "Previews/SW_Hatch_Collapsed_side.png",
+      "Previews/SW_Hatch_Collapsed_back.png",
+      "Previews/SW_Hatch_Collapsed_hero.png"
+    ],
+    "result": "通过静态低多边形资产目视审核",
+    "reviewer": "primary agent, actual rendered pixels"
+  },
+  {
+    "name": "SW_Capstan",
+    "title": "木质绞盘",
+    "front": "四臂绞盘和缆鼓形成识别点",
+    "side": "转杆穿过缆鼓属于合理结构连接",
+    "back": "完整底座与铁箍",
+    "evidence": [
+      "Previews/SW_Capstan_front.png",
+      "Previews/SW_Capstan_side.png",
+      "Previews/SW_Capstan_back.png",
+      "Previews/SW_Capstan_hero.png"
+    ],
+    "result": "通过静态低多边形资产目视审核",
+    "reviewer": "primary agent, actual rendered pixels"
+  },
+  {
+    "name": "SW_Anchor_Rusted",
+    "title": "铁锈双爪锚",
+    "front": "锚横木、双爪、吊环清楚",
+    "side": "窄厚度适于沿船舷陈列",
+    "back": "吊环与锚杆接合，无单面消失",
+    "evidence": [
+      "Previews/SW_Anchor_Rusted_front.png",
+      "Previews/SW_Anchor_Rusted_side.png",
+      "Previews/SW_Anchor_Rusted_back.png",
+      "Previews/SW_Anchor_Rusted_hero.png"
+    ],
+    "result": "通过静态低多边形资产目视审核",
+    "reviewer": "primary agent, actual rendered pixels"
+  },
+  {
+    "name": "SW_Cargo_SaltCrates",
+    "title": "潮湿盐货箱垛",
+    "front": "货垛主次与斜撑可辨",
+    "side": "上箱底部已移到下箱顶面，消除初版细缝",
+    "back": "后板完整，箱体以功能形体为主",
+    "evidence": [
+      "Previews/SW_Cargo_SaltCrates_front.png",
+      "Previews/SW_Cargo_SaltCrates_side.png",
+      "Previews/SW_Cargo_SaltCrates_back.png",
+      "Previews/SW_Cargo_SaltCrates_hero.png"
+    ],
+    "result": "通过静态低多边形资产目视审核",
+    "reviewer": "primary agent, actual rendered pixels"
+  },
+  {
+    "name": "SW_Cargo_WetBarrels",
+    "title": "湿木桶货组",
+    "front": "一高一矮两桶有区别",
+    "side": "箍圈沿对应桶腹半径，未见穿出尖角",
+    "back": "桶盖与桶底闭合",
+    "evidence": [
+      "Previews/SW_Cargo_WetBarrels_front.png",
+      "Previews/SW_Cargo_WetBarrels_side.png",
+      "Previews/SW_Cargo_WetBarrels_back.png",
+      "Previews/SW_Cargo_WetBarrels_hero.png"
+    ],
+    "result": "通过静态低多边形资产目视审核",
+    "reviewer": "primary agent, actual rendered pixels"
+  },
+  {
+    "name": "SW_Rope_Coil",
+    "title": "盘绕船缆",
+    "front": "粗绳五圈形成中空卷缆",
+    "side": "低矮厚度明确",
+    "back": "散开绳尾与外圈相接",
+    "evidence": [
+      "Previews/SW_Rope_Coil_front.png",
+      "Previews/SW_Rope_Coil_side.png",
+      "Previews/SW_Rope_Coil_back.png",
+      "Previews/SW_Rope_Coil_hero.png"
+    ],
+    "result": "通过静态低多边形资产目视审核",
+    "reviewer": "primary agent, actual rendered pixels"
+  },
+  {
+    "name": "SW_Bell_BrokenFrame",
+    "title": "旧铜船钟",
+    "front": "铜钟与双柱框架可辨",
+    "side": "吊杆触及横梁与钟顶",
+    "back": "钟舌有实体连接，框柱落地",
+    "evidence": [
+      "Previews/SW_Bell_BrokenFrame_front.png",
+      "Previews/SW_Bell_BrokenFrame_side.png",
+      "Previews/SW_Bell_BrokenFrame_back.png",
+      "Previews/SW_Bell_BrokenFrame_hero.png"
+    ],
+    "result": "通过静态低多边形资产目视审核",
+    "reviewer": "primary agent, actual rendered pixels"
+  },
+  {
+    "name": "SW_Drift_Planks",
+    "title": "漂积木板",
+    "front": "三板错落，水藻色块克制",
+    "side": "低矮片层适合甲板边缘",
+    "back": "背部厚度完整",
+    "evidence": [
+      "Previews/SW_Drift_Planks_front.png",
+      "Previews/SW_Drift_Planks_side.png",
+      "Previews/SW_Drift_Planks_back.png",
+      "Previews/SW_Drift_Planks_hero.png"
+    ],
+    "result": "通过静态低多边形资产目视审核",
+    "reviewer": "primary agent, actual rendered pixels"
+  },
+  {
+    "name": "SW_Boat_BrokenDinghy",
+    "title": "破损随船小艇",
+    "front": "小艇艏艉不对称，保持中空",
+    "side": "横座位于艇壳上缘内侧",
+    "back": "艇尾闭合，底部完整",
+    "evidence": [
+      "Previews/SW_Boat_BrokenDinghy_front.png",
+      "Previews/SW_Boat_BrokenDinghy_side.png",
+      "Previews/SW_Boat_BrokenDinghy_back.png",
+      "Previews/SW_Boat_BrokenDinghy_hero.png"
+    ],
+    "result": "通过静态低多边形资产目视审核",
+    "reviewer": "primary agent, actual rendered pixels"
+  },
+  {
+    "name": "SW_Gangplank",
+    "title": "登船木跳板",
+    "front": "七板拼成完整跳板",
+    "side": "厚度与下方横撑可见",
+    "back": "两端平齐，预留导航接驳契约",
+    "evidence": [
+      "Previews/SW_Gangplank_front.png",
+      "Previews/SW_Gangplank_side.png",
+      "Previews/SW_Gangplank_back.png",
+      "Previews/SW_Gangplank_hero.png"
+    ],
+    "result": "通过静态低多边形资产目视审核",
+    "reviewer": "primary agent, actual rendered pixels"
+  }
+]

@@ -1,0 +1,3597 @@
+[
+  {
+    "id": "AEW_Sword_DragonTithe",
+    "display_name": "龙税",
+    "category": "Sword",
+    "variant": 0,
+    "design_features": "赤铜龙角护手、单侧齿状鳞脊、灰钢刃",
+    "lore_zh": "赤崖村每年要向盘踞铜矿的幼龙献出一炉好铁。铁匠的女儿终于随猎队夺回矿井，却拒绝把龙首悬在城门上。她把脱落的角磨成护手，用背鳞加固剑根，让红铜色的锻缝留在灰刃之间。剑柄仍缠着父亲的旧围裙，尾端那枚不对称铜钉是最后一年的贡税。村民说它只属于肯为他人守住炉火的人，任何拿它征税的领主都握不稳。",
+    "lore_han_characters": 133,
+    "references": [
+      {
+        "id": "souls_blades",
+        "title": "Dark Souls: Design Works / Astora, Quelaag, Zweihander",
+        "page_url": "https://www.pinterest.com/pin/423690277438927740/",
+        "image_url": "https://i.pinimg.com/736x/ed/ec/2b/edec2b9592f53a53348815af07fc2517.jpg",
+        "takeaway": "直剑的收束刃型、十字护手；有机刃与常规钢刃形成剪影对比。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_blades.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "souls_gwyn",
+        "title": "Dark Souls: Design Works / Gwyn greatsword",
+        "page_url": "https://www.pinterest.com/pin/dark-souls-concept-art-gwyns-greatsword-concept-art--392376186282148317/",
+        "image_url": "https://i.pinimg.com/1200x/fb/e0/d9/fbe0d9e4d89582488a72e02a70234752.jpg",
+        "takeaway": "宽刃、窄柄、末端配重的质量分配；不复制原作徽记。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_gwyn.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Sword_DragonTithe",
+    "dimensions_blender_xyz": [
+      0.4499436616897583,
+      0.10632600635290146,
+      1.244999885559082
+    ],
+    "triangles": 456,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Red",
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Steel",
+      "M_MapLP_AEW_Edge"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Sword_DragonTithe.fbx",
+      "bytes": 31468,
+      "object": "AEW_Sword_DragonTithe",
+      "mesh": "AEW_Sword_DragonTithe_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Sword_VeteranRemnant",
+    "display_name": "归营残锋",
+    "category": "Sword",
+    "variant": 1,
+    "design_features": "断尖、修补横夹、皮条握把",
+    "lore_zh": "白桥守军撤退时，老兵赫辛用佩剑卡住吊桥绞盘，替难民争得最后一炷香。绞齿咬去剑尖，也在剑身留下三道斜缺口。他没有换剑，只请村匠铆上两片铁夹，把失去的尖端磨成偏斜的短锋。每次回营，他都会在护手上系一小段旧绷带，提醒新兵先抬走伤者。如今皮革已被掌心磨亮，剑的分量却恰好适合一个不再追赶勋章的人。",
+    "lore_han_characters": 131,
+    "references": [
+      {
+        "id": "souls_blades",
+        "title": "Dark Souls: Design Works / Astora, Quelaag, Zweihander",
+        "page_url": "https://www.pinterest.com/pin/423690277438927740/",
+        "image_url": "https://i.pinimg.com/736x/ed/ec/2b/edec2b9592f53a53348815af07fc2517.jpg",
+        "takeaway": "直剑的收束刃型、十字护手；有机刃与常规钢刃形成剪影对比。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_blades.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "souls_gwyn",
+        "title": "Dark Souls: Design Works / Gwyn greatsword",
+        "page_url": "https://www.pinterest.com/pin/dark-souls-concept-art-gwyns-greatsword-concept-art--392376186282148317/",
+        "image_url": "https://i.pinimg.com/1200x/fb/e0/d9/fbe0d9e4d89582488a72e02a70234752.jpg",
+        "takeaway": "宽刃、窄柄、末端配重的质量分配；不复制原作徽记。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_gwyn.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Sword_VeteranRemnant",
+    "dimensions_blender_xyz": [
+      0.3673092722892761,
+      0.09415458887815475,
+      0.9449999928474426
+    ],
+    "triangles": 632,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Leather",
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Steel",
+      "M_MapLP_AEW_Edge",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Dark"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Sword_VeteranRemnant.fbx",
+      "bytes": 38652,
+      "object": "AEW_Sword_VeteranRemnant",
+      "mesh": "AEW_Sword_VeteranRemnant_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "geometry_revision": 3,
+    "applique_contract": "Every strip/repair plate/rivet is clipped to the blade front triangles. Back faces embed 0.8 mm in the metal; no fixed-Y floating plane."
+  },
+  {
+    "id": "AEW_Sword_MarshHeron",
+    "display_name": "泽鹭",
+    "category": "Sword",
+    "variant": 2,
+    "design_features": "细长叶形剑、弯喙护手、青铜叶饰",
+    "lore_zh": "盐沼的摆渡人不向迷途者索钱，只收一根能浮在水上的羽毛。渡口被沉尸围困的那年，一位无名旅客留下这柄狭长的叶形剑，护手向两侧弯成鹭喙，青铜在潮气中生出浅绿斑纹。守渡人用它割断沉船的缆绳，放走所有被困灵魂。剑脊保留水草般的浅沟，柄尾悬着空铜环；潮涨时铜环轻响，像在数尚未归岸的客人。",
+    "lore_han_characters": 126,
+    "references": [
+      {
+        "id": "souls_blades",
+        "title": "Dark Souls: Design Works / Astora, Quelaag, Zweihander",
+        "page_url": "https://www.pinterest.com/pin/423690277438927740/",
+        "image_url": "https://i.pinimg.com/736x/ed/ec/2b/edec2b9592f53a53348815af07fc2517.jpg",
+        "takeaway": "直剑的收束刃型、十字护手；有机刃与常规钢刃形成剪影对比。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_blades.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "souls_gwyn",
+        "title": "Dark Souls: Design Works / Gwyn greatsword",
+        "page_url": "https://www.pinterest.com/pin/dark-souls-concept-art-gwyns-greatsword-concept-art--392376186282148317/",
+        "image_url": "https://i.pinimg.com/1200x/fb/e0/d9/fbe0d9e4d89582488a72e02a70234752.jpg",
+        "takeaway": "宽刃、窄柄、末端配重的质量分配；不复制原作徽记。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_gwyn.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Sword_MarshHeron",
+    "dimensions_blender_xyz": [
+      0.4108981788158417,
+      0.09415458887815475,
+      1.315000057220459
+    ],
+    "triangles": 452,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Green",
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Steel",
+      "M_MapLP_AEW_Edge"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Sword_MarshHeron.fbx",
+      "bytes": 31868,
+      "object": "AEW_Sword_MarshHeron",
+      "mesh": "AEW_Sword_MarshHeron_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "geometry_revision": 3,
+    "applique_contract": "Every strip/repair plate/rivet is clipped to the blade front triangles. Back faces embed 0.8 mm in the metal; no fixed-Y floating plane."
+  },
+  {
+    "id": "AEW_Sword_EclipseVow",
+    "display_name": "蚀誓",
+    "category": "Sword",
+    "variant": 3,
+    "design_features": "黑钢菱刃、圆环护手、金色截面",
+    "lore_zh": "群星修院曾要求每个守门骑士发誓，日蚀之时绝不离岗。年轻的伊萝却在黑昼中开门救回山下的孩子，因此被抹去名字。她的仪剑被熏成乌黑，只有磨开的刃线仍露出银色，断开的圆环护手象征那道不完整的誓约。孩子们后来把门闩上的铜片钉在剑根，刻上新名字。剑不再为修院站岗，而为任何在黑暗里敲门的人守夜。",
+    "lore_han_characters": 130,
+    "references": [
+      {
+        "id": "souls_blades",
+        "title": "Dark Souls: Design Works / Astora, Quelaag, Zweihander",
+        "page_url": "https://www.pinterest.com/pin/423690277438927740/",
+        "image_url": "https://i.pinimg.com/736x/ed/ec/2b/edec2b9592f53a53348815af07fc2517.jpg",
+        "takeaway": "直剑的收束刃型、十字护手；有机刃与常规钢刃形成剪影对比。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_blades.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "souls_gwyn",
+        "title": "Dark Souls: Design Works / Gwyn greatsword",
+        "page_url": "https://www.pinterest.com/pin/dark-souls-concept-art-gwyns-greatsword-concept-art--392376186282148317/",
+        "image_url": "https://i.pinimg.com/1200x/fb/e0/d9/fbe0d9e4d89582488a72e02a70234752.jpg",
+        "takeaway": "宽刃、窄柄、末端配重的质量分配；不复制原作徽记。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_gwyn.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Sword_EclipseVow",
+    "dimensions_blender_xyz": [
+      0.31627196073532104,
+      0.09415458887815475,
+      1.2850000858306885
+    ],
+    "triangles": 648,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Leather",
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Gold",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Dark",
+      "M_MapLP_AEW_Edge"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Sword_EclipseVow.fbx",
+      "bytes": 37132,
+      "object": "AEW_Sword_EclipseVow",
+      "mesh": "AEW_Sword_EclipseVow_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "geometry_revision": 3,
+    "applique_contract": "Every strip/repair plate/rivet is clipped to the blade front triangles. Back faces embed 0.8 mm in the metal; no fixed-Y floating plane."
+  },
+  {
+    "id": "AEW_Sword_PilgrimFlame",
+    "display_name": "朝灯",
+    "category": "Sword",
+    "variant": 4,
+    "design_features": "火焰曲刃、短直护手、象牙配重",
+    "lore_zh": "西行巡礼路没有永不熄灭的圣火，只有驿站间互相传递的一盏小灯。末任护灯者把灯台熔进剑脊，铸成温和起伏的火焰刃，避免长途步行时挂住衣袍。象牙色柄头取自早已倒塌的路碑，并不属于任何圣兽。剑根的旧金套箍磨得发暗，仍能看见换手留下的凹痕。巡礼者相信，真正的祝福不是烈焰，而是有人愿意把余光留给后来者。",
+    "lore_han_characters": 133,
+    "references": [
+      {
+        "id": "souls_blades",
+        "title": "Dark Souls: Design Works / Astora, Quelaag, Zweihander",
+        "page_url": "https://www.pinterest.com/pin/423690277438927740/",
+        "image_url": "https://i.pinimg.com/736x/ed/ec/2b/edec2b9592f53a53348815af07fc2517.jpg",
+        "takeaway": "直剑的收束刃型、十字护手；有机刃与常规钢刃形成剪影对比。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_blades.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "souls_gwyn",
+        "title": "Dark Souls: Design Works / Gwyn greatsword",
+        "page_url": "https://www.pinterest.com/pin/dark-souls-concept-art-gwyns-greatsword-concept-art--392376186282148317/",
+        "image_url": "https://i.pinimg.com/1200x/fb/e0/d9/fbe0d9e4d89582488a72e02a70234752.jpg",
+        "takeaway": "宽刃、窄柄、末端配重的质量分配；不复制原作徽记。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_gwyn.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Sword_PilgrimFlame",
+    "dimensions_blender_xyz": [
+      0.3664769232273102,
+      0.12200000137090683,
+      1.2100000381469727
+    ],
+    "triangles": 532,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Purple",
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Gold",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Steel",
+      "M_MapLP_AEW_Edge",
+      "M_MapLP_AEW_Bone"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Sword_PilgrimFlame.fbx",
+      "bytes": 35004,
+      "object": "AEW_Sword_PilgrimFlame",
+      "mesh": "AEW_Sword_PilgrimFlame_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Greatsword_KilnBreaker",
+    "display_name": "裂窑",
+    "category": "Greatsword",
+    "variant": 0,
+    "design_features": "宽截头巨刃、铜箍、煤黑剑脊",
+    "lore_zh": "矮人窑城被岩浆封住出口时，守炉人把铸模尚未冷透的闸刀扛上肩头，砸开通往旧风井的石墙。获救工匠为他磨出双刃，却保留宽大的截头和厚重铜箍，因为那些焦黑色斑块记着每一次撞击。长柄足够双手换握，配重由废炉锤铸成。它从未受过国王的册封；在窑城，谁能用这柄巨剑为别人打开一条路，谁便有资格坐在长桌首席。",
+    "lore_han_characters": 133,
+    "references": [
+      {
+        "id": "souls_gwyn",
+        "title": "Dark Souls: Design Works / Gwyn greatsword",
+        "page_url": "https://www.pinterest.com/pin/dark-souls-concept-art-gwyns-greatsword-concept-art--392376186282148317/",
+        "image_url": "https://i.pinimg.com/1200x/fb/e0/d9/fbe0d9e4d89582488a72e02a70234752.jpg",
+        "takeaway": "宽刃、窄柄、末端配重的质量分配；不复制原作徽记。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_gwyn.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "souls_blades",
+        "title": "Dark Souls: Design Works / Astora, Quelaag, Zweihander",
+        "page_url": "https://www.pinterest.com/pin/423690277438927740/",
+        "image_url": "https://i.pinimg.com/736x/ed/ec/2b/edec2b9592f53a53348815af07fc2517.jpg",
+        "takeaway": "直剑的收束刃型、十字护手；有机刃与常规钢刃形成剪影对比。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_blades.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Greatsword_KilnBreaker",
+    "dimensions_blender_xyz": [
+      0.6717215776443481,
+      0.12553945183753967,
+      1.8949999809265137
+    ],
+    "triangles": 464,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Red",
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Dark",
+      "M_MapLP_AEW_Edge"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Greatsword_KilnBreaker.fbx",
+      "bytes": 31740,
+      "object": "AEW_Greatsword_KilnBreaker",
+      "mesh": "AEW_Greatsword_KilnBreaker_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Greatsword_GraveBell",
+    "display_name": "墓钟",
+    "category": "Greatsword",
+    "variant": 1,
+    "design_features": "长尖巨剑、宽叉护手、暗铜钟形柄尾",
+    "lore_zh": "北陵的钟楼倒在冬夜，埋住了替亡者守灯的敲钟人。徒弟从碎钟里挑出最沉的一块，锻成宽叉护手，把师傅的墓碑铁钉封进长剑柄尾。银灰剑刃没有华丽铭文，只有沿中脊逐渐收束的暗色沟槽。每逢送葬，徒弟将剑竖在墓旁，让风穿过叉间。人们听见的并非钟声，却总能在那一瞬想起逝者说过的一句平常话。",
+    "lore_han_characters": 124,
+    "references": [
+      {
+        "id": "souls_gwyn",
+        "title": "Dark Souls: Design Works / Gwyn greatsword",
+        "page_url": "https://www.pinterest.com/pin/dark-souls-concept-art-gwyns-greatsword-concept-art--392376186282148317/",
+        "image_url": "https://i.pinimg.com/1200x/fb/e0/d9/fbe0d9e4d89582488a72e02a70234752.jpg",
+        "takeaway": "宽刃、窄柄、末端配重的质量分配；不复制原作徽记。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_gwyn.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "souls_blades",
+        "title": "Dark Souls: Design Works / Astora, Quelaag, Zweihander",
+        "page_url": "https://www.pinterest.com/pin/423690277438927740/",
+        "image_url": "https://i.pinimg.com/736x/ed/ec/2b/edec2b9592f53a53348815af07fc2517.jpg",
+        "takeaway": "直剑的收束刃型、十字护手；有机刃与常规钢刃形成剪影对比。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_blades.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Greatsword_GraveBell",
+    "dimensions_blender_xyz": [
+      0.5480901598930359,
+      0.13314791023731232,
+      2.1399998664855957
+    ],
+    "triangles": 668,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Leather",
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Steel",
+      "M_MapLP_AEW_Edge",
+      "M_MapLP_AEW_Copper"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Greatsword_GraveBell.fbx",
+      "bytes": 37996,
+      "object": "AEW_Greatsword_GraveBell",
+      "mesh": "AEW_Greatsword_GraveBell_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "geometry_revision": 3,
+    "applique_contract": "Every strip/repair plate/rivet is clipped to the blade front triangles. Back faces embed 0.8 mm in the metal; no fixed-Y floating plane."
+  },
+  {
+    "id": "AEW_Greatsword_DragonRib",
+    "display_name": "山龙肋",
+    "category": "Greatsword",
+    "variant": 2,
+    "design_features": "不对称骨脊、厚叶形黑刃",
+    "lore_zh": "猎王宣称自己斩杀了山龙，实际上是龙在雪崩中护住了他的军队。幸存的侍从把一截龙肋锻接到黑钢剑背，以巨大而不对称的轮廓揭露这段被改写的历史。骨白的支棱只长在钝脊，锋口仍是连续钢刃，长柄包覆深红旧皮。侍从带着它离开王城，遇见歌者便讲出真相。巨剑沉重，恰如一个人不得不替许多人背负的羞愧。",
+    "lore_han_characters": 129,
+    "references": [
+      {
+        "id": "souls_gwyn",
+        "title": "Dark Souls: Design Works / Gwyn greatsword",
+        "page_url": "https://www.pinterest.com/pin/dark-souls-concept-art-gwyns-greatsword-concept-art--392376186282148317/",
+        "image_url": "https://i.pinimg.com/1200x/fb/e0/d9/fbe0d9e4d89582488a72e02a70234752.jpg",
+        "takeaway": "宽刃、窄柄、末端配重的质量分配；不复制原作徽记。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_gwyn.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "souls_blades",
+        "title": "Dark Souls: Design Works / Astora, Quelaag, Zweihander",
+        "page_url": "https://www.pinterest.com/pin/423690277438927740/",
+        "image_url": "https://i.pinimg.com/736x/ed/ec/2b/edec2b9592f53a53348815af07fc2517.jpg",
+        "takeaway": "直剑的收束刃型、十字护手；有机刃与常规钢刃形成剪影对比。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_blades.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Greatsword_DragonRib",
+    "dimensions_blender_xyz": [
+      0.6132417321205139,
+      0.12676945328712463,
+      1.9450000524520874
+    ],
+    "triangles": 576,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Green",
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Steel",
+      "M_MapLP_AEW_Edge",
+      "M_MapLP_AEW_Bone"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Greatsword_DragonRib.fbx",
+      "bytes": 37260,
+      "object": "AEW_Greatsword_DragonRib",
+      "mesh": "AEW_Greatsword_DragonRib_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Greatsword_TideAnchor",
+    "display_name": "潮锚",
+    "category": "Greatsword",
+    "variant": 3,
+    "design_features": "弧肩巨剑、锚形护手、青灰宽刃",
+    "lore_zh": "海堤守卫最后一次出航时，船上没有余粮，只有一座即将沉没的修道院送来的铁锚。风暴过后，幸存者把锚重新锻成宽刃巨剑，护手依然保留向下弯曲的双爪。剑面青灰，铜铆钉被盐水咬出深色轮廓；两手握住长柄时，仍能感觉到旧锚链的刻纹。它被传给负责最后撤离的守卫，提醒持有者，能把人留在岸上的力量比征服海洋更值得敬畏。",
+    "lore_han_characters": 136,
+    "references": [
+      {
+        "id": "souls_gwyn",
+        "title": "Dark Souls: Design Works / Gwyn greatsword",
+        "page_url": "https://www.pinterest.com/pin/dark-souls-concept-art-gwyns-greatsword-concept-art--392376186282148317/",
+        "image_url": "https://i.pinimg.com/1200x/fb/e0/d9/fbe0d9e4d89582488a72e02a70234752.jpg",
+        "takeaway": "宽刃、窄柄、末端配重的质量分配；不复制原作徽记。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_gwyn.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "souls_blades",
+        "title": "Dark Souls: Design Works / Astora, Quelaag, Zweihander",
+        "page_url": "https://www.pinterest.com/pin/423690277438927740/",
+        "image_url": "https://i.pinimg.com/736x/ed/ec/2b/edec2b9592f53a53348815af07fc2517.jpg",
+        "takeaway": "直剑的收束刃型、十字护手；有机刃与常规钢刃形成剪影对比。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_blades.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Greatsword_TideAnchor",
+    "dimensions_blender_xyz": [
+      0.6446957588195801,
+      0.12553945183753967,
+      1.9049999713897705
+    ],
+    "triangles": 464,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Leather",
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Gold",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Dark",
+      "M_MapLP_AEW_Edge"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Greatsword_TideAnchor.fbx",
+      "bytes": 31868,
+      "object": "AEW_Greatsword_TideAnchor",
+      "mesh": "AEW_Greatsword_TideAnchor_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    },
+    "geometry_revision": 3,
+    "applique_contract": "Every strip/repair plate/rivet is clipped to the blade front triangles. Back faces embed 0.8 mm in the metal; no fixed-Y floating plane."
+  },
+  {
+    "id": "AEW_Greatsword_ThornCrown",
+    "display_name": "荆王",
+    "category": "Greatsword",
+    "variant": 4,
+    "design_features": "折线双刃、枝刺护手、深紫织带",
+    "lore_zh": "荆棘王国选出第一位平民女王时，贵族拒绝交出加冕宝剑。园丁们便以拆下的铁栅栏铸成新剑，把门顶的枝刺做成护手，将紫色围裙裁成握带。锻造不够均匀，宽刃上仍有节奏分明的折线，却能让远处的人一眼认出这件朴素王器。女王后来把它留在议事厅门外，任何申诉者都可以触摸。荆棘没有消失，只是终于转向了欺压他人的手。",
+    "lore_han_characters": 135,
+    "references": [
+      {
+        "id": "souls_gwyn",
+        "title": "Dark Souls: Design Works / Gwyn greatsword",
+        "page_url": "https://www.pinterest.com/pin/dark-souls-concept-art-gwyns-greatsword-concept-art--392376186282148317/",
+        "image_url": "https://i.pinimg.com/1200x/fb/e0/d9/fbe0d9e4d89582488a72e02a70234752.jpg",
+        "takeaway": "宽刃、窄柄、末端配重的质量分配；不复制原作徽记。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_gwyn.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "souls_blades",
+        "title": "Dark Souls: Design Works / Astora, Quelaag, Zweihander",
+        "page_url": "https://www.pinterest.com/pin/423690277438927740/",
+        "image_url": "https://i.pinimg.com/736x/ed/ec/2b/edec2b9592f53a53348815af07fc2517.jpg",
+        "takeaway": "直剑的收束刃型、十字护手；有机刃与常规钢刃形成剪影对比。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_blades.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Greatsword_ThornCrown",
+    "dimensions_blender_xyz": [
+      0.5470641255378723,
+      0.13728639483451843,
+      2.0199999809265137
+    ],
+    "triangles": 532,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Purple",
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Gold",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Steel",
+      "M_MapLP_AEW_Edge"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Greatsword_ThornCrown.fbx",
+      "bytes": 33932,
+      "object": "AEW_Greatsword_ThornCrown",
+      "mesh": "AEW_Greatsword_ThornCrown_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Bow_YewWarden",
+    "display_name": "紫杉守望",
+    "category": "Bow",
+    "variant": 0,
+    "design_features": "高挑长弓、素木弓臂、铜弦槽",
+    "lore_zh": "山口的守林家族从不砍伐活着的紫杉，只等雷雨替他们选择枝干。这张长弓出自同一棵被雷击开的老树，弓臂从厚握把平缓收细，浅铜弦槽护住两端易裂的木纹。第一任弓手曾在暴雪里守了三日，只为让羊群顺利越岭。他没有留下战绩，弓把上却刻着小小的羊角记号。后来的守望者每年更换弓弦，始终保留那层被雨水磨亮的旧木色。",
+    "lore_han_characters": 136,
+    "references": [
+      {
+        "id": "hornbow",
+        "title": "Elden Ring / Horn Bow",
+        "page_url": "https://www.vgbaike.com/elden_ring/baike14959",
+        "image_url": "https://media.vgbaike.com/database/2022/0620/20/33203_oqnzfv.png",
+        "takeaway": "兽角反曲弓梢、握把与弦线的净空关系。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/hornbow.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "shortbow",
+        "title": "Elden Ring / Longbow item card",
+        "page_url": "https://www.gamersky.com/handbook/202401/1694907_252.shtml",
+        "image_url": "https://img1.gamersky.com/image2024/01/20240110_apl_435_24/13920_S.jpg",
+        "takeaway": "传统木长弓的长臂比例、弦距与包握区。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/shortbow.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created; bow limbs lie in XZ and string toward +X; aim is -X; grip center is zero; animation/socket integration pending",
+    "name": "AEW_Bow_YewWarden",
+    "dimensions_blender_xyz": [
+      0.25674471259117126,
+      0.0860000029206276,
+      1.710044503211975
+    ],
+    "triangles": 572,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Lightwood",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Cloth",
+      "M_MapLP_AEW_Leather"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Bow_YewWarden.fbx",
+      "bytes": 35276,
+      "object": "AEW_Bow_YewWarden",
+      "mesh": "AEW_Bow_YewWarden_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Bow_MoonAntler",
+    "display_name": "月鹿",
+    "category": "Bow",
+    "variant": 1,
+    "design_features": "象牙反曲弓梢、暗木中段",
+    "lore_zh": "月井旁的白鹿每隔七年落一次角，守井人把落角分给七座村庄。失去猎场的少女用其中两截与黑桦胶合，制成短而有力的反曲弓，尖梢像半轮新月。她曾以没有箭头的木矢赶走偷井贼，因此弓身从未染血。骨白与深木色的接缝由旧银箍保护，握把上留着儿童打出的结。传说满月时拉弦，会看见自己最想保护之人的影子。",
+    "lore_han_characters": 130,
+    "references": [
+      {
+        "id": "hornbow",
+        "title": "Elden Ring / Horn Bow",
+        "page_url": "https://www.vgbaike.com/elden_ring/baike14959",
+        "image_url": "https://media.vgbaike.com/database/2022/0620/20/33203_oqnzfv.png",
+        "takeaway": "兽角反曲弓梢、握把与弦线的净空关系。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/hornbow.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "shortbow",
+        "title": "Elden Ring / Longbow item card",
+        "page_url": "https://www.gamersky.com/handbook/202401/1694907_252.shtml",
+        "image_url": "https://img1.gamersky.com/image2024/01/20240110_apl_435_24/13920_S.jpg",
+        "takeaway": "传统木长弓的长臂比例、弦距与包握区。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/shortbow.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created; bow limbs lie in XZ and string toward +X; aim is -X; grip center is zero; animation/socket integration pending",
+    "name": "AEW_Bow_MoonAntler",
+    "dimensions_blender_xyz": [
+      0.24916891753673553,
+      0.0860000029206276,
+      1.574455738067627
+    ],
+    "triangles": 636,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Bone",
+      "M_MapLP_AEW_Cloth",
+      "M_MapLP_AEW_Leather"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Bow_MoonAntler.fbx",
+      "bytes": 36124,
+      "object": "AEW_Bow_MoonAntler",
+      "mesh": "AEW_Bow_MoonAntler_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Bow_FenReed",
+    "display_name": "苇泽",
+    "category": "Bow",
+    "variant": 2,
+    "design_features": "非对称短弓、苇绿包片",
+    "lore_zh": "芦苇海的信使必须在狭窄小舟上射出系着绳结的讯箭，因此弓的下臂特意短于上臂。她将轻木弓腹包以干苇和鱼胶，外侧只留几道绿灰色护片，潮湿时也容易握稳。一次大雾中，她凭沿岸三声回应救出整支采药队。此后弓梢各系一段浅色绳结，用来记住已经消失的码头。它的弦声很轻，却曾让所有以为被遗忘的人知道岸上仍有人等待。",
+    "lore_han_characters": 137,
+    "references": [
+      {
+        "id": "hornbow",
+        "title": "Elden Ring / Horn Bow",
+        "page_url": "https://www.vgbaike.com/elden_ring/baike14959",
+        "image_url": "https://media.vgbaike.com/database/2022/0620/20/33203_oqnzfv.png",
+        "takeaway": "兽角反曲弓梢、握把与弦线的净空关系。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/hornbow.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "shortbow",
+        "title": "Elden Ring / Longbow item card",
+        "page_url": "https://www.gamersky.com/handbook/202401/1694907_252.shtml",
+        "image_url": "https://img1.gamersky.com/image2024/01/20240110_apl_435_24/13920_S.jpg",
+        "takeaway": "传统木长弓的长臂比例、弦距与包握区。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/shortbow.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created; bow limbs lie in XZ and string toward +X; aim is -X; grip center is zero; animation/socket integration pending",
+    "name": "AEW_Bow_FenReed",
+    "dimensions_blender_xyz": [
+      0.22652781009674072,
+      0.0860000029206276,
+      1.2023086547851562
+    ],
+    "triangles": 572,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Green",
+      "M_MapLP_AEW_Lightwood",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Cloth"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Bow_FenReed.fbx",
+      "bytes": 35244,
+      "object": "AEW_Bow_FenReed",
+      "mesh": "AEW_Bow_FenReed_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Bow_AshRecurve",
+    "display_name": "烬羽",
+    "category": "Bow",
+    "variant": 3,
+    "design_features": "黑红层压反曲弓、赤铜端片",
+    "lore_zh": "火山林被烧成黑炭后，制弓师在灰烬里发现一株仍流着红色树脂的小树。他只取下已经折断的枝条，反复层压成紧凑的双反曲弓，外黑内红的弓臂像收拢的鸟翼。赤铜弦槽以旧炊锅修补，握把留着烟熏布带。弓师用它为重建村庄猎来第一顿肉，却禁止后人把火当成威名。每一道红色接缝都提醒弓手，能够重生的森林也曾真实地疼痛。",
+    "lore_han_characters": 136,
+    "references": [
+      {
+        "id": "hornbow",
+        "title": "Elden Ring / Horn Bow",
+        "page_url": "https://www.vgbaike.com/elden_ring/baike14959",
+        "image_url": "https://media.vgbaike.com/database/2022/0620/20/33203_oqnzfv.png",
+        "takeaway": "兽角反曲弓梢、握把与弦线的净空关系。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/hornbow.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "shortbow",
+        "title": "Elden Ring / Longbow item card",
+        "page_url": "https://www.gamersky.com/handbook/202401/1694907_252.shtml",
+        "image_url": "https://img1.gamersky.com/image2024/01/20240110_apl_435_24/13920_S.jpg",
+        "takeaway": "传统木长弓的长臂比例、弦距与包握区。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/shortbow.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created; bow limbs lie in XZ and string toward +X; aim is -X; grip center is zero; animation/socket integration pending",
+    "name": "AEW_Bow_AshRecurve",
+    "dimensions_blender_xyz": [
+      0.26759880781173706,
+      0.0860000029206276,
+      1.4220143556594849
+    ],
+    "triangles": 572,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Dark",
+      "M_MapLP_AEW_Red",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Cloth"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Bow_AshRecurve.fbx",
+      "bytes": 34268,
+      "object": "AEW_Bow_AshRecurve",
+      "mesh": "AEW_Bow_AshRecurve_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Bow_BellHunt",
+    "display_name": "巡铃",
+    "category": "Bow",
+    "variant": 4,
+    "design_features": "宽弓臂、黄铜中架、深蓝缠把",
+    "lore_zh": "雾镇猎团习惯在出门前摇铃，好让住在林边的人收回牲畜。领弓人失去听力之后，工匠为她打造宽臂长弓，将黄铜中架做成能传递弦振的桥形。深蓝握带下藏着不同方向的凸纹，她凭掌心便能判断松紧。弓梢没有累赘挂饰，只有一枚不会发声的小铃刻痕。猎团散去多年，这张弓仍教导继承者，缺少一种感官并不等于失去与世界交谈的方法。",
+    "lore_han_characters": 138,
+    "references": [
+      {
+        "id": "hornbow",
+        "title": "Elden Ring / Horn Bow",
+        "page_url": "https://www.vgbaike.com/elden_ring/baike14959",
+        "image_url": "https://media.vgbaike.com/database/2022/0620/20/33203_oqnzfv.png",
+        "takeaway": "兽角反曲弓梢、握把与弦线的净空关系。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/hornbow.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "shortbow",
+        "title": "Elden Ring / Longbow item card",
+        "page_url": "https://www.gamersky.com/handbook/202401/1694907_252.shtml",
+        "image_url": "https://img1.gamersky.com/image2024/01/20240110_apl_435_24/13920_S.jpg",
+        "takeaway": "传统木长弓的长臂比例、弦距与包握区。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/shortbow.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created; bow limbs lie in XZ and string toward +X; aim is -X; grip center is zero; animation/socket integration pending",
+    "name": "AEW_Bow_BellHunt",
+    "dimensions_blender_xyz": [
+      0.2687692642211914,
+      0.09000000357627869,
+      1.6499089002609253
+    ],
+    "triangles": 640,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Lightwood",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Cloth",
+      "M_MapLP_AEW_Blue",
+      "M_MapLP_AEW_Iron"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Bow_BellHunt.fbx",
+      "bytes": 36828,
+      "object": "AEW_Bow_BellHunt",
+      "mesh": "AEW_Bow_BellHunt_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Crossbow_GateArbalest",
+    "display_name": "门垒",
+    "category": "Crossbow",
+    "variant": 0,
+    "design_features": "重木肩托、钢弓臂、前蹬环",
+    "lore_zh": "石门镇的守卫多是年长的磨坊工，难以整日拉开长弓，便把磨架的钢片改成一张厚重弩。宽木肩托能够抵在城垛上，前端蹬环让人借体重上弦，箭槽与铜护片一直延伸到弓臂中央。第一次围城结束后，守卫在枪托下钉了五枚平头钉，记下五次打开城门接回难民的决定。它看起来笨拙，却从未让缺乏臂力的人失去守护家园的位置。",
+    "lore_han_characters": 134,
+    "references": [
+      {
+        "id": "arbalest",
+        "title": "Elden Ring / heavy crossbow screenshot",
+        "page_url": "https://note.com/pyon_pyoko/n/n660826ddbece",
+        "image_url": "https://assets.st-note.com/img/1665331647999-N3RZHQW5Ug.jpg",
+        "takeaway": "横弓臂、纵向箭槽和肩托分层。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/arbalest.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "avelyn",
+        "title": "Dark Souls / Avelyn",
+        "page_url": "https://darksouls.wikidot.com/avelyn",
+        "image_url": "https://i.imgur.com/Bs79j4D.jpg",
+        "takeaway": "装饰性重复弓臂与木托，保持箭路连续。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/avelyn.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Crossbow_GateArbalest",
+    "dimensions_blender_xyz": [
+      0.9989357590675354,
+      1.0177767276763916,
+      0.3880000114440918
+    ],
+    "triangles": 436,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Steel",
+      "M_MapLP_AEW_Cloth",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Gold"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Crossbow_GateArbalest.fbx",
+      "bytes": 33596,
+      "object": "AEW_Crossbow_GateArbalest",
+      "mesh": "AEW_Crossbow_GateArbalest_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Crossbow_ClockAbbey",
+    "display_name": "钟院",
+    "category": "Crossbow",
+    "variant": 1,
+    "design_features": "双层弓臂、铜制桥架、横向绞轮",
+    "lore_zh": "钟院的抄经士厌倦了用钟声预告劫掠，拆下一座坏钟的传动架，设计出双层弓臂的连弩。两道横臂由暗铜桥架隔开，中央箭道清楚可见，木托上的小轮保留着钟表匠的刻度。它第一次发射的不是铁矢，而是一封系着白布的停战信。后来虽被守军采用，弩身仍嵌着那块白色木片，提醒使用者，精密工艺也可以争取让弦不必再次绷紧的时刻。",
+    "lore_han_characters": 137,
+    "references": [
+      {
+        "id": "arbalest",
+        "title": "Elden Ring / heavy crossbow screenshot",
+        "page_url": "https://note.com/pyon_pyoko/n/n660826ddbece",
+        "image_url": "https://assets.st-note.com/img/1665331647999-N3RZHQW5Ug.jpg",
+        "takeaway": "横弓臂、纵向箭槽和肩托分层。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/arbalest.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "avelyn",
+        "title": "Dark Souls / Avelyn",
+        "page_url": "https://darksouls.wikidot.com/avelyn",
+        "image_url": "https://i.imgur.com/Bs79j4D.jpg",
+        "takeaway": "装饰性重复弓臂与木托，保持箭路连续。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/avelyn.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Crossbow_ClockAbbey",
+    "dimensions_blender_xyz": [
+      0.8215811252593994,
+      0.8774999976158142,
+      0.5180000066757202
+    ],
+    "triangles": 1104,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Red",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Steel",
+      "M_MapLP_AEW_Cloth",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Gold"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Crossbow_ClockAbbey.fbx",
+      "bytes": 49740,
+      "object": "AEW_Crossbow_ClockAbbey",
+      "mesh": "AEW_Crossbow_ClockAbbey_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Crossbow_BriarScout",
+    "display_name": "棘径",
+    "category": "Crossbow",
+    "variant": 2,
+    "design_features": "轻型短托、骨梢横臂、皮握",
+    "lore_zh": "穿行黑森林的侦察者发现，宽大的军弩总被枝蔓扯住，于是将旧弩缩成短托，以光滑兽角包住弓梢。灰绿弓臂向后收拢，箭槽只够容纳短矢，皮握把上留下不断穿越泥水的深色痕迹。首任主人曾射断吊桥锁链，让追来的猎犬留在安全岸边。她把那截链环挂在家中，弩上只留一道淡色修痕。轻巧不等于轻慢，每次抬弩之前仍须知道箭会停在哪里。",
+    "lore_han_characters": 139,
+    "references": [
+      {
+        "id": "arbalest",
+        "title": "Elden Ring / heavy crossbow screenshot",
+        "page_url": "https://note.com/pyon_pyoko/n/n660826ddbece",
+        "image_url": "https://assets.st-note.com/img/1665331647999-N3RZHQW5Ug.jpg",
+        "takeaway": "横弓臂、纵向箭槽和肩托分层。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/arbalest.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "avelyn",
+        "title": "Dark Souls / Avelyn",
+        "page_url": "https://darksouls.wikidot.com/avelyn",
+        "image_url": "https://i.imgur.com/Bs79j4D.jpg",
+        "takeaway": "装饰性重复弓臂与木托，保持箭路连续。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/avelyn.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Crossbow_BriarScout",
+    "dimensions_blender_xyz": [
+      0.6839894652366638,
+      0.7540000081062317,
+      0.3880000114440918
+    ],
+    "triangles": 392,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Green",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Bone",
+      "M_MapLP_AEW_Cloth",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Gold"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Crossbow_BriarScout.fbx",
+      "bytes": 31820,
+      "object": "AEW_Crossbow_BriarScout",
+      "mesh": "AEW_Crossbow_BriarScout_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Crossbow_SaltWinch",
+    "display_name": "盐港",
+    "category": "Crossbow",
+    "variant": 3,
+    "design_features": "海蓝木托、外露双绞轮、弩首铜箍",
+    "lore_zh": "盐港灯塔的守塔人用这张绞盘弩把引导绳送到触礁船上。潮水洗淡了海蓝木托，双侧绞轮却一直被他擦得干净，铜箍护住最容易被盐蚀的弩首。箭道比军用弩宽，便于容纳结着救生细绳的短箭。一次风暴后，获救水手送来银币，他只取两枚钉在肩托上作为垫片。它因此显得古怪而不华丽，却让所有见过它的人想起黑海上那根通向灯光的细线。",
+    "lore_han_characters": 140,
+    "references": [
+      {
+        "id": "arbalest",
+        "title": "Elden Ring / heavy crossbow screenshot",
+        "page_url": "https://note.com/pyon_pyoko/n/n660826ddbece",
+        "image_url": "https://assets.st-note.com/img/1665331647999-N3RZHQW5Ug.jpg",
+        "takeaway": "横弓臂、纵向箭槽和肩托分层。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/arbalest.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "avelyn",
+        "title": "Dark Souls / Avelyn",
+        "page_url": "https://darksouls.wikidot.com/avelyn",
+        "image_url": "https://i.imgur.com/Bs79j4D.jpg",
+        "takeaway": "装饰性重复弓臂与木托，保持箭路连续。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/avelyn.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Crossbow_SaltWinch",
+    "dimensions_blender_xyz": [
+      0.9003433585166931,
+      1.0847723484039307,
+      0.4333651661872864
+    ],
+    "triangles": 1012,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Blue",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Steel",
+      "M_MapLP_AEW_Cloth",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Gold"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Crossbow_SaltWinch.fbx",
+      "bytes": 47900,
+      "object": "AEW_Crossbow_SaltWinch",
+      "mesh": "AEW_Crossbow_SaltWinch_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Crossbow_Reliquary",
+    "display_name": "小圣匣",
+    "category": "Crossbow",
+    "variant": 4,
+    "design_features": "拱形机匣、深红木托、单层短弓",
+    "lore_zh": "旅修会将一页烧剩的祈祷书封在木匣里，由最年轻的护送者背往边城。途中木匣裂开，她请工匠把残片嵌进弩托，做成拱形护壳，既挡雨也护住扳机。暗金包边和深红木色使这张短弩看起来像微缩礼拜堂，中央箭槽仍保持朴素直线。残页写的并非胜利，而是为饥饿者留下一把椅子。护送者后来开了客店，把弩挂在门旁，只用来驱赶夜里的野兽。",
+    "lore_han_characters": 139,
+    "references": [
+      {
+        "id": "arbalest",
+        "title": "Elden Ring / heavy crossbow screenshot",
+        "page_url": "https://note.com/pyon_pyoko/n/n660826ddbece",
+        "image_url": "https://assets.st-note.com/img/1665331647999-N3RZHQW5Ug.jpg",
+        "takeaway": "横弓臂、纵向箭槽和肩托分层。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/arbalest.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "avelyn",
+        "title": "Dark Souls / Avelyn",
+        "page_url": "https://darksouls.wikidot.com/avelyn",
+        "image_url": "https://i.imgur.com/Bs79j4D.jpg",
+        "takeaway": "装饰性重复弓臂与木托，保持箭路连续。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/avelyn.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Crossbow_Reliquary",
+    "dimensions_blender_xyz": [
+      0.723270833492279,
+      0.7799999713897705,
+      0.5755884647369385
+    ],
+    "triangles": 448,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Red",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Steel",
+      "M_MapLP_AEW_Cloth",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Gold"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Crossbow_Reliquary.fbx",
+      "bytes": 33532,
+      "object": "AEW_Crossbow_Reliquary",
+      "mesh": "AEW_Crossbow_Reliquary_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Longgun_PilgrimMusket",
+    "display_name": "行旅铳",
+    "category": "Longgun",
+    "variant": 0,
+    "design_features": "长八角管、弯木托、黄铜机匣",
+    "lore_zh": "铳匠托兰原本替钟楼修钟，直到巡礼队请求他造一件能在暴雨里示警的器具。他用旧钟铜包住黑铁机匣，保留细长的八角管与弯曲木托，让徒步者能够平稳背负。护木上的浅色木补丁来自沿途不同驿站，记录的都是修理与赠予。它最响亮的一次并非对着敌人，而是在雪山口唤醒迷失的商队。如今人们仍称它行旅铳，因为回家的方向比枪口更重要。",
+    "lore_han_characters": 142,
+    "references": [
+      {
+        "id": "bloodborne_guns",
+        "title": "Bloodborne Official Design Art Works / firearms spread",
+        "page_url": "https://www.animebooks.com/blofartwoart.html",
+        "image_url": "https://sep.turbifycdn.com/ay/animebooks-com/bloodborne-official-art-works-art-book-12.gif",
+        "takeaway": "哥特长枪、钟口枪管和手枪木握把；取比例而不复制机构。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/bloodborne_guns.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "metro_rifle",
+        "title": "Metro Exodus / Valve promotional render",
+        "page_url": "https://shazoo.ru/2019/01/22/75076/postapokalipticheskoe-oruzhie-v-novom-trejlere-metro-exodus",
+        "image_url": "https://cdn.shazoo.ru/315240_0RLeaKXvKl_metro_exodus_the_valve_nologo.jpg",
+        "takeaway": "镜体与安装脚分离、包布握点；仅借鉴配件结构可读性。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_rifle.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Longgun_PilgrimMusket",
+    "dimensions_blender_xyz": [
+      0.12012435495853424,
+      1.5110000371932983,
+      0.47586801648139954
+    ],
+    "triangles": 616,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Dark",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Gold"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Longgun_PilgrimMusket.fbx",
+      "bytes": 36972,
+      "object": "AEW_Longgun_PilgrimMusket",
+      "mesh": "AEW_Longgun_PilgrimMusket_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Longgun_CinderMouth",
+    "display_name": "烬口",
+    "category": "Longgun",
+    "variant": 1,
+    "design_features": "扩张钟口、粗木托、铜散热圈",
+    "lore_zh": "熔岩矿井的工人常被地下巨虫围困，他们把报废炉嘴改成一支短粗长铳，用开阔的钟口发射驱虫的盐石。粗重木托包着煤色铁皮，三道铜圈隔开灼热管身与前手，侧面的红铜片留下多次修补痕迹。矿长曾想将它镀金献给领主，工人却坚持保留烟灰色。对他们而言，这件古怪器具的价值不在杀伤，而在每次响过以后，井口能够多走出一个活人。",
+    "lore_han_characters": 139,
+    "references": [
+      {
+        "id": "bloodborne_guns",
+        "title": "Bloodborne Official Design Art Works / firearms spread",
+        "page_url": "https://www.animebooks.com/blofartwoart.html",
+        "image_url": "https://sep.turbifycdn.com/ay/animebooks-com/bloodborne-official-art-works-art-book-12.gif",
+        "takeaway": "哥特长枪、钟口枪管和手枪木握把；取比例而不复制机构。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/bloodborne_guns.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "metro_rifle",
+        "title": "Metro Exodus / Valve promotional render",
+        "page_url": "https://shazoo.ru/2019/01/22/75076/postapokalipticheskoe-oruzhie-v-novom-trejlere-metro-exodus",
+        "image_url": "https://cdn.shazoo.ru/315240_0RLeaKXvKl_metro_exodus_the_valve_nologo.jpg",
+        "takeaway": "镜体与安装脚分离、包布握点；仅借鉴配件结构可读性。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_rifle.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Longgun_CinderMouth",
+    "dimensions_blender_xyz": [
+      0.15960000455379486,
+      1.2280000448226929,
+      0.47586801648139954
+    ],
+    "triangles": 652,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Dark",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Gold"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Longgun_CinderMouth.fbx",
+      "bytes": 38124,
+      "object": "AEW_Longgun_CinderMouth",
+      "mesh": "AEW_Longgun_CinderMouth_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Longgun_AntlerWatch",
+    "display_name": "角哨",
+    "category": "Longgun",
+    "variant": 2,
+    "design_features": "骨护木、细长管、开放瞄具",
+    "lore_zh": "北岭瞭望站没有足够木料，守望者用自然脱落的鹿角做出枪托侧板，将一支旧猎铳修得比原来更轻。骨白护木沿着黑铁长管铺开，开放瞄具只有两片短短的铜叶，不会遮住雪地里的身影。她曾故意打偏一枪，为误闯边境的牧童争取逃离时间，因此被扣去军饷。枪托上的空钉孔就是被摘下的军徽。那片空白至今比任何奖章更醒目。",
+    "lore_han_characters": 134,
+    "references": [
+      {
+        "id": "bloodborne_guns",
+        "title": "Bloodborne Official Design Art Works / firearms spread",
+        "page_url": "https://www.animebooks.com/blofartwoart.html",
+        "image_url": "https://sep.turbifycdn.com/ay/animebooks-com/bloodborne-official-art-works-art-book-12.gif",
+        "takeaway": "哥特长枪、钟口枪管和手枪木握把；取比例而不复制机构。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/bloodborne_guns.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "metro_rifle",
+        "title": "Metro Exodus / Valve promotional render",
+        "page_url": "https://shazoo.ru/2019/01/22/75076/postapokalipticheskoe-oruzhie-v-novom-trejlere-metro-exodus",
+        "image_url": "https://cdn.shazoo.ru/315240_0RLeaKXvKl_metro_exodus_the_valve_nologo.jpg",
+        "takeaway": "镜体与安装脚分离、包布握点；仅借鉴配件结构可读性。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_rifle.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Longgun_AntlerWatch",
+    "dimensions_blender_xyz": [
+      0.12099999934434891,
+      1.4610000848770142,
+      0.47586801648139954
+    ],
+    "triangles": 640,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Bone",
+      "M_MapLP_AEW_Steel",
+      "M_MapLP_AEW_Dark",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Gold"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Longgun_AntlerWatch.fbx",
+      "bytes": 38860,
+      "object": "AEW_Longgun_AntlerWatch",
+      "mesh": "AEW_Longgun_AntlerWatch_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Longgun_AlchemistCarbine",
+    "display_name": "炼潮",
+    "category": "Longgun",
+    "variant": 3,
+    "design_features": "蓝晶侧舱、短肩托、铜管桥架",
+    "lore_zh": "潮汐学会相信声音可以装进晶体，年轻研究员便造出一支以蓝晶舱调和震响的卡宾铳。铜色桥架把晶舱固定在机匣外侧，短肩托和厚护木保持实用形态，没有遮住装配接缝。试验失败时，整条街的钟一起响起，研究员被罚修了半年钟楼。她后来把枪交给海防队，只保留一枚裂晶。侧舱的浅色修补线使这件武器像一个承认过错误的人。",
+    "lore_han_characters": 136,
+    "references": [
+      {
+        "id": "bloodborne_guns",
+        "title": "Bloodborne Official Design Art Works / firearms spread",
+        "page_url": "https://www.animebooks.com/blofartwoart.html",
+        "image_url": "https://sep.turbifycdn.com/ay/animebooks-com/bloodborne-official-art-works-art-book-12.gif",
+        "takeaway": "哥特长枪、钟口枪管和手枪木握把；取比例而不复制机构。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/bloodborne_guns.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "metro_rifle",
+        "title": "Metro Exodus / Valve promotional render",
+        "page_url": "https://shazoo.ru/2019/01/22/75076/postapokalipticheskoe-oruzhie-v-novom-trejlere-metro-exodus",
+        "image_url": "https://cdn.shazoo.ru/315240_0RLeaKXvKl_metro_exodus_the_valve_nologo.jpg",
+        "takeaway": "镜体与安装脚分离、包布握点；仅借鉴配件结构可读性。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_rifle.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Longgun_AlchemistCarbine",
+    "dimensions_blender_xyz": [
+      0.1770000010728836,
+      1.1410000324249268,
+      0.47586801648139954
+    ],
+    "triangles": 752,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Green",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Dark",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Gold",
+      "M_MapLP_AEW_Cyan"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Longgun_AlchemistCarbine.fbx",
+      "bytes": 41644,
+      "object": "AEW_Longgun_AlchemistCarbine",
+      "mesh": "AEW_Longgun_AlchemistCarbine_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Longgun_GraveWarden",
+    "display_name": "墓卫",
+    "category": "Longgun",
+    "variant": 4,
+    "design_features": "黑铁重管、银色机匣、破旗布托",
+    "lore_zh": "荒原墓园的守卫不愿惊醒沉睡者，却必须在每年幽潮到来时驱走掘墓兽。他把旧军旗裁成细带缠在肩托上，用沉重黑铁管降低前端跳动，银灰机匣只留下守墓人的简朴十字钉。一次守夜，他发现敌兽只是寻找死去幼崽，便放下枪替它挖开冻土。此后枪托多了一道温柔的爪痕。墓卫仍保持警惕，但不再把每一个越过围墙的影子都当成敌人。",
+    "lore_han_characters": 138,
+    "references": [
+      {
+        "id": "bloodborne_guns",
+        "title": "Bloodborne Official Design Art Works / firearms spread",
+        "page_url": "https://www.animebooks.com/blofartwoart.html",
+        "image_url": "https://sep.turbifycdn.com/ay/animebooks-com/bloodborne-official-art-works-art-book-12.gif",
+        "takeaway": "哥特长枪、钟口枪管和手枪木握把；取比例而不复制机构。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/bloodborne_guns.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "metro_rifle",
+        "title": "Metro Exodus / Valve promotional render",
+        "page_url": "https://shazoo.ru/2019/01/22/75076/postapokalipticheskoe-oruzhie-v-novom-trejlere-metro-exodus",
+        "image_url": "https://cdn.shazoo.ru/315240_0RLeaKXvKl_metro_exodus_the_valve_nologo.jpg",
+        "takeaway": "镜体与安装脚分离、包布握点；仅借鉴配件结构可读性。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_rifle.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Longgun_GraveWarden",
+    "dimensions_blender_xyz": [
+      0.12012435495853424,
+      1.3410000801086426,
+      0.47586801648139954
+    ],
+    "triangles": 664,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Red",
+      "M_MapLP_AEW_Dark",
+      "M_MapLP_AEW_Steel",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Cloth",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Gold"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Longgun_GraveWarden.fbx",
+      "bytes": 40588,
+      "object": "AEW_Longgun_GraveWarden",
+      "mesh": "AEW_Longgun_GraveWarden_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Pistol_DuelOath",
+    "display_name": "决斗誓",
+    "category": "Pistol",
+    "variant": 0,
+    "design_features": "修长单管、象牙柄片、铜护弓",
+    "lore_zh": "旧城决斗官把这支象牙柄短铳交给每个执意雪恨的人，却只给一枚没有弹头的药筒。他们必须先听见响声，再决定是否愿意真正伤害对方。修长黑管与弯铜护弓因此几乎没有战斗损伤，只有握片边缘被无数犹疑的手指磨圆。最后一位决斗官失踪后，枪柄上被刻下一道未闭合的圆。传说那是留给后悔的位置，也是最难瞄准、却最值得保留的一条退路。",
+    "lore_han_characters": 143,
+    "references": [
+      {
+        "id": "bloodborne_guns",
+        "title": "Bloodborne Official Design Art Works / firearms spread",
+        "page_url": "https://www.animebooks.com/blofartwoart.html",
+        "image_url": "https://sep.turbifycdn.com/ay/animebooks-com/bloodborne-official-art-works-art-book-12.gif",
+        "takeaway": "哥特长枪、钟口枪管和手枪木握把；取比例而不复制机构。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/bloodborne_guns.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "hunter_pistol",
+        "title": "Bloodborne / Hunter blunderbuss screenshot",
+        "page_url": "https://www.gamedeveloper.com/design/hunter-s-pistol",
+        "image_url": "https://eu-images.contentstack.com/v3/assets/blt740a130ae3c5d529/blt3ab1d9a2f9486e31/650e86df0d64cd4b7ab4a325/shot4.png",
+        "takeaway": "长枪管、深色木柄与旧银结构的视觉层次。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/hunter_pistol.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Pistol_DuelOath",
+    "dimensions_blender_xyz": [
+      0.12012435495853424,
+      0.593999981880188,
+      0.48586803674697876
+    ],
+    "triangles": 496,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Dark",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Gold",
+      "M_MapLP_AEW_Bone"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Pistol_DuelOath.fbx",
+      "bytes": 34780,
+      "object": "AEW_Pistol_DuelOath",
+      "mesh": "AEW_Pistol_DuelOath_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Pistol_DockScatter",
+    "display_name": "码头喇叭",
+    "category": "Pistol",
+    "variant": 1,
+    "design_features": "短钟口、粗弯柄、青铜枪箍",
+    "lore_zh": "码头搬运工遇见雾盗时，没有钱购买军械，便请修锅匠把破铜喇叭接到旧短铳上。宽钟口与厚木柄形成滑稽轮廓，却能在浓雾里发出谁也不会听错的警报。枪箍上有一道明显的锡色焊缝，柄尾还嵌着工会的平钉。第一任主人靠它吓退盗船后仍去搬了一整天货，没有接受酒馆的免费酒。他说这东西不属于英雄，只属于需要平安领到工钱的人。",
+    "lore_han_characters": 139,
+    "references": [
+      {
+        "id": "bloodborne_guns",
+        "title": "Bloodborne Official Design Art Works / firearms spread",
+        "page_url": "https://www.animebooks.com/blofartwoart.html",
+        "image_url": "https://sep.turbifycdn.com/ay/animebooks-com/bloodborne-official-art-works-art-book-12.gif",
+        "takeaway": "哥特长枪、钟口枪管和手枪木握把；取比例而不复制机构。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/bloodborne_guns.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "hunter_pistol",
+        "title": "Bloodborne / Hunter blunderbuss screenshot",
+        "page_url": "https://www.gamedeveloper.com/design/hunter-s-pistol",
+        "image_url": "https://eu-images.contentstack.com/v3/assets/blt740a130ae3c5d529/blt3ab1d9a2f9486e31/650e86df0d64cd4b7ab4a325/shot4.png",
+        "takeaway": "长枪管、深色木柄与旧银结构的视觉层次。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/hunter_pistol.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Pistol_DockScatter",
+    "dimensions_blender_xyz": [
+      0.13019999861717224,
+      0.5009999871253967,
+      0.4958680272102356
+    ],
+    "triangles": 492,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Dark",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Gold"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Pistol_DockScatter.fbx",
+      "bytes": 33612,
+      "object": "AEW_Pistol_DockScatter",
+      "mesh": "AEW_Pistol_DockScatter_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Pistol_TwinVigil",
+    "display_name": "双守",
+    "category": "Pistol",
+    "variant": 2,
+    "design_features": "并列双管、深红柄、旧银框",
+    "lore_zh": "夜巡姐妹原本各持一支短铳，妹妹失踪后，姐姐把两支枪的管身装进同一副旧银框架。并列双管下方仍有两套不同的修补痕迹，深红握片却被重新磨成适合一只手的形状。她从不同时装填两管，总给归来的人留一个位置。多年以后，巡逻路线上的孩子都知道这支古怪手枪，也知道守夜人会绕远路检查每一扇没关紧的门。金属保存记忆，习惯则替人守住希望。",
+    "lore_han_characters": 146,
+    "references": [
+      {
+        "id": "bloodborne_guns",
+        "title": "Bloodborne Official Design Art Works / firearms spread",
+        "page_url": "https://www.animebooks.com/blofartwoart.html",
+        "image_url": "https://sep.turbifycdn.com/ay/animebooks-com/bloodborne-official-art-works-art-book-12.gif",
+        "takeaway": "哥特长枪、钟口枪管和手枪木握把；取比例而不复制机构。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/bloodborne_guns.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "hunter_pistol",
+        "title": "Bloodborne / Hunter blunderbuss screenshot",
+        "page_url": "https://www.gamedeveloper.com/design/hunter-s-pistol",
+        "image_url": "https://eu-images.contentstack.com/v3/assets/blt740a130ae3c5d529/blt3ab1d9a2f9486e31/650e86df0d64cd4b7ab4a325/shot4.png",
+        "takeaway": "长枪管、深色木柄与旧银结构的视觉层次。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/hunter_pistol.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Pistol_TwinVigil",
+    "dimensions_blender_xyz": [
+      0.12929999828338623,
+      0.5040000081062317,
+      0.48086804151535034
+    ],
+    "triangles": 564,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Bone",
+      "M_MapLP_AEW_Steel",
+      "M_MapLP_AEW_Dark",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Gold"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Pistol_TwinVigil.fbx",
+      "bytes": 35964,
+      "object": "AEW_Pistol_TwinVigil",
+      "mesh": "AEW_Pistol_TwinVigil_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Pistol_MothSpark",
+    "display_name": "蛾火",
+    "category": "Pistol",
+    "variant": 3,
+    "design_features": "小型晶舱、紧凑短管、绿柄",
+    "lore_zh": "药铺学徒为了赶走啃食药草的夜蛾，制造出能发出微弱蓝光与响声的小铳。紧凑枪管旁嵌着一枚多面晶舱，绿木柄用黄铜细框保护，握在手里像一只收翅的昆虫。后来山村遭袭，学徒用它引开闯入者，将老人藏进药柜。晶舱因此裂出一条暗线，她也没有再把裂痕磨掉。蛾火不承诺照亮整个夜晚，却会在最需要时为身边的人留下一点光。",
+    "lore_han_characters": 136,
+    "references": [
+      {
+        "id": "bloodborne_guns",
+        "title": "Bloodborne Official Design Art Works / firearms spread",
+        "page_url": "https://www.animebooks.com/blofartwoart.html",
+        "image_url": "https://sep.turbifycdn.com/ay/animebooks-com/bloodborne-official-art-works-art-book-12.gif",
+        "takeaway": "哥特长枪、钟口枪管和手枪木握把；取比例而不复制机构。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/bloodborne_guns.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "hunter_pistol",
+        "title": "Bloodborne / Hunter blunderbuss screenshot",
+        "page_url": "https://www.gamedeveloper.com/design/hunter-s-pistol",
+        "image_url": "https://eu-images.contentstack.com/v3/assets/blt740a130ae3c5d529/blt3ab1d9a2f9486e31/650e86df0d64cd4b7ab4a325/shot4.png",
+        "takeaway": "长枪管、深色木柄与旧银结构的视觉层次。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/hunter_pistol.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Pistol_MothSpark",
+    "dimensions_blender_xyz": [
+      0.1770000010728836,
+      0.39400002360343933,
+      0.45586803555488586
+    ],
+    "triangles": 592,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Green",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Dark",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Gold",
+      "M_MapLP_AEW_Cyan"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Pistol_MothSpark.fbx",
+      "bytes": 36956,
+      "object": "AEW_Pistol_MothSpark",
+      "mesh": "AEW_Pistol_MothSpark_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Pistol_GallowsKey",
+    "display_name": "绞门钥",
+    "category": "Pistol",
+    "variant": 4,
+    "design_features": "宽扁机匣、钩柄、黑铜枪管",
+    "lore_zh": "城堡看守曾把钥匙挂在这支黑铜短铳的钩形柄尾，以便一只手开牢门，另一只手守住囚犯。战乱来临时，他却用同一串钥匙放走所有被遗忘的人，随后折断徽章，把残片铆在宽扁机匣侧面。枪管短而沉，旧木握把有一道指甲刻出的深痕。没人知道看守后来去了哪里，只有空牢房的门仍在风中摆动。继承这支武器的人必须先明白，守门与阻止离开并不是同一种责任。",
+    "lore_han_characters": 148,
+    "references": [
+      {
+        "id": "bloodborne_guns",
+        "title": "Bloodborne Official Design Art Works / firearms spread",
+        "page_url": "https://www.animebooks.com/blofartwoart.html",
+        "image_url": "https://sep.turbifycdn.com/ay/animebooks-com/bloodborne-official-art-works-art-book-12.gif",
+        "takeaway": "哥特长枪、钟口枪管和手枪木握把；取比例而不复制机构。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/bloodborne_guns.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "hunter_pistol",
+        "title": "Bloodborne / Hunter blunderbuss screenshot",
+        "page_url": "https://www.gamedeveloper.com/design/hunter-s-pistol",
+        "image_url": "https://eu-images.contentstack.com/v3/assets/blt740a130ae3c5d529/blt3ab1d9a2f9486e31/650e86df0d64cd4b7ab4a325/shot4.png",
+        "takeaway": "长枪管、深色木柄与旧银结构的视觉层次。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/hunter_pistol.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Pistol_GallowsKey",
+    "dimensions_blender_xyz": [
+      0.12012435495853424,
+      0.49400001764297485,
+      0.548691987991333
+    ],
+    "triangles": 616,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Red",
+      "M_MapLP_AEW_Dark",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Gold"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Pistol_GallowsKey.fbx",
+      "bytes": 37644,
+      "object": "AEW_Pistol_GallowsKey",
+      "mesh": "AEW_Pistol_GallowsKey_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Shield_HearthKite",
+    "display_name": "炉乡",
+    "category": "Shield",
+    "variant": 0,
+    "design_features": "赤陶鸢盾、旧金包边、炉火纹",
+    "lore_zh": "炉乡的妇女在围城前拆下旧谷仓门，做成五面尖底木盾。这一面由面包师携带，她把炉火的形状画在赤陶色盾面上，让饥饿的孩子在城墙下也能认出她。金属包边来自被熔掉的秤砣，背面的两条皮带不等长，正好适合她受过伤的左臂。城门重开后，盾牌没有进入武库，而是挂回面包房。只要火纹仍在，村里便承诺不让最后一块面包只属于最有钱的人。",
+    "lore_han_characters": 142,
+    "references": [
+      {
+        "id": "kite",
+        "title": "Elden Ring / Kite Shield",
+        "page_url": "https://www.vgbaike.com/elden_ring/item33098",
+        "image_url": "https://media.vgbaike.com/database/2022/0620/20/33098_n5ydyd.png",
+        "takeaway": "盾缘厚度、肩宽与下尖比例。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/kite.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "twinbird",
+        "title": "Elden Ring / Twinbird Kite Shield",
+        "page_url": "https://note.com/pyon_pyoko/n/n528fd7e9bae7",
+        "image_url": "https://assets.st-note.com/img/1668699018303-D1tFh4ZJlL.jpg",
+        "takeaway": "有限双色纹章分区和连续金属包边。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/twinbird.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Shield_HearthKite",
+    "dimensions_blender_xyz": [
+      0.7132230401039124,
+      0.3037945330142975,
+      0.9810000061988831
+    ],
+    "triangles": 508,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Red",
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Gold",
+      "M_MapLP_AEW_Leather"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Shield_HearthKite.fbx",
+      "bytes": 35100,
+      "object": "AEW_Shield_HearthKite",
+      "mesh": "AEW_Shield_HearthKite_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Shield_SunkenRound",
+    "display_name": "沉日",
+    "category": "Shield",
+    "variant": 1,
+    "design_features": "绿铜圆盾、中央鼓包、破色扇区",
+    "lore_zh": "湖底神殿露出水面那年，渔民拾到一面覆满淤泥的圆盾。盾面原本的太阳纹只剩几块暗金扇区，中央鼓包却完好无损，背部握柄被水磨成温润的木色。渔民带它挡住坠石，救回试图搬走神像的孩子，随后将神像留在原处。盾上的绿铜色从此被视为退潮的记号。它提醒后人，有些沉入水中的东西值得保存，有些则只需要被安静地尊重。",
+    "lore_han_characters": 135,
+    "references": [
+      {
+        "id": "kite",
+        "title": "Elden Ring / Kite Shield",
+        "page_url": "https://www.vgbaike.com/elden_ring/item33098",
+        "image_url": "https://media.vgbaike.com/database/2022/0620/20/33098_n5ydyd.png",
+        "takeaway": "盾缘厚度、肩宽与下尖比例。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/kite.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "twinbird",
+        "title": "Elden Ring / Twinbird Kite Shield",
+        "page_url": "https://note.com/pyon_pyoko/n/n528fd7e9bae7",
+        "image_url": "https://assets.st-note.com/img/1668699018303-D1tFh4ZJlL.jpg",
+        "takeaway": "有限双色纹章分区和连续金属包边。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/twinbird.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Shield_SunkenRound",
+    "dimensions_blender_xyz": [
+      0.8334347605705261,
+      0.38722461462020874,
+      0.8353143930435181
+    ],
+    "triangles": 960,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Green",
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Leather",
+      "M_MapLP_AEW_Gold"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Shield_SunkenRound.fbx",
+      "bytes": 48684,
+      "object": "AEW_Shield_SunkenRound",
+      "mesh": "AEW_Shield_SunkenRound_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Shield_AshPavise",
+    "display_name": "灰垒",
+    "category": "Shield",
+    "variant": 2,
+    "design_features": "矩形高盾、中脊、黑铁脚包",
+    "lore_zh": "边境弩手退伍后在盐路护送商队，他用旧车板做成一面几乎齐肩的高盾。中间凸起的脊梁引开箭矢，底端黑铁包脚可以稳在碎石上，灰蓝盾面只涂了一道浅色路标。最深的裂痕来自一次山崩，而不是战斗；他当时把盾横在两个孩子头上撑住落木。如今背带旁多钉着一小片车铃铜，走路时轻轻作响，仿佛仍在告诉落后的旅人不要急，队伍还等着你。",
+    "lore_han_characters": 141,
+    "references": [
+      {
+        "id": "kite",
+        "title": "Elden Ring / Kite Shield",
+        "page_url": "https://www.vgbaike.com/elden_ring/item33098",
+        "image_url": "https://media.vgbaike.com/database/2022/0620/20/33098_n5ydyd.png",
+        "takeaway": "盾缘厚度、肩宽与下尖比例。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/kite.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "twinbird",
+        "title": "Elden Ring / Twinbird Kite Shield",
+        "page_url": "https://note.com/pyon_pyoko/n/n528fd7e9bae7",
+        "image_url": "https://assets.st-note.com/img/1668699018303-D1tFh4ZJlL.jpg",
+        "takeaway": "有限双色纹章分区和连续金属包边。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/twinbird.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Shield_AshPavise",
+    "dimensions_blender_xyz": [
+      0.7359985113143921,
+      0.32553285360336304,
+      1.2360000610351562
+    ],
+    "triangles": 504,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Blue",
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Leather",
+      "M_MapLP_AEW_Cloth"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Shield_AshPavise.fbx",
+      "bytes": 34588,
+      "object": "AEW_Shield_AshPavise",
+      "mesh": "AEW_Shield_AshPavise_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Shield_DragonScale",
+    "display_name": "龙眠",
+    "category": "Shield",
+    "variant": 3,
+    "design_features": "骨边叶盾、重叠深红鳞片",
+    "lore_zh": "守山修士在死去赤龙身旁住了整个冬天，等饥饿的幼兽离开后才取下一片松动背甲。他将背甲分成层叠的深红鳞片，装在叶形木胎上，骨白边框保留自然弯曲。盾牌因此像一片坚硬的叶子，中央没有炫耀战利品的龙首。修士说他没有战胜龙，只是替龙守完最后一夜。每当它挡住攻击，持盾者都该记得，强大的遗骸也曾属于一个想活下去的生命。",
+    "lore_han_characters": 140,
+    "references": [
+      {
+        "id": "kite",
+        "title": "Elden Ring / Kite Shield",
+        "page_url": "https://www.vgbaike.com/elden_ring/item33098",
+        "image_url": "https://media.vgbaike.com/database/2022/0620/20/33098_n5ydyd.png",
+        "takeaway": "盾缘厚度、肩宽与下尖比例。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/kite.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "twinbird",
+        "title": "Elden Ring / Twinbird Kite Shield",
+        "page_url": "https://note.com/pyon_pyoko/n/n528fd7e9bae7",
+        "image_url": "https://assets.st-note.com/img/1668699018303-D1tFh4ZJlL.jpg",
+        "takeaway": "有限双色纹章分区和连续金属包边。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/twinbird.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Shield_DragonScale",
+    "dimensions_blender_xyz": [
+      0.7837139368057251,
+      0.31066781282424927,
+      1.0889184474945068
+    ],
+    "triangles": 580,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Red",
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Bone",
+      "M_MapLP_AEW_Leather"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Shield_DragonScale.fbx",
+      "bytes": 37804,
+      "object": "AEW_Shield_DragonScale",
+      "mesh": "AEW_Shield_DragonScale_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Shield_BrokenHalo",
+    "display_name": "缺环",
+    "category": "Shield",
+    "variant": 4,
+    "design_features": "白金五角盾、断环纹、宽皮背带",
+    "lore_zh": "圣城的医护队曾被要求举着金盾冲在军阵前，最后只有一位担架员回到城门。她把光亮镀层磨去，露出象牙色木胎，并在盾面钉上一个故意缺口的铜环。五角轮廓与宽皮背带让盾能够临时充当担架侧板，后缘保留搬运时磨出的凹痕。此后她只为救人而举盾，不再接受任何冲锋命令。缺掉的那一段光环没有等待修复，它是留给伤者进入的门。",
+    "lore_han_characters": 139,
+    "references": [
+      {
+        "id": "kite",
+        "title": "Elden Ring / Kite Shield",
+        "page_url": "https://www.vgbaike.com/elden_ring/item33098",
+        "image_url": "https://media.vgbaike.com/database/2022/0620/20/33098_n5ydyd.png",
+        "takeaway": "盾缘厚度、肩宽与下尖比例。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/kite.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "twinbird",
+        "title": "Elden Ring / Twinbird Kite Shield",
+        "page_url": "https://note.com/pyon_pyoko/n/n528fd7e9bae7",
+        "image_url": "https://assets.st-note.com/img/1668699018303-D1tFh4ZJlL.jpg",
+        "takeaway": "有限双色纹章分区和连续金属包边。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/twinbird.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Shield_BrokenHalo",
+    "dimensions_blender_xyz": [
+      0.7733232975006104,
+      0.30058753490448,
+      0.9181027412414551
+    ],
+    "triangles": 616,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Bone",
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Gold",
+      "M_MapLP_AEW_Leather"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Shield_BrokenHalo.fbx",
+      "bytes": 39516,
+      "object": "AEW_Shield_BrokenHalo",
+      "mesh": "AEW_Shield_BrokenHalo_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Dagger_Ratcatcher",
+    "display_name": "捕鼠人",
+    "category": "Dagger",
+    "variant": 0,
+    "design_features": "短宽缺口刀、黑皮柄、铁环尾",
+    "lore_zh": "旧王城的捕鼠人总把这柄短刀藏在工具袋最底下，宽刃用于割麻袋，钝背用于撬开污水沟盖。瘟疫来临时，他带着医生穿过地下水道，在门闩上崩出一个明显缺口。城民后来为他铸了勋章，他却把铜片磨成柄尾的小环，免得再弄丢刀。黑皮握把几乎看不出原色，仍然贴手。没有吟游诗人为捕鼠人写长歌，这把日用短刀却记得城里许多人第二次见到太阳的那一天。",
+    "lore_han_characters": 147,
+    "references": [
+      {
+        "id": "elden_daggers",
+        "title": "Elden Ring Official Art Book Vol. 2 / daggers",
+        "page_url": "https://jumpichiban.com/es/products/elden-ring-official-art-book-volume-2",
+        "image_url": "https://jumpichiban.com/cdn/shop/files/EldenRingOfficialArtBook-Volume2_14.png?v=1768355397&width=1524",
+        "takeaway": "匕首的短小刃体、骨质与矿物材质分区。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/elden_daggers.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "souls_knives",
+        "title": "Dark Souls III / weapon concept collection",
+        "page_url": "https://www.pinterest.com/pin/512777107563079038/",
+        "image_url": "https://s-media-cache-ak0.pinimg.com/originals/2d/ed/95/2ded95b68b7a638aa5e2a945cf3b36f8.jpg",
+        "takeaway": "不对称刀身、弯护手和旧金属比例。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_knives.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Dagger_Ratcatcher",
+    "dimensions_blender_xyz": [
+      0.20378075540065765,
+      0.0770355761051178,
+      0.5806921124458313
+    ],
+    "triangles": 648,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Leather",
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Steel",
+      "M_MapLP_AEW_Edge"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Dagger_Ratcatcher.fbx",
+      "bytes": 35884,
+      "object": "AEW_Dagger_Ratcatcher",
+      "mesh": "AEW_Dagger_Ratcatcher_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Dagger_GlassThorn",
+    "display_name": "琉刺",
+    "category": "Dagger",
+    "variant": 1,
+    "design_features": "细晶体刃、金属包根、青色柄芯",
+    "lore_zh": "玻璃荒原的旅人发现，风暴过后会生出能割断皮带的透明晶刺。女商人阿玛把一根青色晶刺带回城里，请银匠用双层金属套护住脆弱根部，制成纤细的匕首。她用它割开绑住奴隶的绳索，却在最后一次施救时磕掉尖端。重新磨出的锋尖略偏一侧，晶体中仍可看见浅白裂线。阿玛不许工匠把它磨得完美，因为那些不均匀的地方才说明自由并不是毫无代价地到来。",
+    "lore_han_characters": 148,
+    "references": [
+      {
+        "id": "elden_daggers",
+        "title": "Elden Ring Official Art Book Vol. 2 / daggers",
+        "page_url": "https://jumpichiban.com/es/products/elden-ring-official-art-book-volume-2",
+        "image_url": "https://jumpichiban.com/cdn/shop/files/EldenRingOfficialArtBook-Volume2_14.png?v=1768355397&width=1524",
+        "takeaway": "匕首的短小刃体、骨质与矿物材质分区。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/elden_daggers.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "souls_knives",
+        "title": "Dark Souls III / weapon concept collection",
+        "page_url": "https://www.pinterest.com/pin/512777107563079038/",
+        "image_url": "https://s-media-cache-ak0.pinimg.com/originals/2d/ed/95/2ded95b68b7a638aa5e2a945cf3b36f8.jpg",
+        "takeaway": "不对称刀身、弯护手和旧金属比例。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_knives.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Dagger_GlassThorn",
+    "dimensions_blender_xyz": [
+      0.20378075540065765,
+      0.0820000022649765,
+      0.5600000023841858
+    ],
+    "triangles": 436,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Blue",
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Gold",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Cyan"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Dagger_GlassThorn.fbx",
+      "bytes": 29868,
+      "object": "AEW_Dagger_GlassThorn",
+      "mesh": "AEW_Dagger_GlassThorn_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Dagger_RavenBill",
+    "display_name": "鸦喙",
+    "category": "Dagger",
+    "variant": 2,
+    "design_features": "向前弯曲黑刃、骨柄、短叉护手",
+    "lore_zh": "送信人饲养的乌鸦在战火中失去一只翅膀，他便改为徒步送信，将掉落的黑羽压在刀鞘里。为穿过茂密灌木，他把旧短刀磨成向前弯曲的喙形，骨柄与短叉护手保持结实简洁。刀刃从不用于裁开别人的信，只会割去挡路的细枝。那只不能飞的乌鸦后来一直栖在他的肩上。刀的名字既不是威胁，也不是诅咒，而是对一位仍然陪伴旅途的老朋友的纪念。",
+    "lore_han_characters": 142,
+    "references": [
+      {
+        "id": "elden_daggers",
+        "title": "Elden Ring Official Art Book Vol. 2 / daggers",
+        "page_url": "https://jumpichiban.com/es/products/elden-ring-official-art-book-volume-2",
+        "image_url": "https://jumpichiban.com/cdn/shop/files/EldenRingOfficialArtBook-Volume2_14.png?v=1768355397&width=1524",
+        "takeaway": "匕首的短小刃体、骨质与矿物材质分区。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/elden_daggers.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "souls_knives",
+        "title": "Dark Souls III / weapon concept collection",
+        "page_url": "https://www.pinterest.com/pin/512777107563079038/",
+        "image_url": "https://s-media-cache-ak0.pinimg.com/originals/2d/ed/95/2ded95b68b7a638aa5e2a945cf3b36f8.jpg",
+        "takeaway": "不对称刀身、弯护手和旧金属比例。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_knives.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Dagger_RavenBill",
+    "dimensions_blender_xyz": [
+      0.21697136759757996,
+      0.0770355761051178,
+      0.5299999713897705
+    ],
+    "triangles": 408,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Bone",
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Dark",
+      "M_MapLP_AEW_Edge"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Dagger_RavenBill.fbx",
+      "bytes": 30284,
+      "object": "AEW_Dagger_RavenBill",
+      "mesh": "AEW_Dagger_RavenBill_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Dagger_CopperMercy",
+    "display_name": "铜赦",
+    "category": "Dagger",
+    "variant": 3,
+    "design_features": "圆头外科短刃、赤铜柄、白布握",
+    "lore_zh": "军医从刑场收回一枚被折断的刃片，将尖端磨圆、边缘收窄，做成便于割开护甲绑带的短刀。赤铜柄有足够重量，白布缠握可以拆下清洗；刀根保留一处原先的黑色锻痕。她给伤兵取出碎甲时从不询问旗号，因此同时受到两支军队怀疑。停战后，这柄不起眼的刀被放在公共药房门边。人们摸着光滑圆头，才明白锋利也可以以克制而不是伤口证明自己。",
+    "lore_han_characters": 142,
+    "references": [
+      {
+        "id": "elden_daggers",
+        "title": "Elden Ring Official Art Book Vol. 2 / daggers",
+        "page_url": "https://jumpichiban.com/es/products/elden-ring-official-art-book-volume-2",
+        "image_url": "https://jumpichiban.com/cdn/shop/files/EldenRingOfficialArtBook-Volume2_14.png?v=1768355397&width=1524",
+        "takeaway": "匕首的短小刃体、骨质与矿物材质分区。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/elden_daggers.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "souls_knives",
+        "title": "Dark Souls III / weapon concept collection",
+        "page_url": "https://www.pinterest.com/pin/512777107563079038/",
+        "image_url": "https://s-media-cache-ak0.pinimg.com/originals/2d/ed/95/2ded95b68b7a638aa5e2a945cf3b36f8.jpg",
+        "takeaway": "不对称刀身、弯护手和旧金属比例。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_knives.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Dagger_CopperMercy",
+    "dimensions_blender_xyz": [
+      0.08100000023841858,
+      0.0770355761051178,
+      0.47999998927116394
+    ],
+    "triangles": 344,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Cloth",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Edge"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Dagger_CopperMercy.fbx",
+      "bytes": 24940,
+      "object": "AEW_Dagger_CopperMercy",
+      "mesh": "AEW_Dagger_CopperMercy_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Dagger_OathShiver",
+    "display_name": "寒约",
+    "category": "Dagger",
+    "variant": 4,
+    "design_features": "三棱窄刃、冰蓝沟线、圆盘尾",
+    "lore_zh": "北境两个家族曾用一对短刀交换人质，保证冬季停战。其中一柄遗失在雪崩里，被多年后经过的猎人找到。三棱窄刃仍直，冰蓝色矿物嵌线却在刀根断了一小截，圆盘柄尾只剩半个被磨平的家徽。猎人把它送回已经合并的村庄，没有索取报酬。如今这把刀用于婚礼上切开系住两块面包的绳结，提醒新人，承诺若能熬过寒冬，便应当为后来的人留下温暖。",
+    "lore_han_characters": 143,
+    "references": [
+      {
+        "id": "elden_daggers",
+        "title": "Elden Ring Official Art Book Vol. 2 / daggers",
+        "page_url": "https://jumpichiban.com/es/products/elden-ring-official-art-book-volume-2",
+        "image_url": "https://jumpichiban.com/cdn/shop/files/EldenRingOfficialArtBook-Volume2_14.png?v=1768355397&width=1524",
+        "takeaway": "匕首的短小刃体、骨质与矿物材质分区。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/elden_daggers.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "souls_knives",
+        "title": "Dark Souls III / weapon concept collection",
+        "page_url": "https://www.pinterest.com/pin/512777107563079038/",
+        "image_url": "https://s-media-cache-ak0.pinimg.com/originals/2d/ed/95/2ded95b68b7a638aa5e2a945cf3b36f8.jpg",
+        "takeaway": "不对称刀身、弯护手和旧金属比例。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/souls_knives.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Dagger_OathShiver",
+    "dimensions_blender_xyz": [
+      0.20378075540065765,
+      0.09000000357627869,
+      0.5900000333786011
+    ],
+    "triangles": 452,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Leather",
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Steel",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Edge",
+      "M_MapLP_AEW_Cyan"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Dagger_OathShiver.fbx",
+      "bytes": 31356,
+      "object": "AEW_Dagger_OathShiver",
+      "mesh": "AEW_Dagger_OathShiver_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Staff_LanternRoot",
+    "display_name": "根灯",
+    "category": "Staff",
+    "variant": 0,
+    "design_features": "分叉木杖、悬挂铜灯、暗绿晶核",
+    "lore_zh": "迷林守灯者从倒伏老树上取下一根分叉树根，把祖母的铜灯挂在弯曲杖首。灯里没有油，只有一粒在夜晚微亮的绿晶，必须握住树皮才肯发光。她用这根杖带迷路的伐木工回家，也曾带一头受伤野兽离开猎人的火堆。杖身保留自然瘤节，铜灯有一扇朝内的小窗。守灯者相信，光的价值在于照见脚边的路，而不是把别人眼中的黑暗全部赶走。",
+    "lore_han_characters": 138,
+    "references": [
+      {
+        "id": "academy",
+        "title": "Elden Ring / Academy Glintstone Staff",
+        "page_url": "https://www.vgbaike.com/elden_ring/baike14925",
+        "image_url": "https://media.vgbaike.com/database/2022/0620/20/33169_sggr7w.png",
+        "takeaway": "细长木杆与嵌套晶石，头部支撑结构。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/academy.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "lusat",
+        "title": "Elden Ring / Lusat Glintstone Staff",
+        "page_url": "https://www.vgbaike.com/elden_ring/baike14928",
+        "image_url": "https://media.vgbaike.com/database/2022/0620/20/33172_o0lknt.png",
+        "takeaway": "粗晶簇与扭曲杖杆，集中视觉焦点。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/lusat.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Staff_LanternRoot",
+    "dimensions_blender_xyz": [
+      0.4280913472175598,
+      0.20318222045898438,
+      2.200056314468384
+    ],
+    "triangles": 1000,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Leather",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Green"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Staff_LanternRoot.fbx",
+      "bytes": 46844,
+      "object": "AEW_Staff_LanternRoot",
+      "mesh": "AEW_Staff_LanternRoot_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Staff_TideCrook",
+    "display_name": "潮牧",
+    "category": "Staff",
+    "variant": 1,
+    "design_features": "弧形牧杖头、青蓝晶体、铜脚套",
+    "lore_zh": "潮牧师负责在退潮时点清滩涂上的孩子，把最不听话的那个送到家门口。她的长杖顶端向内弯曲，像能轻轻勾住披风的牧钩，青蓝晶体嵌在弧心，铜脚套经海砂磨得发暗。一次异常大潮吞没堤坝，她用杖身撑住木门直到最后一人通过。木头因此弯得不再对称，晶体也少了一角。村民要给她新杖，她只请他们把回家的路修得更宽一些。",
+    "lore_han_characters": 135,
+    "references": [
+      {
+        "id": "academy",
+        "title": "Elden Ring / Academy Glintstone Staff",
+        "page_url": "https://www.vgbaike.com/elden_ring/baike14925",
+        "image_url": "https://media.vgbaike.com/database/2022/0620/20/33169_sggr7w.png",
+        "takeaway": "细长木杆与嵌套晶石，头部支撑结构。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/academy.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "lusat",
+        "title": "Elden Ring / Lusat Glintstone Staff",
+        "page_url": "https://www.vgbaike.com/elden_ring/baike14928",
+        "image_url": "https://media.vgbaike.com/database/2022/0620/20/33172_o0lknt.png",
+        "takeaway": "粗晶簇与扭曲杖杆，集中视觉焦点。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/lusat.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Staff_TideCrook",
+    "dimensions_blender_xyz": [
+      0.3416088819503784,
+      0.0952627956867218,
+      2.2238807678222656
+    ],
+    "triangles": 436,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Lightwood",
+      "M_MapLP_AEW_Leather",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Cyan"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Staff_TideCrook.fbx",
+      "bytes": 31372,
+      "object": "AEW_Staff_TideCrook",
+      "mesh": "AEW_Staff_TideCrook_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Staff_FungalCenser",
+    "display_name": "菌香",
+    "category": "Staff",
+    "variant": 2,
+    "design_features": "伞盖杖冠、孢囊吊饰、淡骨杖身",
+    "lore_zh": "蘑菇林的药师发现，有些孢子只在听到人的低语时释放，于是将干燥菌盖安在长杖顶端，做成可以轻摇的香炉。淡骨色杖身以藤条加固，赭红伞盖下面悬着三个封闭孢囊，结构像一座古怪的小屋。药师走过瘟疫村庄时，先把自己的名字告诉病人，才举起菌香杖。后来她忘记许多药方，却仍记得那些名字。杖上的深浅斑点是菌林留下的纹路，也是漫长照护的年轮。",
+    "lore_han_characters": 146,
+    "references": [
+      {
+        "id": "academy",
+        "title": "Elden Ring / Academy Glintstone Staff",
+        "page_url": "https://www.vgbaike.com/elden_ring/baike14925",
+        "image_url": "https://media.vgbaike.com/database/2022/0620/20/33169_sggr7w.png",
+        "takeaway": "细长木杆与嵌套晶石，头部支撑结构。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/academy.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "lusat",
+        "title": "Elden Ring / Lusat Glintstone Staff",
+        "page_url": "https://www.vgbaike.com/elden_ring/baike14928",
+        "image_url": "https://media.vgbaike.com/database/2022/0620/20/33172_o0lknt.png",
+        "takeaway": "粗晶簇与扭曲杖杆，集中视觉焦点。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/lusat.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Staff_FungalCenser",
+    "dimensions_blender_xyz": [
+      0.4399999976158142,
+      0.4399999976158142,
+      2.049999952316284
+    ],
+    "triangles": 556,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Bone",
+      "M_MapLP_AEW_Leather",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Red",
+      "M_MapLP_AEW_Gold"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Staff_FungalCenser.fbx",
+      "bytes": 34908,
+      "object": "AEW_Staff_FungalCenser",
+      "mesh": "AEW_Staff_FungalCenser_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Staff_StarCage",
+    "display_name": "星囚",
+    "category": "Staff",
+    "variant": 3,
+    "design_features": "八角铜笼、紫晶核心、暗木长杆",
+    "lore_zh": "观星塔的学徒曾试图把一颗坠落的星光关进铜笼，好证明导师的旧理论有错。星光真的留下来，却不再闪烁，直到他打开一道笼缝才重新亮起。于是他将八角铜笼安在暗木杖顶，保留那道明显的缺口，紫色晶核由三条弯臂支撑，既稳固又不显封闭。学徒后来成为教师，每次授课都先讲这次失败。知识可以为未知搭建框架，却不该把好奇心牢牢锁在里面。",
+    "lore_han_characters": 143,
+    "references": [
+      {
+        "id": "academy",
+        "title": "Elden Ring / Academy Glintstone Staff",
+        "page_url": "https://www.vgbaike.com/elden_ring/baike14925",
+        "image_url": "https://media.vgbaike.com/database/2022/0620/20/33169_sggr7w.png",
+        "takeaway": "细长木杆与嵌套晶石，头部支撑结构。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/academy.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "lusat",
+        "title": "Elden Ring / Lusat Glintstone Staff",
+        "page_url": "https://www.vgbaike.com/elden_ring/baike14928",
+        "image_url": "https://media.vgbaike.com/database/2022/0620/20/33172_o0lknt.png",
+        "takeaway": "粗晶簇与扭曲杖杆，集中视觉焦点。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/lusat.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Staff_StarCage",
+    "dimensions_blender_xyz": [
+      0.30156704783439636,
+      0.30490347743034363,
+      2.1894137859344482
+    ],
+    "triangles": 824,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Dark",
+      "M_MapLP_AEW_Leather",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Purple",
+      "M_MapLP_AEW_Gold"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Staff_StarCage.fbx",
+      "bytes": 41772,
+      "object": "AEW_Staff_StarCage",
+      "mesh": "AEW_Staff_StarCage_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Staff_StormFork",
+    "display_name": "雷枝",
+    "category": "Staff",
+    "variant": 4,
+    "design_features": "双叉铁杖冠、琥珀核、麻绳握",
+    "lore_zh": "山村的避雷匠失去右手后，仍坚持修复被风暴击坏的钟塔。他把旧避雷叉装到长木杆上，在叉间嵌入一块琥珀色焦晶，用粗麻绳缠出适合单手的宽握。铁叉上方的两枝高低不同，正是那次雷击留下的轮廓。村里的孩子把它叫作法杖，匠人却说只是提醒天空别再找错落点。后来它确实能引导微弱电光，但最常做的事仍是替老人拨开湿滑山路上的荆棘。",
+    "lore_han_characters": 143,
+    "references": [
+      {
+        "id": "academy",
+        "title": "Elden Ring / Academy Glintstone Staff",
+        "page_url": "https://www.vgbaike.com/elden_ring/baike14925",
+        "image_url": "https://media.vgbaike.com/database/2022/0620/20/33169_sggr7w.png",
+        "takeaway": "细长木杆与嵌套晶石，头部支撑结构。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/academy.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "lusat",
+        "title": "Elden Ring / Lusat Glintstone Staff",
+        "page_url": "https://www.vgbaike.com/elden_ring/baike14928",
+        "image_url": "https://media.vgbaike.com/database/2022/0620/20/33172_o0lknt.png",
+        "takeaway": "粗晶簇与扭曲杖杆，集中视觉焦点。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/lusat.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Staff_StormFork",
+    "dimensions_blender_xyz": [
+      0.3372347950935364,
+      0.12643970549106598,
+      2.165729284286499
+    ],
+    "triangles": 420,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Wood",
+      "M_MapLP_AEW_Cloth",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Gold"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Staff_StormFork.fbx",
+      "bytes": 31484,
+      "object": "AEW_Staff_StormFork",
+      "mesh": "AEW_Staff_StormFork_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Scope_SurveyorGlass",
+    "display_name": "测岭镜",
+    "category": "Scope",
+    "variant": 0,
+    "design_features": "长铜镜筒、大物镜、小目镜",
+    "lore_zh": "测岭师曾用这支铜镜寻找雪崩后的失踪者，镜筒两端的口径不同，前端包边保护着淡蓝玻璃。后来边军请求将它装上长铳，她坚持在安装脚上留下可拆的铜栓，让镜子随时能够重新用于观察道路。筒身刻度已被风沙磨浅，目镜附近有一圈旧皮。它最珍贵的记录不是命中多远的靶子，而是一次在白茫茫山坡上发现了仍在挥手的人，从此远处也不再只是抽象的距离。",
+    "lore_han_characters": 149,
+    "references": [
+      {
+        "id": "metro_rifle",
+        "title": "Metro Exodus / Valve promotional render",
+        "page_url": "https://shazoo.ru/2019/01/22/75076/postapokalipticheskoe-oruzhie-v-novom-trejlere-metro-exodus",
+        "image_url": "https://cdn.shazoo.ru/315240_0RLeaKXvKl_metro_exodus_the_valve_nologo.jpg",
+        "takeaway": "镜体与安装脚分离、包布握点；仅借鉴配件结构可读性。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_rifle.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "metro_optics",
+        "title": "Metro Exodus / workbench scope view",
+        "page_url": "https://www.gamepressure.com/metro-exodus/beginners-guide/zcbe4a",
+        "image_url": "https://www.gamepressure.com/metro-exodus/gfx/word/27742296.jpg",
+        "takeaway": "大物镜、小目镜、宽调节轮与两只安装脚的结构层次。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_optics.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Scope_SurveyorGlass",
+    "dimensions_blender_xyz": [
+      0.1080000028014183,
+      0.3580000102519989,
+      0.16200000047683716
+    ],
+    "triangles": 344,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Gold",
+      "M_MapLP_AEW_Cyan",
+      "M_MapLP_AEW_Iron"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Scope_SurveyorGlass.fbx",
+      "bytes": 26524,
+      "object": "AEW_Scope_SurveyorGlass",
+      "mesh": "AEW_Scope_SurveyorGlass_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Scope_MoonPrism",
+    "display_name": "月棱镜",
+    "category": "Scope",
+    "variant": 1,
+    "design_features": "短方壳、斜棱顶、圆目镜",
+    "lore_zh": "月井工匠认为长镜筒容易让使用者只盯住一点，于是用棱镜折出紧凑的观察器。方形旧银外壳顶端向一侧倾斜，圆目镜藏在短铜环里，底部安装脚像一座小桥。它最初供夜间摆渡人判断岸边灯号，后来才被侦察队采用。壳侧保留被船篙撞出的浅凹，玻璃仍泛着安静的蓝色。工匠留下的唯一叮嘱是，看清远方之后，别忘了抬头确认身旁是否还有同行的人。",
+    "lore_han_characters": 144,
+    "references": [
+      {
+        "id": "metro_rifle",
+        "title": "Metro Exodus / Valve promotional render",
+        "page_url": "https://shazoo.ru/2019/01/22/75076/postapokalipticheskoe-oruzhie-v-novom-trejlere-metro-exodus",
+        "image_url": "https://cdn.shazoo.ru/315240_0RLeaKXvKl_metro_exodus_the_valve_nologo.jpg",
+        "takeaway": "镜体与安装脚分离、包布握点；仅借鉴配件结构可读性。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_rifle.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "metro_optics",
+        "title": "Metro Exodus / workbench scope view",
+        "page_url": "https://www.gamepressure.com/metro-exodus/beginners-guide/zcbe4a",
+        "image_url": "https://www.gamepressure.com/metro-exodus/gfx/word/27742296.jpg",
+        "takeaway": "大物镜、小目镜、宽调节轮与两只安装脚的结构层次。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_optics.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Scope_MoonPrism",
+    "dimensions_blender_xyz": [
+      0.11339999735355377,
+      0.20800000429153442,
+      0.1647000014781952
+    ],
+    "triangles": 312,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Steel",
+      "M_MapLP_AEW_Cyan",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Copper"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Scope_MoonPrism.fbx",
+      "bytes": 25836,
+      "object": "AEW_Scope_MoonPrism",
+      "mesh": "AEW_Scope_MoonPrism_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Scope_OwlEye",
+    "display_name": "鸮眼",
+    "category": "Scope",
+    "variant": 2,
+    "design_features": "宽双层物镜、深铁筒、骨白护圈",
+    "lore_zh": "守夜猎人救下一只被捕兽夹伤到的猫头鹰，从此把它收拢翅膀时的轮廓刻在镜体护圈上。宽大的双层物镜适合收集昏暗光线，深铁镜筒以骨白边圈区分调节位置，摸索时也不易弄错。镜架的一只脚曾折断，后来用铜片补齐，因此左右并不完全相同。猎人说夜色并没有偏袒任何一方，只是要求人放慢判断。鸮眼的第一课是辨认影子，第二课才是决定是否举枪。",
+    "lore_han_characters": 146,
+    "references": [
+      {
+        "id": "metro_rifle",
+        "title": "Metro Exodus / Valve promotional render",
+        "page_url": "https://shazoo.ru/2019/01/22/75076/postapokalipticheskoe-oruzhie-v-novom-trejlere-metro-exodus",
+        "image_url": "https://cdn.shazoo.ru/315240_0RLeaKXvKl_metro_exodus_the_valve_nologo.jpg",
+        "takeaway": "镜体与安装脚分离、包布握点；仅借鉴配件结构可读性。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_rifle.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "metro_optics",
+        "title": "Metro Exodus / workbench scope view",
+        "page_url": "https://www.gamepressure.com/metro-exodus/beginners-guide/zcbe4a",
+        "image_url": "https://www.gamepressure.com/metro-exodus/gfx/word/27742296.jpg",
+        "takeaway": "大物镜、小目镜、宽调节轮与两只安装脚的结构层次。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_optics.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Scope_OwlEye",
+    "dimensions_blender_xyz": [
+      0.18199999630451202,
+      0.2980000078678131,
+      0.19900000095367432
+    ],
+    "triangles": 432,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Steel",
+      "M_MapLP_AEW_Cyan",
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Bone"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Scope_OwlEye.fbx",
+      "bytes": 29532,
+      "object": "AEW_Scope_OwlEye",
+      "mesh": "AEW_Scope_OwlEye_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Scope_AmberDial",
+    "display_name": "琥珀刻",
+    "category": "Scope",
+    "variant": 3,
+    "design_features": "中长筒、侧调节轮、红铜接环",
+    "lore_zh": "王城报时员喜欢观察城外最早亮起的窗户，便把修钟剩下的调节轮装到观测镜上。琥珀色镜片夹在红铜接环之间，侧轮很大，戴着冬手套也能够转动。城防队借走它以后，仍须每天替报时员记录晨光出现的时刻。镜筒外侧有一道没有擦净的墨迹，是他第一次把时间写错留下的。这个小小失误让继任者记住，最精巧的刻度也需要人的耐心，而不是盲目的相信。",
+    "lore_han_characters": 146,
+    "references": [
+      {
+        "id": "metro_rifle",
+        "title": "Metro Exodus / Valve promotional render",
+        "page_url": "https://shazoo.ru/2019/01/22/75076/postapokalipticheskoe-oruzhie-v-novom-trejlere-metro-exodus",
+        "image_url": "https://cdn.shazoo.ru/315240_0RLeaKXvKl_metro_exodus_the_valve_nologo.jpg",
+        "takeaway": "镜体与安装脚分离、包布握点；仅借鉴配件结构可读性。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_rifle.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "metro_optics",
+        "title": "Metro Exodus / workbench scope view",
+        "page_url": "https://www.gamepressure.com/metro-exodus/beginners-guide/zcbe4a",
+        "image_url": "https://www.gamepressure.com/metro-exodus/gfx/word/27742296.jpg",
+        "takeaway": "大物镜、小目镜、宽调节轮与两只安装脚的结构层次。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_optics.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Scope_AmberDial",
+    "dimensions_blender_xyz": [
+      0.1297999918460846,
+      0.30799999833106995,
+      0.16740000247955322
+    ],
+    "triangles": 388,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Gold",
+      "M_MapLP_AEW_Iron"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Scope_AmberDial.fbx",
+      "bytes": 26460,
+      "object": "AEW_Scope_AmberDial",
+      "mesh": "AEW_Scope_AmberDial_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Scope_PilgrimMonocle",
+    "display_name": "行僧独眼",
+    "category": "Scope",
+    "variant": 4,
+    "design_features": "极短单筒、开放护架、白陶圈",
+    "lore_zh": "独眼行僧在雪地里看不清路标，玻璃匠便为他做了一支极短的观察筒，白陶环能够隔开冰冷金属，开放铜架便于绑在杖或器械上。行僧后来将它赠给视力受损的城门守卫，自己继续凭熟悉的钟声旅行。筒身没有复杂纹章，只有一枚斜钉和换过数次的皮圈。它提醒使用者，工具的意义是补足人的局限，让曾经看不见的路径重新出现，而不是让人忘记自己的局限。",
+    "lore_han_characters": 147,
+    "references": [
+      {
+        "id": "metro_rifle",
+        "title": "Metro Exodus / Valve promotional render",
+        "page_url": "https://shazoo.ru/2019/01/22/75076/postapokalipticheskoe-oruzhie-v-novom-trejlere-metro-exodus",
+        "image_url": "https://cdn.shazoo.ru/315240_0RLeaKXvKl_metro_exodus_the_valve_nologo.jpg",
+        "takeaway": "镜体与安装脚分离、包布握点；仅借鉴配件结构可读性。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_rifle.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "metro_optics",
+        "title": "Metro Exodus / workbench scope view",
+        "page_url": "https://www.gamepressure.com/metro-exodus/beginners-guide/zcbe4a",
+        "image_url": "https://www.gamepressure.com/metro-exodus/gfx/word/27742296.jpg",
+        "takeaway": "大物镜、小目镜、宽调节轮与两只安装脚的结构层次。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_optics.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Scope_PilgrimMonocle",
+    "dimensions_blender_xyz": [
+      0.15453824400901794,
+      0.1679999977350235,
+      0.18579423427581787
+    ],
+    "triangles": 400,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Bone",
+      "M_MapLP_AEW_Steel",
+      "M_MapLP_AEW_Cyan",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Copper"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Scope_PilgrimMonocle.fbx",
+      "bytes": 29596,
+      "object": "AEW_Scope_PilgrimMonocle",
+      "mesh": "AEW_Scope_PilgrimMonocle_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Suppressor_QuietBell",
+    "display_name": "静钟",
+    "category": "Suppressor",
+    "variant": 0,
+    "design_features": "钟形外壳、收束尾端、青铜环",
+    "lore_zh": "静语修会禁止在疗养院附近制造巨响，守门工匠便给示警铳加上一只刻着吸声符的钟形罩。宽壳和细尾之间由青铜环连接，外壁保留铸钟砂模留下的平整折面。它不会让声音消失，只把刺耳回声化成低沉短响，好让病人继续安睡。第一只罩子被盗后，修士没有诅咒窃贼，而是重新铸了一只。对他们而言，宁静从来不是无人回应，而是每个人都愿意替别人的疲惫留一点余地。",
+    "lore_han_characters": 152,
+    "references": [
+      {
+        "id": "metro_silenced",
+        "title": "Metro Exodus / customized revolver",
+        "page_url": "https://www.gamersyde.com/news_the_weaponry_in_metro_exodus-20648_en.html",
+        "image_url": "https://images.gamersyde.com/image_metro_exodus-39825-3881_0001.jpg",
+        "takeaway": "可拆筒体的安装端、外壳节段与旧皮革。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_silenced.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "metro_silenced_two",
+        "title": "Bloodborne / Ludwig rifle and repeating pistol concept",
+        "page_url": "https://www.pinterest.com/pin/507217976789031338/",
+        "image_url": "https://i.pinimg.com/736x/22/de/c6/22dec66be832e00d5544fd867d5804ae.jpg",
+        "takeaway": "细窄接口和渐变枪口外壳的层次；借鉴哥特工业外观而非现实消声机构。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_silenced_two.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Suppressor_QuietBell",
+    "dimensions_blender_xyz": [
+      0.18465200066566467,
+      0.3319999873638153,
+      0.18465200066566467
+    ],
+    "triangles": 212,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Dark"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Suppressor_QuietBell.fbx",
+      "bytes": 21180,
+      "object": "AEW_Suppressor_QuietBell",
+      "mesh": "AEW_Suppressor_QuietBell_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Suppressor_AshSleeve",
+    "display_name": "灰衣",
+    "category": "Suppressor",
+    "variant": 1,
+    "design_features": "长筒布套、铁端盖、外露缝带",
+    "lore_zh": "穿过火山山道的信使常被铳声引来的石翼兽追赶，便请灰衣巫婆把吸声布缠在长筒外壳上。深灰织物由三条浅色缝带固定，两端铁盖露在外面，烧坏的部分可以单独更换。巫婆没有收钱，只让信使在每封家书上多等一刻钟。后来布套换了许多次，等候的习惯却没有改变。它承载的魔法不算强大，却让匆忙世界中的一些声音得以变轻，让尚未说完的话有机会被听见。",
+    "lore_han_characters": 149,
+    "references": [
+      {
+        "id": "metro_silenced",
+        "title": "Metro Exodus / customized revolver",
+        "page_url": "https://www.gamersyde.com/news_the_weaponry_in_metro_exodus-20648_en.html",
+        "image_url": "https://images.gamersyde.com/image_metro_exodus-39825-3881_0001.jpg",
+        "takeaway": "可拆筒体的安装端、外壳节段与旧皮革。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_silenced.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "metro_silenced_two",
+        "title": "Bloodborne / Ludwig rifle and repeating pistol concept",
+        "page_url": "https://www.pinterest.com/pin/507217976789031338/",
+        "image_url": "https://i.pinimg.com/736x/22/de/c6/22dec66be832e00d5544fd867d5804ae.jpg",
+        "takeaway": "细窄接口和渐变枪口外壳的层次；借鉴哥特工业外观而非现实消声机构。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_silenced_two.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Suppressor_AshSleeve",
+    "dimensions_blender_xyz": [
+      0.09752000123262405,
+      0.4320000112056732,
+      0.09752000123262405
+    ],
+    "triangles": 344,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Leather",
+      "M_MapLP_AEW_Iron",
+      "M_MapLP_AEW_Dark",
+      "M_MapLP_AEW_Cloth"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Suppressor_AshSleeve.fbx",
+      "bytes": 26988,
+      "object": "AEW_Suppressor_AshSleeve",
+      "mesh": "AEW_Suppressor_AshSleeve_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Suppressor_ReedWhisper",
+    "display_name": "苇语",
+    "category": "Suppressor",
+    "variant": 2,
+    "design_features": "分节绿铜筒、窄尾箍、浅色隔环",
+    "lore_zh": "芦苇海的守渡人发现，空苇束能把回声分散到水面，于是用绿铜仿制分节外壳，在节间嵌入浅色陶环。细长筒体装到守船铳前端，远看像一截被晒干的水草。它最初用于赶走咬断缆绳的水兽，避免惊吓船上的病人。每次进港，守渡人都会卸下它清理盐泥，动作如同照料一支旧笛。苇语不以无声为荣，它只是让一次必要的警告不再伤害更多无关的耳朵。",
+    "lore_han_characters": 142,
+    "references": [
+      {
+        "id": "metro_silenced",
+        "title": "Metro Exodus / customized revolver",
+        "page_url": "https://www.gamersyde.com/news_the_weaponry_in_metro_exodus-20648_en.html",
+        "image_url": "https://images.gamersyde.com/image_metro_exodus-39825-3881_0001.jpg",
+        "takeaway": "可拆筒体的安装端、外壳节段与旧皮革。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_silenced.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "metro_silenced_two",
+        "title": "Bloodborne / Ludwig rifle and repeating pistol concept",
+        "page_url": "https://www.pinterest.com/pin/507217976789031338/",
+        "image_url": "https://i.pinimg.com/736x/22/de/c6/22dec66be832e00d5544fd867d5804ae.jpg",
+        "takeaway": "细窄接口和渐变枪口外壳的层次；借鉴哥特工业外观而非现实消声机构。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_silenced_two.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Suppressor_ReedWhisper",
+    "dimensions_blender_xyz": [
+      0.10175999999046326,
+      0.38199999928474426,
+      0.10175999999046326
+    ],
+    "triangles": 344,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Green",
+      "M_MapLP_AEW_Dark",
+      "M_MapLP_AEW_Bone"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Suppressor_ReedWhisper.fbx",
+      "bytes": 25900,
+      "object": "AEW_Suppressor_ReedWhisper",
+      "mesh": "AEW_Suppressor_ReedWhisper_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Suppressor_GraveHush",
+    "display_name": "墓息",
+    "category": "Suppressor",
+    "variant": 3,
+    "design_features": "短宽黑筒、骨色侧板、封闭端面",
+    "lore_zh": "墓园守卫把哀歌符刻在短宽铁筒上，希望守夜时的警告不打断亡者家属的祈祷。骨色侧板由普通白陶制成，不来自任何遗骸，边缘以暗铜钉固定，端面保留清楚的中央孔。一次寒夜，守卫将它卸下暖在怀里，才发现自己已经多年没有认真听过风声。此后他总会先走近辨认来者，再考虑举枪。墓息真正压低的也许不是铳响，而是人面对陌生影子时仓促升起的恐惧。",
+    "lore_han_characters": 147,
+    "references": [
+      {
+        "id": "metro_silenced",
+        "title": "Metro Exodus / customized revolver",
+        "page_url": "https://www.gamersyde.com/news_the_weaponry_in_metro_exodus-20648_en.html",
+        "image_url": "https://images.gamersyde.com/image_metro_exodus-39825-3881_0001.jpg",
+        "takeaway": "可拆筒体的安装端、外壳节段与旧皮革。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_silenced.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "metro_silenced_two",
+        "title": "Bloodborne / Ludwig rifle and repeating pistol concept",
+        "page_url": "https://www.pinterest.com/pin/507217976789031338/",
+        "image_url": "https://i.pinimg.com/736x/22/de/c6/22dec66be832e00d5544fd867d5804ae.jpg",
+        "takeaway": "细窄接口和渐变枪口外壳的层次；借鉴哥特工业外观而非现实消声机构。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_silenced_two.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Suppressor_GraveHush",
+    "dimensions_blender_xyz": [
+      0.1653600037097931,
+      0.2619999945163727,
+      0.1653600037097931
+    ],
+    "triangles": 236,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Dark",
+      "M_MapLP_AEW_Bone"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Suppressor_GraveHush.fbx",
+      "bytes": 22604,
+      "object": "AEW_Suppressor_GraveHush",
+      "mesh": "AEW_Suppressor_GraveHush_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  },
+  {
+    "id": "AEW_Suppressor_StarBaffle",
+    "display_name": "星隔",
+    "category": "Suppressor",
+    "variant": 4,
+    "design_features": "八角长壳、紫晶缝、铜安装端",
+    "lore_zh": "观星塔的工匠试着用极细晶片吸收器械震动，把八角外壳做成便于拆开的两半。紫色晶缝沿一侧延伸，铜安装端与暗银筒身之间留着明确的接合圈，看起来像封住星光的小匣。试验中它曾把钟声变成轻微颤动，令一名失聪学徒第一次用掌心感到报时。工匠因此放弃为它取威武名字，只叫星隔。它隔开的是令人畏惧的尖响，留下的却是仍能被身体理解的温柔节拍。",
+    "lore_han_characters": 149,
+    "references": [
+      {
+        "id": "metro_silenced",
+        "title": "Metro Exodus / customized revolver",
+        "page_url": "https://www.gamersyde.com/news_the_weaponry_in_metro_exodus-20648_en.html",
+        "image_url": "https://images.gamersyde.com/image_metro_exodus-39825-3881_0001.jpg",
+        "takeaway": "可拆筒体的安装端、外壳节段与旧皮革。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_silenced.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      },
+      {
+        "id": "metro_silenced_two",
+        "title": "Bloodborne / Ludwig rifle and repeating pistol concept",
+        "page_url": "https://www.pinterest.com/pin/507217976789031338/",
+        "image_url": "https://i.pinimg.com/736x/22/de/c6/22dec66be832e00d5544fd867d5804ae.jpg",
+        "takeaway": "细窄接口和渐变枪口外壳的层次；借鉴哥特工业外观而非现实消声机构。",
+        "source_kind": "game artwork / screenshot; reference only",
+        "viewed": true,
+        "local_path": "References/metro_silenced_two.png",
+        "review_note": "2026-10-01 agent inspected local pixels; image contains the listed game weapon."
+      }
+    ],
+    "literature_references": [
+      "elfland",
+      "beowulf"
+    ],
+    "integration_status": "Unity FBX, material and standalone Prefab imported and checked; gameplay tables, random pools, character fit and sockets are not configured.",
+    "origin_contract": "metres; Blender +Z up / -Y front; grip origin at zero except accessories origin is mounting axis; guns shoot -Y, blades extend +Z; no configured grip rows created",
+    "name": "AEW_Suppressor_StarBaffle",
+    "dimensions_blender_xyz": [
+      0.10599999874830246,
+      0.3919999897480011,
+      0.10599999874830246
+    ],
+    "triangles": 220,
+    "nonmanifold_edges": 0,
+    "degenerate_faces": 0,
+    "uv_layers": 1,
+    "materials": [
+      "M_MapLP_AEW_Copper",
+      "M_MapLP_AEW_Steel",
+      "M_MapLP_AEW_Dark",
+      "M_MapLP_AEW_Purple"
+    ],
+    "export": {
+      "path": "D:\\Program\\Unity\\Project Y\\Art\\AssetExpansion202610\\Weapons\\Staging\\AEW_Suppressor_StarBaffle.fbx",
+      "bytes": 23404,
+      "object": "AEW_Suppressor_StarBaffle",
+      "mesh": "AEW_Suppressor_StarBaffle_Mesh",
+      "geometry_rotation_blender_z_degrees": 180,
+      "bake_space_transform": true,
+      "unity_bakeAxisConversion_required": true
+    }
+  }
+]

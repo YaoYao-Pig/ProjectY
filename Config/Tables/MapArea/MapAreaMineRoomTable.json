@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "name": "MapAreaMineRoomTable",
+  "description": "主采掘厅与两侧分支矿室；边缘连续噪声轻微扰动，主矿道保持净宽。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定编号",
+      "min": 1
+    },
+    {
+      "name": "profileId",
+      "type": "int",
+      "description": "矿井模板",
+      "ref": "MapAreaMineTable"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "矿室名称"
+    },
+    {
+      "name": "layer",
+      "type": "int",
+      "description": "层身份"
+    },
+    {
+      "name": "q",
+      "type": "int",
+      "description": "相对轴向q"
+    },
+    {
+      "name": "r",
+      "type": "int",
+      "description": "相对轴向r"
+    },
+    {
+      "name": "radius",
+      "type": "int",
+      "description": "保底房间半径",
+      "min": 3
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "profileId": 1,
+      "name": "深井采掘厅",
+      "layer": 0,
+      "q": 0,
+      "r": 0,
+      "radius": 10
+    },
+    {
+      "id": 2,
+      "profileId": 1,
+      "name": "旧排水机房",
+      "layer": 0,
+      "q": -16,
+      "r": 0,
+      "radius": 5
+    },
+    {
+      "id": 3,
+      "profileId": 1,
+      "name": "富矿工作面",
+      "layer": 0,
+      "q": 16,
+      "r": 0,
+      "radius": 5
+    },
+    {
+      "id": 4,
+      "profileId": 1,
+      "name": "运输集散厅",
+      "layer": 1,
+      "q": 0,
+      "r": 0,
+      "radius": 10
+    },
+    {
+      "id": 5,
+      "profileId": 1,
+      "name": "中层工具间",
+      "layer": 1,
+      "q": -16,
+      "r": 0,
+      "radius": 5
+    },
+    {
+      "id": 6,
+      "profileId": 1,
+      "name": "矿车装卸场",
+      "layer": 1,
+      "q": 16,
+      "r": 0,
+      "radius": 5
+    },
+    {
+      "id": 7,
+      "profileId": 1,
+      "name": "塌陷观测厅",
+      "layer": 2,
+      "q": 0,
+      "r": 0,
+      "radius": 10
+    },
+    {
+      "id": 8,
+      "profileId": 1,
+      "name": "矿井入口站",
+      "layer": 2,
+      "q": -16,
+      "r": 0,
+      "radius": 5
+    },
+    {
+      "id": 9,
+      "profileId": 1,
+      "name": "废弃储料场",
+      "layer": 2,
+      "q": 16,
+      "r": 0,
+      "radius": 5
+    }
+  ]
+}
+

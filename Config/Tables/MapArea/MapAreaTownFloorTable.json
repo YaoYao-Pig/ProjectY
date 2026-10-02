@@ -1,0 +1,288 @@
+{
+  "version": 1,
+  "name": "MapAreaTownFloorTable",
+  "description": "真实建筑二楼与连续楼梯；坐标相对建筑地块，底层封闭格明确配置",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "ref": "MapAreaTownLotTable",
+      "description": "对应有二楼的完整建筑地块"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "二楼名称"
+    },
+    {
+      "name": "floorQ",
+      "type": "int[]",
+      "description": "二楼平面可走格 q，不包含楼梯井"
+    },
+    {
+      "name": "floorR",
+      "type": "int[]",
+      "description": "二楼平面可走格 r"
+    },
+    {
+      "name": "stairQ",
+      "type": "int[]",
+      "description": "从低到高排列的连续楼梯和转角平台 q"
+    },
+    {
+      "name": "stairR",
+      "type": "int[]",
+      "description": "从低到高排列的连续楼梯和转角平台 r"
+    },
+    {
+      "name": "stairEdges",
+      "type": "float[]",
+      "description": "每段楼梯的入口和出口边高，数量为楼梯格数加一，相对建筑地面"
+    },
+    {
+      "name": "bottomQ",
+      "type": "int",
+      "description": "接入楼梯最低端的首层格 q"
+    },
+    {
+      "name": "bottomR",
+      "type": "int",
+      "description": "接入楼梯最低端的首层格 r"
+    },
+    {
+      "name": "topQ",
+      "type": "int",
+      "description": "接入楼梯最高端的二楼平格 q"
+    },
+    {
+      "name": "topR",
+      "type": "int",
+      "description": "接入楼梯最高端的二楼平格 r"
+    },
+    {
+      "name": "serviceNpcQ",
+      "type": "int",
+      "description": "首层服务 NPC 的固定待机格 q，避开门厅和楼梯入口"
+    },
+    {
+      "name": "serviceNpcR",
+      "type": "int",
+      "description": "首层服务 NPC 的固定待机格 r"
+    },
+    {
+      "name": "closedGroundQ",
+      "type": "int[]",
+      "description": "被梯底占用或隔断的首层格 q"
+    },
+    {
+      "name": "closedGroundR",
+      "type": "int[]",
+      "description": "被梯底占用或隔断的首层格 r"
+    },
+    {
+      "name": "deckThickness",
+      "type": "float",
+      "min": 0.05,
+      "description": "二楼与楼梯板厚度，米"
+    },
+    {
+      "name": "stairRise",
+      "type": "float",
+      "min": 0.05,
+      "description": "可见踏步高度，米"
+    },
+    {
+      "name": "minimumClearance",
+      "type": "float",
+      "min": 1.9,
+      "description": "保留下层通路的最小板底净空，米"
+    },
+    {
+      "name": "surfaceId",
+      "type": "int",
+      "ref": "MapAreaSurfaceTable",
+      "description": "楼梯与二楼铺装"
+    },
+    {
+      "name": "boundaryX",
+      "type": "float[]",
+      "description": "容纳既有完整hex的最小外包墙顶楼板线X（逆时针）；源墙线±7.75m，薄檐外包±7.794228634m，不改变导航"
+    },
+    {
+      "name": "boundaryZ",
+      "type": "float[]",
+      "description": "对应Unity局部Z；源墙线±3.55m，完整hex外包薄檐线±3.75m，消除楼板齿尖，不使用屋檐模型bounds"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "酒馆二楼回廊",
+      "floorQ": [
+        2,
+        3,
+        0,
+        1,
+        2,
+        0,
+        1,
+        2
+      ],
+      "floorR": [
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1
+      ],
+      "stairQ": [
+        -1,
+        -1,
+        -1,
+        0,
+        1
+      ],
+      "stairR": [
+        1,
+        0,
+        -1,
+        -1,
+        -1
+      ],
+      "stairEdges": [
+        0,
+        0.8,
+        1.6,
+        1.6,
+        2.4,
+        3.2
+      ],
+      "bottomQ": -1,
+      "bottomR": 2,
+      "topQ": 2,
+      "topR": -1,
+      "serviceNpcQ": 1,
+      "serviceNpcR": -1,
+      "closedGroundQ": [
+        -1,
+        -1,
+        -1,
+        0,
+        -2,
+        -3
+      ],
+      "closedGroundR": [
+        1,
+        0,
+        -1,
+        -1,
+        0,
+        1
+      ],
+      "deckThickness": 0.18,
+      "stairRise": 0.16,
+      "minimumClearance": 2.0,
+      "surfaceId": 9,
+      "boundaryX": [
+        -7.794228634,
+        7.794228634,
+        7.794228634,
+        -7.794228634
+      ],
+      "boundaryZ": [
+        -3.75,
+        -3.75,
+        3.75,
+        3.75
+      ]
+    },
+    {
+      "id": 4,
+      "name": "公会二楼议事廊",
+      "floorQ": [
+        2,
+        3,
+        0,
+        1,
+        2,
+        0,
+        1,
+        2
+      ],
+      "floorR": [
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1
+      ],
+      "stairQ": [
+        -1,
+        -1,
+        -1,
+        0,
+        1
+      ],
+      "stairR": [
+        1,
+        0,
+        -1,
+        -1,
+        -1
+      ],
+      "stairEdges": [
+        0,
+        0.8,
+        1.6,
+        1.6,
+        2.4,
+        3.2
+      ],
+      "bottomQ": -1,
+      "bottomR": 2,
+      "topQ": 2,
+      "topR": -1,
+      "serviceNpcQ": 1,
+      "serviceNpcR": -1,
+      "closedGroundQ": [
+        -1,
+        -1,
+        -1,
+        0,
+        -2,
+        -3
+      ],
+      "closedGroundR": [
+        1,
+        0,
+        -1,
+        -1,
+        0,
+        1
+      ],
+      "deckThickness": 0.18,
+      "stairRise": 0.16,
+      "minimumClearance": 2.0,
+      "surfaceId": 9,
+      "boundaryX": [
+        -7.794228634,
+        7.794228634,
+        7.794228634,
+        -7.794228634
+      ],
+      "boundaryZ": [
+        -3.75,
+        -3.75,
+        3.75,
+        3.75
+      ]
+    }
+  ]
+}

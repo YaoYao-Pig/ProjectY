@@ -33,7 +33,8 @@ return function(map)
     end
     for i, road in ipairs(map:GetRoads()) do result.roads[i] = { kind = road.kind, cells = cellIds(road.cells) } end
     for i, item in ipairs(map:GetDecorations()) do
-        result.decorations[i] = { cell = indices[item.cell], assetId = item.assetId, scale = item.scale, yaw = item.yaw }
+        result.decorations[i] = { cell = indices[item.cell], assetId = item.assetId, scale = item.scale, yaw = item.yaw,
+            height = item.height or item.cell.height }
     end
     for i, item in ipairs(map:GetWaterfalls()) do
         result.waterfalls[i] = { from = indices[item.from], to = indices[item.to], drop = item.drop }

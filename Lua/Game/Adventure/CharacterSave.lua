@@ -46,7 +46,7 @@ function Save.Validate(adventure,prepared)
     for i=0,data.MagazineCount-1 do local item=data:GetMagazineAt(i);local definition=equipment.magazines:Get(item.ItemId)
         assert(item.Capacity==definition.capacity and item.AmmoItemId==definition.ammoItemId,'存档弹匣规格与配置不符') end
     for i=0,data.StackCount-1 do local row=data:GetStackAt(i);local item=equipment.items:Get(row.ItemId)
-        assert(item.kind=='rune' or item.kind=='module' or item.kind=='ammo','存档堆叠类型无效') end
+        assert(item.kind=='rune' or item.kind=='module' or item.kind=='ammo' or item.kind=='material','存档堆叠类型无效') end
 end
 function Save.Write(adventure)
     if adventure.narrative and adventure.narrative.data.DialogueOpen then return false,'请先结束对话再保存' end

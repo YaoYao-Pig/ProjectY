@@ -8,18 +8,23 @@
 
 ## 正文
 
+- 直墙与六角楼板的接缝由 [FloorBoundary](../../Lua/Game/MapArea/FloorBoundary.lua) 共用裁切：生成策略登记真实楼板轮廓和明确洞口，冻结前构建独立 `floorBoundaryPatches`，以半六角等凸裁切块补齐墙边。它们不进入 `cells/neighbors/walkMask`，也不生成移动或战斗高亮；完整六角导航不变。快照复制 `ownerIndex/points/height/thickness`，`TownSurfaceRenderer` 随所属楼板同步迷雾、剖切和材质；封边命中返回无目标但保留遮挡距离，不能点穿到下层。已有楼梯和预留挑空必须显式排除，不能靠填满空邻格推测墙线。
+
+- 临时石堆、木箱阻断与土堆/上锁箱子交互见[工具武器与临时障碍](ToolWeapons.md)。其状态独立于只读布局；探索寻路、编队部署和战斗外部占格均叠加当前未清除障碍。
+
 - 生成器允许调用方提供可选 `decorate(area)`，在静态几何完成、`Layout.Freeze` 前补充配置对象。[叙事 NPC](Narrative.md)通过此入口安置，冻结后仍禁止修改布局；运行期位置/存在状态归 C# MapAreaData。
 
-- 森林/地牢的概率宝箱，以及旧事件转入 `Battlefield` 后的战后走动、拾取与地点重进，见[宝箱与敌人掉落](Loot.md)。事件战场保留原半径的六边形棋盘，实际 cells 不使用定义表的方形采样尺寸。
+- 容器在 `ContainerLayout.Populate` 中于冻结前安置，运行期由 `ContainerTerrain` 叠加耐久对应的动态阻挡；攻击、搜刮、概率配置和陈设关联见[容器与掉落](Loot.md)。旧事件 `Battlefield` 保留原半径六边形棋盘，实际 cells 不使用定义表方形采样尺寸。
 
 - `Forest` 独立策略及区域入口、动物与哥布林刷新、驯服与骑乘见[森林动物与骑乘](Animals.md)，复用当前单层原地战斗与探索状态。
 
 - 大地图聚落实例经 `MapAreaEntranceTable.townId → areaId` 生成单一交互入口；同一城镇的分散建筑共享入口。`AdventureSystem:Visit` 按 `areaConfigId` 进入 MapArea，旧营地/野外事件保留。入口带真实 Region ID/类型、坐标、高度与地貌混合权重，地图本身仍使用[大地图](Map.md)的只读快照。
-- `MapAreaGenerator` 按 `E_MapAreaType` 注册策略、独立参数表和主题表。当前 Dungeon、[Town 城镇街区](TownArea.md)、[Forest 森林](Animals.md) 与 [Battlefield 事件战场](Loot.md) 均可生成；注册时可指定 themeTableName，省略时使用地牢主题表。以后新增类型应注册自己的生成策略，不在入口里套用其他类型。
+- `MapAreaGenerator` 按 `E_MapAreaType` 注册策略、独立参数表和主题表。当前 Dungeon、[Town 城镇街区](TownArea.md)、[Forest 森林](Animals.md)、[Battlefield 事件战场](Loot.md)、[Shipwreck 沉船](Shipwreck.md) 与 [Mine 矿井](Mine.md) 均可生成；注册时可指定 themeTableName，省略时使用地牢主题表。以后新增类型应注册自己的生成策略，不在入口里套用其他类型。
 - `MapAreaTable` 定义类型、策略参数 ID、宽高、六边形半径、视野、移动间隔和种子盐。默认地牢 96×96，共 9216 格（包含实体墙），地格半径 1.5；格子使用轴向 q/r，与 BattleBoard 共用 HexGrid。调整 hexRadius 放大地面间距、通道和陈设，不改变格数、寻路与视野半径的格单位。尺寸目前配置范围 32–192，房间数量/半径也需与面积匹配，放置次数耗尽明确报错。
-- 地格身份为 `index`，位置为 `q/r/layer`：`Find(q,r)` 默认地面层 0，`AddLayerCell` 追加独立桥面格，因此 `#cells` 可超过 width×height。`neighbors[1..6]` 保存明确索引（边界为 0），`walkMask` 与目标 blocked 决定 `CanStep`；邻接和寻路不得自行按 q/r 推断。`MoveToIndex` / `area_move_cell` 保留点击层，旧 `MoveTo(q,r)` 只选择地面层。城镇目前公开全图，地牢视线仍是单层射线；尚未定义多层战斗视线。
+- 地格身份为 `index`，位置为 `q/r/layer`：`Find(q,r)` 默认地面层 0，`AddLayerCell` 追加独立桥面格，因此 `#cells` 可超过 width×height。`neighbors[1..6]` 保存明确索引（边界为 0），`walkMask` 与目标 blocked 决定 `CanStep`；邻接和寻路不得自行按 q/r 推断。`MoveToIndex` / `area_move_cell` 保留点击层，旧 `MoveTo(q,r)` 只选择地面层。城镇目前公开全图；普通地牢保留单层视线，矿井通过 `layeredVisibility=true, layerCount=N` 启用分层探索视线。`LayeredVisibility` 只查询射线经过的六角柱，以真实高度检查各层楼板、梯面和墙体；同坐标、相邻跨层格也受楼板遮挡，缺失楼板才形成视线洞口。尚未定义多层战斗视线。
 - 地牢 `generationVersion=3`：`DungeonRooms/DungeonDistricts` 按功能分区选择、聚合和绘制房间；`DungeonGenerator` 优先连接同分区，再跨分区并添加缩短折返的回路；`DungeonPassages` 绘制变宽通道；`DungeonProps` 布置物件。默认一级洞穴 2 个、二级随机房间 5 个、三级预设 3 个。入口/目标由 presetId 指定，种子仍由远征种子、稳定聚落实例 ID 与配置盐派生。
 - `MapAreaDungeonTable` 控制数量、尺寸、间隔、分区、入口/目标和回路。通道最小半径 2、最大 4，连续噪声与扩厅产生 5/7/9 格断面，两向平滑限制逐段变化；扩宽不侵入房间。房门至少 5 格，房间中心保留半径 4 的 61 格战斗区。不连通则明确报错，不降低净宽兜底。`connections.radii` 与 `path` 一一对应，`radius` 保留最小净宽契约。
+- `DungeonTerrain` 在陈设完成后把完整房间收缩为等高节点，通道按离入口的拓扑深度连接台地。`terraceHeight/terraceCount/terraceSpacing/stairLength/stairRise` 控制高差与楼梯；默认最高 5.4 米、踏步 0.18 米。房间和多格设施保持平整，共享 `corners` 保持楼梯接缝连续，墙基随邻近地面抬升。普通地牢仍是一张分高程地表；重叠楼层由[城镇建筑](TownArea.md)、[沉船](Shipwreck.md)及[矿井](Mine.md)提供。
 - `MapAreaDistrictTable` 定义功能分区及归一化锚点；房间按 districtId 聚合，主厅先放，附属房间在合法候选中偏好同分区。整体镜像/换轴/扰动带来变化；人工房间共用分区建筑轴。`MapAreaRoomStyleTable` 配置 cavern / hall / lobed / apse、边缘起伏、设施池和覆盖率。`MapAreaRoomPresetTable.tiles` 是轴向固定格罩（`.` 地面，`#` 墙），`MapAreaRoomPlacementTable` 是固定局部坐标陈设；模板仅整体旋转/平移，连接不得挖坏模板墙体。
 - `MapAreaPropTable` 映射模型、缩放、视线和摆放方式。`footprintQ/footprintR` 成对定义可旋转占地，替代旧 footprintRadius；必须含原点且不重复，大型设施使用 13/19 格。固定陈设冲突直接报错；随机陈设先大后小，以覆盖率为目标，沿墙/建筑轴或天然成片摆放，避开保留区，切断地面连通则回滚。`cell.blocked` 决定移动，`blocksSight` 决定视线；物件格仍是地板，不按 blocked 挤出墙。资源见[地图模型](MapArt.md)。
 - `MapAreaThemeTable` 将 Region 类型映射到墙高、房间尺度、走廊曲折、细微高度、材质配方及柱模型。几何使用入口主 Region，基础颜色支持地貌权重融合；当前墙地配方覆盖基础色，按房间功能和 Region 选择连续材质，见[材质表现](MapPresentation.md)。固定模板不随 Region 缩放其格罩与摆件。
@@ -31,8 +36,13 @@
 - `AdventureSystem:Tick` 在探索移动更新后检测敌我距离及原地形视线，满足条件即停止队伍路线，通过 `BattleWindow/StartArea` 原地开战；规则见[战斗](Battle.md)。胜利只结算一次，存活队员留在各自战斗结束格继续探索，下一次探索移动先逐格收拢散队；失败/超时返回大地图，下次进入从入口部署。敌人伤势与清除状态保留。
 - `BattleBoard.FromArea(area,q,r,radius,layer)` 按平面半径裁出包含各层的窗口，共享原格身份和导航边。当前原地战斗接单层地牢与森林；城镇多层导航与旧事件独立棋盘继续使用各自原有入口。
 - Unity 菜单 `Project Y/地图/打开 MapArea 地牢测试` 复用 `AdventureDemo.unity`，Play 后点击“古代地下迷宫”地点。左键移动、空格停止、滚轮缩放、中键/WASD 平移、右键旋转；侧栏可跟随小队、查看全图与完整结构。调试显示不解锁探索状态，测试返回按钮允许在任意位置返回大地图。
-- `MapAreaRenderer` 使用已绑定、配表指定的低模陈设做 GPU 实例渲染；地牢继续使用低模柱、未知格压平和探索明暗。城镇由 `TownSurfaceRenderer` 按 `corners/deckThickness/stairRise` 绘制台地、台阶、坡道和薄桥面，拾取使用实际三角形；桥下不填成实体。静态快照还包含层、邻接、通行掩码和物件 `scaleX/Y/Z`，进入时读取一次；动态快照按需更新。显示数据不持有 LuaTable，也不作为玩法状态。
+- `MapAreaRenderer` 使用已绑定、配表指定的低模陈设做 GPU 实例渲染；地牢平地和墙使用低模柱，坡阶复用 `TownSurfaceRenderer` 的实际三角形与贴地采样。未知坡阶隐藏并显示压平迷雾，已知不可见部分连同材质细节减暗。城镇按 `corners/deckThickness/stairRise` 绘制台地、台阶和薄楼板，桥下不填成实体；二楼剖切同时作用于渲染、拾取、相机避障和探索高亮。静态快照包含层、邻接、通行掩码和物件 `scaleX/Y/Z`，进入时读取一次；显示数据不持有 LuaTable，也不作为玩法状态。
+- 俯视探索默认俯角 50°、方位角 −35°、正交尺寸 `10×hexRadius`；城镇高位跟随镜头参数见[城镇](TownArea.md)。人物保持现有米制尺寸。`PawnMotion` 对城镇和地牢坡阶逐边采样，冲锋也展开成直线逐格路径；站立与移动末端同样贴合踏步。视线仍保留墙体规则，并以 1.6 米眼高检查中途地表遮挡。
 - `LayoutSnapshot` 的嵌套数值数组必须复制为普通 Lua 数组：冻结布局是带 `__index/__len` 的空代理，xLua `LuaTable.Length` 调用 `xlua_objlen`，不会使用代理的 `__len`。直接传 `corners/neighbors` 会让 C# 收到零长度数组；颜色也复制，确保显示快照不共享只读代理。最小边界回归为 `python -B Tools/Tests/run_lua.py Tools/Tests/maparea_snapshot.lua`。
+- 动态快照的 `fullVisibilityCount>0` 表示真实 Known/Visible 都覆盖全图，此时 `known/visible` 空数组由 C# 展开为共享只读的 `0..N-1` 索引范围，避免每次移动往返传递数万个索引。部分/空视野继续发送原数组；旧快照省略该字段仍可读。显示方不得修改索引数组内容，只能替换快照引用。
+- `TownSurfaceRenderer` 按有几何的地格包围盒构建静态 BVH；相机避障和鼠标拾取先筛选少量候选，再按原地格顺序使用相同的精确三角形算法。查询复用候选数组，迷雾/楼板剖切仍即时过滤；只有地形重建时重建索引，不逐帧遍历全图或分配查询集合。
+- 平薄楼板由 `deckThickness>0` 明确选择面网格，包含船体下舱layer0；显示剖切支持 `cutawayGroup/cutawayLayer` 与 `coverInteriorId`，用于同一大结构的下舱和露天高台。旧城镇未设置group时保持原室内剖切语义；[沉船](Shipwreck.md)记录其分层规则。导航边由 `LayeredFloorEdges` 共用，不以显示剖切改变权威占格。分层柱墙的底面位于所属楼板，避免贯穿下层；柱体绘制、拾取与镜头射线共用底面及剖切状态。
+- 探索规划的占地缓存仅存在于单次 `SquadFootprint` 闭包，单格角色直接使用真实锚点索引、多格按同一物种形状共享结果，保留楼层。建造投影的查询生命周期见[营造地形](Construction.md)，不得把局部规划视图保存成地图权威状态。
 - `SquadPawnRenderer` 按 `members(actorId,cellIndex)` 显示独立棋子，平滑位置和朝向，不决定占格。模型高度固定，地格半径 1.5；进入区域创建，离开/销毁时释放，身体和装备通过显式 Prefab 挂点组合。资源与同步菜单见[棋子资源](PawnArt.md)。
 - `ExplorationGridRenderer` 在 `phase=area` 时显示小队附近当前可见、可行走且与成员同层的六边形半透明面片；进入战斗关闭。距离取全员平滑显示位置的最近水平距离，默认 3 格内清晰、3–6 格平滑渐隐（格单位为相邻格中心间距）。`AdventureRuntimeDemo.explorationGrid` 配置范围、格边留缝比例和颜色；面片沿 `TownSurfaceRenderer.AppendOverlay` 贴合斜坡/台阶，shader 经 Resources 加载，进入区域创建、离开/销毁时释放。它不决定移动范围或修改迷雾。
 - 悬停面片用 `HoverColor`（亮青）、成功点击移动后的选中目标用 `SelectedColor`（亮绿），选中优先；目标保留到下一次成功选择，停止、第三人称行走、进入战斗或离开地图会清除。交互高亮仅显示可见且可行走的被指向格，允许在基础渐隐半径外及被明确拾取的其他层显示；不扩大周围可见范围。鼠标经过背包、侧栏及第三人称面板时取消悬停。
@@ -42,11 +52,16 @@
 
 ## 关键入口
 
+- [直墙封边几何与导航不变检查](../../Tools/Tests/floor_boundaries.lua) / [Editor 定向预览](../../Tools/Tests/floor_boundaries_preview.cs) / [快照夹具](../../Tools/Tests/floor_boundaries_preview.lua)：只检查裁切、洞口、原导航身份、封边拾取和楼层隐显，输出至 `Docs/Previews/MapArea/FloorBoundaries/`。
+
 - [MapAreaSystem.lua](../../Lua/Game/MapArea/MapAreaSystem.lua)：入口、会话、探索命令与快照；[MapAreaGenerator.lua](../../Lua/Game/MapArea/MapAreaGenerator.lua)：类型注册、种子和 Region 主题。
 - [DungeonGenerator.lua](../../Lua/Game/MapArea/DungeonGenerator.lua) / [DungeonRooms.lua](../../Lua/Game/MapArea/DungeonRooms.lua) / [DungeonDistricts.lua](../../Lua/Game/MapArea/DungeonDistricts.lua) / [DungeonPassages.lua](../../Lua/Game/MapArea/DungeonPassages.lua) / [DungeonProps.lua](../../Lua/Game/MapArea/DungeonProps.lua)：分区、混合生成、变宽连接和设施；[MapAreaLayout.lua](../../Lua/Game/MapArea/MapAreaLayout.lua)：寻路、视线与只读契约。
 - [MapAreaData.cs](../../Assets/GameFramework/Runtime/Data/MapAreaData.cs)：探索权威状态；[配置目录](../../Config/Tables/MapArea/)：地牢、城镇及公共源表；[本版 review](../../Docs/MapAreaDungeonV3-Review.md)：地牢算法参考、配表入口与预览。
 - [MapAreaRenderer.cs](../../Assets/GameFramework/Samples/Adventure/MapAreaRenderer.cs) / [MapAreaViewData.cs](../../Assets/GameFramework/Samples/Adventure/MapAreaViewData.cs)：Unity 地形与探索显示；交互宿主见[远征 Demo](Adventure.md)。
 - [算法检查](../../Tools/Tests/maparea_core.lua) / [快照数组边界检查](../../Tools/Tests/maparea_snapshot.lua) / [集成检查](../../Tools/Tests/maparea_integration.lua)：最小验证入口。
+- [地牢高程生成](../../Lua/Game/MapArea/DungeonTerrain.lua) / [定向检查](../../Tools/Tests/dungeon_relief.lua)：共享顶点、通道净宽、陈设支撑、双向通行、确定性与高地视线；用现有 `run_lua.py` 执行。
+- [多层 Edit Mode 检查与预览](../../Tools/Tests/maparea_multilevel_preview.cs) / [真实状态输入](../../Tools/Tests/maparea_multilevel_preview.lua)：编译后的 MCP `execute_code` 方法体，检查二楼往返/重进、楼板剖切与拾取、坡阶脚底、冲锋和未知迷雾；输出到 `Docs/Previews/MapArea/`，不进入 Play、不保存场景。
 - [编队规划](../../Lua/Game/MapArea/SquadMovement.lua) / [编队检查](../../Tools/Tests/squad_movement.lua)：1–4 人、转角、窄口、真实地牢往返的逐帧占格/邻接约束；[棋子显示](../../Assets/GameFramework/Samples/Adventure/SquadPawnRenderer.cs)：只读显示副本。
 - [探索高亮](../../Assets/GameFramework/Samples/Adventure/ExplorationGridRenderer.cs) / [渐隐 Shader](../../Assets/GameFramework/Resources/Rendering/ExplorationGrid.shader) / [最小显示检查](../../Tools/Tests/exploration_grid.cs)：C# 编译后通过 Unity MCP `execute_code` 执行检查文件的方法体，验证可见格、障碍、队员并集、层隔离、战斗切换、坡道台阶贴合、格内填充和 GPU 距离渐隐，并输出独立预览图；不进入 Play、不保存场景。
+- [真实 C# 移动基准](../../Tools/Tests/town_movement_perf.lua) / [射线与显示基准](../../Tools/Tests/maparea_raycast_perf.cs) / [BVH 对照](../../Tools/Tests/maparea_raycast_bvh.cs) / [可见性快照检查](../../Tools/Tests/maparea_visibility_snapshot.lua)：有限 Edit Mode 检查，不渲染或启动 Play；前后耗时与命中一致性结果保存到 `Docs/Previews/MapArea/`。
 - [敌群部署](../../Lua/Game/MapArea/DungeonEncounters.lua) / [敌群配置](../../Config/Tables/MapArea/MapAreaEncounterTable.json) / [战斗显示](../../Assets/GameFramework/Samples/Adventure/AreaCombatRenderer.cs)；原地战斗验证入口见[战斗](Battle.md)。

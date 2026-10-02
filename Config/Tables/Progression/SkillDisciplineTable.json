@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "name": "SkillDisciplineTable",
+  "description": "技能图谱一级领域；不限制角色职业或武器。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "领域 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "领域名称"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "领域说明"
+    },
+    {
+      "name": "order",
+      "type": "int",
+      "description": "显示顺序"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "武艺",
+      "description": "武器招式与通用战技",
+      "order": 1
+    },
+    {
+      "id": 2,
+      "name": "术法",
+      "description": "法术、治疗与奥术",
+      "order": 2
+    },
+    {
+      "id": 3,
+      "name": "营造",
+      "description": "筑障、架设与土工",
+      "order": 3
+    },
+    {
+      "id": 4,
+      "name": "机关",
+      "description": "陷阱与作战装置",
+      "order": 4
+    },
+    {
+      "id": 5,
+      "name": "驭兽",
+      "description": "驯服、指挥与骑乘",
+      "order": 5
+    },
+    {
+      "id": 6,
+      "name": "野外技艺",
+      "description": "侦察、追踪与生存",
+      "order": 6
+    }
+  ]
+}

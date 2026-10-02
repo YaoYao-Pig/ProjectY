@@ -1,0 +1,47 @@
+local registry=require('Core.SystemRegistry')(Services)
+require('Game.Systems')(registry)
+local messages={}
+local function test(name,run) run();messages[#messages+1]='PASS '..name end
+local ok,err=xpcall(function()
+    registry:Start()
+    local ui,growth=registry:Get('UI'),registry:Get('Growth');local data=Services.Adventure
+    data:Reset(123)
+    for i,id in ipairs({1,2,3,6}) do local actor=data:AddPartyActor(i,id);growth:Initialize(actor);actor:SetMaxHP(growth.stats:MaximumHP(actor));actor:Restore() end
+    local adapter={LastError='',SetGrowthOpen=function(self,value)self.open=value end}
+    local actor=data:GetPartyAt(0);local revision=actor.Growth.Revision
+    local panel=ui:Open('SkillAtlas',{demo=adapter})
+    ArrangeAtlas(panel.reference)
+    test('two-level navigation, current character and no learning side effects',function()
+        assert(adapter.open and Services.UI.IsWorldPaused and panel.categoryId==31)
+        assert(#panel.nodes==2 and panel.nodes[1].view.Icon.sprite~=nil)
+        assert(actor.Growth.Revision==revision)
+        panel.view.Domain1.onClick:Invoke();assert(panel.disciplineId==1 and panel.categoryId==11)
+        panel.categories[5].view.Button.onClick:Invoke();assert(panel.categoryId==15)
+        panel.view.Party2.onClick:Invoke();assert(panel.actorIndex==1)
+        CaptureAtlas(panel.reference,'weapons')
+    end)
+    test('global search jumps across categories to the same skill identity',function()
+        panel.view.Search.text='高台';panel.view.SearchButton.onClick:Invoke()
+        assert(panel.results[1].view.Title.text=='射击高台')
+        panel.results[1].view.Button.onClick:Invoke();ArrangeAtlas(panel.reference)
+        assert(panel.categoryId==32 and panel.selectedId==304 and panel.view.Geometry.PopupVisible)
+        assert(panel.view.TipDetail.text:find('材料',1,true) and panel.view.PrerequisiteTitle.text=='前置：全部掌握')
+        CaptureAtlas(panel.reference,'platform')
+    end)
+    test('anchored popup follows the cell, flips at an edge and dismisses offscreen',function()
+        local widget;for _,item in ipairs(panel.nodes) do if item.node and item.node.id==304 then widget=item end end
+        CheckAtlasPopup(panel.reference,widget.view.Root)
+        panel:Jump(304);panel.links[1].view.Button.onClick:Invoke();assert(panel.selectedId==303)
+        panel.view.TipClose.onClick:Invoke();assert(not panel.view.Geometry.PopupVisible)
+        panel:Jump(302);CaptureAtlas(panel.reference,'barriers')
+        panel.view.Dismiss.onClick:Invoke();assert(not panel.view.Geometry.PopupVisible)
+    end)
+    test('cache reopen clears transient selections and restores pause ownership',function()
+        ui:Close('SkillAtlas');assert(not adapter.open and not Services.UI.IsWorldPaused)
+        panel=ui:Open('SkillAtlas',{demo=adapter});assert(not panel.selectedId and not panel.view.Geometry.PopupVisible)
+        ui:Close('SkillAtlas');assert(actor.Growth.Revision==revision)
+    end)
+end,debug.traceback)
+registry:Shutdown()
+if not ok then error(err) end
+return table.concat(messages,'\n')

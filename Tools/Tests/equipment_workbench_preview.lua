@@ -22,6 +22,15 @@ function data:Wear()error('Preview must not unequip the shield')end
 local EmptyGrowth=assert(loadfile('Tools/Tests/growth_empty.lua'))()
 local actor={Id=7,Team=1,TemplateId=1,TraitCount=0,Effects={Count=0},Growth=EmptyGrowth()}
 local stats=require('Game.Battle.CombatStats')(config,data);local rules=stats.equipment
+local heavyTags=rules:WeaponTags(45)
+assert(#heavyTags==2 and heavyTags[1].id=='two_handed_sword' and heavyTags[1].name=='双手剑' and heavyTags[2].id=='greatsword')
+assert(rules:HasWeaponTag(45,'two_handed_sword') and rules:HasWeaponTag(42,'two_handed_sword'))
+assert(not rules:HasWeaponTag(40,'two_handed_sword') and not rules:HasWeaponTag(45,'axe'))
+assert(not pcall(function() rules:HasWeaponTag(45,'missing_tag') end),'Misspelled gameplay tags must fail')
+for _,definition in ipairs(rules.weapons:All()) do
+    local seen={}
+    for _,tag in ipairs(rules:WeaponTags(definition.id)) do assert(not seen[tag.id]);seen[tag.id]=true end
+end
 local function resolve(query)
     local rows={}
     for _,id in ipairs(query:SkillIds(actor,stats:Template(actor))) do rows[id]=query:Skill(actor,id,stats) end
@@ -66,5 +75,6 @@ data.shield=nil;data.off=off;data.WearableCount=0
 assert(not resolve(rules:PreviewWeapon(off))[13],'Previewing the real offhand must not duplicate it in both hands')
 assert(resolve(rules)[13] and rules:MotionModule(actor).code=='dual' and off.Hand=='offhand')
 assert(loadfile('Lua/UI/Panel/EquipmentWorkbenchCtr.lua'))
+assert(loadfile('Lua/UI/Widget/EquipmentTag.lua'))
 config:OnShutdown()
 print('PASS '..count..' configured weapon/shield-or-dual preview cases; runes, current attributes and actual offhand combat remain intact')

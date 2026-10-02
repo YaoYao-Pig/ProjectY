@@ -20,6 +20,12 @@ namespace ProjectY.Samples
         private int weatherIndex;
         private readonly Snapshot original;
         private readonly ProjectY.Rendering.FantasyPresentation presentation;
+        private Material skyMaterial;
+        private bool skyEnabled;
+        private Vector3 reflectionSunDirection;
+        private static readonly int SkySunDirection = Shader.PropertyToID("_SunDirection");
+        private static readonly int SkySunRadiance = Shader.PropertyToID("_SunRadiance");
+        private static readonly int SkyDaylight = Shader.PropertyToID("_Daylight");
         public bool Running { get; set; }
         public float Hour { get => hour; set => hour = Mathf.Repeat(value, 24); }
         public int WeatherIndex => weatherIndex;
@@ -35,6 +41,8 @@ namespace ProjectY.Samples
             public Light Sun;
             public Quaternion Rotation;
             public LightShadows Shadows;
+            public Material Skybox;
+            public CameraClearFlags ClearFlags;
         }
         public MapEnvironmentController(MapEnvironmentData data, Light mainLight, Camera viewCamera, Transform owner)
         {
@@ -43,7 +51,7 @@ namespace ProjectY.Samples
             original = new Snapshot { Ambient = RenderSettings.ambientMode, Sky = RenderSettings.ambientSkyColor, Equator = RenderSettings.ambientEquatorColor,
                 Ground = RenderSettings.ambientGroundColor, Fog = RenderSettings.fog, FogMode = RenderSettings.fogMode, FogColor = RenderSettings.fogColor,
                 FogStart = RenderSettings.fogStartDistance, FogEnd = RenderSettings.fogEndDistance, FogDensity = RenderSettings.fogDensity, Reflection = RenderSettings.reflectionIntensity,
-                Background = camera.backgroundColor, Sun = RenderSettings.sun,
+                Background = camera.backgroundColor, Sun = RenderSettings.sun, Skybox = RenderSettings.skybox, ClearFlags = camera.clearFlags,
                 Rotation = sun.transform.rotation, SunColor = sun.color, SunIntensity = sun.intensity, Shadows = sun.shadows, ShadowStrength = sun.shadowStrength,
                 ShadowBias = sun.shadowBias, ShadowNormalBias = sun.shadowNormalBias };
             Hour = data.StartHour; Running = data.AutoCycle;
@@ -58,7 +66,7 @@ namespace ProjectY.Samples
                 lamps[i] = go.AddComponent<Light>(); lamps[i].type = LightType.Point; lamps[i].color = data.LampColor; lamps[i].range = data.LampRange;
                 lamps[i].shadows = LightShadows.None; lamps[i].renderMode = LightRenderMode.ForcePixel; lamps[i].enabled = false;
             }
-            RenderSettings.ambientMode = AmbientMode.Trilight; RenderSettings.sun = sun; RenderSettings.reflectionIntensity = 0;
+            RenderSettings.ambientMode = AmbientMode.Trilight; RenderSettings.sun = sun;
             sun.shadows = LightShadows.Soft; sun.shadowBias = .03f; sun.shadowNormalBias = .25f;
             presentation = new ProjectY.Rendering.FantasyPresentation(camera, owner);
             presentation.SetShadowDistance(data.ShadowDistance);
@@ -93,14 +101,21 @@ namespace ProjectY.Samples
             var a = keys[index]; var b = keys[(index + 1) % keys.Length]; var span = Mathf.Repeat(b.Hour - a.Hour, 24);
             var t = Mathf.Repeat(Hour - a.Hour, 24) / span;
             var altitude = Mathf.Sin((Hour - 6) / 24 * Mathf.PI * 2);
+            var look = presentation.Lighting;
+            var daylight = Mathf.SmoothStep(0, 1, Mathf.InverseLerp(-.15f, .3f, altitude));
+            var sunGain = Mathf.Lerp(1, look.daySunMultiplier, daylight);
+            var ambientGain = Mathf.Lerp(1, look.dayAmbientMultiplier, daylight);
+            var skyTint = Color.Lerp(Color.white, look.skyLightTint, daylight);
             sun.transform.rotation = Quaternion.Euler(12 + Mathf.Abs(altitude) * 58, Data.Azimuth + (altitude < 0 ? 180 : 0), 0);
             sun.color = Color.Lerp(a.SunColor, b.SunColor, t) * weatherTint;
-            sun.intensity = Mathf.Lerp(a.Sun, b.Sun, t) * weatherSun * Mathf.Lerp(1, Data.IndoorSun, indoors); sun.shadowStrength = weatherShadow;
-            RenderSettings.ambientSkyColor = Color.Lerp(Color.Lerp(a.Sky, b.Sky, t) * weatherTint * weatherAmbient, Data.IndoorAmbient * .70f, indoors);
-            RenderSettings.ambientEquatorColor = Color.Lerp(Color.Lerp(a.Equator, b.Equator, t) * weatherTint * weatherAmbient, Data.IndoorAmbient * .62f, indoors);
-            RenderSettings.ambientGroundColor = Color.Lerp(Color.Lerp(a.Ground, b.Ground, t) * weatherTint * weatherAmbient, Data.IndoorAmbient * .4f, indoors);
+            sun.intensity = Mathf.Lerp(a.Sun, b.Sun, t) * weatherSun * Mathf.Lerp(1, Data.IndoorSun, indoors) * sunGain; sun.shadowStrength = weatherShadow;
+            RenderSettings.ambientSkyColor = Color.Lerp(Color.Lerp(a.Sky, b.Sky, t) * weatherTint * weatherAmbient * ambientGain * skyTint, Data.IndoorAmbient * .70f, indoors);
+            RenderSettings.ambientEquatorColor = Color.Lerp(Color.Lerp(a.Equator, b.Equator, t) * weatherTint * weatherAmbient * ambientGain, Data.IndoorAmbient * .62f, indoors);
+            RenderSettings.ambientGroundColor = Color.Lerp(Color.Lerp(a.Ground, b.Ground, t) * weatherTint * weatherAmbient * ambientGain, Data.IndoorAmbient * .4f, indoors);
             RenderSettings.fog = true; RenderSettings.fogMode = FogMode.Linear; RenderSettings.fogColor = Color.Lerp(a.Fog, b.Fog, t) * weatherTint;
             camera.backgroundColor = RenderSettings.fogColor;
+            RenderSettings.reflectionIntensity = look.reflectionIntensity * Mathf.Lerp(.3f, 1, daylight);
+            ApplySky(look.skybox, daylight);
             lit.Clear(); var count = 0; var lampWeight = Mathf.Lerp(.4f, 1, Mathf.Lerp(a.Lamp, b.Lamp, t));
             if (layout != null && state != null) foreach (var member in state.Members)
             {
@@ -109,6 +124,30 @@ namespace ProjectY.Samples
                 var lamp = lamps[count++]; lamp.transform.position = anchors[id]; lamp.intensity = Data.LampIntensity * lampWeight; lamp.enabled = true;
             }
             for (var i = count; i < lamps.Length; i++) lamps[i].enabled = false;
+        }
+
+        private void ApplySky(bool enabled, float daylight)
+        {
+            if (!enabled)
+            {
+                if (skyEnabled) { RenderSettings.skybox = original.Skybox; camera.clearFlags = original.ClearFlags; DynamicGI.UpdateEnvironment(); }
+                skyEnabled = false;
+                return;
+            }
+            if (skyMaterial == null)
+            {
+                if (presentation.SkyboxTemplate == null) throw new InvalidOperationException("Fantasy skybox is missing. Install the world style assets.");
+                skyMaterial = new Material(presentation.SkyboxTemplate) { name = "Fantasy Sky (World session)", hideFlags = HideFlags.HideAndDontSave };
+            }
+            skyMaterial.SetVector(SkySunDirection, -sun.transform.forward);
+            var radiance = sun.color.linear * sun.intensity;
+            skyMaterial.SetVector(SkySunRadiance, new Vector4(radiance.r, radiance.g, radiance.b, 1));
+            skyMaterial.SetFloat(SkyDaylight, daylight);
+            RenderSettings.skybox = skyMaterial; camera.clearFlags = CameraClearFlags.Skybox;
+            // Refresh reflections on style changes or meaningful sun movement, not every frame.
+            if (!skyEnabled || Vector3.Dot(reflectionSunDirection, sun.transform.forward) < .995f)
+            { DynamicGI.UpdateEnvironment(); reflectionSunDirection = sun.transform.forward; }
+            skyEnabled = true;
         }
         // 正交远景相机距地很远；雾从观察焦点向后累计，不能吞掉整张大地图。
         public void ApplyCameraFocus(Vector3 focus)
@@ -125,7 +164,10 @@ namespace ProjectY.Samples
             RenderSettings.fog = original.Fog; RenderSettings.fogMode = original.FogMode; RenderSettings.fogColor = original.FogColor;
             RenderSettings.fogStartDistance = original.FogStart; RenderSettings.fogEndDistance = original.FogEnd; RenderSettings.fogDensity = original.FogDensity;
             RenderSettings.reflectionIntensity = original.Reflection; RenderSettings.sun = original.Sun;
-            if (camera != null) camera.backgroundColor = original.Background;
+            RenderSettings.skybox = original.Skybox;
+            if (skyEnabled) DynamicGI.UpdateEnvironment();
+            if (skyMaterial != null) { if (Application.isPlaying) UnityEngine.Object.Destroy(skyMaterial); else UnityEngine.Object.DestroyImmediate(skyMaterial); }
+            if (camera != null) { camera.backgroundColor = original.Background; camera.clearFlags = original.ClearFlags; }
             if (sun != null)
             {
                 sun.transform.rotation = original.Rotation; sun.color = original.SunColor; sun.intensity = original.SunIntensity;

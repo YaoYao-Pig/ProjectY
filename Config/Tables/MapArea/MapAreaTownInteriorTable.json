@@ -71,6 +71,30 @@
       "type": "int",
       "description": "室内地面材质",
       "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "doorQ",
+      "type": "int[]",
+      "default": [],
+      "description": "明确门洞边的室外格 q；空数组沿用地块主入口"
+    },
+    {
+      "name": "doorR",
+      "type": "int[]",
+      "default": [],
+      "description": "明确门洞边的室外格 r"
+    },
+    {
+      "name": "doorInsideQ",
+      "type": "int[]",
+      "default": [],
+      "description": "每条门洞边的室内格 q，与 doorQ 一一对应"
+    },
+    {
+      "name": "doorInsideR",
+      "type": "int[]",
+      "default": [],
+      "description": "每条门洞边的室内格 r"
     }
   ],
   "rows": [
@@ -115,7 +139,11 @@
       "doorWidth": 3.0,
       "doorHeight": 2.4,
       "storeyHeight": 3.2,
-      "surfaceId": 9
+      "surfaceId": 9,
+      "doorQ": [],
+      "doorR": [],
+      "doorInsideQ": [],
+      "doorInsideR": []
     },
     {
       "id": 2,
@@ -160,7 +188,11 @@
       "doorWidth": 3.0,
       "doorHeight": 2.4,
       "storeyHeight": 3.2,
-      "surfaceId": 10
+      "surfaceId": 10,
+      "doorQ": [],
+      "doorR": [],
+      "doorInsideQ": [],
+      "doorInsideR": []
     },
     {
       "id": 3,
@@ -205,7 +237,11 @@
       "doorWidth": 3.0,
       "doorHeight": 2.4,
       "storeyHeight": 3.2,
-      "surfaceId": 9
+      "surfaceId": 9,
+      "doorQ": [],
+      "doorR": [],
+      "doorInsideQ": [],
+      "doorInsideR": []
     },
     {
       "id": 4,
@@ -250,7 +286,11 @@
       "doorWidth": 3.0,
       "doorHeight": 2.4,
       "storeyHeight": 3.2,
-      "surfaceId": 10
+      "surfaceId": 10,
+      "doorQ": [],
+      "doorR": [],
+      "doorInsideQ": [],
+      "doorInsideR": []
     },
     {
       "id": 17,
@@ -373,7 +413,11 @@
       "doorWidth": 3.6,
       "doorHeight": 4.1,
       "storeyHeight": 4.5,
-      "surfaceId": 11
+      "surfaceId": 11,
+      "doorQ": [],
+      "doorR": [],
+      "doorInsideQ": [],
+      "doorInsideR": []
     },
     {
       "id": 25,
@@ -418,7 +462,11 @@
       "doorWidth": 3.0,
       "doorHeight": 2.4,
       "storeyHeight": 3.2,
-      "surfaceId": 9
+      "surfaceId": 9,
+      "doorQ": [],
+      "doorR": [],
+      "doorInsideQ": [],
+      "doorInsideR": []
     },
     {
       "id": 26,
@@ -463,7 +511,11 @@
       "doorWidth": 3.0,
       "doorHeight": 2.4,
       "storeyHeight": 3.2,
-      "surfaceId": 9
+      "surfaceId": 9,
+      "doorQ": [],
+      "doorR": [],
+      "doorInsideQ": [],
+      "doorInsideR": []
     },
     {
       "id": 27,
@@ -506,7 +558,11 @@
       "doorWidth": 3.0,
       "doorHeight": 2.4,
       "storeyHeight": 3.2,
-      "surfaceId": 10
+      "surfaceId": 10,
+      "doorQ": [],
+      "doorR": [],
+      "doorInsideQ": [],
+      "doorInsideR": []
     },
     {
       "id": 28,
@@ -551,7 +607,11 @@
       "doorWidth": 3.0,
       "doorHeight": 2.4,
       "storeyHeight": 3.2,
-      "surfaceId": 9
+      "surfaceId": 9,
+      "doorQ": [],
+      "doorR": [],
+      "doorInsideQ": [],
+      "doorInsideR": []
     },
     {
       "id": 29,
@@ -594,7 +654,11 @@
       "doorWidth": 3.0,
       "doorHeight": 2.4,
       "storeyHeight": 3.2,
-      "surfaceId": 9
+      "surfaceId": 9,
+      "doorQ": [],
+      "doorR": [],
+      "doorInsideQ": [],
+      "doorInsideR": []
     },
     {
       "id": 30,
@@ -639,7 +703,338 @@
       "doorWidth": 3.0,
       "doorHeight": 2.4,
       "storeyHeight": 3.2,
-      "surfaceId": 10
+      "surfaceId": 10,
+      "doorQ": [],
+      "doorR": [],
+      "doorInsideQ": [],
+      "doorInsideR": []
+    },
+    {
+      "id": 14,
+      "name": "阶巷联排首层",
+      "coverAssetId": 700,
+      "navRadius": 1.5,
+      "interiorQ": [
+        -1,
+        0,
+        1,
+        2,
+        -1,
+        0,
+        1,
+        -2,
+        -1,
+        0,
+        1
+      ],
+      "interiorR": [
+        -1,
+        -1,
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "serviceQ": 0,
+      "serviceR": 0,
+      "floorColor": "#9b805f",
+      "doorWidth": 1.8,
+      "doorHeight": 2.4,
+      "storeyHeight": 3.2,
+      "surfaceId": 9,
+      "doorQ": [
+        -2,
+        -1,
+        1
+      ],
+      "doorR": [
+        2,
+        2,
+        2
+      ],
+      "doorInsideQ": [
+        -2,
+        0,
+        1
+      ],
+      "doorInsideR": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 15,
+      "name": "高低楼联排首层",
+      "coverAssetId": 701,
+      "navRadius": 1.5,
+      "interiorQ": [
+        -1,
+        0,
+        1,
+        2,
+        -1,
+        0,
+        1,
+        -2,
+        -1,
+        0,
+        1
+      ],
+      "interiorR": [
+        -1,
+        -1,
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "serviceQ": 0,
+      "serviceR": 0,
+      "floorColor": "#9b805f",
+      "doorWidth": 1.8,
+      "doorHeight": 2.4,
+      "storeyHeight": 3.2,
+      "surfaceId": 9,
+      "doorQ": [
+        -2,
+        -1,
+        1
+      ],
+      "doorR": [
+        2,
+        2,
+        2
+      ],
+      "doorInsideQ": [
+        -2,
+        0,
+        1
+      ],
+      "doorInsideR": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 16,
+      "name": "檐廊联排首层",
+      "coverAssetId": 702,
+      "navRadius": 1.5,
+      "interiorQ": [
+        -1,
+        0,
+        1,
+        2,
+        -1,
+        0,
+        1,
+        -2,
+        -1,
+        0,
+        1
+      ],
+      "interiorR": [
+        -1,
+        -1,
+        -1,
+        -1,
+        0,
+        0,
+        0,
+        1,
+        1,
+        1,
+        1
+      ],
+      "serviceQ": 0,
+      "serviceR": 0,
+      "floorColor": "#9b805f",
+      "doorWidth": 1.8,
+      "doorHeight": 2.4,
+      "storeyHeight": 3.2,
+      "surfaceId": 9,
+      "doorQ": [
+        -2,
+        -1,
+        1
+      ],
+      "doorR": [
+        2,
+        2,
+        2
+      ],
+      "doorInsideQ": [
+        -2,
+        0,
+        1
+      ],
+      "doorInsideR": [
+        1,
+        1,
+        1
+      ]
+    },
+    {
+      "id": 18,
+      "name": "双塔门楼值守室",
+      "coverAssetId": 703,
+      "navRadius": 1.5,
+      "interiorQ": [
+        -4,
+        -3,
+        3,
+        4
+      ],
+      "interiorR": [
+        0,
+        0,
+        0,
+        0
+      ],
+      "serviceQ": 3,
+      "serviceR": 0,
+      "floorColor": "#aa9e8b",
+      "doorWidth": 1.8,
+      "doorHeight": 2.4,
+      "storeyHeight": 3.2,
+      "surfaceId": 10,
+      "doorQ": [
+        -2,
+        2
+      ],
+      "doorR": [
+        0,
+        0
+      ],
+      "doorInsideQ": [
+        -3,
+        3
+      ],
+      "doorInsideR": [
+        0,
+        0
+      ]
+    },
+    {
+      "id": 19,
+      "name": "花园亭首层",
+      "coverAssetId": 704,
+      "navRadius": 1.5,
+      "interiorQ": [
+        0,
+        1,
+        0,
+        -1,
+        -1,
+        0,
+        1
+      ],
+      "interiorR": [
+        0,
+        0,
+        1,
+        1,
+        0,
+        -1,
+        -1
+      ],
+      "serviceQ": 0,
+      "serviceR": 0,
+      "floorColor": "#aa9e8b",
+      "doorWidth": 1.8,
+      "doorHeight": 2.4,
+      "storeyHeight": 3.2,
+      "surfaceId": 10,
+      "doorQ": [
+        -1,
+        -1
+      ],
+      "doorR": [
+        2,
+        2
+      ],
+      "doorInsideQ": [
+        0,
+        -1
+      ],
+      "doorInsideR": [
+        1,
+        1
+      ]
+    },
+    {
+      "id": 31,
+      "name": "乡村风车磨坊首层",
+      "coverAssetId": 705,
+      "navRadius": 1.5,
+      "interiorQ": [
+        0
+      ],
+      "interiorR": [
+        0
+      ],
+      "serviceQ": 0,
+      "serviceR": 0,
+      "floorColor": "#9b805f",
+      "doorWidth": 1.8,
+      "doorHeight": 2.4,
+      "storeyHeight": 3.2,
+      "surfaceId": 9,
+      "doorQ": [
+        0
+      ],
+      "doorR": [
+        1
+      ],
+      "doorInsideQ": [
+        0
+      ],
+      "doorInsideR": [
+        0
+      ]
+    },
+    {
+      "id": 32,
+      "name": "木构谷仓首层",
+      "coverAssetId": 706,
+      "navRadius": 1.5,
+      "interiorQ": [
+        0
+      ],
+      "interiorR": [
+        0
+      ],
+      "serviceQ": 0,
+      "serviceR": 0,
+      "floorColor": "#9b805f",
+      "doorWidth": 1.8,
+      "doorHeight": 2.4,
+      "storeyHeight": 3.2,
+      "surfaceId": 9,
+      "doorQ": [
+        0
+      ],
+      "doorR": [
+        1
+      ],
+      "doorInsideQ": [
+        0
+      ],
+      "doorInsideR": [
+        0
+      ]
     }
   ]
 }

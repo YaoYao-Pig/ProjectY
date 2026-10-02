@@ -22,6 +22,11 @@ ModelImporter:
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
+      name: M_MapLP_InteriorWood
+    second: {fileID: 2100000, guid: 3692306ac5dd2b74a9db795d4391f040, type: 2}
+  - first:
+      type: UnityEngine:Material
+      assembly: UnityEngine.CoreModule
       name: M_MapLP_Plaster
     second: {fileID: 2100000, guid: f370cdac537ba674e9b42217d39165b2, type: 2}
   - first:
@@ -48,7 +53,7 @@ ModelImporter:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
       name: M_MapLP_Timber
-    second: {fileID: 2100000, guid: ab95db1ecebda5d4a99bad107abcbe2b, type: 2}
+    second: {fileID: 2100000, guid: 427ad96960d4fa84996bd6a28758f085, type: 2}
   - first:
       type: UnityEngine:Material
       assembly: UnityEngine.CoreModule
@@ -60,7 +65,7 @@ ModelImporter:
       name: M_MapLP_Window
     second: {fileID: 2100000, guid: 8bad6275377269342b28fb4604905d4e, type: 2}
   materials:
-    materialImportMode: 2
+    materialImportMode: 1
     materialName: 0
     materialSearch: 1
     materialLocation: 1
@@ -87,7 +92,7 @@ ModelImporter:
     extraExposedTransformPaths: []
     extraUserProperties: []
     clipAnimations: []
-    isReadable: 0
+    isReadable: 1
   meshes:
     lODScreenPercentages: []
     globalScale: 1
@@ -127,7 +132,7 @@ ModelImporter:
   tangentSpace:
     normalSmoothAngle: 60
     normalImportMode: 0
-    tangentImportMode: 3
+    tangentImportMode: 2
     normalCalculationMode: 4
     legacyComputeAllNormalsFromSmoothingGroupsWhenMeshHasBlendShapes: 0
     blendShapeNormalImportMode: 1

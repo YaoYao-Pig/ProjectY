@@ -121,7 +121,7 @@ export class MapRenderer {
     for (const cell of data.cells) this.maxSurface = Math.max(this.maxSurface, cell.waterLevel ?? cell.height);
     this.geometryMargin = data.hexRadius * 2;
     for (const item of data.decorations) {
-      this.maxSurface = Math.max(this.maxSurface, data.cells[item.cell - 1].height + this.assets.get(item.assetId).referenceHeight * item.scale);
+      this.maxSurface = Math.max(this.maxSurface, (item.height ?? data.cells[item.cell - 1].height) + this.assets.get(item.assetId).referenceHeight * item.scale);
       this.geometryMargin = Math.max(this.geometryMargin, data.hexRadius * item.scale);
     }
     for (const building of data.buildings) {
@@ -367,20 +367,31 @@ export class MapRenderer {
     if (this.options.decorations) for (const item of this.data.decorations) {
       if (!visible.has(item.cell - 1)) continue;
       const cell = this.data.cells[item.cell - 1], asset = this.assets.get(item.assetId);
+      const baseHeight = item.height ?? cell.height;
       const height = asset.referenceHeight * item.scale, radius = this.data.hexRadius * item.scale * .42;
       const cone = (base, peak, width, fill) => {
         const ring = this.corners.map(c => screen(cell.x+c.x*width,base,cell.z+c.z*width));
         for (let i=0;i<6;i++) face([ring[i],ring[(i+1)%6],screen(cell.x,peak,cell.z)],item.cell-1,false,1,false,fill);
       };
-      if (asset.previewShape === 'mountain') cone(cell.height,cell.height+height,.65*item.scale,asset.previewColor);
+      if (asset.previewShape === 'shipwreck') {
+        const angle = item.yaw * Math.PI / 180, size = this.data.hexRadius * item.scale;
+        const point = (x,y,z) => screen(cell.x + (x*Math.cos(angle)+z*Math.sin(angle))*size, baseHeight+y*size,
+          cell.z + (z*Math.cos(angle)-x*Math.sin(angle))*size);
+        const hull = [[-.26,-.68],[.26,-.68],[.31,.22],[0,.88],[-.31,.22]];
+        face(hull.map(([x,z])=>point(x,.12,z)),item.cell-1,false,1,false,asset.previewColor);
+        face([point(-.24,.13,-.68),point(.24,.13,-.68),point(.24,.3,-.68),point(-.24,.3,-.68)],item.cell-1,false,1,false,'#514536');
+        face([point(-.025,.12,0),point(.025,.12,0),point(.025,.6,0),point(-.025,.6,0)],item.cell-1,false,1,false,'#6b5640');
+        face([point(-.28,.54,0),point(.28,.54,0),point(.17,.32,0),point(-.24,.37,0)],item.cell-1,false,1,false,'#aaad91');
+      }
+      else if (asset.previewShape === 'mountain') cone(baseHeight,baseHeight+height,.65*item.scale,asset.previewColor);
       else {
         const trunk = radius*.14;
-        face([screen(cell.x-trunk,cell.height,cell.z),screen(cell.x+trunk,cell.height,cell.z),screen(cell.x+trunk,cell.height+height*.5,cell.z),screen(cell.x-trunk,cell.height+height*.5,cell.z)],item.cell-1,false,1,false,'#66594a');
+        face([screen(cell.x-trunk,baseHeight,cell.z),screen(cell.x+trunk,baseHeight,cell.z),screen(cell.x+trunk,baseHeight+height*.5,cell.z),screen(cell.x-trunk,baseHeight+height*.5,cell.z)],item.cell-1,false,1,false,'#66594a');
         if (asset.previewShape === 'tree') {
-          cone(cell.height+height*.38,cell.height+height,radius/this.data.hexRadius,asset.previewColor);
-          cone(cell.height+height*.6,cell.height+height*.23,radius/this.data.hexRadius,'#486a3b');
+          cone(baseHeight+height*.38,baseHeight+height,radius/this.data.hexRadius,asset.previewColor);
+          cone(baseHeight+height*.6,baseHeight+height*.23,radius/this.data.hexRadius,'#486a3b');
         } else for (let layer=0;layer<3;layer++)
-          cone(cell.height+height*(.22+layer*.21),cell.height+height*(.6+layer*.2),radius/this.data.hexRadius*(1-layer*.22),asset.previewColor);
+          cone(baseHeight+height*(.22+layer*.21),baseHeight+height*(.6+layer*.2),radius/this.data.hexRadius*(1-layer*.22),asset.previewColor);
       }
     }
     if (this.options.water) for (const fall of this.data.waterfalls) {
@@ -396,7 +407,7 @@ export class MapRenderer {
       const point = (x, y, z) => screen(cell.x + x * Math.cos(yaw) - z * Math.sin(yaw), y, cell.z + x * Math.sin(yaw) + z * Math.cos(yaw));
       const base = building.baseHeight + .025, eave = base + building.height, ridge = eave + building.roofHeight;
       // 地牢按资源轮廓画成石拱遗址，不再复用民居的墙体和坡屋顶。
-      if (asset.previewShape === 'dungeon') {
+      if (asset.previewShape === 'dungeon' || asset.previewShape === 'mine') {
         const unit = (building.height + building.roofHeight) / asset.referenceHeight;
         const local = (x, y, z) => point(x * unit, base + y * unit, z * unit);
         const solid = (vertices, sides, fill) => {
@@ -407,6 +418,15 @@ export class MapRenderer {
             .map(([a,b,c]) => [x+a*dx/2,y+b*dy/2,z+c*dz/2]);
           solid(vertices, [[0,1,5,4],[1,2,6,5],[2,3,7,6],[3,0,4,7],[4,5,6,7]], fill);
         };
+        if (asset.previewShape === 'mine') {
+          box(-.28,.67,0,.60,1.34,1.15,'#827969');
+          box(.06,.57,0,.06,1.04,.74,'#35312b');
+          for (const z of [-.47,.47]) box(.15,.62,z,.25,1.24,.21,'#715b40');
+          box(.15,1.28,0,.30,.23,1.21,'#8b704d');
+          for (const x of [.28,.48,.68]) box(x,.035,0,.11,.07,.83,'#7b684e');
+          for (const z of [-.24,.24]) box(.43,.075,z,.95,.055,.055,'#514b43');
+          continue;
+        }
         for (const z of [-.49,.49]) {
           box(-.03,.37,z,.58,.74,.27,asset.previewColor);
           box(.05,.10,z,.69,.20,.31,'#77736c');

@@ -1,0 +1,343 @@
+[
+  {
+    "id": "DG_Tex_MossAshlarWall",
+    "prompt": "Square seamless horizontally AND vertically tileable game albedo texture, medieval fantasy dungeon ashlar wall. Large chunky muted grey limestone blocks in six staggered horizontal courses, aged olive moss concentrated in joints and little bottom-edge clusters, 20 percent moss. Orthographic straight-on surface only, no scene. Hand-painted stylized low-poly project aesthetic, broad quiet colors #898379 #aea18b #536947. Diffuse base color only, no directional illumination, no highlights, no cast shadows, no vignette, no text or border, no objects, no perspective. All four boundaries must tile perfectly in a 3 by 3 repeat. Original surface design with restrained medieval ruin atmosphere. Resolution 1024 square.",
+    "source": "C:\\Users\\yyz\\.codex\\generated_images\\01a0f78e-20a7-7c01-b125-3773a4996c42\\exec-aba252bb-dfd6-481e-aeab-e7b96c6282fc.png",
+    "file": "Textures/DG_Tex_MossAshlarWall.png",
+    "references": [
+      {
+        "id": "ds3_dungeon",
+        "work": "Dark Souls III — Irithyll Dungeon",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/irithyll-dungeon/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_12.12.jpg",
+        "notes": "Damp masonry, low candles, aged timber and edge clutter; retain clear central passage.",
+        "local": "References\\ds3_dungeon.jpg",
+        "download_bytes": 168483
+      },
+      {
+        "id": "skyrim_moss",
+        "work": "The Elder Scrolls V: Skyrim Special Edition — cavern",
+        "page": "https://www.rpgsite.net/news/5038-skyrim-special-edition-pc-comparison",
+        "image": "https://images.rpgsite.net/image/da49c9a1/49949/original/SSE_2016OCT27_06.png",
+        "notes": "Cold damp rock, muted moss and dry readable walking surface; roots kept near walls.",
+        "local": "References\\skyrim_moss.jpg",
+        "download_bytes": 4999490
+      }
+    ],
+    "dimensions": [
+      1254,
+      1254
+    ],
+    "color_space": "sRGB",
+    "unity_texture_type": "Default",
+    "wrap_mode": "Repeat",
+    "filter_mode": "Trilinear",
+    "mipmaps": true,
+    "physical_tile_metres": 2,
+    "shader": "Universal Render Pipeline/Lit",
+    "metallic": 0,
+    "smoothness": 0.12,
+    "base_color": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "edge_difference_rgb255": {
+      "horizontal": 12.995746612548828,
+      "vertical": 15.316055297851562,
+      "interior_horizontal": 4.325819492340088,
+      "interior_vertical": 4.95545768737793
+    },
+    "seam_status": "visual_repeat_3x3_reviewed_with_residual_edge_difference",
+    "npot_scale": "None",
+    "max_texture_size": 2048,
+    "review": "Inspected actual 3x3 Repeat image in both axes: no blank border, perspective discontinuity or obvious bright seam. The masonry pattern is continuous at viewing scale. Raw opposite-edge pixels are not identical; edge RGB metrics are retained and do not certify mathematical periodicity.",
+    "review_preview": "Previews/DG_Tex_MossAshlarWall_repeat3x3.png",
+    "seam_iteration": {
+      "result": "retained_original",
+      "reason": "Targeted imagegen seam edit changed mean edge difference from H13.00/V15.32 to H15.46/V13.98; no overall improvement.",
+      "alternate_source": "C:\\Users\\yyz\\.codex\\generated_images\\01a0f78e-20a7-7c01-b125-3773a4996c42\\exec-060976c7-e0b4-4873-8841-04d9111e940a.png"
+    }
+  },
+  {
+    "id": "DG_Tex_DampBasaltWall",
+    "prompt": "Square seamless horizontally AND vertically tileable game albedo texture, medieval fantasy damp basalt dungeon wall. Large irregular fitted dark slate blocks with broad flat faces, restrained desaturated teal mineral stains along crevices, 10 percent muted green moss. Orthographic straight-on surface only. Hand-painted stylized low-poly asset aesthetic, broad readable geometry and subtle texture, slate #5b6562 stone #898379 moss #536947. Diffuse base color only, no directional illumination, no highlights or cast shadows, no vignette, no text or border, no scene or perspective. All four edges must tile perfectly in a 3 by 3 repeat. Original medieval fantasy surface. Resolution 1024 square.",
+    "source": "C:\\Users\\yyz\\.codex\\generated_images\\01a0f78e-20a7-7c01-b125-3773a4996c42\\exec-6b22e53f-a86e-441b-9c7e-2f83aad8524d.png",
+    "file": "Textures/DG_Tex_DampBasaltWall.png",
+    "references": [
+      {
+        "id": "ds3_dungeon",
+        "work": "Dark Souls III — Irithyll Dungeon",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/irithyll-dungeon/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_12.12.jpg",
+        "notes": "Damp masonry, low candles, aged timber and edge clutter; retain clear central passage.",
+        "local": "References\\ds3_dungeon.jpg",
+        "download_bytes": 168483
+      },
+      {
+        "id": "skyrim_moss",
+        "work": "The Elder Scrolls V: Skyrim Special Edition — cavern",
+        "page": "https://www.rpgsite.net/news/5038-skyrim-special-edition-pc-comparison",
+        "image": "https://images.rpgsite.net/image/da49c9a1/49949/original/SSE_2016OCT27_06.png",
+        "notes": "Cold damp rock, muted moss and dry readable walking surface; roots kept near walls.",
+        "local": "References\\skyrim_moss.jpg",
+        "download_bytes": 4999490
+      }
+    ],
+    "dimensions": [
+      1254,
+      1254
+    ],
+    "color_space": "sRGB",
+    "unity_texture_type": "Default",
+    "wrap_mode": "Repeat",
+    "filter_mode": "Trilinear",
+    "mipmaps": true,
+    "physical_tile_metres": 2,
+    "shader": "Universal Render Pipeline/Lit",
+    "metallic": 0,
+    "smoothness": 0.12,
+    "base_color": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "edge_difference_rgb255": {
+      "horizontal": 8.74667739868164,
+      "vertical": 6.956406116485596,
+      "interior_horizontal": 4.555088520050049,
+      "interior_vertical": 5.1104044914245605
+    },
+    "seam_status": "visual_repeat_3x3_reviewed_with_residual_edge_difference",
+    "npot_scale": "None",
+    "max_texture_size": 2048,
+    "review": "Inspected actual 3x3 Repeat image in both axes: no blank border, perspective discontinuity or obvious bright seam. The masonry pattern is continuous at viewing scale. Raw opposite-edge pixels are not identical; edge RGB metrics are retained and do not certify mathematical periodicity.",
+    "review_preview": "Previews/DG_Tex_DampBasaltWall_repeat3x3.png"
+  },
+  {
+    "id": "DG_Tex_OldBrickWall",
+    "prompt": "Square seamless horizontally AND vertically tileable game albedo texture, medieval fantasy dungeon old brick wall. Large warm brown terracotta bricks in eight clean staggered courses, soft desaturated mortar, occasional pale salt deposits and chipped corners, no graffiti. Orthographic straight-on surface only. Hand-painted stylized low-poly aesthetic, broad simple shapes and matte colors #875241 #a8694e #948365, low contrast. Diffuse base color only, no illumination direction, highlights, shadows, vignette, text, border, perspective. All four edges tile perfectly in a 3 by 3 repeat. Original medieval fantasy surface. Resolution 1024 square.",
+    "source": "C:\\Users\\yyz\\.codex\\generated_images\\01a0f78e-20a7-7c01-b125-3773a4996c42\\exec-4cfe4d59-8f4f-4c95-83a9-6a1d5f42e062.png",
+    "file": "Textures/DG_Tex_OldBrickWall.png",
+    "references": [
+      {
+        "id": "ds3_dungeon",
+        "work": "Dark Souls III — Irithyll Dungeon",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/irithyll-dungeon/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_12.12.jpg",
+        "notes": "Damp masonry, low candles, aged timber and edge clutter; retain clear central passage.",
+        "local": "References\\ds3_dungeon.jpg",
+        "download_bytes": 168483
+      },
+      {
+        "id": "ds3_wood",
+        "work": "Dark Souls — the Depths",
+        "page": "https://www.svg.com/842336/tragic-details-you-missed-in-dark-souls/",
+        "image": "https://www.svg.com/img/gallery/tragic-details-you-missed-in-dark-souls/laurentius-hallowing-1650652881.jpg",
+        "notes": "Curved barrel staves, iron hoop bands and discarded timber planks.",
+        "local": "References\\ds3_wood.jpg",
+        "download_bytes": 104795
+      }
+    ],
+    "dimensions": [
+      1254,
+      1254
+    ],
+    "color_space": "sRGB",
+    "unity_texture_type": "Default",
+    "wrap_mode": "Repeat",
+    "filter_mode": "Trilinear",
+    "mipmaps": true,
+    "physical_tile_metres": 2,
+    "shader": "Universal Render Pipeline/Lit",
+    "metallic": 0,
+    "smoothness": 0.12,
+    "base_color": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "edge_difference_rgb255": {
+      "horizontal": 2.9460394382476807,
+      "vertical": 7.709197044372559,
+      "interior_horizontal": 1.598824143409729,
+      "interior_vertical": 2.006701707839966
+    },
+    "seam_status": "visual_repeat_3x3_reviewed_with_residual_edge_difference",
+    "npot_scale": "None",
+    "max_texture_size": 2048,
+    "review": "Inspected actual 3x3 Repeat image in both axes: no blank border, perspective discontinuity or obvious bright seam. The masonry pattern is continuous at viewing scale. Raw opposite-edge pixels are not identical; edge RGB metrics are retained and do not certify mathematical periodicity.",
+    "review_preview": "Previews/DG_Tex_OldBrickWall_repeat3x3.png"
+  },
+  {
+    "id": "DG_Tex_MossFlagstoneFloor",
+    "prompt": "Square seamless horizontally AND vertically tileable game albedo texture, medieval fantasy dungeon mossy flagstone floor. Large irregular but fitted broad grey limestone slabs, flat readable faces, earthy narrow crevices containing modest olive moss clusters, no large cracks crossing center. Orthographic top-down texture only, 2 metre square source area. Hand-painted low-poly asset aesthetic with muted natural colors #9e9685 #898379 #607650 #536947. Flat diffuse base color, no highlights, shadows, directional lighting, vignette, text, border, props or perspective. All four edges tile perfectly in a 3 by 3 repeat. Original medieval fantasy surface. Resolution 1024 square.",
+    "source": "C:\\Users\\yyz\\.codex\\generated_images\\01a0f78e-20a7-7c01-b125-3773a4996c42\\exec-9813beb6-d973-42dd-9ba6-9c5bb0afc17e.png",
+    "file": "Textures/DG_Tex_MossFlagstoneFloor.png",
+    "references": [
+      {
+        "id": "ds3_dungeon",
+        "work": "Dark Souls III — Irithyll Dungeon",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/irithyll-dungeon/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_12.12.jpg",
+        "notes": "Damp masonry, low candles, aged timber and edge clutter; retain clear central passage.",
+        "local": "References\\ds3_dungeon.jpg",
+        "download_bytes": 168483
+      },
+      {
+        "id": "skyrim_moss",
+        "work": "The Elder Scrolls V: Skyrim Special Edition — cavern",
+        "page": "https://www.rpgsite.net/news/5038-skyrim-special-edition-pc-comparison",
+        "image": "https://images.rpgsite.net/image/da49c9a1/49949/original/SSE_2016OCT27_06.png",
+        "notes": "Cold damp rock, muted moss and dry readable walking surface; roots kept near walls.",
+        "local": "References\\skyrim_moss.jpg",
+        "download_bytes": 4999490
+      }
+    ],
+    "dimensions": [
+      1254,
+      1254
+    ],
+    "color_space": "sRGB",
+    "unity_texture_type": "Default",
+    "wrap_mode": "Repeat",
+    "filter_mode": "Trilinear",
+    "mipmaps": true,
+    "physical_tile_metres": 2,
+    "shader": "Universal Render Pipeline/Lit",
+    "metallic": 0,
+    "smoothness": 0.12,
+    "base_color": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "edge_difference_rgb255": {
+      "horizontal": 9.464380264282227,
+      "vertical": 8.253854751586914,
+      "interior_horizontal": 5.91166353225708,
+      "interior_vertical": 6.031874179840088
+    },
+    "seam_status": "visual_repeat_3x3_reviewed_with_residual_edge_difference",
+    "npot_scale": "None",
+    "max_texture_size": 2048,
+    "review": "Inspected actual 3x3 Repeat image in both axes: no blank border, perspective discontinuity or obvious bright seam. The masonry pattern is continuous at viewing scale. Raw opposite-edge pixels are not identical; edge RGB metrics are retained and do not certify mathematical periodicity.",
+    "review_preview": "Previews/DG_Tex_MossFlagstoneFloor_repeat3x3.png"
+  },
+  {
+    "id": "DG_Tex_CrackedLimestoneFloor",
+    "prompt": "Square seamless horizontally AND vertically tileable game albedo texture, medieval fantasy crypt cracked limestone slab floor. Broad warm muted limestone pavers, subtle chipped corners, restrained hairline fissures and soft accumulated grey dust in narrow joints, occasional pale lichen. Orthographic top-down texture only, 2 metre square source area. Hand-painted stylized low-poly asset aesthetic, muted colors #aea18b #9e9685 #c2b69a, low contrast. Flat diffuse base color only, no cast shadows, highlights, lighting gradient, vignette, text, border, props, perspective. All four edges must tile perfectly in a 3 by 3 repeat. Original medieval fantasy surface. Resolution 1024 square.",
+    "source": "C:\\Users\\yyz\\.codex\\generated_images\\01a0f78e-20a7-7c01-b125-3773a4996c42\\exec-4f40c01a-8a2d-4cb9-950e-1e603dca9a79.png",
+    "file": "Textures/DG_Tex_CrackedLimestoneFloor.png",
+    "references": [
+      {
+        "id": "ds3_dungeon",
+        "work": "Dark Souls III — Irithyll Dungeon",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/irithyll-dungeon/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_12.12.jpg",
+        "notes": "Damp masonry, low candles, aged timber and edge clutter; retain clear central passage.",
+        "local": "References\\ds3_dungeon.jpg",
+        "download_bytes": 168483
+      },
+      {
+        "id": "skyrim_moss",
+        "work": "The Elder Scrolls V: Skyrim Special Edition — cavern",
+        "page": "https://www.rpgsite.net/news/5038-skyrim-special-edition-pc-comparison",
+        "image": "https://images.rpgsite.net/image/da49c9a1/49949/original/SSE_2016OCT27_06.png",
+        "notes": "Cold damp rock, muted moss and dry readable walking surface; roots kept near walls.",
+        "local": "References\\skyrim_moss.jpg",
+        "download_bytes": 4999490
+      }
+    ],
+    "dimensions": [
+      1254,
+      1254
+    ],
+    "color_space": "sRGB",
+    "unity_texture_type": "Default",
+    "wrap_mode": "Repeat",
+    "filter_mode": "Trilinear",
+    "mipmaps": true,
+    "physical_tile_metres": 2,
+    "shader": "Universal Render Pipeline/Lit",
+    "metallic": 0,
+    "smoothness": 0.12,
+    "base_color": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "edge_difference_rgb255": {
+      "horizontal": 6.821903228759766,
+      "vertical": 7.533758640289307,
+      "interior_horizontal": 5.682884216308594,
+      "interior_vertical": 5.87596321105957
+    },
+    "seam_status": "visual_repeat_3x3_reviewed_with_residual_edge_difference",
+    "npot_scale": "None",
+    "max_texture_size": 2048,
+    "review": "Inspected actual 3x3 Repeat image in both axes: no blank border, perspective discontinuity or obvious bright seam. The masonry pattern is continuous at viewing scale. Raw opposite-edge pixels are not identical; edge RGB metrics are retained and do not certify mathematical periodicity.",
+    "review_preview": "Previews/DG_Tex_CrackedLimestoneFloor_repeat3x3.png"
+  },
+  {
+    "id": "DG_Tex_RootDirtFloor",
+    "prompt": "Square seamless horizontally AND vertically tileable game albedo texture, medieval fantasy dungeon earthen floor. Compact muted brown soil, broad flattened rocks embedded sparsely, thin weathered roots scattered in quiet asymmetrical arrangements, muted olive moss on 15 percent of surface. Keep recognizable dirt clear and low frequency shapes. Orthographic top-down texture only, 2 metre square source area. Hand-painted stylized low-poly asset aesthetic, earth #948365 wood #66594a moss #536947. Flat diffuse base color only, no cast shadows, highlights, lighting gradients, vignette, text, border, large props, perspective. All four edges must tile perfectly in a 3 by 3 repeat. Original fantasy surface. Resolution 1024 square.",
+    "source": "C:\\Users\\yyz\\.codex\\generated_images\\01a0f78e-20a7-7c01-b125-3773a4996c42\\exec-bfcc7e30-d5d7-4e0b-8d49-75e459822a1e.png",
+    "file": "Textures/DG_Tex_RootDirtFloor.png",
+    "references": [
+      {
+        "id": "ds3_dungeon",
+        "work": "Dark Souls III — Irithyll Dungeon",
+        "page": "https://www.cheatcc.com/guides/dark-souls-iii-guide-walkthrough/walkthrough-15/irithyll-dungeon/",
+        "image": "https://cdn.cheatcc.com/guide_screens/dark_souls_3/ds3_12.12.jpg",
+        "notes": "Damp masonry, low candles, aged timber and edge clutter; retain clear central passage.",
+        "local": "References\\ds3_dungeon.jpg",
+        "download_bytes": 168483
+      },
+      {
+        "id": "skyrim_moss",
+        "work": "The Elder Scrolls V: Skyrim Special Edition — cavern",
+        "page": "https://www.rpgsite.net/news/5038-skyrim-special-edition-pc-comparison",
+        "image": "https://images.rpgsite.net/image/da49c9a1/49949/original/SSE_2016OCT27_06.png",
+        "notes": "Cold damp rock, muted moss and dry readable walking surface; roots kept near walls.",
+        "local": "References\\skyrim_moss.jpg",
+        "download_bytes": 4999490
+      }
+    ],
+    "dimensions": [
+      1254,
+      1254
+    ],
+    "color_space": "sRGB",
+    "unity_texture_type": "Default",
+    "wrap_mode": "Repeat",
+    "filter_mode": "Trilinear",
+    "mipmaps": true,
+    "physical_tile_metres": 2,
+    "shader": "Universal Render Pipeline/Lit",
+    "metallic": 0,
+    "smoothness": 0.12,
+    "base_color": [
+      1,
+      1,
+      1,
+      1
+    ],
+    "edge_difference_rgb255": {
+      "horizontal": 8.80542278289795,
+      "vertical": 9.258373260498047,
+      "interior_horizontal": 5.352875232696533,
+      "interior_vertical": 5.829799175262451
+    },
+    "seam_status": "visual_repeat_3x3_reviewed_with_residual_edge_difference",
+    "npot_scale": "None",
+    "max_texture_size": 2048,
+    "review": "Inspected actual 3x3 Repeat image in both axes: no blank border, perspective discontinuity or obvious bright seam. The masonry pattern is continuous at viewing scale. Raw opposite-edge pixels are not identical; edge RGB metrics are retained and do not certify mathematical periodicity.",
+    "review_preview": "Previews/DG_Tex_RootDirtFloor_repeat3x3.png"
+  }
+]
