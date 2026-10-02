@@ -10,9 +10,10 @@
 - 源文件位于 `Art/PawnCustomization/Source`，FBX 经 `Staging` 进入 `Assets/DynamicAsset/PawnCustomization`；沿用现有[棋子动画](PawnAnimation.md)的 23 骨参考姿势。新增模块不得改名、重排层级或应用未核实的骨架变换。
 - 当前头脸/发型源为 `PawnCustomizationStylized.blend`：20 个头脸采用收窄下颌、杏仁眼与较小鼻型，3 种发型使用有厚度的分束几何；保留全部模块 ID、六种身体、23 骨参考姿势与装备接口。`PawnCustomization.blend` 保留为旧版来源；继续修改应使用当前源，不重放旧版初始化脚本。
 - `Integration/catalog.json` 是制作目录；`PawnCustomizationAssets.Build` 读取它与实际 FBX，校验 bind pose，按骨名重映射并生成规范坐标下的 Mesh、独立 URP Lit 材质和 `PawnCustomization.asset`。已有 Mesh/目录资源更新保留 GUID；运行时换色使用 `_BaseColor`，参见[渲染管线](../Framework/Rendering.md)。
-- Mesh 拓扑变化必须显式清空并重建顶点/法线/UV/权重/索引缓冲，不能直接 `EditorUtility.CopySerialized` 到旧 Mesh（会留下旧顶点布局配新索引而破面）。FBX 的 `PC_*` 材质必须 remap 到本目录同名角色材质，避免 URP 抽取材质的 GUID 前缀破坏 Skin/Hair 换色角色名。
+- Mesh 拓扑变化必须显式清空并重建顶点/法线/UV/权重/索引缓冲，不能直接 `EditorUtility.CopySerialized` 到旧 Mesh（会留下旧顶点布局配新索引而破面）。基础模块与 42 个遮挡网格统一使用 `PawnCustomizationAssets.SaveAsset`，保留 GUID。FBX 的 `PC_*` 材质必须 remap 到本目录同名角色材质，避免 URP 抽取材质的 GUID 前缀破坏 Skin/Hair 换色角色名。
 - `PawnCustomizationData/PawnCustomizationRules` 归 Runtime/Data；保存版本、种子、种族、男女、实际身体/脸/发型 ID、三类颜色索引。`Rules.Randomize(seed, race?, sex?)` 使用局部 uint32 状态，根据目录筛选可用模块；龙人只允许短脊或无发。同步菜单生成 Resources 的只读目录，`CharacterAppearanceService` 校验并写入 `CombatActorData.CustomizationJson`，不在视图中随机。
-- `PawnCustomizationView` 绑定实际骨骼和三个蒙皮显示节点；`PawnView.ApplyAppearance` 接收 `PawnAppearanceData.Customization`。战斗、探索和背包快照传递同一个 `customizationJson`；未提供时仍可使用原动画身体。
+- `PawnCustomizationView` 绑定实际骨骼和三个蒙皮显示节点；`PawnView.ApplyAppearance` 接收 `PawnAppearanceData.Customization`。战斗、探索和背包快照传递同一个 `customizationJson`；未提供的 Humanoid 按身体部件 ID 读取 `BodyDefaults`，同样走模块、贴合装备与遮挡网格。显式外观优先，显示层不随机、不改存档；动物继续使用静态资源。
+- `Integration/body-defaults.json` 显式配置旧身体 1/15/19 与居民/工匠 17/18 的默认模块与颜色。`SyncBodyDefaults` 只更新目录和动画支持 ID；完整模块同步也导入该配置。修改后通过 `PawnAssetMenu.BuildPrefabs` 重建 Rig、人物装配和城镇样例，不必保存当前场景或重做模型。
 - `PawnAnimationAssets.Attach` 重建动画身体后重建定制绑定，避免重新同步动画丢失引用。`PawnCustomizationPreset` 保存网页描述及显示组件引用，用于导入的独立 Prefab。
 - `PawnTemplateTable.appearancePoolId` 与 `CombatEncounterTable.appearancePoolId` 引用 `CharacterAppearancePoolTable`。池配置种族/性别及权重、同群同族开关；当前主角默认池 1，废墟遭遇使用可编辑的池 6，池 7 演示逐名混编。`CharacterAppearance.lua` 在主角、旧棋盘敌人和地牢敌群创建时分配一次，不消耗战斗 RNG；同地点重进保留原敌人实例与外观。
 - [角色存档](CharacterSave.md)保存完整描述及角色/背包状态。网页 JSON 仍只表示外观；装备所有权由 EquipmentData 保存，网页试穿不改写存档。
@@ -24,6 +25,7 @@
 ## 关键入口
 
 - [Blender 源](../../Art/PawnCustomization/Source/PawnCustomization.blend) / [制作脚本](../../Art/PawnCustomization/Scripts/build_modules.py) / [制作目录](../../Art/PawnCustomization/Integration/catalog.json)。
+- [旧角色与城镇默认外观](../../Art/PawnCustomization/Integration/body-defaults.json) / [入口定向检查](../../Tools/Tests/pawn_default_appearance.cs)：验证默认外观、显式外观优先、换装、动物分流与动画。
 - [当前风格化源](../../Art/PawnCustomization/Source/PawnCustomizationStylized.blend) / [头脸与发束修订](../../Art/PawnCustomization/Scripts/refine_style.py) / [Unity 像素描边预览](../../Docs/Previews/Rendering/stylized-ink-after.png)。
 - [Mesh 更新定向检查](../../Tools/Tests/pawn_mesh_reimport.cs)：MCP Edit Mode，检查顶点数增减、索引/UV/法线/权重、GUID 稳定及实际 23 个头脸/发型；结束通过 MCP 删除脚本注明的临时 `.asset`，不进入 Play。
 - [正式目录](../../Assets/DynamicAsset/PawnCustomization/PawnCustomization.asset) / [目录与规则](../../Assets/GameFramework/Samples/Adventure/PawnCustomizationCatalog.cs) / [装配组件](../../Assets/GameFramework/Samples/Adventure/PawnCustomizationView.cs)。

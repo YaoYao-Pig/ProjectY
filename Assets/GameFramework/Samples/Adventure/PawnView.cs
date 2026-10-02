@@ -127,23 +127,29 @@ namespace ProjectY.Samples
                     mount.anchor.localRotation = Quaternion.identity;
                 }
             }
-            // Body support is selected by configured part IDs, so town NPCs retain their own silhouettes.
+            // Old templates and town NPCs use authored defaults from the same modular catalog.
             if (animationView != null) animationView.gameObject.SetActive(useAnimation);
             animated = useAnimation;
-            if (appearance.Customization != null && (!animated || customizationView == null))
+            var customization = appearance.Customization;
+            if (animated && customization == null)
+            {
+                if (customizationView == null) throw new InvalidOperationException("Animated pawn has no customization binding.");
+                customization = customizationView.Catalog.DefaultAppearance(requested["body"].Id);
+            }
+            if (customization != null && (!animated || customizationView == null))
                 throw new InvalidOperationException("当前棋子未绑定模块化 Humanoid 外观。");
             int previousCustomization = customizationView == null ? 0 : customizationView.Revision;
             if (customizationView != null)
             {
                 int coverage = 0; bool hideHair = false;
-                if (animated && appearance.Customization != null)
+                if (animated && customization != null)
                 {
                     foreach (var part in appearance.Parts) if (PawnCustomizationCatalog.NeedsFit(part.Slot))
-                    { var fit = customizationView.Catalog.Fit(part.Path, appearance.Customization); coverage |= fit.Coverage; hideHair |= fit.HideHair; }
+                    { var fit = customizationView.Catalog.Fit(part.Path, customization); coverage |= fit.Coverage; hideHair |= fit.HideHair; }
                     if (appearance.Equipment != null) foreach (var worn in appearance.Equipment.Wearables) if (PawnCustomizationCatalog.NeedsFit(worn.Mount))
-                    { var fit = customizationView.Catalog.Fit(worn.Model.Path, appearance.Customization); coverage |= fit.Coverage; hideHair |= fit.HideHair; }
+                    { var fit = customizationView.Catalog.Fit(worn.Model.Path, customization); coverage |= fit.Coverage; hideHair |= fit.HideHair; }
                 }
-                customizationView.Apply(animated ? appearance.Customization : null, coverage, hideHair);
+                customizationView.Apply(animated ? customization : null, coverage, hideHair);
             }
             bool customizationChanged = customizationView != null && previousCustomization != customizationView.Revision;
             refreshPicking|=customizationChanged;
@@ -159,7 +165,7 @@ namespace ProjectY.Samples
                     objects.Remove(mount.slot); partIds.Remove(mount.slot);
                 }
                 if (!exists) continue; // 空插槽表示未装备，而不是缺少必需数据。
-                bool fitted = animated && appearance.Customization != null && PawnCustomizationCatalog.NeedsFit(mount.slot);
+                bool fitted = animated && customization != null && PawnCustomizationCatalog.NeedsFit(mount.slot);
                 var next = fitted ? customizationView.CreateFit(part.Path) : Instantiate(prefabs[mount.slot], anchors[mount.slot], false);
                 next.transform.localPosition = Vector3.zero;
                 next.transform.localRotation = Quaternion.identity;
@@ -168,7 +174,7 @@ namespace ProjectY.Samples
                 refreshPicking=true;
             }
             if(animated && appearance.Equipment==null) animationView.SetHold(null);
-            if(equipmentView!=null) {equipmentView.SetAnimation(animated ? animationView : null); equipmentView.SetCustomization(animated && appearance.Customization != null ? customizationView : null); equipmentView.Apply(appearance.Equipment);}
+            if(equipmentView!=null) {equipmentView.SetAnimation(animated ? animationView : null); equipmentView.SetCustomization(animated && customization != null ? customizationView : null); equipmentView.Apply(appearance.Equipment);}
             else if(appearance.Equipment!=null) throw new InvalidOperationException("棋子未绑定装备显示组件。");
             var ride=appearance.Riding;
             int nextPart=ride==null?0:ride.Body.Id;

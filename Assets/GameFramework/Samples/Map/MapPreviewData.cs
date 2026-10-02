@@ -10,8 +10,8 @@ namespace ProjectY.Samples
         public sealed class Asset { public int Id; public string Path, TintMaterial; public float ReferenceHeight; }
         public sealed class Cell
         {
-            public Vector3 Position; public Color Color; public bool HasWater; public float WaterLevel;
-            public int TerrainAssetId, WaterAssetId; public int[] Neighbors;
+            public Vector3 Position; public Color Color; public bool HasWater, IsRiver; public float WaterLevel, WaterDepth;
+            public int TerrainAssetId, WaterAssetId, RiverId; public int FlowTo = -1; public int[] Neighbors;
         }
         public sealed class Decoration { public int Cell, AssetId; public float Scale, Yaw, Height; }
         public sealed class Waterfall { public int From, To; public float Drop; }
@@ -69,6 +69,8 @@ namespace ProjectY.Samples
                 color = new Color(rgb.Get<int, float>(1), rgb.Get<int, float>(2), rgb.Get<int, float>(3), 1);
             return new Cell { Position = new Vector3(row.Get<float>("x"), row.Get<float>("y"), row.Get<float>("z")),
                 HasWater = row.Get<bool>("hasWater"), WaterLevel = row.Get<float>("waterLevel"), Color = color,
+                IsRiver = row.Get<bool>("isRiver"), RiverId = row.Get<int>("riverId"),
+                FlowTo = row.Get<int>("flowTo") - 1, WaterDepth = row.Get<float>("waterDepth"),
                 TerrainAssetId = row.Get<int>("terrainAssetId"), WaterAssetId = row.Get<int>("waterAssetId"),
                 Neighbors = ReadIndices(row, "neighbors") };
         }

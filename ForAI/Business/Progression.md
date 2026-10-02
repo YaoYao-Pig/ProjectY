@@ -29,7 +29,8 @@
 - `Chronicle` 与事件共用 `StoryLogTemplateTable`；`AdventureData` 持有带序号、地点、参与者、事件与选项 ID 的经历快照。个人页按参与者过滤，游戏日志只显示配置条数，完整经历不裁剪；没有虚构游戏日期或关系值。
 - `CharacterGrowth` 是暂停世界的模态 Panel，按 C 或游戏内日志上的“同行者”打开；总览含属性与特质标签，技能页含可滚动天赋图和主动候选/已掌握技能，经历页按时间顺序倒排并分页。节点点击查看，独立按钮确认投入；UI 组件全部通过 LuaReference 绑定。
 - 角色手记采用纸色界面、真实角色预览、紧凑属性/特质标签和图标天赋图；`InventoryCharacterView` 支持 0 个引线的纯肖像与 8 个引线的装备模式，关闭即释放预览。`CharacterJournalAssets` 菜单“重建角色手记布局”显式覆盖本模块布局并生成 JournalAttribute/Skill/Entry 与图标；日常同步使用原创建菜单保留布局。图标是可编辑资源，未把按钮或文字烘焙到背景中。
-- `Project Y/UI/同步角色手记图标` 只更新 CharacterGrowth 的 glyphs 绑定，保留手工布局。所需代码从 GrowthAttributeTable.code 和 PassiveSkillTable.attributeNames[1] 收集，不维护固定属性数量；“创建事件与养成 UI”也执行此同步。已有 Journal Sprite 原样保留，缺少资源且未定义绘制配方时在同步阶段明确报错；不能用通用占位图静默掩盖遗漏。动物亲和与魅力有独立图标配方。
+- `Project Y/UI/同步角色手记图标` 同步 CharacterGrowth 及已注册 SkillAtlas 的 glyphs 绑定，保留手工布局。`CharacterJournalAssets.CreateGlyphBindings` 从 GrowthAttributeTable.code 和 PassiveSkillTable.attributeNames[1] 收集所需图标，技能图谱生成也直接使用这个入口，不再复制可能过期的角色手记 Prefab 图标表；“创建事件与养成 UI”执行同一同步。已有 Journal Sprite 原样保留，缺少资源且未定义绘制配方时明确报错；动物亲和与魅力使用各自图标，不以占位图掩盖遗漏。
+- 两个界面的图标定向回归通过 Unity MCP 执行 `Tools/Construction/check_glyphs.cs`，使用 `skill_glyphs_integration.lua` 在独立 PreviewScene 打开角色总览、逐个浏览全部技能分类并检查动物技能 Tips 与缓存重开；不进入 Play，不改变角色学习状态。
 - 图标/属性扩展后执行该同步，再用 `growth_ui_integration.lua` 检查当前配置的全部属性行及 Sprite 引用；测试不写死旧的 17 项，也覆盖 animalAffinity/charisma，运行时仍拒绝缺失或空 Sprite 绑定。
 - `StoryGrowthAssets.Create` 经 Unity MCP/菜单 `Project Y/UI/创建事件与养成 UI` 生成和注册 Prefab，重复执行保留已有布局并同步图片。新增图的配置路径必须为 Sprite，资源直接序列化在 `StoryGrowthView`，构建可收集；Lua 不搜索组件、不运行时创建界面结构。
 - 最小检查：`python -B Tools/Tests/run_lua.py Tools/Tests/growth_core.lua`；真实 C# 状态用 `Project Y/远征/验证角色养成与故事`。UI 用 `Project Y/UI/验证事件与养成 UI`，在独立 PreviewScene 验证按钮、缓存重开与暂停恢复，并输出 `Docs/Previews/StoryGrowth-*.png`；不进入 Play、不切换当前编辑场景。新增 C# API 后须编译并重新生成 xLua 桥接。

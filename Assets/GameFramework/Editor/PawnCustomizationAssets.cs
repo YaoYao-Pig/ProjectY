@@ -20,8 +20,10 @@ namespace ProjectY.Editor
         private const string RigPath = "Assets/DynamicAsset/PawnLowPoly/PawnRig.prefab";
         private const string OriginalPath = "Assets/DynamicAsset/PawnAnimation/PawnHumanoid.fbx";
         private const string RulePath = "Art/PawnCustomization/Integration/catalog.json";
+        private const string DefaultsPath = "Art/PawnCustomization/Integration/body-defaults.json";
+        [Serializable] private sealed class BodyDefaultsFile { public PawnCustomizationCatalog.BodyDefault[] entries; }
 
-        private static void SaveAsset(UnityEngine.Object value, string path)
+        internal static void SaveAsset(UnityEngine.Object value, string path)
         {
             var prior = AssetDatabase.LoadAssetAtPath<UnityEngine.Object>(path);
             if (prior == null) AssetDatabase.CreateAsset(value, path);
@@ -122,6 +124,7 @@ namespace ProjectY.Editor
             var catalog = AssetDatabase.LoadAssetAtPath<PawnCustomizationCatalog>(CatalogPath);
             if (catalog == null) { catalog = ScriptableObject.CreateInstance<PawnCustomizationCatalog>(); AssetDatabase.CreateAsset(catalog, CatalogPath); }
             catalog.Rules = rules; catalog.BoneNames = names; catalog.Parts = parts.ToArray();
+            ConfigureBodyDefaults(catalog);
             PawnGearFitAssets.Build(catalog, original);
             EquipmentMotionAssets.Sync();
             const string runtimeRules = "Assets/GameFramework/Resources/CharacterAppearanceCatalog.json";
@@ -132,6 +135,36 @@ namespace ProjectY.Editor
             finally { PrefabUtility.UnloadPrefabContents(rig); }
             AssetDatabase.SaveAssets();
             Debug.Log("Character modules: " + parts.Count + ", shared bones: " + names.Length + ".");
+        }
+
+        private static void ConfigureBodyDefaults(PawnCustomizationCatalog catalog)
+        {
+            var entries = JsonUtility.FromJson<BodyDefaultsFile>(File.ReadAllText(DefaultsPath)).entries;
+            if (entries == null || entries.Length == 0) throw new InvalidOperationException("Character body defaults are missing.");
+            var ids = new HashSet<int>();
+            foreach (var entry in entries)
+            {
+                if (entry.BodyPartId <= 0 || !ids.Add(entry.BodyPartId)) throw new InvalidOperationException("Duplicate or invalid default body: " + entry.BodyPartId);
+                catalog.Rules.Validate(entry.Appearance);
+                catalog.GetPart(entry.Appearance.body); catalog.GetPart(entry.Appearance.head);
+                if (entry.Appearance.hair != "none") catalog.GetPart(entry.Appearance.hair);
+            }
+            var animations = AssetDatabase.LoadAssetAtPath<PawnAnimationSet>(PawnAnimationAssets.SetPath);
+            if (animations == null) throw new InvalidOperationException("Character animation set is missing.");
+            catalog.BodyDefaults = entries;
+            animations.BodyParts = animations.BodyParts.Concat(ids).Distinct().OrderBy(id => id).ToArray();
+            EditorUtility.SetDirty(catalog); EditorUtility.SetDirty(animations);
+        }
+
+        [MenuItem("Project Y/角色/同步旧角色与城镇默认外观")]
+        public static void SyncBodyDefaults()
+        {
+            if (EditorApplication.isPlayingOrWillChangePlaymode) throw new InvalidOperationException("Edit Mode required.");
+            var catalog = AssetDatabase.LoadAssetAtPath<PawnCustomizationCatalog>(CatalogPath);
+            if (catalog == null) throw new InvalidOperationException("Sync character modules first.");
+            ConfigureBodyDefaults(catalog);
+            AssetDatabase.SaveAssetIfDirty(catalog);
+            AssetDatabase.SaveAssetIfDirty(AssetDatabase.LoadAssetAtPath<PawnAnimationSet>(PawnAnimationAssets.SetPath));
         }
 
         public static void Attach(PawnView pawn)
@@ -214,6 +247,7 @@ namespace ProjectY.Editor
             AssetDatabase.SaveAssets();
             var paths = new HashSet<string>(AssetDatabase.GetDependencies(new[] { CatalogPath, RigPath }, true));
             paths.Add(ModelPath); paths.Add(RulePath); paths.Add("Art/PawnCustomization/Integration/gear-manifest.json"); paths.Add("Assets/DynamicAsset/PawnCustomization/PawnGearFits.fbx"); paths.Add("Assets/GameFramework/Resources/CharacterAppearanceCatalog.json");
+            paths.Add(DefaultsPath);
             foreach (string name in new[] { "EquipmentMotionModuleTable", "EquipmentMotionMatchTable", "EquipmentGripTable", "EquipmentHoldAdjustmentTable", "EquipmentPoseTable", "EquipmentWeaponTable", "EquipmentActionTable", "EquipmentSocketTable", "EquipmentItemTable" })
             { paths.Add("Config/Tables/Equipment/" + name + ".json"); paths.Add("Assets/GameFramework/Resources/_Gen/Config/" + name + ".bytes"); }
             paths.Add("Lua/Game/Equipment/EquipmentMotion.lua"); paths.Add("Lua/Game/Equipment/EquipmentRules.lua"); paths.Add("Tools/CharacterPreview/export_equipment.lua");

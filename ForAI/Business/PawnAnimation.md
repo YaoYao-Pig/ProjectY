@@ -7,7 +7,7 @@
 ## 正文
 
 - 公共身体来自原 PawnCommon 的独立副本，23 骨、Unity 映射 22 个人体节点；原始静态资源仍保留。Unity 模型朝 +Z、米制，Animator 禁用根位移。身体与裤腿/靴子用蒙皮，其余硬质附件挂骨骼。
-- `PawnRig` 已绑定 `PawnAnimationView`，按 `PawnAnimationSet.BodyParts` 替换身体部件 1/15/19；城镇 NPC 17/18 保持原外形。`PawnAssetMenu` 重建 Rig 时保留动画接入。静态装配样例 Prefab 仍用于查看原部件。
+- `PawnRig` 已绑定 `PawnAnimationView`，按 `PawnAnimationSet.BodyParts` 支持身体部件 1/15/19 与城镇 NPC 17/18；无显式外观时使用[角色定制](PawnCustomization.md)的默认模块。`PawnAssetMenu` 重建 Rig 与装配样例时保留动画接入；`TownNpcRenderer` 按实际显示移动速度驱动居民待机/行走。
 - UAL1 Standard 的免费包实际有 43 个片段，采用不带 Root Motion 的 Unity FBX；CC0 许可证、哈希、原包、动作清单保留于 `Art/PawnAnimation/ThirdParty`、`Integration`。不包含专门拉弓动作，也没有宣称这些片段覆盖全部武器动作。
 - `PawnAnimations.asset` 配置动作模板→状态/Clip/时长/命中比例、`UseAuthoredGrip/GripKeys/OffGripOffset` 武器轨迹、持握姿态→待机/握点旋转/手头间距、移动与播放速度、倒地保留时间和底座高度。首次生成从 EquipmentActionTable 初始化；已存在资产保留作者修改。新增动作需同步 AnimatorController 的同名状态。
 - `CombatActorData.RecordAction` 额外保留最多 8 条只读表现记录，覆盖 AI 一次命令的攻击+防御。`CombatSnapshot.presentationActor` 是同步读桥接入口；`AdventureViewData.ReadActor` 当场复制记录，不持有该 actor 或 LuaTable。高频快照按动作序号去重，初次可见不补播旧动作。

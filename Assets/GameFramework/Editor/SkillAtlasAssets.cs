@@ -36,11 +36,7 @@ namespace ProjectY.Editor
                 if(kind==UIKind.Panel)
                 {
                     var style=root.GetComponent<StoryGrowthView>();
-                    var journal=PanelAssets.LoadOrCreate().Entries.Single(row=>row.Name=="CharacterGrowth").Prefab;
-                    var source=journal.GetComponent<StoryGrowthView>();var serialized=new SerializedObject(source);var icons=serialized.FindProperty("glyphs");
-                    var glyphs=new StoryGrowthView.GlyphEntry[icons.arraySize];
-                    for(int i=0;i<glyphs.Length;i++){var item=icons.GetArrayElementAtIndex(i);glyphs[i]=new StoryGrowthView.GlyphEntry{Code=item.FindPropertyRelative("Code").stringValue,Sprite=(Sprite)item.FindPropertyRelative("Sprite").objectReferenceValue};}
-                    style.SetJournalTheme(glyphs);
+                    style.SetJournalTheme(CharacterJournalAssets.CreateGlyphBindings());
                     var page=(RectTransform)root.GetComponent<LuaReference>().GetEditorBindings().Single(row=>row.Key=="Page").Target;
                     style.SetEditorBindings(root.GetComponentsInChildren<Text>(true),Array.Empty<StoryGrowthView.ArtEntry>(),page);
                 }

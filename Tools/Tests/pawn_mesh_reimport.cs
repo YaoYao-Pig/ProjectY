@@ -27,5 +27,11 @@ string guid = null;
         if (part.Mesh.triangles.Max() >= part.Mesh.vertexCount) throw new System.Exception("Invalid source topology " + part.Id);
         if (part.Roles.Any(r => !new[] { "Skin", "Cloth", "Leather", "Hair", "EyeWhite", "Iris", "Horn", "Mouth", "Trim" }.Contains(r))) throw new System.Exception("Invalid tint role " + part.Id);
     }
-    return "PASS grow/shrink vertex layout, normals, weights, UV, triangles and stable GUID; 23 head/hair modules valid";
+    foreach (var covered in catalog.CoveredBodies)
+    {
+        var source = catalog.GetPart(covered.Body).Mesh; var mesh = covered.Mesh;
+        if (mesh.vertexCount != source.vertexCount || mesh.normals.Length != mesh.vertexCount || mesh.uv.Length != mesh.vertexCount || mesh.boneWeights.Length != mesh.vertexCount || mesh.bindposes.Length != 23 || mesh.triangles.Any(i => i < 0 || i >= mesh.vertexCount))
+            throw new System.Exception("Invalid covered body layout: " + mesh.name);
+    }
+    return "PASS grow/shrink vertex layout, normals, weights, UV, triangles and stable GUID; 23 head/hair and 42 covered meshes valid";
 }

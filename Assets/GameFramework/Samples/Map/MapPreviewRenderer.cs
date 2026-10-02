@@ -23,6 +23,7 @@ namespace ProjectY.Samples
             public Kind Kind;
             public readonly Matrix4x4[] Matrices = new Matrix4x4[1023];
             public readonly Vector4[] Colors = new Vector4[1023];
+            public Vector4[] WaterFlows;
             public readonly MaterialPropertyBlock Properties = new MaterialPropertyBlock();
         }
         private readonly Dictionary<GameObject, Model> models = new Dictionary<GameObject, Model>();
@@ -34,6 +35,7 @@ namespace ProjectY.Samples
         private readonly GameObject waterEdges;
         private Mesh waterMesh;
         private readonly List<Material> waterMaterials = new List<Material>();
+        private readonly MapWaterEffects waterEffects;
         public Bounds Bounds { get; private set; }
 
         public MapPreviewRenderer(Shader shader, Transform owner)
@@ -41,6 +43,7 @@ namespace ProjectY.Samples
             if (!SystemInfo.supportsInstancing) throw new NotSupportedException("地图测试场景需要 GPU Instancing。");
             if (shader == null || !shader.isSupported) throw new InvalidOperationException("地图预览 Shader 缺失或不受支持。");
             material = new Material(shader) { name = "地图预览_实例材质", enableInstancing = true };
+            waterEffects = new MapWaterEffects(owner);
             roadMaterial = new Material(shader) { name = "地图预览_道路", color = new Color32(210, 180, 136, 255) };
             roadObject = new GameObject("生成的道路", typeof(MeshFilter), typeof(MeshRenderer));
             roadObject.transform.SetParent(owner, false);
@@ -68,7 +71,7 @@ namespace ProjectY.Samples
         }
 
         private void Add(GameObject prefab, Kind kind, Vector3 position, Vector3 scale, Quaternion rotation,
-            Color? ground = null, string tintMaterial = null)
+            Color? ground = null, string tintMaterial = null, Vector4 waterFlow = default)
         {
             var model = GetModel(prefab);
             if (!model.Groups.TryGetValue(kind, out var groups))
@@ -82,7 +85,8 @@ namespace ProjectY.Samples
                 var group = groups[slot];
                 if (group.Count == 0 || group[group.Count - 1].Count == 1023)
                 {
-                    var added = new Batch { Mesh = model.Mesh, Submesh = slot, Kind = kind };
+                    var added = new Batch { Mesh = model.Mesh, Submesh = slot, Kind = kind,
+                        WaterFlows = kind == Kind.Water ? new Vector4[1023] : null };
                     group.Add(added); batches.Add(added);
                 }
                 var batch = group[group.Count - 1];
@@ -94,6 +98,7 @@ namespace ProjectY.Samples
                 }
                 // SetVectorArray 不执行 Color 的颜色空间转换，线性项目须显式转换。
                 batch.Colors[batch.Count] = QualitySettings.activeColorSpace == ColorSpace.Linear ? color.linear : color;
+                if (kind == Kind.Water) batch.WaterFlows[batch.Count] = waterFlow;
                 batch.Matrices[batch.Count++] = Matrix4x4.TRS(position, rotation, scale);
             }
         }
@@ -113,18 +118,20 @@ namespace ProjectY.Samples
             }
             batches.Clear();
             foreach (var model in models.Values) model.Groups.Clear();
+            waterEffects.Build(map);
             Bounds = new Bounds(map.Cells[0].Position, Vector3.zero);
             var bottom = map.Cells[0].Position.y;
             foreach (var cell in map.Cells) { Bounds = Encapsulate(Bounds, cell.Position); bottom = Mathf.Min(bottom, cell.Position.y); }
             bottom -= map.Radius * 1.5f;
-            foreach (var cell in map.Cells)
+            for (var cellIndex = 0; cellIndex < map.Cells.Length; cellIndex++)
             {
+                var cell = map.Cells[cellIndex];
                 Add(prefabs[cell.TerrainAssetId], Kind.Terrain, cell.Position,
                     new Vector3(map.Radius, cell.Position.y - bottom, map.Radius), Quaternion.identity,
                     cell.Color, assets[cell.TerrainAssetId].TintMaterial);
                 if (cell.HasWater)
                     Add(prefabs[cell.WaterAssetId], Kind.Water, new Vector3(cell.Position.x, cell.WaterLevel, cell.Position.z),
-                        new Vector3(map.Radius, 1, map.Radius), Quaternion.identity);
+                        new Vector3(map.Radius, 1, map.Radius), Quaternion.identity, waterFlow: waterEffects.Flows[cellIndex]);
             }
             foreach (var building in map.Buildings)
             {
@@ -156,7 +163,11 @@ namespace ProjectY.Samples
                 Bounds = Encapsulate(Bounds, position + Vector3.up * GetModel(prefab).Mesh.bounds.size.y * scale.y);
             }
             Bounds = new Bounds(Bounds.center, Bounds.size + Vector3.one * map.Radius * 2);
-            foreach (var batch in batches) batch.Properties.SetVectorArray("_Color", batch.Colors);
+            foreach (var batch in batches)
+            {
+                batch.Properties.SetVectorArray("_Color", batch.Colors);
+                if (batch.Kind == Kind.Water) batch.Properties.SetVectorArray("_WaterFlow", batch.WaterFlows);
+            }
             BuildRoads(map);
             BuildWaterEdges(map, prefabs, assets);
         }
@@ -165,7 +176,7 @@ namespace ProjectY.Samples
 
         private void BuildRoads(MapPreviewData map)
         {
-            if (roadMesh != null) Object.Destroy(roadMesh);
+            Release(roadMesh);
             var vertices = new List<Vector3>(); var triangles = new List<int>();
             var used = new HashSet<ulong>();
             Action<Vector3, Vector3, Vector3> quad = (a, b, side) => {
@@ -199,16 +210,24 @@ namespace ProjectY.Samples
         private void BuildWaterEdges(MapPreviewData map, Dictionary<int, GameObject> prefabs,
             Dictionary<int, MapPreviewData.Asset> assets)
         {
-            if (waterMesh != null) Object.Destroy(waterMesh);
-            foreach (var value in waterMaterials) Object.Destroy(value);
+            Release(waterMesh);
+            foreach (var value in waterMaterials) Release(value);
             waterMaterials.Clear();
             var vertices = new List<Vector3>();
+            var normals = new List<Vector3>();
+            var uv = new List<Vector2>();
             var groups = new Dictionary<int, List<int>>();
+            var foam = new List<int>();
             Action<Vector3, Vector3, Vector3, Vector3, List<int>> quad = (a, b, c, d, triangles) => {
                 var index = vertices.Count;
+                var normal = Vector3.Cross(b - a, c - a).normalized;
                 vertices.Add(a); vertices.Add(b); vertices.Add(c); vertices.Add(d);
+                for (var i = 0; i < 4; i++) normals.Add(normal);
+                uv.Add(new Vector2(0, 1)); uv.Add(new Vector2(1, 1)); uv.Add(new Vector2(1, 0)); uv.Add(new Vector2(0, 0));
                 // 两侧必须拆开顶点，否则 RecalculateNormals 会让相反法线抵消为零。
                 vertices.Add(d); vertices.Add(c); vertices.Add(b); vertices.Add(a);
+                for (var i = 0; i < 4; i++) normals.Add(-normal);
+                uv.Add(new Vector2(0, 0)); uv.Add(new Vector2(1, 0)); uv.Add(new Vector2(1, 1)); uv.Add(new Vector2(0, 1));
                 foreach (var offset in new[] { 0, 1, 2, 0, 2, 3, 4, 5, 6, 4, 6, 7 }) triangles.Add(index + offset);
             };
             foreach (var cell in map.Cells)
@@ -220,27 +239,24 @@ namespace ProjectY.Samples
                 {
                     var other = map.Cells[index];
                     if (!other.HasWater || cell.WaterLevel <= other.WaterLevel + .0001f) continue;
-                    var direction = other.Position - cell.Position; direction.y = 0;
-                    var side = Vector3.Cross(Vector3.up, direction.normalized) * map.Radius * .5f;
-                    var upper = (cell.Position + other.Position) * .5f + direction.normalized * map.Radius * .003f;
+                    var direction = other.Position - cell.Position; direction.y = 0; direction.Normalize();
+                    var side = Vector3.Cross(Vector3.up, direction) * map.Radius * .5f;
+                    var upper = (cell.Position + other.Position) * .5f + direction * map.Radius * .003f;
                     upper.y = cell.WaterLevel;
                     var lower = upper; lower.y = other.WaterLevel;
-                    quad(upper-side, upper+side, lower+side, lower-side, triangles);
+                    var drop = cell.WaterLevel - other.WaterLevel;
+                    if (drop < map.Radius * .04f) quad(upper-side, upper+side, lower+side, lower-side, triangles);
+                    else AddWaterCurtain(upper, direction, drop, map.Radius, vertices, normals, uv, triangles);
+                    if (drop < map.Radius * .12f) continue;
+                    // 每条实际落差都覆盖上沿和撞水处，避免只有被标记的瀑布才有过渡。
+                    var crest = upper + direction * map.Radius * .065f + Vector3.up * map.Radius * .028f;
+                    quad(crest-side, crest+side, crest+side-direction*map.Radius*.4f, crest-side-direction*map.Radius*.4f, foam);
+                    var impact = lower + direction * map.Radius * .12f + Vector3.up * map.Radius * .032f;
+                    quad(impact-side, impact+side, impact+side+direction*map.Radius*.85f, impact-side+direction*map.Radius*.85f, foam);
                 }
             }
-            // 白沫只是水面表现，不附加障碍或通行规则。
-            var foam = new List<int>();
-            foreach (var fall in map.Waterfalls)
-            {
-                var lower = map.Cells[fall.To]; var upper = map.Cells[fall.From];
-                var along = lower.Position - upper.Position; along.y = 0; along.Normalize();
-                var side = Vector3.Cross(Vector3.up, along) * map.Radius * .35f;
-                var center = (lower.Position + upper.Position) * .5f + along * map.Radius * .24f;
-                center.y = lower.WaterLevel + .025f;
-                quad(center-side, center+side, center+side+along*map.Radius*.45f, center-side+along*map.Radius*.45f, foam);
-            }
             waterMesh = new Mesh { name = "地图预览_水面落差", indexFormat = IndexFormat.UInt32 };
-            waterMesh.SetVertices(vertices); waterMesh.subMeshCount = groups.Count + 1;
+            waterMesh.SetVertices(vertices); waterMesh.SetNormals(normals); waterMesh.SetUVs(0, uv); waterMesh.subMeshCount = groups.Count + 1;
             var slot = 0;
             foreach (var group in groups)
             {
@@ -248,27 +264,80 @@ namespace ProjectY.Samples
                 var surface = Array.Find(GetModel(prefabs[group.Key]).Materials,
                     value => value.name == assets[group.Key].TintMaterial);
                 if (surface == null) throw new InvalidOperationException("水体资源须配置水面材质: " + assets[group.Key].Path);
-                waterMaterials.Add(new Material(material) { color = surface.color });
+                var curtain = new Material(waterEffects.SurfaceMaterial) { name = "地图_流动水幕", color = surface.color };
+                curtain.SetFloat("_WaterMode", 1);
+                waterMaterials.Add(curtain);
             }
             waterMesh.SetTriangles(foam, slot);
-            waterMaterials.Add(new Material(material) { color = new Color(.79f, .91f, .90f) });
-            waterMesh.RecalculateNormals(); waterMesh.RecalculateBounds();
+            waterMaterials.Add(new Material(waterEffects.FoamMaterial) { color = new Color(.79f, .91f, .90f) });
+            waterMesh.RecalculateBounds();
             waterEdges.GetComponent<MeshFilter>().sharedMesh = waterMesh;
             waterEdges.GetComponent<MeshRenderer>().sharedMaterials = waterMaterials.ToArray();
         }
 
+        private static void AddWaterCurtain(Vector3 upper, Vector3 direction, float drop, float radius,
+            List<Vector3> vertices, List<Vector3> normals, List<Vector2> uv, List<int> triangles)
+        {
+            // 水体专用弧面盖住直角；地形、水位、相邻同高水面以及碰撞保持原契约。
+            var bend = Mathf.Min(radius * .10f, drop * .18f);
+            var profile = new[] {
+                new Vector2(-.20f * radius, .008f * radius), new Vector2(.025f * radius, .012f * radius),
+                new Vector2(.11f * radius, -bend), new Vector2(.14f * radius, -drop * .5f),
+                new Vector2(.18f * radius, -drop + bend), new Vector2(.30f * radius, -drop + radius * .025f),
+                new Vector2(.55f * radius, -drop + radius * .009f)
+            };
+            const int columns = 6;
+            var side = Vector3.Cross(Vector3.up, direction);
+            for (var face = 0; face < 2; face++)
+            {
+                var start = vertices.Count;
+                for (var row = 0; row < profile.Length; row++)
+                    for (var column = 0; column <= columns; column++)
+                    {
+                        var u = column / (float)columns;
+                        // 端点保持共边位置，邻接水幕仍能拼接；中段轻微不规则，打散矩形轮廓。
+                        var taper = Mathf.Sin(u * Mathf.PI);
+                        var jitter = (Mathf.PerlinNoise(upper.x * .73f + u * 3.7f, upper.z * .61f) - .5f) * radius * .035f;
+                        var point = profile[row];
+                        var position = upper + side * ((u - .5f) * radius)
+                            + direction * (point.x * taper + jitter * taper)
+                            + Vector3.up * point.y;
+                        var before = profile[Mathf.Max(0, row - 1)];
+                        var after = profile[Mathf.Min(profile.Length - 1, row + 1)];
+                        var tangent = direction * ((after.x - before.x) * Mathf.Max(.02f, taper)) + Vector3.up * (after.y - before.y);
+                        var normal = Vector3.Cross(tangent, side).normalized;
+                        vertices.Add(position); normals.Add(face == 0 ? normal : -normal);
+                        uv.Add(new Vector2(u, 1 - row / (float)(profile.Length - 1)));
+                    }
+                for (var row = 0; row < profile.Length - 1; row++)
+                    for (var column = 0; column < columns; column++)
+                    {
+                        var a = start + row * (columns + 1) + column;
+                        var b = a + columns + 1; var c = b + 1; var d = a + 1;
+                        if (face == 0) { triangles.Add(a); triangles.Add(b); triangles.Add(c); triangles.Add(a); triangles.Add(c); triangles.Add(d); }
+                        else { triangles.Add(a); triangles.Add(c); triangles.Add(b); triangles.Add(a); triangles.Add(d); triangles.Add(c); }
+                    }
+            }
+        }
+
         // 同一个观察器切换到局部地图时，连同独立 Mesh 一起隐藏大地图。
-        public void SetVisible(bool visible) { roadObject.SetActive(visible); waterEdges.SetActive(visible); }
+        public void SetVisible(bool visible)
+        {
+            roadObject.SetActive(visible); waterEdges.SetActive(visible); waterEffects.SetVisible(visible);
+        }
 
         public void Draw(Camera camera, bool water, bool buildings, bool roads, bool decorations)
         {
             roadObject.SetActive(roads);
             waterEdges.SetActive(water);
+            waterEffects.SetVisible(water);
+            waterEffects.Tick(camera, Time.deltaTime);
             foreach (var batch in batches)
             {
                 if (batch.Kind == Kind.Water && !water || batch.Kind == Kind.Building && !buildings ||
                     batch.Kind == Kind.Decoration && !decorations) continue;
-                Graphics.DrawMeshInstanced(batch.Mesh, batch.Submesh, material, batch.Matrices, batch.Count, batch.Properties,
+                var batchMaterial = batch.Kind == Kind.Water ? waterEffects.SurfaceMaterial : material;
+                Graphics.DrawMeshInstanced(batch.Mesh, batch.Submesh, batchMaterial, batch.Matrices, batch.Count, batch.Properties,
                     batch.Kind == Kind.Water ? ShadowCastingMode.Off : ShadowCastingMode.On, true, 0, camera,
                     LightProbeUsage.Off);
             }
@@ -279,6 +348,7 @@ namespace ProjectY.Samples
             Release(roadMesh); Release(waterMesh);
             foreach (var value in waterMaterials) Release(value);
             waterMaterials.Clear(); Release(waterEdges);
+            waterEffects.Dispose();
             Release(roadObject); Release(material); Release(roadMaterial);
             batches.Clear(); models.Clear();
         }

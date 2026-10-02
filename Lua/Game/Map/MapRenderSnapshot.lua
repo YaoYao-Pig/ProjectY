@@ -16,7 +16,10 @@ return function(map)
             weights[j] = { regionType = item.regionType, weight = item.weight }
         end
         result.cells[i] = { x = x, y = y, z = z, hasWater = cell.waterLevel ~= nil,
-            waterLevel = cell.waterLevel or 0, weights = weights,
+            waterLevel = cell.waterLevel or 0, waterDepth = cell.waterDepth or 0,
+            isRiver = cell.waterKind == 'river', riverId = cell.riverId or 0,
+            flowTo = cell.flowTo and assert(indices[cell.flowTo], 'River flow target is outside this map') or 0,
+            weights = weights,
             groundColor = {cell.groundColor[1], cell.groundColor[2], cell.groundColor[3]},
             neighbors = cellIds(map:GetNeighbors(cell.q, cell.r)),
             terrainAssetId = cell.terrainAssetId, waterAssetId = cell.waterAssetId }

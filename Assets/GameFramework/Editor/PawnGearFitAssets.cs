@@ -49,9 +49,7 @@ namespace ProjectY.Editor
                         mesh.SetTriangles(visible, sub);
                     }
                     string target = PawnCustomizationAssets.Folder + "/Meshes/" + mesh.name + ".asset";
-                    var existing = AssetDatabase.LoadAssetAtPath<Mesh>(target);
-                    if (existing == null) AssetDatabase.CreateAsset(mesh, target);
-                    else { EditorUtility.CopySerialized(mesh, existing); UnityEngine.Object.DestroyImmediate(mesh); EditorUtility.SetDirty(existing); }
+                    PawnCustomizationAssets.SaveAsset(mesh, target);
                     covered.Add(new PawnCustomizationCatalog.CoveredBody { Body = body.Id, Mask = mask, Mesh = AssetDatabase.LoadAssetAtPath<Mesh>(target) });
                 }
             }

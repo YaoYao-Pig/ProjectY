@@ -40,19 +40,29 @@ namespace ProjectY.Editor
         public static void SyncGlyphs()
         {
             if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("请在 Edit Mode 同步角色手记图标。");
-            PrepareSprites();
-            var entry=PanelAssets.LoadOrCreate().Get("CharacterGrowth");
-            if(entry.Prefab==null)throw new InvalidOperationException("请先创建角色手记 Prefab。");
-            var root=PrefabUtility.LoadPrefabContents(entry.PrefabPath);
-            try
+            var glyphs=CreateGlyphBindings();var config=PanelAssets.LoadOrCreate();
+            config.Get("CharacterGrowth");
+            foreach(var name in new[]{"CharacterGrowth","SkillAtlas"})
             {
-                var style=(StoryGrowthView)root.GetComponent<LuaReference>().Get("Style");
-                style.SetJournalTheme(codes.Select(code=>new StoryGrowthView.GlyphEntry{Code=code,Sprite=sprites[code]}).ToArray());
-                PrefabUtility.SaveAsPrefabAsset(root,entry.PrefabPath);
+                // 技能图谱可尚未创建；已经注册的界面必须具有有效 Prefab 和 Style 绑定。
+                var entry=config.Entries.Find(value=>value.Name==name);if(entry==null)continue;
+                if(entry.Prefab==null)throw new InvalidOperationException("请先创建 "+name+" Prefab。");
+                var root=PrefabUtility.LoadPrefabContents(entry.PrefabPath);
+                try
+                {
+                    var style=(StoryGrowthView)root.GetComponent<LuaReference>().Get("Style");
+                    style.SetJournalTheme(glyphs);PrefabUtility.SaveAsPrefabAsset(root,entry.PrefabPath);
+                }
+                finally{PrefabUtility.UnloadPrefabContents(root);}
             }
-            finally{PrefabUtility.UnloadPrefabContents(root);}
             AssetDatabase.SaveAssets();
             Debug.Log("Character journal glyphs synchronized from configured attributes/passives: "+codes.Length);
+        }
+        public static StoryGrowthView.GlyphEntry[] CreateGlyphBindings()
+        {
+            if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("请在 Edit Mode 生成属性图标绑定。");
+            PrepareSprites();
+            return codes.Select(code=>new StoryGrowthView.GlyphEntry{Code=code,Sprite=sprites[code]}).ToArray();
         }
         private static string[] ReadGlyphCodes()
         {

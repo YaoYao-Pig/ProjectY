@@ -75,17 +75,16 @@ namespace ProjectY.Editor
                 var parts = new Dictionary<int, PartRow>(); foreach (var row in JsonUtility.FromJson<PartTable>(Read("PawnPartTable")).rows) parts.Add(row.id, row);
                 foreach (var template in JsonUtility.FromJson<TemplateTable>(Read("PawnTemplateTable")).rows)
                 {
-                    var obj = new GameObject("Pawn_Template_" + template.id); SceneManager.MoveGameObjectToScene(obj, preview);
-                    foreach (var id in template.partIds)
+                    var obj = UnityEngine.Object.Instantiate(rig); obj.name = "Pawn_Template_" + template.id;
+                    SceneManager.MoveGameObjectToScene(obj.gameObject, preview);
+                    var appearance = new PawnAppearanceData { TemplateId = template.id, Parts = new PawnAppearanceData.Part[template.partIds.Length] };
+                    for (int i = 0; i < template.partIds.Length; i++)
                     {
-                        var row = parts[id]; var slot = Array.IndexOf(Slots, row.slot);
-                        if (slot < 0) throw new InvalidOperationException("未知棋子挂点：" + row.slot);
-                        var anchor = new GameObject(row.slot).transform; anchor.SetParent(obj.transform, false); anchor.localPosition = Positions[slot];
-                        var asset = AssetDatabase.LoadAssetAtPath<GameObject>(row.prefabPath);
-                        if (asset == null) throw new InvalidOperationException("缺少棋子部件：" + row.prefabPath);
-                        var part = (GameObject)PrefabUtility.InstantiatePrefab(asset, preview); part.transform.SetParent(anchor, false);
+                        var row = parts[template.partIds[i]];
+                        appearance.Parts[i] = new PawnAppearanceData.Part { Id = row.id, Slot = row.slot, Path = row.prefabPath };
                     }
-                    PrefabUtility.SaveAsPrefabAsset(obj, "Assets/DynamicAsset/PawnLowPoly/Templates/" + obj.name + ".prefab");
+                    obj.ApplyAppearance(appearance, part => AssetDatabase.LoadAssetAtPath<GameObject>(part.Path));
+                    PrefabUtility.SaveAsPrefabAsset(obj.gameObject, "Assets/DynamicAsset/PawnLowPoly/Templates/" + obj.name + ".prefab");
                 }
                 // NPC 模板独立于战斗单位表，仍使用相同的显式挂点装配。
                 var townPath = Path.Combine(Directory.GetParent(Application.dataPath).FullName, "Config/Tables/MapArea/MapAreaTownNpcTable.json");

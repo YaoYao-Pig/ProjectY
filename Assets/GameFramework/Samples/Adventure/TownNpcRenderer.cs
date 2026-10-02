@@ -45,7 +45,9 @@ namespace ProjectY.Samples
                 var target = item.View.transform; var delta = item.Target - target.position; delta.y = 0;
                 if (delta.sqrMagnitude > .01f) target.rotation = Quaternion.Slerp(target.rotation, Quaternion.LookRotation(delta), 1 - Mathf.Exp(-dt * 10));
                 var from = target.position; var to = item.Target; from.y = to.y = 0;
-                target.position = TownSurfaceRenderer.Ground(terrain, item.FromCell, item.Cell, Vector3.MoveTowards(from, to, item.Speed * dt));
+                var next = Vector3.MoveTowards(from, to, item.Speed * dt);
+                target.position = TownSurfaceRenderer.Ground(terrain, item.FromCell, item.Cell, next);
+                item.View.TickPresentation(dt, dt > 0 ? Vector3.Distance(from, next) / dt : 0);
             }
         }
         public Vector3 Position(int id) => items[id].View.transform.position;

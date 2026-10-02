@@ -11,7 +11,7 @@
 - 本套资源延续地图实验室的低多边形与纯色风格，用于 Unity 地形和城镇表现。[Unity 运行测试](../Tools/MapRuntimePreview.md) 已使用本套模型显示真实生成布局；地图算法、配表和 Web Canvas 渲染仍由 [地图](Map.md) 与 [地图预览](../Tools/MapPreview.md) 维护。
 - 源文件、制作脚本、FBX 暂存与图片在 `Art/MapLowPoly/`；最终 Unity 资源在 `Assets/DynamicAsset/MapLowPoly/`。源 `.blend` 不进入 Assets，避免 Unity 调用本机 Blender 自动转换；已有 FBX 更新保留 `.meta`。
 - `Hex_Grass/Hex_Rock/Hex_Shore/Hex_Riverbed/Hex_City/Hex_Forest/Hex_Snow` 共用半径 1 的尖顶六边形外形，顶面 Y=0，底面 Y=-1。中心沿项目轴坐标放置；地形高度由实例位置和纵向缩放控制，模型本身不运行地形算法。
-- `Hex_Water` 是独立不透明薄水面；放置高度来自 `cell.waterLevel`，并只在实际水格显示。`Mountain_Cluster` 是可选山石装饰，不属于拼接边界或碰撞/通行规则。
+- `Hex_Water` 是独立不透明薄水面；放置高度来自 `cell.waterLevel`，并只在实际水格显示。运行时[动态流水、分层波纹和水花](../Tools/MapRuntimePreview.md)由观察器的专用 Shader/粒子系统实现，原模型与共用材质不变。`Mountain_Cluster` 是可选山石装饰，不属于拼接边界或碰撞/通行规则。
 - `CityPlot7` 按中心与六邻格合并外轮廓制作，平坦连续顶面，不以放大单六边形代替。单格建筑地块用 `Hex_City`；平台放到 `building.baseHeight`，厚度根据实际地面落差配置，避免悬空或穿底。
 - `House/Workshop/TownHall` 分别对应当前 `MapBuildingTable` 的 ID 2/3/4；建筑模型是一栋完整建筑，集会厅使用七格占地。资源路径与基准高度统一由 MapAssetTable 配置，建筑表通过 assetId/platformAssetId 引用；Editor 同步真实场景引用。
 - `Building_Castle` 为四角塔、垛口城墙、拱门和中央主堡，建筑 ID 5 参与城堡领地生成。当前细化版加入后塔尖顶、吊桥与沿七格平台边界的水渠，Unity 尺寸 X=5.144、Y=3.7、Z=4.95，仍在原七格占地内；当前来源见[城镇建筑美术](TownArt.md)。模型没有室内；聚落通过 [MapArea](MapArea.md) 进入城镇，宫殿与御苑另见[王城](RoyalTown.md)。
