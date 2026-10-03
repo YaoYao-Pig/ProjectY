@@ -13,7 +13,10 @@ return function(command, a, b, c)
     if command == 'presentation' then return require('Game.Rendering.MapPresentation').Snapshot(require('Main'):Get('Config')) end
     local previousArea=adventure.data.Areas.ActiveSiteId
     local ok, reason
-    if command == 'dialogue_choose' then ok,reason=adventure.narrative.dialogue:Choose(a,b)
+    if command == 'shop_open' then ok,reason=adventure.shop:Open(a,b)
+    elseif command == 'shop_buy' then ok,reason=adventure.shop:Buy(a,b,c)
+    elseif command == 'shop_close' then ok,reason=adventure.shop:Close()
+    elseif command == 'dialogue_choose' then ok,reason=adventure.narrative.dialogue:Choose(a,b)
     elseif command == 'dialogue_close' then ok,reason=adventure.narrative.dialogue:Close()
     elseif command == 'mission_accept' then ok,reason=adventure.narrative:Accept(a)
     elseif command == 'mission_claim' then ok,reason=adventure.narrative:Claim('mission',a)

@@ -25,7 +25,7 @@
 - 常驻地点、资金、入口、探索操作、队伍、交互、日志和战斗内容统一归 [MainHud](MainHud.md)。复杂事件使用 `StoryEvent` 通用图文选项 Prefab；简单事件检查条件后自动结算，只写游戏内日志，不写 Console。`AdventureUIBridge` 同步窗口；养成与故事使用模态输入和暂停租约。世界血条已用 Overlay UIFollower；地图标记、旧二维棋盘及可选画面调试仍由 C# 绘制。
 - 主角在 Begin 时按配置选出，`AdventureData.EventActorId/EventLocation` 固定本次上下文；`Chronicle` 按通用模板记录参与者和结果。复杂事件图片通过 `StoryGrowthView` 序列化 Sprite 引用，菜单 `Project Y/UI/创建事件与养成 UI` 生成资源和同步图路径，重复执行保留已编辑布局。经历和配置入口见[养成文档](Progression.md)。
 - `ExplorationEventTable` 把事件接到 enter/explore/loot/victory/facility；可限制 areaIds、来源 ID、入口距离与每地点一次。`ExplorationEvents` 不保存消费状态，`AdventureData` 持有地点:规则 ID 记录和 `EventReturnPhase`。区域故事仅允许非战斗选项，期间保留区域显示、停止路线；完成后回原区域/位置。原地战斗优先于探索故事。新远征清除消费记录，重进同地点不刷新。
-- `AdventureChoiceTable.itemIds/itemCounts` 发放真实共享背包物品；先检查金币与整组物品容量，再消费事件。搜刮、购买写【获得】明细。铁匠/商店/酒馆沿原有靠近设施并按 E 的校验进入服务事件；其余设施保持介绍。不是独立商店库存、制作或任务系统。
+- `AdventureChoiceTable.itemIds/itemCounts` 发放真实共享背包物品；先检查金币与整组物品容量，再消费事件。搜刮、购买写【获得】明细。绑定商人的设施与 NPC 接入 [NPC 商店](Shop.md)，独立库存按模板随机补货；未绑定商人的铁匠、酒馆等设施保留原服务事件。
 - `DemoBridge` 通过 GameBootstrap.CallModule 使用同一常驻 LuaEnv；`MapPreviewData.Read` 和 `AdventureViewData.Read` 在调用内复制纯显示数据并释放 LuaTable，不持有长期 Lua 句柄。新场景独立于现有地图预览，尚未加入 Build Settings。
 - 显示快照的 `cells` 与 `reachable` 共用 C# Cell 结构，均须提供 `q/r/blocked/cellIndex`；角色统一提供初始 `appearance` 和 `cellIndex`（旧棋盘为 0）。Lua 地格索引从 1 起，C# 显示读取时减 1；值类型字段不能用 nil 表示默认值。
 - 队伍与敌人外观均由[棋子资源配置](PawnArt.md)解析。`area` 快照在探索及原地战斗阶段都存在，显示宿主据此保持地形/相机/模型生命周期；地牢战斗使用真实场景、地格拾取和现有技能按钮，旧事件战斗继续显示二维棋盘。MapArea 与战后恢复规则见[局部地图](MapArea.md)，城镇第三人称与交互见[城镇](TownArea.md)。

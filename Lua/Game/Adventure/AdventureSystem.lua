@@ -25,6 +25,7 @@ function Adventure:OnInit(context)
     self.battle.containerCombat=self.containerCombat
     self.explorationEvents = require('Game.Adventure.ExplorationEvents').New(config,self)
     self.characterSkills=require('Game.Adventure.CharacterSkills').New(self)
+    self.shop=require('Game.Shop.ShopModel').New(self)
     assert(self.recipe.maxPartySize<=4 and #self.recipe.partyIds > 0 and #self.recipe.partyIds <= self.recipe.maxPartySize, 'Invalid demo party size')
     assert(#self.recipe.buildingIds == #self.recipe.buildingEventIds, 'Building event mapping differs')
 end
@@ -102,6 +103,7 @@ function Adventure:Visit(siteId)
     return true
 end
 function Adventure:AreaCommand(command,a,b)
+    if self.shop.data.IsOpen then return false,'请先关闭商店' end
     if self.narrative and self.narrative.data.DialogueOpen then return false,'请先结束当前对话' end
     if command=='area_tame' then return self.areas:Tame(a,b) end
     if command=='area_obstacle' then return self.obstacles:Begin(a) end
@@ -115,13 +117,24 @@ function Adventure:AreaCommand(command,a,b)
         local ok,reason=self.areas:Interact(a,b)
         if ok and a==2 and self.narrative then
             local npc=self.areas:ActiveLayout().npcs[b]
-            if npc.narrativeId then
+            if npc.narrativeId and #self.narrative.rules.npcs:Get(npc.narrativeId).dialogueIds>0 then
                 ok,reason=self.narrative.dialogue:Open(npc.narrativeId,b)
                 if not ok then self.areas:CloseInteraction() end
                 return ok,reason
             end
+            if self.shop.rules:Resolve(self.areas:ActiveLayout(),npc) then return self.shop:Open(b) end
         end
-        if ok and a==1 then self.explorationEvents:Try('facility',self.areas:ActiveLayout().facilities[b].configId) end
+        if ok and a==1 then
+            local area=self.areas:ActiveLayout()
+            for _,npc in ipairs(area.npcs) do
+                if npc.facilityId==b and self.shop.rules:Resolve(area,npc) then
+                    ok,reason=self.shop:Open(npc.id)
+                    if not ok then self.areas:CloseInteraction() end
+                    return ok,reason
+                end
+            end
+            self.explorationEvents:Try('facility',area.facilities[b].configId)
+        end
         return ok,reason
     end
     if command=='area_close' then return self.areas:CloseInteraction() end

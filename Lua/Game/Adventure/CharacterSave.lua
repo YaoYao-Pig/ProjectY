@@ -1,6 +1,7 @@
 -- 外部文件先完整准备和校验，再创建新地图并提交；失败不改当前队伍。
 local Save={}
 function Save.Validate(adventure,prepared)
+    if adventure.shop then adventure.shop.rules:ValidateSaved(CS.ProjectY.Data.ShopData.Prepared(prepared),prepared.LegacyNarrative and 0 or prepared.Narrative.Minutes) end
     if adventure.narrative and not prepared.LegacyNarrative then require('Game.Narrative.NarrativeSave').Validate(adventure.narrative,prepared) end
     local config=adventure.config;local equipment=require('Game.Equipment.EquipmentRules').New(config,prepared.Equipment)
     local stats=require('Game.Battle.CombatStats')(config,prepared.Equipment)
@@ -49,12 +50,14 @@ function Save.Validate(adventure,prepared)
         assert(item.kind=='rune' or item.kind=='module' or item.kind=='ammo' or item.kind=='material','存档堆叠类型无效') end
 end
 function Save.Write(adventure)
+    if adventure.shop and adventure.shop.data.IsOpen then return false,'请先关闭商店再保存' end
     if adventure.narrative and adventure.narrative.data.DialogueOpen then return false,'请先结束对话再保存' end
     if adventure.data.Phase~='map' and adventure.data.Phase~='area' then return false,'只能在探索期间保存队伍' end
     local ok,err=pcall(function() adventure.characterSaves:Save(adventure.data,adventure.player) end)
     return ok,ok and '' or tostring(err)
 end
 function Save.Read(adventure)
+    if adventure.shop and adventure.shop.data.IsOpen then return false,'请先关闭商店再读取' end
     if adventure.narrative and adventure.narrative.data.DialogueOpen then return false,'请先结束对话再读取' end
     if adventure.data.Phase~='map' and adventure.data.Phase~='area' then return false,'只能在探索期间读取队伍' end
     local ok,prepared=pcall(function()

@@ -23,6 +23,10 @@ return function(command,demo)
         local dialogue=main:Get('Narrative').data.DialogueOpen
         if dialogue and not ui:IsOpen('Dialogue') then ui:Open('Dialogue',{demo=demo})
         elseif not dialogue and ui:IsOpen('Dialogue') then ui:Close('Dialogue') end
+        local shop=main:Get('Adventure').shop
+        if shop.data.IsOpen and (data.Phase~='area' or shop.data.Active.SiteId~=data.Areas.ActiveSiteId) then shop:Close() end
+        if shop.data.IsOpen and not ui:IsOpen('Shop') then ui:Open('Shop',{demo=demo})
+        elseif not shop.data.IsOpen and ui:IsOpen('Shop') then ui:Close('Shop') end
         local event=data.Phase=='event' or data.Phase=='result'
         if event and not ui:IsOpen('StoryEvent') then ui:Open('StoryEvent',{demo=demo})
         elseif not event and ui:IsOpen('StoryEvent') then ui:Close('StoryEvent') end

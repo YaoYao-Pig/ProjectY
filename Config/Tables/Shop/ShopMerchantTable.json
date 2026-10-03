@@ -1,0 +1,58 @@
+{
+  "version": 1,
+  "name": "ShopMerchantTable",
+  "description": "商人和商品模板的绑定；两种 NPC 选择方式只能填写一种，匹配范围不得重叠。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "绑定用途"
+    },
+    {
+      "name": "npcIds",
+      "type": "int[]",
+      "description": "特殊 NPC 的稳定 ID；与普通 NPC 模板二选一",
+      "ref": "NpcTable",
+      "default": []
+    },
+    {
+      "name": "townNpcTemplateIds",
+      "type": "int[]",
+      "description": "普通城镇 NPC 模板；不影响使用相同外观的特殊 NPC",
+      "ref": "MapAreaTownNpcTable",
+      "default": []
+    },
+    {
+      "name": "areaIds",
+      "type": "int[]",
+      "description": "限定地点类型；空数组匹配所有地区的地点",
+      "ref": "MapAreaTable",
+      "default": []
+    },
+    {
+      "name": "templateId",
+      "type": "int",
+      "description": "出售的商品模板",
+      "ref": "ShopTemplateTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "城镇杂货商",
+      "npcIds": [],
+      "townNpcTemplateIds": [
+        3
+      ],
+      "areaIds": [],
+      "templateId": 1
+    }
+  ]
+}

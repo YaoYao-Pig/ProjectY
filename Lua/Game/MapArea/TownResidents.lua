@@ -59,6 +59,7 @@ function Residents.Populate(area,row,config,doors)
         assert(not occupied[index],'NPC spawn overlap');occupied[index]=true
         local template=npcTemplates:Get(templateId)
         area.npcs[#area.npcs+1]={id=#area.npcs+1,templateId=templateId,spawnIndex=index,route=route,stepSeconds=template.stepSeconds,idleSeconds=template.idleSeconds}
+        return area.npcs[#area.npcs]
     end
     for _,site in ipairs(area.facilities) do
         local door=area.cells[site.entryIndex];local found
@@ -71,7 +72,7 @@ function Residents.Populate(area,row,config,doors)
                 and cell.interiorId==door.interiorId then found=cell;break end
         end
         end
-        assert(found,'No service NPC space');addNpc(site.npcTemplateId,found.index,{})
+        assert(found,'No service NPC space');addNpc(site.npcTemplateId,found.index,{}).facilityId=site.id
     end
     for i=1,row.residentCount do
         local start=doors[(i-1)%#doors+1];local target=doors[(i+3)%#doors+1]

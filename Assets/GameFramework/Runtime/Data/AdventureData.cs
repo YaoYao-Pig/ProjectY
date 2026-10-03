@@ -47,7 +47,7 @@ namespace ProjectY.Data
         public bool HasVisited(int siteId) => visited.Contains(siteId);
         public void Reset(uint seed)
         {
-            Seed = seed; party.Clear(); visited.Clear(); journal.Clear(); storyTriggers.Clear(); Battle.Clear(); Areas.Clear(); Equipment.Clear(); Narrative.Clear();
+            Seed = seed; party.Clear(); visited.Clear(); journal.Clear(); storyTriggers.Clear(); Battle.Clear(); Areas.Clear(); Equipment.Clear(); Narrative.Clear(); Shops.Clear();
             EventReturnPhase = "map"; StoryTriggerKey = "";
             EventActorId = 0; EventLocation = "";
             Phase = "map"; SiteId = 0; EventId = 0; ChoiceId = 0; AreaEncounterId = 0; ResultText = "";

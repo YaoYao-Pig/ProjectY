@@ -85,7 +85,7 @@ function Story:Refresh()
 end
 function Story:Tick(dt)
     local ui=self.context.services.UI
-    if not self.adventure.map or (ui and ui.IsWorldPaused) or self.data.DialogueOpen then return end
+    if not self.adventure.map or (ui and ui.IsWorldPaused) or self.data.DialogueOpen or self.adventure.shop.data.IsOpen then return end
     if self.adventure.data.Phase ~= 'map' and self.adventure.data.Phase ~= 'area' then return end
     if self.rules.environment.autoCycle then self.data:AdvanceMinutes(dt * 1440 / self.rules.environment.cycleSeconds) end
     local revision = self.data.Revision..':'..self.adventure.data.Equipment.Revision..':'..self.adventure.player.Coins..':'..math.floor(self.data.Minutes)

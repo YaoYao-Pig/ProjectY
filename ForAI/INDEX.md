@@ -28,6 +28,7 @@
 | MainHud、常驻 HUD、Overlay、UIFollower、屏幕血条、双层血条、震屏、BattleFeedbackSystem、相机跟随、地点、队伍、交互提示 | [主 HUD 与跟随 UI](Business/MainHud.md) |
 | 装备、武器分类、等级、属性要求、单手剑、大剑、双手巨剑、推进器、槽位引线、法杖、符文、步枪、弹匣、换弹、搜刮、共享背包、3D 改装、持握动作、EquipmentWorkbench | [装备与改装 Demo](Business/Equipment.md) |
 | 网格背包、Inventory、占格、拖拽、旋转、收纳、满包、头部、身体甲、左右戒指、裤子、鞋子、副手、双持、盾牌、角色预览、模型图标、图标导出 | [网格背包与角色装备](Business/Inventory.md) |
+| 商店、商人、商品模板、随机商品、库存、售价、购买、补货、刷新天数 | [NPC 商店](Business/Shop.md) |
 | 宝箱生成、容器、陶罐、板条箱、武器架、耐久、破坏、掉落、战利品、概率、掉落池、敌人掉落、战后拾取、旧事件战场 | [宝箱与敌人掉落](Business/Loot.md) |
 | 工具性武器、武器标签、斧子、镐子、铲子、撬棍、清障、石堆、木箱、土堆、开锁 | [工具武器与临时障碍](Business/ToolWeapons.md) |
 | Adventure、探索事件、触发路径、设施交易、配件获取、选择、条件、营地、远征 Demo、战斗结算 | [探索事件与远征](Business/Adventure.md) |

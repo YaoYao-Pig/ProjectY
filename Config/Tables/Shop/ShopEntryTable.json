@@ -1,0 +1,128 @@
+{
+  "version": 1,
+  "name": "ShopEntryTable",
+  "description": "每个模板内同一种物品只配置一条；数量是上架后的库存，价格是每件金币数。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "templateId",
+      "type": "int",
+      "description": "商品模板",
+      "ref": "ShopTemplateTable"
+    },
+    {
+      "name": "itemId",
+      "type": "int",
+      "description": "出售物品",
+      "ref": "EquipmentItemTable"
+    },
+    {
+      "name": "chance",
+      "type": "float",
+      "description": "独立上架概率，百分比，0 为从不出现，100 为必定出现",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "minCount",
+      "type": "int",
+      "description": "命中后最小库存",
+      "min": 1,
+      "max": 10000
+    },
+    {
+      "name": "maxCount",
+      "type": "int",
+      "description": "命中后最大库存",
+      "min": 1,
+      "max": 10000
+    },
+    {
+      "name": "price",
+      "type": "int",
+      "description": "每件售价，金币",
+      "min": 0,
+      "max": 1000000
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "templateId": 1,
+      "itemId": 31,
+      "chance": 100,
+      "minCount": 12,
+      "maxCount": 24,
+      "price": 1
+    },
+    {
+      "id": 2,
+      "templateId": 1,
+      "itemId": 81,
+      "chance": 80,
+      "minCount": 3,
+      "maxCount": 8,
+      "price": 3
+    },
+    {
+      "id": 3,
+      "templateId": 1,
+      "itemId": 82,
+      "chance": 70,
+      "minCount": 2,
+      "maxCount": 5,
+      "price": 4
+    },
+    {
+      "id": 4,
+      "templateId": 1,
+      "itemId": 40,
+      "chance": 45,
+      "minCount": 1,
+      "maxCount": 2,
+      "price": 35
+    },
+    {
+      "id": 5,
+      "templateId": 1,
+      "itemId": 51,
+      "chance": 40,
+      "minCount": 1,
+      "maxCount": 2,
+      "price": 20
+    },
+    {
+      "id": 6,
+      "templateId": 1,
+      "itemId": 21,
+      "chance": 55,
+      "minCount": 1,
+      "maxCount": 3,
+      "price": 12
+    },
+    {
+      "id": 7,
+      "templateId": 1,
+      "itemId": 11,
+      "chance": 25,
+      "minCount": 1,
+      "maxCount": 1,
+      "price": 45
+    },
+    {
+      "id": 8,
+      "templateId": 1,
+      "itemId": 74,
+      "chance": 35,
+      "minCount": 1,
+      "maxCount": 1,
+      "price": 30
+    }
+  ]
+}

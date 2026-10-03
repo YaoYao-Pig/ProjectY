@@ -37,7 +37,15 @@ function Dialogue:Refresh()
         self.choices[i]:SetData({title=i..'. '..Rich.Escape(choice.text),body=Rich.Escape(choice.reason),available=choice.available},
             self.demo.MainHudFont,function() self.demo:SendCommand('dialogue_choose',id,version) end)
     end
-    for i=#choices+1,#self.choices do self.choices[i]:SetData(nil) end
+    local choiceCount=#choices
+    local adventure=story.adventure;local area=adventure.areas:ActiveLayout();local localId=data.DialogueLocalNpcId
+    if adventure.shop.rules:Resolve(area,area.npcs[localId]) then
+        choiceCount=choiceCount+1
+        if not self.choices[choiceCount] then self.choices[choiceCount]=self:CreateWidget('NarrativeEntry',self.view.Choices) end
+        self.choices[choiceCount]:SetData({title='查看商品',body='',available=true},self.demo.MainHudFont,
+            function() self.demo:SendCommand('shop_open',localId,version) end)
+    end
+    for i=choiceCount+1,#self.choices do self.choices[i]:SetData(nil) end
     self.view.ChoiceScroll.verticalNormalizedPosition=1
     self.view.Hint.text=self.demo.LastError or ''
     self.view.Style:ScrollToEnd();self.revision=data.Revision;self.demoRevision=self.demo.BattleHUDRevision

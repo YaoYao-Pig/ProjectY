@@ -22,7 +22,7 @@ namespace ProjectY.Data
     [Serializable] internal sealed class EquipmentSave
     { public int width, height, nextId; public IntEntry[] stacks; public WeaponSave[] weapons; public MagazineSave[] magazines; public WearableSave[] wearables; public PlacementSave[] placements; }
     [Serializable] internal sealed class CharacterSaveDocument
-    { public int version, coins, playerLevel; public uint seed; public string savedAt; public ActorSave[] actors; public EquipmentSave equipment; public NarrativeSave narrative; }
+    { public int version, coins, playerLevel; public uint seed; public string savedAt; public ActorSave[] actors; public EquipmentSave equipment; public NarrativeSave narrative; public ShopStockSave[] shops; }
 
     internal static class SaveCheck
     {

@@ -17,6 +17,7 @@
 - `AdventureRuntimeDemo.SendCommand` 的 dialogue_choose/dialogue_close 不等待世界角色动画；进入会暂停世界的对话后也不追加 PlayInteraction。不能将对话输入绑到依赖缩放时间的 ActionBusy 上，否则 timeScale=0 会同时锁住选项与关闭。
 - Cinemachine **2.10.7** 对话控制器独占输出相机的 Brain，使用 ManualUpdate 和忽略 timeScale 的混合；双人、NPC、玩家、返回镜头由 DialogueCameraTable 配置。位置来自现有真实棋子显示器，重用城镇障碍与地形检查。右侧 UI 占据的宽度从世界视口扣除；退出恢复进入前投影、位置、旋转和裁剪参数。原有漫游镜头仍保留。
 - NPC 身份全局稳定；NpcPlacementTable 在本次世界的第一个匹配城镇安置一次，未生成匹配地点时不生成替身。城镇临时 npc.id 只用于位置/交互。外观引用 MapAreaTownNpcTable，招募角色模板引用 CombatUnitTable；招募 actorId=10000+npcId，招募后世界 NPC 在会话结束时隐藏并释放占格。
+- 特殊 NPC 可经 [NPC 商店](Shop.md)绑定商品模板；保留原有对白，并在对话底部增加“查看商品”。普通城镇商人直接交互打开库存，交易不占用 NarrativeAction 或任务事实键。
 - NPC 好感与玩家阵营声望分别保存，初始值/上下界配表；增量动作钳制在配置边界。日程按 [startMinute,endMinute) 连续覆盖一天 0–1440，在当前城镇沿同一导航图逐格移向设施；拥堵等待，交谈/暂停时不移动。离开地图不进行后台移动，重进保留位置后继续前往当前时段目标。尚无 NPC 彼此关系、阵营战争或队伍编成/遣散 UI。
 - 游戏时钟按 NarrativeSettingsTable.environmentId 引用 MapEnvironmentTable 的 startHour、cycleSeconds、autoCycle 推进，探索时运行、战斗/对话/暂停时停止。昼夜显示读取同一时钟；旧纯视觉调时按钮已移除，天气预览保留。
 - [角色存档](CharacterSave.md) 同时保存任务、击杀起点、事实、关系/声望、招募记录和游戏时间；不保存对话中间节点，交谈中禁止保存/读取。恢复仍重新生成地图，已完成任务不重发，NPC 根据招募记录恢复存在状态。

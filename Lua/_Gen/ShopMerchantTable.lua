@@ -1,0 +1,9 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class ShopMerchantTableRow
+---@field id number 稳定配置 ID
+---@field name string 绑定用途
+---@field npcIds number[] 特殊 NPC 的稳定 ID；与普通 NPC 模板二选一
+---@field townNpcTemplateIds number[] 普通城镇 NPC 模板；不影响使用相同外观的特殊 NPC
+---@field areaIds number[] 限定地点类型；空数组匹配所有地区的地点
+---@field templateId number 出售的商品模板
+return {["name"]="ShopMerchantTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="name",["type"]="text",["description"]="\231\187\145\229\174\154\231\148\168\233\128\148"},{["name"]="npcIds",["type"]="int[]",["description"]="\231\137\185\230\174\138 NPC \231\154\132\231\168\179\229\174\154 ID\239\188\155\228\184\142\230\153\174\233\128\154 NPC \230\168\161\230\157\191\228\186\140\233\128\137\228\184\128",["ref"]="NpcTable",["default"]={}},{["name"]="townNpcTemplateIds",["type"]="int[]",["description"]="\230\153\174\233\128\154\229\159\142\233\149\135 NPC \230\168\161\230\157\191\239\188\155\228\184\141\229\189\177\229\147\141\228\189\191\231\148\168\231\155\184\229\144\140\229\164\150\232\167\130\231\154\132\231\137\185\230\174\138 NPC",["ref"]="MapAreaTownNpcTable",["default"]={}},{["name"]="areaIds",["type"]="int[]",["description"]="\233\153\144\229\174\154\229\156\176\231\130\185\231\177\187\229\158\139\239\188\155\231\169\186\230\149\176\231\187\132\229\140\185\233\133\141\230\137\128\230\156\137\229\156\176\229\140\186\231\154\132\229\156\176\231\130\185",["ref"]="MapAreaTable",["default"]={}},{["name"]="templateId",["type"]="int",["description"]="\229\135\186\229\148\174\231\154\132\229\149\134\229\147\129\230\168\161\230\157\191",["ref"]="ShopTemplateTable"}},["fingerprint"]="0e41c40facd4be45e3d199fe121f6b279f04e5c0ecf3d211d8dea99a2336fdc1"}

@@ -80,7 +80,8 @@ function Model.Build(adventure)
                 end end
                 for _,npc in ipairs(area.npcs) do local live=state:GetNpcAt(npc.id-1);local steps=distance[live.CellIndex];if live.Present and steps and steps<=1 and (steps<best or (steps==best and npc.narrativeId)) then
                     local row=npc.narrativeId and adventure.narrative.rules.npcs:Get(npc.narrativeId) or areas.config:GetTable('MapAreaTownNpcTable'):Get(npc.templateId)
-                    best=steps;model.interaction={title=row.name,body='与这位旅人交谈',caption='交谈  [E]',command='area_interact',a=2,b=npc.id}
+                    local merchant=adventure.shop and adventure.shop.rules:Resolve(area,npc)
+                    best=steps;model.interaction={title=row.name,body=merchant and '查看商品、库存与价格' or '与这位旅人交谈',caption=merchant and '交易  [E]' or '交谈  [E]',command='area_interact',a=2,b=npc.id}
                 end end
             end
         end

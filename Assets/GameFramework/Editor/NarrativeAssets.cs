@@ -20,10 +20,16 @@ namespace ProjectY.Editor
             Entry("NarrativeEntry",true,false);Entry("Dialogue",false,true);Entry("MissionJournal",false,false);
             AssetDatabase.SaveAssets();Debug.Log("Narrative prefabs, registry and LuaReference bindings saved.");
         }
-        private static void Entry(string name,bool widget,bool right)
+        [MenuItem("Project Y/商店/同步商店界面")]
+        public static void CreateShop()
+        {
+            if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Shop UI requires Edit Mode.");
+            Entry("Shop",false,false,"Shop");AssetDatabase.SaveAssets();
+        }
+        private static void Entry(string name,bool widget,bool right,string module="Narrative")
         {
             var config=PanelAssets.LoadOrCreate();var entry=config.Entries.Find(e=>e.Name==name);
-            if(entry==null)entry=PanelAssets.Save(new PanelDefinition{Name=name,Module="Narrative",Kind=widget?UIKind.Widget:UIKind.Panel,
+            if(entry==null)entry=PanelAssets.Save(new PanelDefinition{Name=name,Module=module,Kind=widget?UIKind.Widget:UIKind.Panel,
                 Layer="Popup",Modal=!widget,ModalDimAlpha=right?0:.65f,Cache=true,CloseOnBack=true,PauseWorldOnOpen=!widget},null);
             if(entry.Prefab!=null)return; // 已存在的手工资源不重建。
             Directory.CreateDirectory(Path.GetDirectoryName(entry.PrefabPath));

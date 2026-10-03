@@ -1,0 +1,40 @@
+{
+  "version": 1,
+  "name": "ShopTemplateTable",
+  "description": "可复用商品模板；模板内各商品独立判定，允许全部落空。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "商品模板名称"
+    },
+    {
+      "name": "refreshDays",
+      "type": "int",
+      "description": "每隔多少游戏天补货；从世界第 1 天零点起分段",
+      "min": 1,
+      "max": 3650
+    },
+    {
+      "name": "seedSalt",
+      "type": "int",
+      "description": "模板随机通道",
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "模板 A · 旅途杂货",
+      "refreshDays": 1,
+      "seedSalt": 1709
+    }
+  ]
+}

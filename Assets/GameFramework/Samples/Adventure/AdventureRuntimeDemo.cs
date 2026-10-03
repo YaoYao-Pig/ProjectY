@@ -233,7 +233,7 @@ namespace ProjectY.Samples
                 BuildExpedition(command); return;
             }
             // 对话会暂停世界，不能等待已暂停的角色动画才能选择或关闭。
-            var dialogueCommand=command=="dialogue_choose" || command=="dialogue_close";
+            var dialogueCommand=command=="dialogue_choose" || command=="dialogue_close" || command=="shop_open" || command=="shop_buy" || command=="shop_close";
             if (pendingExitView != null || (!dialogueCommand && !command.StartsWith("gm_",StringComparison.Ordinal) && HasArea && command != "snapshot" && command != "area_stop" &&
                 (view.Phase == "battle" ? AnimationBusy : squadRenderer.ActionBusy || combatRenderer.ActionBusy))) return;
             if(command=="hud_follow")
