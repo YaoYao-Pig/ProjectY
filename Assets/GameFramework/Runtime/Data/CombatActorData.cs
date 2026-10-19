@@ -29,7 +29,10 @@ namespace ProjectY.Data
         public int Q { get; private set; }
         public int R { get; private set; }
         public int Guard { get; private set; }
+        // Normal movement ends when its distance budget is exhausted or an action is committed.
         public bool Moved { get; private set; }
+        private int movementSpent;
+        internal int MovementSpent => movementSpent;
         public bool MainUsed { get; private set; }
         public int TraitCount => traits.Count;
         public bool DropResolved { get; private set; }
@@ -76,14 +79,18 @@ namespace ProjectY.Data
         public void Deploy(int team, int q, int r)
         {
             if (team != 0 && team != 1 && team != 2) throw new ArgumentOutOfRangeException(nameof(team));
-            Team = team; Q = q; R = r; AP = 0; Guard = 0; Moved = false; MainUsed = false;
+            Team = team; Q = q; R = r; AP = 0; Guard = 0; Moved = false; MainUsed = false;movementSpent=0;
             cooldowns.Clear(); ActionTemplateId = 0; presentationActions.Clear();
         }
         public void BeginTurn(int points)
         {
-            if (HP == 0 || points < 1) throw new InvalidOperationException("Invalid actor turn.");
-            AP = points; Moved = false; MainUsed = false; Guard = 0;
+            BeginDeploymentTurn(points);
             AdvanceSkillCooldowns();
+        }
+        public void BeginDeploymentTurn(int points)
+        {
+            if (HP == 0 || points < 1) throw new InvalidOperationException("Invalid actor turn.");
+            AP = points; Moved = false; MainUsed = false; Guard = 0;movementSpent=0;
         }
         internal void AdvanceSkillCooldowns()
         {foreach(var id in new List<int>(cooldowns.Keys))SetCooldown(id,Math.Max(0,cooldowns[id]-1));}
@@ -93,12 +100,22 @@ namespace ProjectY.Data
             Q = q; R = r; AP -= cost; Moved = true;
             MovementStyle="walk";MovementSequence++;
         }
+        internal void MoveSegment(int q,int r,int moveAP,int pathCost,int moveRange)
+        {
+            int cost=movementSpent==0?moveAP:0;
+            if(HP==0 || Moved || moveAP<0 || pathCost<1 || moveRange<1 || pathCost>moveRange-movementSpent || AP<cost || (q==Q && r==R))
+                throw new InvalidOperationException("Invalid movement segment.");
+            Q=q;R=r;AP-=cost;movementSpent+=pathCost;Moved=movementSpent==moveRange;
+            MovementStyle="walk";MovementSequence++;
+        }
         public void SpendAction(string kind, int cost)
         {
             if (kind != "main" && kind != "secondary") throw new ArgumentException("Unknown action kind.", nameof(kind));
             if (HP == 0 || cost < 0 || AP < cost || (kind == "main" && MainUsed))
                 throw new InvalidOperationException("Invalid action budget.");
             AP -= cost;
+            // Acting commits the turn to actions; skip any unused normal move without charging its AP or animating a step.
+            Moved = true;
             if (kind == "main") MainUsed = true;
         }
         internal int ApplyExertion(int amount)

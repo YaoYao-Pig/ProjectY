@@ -12,6 +12,7 @@
 - 城镇/村庄池保留风车磨坊、谷仓与麦田（资源 113–115、陈设 41–43）。风车/谷仓通过 `MapAreaPropTable.buildingLotId` 接到建筑地块 31/32，使用同一个 `TownBuildings` 做门洞、室内、上盖和封墙后连通检查；普通陈设此字段为 0。`TownDressing.Apply` 接收生成器持有的 building builder，原池、数量上限与候选规则保留，新增门口纳入后续避让。建筑当前源见[城镇](TownArea.md)，麦田继续作为环境陈设。
 - 源文件在 `Art/MapDressingLowPoly/Source/MapDressing.blend`，Unity 使用 `Assets/DynamicAsset/MapDressingLowPoly/Models` 的 24 个 FBX，合计 7018 三角形。硬边、纯色、米制、单位根变换，静态导出沿用 [地图资源](MapArt.md) 的轴转换。旧颜色复用共享材质，新增颜色在本目录独立材质中共享；不依赖贴图。
 - 大地图 `MapDecorationRuleTable` 按主导地貌、密度、坡度、缩放及两格内水岸/道路关系筛选。`MapDressing.Build` 在原树木与岩石散布后执行，避开水格、道路、建筑和已有装饰；`clearance` 控制建筑/装饰净距。位置噪声不消耗其他生成阶段的随机序列，陈设只影响显示。Web 使用配置的占位轮廓，不加载 FBX。
+- 大地图低矮灌木、草束、小花与蝴蝶/虫群使用独立 `MapGroundcover` 显示层，不占用原单格 `decorationId`，可在满足净空的树下生成少量草。配置、贴图、散布和显示生命周期归[地图材质与环境表现](MapPresentation.md)。
 - 城镇 `MapAreaTownTable.dressingProfileId → MapAreaTownDressingTable` 控制物件池、数量上限、间距及临街/临建筑距离。`TownDressing.Apply` 适用于普通镇、村庄、城堡镇、隐居群落与王城；在建筑与街网之后、居民路线之前执行。仅选地面层平坦公共园地，避开室内、入口一格邻域、保留区和坡面。整件试摆后检查可走格全连通，不满足便回滚。
 - 地牢功能设施仍走旧 `propIds/propCount/propCoverage`；`DungeonProps.Dress` 使用单独的环境陈设预算，避免被大设施覆盖率提前耗尽。一级洞穴读取 `MapAreaDungeonTable.basicDressingIds/basicDressingCount`；二级样式与三级预设读取 `dressingPropIds/dressingCount`。按房间用途沿墙选择候选，保留中央战斗区与所有走廊，试摆后检查全图连通。
 - 新 `MapAreaPropTable.scaleMode=meters` 保持模型实际尺寸；旧物件使用 `grid`。大件沿局部 q 轴占连续三格，小件占一格；显示朝向与足迹旋转同源。小地图陈设为阻挡物，视线分别由 `blocksSight` 决定。矿道木架是整件阻挡陈设，不把其视觉开口当作通道。数量均为上限，不为凑数挤入不合法空位。

@@ -1,0 +1,130 @@
+{
+  "version": 1,
+  "name": "WorldPartyTable",
+  "description": "大地图可见队伍；单格展示，战斗模板决定内部成员。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text"
+    },
+    {
+      "name": "kind",
+      "type": "string"
+    },
+    {
+      "name": "modelPath",
+      "type": "string"
+    },
+    {
+      "name": "encounterId",
+      "type": "int",
+      "ref": "CombatEncounterTable"
+    },
+    {
+      "name": "count",
+      "type": "int",
+      "min": 0,
+      "max": 64
+    },
+    {
+      "name": "speed",
+      "type": "float",
+      "min": 0.1
+    },
+    {
+      "name": "detectRadius",
+      "type": "int",
+      "min": 0
+    },
+    {
+      "name": "roamRadius",
+      "type": "int",
+      "min": 1
+    },
+    {
+      "name": "shopTemplateId",
+      "type": "int",
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "行旅商队",
+      "kind": "caravan",
+      "modelPath": "Assets/DynamicAsset/WorldPartyLowPoly/Models/WorldParty_Caravan.fbx",
+      "encounterId": 401,
+      "count": 6,
+      "speed": 0.72,
+      "detectRadius": 0,
+      "roamRadius": 12,
+      "shopTemplateId": 1
+    },
+    {
+      "id": 2,
+      "name": "人类强盗",
+      "kind": "hostile",
+      "modelPath": "Assets/DynamicAsset/WorldPartyLowPoly/Models/WorldParty_Bandits.fbx",
+      "encounterId": 402,
+      "count": 4,
+      "speed": 0.85,
+      "detectRadius": 6,
+      "roamRadius": 12,
+      "shopTemplateId": 0
+    },
+    {
+      "id": 3,
+      "name": "哥布林游荡队",
+      "kind": "hostile",
+      "modelPath": "Assets/DynamicAsset/WorldPartyLowPoly/Models/WorldParty_Goblins.fbx",
+      "encounterId": 403,
+      "count": 4,
+      "speed": 0.9,
+      "detectRadius": 5,
+      "roamRadius": 12,
+      "shopTemplateId": 0
+    },
+    {
+      "id": 4,
+      "name": "兽人劫掠队",
+      "kind": "hostile",
+      "modelPath": "Assets/DynamicAsset/WorldPartyLowPoly/Models/WorldParty_Orcs.fbx",
+      "encounterId": 404,
+      "count": 3,
+      "speed": 0.78,
+      "detectRadius": 6,
+      "roamRadius": 12,
+      "shopTemplateId": 0
+    },
+    {
+      "id": 5,
+      "name": "巨狼群",
+      "kind": "hostile",
+      "modelPath": "Assets/DynamicAsset/WorldPartyLowPoly/Models/WorldParty_Direwolves.fbx",
+      "encounterId": 405,
+      "count": 3,
+      "speed": 1.05,
+      "detectRadius": 7,
+      "roamRadius": 12,
+      "shopTemplateId": 0
+    },
+    {
+      "id": 6,
+      "name": "岩石巨兽",
+      "kind": "hostile",
+      "modelPath": "Assets/DynamicAsset/WorldPartyLowPoly/Models/WorldParty_Stonebeast.fbx",
+      "encounterId": 406,
+      "count": 2,
+      "speed": 0.55,
+      "detectRadius": 5,
+      "roamRadius": 12,
+      "shopTemplateId": 0
+    }
+  ]
+}

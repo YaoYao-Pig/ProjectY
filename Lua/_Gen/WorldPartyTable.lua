@@ -1,0 +1,13 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class WorldPartyTableRow
+---@field id number
+---@field name string
+---@field kind string
+---@field modelPath string
+---@field encounterId number
+---@field count number
+---@field speed number
+---@field detectRadius number
+---@field roamRadius number
+---@field shopTemplateId number
+return {["name"]="WorldPartyTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["min"]=1},{["name"]="name",["type"]="text"},{["name"]="kind",["type"]="string"},{["name"]="modelPath",["type"]="string"},{["name"]="encounterId",["type"]="int",["ref"]="CombatEncounterTable"},{["name"]="count",["type"]="int",["min"]=0,["max"]=64},{["name"]="speed",["type"]="float",["min"]=0.1},{["name"]="detectRadius",["type"]="int",["min"]=0},{["name"]="roamRadius",["type"]="int",["min"]=1},{["name"]="shopTemplateId",["type"]="int",["min"]=0}},["fingerprint"]="d3926df227a7324260b58d8965b56dd7fadd75becdaced1434e45423a34e8234"}

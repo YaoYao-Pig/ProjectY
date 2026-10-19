@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-18",
+  "content": {"weapons":20,"attachments":20,"weaponSkills":23,"effects":60,"buffs":4,"sockets":32,"shopEntries":40,"weightedLootEntries":8},
+  "checks": [
+    "arsenal_effects.lua: 9 groups covering original-target accuracy, source benefits, lethal-hit rewards, corpse abuse prevention, caster death, no revival, current tags and ordered consumption",
+    "arsenal_effects.lua: dispel/cleanse categories and probability, dynamic health across repeated hits, successful-application Buff snapshot and fixed periodic values",
+    "arsenal_effects.lua: 20 weapon previews, rail/edge and offhand isolation, immutable skill definitions, container filtering, life attack dispatch and container-primary actor splash accuracy",
+    "equipment_workbench_preview.lua: 68 weapon/shield/dual-hand previews",
+    "equipment_catalyst_core.lua: catalyst requirements and specialization regression",
+    "game_effects_core.lua, battle_feedback.lua, buffs_core.lua, event_choice_effects.lua: directly related effect and event regressions",
+    "Unity Edit Mode: 104 actual inventory install/uninstall and saved prefab socket/model/icon/material/scale cases",
+    "Unity: EquipmentAssets tool compilation requested once and completed; Console had zero error entries"
+  ],
+  "playModeRun": false,
+  "projectCompilationsRequested": 1
+}

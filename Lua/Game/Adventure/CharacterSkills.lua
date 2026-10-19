@@ -45,7 +45,8 @@ function Skills:CanUse(actorId,skillId,targetId)
     for _,id in ipairs(self.adventure.battle:SkillIds(actor)) do if id==skillId then owns=true;break end end
     if not owns then return false,'角色没有这个技能' end
     local context=self:Context()
-    if not Supports(skill,context) then return false,'此技能不能在当前场景使用' end
+    local usage=context=='battle' and self.adventure.battle.data.Phase=='deployment' and 'preparation' or context
+    if not Supports(skill,usage) then return false,'此技能不能在当前阶段使用' end
     if context=='battle' then
         local battle=self.adventure.battle
         if battle.data.ActiveId~=actorId then return false,'请等待此角色的回合' end
@@ -57,6 +58,9 @@ function Skills:CanUse(actorId,skillId,targetId)
         return battle:CanUseSkill(skillId,targetId)
     end
     if self.adventure.data.Phase~='area' then return false,'进入小地图后使用' end
+    local battle=self.adventure.battle
+    local allowed,reason=battle.stats.equipment:CheckSkillEquipment(actor,battle:Skill(actor,skillId),battle.stats)
+    if not allowed then return false,reason end
     if skill.affectsContainers then return self.adventure.containerCombat:CanArea(actor,skillId,targetId) end
     return self:Handler(skill).CanUse(actor,targetId)
 end
@@ -71,9 +75,10 @@ end
 function Skills:Rows(actorId,context)
     local actor=self:Actor(actorId);if not actor then return {} end
     local rows={}
+    local usage=context=='battle' and self.adventure.battle.data.Phase=='deployment' and 'preparation' or context
     for _,id in ipairs(self.adventure.battle:SkillIds(actor)) do
         local skill=self.skills:Get(id)
-        if Supports(skill,context) then
+        if Supports(skill,usage) then
             local targets={}
             if context=='life' and self.adventure.data.Phase=='area' then
                 targets=skill.affectsContainers and self.adventure.containerCombat:Targets(actor,id) or self:Handler(skill).Targets(actor)
@@ -89,8 +94,10 @@ function Skills:Rows(actorId,context)
                 if ok then available=true;reason='';break end
                 reason=why
             end
-            local labels={};for _,tag in ipairs(skill.contexts) do labels[#labels+1]=tag=='life' and '生活' or '战斗' end
-            rows[#rows+1]={id=id,name=skill.name,description=skill.description,contexts=table.concat(labels,' + '),
+            local labels={};for _,tag in ipairs(skill.contexts) do labels[#labels+1]=tag=='life' and '生活' or tag=='preparation' and '准备' or '战斗' end
+            local description=skill.description
+            if skill.trajectory~='sight' then description=description..'\n'..require('Game.Battle.SkillTrajectory').Description(skill.trajectory) end
+            rows[#rows+1]={id=id,name=skill.name,description=description,contexts=table.concat(labels,' + '),
                 target=context=='life' and skill.affectsContainers and 'container' or skill.target=='self' and 'self' or skill.target=='cell' and 'cell' or 'unit',available=available,reason=reason}
         end
     end

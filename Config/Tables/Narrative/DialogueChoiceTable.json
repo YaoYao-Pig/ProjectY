@@ -149,6 +149,1406 @@
       "text": "改日再来。",
       "conditionId": 1,
       "nextNodeId": 0
+    },
+    {
+      "id": 3000,
+      "text": "这封烧焦的信写了什么？",
+      "conditionId": 3024,
+      "nextNodeId": 3004,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3001,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3000,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3002,
+      "text": "我会把账、人和退路一起查清。",
+      "conditionId": 3025,
+      "nextNodeId": 3005,
+      "actionIds": [
+        3007
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3003,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3000,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3004,
+      "text": "火灾那夜，你为什么没有离开？",
+      "conditionId": 3026,
+      "nextNodeId": 3006,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3005,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3002,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3006,
+      "text": "先把你记作幸存者，不急着让你指认。",
+      "conditionId": 3027,
+      "nextNodeId": 3007,
+      "actionIds": [
+        3008,
+        3009
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3007,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3002,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3008,
+      "text": "我们来核对两本账。",
+      "conditionId": 3031,
+      "nextNodeId": 3008,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3009,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3000,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3010,
+      "text": "[智力 ≥ 8] 对照运费和仓储日期，找出重记。",
+      "conditionId": 3032,
+      "nextNodeId": 3009,
+      "actionIds": [
+        3010,
+        3011
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3011,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3000,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3012,
+      "text": "[侦察 ≥ 5] 比对封印和车轮留下的收货记号。",
+      "conditionId": 3033,
+      "nextNodeId": 3010,
+      "actionIds": [
+        3012,
+        3013
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3013,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3000,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3014,
+      "text": "支付 20 金币，请旧账房逐条复核。",
+      "conditionId": 3034,
+      "nextNodeId": 3011,
+      "actionIds": [
+        3014,
+        3015,
+        3016
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3015,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3000,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3016,
+      "text": "退路与救济物资已经准备好了。",
+      "conditionId": 3036,
+      "nextNodeId": 3012,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3017,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3002,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3018,
+      "text": "[魅力 ≥ 4] 由我们当公开见证人，让你亲自决定每句话。",
+      "conditionId": 3037,
+      "nextNodeId": 3013,
+      "actionIds": [
+        3017,
+        3018,
+        3019,
+        3020
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3019,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3002,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3020,
+      "text": "把证词匿名封存；现在先让你安全。",
+      "conditionId": 3038,
+      "nextNodeId": 3014,
+      "actionIds": [
+        3021,
+        3022,
+        3023
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3021,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3002,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3022,
+      "text": "账本不能永远藏着。",
+      "conditionId": 3039,
+      "nextNodeId": 3015,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3023,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3000,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3024,
+      "text": "公开原账与救济名单，允许每个人质询。",
+      "conditionId": 3040,
+      "nextNodeId": 3016,
+      "actionIds": [
+        3024,
+        3025,
+        3026,
+        3027
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3025,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3000,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3026,
+      "text": "原账交互助会封存，先让救济与修钟继续。",
+      "conditionId": 3040,
+      "nextNodeId": 3017,
+      "actionIds": [
+        3028,
+        3029,
+        3030
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3027,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3000,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3028,
+      "text": "交给工匠会换取赔偿，先填上眼前的缺口。",
+      "conditionId": 3040,
+      "nextNodeId": 3018,
+      "actionIds": [
+        3031,
+        3032,
+        3033,
+        3034
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3029,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3000,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3030,
+      "text": "关于仓库大火，这是我们的结论。",
+      "conditionId": 3041,
+      "nextNodeId": 3019,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3031,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3003,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3032,
+      "text": "把这段承认一并留下，别再让制服替人隐瞒。",
+      "conditionId": 3042,
+      "nextNodeId": 3020,
+      "actionIds": [
+        3035,
+        3036,
+        3037
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3033,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3003,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3034,
+      "text": "请把最后一页记录补上。",
+      "conditionId": 3043,
+      "nextNodeId": 3021,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3035,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3000,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3036,
+      "text": "签字。账与人都要留下。",
+      "conditionId": 3044,
+      "nextNodeId": 3022,
+      "actionIds": [
+        3038
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3037,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3000,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3038,
+      "text": "下一程见。",
+      "conditionId": 1,
+      "nextNodeId": 0,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3039,
+      "text": "领取「灰烬账本」报酬。",
+      "conditionId": 3045,
+      "nextNodeId": 3023,
+      "actionIds": [
+        3039
+      ],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3040,
+      "text": "城里的警钟为什么停了？",
+      "conditionId": 3078,
+      "nextNodeId": 3024,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3041,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3042,
+      "text": "先把裂痕和路上的威胁查清。",
+      "conditionId": 3079,
+      "nextNodeId": 3025,
+      "actionIds": [
+        3046
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3043,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3044,
+      "text": "让我看看拆下的钟机。",
+      "conditionId": 3081,
+      "nextNodeId": 3026,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3045,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3046,
+      "text": "[侦察 ≥ 5] 从磨损方向找到被覆盖的刻线。",
+      "conditionId": 3082,
+      "nextNodeId": 3027,
+      "actionIds": [
+        3047
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3047,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3048,
+      "text": "[智力 ≥ 8] 用工图推回原来的三段信号。",
+      "conditionId": 3083,
+      "nextNodeId": 3028,
+      "actionIds": [
+        3048
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3049,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3050,
+      "text": "支付 15 金币，请行会学徒重拓刻线。",
+      "conditionId": 3084,
+      "nextNodeId": 3029,
+      "actionIds": [
+        3049,
+        3050
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3051,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3052,
+      "text": "这次修好后，钟该为谁而响？",
+      "conditionId": 3085,
+      "nextNodeId": 3030,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3053,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3054,
+      "text": "恢复人人都能理解的公共预警。",
+      "conditionId": 3086,
+      "nextNodeId": 3031,
+      "actionIds": [
+        3051
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3055,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3056,
+      "text": "保留卫队专用警戒，由守卫承担责任。",
+      "conditionId": 3086,
+      "nextNodeId": 3032,
+      "actionIds": [
+        3052
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3057,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3058,
+      "text": "改用分区的无声信号，减少整城惊慌。",
+      "conditionId": 3086,
+      "nextNodeId": 3033,
+      "actionIds": [
+        3053
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3059,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3060,
+      "text": "材料与方案齐了，开始校准。",
+      "conditionId": 3089,
+      "nextNodeId": 3034,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3061,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3062,
+      "text": "[巧匠 ≥ 4] 调整咬合，让第三次震动归位。",
+      "conditionId": 3090,
+      "nextNodeId": 3035,
+      "actionIds": [
+        3054,
+        3055
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3063,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3064,
+      "text": "[智力 ≥ 9] 算出偏移周期，重新安排配重。",
+      "conditionId": 3091,
+      "nextNodeId": 3036,
+      "actionIds": [
+        3056,
+        3057
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3065,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3066,
+      "text": "支付 15 金币，请学徒扶稳配重，我们协作。",
+      "conditionId": 3092,
+      "nextNodeId": 3037,
+      "actionIds": [
+        3058,
+        3059,
+        3060
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3067,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3068,
+      "text": "火灾那夜，钟究竟响了几次？",
+      "conditionId": 3096,
+      "nextNodeId": 3038,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3069,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3002,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3070,
+      "text": "[20:00–23:00] 等人群散去，请她说完。",
+      "conditionId": 3097,
+      "nextNodeId": 3039,
+      "actionIds": [
+        3061,
+        3062
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3071,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3002,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3072,
+      "text": "凭公开具名的信任，当面核对证词。",
+      "conditionId": 3098,
+      "nextNodeId": 3040,
+      "actionIds": [
+        3063,
+        3064
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3073,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3002,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3074,
+      "text": "支付 10 金币，租下私室，在白日核对。",
+      "conditionId": 3099,
+      "nextNodeId": 3041,
+      "actionIds": [
+        3065,
+        3066,
+        3067
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3075,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3002,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3076,
+      "text": "证词与钟机终于对上了。",
+      "conditionId": 3100,
+      "nextNodeId": 3042,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3077,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3078,
+      "text": "依照约定，恢复公共预警。",
+      "conditionId": 3101,
+      "nextNodeId": 3043,
+      "actionIds": [
+        3068,
+        3069,
+        3070
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3079,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3080,
+      "text": "依照约定，交卫队掌管有签名的警戒。",
+      "conditionId": 3102,
+      "nextNodeId": 3044,
+      "actionIds": [
+        3071,
+        3072,
+        3073
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3081,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3082,
+      "text": "依照约定，建立街区无声信号。",
+      "conditionId": 3103,
+      "nextNodeId": 3045,
+      "actionIds": [
+        3074,
+        3075,
+        3076
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3083,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3084,
+      "text": "这是钟楼新的警戒规程。",
+      "conditionId": 3104,
+      "nextNodeId": 3046,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3085,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3003,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3086,
+      "text": "请把这句话写进议约的第一份草案。",
+      "conditionId": 3105,
+      "nextNodeId": 3047,
+      "actionIds": [
+        3077,
+        3078,
+        3079
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3087,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3003,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3088,
+      "text": "把工图交还给你。",
+      "conditionId": 3106,
+      "nextNodeId": 3048,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3089,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3090,
+      "text": "签下验收记录。",
+      "conditionId": 3107,
+      "nextNodeId": 3049,
+      "actionIds": [
+        3080
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3091,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3092,
+      "text": "下一程见。",
+      "conditionId": 1,
+      "nextNodeId": 0,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3093,
+      "text": "领取「钟楼无声」报酬。",
+      "conditionId": 3108,
+      "nextNodeId": 3050,
+      "actionIds": [
+        3081
+      ],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3094,
+      "text": "你说有一份邀请？",
+      "conditionId": 3147,
+      "nextNodeId": 3051,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3095,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3003,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3096,
+      "text": "先落实三方席位、储备和路上的安全。",
+      "conditionId": 3148,
+      "nextNodeId": 3052,
+      "actionIds": [
+        3088
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3097,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3003,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3098,
+      "text": "议约不能缺少救济与驿工的席位。",
+      "conditionId": 3150,
+      "nextNodeId": 3053,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3099,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3000,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3100,
+      "text": "[魅力 ≥ 4] 让救济名单成为每次会议都要复核的第一项。",
+      "conditionId": 3151,
+      "nextNodeId": 3054,
+      "actionIds": [
+        3089,
+        3090,
+        3091
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3101,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3000,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3102,
+      "text": "保留你的赔偿条件，并承诺逐条记入。",
+      "conditionId": 3152,
+      "nextNodeId": 3055,
+      "actionIds": [
+        3092,
+        3093
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3103,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3000,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3104,
+      "text": "工匠会愿意坐到桌前吗？",
+      "conditionId": 3154,
+      "nextNodeId": 3056,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3105,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3106,
+      "text": "[巧匠 ≥ 4] 列出可核验的工时与材料，堵住新账的漏洞。",
+      "conditionId": 3155,
+      "nextNodeId": 3057,
+      "actionIds": [
+        3094,
+        3095,
+        3096
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3107,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3108,
+      "text": "先保留工钱条款，让三方一起核算。",
+      "conditionId": 3156,
+      "nextNodeId": 3058,
+      "actionIds": [
+        3097,
+        3098
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3109,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3110,
+      "text": "这次有一张写给你的席签。",
+      "conditionId": 3161,
+      "nextNodeId": 3059,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3111,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3002,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3112,
+      "text": "你已有公开证词；当然可以在桌前反对我们。",
+      "conditionId": 3162,
+      "nextNodeId": 3060,
+      "actionIds": [
+        3099,
+        3100,
+        3101
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3113,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3002,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3114,
+      "text": "[魅力 ≥ 5，好感 ≥ 9] 你无需替我们作证，只需为自己发言。",
+      "conditionId": 3163,
+      "nextNodeId": 3061,
+      "actionIds": [
+        3102,
+        3103,
+        3104
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3115,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3002,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3116,
+      "text": "匿名陈述也有席位，我替你递交，不擅自改字。",
+      "conditionId": 3164,
+      "nextNodeId": 3062,
+      "actionIds": [
+        3105,
+        3106
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3117,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3002,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3118,
+      "text": "物资不够时，能请商队筹办吗？",
+      "conditionId": 3166,
+      "nextNodeId": 3063,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3119,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3003,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3120,
+      "text": "支付 80 金币，让商队筹办。",
+      "conditionId": 3167,
+      "nextNodeId": 3064,
+      "actionIds": [
+        3107,
+        3108
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3121,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3003,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3122,
+      "text": "三方都到了，先写什么？",
+      "conditionId": 3169,
+      "nextNodeId": 3065,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3123,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3003,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3124,
+      "text": "[智力 ≥ 10] 建立原账、命令与工图的交叉复核。",
+      "conditionId": 3170,
+      "nextNodeId": 3066,
+      "actionIds": [
+        3109,
+        3110
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3125,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3003,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3126,
+      "text": "[魅力 ≥ 5] 让三方保留否决与重谈的权利。",
+      "conditionId": 3171,
+      "nextNodeId": 3067,
+      "actionIds": [
+        3111,
+        3112
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3127,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3003,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3128,
+      "text": "订立临时章程，每次封路、用料、救济都留下签名。",
+      "conditionId": 3172,
+      "nextNodeId": 3068,
+      "actionIds": [
+        3113,
+        3114
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3129,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3003,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3130,
+      "text": "公布最终的议约。",
+      "conditionId": 3181,
+      "nextNodeId": 3069,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3131,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3003,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3132,
+      "text": "[驿路声望 ≥ 10] 以驿路同盟主导统一警戒与救济。",
+      "conditionId": 3182,
+      "nextNodeId": 3070,
+      "actionIds": [
+        3115,
+        3116,
+        3117,
+        3118
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3133,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3003,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3134,
+      "text": "[工匠声望 ≥ 10] 由工匠会承担长期维修与赔偿契约。",
+      "conditionId": 3183,
+      "nextNodeId": 3071,
+      "actionIds": [
+        3119,
+        3120,
+        3121,
+        3122
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3135,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3003,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3136,
+      "text": "先签临时守望协议，保留分歧与下次重谈的席位。",
+      "conditionId": 3184,
+      "nextNodeId": 3072,
+      "actionIds": [
+        3123,
+        3124,
+        3125,
+        3126
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3137,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3003,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3138,
+      "text": "[公开原账、公共预警、具名证人；魅力或莱雅担保] 建立三方共同议席。",
+      "conditionId": 3185,
+      "nextNodeId": 3073,
+      "actionIds": [
+        3127,
+        3128,
+        3129,
+        3130,
+        3131
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3139,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3003,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3140,
+      "text": "广场上的人怎么看这份议约？",
+      "conditionId": 3186,
+      "nextNodeId": 3074,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3141,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3000,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3142,
+      "text": "把这些问题记在下一页，别让结局替我们回答。",
+      "conditionId": 3187,
+      "nextNodeId": 3075,
+      "actionIds": [
+        3132,
+        3133
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3143,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3000,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3144,
+      "text": "最后一封档案，交给下一位驿使。",
+      "conditionId": 3188,
+      "nextNodeId": 3076,
+      "actionIds": [],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3145,
+      "text": "记下这件事。",
+      "conditionId": 1,
+      "nextNodeId": 3003,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3146,
+      "text": "封存档案。下一段路继续走。",
+      "conditionId": 3189,
+      "nextNodeId": 3077,
+      "actionIds": [
+        3134
+      ],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3147,
+      "text": "我还要准备一下。",
+      "conditionId": 1,
+      "nextNodeId": 3003,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3148,
+      "text": "下一程见。",
+      "conditionId": 1,
+      "nextNodeId": 0,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3149,
+      "text": "领取「三方议约」报酬。",
+      "conditionId": 3190,
+      "nextNodeId": 3078,
+      "actionIds": [
+        3135
+      ],
+      "hideWhenLocked": true
+    },
+    {
+      "id": 3150,
+      "text": "我先去处理手边的事。",
+      "conditionId": 1,
+      "nextNodeId": 0,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3151,
+      "text": "我先去处理手边的事。",
+      "conditionId": 1,
+      "nextNodeId": 0,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3152,
+      "text": "我先去处理手边的事。",
+      "conditionId": 1,
+      "nextNodeId": 0,
+      "actionIds": [],
+      "hideWhenLocked": false
+    },
+    {
+      "id": 3153,
+      "text": "我先去处理手边的事。",
+      "conditionId": 1,
+      "nextNodeId": 0,
+      "actionIds": [],
+      "hideWhenLocked": false
     }
   ]
 }

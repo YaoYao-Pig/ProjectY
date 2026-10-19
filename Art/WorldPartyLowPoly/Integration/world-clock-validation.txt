@@ -1,0 +1,7 @@
+PASS idle time and caravan movement advance at the three configured rates without random travel checks
+PASS pause freezes everyone; changing speed and planning a route preserve pause
+PASS arrival stops only the squad and consumes the remaining frame as idle world time
+PASS idle HUD exposes world pause and labels the 1/2/3 shortcuts
+PASS modal UI and camp retain their pause lease without changing the selected clock state
+PASS a hostile pursues and contacts a stationary player without requiring a move command
+Temporary save: C:\Users\yyz\AppData\Local\Temp\project-y-world-clock-0fdc342d45e848bf888720db613a53a6.json

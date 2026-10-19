@@ -40,6 +40,12 @@ local ok,err=xpcall(function()
         assert(area.cells[pot.CellIndex].blocked and not base.cells[pot.CellIndex].blocked)
         assert(not eq:Loot(areas,pot.Id),'Unbroken pottery must not be searchable')
         assert(not cc:CanArea(actor,5,pot.Id),'Healing must not damage a container')
+        local blockedRound=state.WorldRound;local durability=physical.Of(pot).Durability
+        local allowed,reason=cc:CanArea(actor,3,pot.Id)
+        assert(not allowed and reason:find('触媒'),'A learned spell must require a catalyst even for exploration containers')
+        allowed,reason=adventure.characterSkills:Use(actor.Id,3,pot.Id)
+        assert(not allowed and reason:find('触媒') and state.WorldRound==blockedRound and physical.Of(pot).Durability==durability,
+            'Rejected container casting must preserve exploration time and durability')
         assert(not cc:CanArea(actor,3,boss.Id),'Encounter-locked boss reward must resist attacks')
         assert(not eq:Loot(areas,5),'Crate requires equipped crowbar or destruction')
         assert(eq:Grant(74,1));local crowbar
@@ -49,6 +55,10 @@ local ok,err=xpcall(function()
         assert(eq:Loot(areas,5));eq.worldLoot.session:Close();assert(state.WorldRound==round+1)
         assert(eq:Command('unequip_offhand',actor.Id));assert(eq:Loot(areas,5));eq.worldLoot.session:Close()
         assert(state.WorldRound==round+1,'An already opened crate must not charge the tool cost twice')
+        local staff
+        for i=0,eq.data.WeaponCount-1 do local weapon=eq.data:GetWeaponAt(i);if weapon.ItemId==1 then staff=weapon;break end end
+        assert(staff and eq:Command('equip',actor.Id,staff.Id),'Container caster must equip the configured starter catalyst')
+        assert(not cc:CanArea(actor,3,boss.Id),'Encounter lock must still reject a caster with a valid catalyst')
         local rows=adventure.characterSkills:Rows(actor.Id,'life');local skill
         for _,row in ipairs(rows) do if row.id==3 then skill=row end end
         assert(skill and skill.target=='container' and skill.available,'Exploration skill bar must expose container targets')
@@ -90,6 +100,7 @@ local ok,err=xpcall(function()
     test('combat attacks spend normal AP and never add containers to the initiative',function()
         local board=require('Game.Battle.BattleBoard').FromArea(area,5,5,8);board.allowed=function()return true end
         battle:StartArea(1,board,{{actor=actor,q=3,r=6}},{enemy})
+        assert(loadfile('Tools/Tests/combat_phase_fixture.lua'))()(battle)
         local function turn()
             for i=0,battle.data.TurnCount-1 do if battle.data:GetTurnAt(i)==actor.Id then battle:BeginTurn(i);return end end
             error('Missing player turn')
@@ -131,6 +142,7 @@ local ok,err=xpcall(function()
         local enemy=CS.ProjectY.Data.CombatActorData(990,4);enemy:SetMaxHP(100);enemy:Restore();enemy:Deploy(2,8,8)
         local board=require('Game.Battle.BattleBoard').FromArea(area,5,5,8);board.allowed=function()return true end
         battle:StartArea(1,board,{{actor=actor,q=3,r=4}},{enemy})
+        assert(loadfile('Tools/Tests/combat_phase_fixture.lua'))()(battle)
         for i=0,battle.data.TurnCount-1 do if battle.data:GetTurnAt(i)==actor.Id then battle:BeginTurn(i) end end
         local skill=battle:Skill(actor,103);assert(skill.maxTargets==3 and skill.splashRadius==2)
         local middle=state:GetLootAt(1);local before=physical.Of(middle).Durability

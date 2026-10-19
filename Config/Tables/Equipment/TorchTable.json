@@ -1,0 +1,26 @@
+{
+  "version": 1,
+  "name": "TorchTable",
+  "description": "队伍便携火炬：随背包所有权生效，开关随叙事状态存档；只改变局部画面照明。",
+  "key": "id",
+  "fields": [
+    { "name": "id", "type": "int", "description": "照明配方编号", "min": 1 },
+    { "name": "itemId", "type": "int", "description": "背包中的火炬物品", "ref": "EquipmentItemTable" },
+    { "name": "color", "type": "string", "description": "火光的 HTML 颜色" },
+    { "name": "intensity", "type": "float", "description": "局部点光强度", "min": 0.1 },
+    { "name": "range", "type": "float", "description": "照明半径，米", "min": 1 },
+    { "name": "height", "type": "float", "description": "相对领队脚底的光源高度，米", "min": 0.1 },
+    { "name": "description", "type": "text", "description": "背包详情中的用途和操作说明" }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "itemId": 94,
+      "color": "#FFD09A",
+      "intensity": 3.6,
+      "range": 9,
+      "height": 1.8,
+      "description": "便携照明工具 · 留在共享背包即可使用，不占武器槽。探索时按 T 或在时间 / 天气窗口开关；照亮领队周围 9 米，进入战斗后保持照明。不会揭开探索迷雾，不消耗数量。"
+    }
+  ]
+}

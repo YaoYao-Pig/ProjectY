@@ -29,7 +29,16 @@
         "head",
         "shaft",
         "magazine",
-        "thruster"
+        "thruster",
+        "catalyst",
+        "rail",
+        "edge",
+        "grip",
+        "pommel",
+        "bowlimb",
+        "bowstring",
+        "muzzle",
+        "stock"
       ]
     },
     {
@@ -55,7 +64,7 @@
   "rows": [
     {
       "id": 1,
-      "name": "杖头 · 散射",
+      "name": "杖头组件",
       "weaponItemId": 1,
       "kind": "head",
       "position": [
@@ -72,7 +81,7 @@
     },
     {
       "id": 2,
-      "name": "杆身 · 精准",
+      "name": "杖身组件",
       "weaponItemId": 1,
       "kind": "shaft",
       "position": [
@@ -106,7 +115,7 @@
     },
     {
       "id": 4,
-      "name": "剑脊 · 推进器",
+      "name": "剑脊 · 机械组件",
       "weaponItemId": 44,
       "kind": "thruster",
       "position": [
@@ -123,7 +132,7 @@
     },
     {
       "id": 5,
-      "name": "剑脊 · 推进器",
+      "name": "剑脊 · 机械组件",
       "weaponItemId": 45,
       "kind": "thruster",
       "position": [
@@ -137,6 +146,1825 @@
         0
       ],
       "calloutSide": "right"
+    },
+    {
+      "id": 6,
+      "name": "剑脊 · 奥术触媒",
+      "weaponItemId": 40,
+      "kind": "catalyst",
+      "position": [
+        0,
+        0.3,
+        -0.045
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 7,
+      "name": "剑脊 · 奥术触媒",
+      "weaponItemId": 41,
+      "kind": "catalyst",
+      "position": [
+        0,
+        0.36,
+        -0.045
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 101,
+      "name": "杖头组件",
+      "weaponItemId": 601,
+      "kind": "head",
+      "position": [
+        0,
+        1.25,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 102,
+      "name": "杖身组件",
+      "weaponItemId": 601,
+      "kind": "shaft",
+      "position": [
+        0,
+        0.43,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 103,
+      "name": "杖头组件",
+      "weaponItemId": 602,
+      "kind": "head",
+      "position": [
+        0,
+        1.27,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 104,
+      "name": "杖身组件",
+      "weaponItemId": 602,
+      "kind": "shaft",
+      "position": [
+        0,
+        0.43,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 105,
+      "name": "杖头组件",
+      "weaponItemId": 603,
+      "kind": "head",
+      "position": [
+        0,
+        1.3,
+        -0.025
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 106,
+      "name": "杖身组件",
+      "weaponItemId": 603,
+      "kind": "shaft",
+      "position": [
+        0,
+        0.43,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 107,
+      "name": "弹匣仓",
+      "weaponItemId": 604,
+      "kind": "magazine",
+      "position": [
+        0,
+        0.04,
+        0.22
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 108,
+      "name": "枪弓导轨",
+      "weaponItemId": 604,
+      "kind": "rail",
+      "position": [
+        -0.105,
+        0.18,
+        0.12
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 109,
+      "name": "弹匣仓",
+      "weaponItemId": 605,
+      "kind": "magazine",
+      "position": [
+        0,
+        0.04,
+        0.22
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 110,
+      "name": "枪弓导轨",
+      "weaponItemId": 605,
+      "kind": "rail",
+      "position": [
+        -0.105,
+        0.18,
+        0.12
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 111,
+      "name": "弹匣仓",
+      "weaponItemId": 606,
+      "kind": "magazine",
+      "position": [
+        0,
+        0.04,
+        0.22
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 112,
+      "name": "枪弓导轨",
+      "weaponItemId": 606,
+      "kind": "rail",
+      "position": [
+        -0.105,
+        0.18,
+        0.12
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 113,
+      "name": "剑脊 · 奥术触媒",
+      "weaponItemId": 607,
+      "kind": "catalyst",
+      "position": [
+        0,
+        0.31,
+        -0.045
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 114,
+      "name": "刃面配件",
+      "weaponItemId": 607,
+      "kind": "edge",
+      "position": [
+        0,
+        0.72,
+        0.038
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 115,
+      "name": "剑脊 · 奥术触媒",
+      "weaponItemId": 608,
+      "kind": "catalyst",
+      "position": [
+        0,
+        0.31,
+        -0.045
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 116,
+      "name": "刃面配件",
+      "weaponItemId": 608,
+      "kind": "edge",
+      "position": [
+        0,
+        0.72,
+        0.038
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 117,
+      "name": "剑脊 · 奥术触媒",
+      "weaponItemId": 609,
+      "kind": "catalyst",
+      "position": [
+        0,
+        0.31,
+        -0.045
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 118,
+      "name": "刃面配件",
+      "weaponItemId": 609,
+      "kind": "edge",
+      "position": [
+        0,
+        0.72,
+        0.045
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 119,
+      "name": "刃面配件",
+      "weaponItemId": 610,
+      "kind": "edge",
+      "position": [
+        0,
+        0.68,
+        0.055
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 120,
+      "name": "刃面配件",
+      "weaponItemId": 611,
+      "kind": "edge",
+      "position": [
+        0,
+        0.68,
+        0.052
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 121,
+      "name": "刃面配件",
+      "weaponItemId": 612,
+      "kind": "edge",
+      "position": [
+        0,
+        0.68,
+        0.058
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 122,
+      "name": "剑脊 · 机械组件",
+      "weaponItemId": 613,
+      "kind": "thruster",
+      "position": [
+        0,
+        0.7,
+        -0.09
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 123,
+      "name": "刃面配件",
+      "weaponItemId": 613,
+      "kind": "edge",
+      "position": [
+        0,
+        1.06,
+        0.078
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 124,
+      "name": "剑脊 · 机械组件",
+      "weaponItemId": 614,
+      "kind": "thruster",
+      "position": [
+        0,
+        0.7,
+        -0.09
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 125,
+      "name": "刃面配件",
+      "weaponItemId": 614,
+      "kind": "edge",
+      "position": [
+        0,
+        1.06,
+        0.085
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 126,
+      "name": "剑脊 · 机械组件",
+      "weaponItemId": 615,
+      "kind": "thruster",
+      "position": [
+        0,
+        0.7,
+        -0.09
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 127,
+      "name": "刃面配件",
+      "weaponItemId": 615,
+      "kind": "edge",
+      "position": [
+        -0.04,
+        1.06,
+        0.075
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 128,
+      "name": "枪弓导轨",
+      "weaponItemId": 616,
+      "kind": "rail",
+      "position": [
+        -0.06,
+        0.23,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 129,
+      "name": "枪弓导轨",
+      "weaponItemId": 617,
+      "kind": "rail",
+      "position": [
+        -0.06,
+        0.23,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 130,
+      "name": "枪弓导轨",
+      "weaponItemId": 618,
+      "kind": "rail",
+      "position": [
+        -0.06,
+        0.23,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 131,
+      "name": "刃面配件",
+      "weaponItemId": 619,
+      "kind": "edge",
+      "position": [
+        -0.18,
+        0.79,
+        0.08
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 132,
+      "name": "刃面配件",
+      "weaponItemId": 620,
+      "kind": "edge",
+      "position": [
+        0.16,
+        1.1,
+        0.083
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 201,
+      "name": "瞄准导轨",
+      "weaponItemId": 2,
+      "kind": "rail",
+      "position": [
+        -0.105,
+        0.18,
+        0.12
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 202,
+      "name": "枪口组件",
+      "weaponItemId": 2,
+      "kind": "muzzle",
+      "position": [
+        0,
+        0.18,
+        1.112
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 203,
+      "name": "枪托组件",
+      "weaponItemId": 2,
+      "kind": "stock",
+      "position": [
+        0.069,
+        0.11,
+        -0.35
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 204,
+      "name": "刃部组件",
+      "weaponItemId": 40,
+      "kind": "edge",
+      "position": [
+        0,
+        0.7308,
+        0.036
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 205,
+      "name": "握柄组件",
+      "weaponItemId": 40,
+      "kind": "grip",
+      "position": [
+        0,
+        -0.0792,
+        0.044
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 206,
+      "name": "柄尾配重",
+      "weaponItemId": 40,
+      "kind": "pommel",
+      "position": [
+        0,
+        -0.206,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 207,
+      "name": "刃部组件",
+      "weaponItemId": 41,
+      "kind": "edge",
+      "position": [
+        0,
+        0.8568,
+        0.036
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 208,
+      "name": "握柄组件",
+      "weaponItemId": 41,
+      "kind": "grip",
+      "position": [
+        0,
+        -0.0864,
+        0.044
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 209,
+      "name": "柄尾配重",
+      "weaponItemId": 41,
+      "kind": "pommel",
+      "position": [
+        0,
+        -0.226,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 210,
+      "name": "刃部组件",
+      "weaponItemId": 42,
+      "kind": "edge",
+      "position": [
+        0,
+        1.0206,
+        0.036
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 211,
+      "name": "握柄组件",
+      "weaponItemId": 42,
+      "kind": "grip",
+      "position": [
+        0,
+        -0.1404,
+        0.044
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 212,
+      "name": "柄尾配重",
+      "weaponItemId": 42,
+      "kind": "pommel",
+      "position": [
+        0,
+        -0.376,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 213,
+      "name": "刃部组件",
+      "weaponItemId": 43,
+      "kind": "edge",
+      "position": [
+        0,
+        1.1844,
+        0.036
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 214,
+      "name": "握柄组件",
+      "weaponItemId": 43,
+      "kind": "grip",
+      "position": [
+        0,
+        -0.1512,
+        0.044
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 215,
+      "name": "柄尾配重",
+      "weaponItemId": 43,
+      "kind": "pommel",
+      "position": [
+        0,
+        -0.406,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 216,
+      "name": "刃部组件",
+      "weaponItemId": 44,
+      "kind": "edge",
+      "position": [
+        0,
+        1.2096,
+        0.036
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 217,
+      "name": "握柄组件",
+      "weaponItemId": 44,
+      "kind": "grip",
+      "position": [
+        0,
+        -0.1764,
+        0.044
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 218,
+      "name": "柄尾配重",
+      "weaponItemId": 44,
+      "kind": "pommel",
+      "position": [
+        0,
+        -0.476,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 219,
+      "name": "刃部组件",
+      "weaponItemId": 45,
+      "kind": "edge",
+      "position": [
+        0,
+        1.3356,
+        0.036
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 220,
+      "name": "握柄组件",
+      "weaponItemId": 45,
+      "kind": "grip",
+      "position": [
+        0,
+        -0.1872,
+        0.044
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 221,
+      "name": "柄尾配重",
+      "weaponItemId": 45,
+      "kind": "pommel",
+      "position": [
+        0,
+        -0.506,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 222,
+      "name": "瞄准导轨",
+      "weaponItemId": 46,
+      "kind": "rail",
+      "position": [
+        -0.06,
+        0.23,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 223,
+      "name": "弓臂组件",
+      "weaponItemId": 46,
+      "kind": "bowlimb",
+      "position": [
+        0.15,
+        0.426788,
+        0.035
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 224,
+      "name": "弓弦组件",
+      "weaponItemId": 46,
+      "kind": "bowstring",
+      "position": [
+        0.248985,
+        -0.235043,
+        0.012
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 225,
+      "name": "刃部组件",
+      "weaponItemId": 70,
+      "kind": "edge",
+      "position": [
+        0.3,
+        0.8,
+        0.07
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 226,
+      "name": "握柄组件",
+      "weaponItemId": 70,
+      "kind": "grip",
+      "position": [
+        0,
+        -0.09,
+        0.044
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 227,
+      "name": "柄尾配重",
+      "weaponItemId": 70,
+      "kind": "pommel",
+      "position": [
+        0,
+        -0.236,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 228,
+      "name": "刃部组件",
+      "weaponItemId": 71,
+      "kind": "edge",
+      "position": [
+        0.3,
+        0.96,
+        0.07
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 229,
+      "name": "握柄组件",
+      "weaponItemId": 71,
+      "kind": "grip",
+      "position": [
+        0,
+        -0.09,
+        0.044
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 230,
+      "name": "柄尾配重",
+      "weaponItemId": 71,
+      "kind": "pommel",
+      "position": [
+        0,
+        -0.236,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 231,
+      "name": "刃部组件",
+      "weaponItemId": 72,
+      "kind": "edge",
+      "position": [
+        0.33,
+        1.11,
+        0.065
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 232,
+      "name": "握柄组件",
+      "weaponItemId": 72,
+      "kind": "grip",
+      "position": [
+        0,
+        -0.09,
+        0.044
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 233,
+      "name": "柄尾配重",
+      "weaponItemId": 72,
+      "kind": "pommel",
+      "position": [
+        0,
+        -0.236,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 234,
+      "name": "刃部组件",
+      "weaponItemId": 73,
+      "kind": "edge",
+      "position": [
+        0.0,
+        1.24,
+        0.036
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 235,
+      "name": "握柄组件",
+      "weaponItemId": 73,
+      "kind": "grip",
+      "position": [
+        0,
+        -0.1152,
+        0.044
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 236,
+      "name": "柄尾配重",
+      "weaponItemId": 73,
+      "kind": "pommel",
+      "position": [
+        0,
+        -0.306,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 237,
+      "name": "刃部组件",
+      "weaponItemId": 74,
+      "kind": "edge",
+      "position": [
+        0.16,
+        0.65,
+        0.028
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 238,
+      "name": "握柄组件",
+      "weaponItemId": 74,
+      "kind": "grip",
+      "position": [
+        0,
+        -0.1224,
+        0.044
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 239,
+      "name": "柄尾配重",
+      "weaponItemId": 74,
+      "kind": "pommel",
+      "position": [
+        0,
+        -0.326,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 240,
+      "name": "枪口组件",
+      "weaponItemId": 604,
+      "kind": "muzzle",
+      "position": [
+        0,
+        0.18,
+        1.142
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 241,
+      "name": "枪托组件",
+      "weaponItemId": 604,
+      "kind": "stock",
+      "position": [
+        0.069,
+        0.11,
+        -0.35
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 242,
+      "name": "枪口组件",
+      "weaponItemId": 605,
+      "kind": "muzzle",
+      "position": [
+        0,
+        0.18,
+        1.062
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 243,
+      "name": "枪托组件",
+      "weaponItemId": 605,
+      "kind": "stock",
+      "position": [
+        0.069,
+        0.11,
+        -0.35
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 244,
+      "name": "枪口组件",
+      "weaponItemId": 606,
+      "kind": "muzzle",
+      "position": [
+        0,
+        0.18,
+        1.096
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 245,
+      "name": "枪托组件",
+      "weaponItemId": 606,
+      "kind": "stock",
+      "position": [
+        0.069,
+        0.11,
+        -0.35
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 246,
+      "name": "握柄组件",
+      "weaponItemId": 607,
+      "kind": "grip",
+      "position": [
+        0,
+        -0.0972,
+        0.044
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 247,
+      "name": "柄尾配重",
+      "weaponItemId": 607,
+      "kind": "pommel",
+      "position": [
+        0,
+        -0.256,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 248,
+      "name": "握柄组件",
+      "weaponItemId": 608,
+      "kind": "grip",
+      "position": [
+        0,
+        -0.10584,
+        0.044
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 249,
+      "name": "柄尾配重",
+      "weaponItemId": 608,
+      "kind": "pommel",
+      "position": [
+        0,
+        -0.28,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 250,
+      "name": "握柄组件",
+      "weaponItemId": 609,
+      "kind": "grip",
+      "position": [
+        0,
+        -0.118519,
+        0.044
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 251,
+      "name": "柄尾配重",
+      "weaponItemId": 609,
+      "kind": "pommel",
+      "position": [
+        0,
+        -0.315219,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 252,
+      "name": "握柄组件",
+      "weaponItemId": 610,
+      "kind": "grip",
+      "position": [
+        0,
+        -0.135,
+        0.044
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 253,
+      "name": "柄尾配重",
+      "weaponItemId": 610,
+      "kind": "pommel",
+      "position": [
+        0,
+        -0.361,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 254,
+      "name": "握柄组件",
+      "weaponItemId": 611,
+      "kind": "grip",
+      "position": [
+        0,
+        -0.135,
+        0.044
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 255,
+      "name": "柄尾配重",
+      "weaponItemId": 611,
+      "kind": "pommel",
+      "position": [
+        0,
+        -0.361,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 256,
+      "name": "握柄组件",
+      "weaponItemId": 612,
+      "kind": "grip",
+      "position": [
+        0,
+        -0.1584,
+        0.044
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 257,
+      "name": "柄尾配重",
+      "weaponItemId": 612,
+      "kind": "pommel",
+      "position": [
+        0,
+        -0.426,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 258,
+      "name": "握柄组件",
+      "weaponItemId": 613,
+      "kind": "grip",
+      "position": [
+        0,
+        -0.171,
+        0.044
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 259,
+      "name": "柄尾配重",
+      "weaponItemId": 613,
+      "kind": "pommel",
+      "position": [
+        0,
+        -0.461,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 260,
+      "name": "握柄组件",
+      "weaponItemId": 614,
+      "kind": "grip",
+      "position": [
+        0,
+        -0.171,
+        0.044
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 261,
+      "name": "柄尾配重",
+      "weaponItemId": 614,
+      "kind": "pommel",
+      "position": [
+        0,
+        -0.461,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 262,
+      "name": "握柄组件",
+      "weaponItemId": 615,
+      "kind": "grip",
+      "position": [
+        0,
+        -0.171,
+        0.044
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 263,
+      "name": "柄尾配重",
+      "weaponItemId": 615,
+      "kind": "pommel",
+      "position": [
+        0,
+        -0.461,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 264,
+      "name": "弓臂组件",
+      "weaponItemId": 616,
+      "kind": "bowlimb",
+      "position": [
+        0.15,
+        0.428766,
+        0.035
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 265,
+      "name": "弓弦组件",
+      "weaponItemId": 616,
+      "kind": "bowstring",
+      "position": [
+        0.252695,
+        -0.236132,
+        0.012
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 266,
+      "name": "弓臂组件",
+      "weaponItemId": 617,
+      "kind": "bowlimb",
+      "position": [
+        0.15,
+        0.428766,
+        0.035
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 267,
+      "name": "弓弦组件",
+      "weaponItemId": 617,
+      "kind": "bowstring",
+      "position": [
+        0.252695,
+        -0.236132,
+        0.012
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 268,
+      "name": "弓臂组件",
+      "weaponItemId": 618,
+      "kind": "bowlimb",
+      "position": [
+        0.15,
+        0.428766,
+        0.035
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 269,
+      "name": "弓弦组件",
+      "weaponItemId": 618,
+      "kind": "bowstring",
+      "position": [
+        0.252695,
+        -0.236132,
+        0.012
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 270,
+      "name": "握柄组件",
+      "weaponItemId": 619,
+      "kind": "grip",
+      "position": [
+        0,
+        -0.09,
+        0.044
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 271,
+      "name": "柄尾配重",
+      "weaponItemId": 619,
+      "kind": "pommel",
+      "position": [
+        0,
+        -0.236,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 272,
+      "name": "握柄组件",
+      "weaponItemId": 620,
+      "kind": "grip",
+      "position": [
+        0,
+        -0.09,
+        0.044
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 273,
+      "name": "柄尾配重",
+      "weaponItemId": 620,
+      "kind": "pommel",
+      "position": [
+        0,
+        -0.236,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
     }
   ]
 }

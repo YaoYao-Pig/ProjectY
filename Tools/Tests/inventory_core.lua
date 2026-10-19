@@ -1,4 +1,5 @@
 local EmptyGrowth=assert(loadfile('Tools/Tests/growth_empty.lua'))()
+local Gear=assert(loadfile('Tools/Tests/equipment_read_fixture.lua'))()
 -- No Editor: real exported configuration and production inventory projections/command guards.
 package.path='Lua/?.lua;'..package.path
 local config=require('Config.ConfigSystem')()
@@ -6,9 +7,10 @@ config:OnInit({services={ReadConfig=function(_,name)
     local file=assert(io.open('Assets/GameFramework/Resources/_Gen/Config/'..name..'.bytes','rb'))
     local bytes=file:read('*a');file:close();return bytes
 end}})
-local gear={Id=3,ItemId=53,OwnerActorId=1,Slot='leftRing'}
+local gear=Gear(3,53,1);gear.Slot='leftRing'
 local data={WearableCount=1,WeaponCount=0,MagazineCount=0,StackCount=0,
     GetWearableAt=function() return gear end,
+    GetWearable=function()return gear end,Equipped=function()return nil end,Offhand=function()return nil end,Worn=function()return nil end,
     CanWear=function() return true end,
     Grid={Find=function() return nil end}}
 local stats=require('Game.Battle.CombatStats')(config,data)
@@ -18,7 +20,7 @@ local base=require('Game.Battle.CombatStats')(config)
 assert(stats:Get(actor,'strength')==base:Get(actor,'strength')+2)
 assert(stats:Get(other,'strength')==base:Get(other,'strength'))
 print('PASS real wearable configuration applies attributes only to its owner')
-local system={data=data,rules=stats.equipment,adventure={Phase='map'},Actor=function(_,id) return id==1 and actor or nil end}
+local system={data=data,rules=stats.equipment,adventure={Phase='map'},Actor=function(_,id) return id==1 and actor or id==2 and other or nil end}
 local model=require('Game.Equipment.InventoryModel').New(system,stats)
 local rows=model:Rows(1)
 assert(#rows==1 and rows[1].slot=='leftRing' and rows[1].compatible=='ring' and rows[1].equipMask==12)

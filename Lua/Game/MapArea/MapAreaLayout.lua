@@ -69,7 +69,11 @@ function Layout:FindPath(startIndex, goalIndex, allowed)
 end
 -- 墙格本身可见；射线中途遇墙即阻挡。微小双向偏移避免沿顶点缝隙偷看。
 function Layout:CanSee(origin, target, query)
-    if self.layeredVisibility then return LayeredVisibility.CanSee(self,origin,target,query) end
+    return self:CanTrace(origin,target,query)
+end
+-- includeCell 是可选的路径格筛选；省略时保持完整视线，弹道可只检查指定距离的中间格。
+function Layout:CanTrace(origin,target,query,includeCell)
+    if self.layeredVisibility then return LayeredVisibility.CanSee(self,origin,target,query,includeCell) end
     local distance=Hex.Distance(origin.q,origin.r,target.q,target.r)
     if distance<=1 then return true end
     local ax,_,az=Hex.ToWorld(origin.q,origin.r,0,1)
@@ -78,12 +82,14 @@ function Layout:CanSee(origin, target, query)
         for step=1,distance-1 do
             local t=step/distance
             local q,r=Hex.FromWorld(ax+(bx-ax)*t+epsilon,az+(bz-az)*t+epsilon,1)
-            local cell=self:Find(q,r)
-            if not cell or cell.blocksSight then return false end
-            -- 米制角色眼高；抬升的实体地面会挡住低处目标，避免隔着台地触发遭遇。
-            if origin.height and target.height and cell.height then
-                local eyeHeight=origin.height+(target.height-origin.height)*t+1.6
-                if cell.height>eyeHeight then return false end
+            if not includeCell or includeCell(q,r) then
+                local cell=self:Find(q,r)
+                if not cell or cell.blocksSight then return false end
+                -- 米制角色眼高；抬升的实体地面会挡住低处目标，避免隔着台地触发遭遇。
+                if origin.height and target.height and cell.height then
+                    local eyeHeight=origin.height+(target.height-origin.height)*t+1.6
+                    if cell.height>eyeHeight then return false end
+                end
             end
         end
     end

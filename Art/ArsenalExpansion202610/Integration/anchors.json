@@ -1,0 +1,580 @@
+{
+  "version": 1,
+  "coordinateSystem": "Unity local metres. Confirmed source Blender (x,y,z) maps to Unity (-x,z,-y) using the existing FBX preset and bakeAxisConversion=true. All socket rotations are zero.",
+  "railConvention": "Rail accessory geometry: longitudinal Unity +Z, protrusion Unity -X. Gun/bow side sockets use negative Unity X, matching the source mesh support side and remaining outside the bow string region.",
+  "edgeConvention": "Edge accessory geometry: longitudinal Unity +Y, protrusion Unity +Z. Anchors sit on blade face; existing rear catalyst/thruster remain independent.",
+  "weapons": [
+    {
+      "id": 601,
+      "baseWeaponId": 1,
+      "grip": "inherit exact EquipmentGripTable row of baseWeaponId; source geometry preserves its functional handle",
+      "sockets": [
+        {
+          "kind": "head",
+          "position": [
+            0,
+            1.25,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "shaft",
+          "position": [
+            0,
+            0.43,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": 602,
+      "baseWeaponId": 1,
+      "grip": "inherit exact EquipmentGripTable row of baseWeaponId; source geometry preserves its functional handle",
+      "sockets": [
+        {
+          "kind": "head",
+          "position": [
+            0,
+            1.27,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "shaft",
+          "position": [
+            0,
+            0.43,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": 603,
+      "baseWeaponId": 1,
+      "grip": "inherit exact EquipmentGripTable row of baseWeaponId; source geometry preserves its functional handle",
+      "sockets": [
+        {
+          "kind": "head",
+          "position": [
+            0,
+            1.3,
+            -0.025
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "shaft",
+          "position": [
+            0,
+            0.43,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": 604,
+      "baseWeaponId": 2,
+      "grip": "inherit exact EquipmentGripTable row of baseWeaponId; source geometry preserves its functional handle",
+      "sockets": [
+        {
+          "kind": "magazine",
+          "position": [
+            0,
+            0.04,
+            0.22
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "rail",
+          "position": [
+            -0.105,
+            0.18,
+            0.12
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": 605,
+      "baseWeaponId": 2,
+      "grip": "inherit exact EquipmentGripTable row of baseWeaponId; source geometry preserves its functional handle",
+      "sockets": [
+        {
+          "kind": "magazine",
+          "position": [
+            0,
+            0.04,
+            0.22
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "rail",
+          "position": [
+            -0.105,
+            0.18,
+            0.12
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": 606,
+      "baseWeaponId": 2,
+      "grip": "inherit exact EquipmentGripTable row of baseWeaponId; source geometry preserves its functional handle",
+      "sockets": [
+        {
+          "kind": "magazine",
+          "position": [
+            0,
+            0.04,
+            0.22
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "rail",
+          "position": [
+            -0.105,
+            0.18,
+            0.12
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": 607,
+      "baseWeaponId": 40,
+      "grip": "inherit exact EquipmentGripTable row of baseWeaponId; source geometry preserves its functional handle",
+      "sockets": [
+        {
+          "kind": "catalyst",
+          "position": [
+            0,
+            0.31,
+            -0.045
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "edge",
+          "position": [
+            0,
+            0.72,
+            0.038
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": 608,
+      "baseWeaponId": 40,
+      "grip": "inherit exact EquipmentGripTable row of baseWeaponId; source geometry preserves its functional handle",
+      "sockets": [
+        {
+          "kind": "catalyst",
+          "position": [
+            0,
+            0.31,
+            -0.045
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "edge",
+          "position": [
+            0,
+            0.72,
+            0.038
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": 609,
+      "baseWeaponId": 40,
+      "grip": "inherit exact EquipmentGripTable row of baseWeaponId; source geometry preserves its functional handle",
+      "sockets": [
+        {
+          "kind": "catalyst",
+          "position": [
+            0,
+            0.31,
+            -0.045
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "edge",
+          "position": [
+            0,
+            0.72,
+            0.045
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": 610,
+      "baseWeaponId": 42,
+      "grip": "inherit exact EquipmentGripTable row of baseWeaponId; source geometry preserves its functional handle",
+      "sockets": [
+        {
+          "kind": "edge",
+          "position": [
+            0,
+            0.68,
+            0.055
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": 611,
+      "baseWeaponId": 42,
+      "grip": "inherit exact EquipmentGripTable row of baseWeaponId; source geometry preserves its functional handle",
+      "sockets": [
+        {
+          "kind": "edge",
+          "position": [
+            0,
+            0.68,
+            0.052
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": 612,
+      "baseWeaponId": 42,
+      "grip": "inherit exact EquipmentGripTable row of baseWeaponId; source geometry preserves its functional handle",
+      "sockets": [
+        {
+          "kind": "edge",
+          "position": [
+            0,
+            0.68,
+            0.058
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": 613,
+      "baseWeaponId": 44,
+      "grip": "inherit exact EquipmentGripTable row of baseWeaponId; source geometry preserves its functional handle",
+      "sockets": [
+        {
+          "kind": "thruster",
+          "position": [
+            0,
+            0.7,
+            -0.09
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "edge",
+          "position": [
+            0,
+            1.06,
+            0.078
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": 614,
+      "baseWeaponId": 44,
+      "grip": "inherit exact EquipmentGripTable row of baseWeaponId; source geometry preserves its functional handle",
+      "sockets": [
+        {
+          "kind": "thruster",
+          "position": [
+            0,
+            0.7,
+            -0.09
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "edge",
+          "position": [
+            0,
+            1.06,
+            0.085
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": 615,
+      "baseWeaponId": 44,
+      "grip": "inherit exact EquipmentGripTable row of baseWeaponId; source geometry preserves its functional handle",
+      "sockets": [
+        {
+          "kind": "thruster",
+          "position": [
+            0,
+            0.7,
+            -0.09
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        },
+        {
+          "kind": "edge",
+          "position": [
+            -0.04,
+            1.06,
+            0.075
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": 616,
+      "baseWeaponId": 46,
+      "grip": "inherit exact EquipmentGripTable row of baseWeaponId; source geometry preserves its functional handle",
+      "sockets": [
+        {
+          "kind": "rail",
+          "position": [
+            -0.06,
+            0.23,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": 617,
+      "baseWeaponId": 46,
+      "grip": "inherit exact EquipmentGripTable row of baseWeaponId; source geometry preserves its functional handle",
+      "sockets": [
+        {
+          "kind": "rail",
+          "position": [
+            -0.06,
+            0.23,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": 618,
+      "baseWeaponId": 46,
+      "grip": "inherit exact EquipmentGripTable row of baseWeaponId; source geometry preserves its functional handle",
+      "sockets": [
+        {
+          "kind": "rail",
+          "position": [
+            -0.06,
+            0.23,
+            0
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": 619,
+      "baseWeaponId": 70,
+      "grip": "inherit exact EquipmentGripTable row of baseWeaponId; source geometry preserves its functional handle",
+      "sockets": [
+        {
+          "kind": "edge",
+          "position": [
+            -0.18,
+            0.79,
+            0.08
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    },
+    {
+      "id": 620,
+      "baseWeaponId": 72,
+      "grip": "inherit exact EquipmentGripTable row of baseWeaponId; source geometry preserves its functional handle",
+      "sockets": [
+        {
+          "kind": "edge",
+          "position": [
+            0.16,
+            1.1,
+            0.083
+          ],
+          "rotation": [
+            0,
+            0,
+            0
+          ]
+        }
+      ]
+    }
+  ],
+  "axisVerification": {
+    "model": "Arsenal_WoundTracerRail",
+    "unityMeshCenter": [
+      -0.0193,
+      0,
+      0.0148
+    ],
+    "unityMeshSize": [
+      0.1135,
+      0.1146,
+      0.3771
+    ],
+    "scale": 1,
+    "bakeAxisConversion": true,
+    "result": "Unity-native check confirmed X reflection; nine off-center socket X values corrected; no FBX changed."
+  }
+}

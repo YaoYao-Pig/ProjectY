@@ -1,0 +1,18 @@
+{
+  "date": "2026-10-11",
+  "scope": "Large-map ground textures and ambient groundcover",
+  "textureAssets": ["Grass", "Forest", "Rock", "Shore", "Snow"],
+  "textureSource": "Built-in image_gen; prompts in Art/MapGround/texture-prompts.json",
+  "textureImporterMetadataSaved": true,
+  "configExport": { "runs": 1, "passed": true, "changedTables": ["MapBiomeTable"] },
+  "luaChecks": {
+    "map_groundcover": { "passed": true, "syntheticCells": 625, "items": 117, "understoryItems": 6, "kinds": 5, "patchOccupancyRange": [0, 0.83], "realCells": 240 },
+    "map_render_snapshot": { "passed": true, "cells": 2598, "waterCells": 692 }
+  },
+  "showcase": { "file": "map-ground-layout.json", "isProductionRandomMap": false, "cells": 288, "surfaces": 6, "mixedCells": 92, "waterCells": 7, "roadCells": 9, "legacyDecorations": 52, "grass": 31, "shrubs": 1, "flowers": 4, "butterflies": 2, "insectGroups": 7 },
+  "explicitCsharpCompilationRequests": 0,
+  "editorAutomaticRefreshObserved": true,
+  "nativePreview": "pending: Unity MCP editor instance not connected",
+  "shaderImport": "initial reserved-word diagnostic fixed in source; native recheck pending",
+  "notRun": ["Play Mode", "full regression", "Player build", "native rendering acceptance"]
+}

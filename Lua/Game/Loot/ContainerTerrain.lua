@@ -7,7 +7,7 @@ function Terrain.Wrap(base,loot,state)
     for i=0,state.LootCount-1 do local container=state:GetLootAt(i);local physical=loot:Physical(container)
         if physical.Configured then
             local definition=loot.rules.containers:Get(container.TableId)
-            for j=0,physical.CellCount-1 do records[physical:GetCellAt(j)]={physical=physical,definition=definition} end
+            for j=0,physical.CellCount-1 do records[physical:GetCellAt(j)]={container=container,physical=physical,definition=definition} end
         end
     end
     local function view(source)
@@ -27,17 +27,35 @@ function Terrain.Wrap(base,loot,state)
             rawset(cells,index,cell);return cell
         end})
         function area:Find(q,r,layer) local cell=source:Find(q,r,layer);return cell and self.cells[cell.index] end
-        function area:CanSee(origin,target,query)
-            if not source:CanSee(origin,target,query) then return false end
+        local function ownClear(origin,target,includeCell)
             local distance=Hex.Distance(origin.q,origin.r,target.q,target.r)
             if distance<=1 then return true end
             local ax,_,az=Hex.ToWorld(origin.q,origin.r,0,1);local bx,_,bz=Hex.ToWorld(target.q,target.r,0,1)
             for _,epsilon in ipairs({-.000001,.000001}) do for step=1,distance-1 do
                 local t=step/distance;local q,r=Hex.FromWorld(ax+(bx-ax)*t+epsilon,az+(bz-az)*t+epsilon,1)
-                local cell=self:Find(q,r,origin.layer)
-                if cell and cell.blocksSight then return false end
+                if not includeCell or includeCell(q,r) then
+                    local cell=area:Find(q,r,origin.layer);local record=cell and records[cell.index]
+                    if record and not record.physical.Destroyed and record.definition.blocksSight then return false end
+                end
             end end
             return true
+        end
+        function area:CanTrace(origin,target,query,includeCell)
+            return source:CanTrace(origin,target,query,includeCell) and ownClear(origin,target,includeCell)
+        end
+        function area:ProjectileBlockers(origin,target,cell)
+            local include=function(q,r)return q==cell.q and r==cell.r end
+            local result={}
+            if source.ProjectileBlockers then result=source:ProjectileBlockers(origin,target,cell)
+            elseif not source:CanTrace(origin,target,nil,include) then
+                result[1]={kind='terrain',key='terrain:'..(cell.layer or 0)..':'..Hex.Key(cell.q,cell.r),cell=cell,name='地形或陈设'}
+            end
+            if not ownClear(origin,target,include) then
+                local record=assert(records[cell.index],'Container blocker lost its physical identity')
+                result[#result+1]={kind='container',key='container:'..record.container.Id,cell=self.cells[cell.index],
+                    container=record.container,physical=record.physical,name=record.container.Name}
+            end
+            return result
         end
         return setmetatable(area,{__index=function(_,key)
             if key=='MoveCost' then return source.MoveCost end

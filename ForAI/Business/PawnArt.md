@@ -18,6 +18,8 @@
 - 最小检查 `python -B Tools/Tests/run_lua.py Tools/Tests/pawn_appearance.lua` 使用真实导表结果，覆盖四套模板、资源存在、插槽冲突与空装备。实际角色实例和部件资源需再用 Unity Edit Mode 检查；不自动进入 Play。
 - AdventureDemo 当前保存 19 项部件引用和七挂点 Rig：原有小队部件 16 项、居民/工匠身体两项、装备系统无手臂身体一项；NPC 资源归 TownLowPoly。`PawnRig` 显式绑定 PawnEquipmentView 与装备目录；同步棋子 Rig 时必须保留该绑定。
 
+- 大地图旗帜、商队与敌队使用独立的[单格队伍棋子](WorldParties.md)；进入战斗后仍按成员和实际身体占地显示，巨狼/岩石巨兽身体通过原 `pawnBindings` 装配。
+
 ## 关键入口
 
 - [可编辑源](../../Art/PawnLowPoly/Source/PawnCommon.blend) / [模型清单](../../Art/PawnLowPoly/Integration/pawn-models.json) / [Unity 部件](../../Assets/DynamicAsset/PawnLowPoly/Models/) / [装配 Prefab](../../Assets/DynamicAsset/PawnLowPoly/Templates/)。

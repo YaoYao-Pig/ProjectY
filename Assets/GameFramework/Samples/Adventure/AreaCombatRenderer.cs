@@ -23,6 +23,7 @@ namespace ProjectY.Samples
         private readonly HashSet<int> neutralCells = new HashSet<int>();
         private readonly HashSet<int> moves = new HashSet<int>();
         private readonly HashSet<int> targets = new HashSet<int>();
+        private readonly HashSet<int> selectedTargets = new HashSet<int>();
         public AreaCombatRenderer(Transform parent, PawnView prefab, Shader shader, Func<PawnAppearanceData.Part, GameObject> resolve)
         {
             this.prefab = prefab; this.resolve = resolve;
@@ -70,6 +71,15 @@ namespace ProjectY.Samples
                     pawn.View.Capture(actor,pawn.View.transform.position,0);enemies.Add(actor.Id, pawn);
                 }
                 pawn.Actor=actor;pawn.View.ApplyAppearance(actor.Appearance, resolve);
+                pawn.Motion.FixedFacing=actor.FixedFootprint;
+                var offset=Vector3.zero;
+                if(actor.FixedFootprint)
+                {
+                    float top=float.NegativeInfinity;
+                    foreach(int index in actor.OccupiedCells){offset+=layout.Cells[index].Position;top=Mathf.Max(top,layout.Cells[index].Position.y);}
+                    offset/=actor.OccupiedCells.Length;offset.y=top;offset-=layout.Cells[actor.CellIndex].Position;
+                }
+                pawn.Motion.VisualOffset=offset;
                 pawn.Motion.Speed=pawn.View.BattleMoveSpeed;pawn.Motion.SetDestination(actor.CellIndex,occupied);
             }
         }
@@ -111,20 +121,22 @@ namespace ProjectY.Samples
                 {actorId=pair.Key;distance=hit;}
             return actorId;
         }
-        public void Draw(Camera camera, AdventureViewData view, MapAreaViewData layout, bool moving, int skillId)
+        public void Draw(Camera camera, AdventureViewData view, MapAreaViewData layout, bool moving, int skillId,IReadOnlyList<int> chosenTargets)
         {
             if (view.Phase != "battle")
             {
                 foreach (var cell in enemyCells) Mark(camera, layout, cell, neutralCells.Contains(cell)?new Color(.96f,.78f,.22f):new Color(.85f, .27f, .2f));
                 return;
             }
-            moves.Clear(); targets.Clear();
+            moves.Clear(); targets.Clear();selectedTargets.Clear();
             if (view.Active.Team == 1)
             {
                 if (moving) foreach (var cell in view.Reachable) moves.Add(cell.CellIndex);
                 var skill = Array.Find(view.Skills, row => row.Id == skillId);
                 if (skill != null) foreach (var id in skill.Targets)
-                    targets.Add(Array.Find(view.Units, actor => actor.Id == id).CellIndex);
+                    foreach(var cell in Array.Find(view.Units, actor => actor.Id == id).OccupiedCells) targets.Add(cell);
+                foreach(var id in chosenTargets)
+                    foreach(var cell in Array.Find(view.Units,actor=>actor.Id==id).OccupiedCells)selectedTargets.Add(cell);
                 if(skill!=null) foreach(var index in skill.TargetCells) targets.Add(index-1);
             }
             foreach (var cell in view.Cells)
@@ -136,6 +148,7 @@ namespace ProjectY.Samples
                 if (neutralCells.Contains(index)) color = new Color(.96f,.78f,.22f);
                 if (moves.Contains(index)) color = new Color(.24f, .76f, .51f);
                 if (targets.Contains(index)) color = new Color(.97f, .76f, .43f);
+                if (selectedTargets.Contains(index)) color = new Color(.31f, .91f, .83f);
                 if (view.Active.CellIndex == index) color = Color.white;
                 Mark(camera, layout, index, color);
             }

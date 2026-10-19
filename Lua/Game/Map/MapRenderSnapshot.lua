@@ -2,7 +2,15 @@
 return function(map)
     local result = { seed = map.seed, generationVersion = map.generationVersion, hexRadius = map.hexRadius,
         cells = {}, buildings = {}, roads = {}, towns = {}, regionCount = #map:GetRegions(),
-        assets = {}, decorations = {}, waterfalls = {}, rivers = {} }
+        assets = {}, decorations = {}, waterfalls = {}, rivers = {}, surfaces = {}, groundcover = {} }
+    local surfaces = {}
+    for i, row in ipairs(map.biomes) do
+        assert(not surfaces[row.id], 'Duplicate render surface biome')
+        surfaces[row.id] = true
+        result.surfaces[i] = { id = row.id, groundTexture = assert(row.groundTexture),
+            textureWorldSize = assert(row.textureWorldSize), textureStrength = assert(row.textureStrength),
+            windStrength = assert(row.windStrength), groundColor = assert(row.groundColor) }
+    end
     local indices = {}
     for i, cell in ipairs(map:GetCells()) do indices[cell] = i end
     local function cellIds(cells)
@@ -11,15 +19,21 @@ return function(map)
     end
     for i, cell in ipairs(map:GetCells()) do
         local x, y, z = map:GetCellWorldPosition(cell.q, cell.r)
-        local weights = {}
+        local weights, first, second = {}, nil, nil
         for j, item in ipairs(cell.biomeWeights) do
+            assert(surfaces[item.regionType], 'Cell references a missing render surface biome')
             weights[j] = { regionType = item.regionType, weight = item.weight }
+            if not first or item.weight > first.weight then second, first = first, item
+            elseif not second or item.weight > second.weight then second = item end
         end
+        assert(first and first.weight > 0, 'Render cell requires a positive biome weight')
         result.cells[i] = { x = x, y = y, z = z, hasWater = cell.waterLevel ~= nil,
             waterLevel = cell.waterLevel or 0, waterDepth = cell.waterDepth or 0,
             isRiver = cell.waterKind == 'river', riverId = cell.riverId or 0,
             flowTo = cell.flowTo and assert(indices[cell.flowTo], 'River flow target is outside this map') or 0,
             weights = weights,
+            surfaceA = first.regionType, surfaceB = second and second.regionType or first.regionType,
+            surfaceBlend = second and second.weight / (first.weight + second.weight) or 0,
             groundColor = {cell.groundColor[1], cell.groundColor[2], cell.groundColor[3]},
             neighbors = cellIds(map:GetNeighbors(cell.q, cell.r)),
             terrainAssetId = cell.terrainAssetId, waterAssetId = cell.waterAssetId }
@@ -38,6 +52,10 @@ return function(map)
     for i, item in ipairs(map:GetDecorations()) do
         result.decorations[i] = { cell = indices[item.cell], assetId = item.assetId, scale = item.scale, yaw = item.yaw,
             height = item.height or item.cell.height }
+    end
+    for i, item in ipairs(assert(map.groundcover, 'Map groundcover has not been built')) do
+        result.groundcover[i] = { cell = assert(indices[item.cell], 'Groundcover cell is outside this map'),
+            kind = item.kind, offsetX = item.offsetX, offsetZ = item.offsetZ, scale = item.scale, yaw = item.yaw, phase = item.phase }
     end
     for i, item in ipairs(map:GetWaterfalls()) do
         result.waterfalls[i] = { from = indices[item.from], to = indices[item.to], drop = item.drop }

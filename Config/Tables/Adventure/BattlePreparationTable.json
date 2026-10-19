@@ -1,0 +1,27 @@
+{
+  "version": 1,
+  "name": "BattlePreparationTable",
+  "description": "进入正式战斗之前的独立部署回合；AP及行动额度沿用角色模板，敌人不行动",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "规则1",
+      "min": 1
+    },
+    {
+      "name": "deploymentRadius",
+      "type": "int",
+      "description": "部署移动距离自己初始格的最大六边形距离",
+      "min": 0,
+      "max": 12
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "deploymentRadius": 2
+    }
+  ]
+}

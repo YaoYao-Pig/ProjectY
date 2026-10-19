@@ -1,6 +1,6 @@
 # MainHud 与屏幕跟随 UI
 
-关键词：MainHud、UIFollower、Overlay、屏幕血条、相机跟随、常驻 HUD、地点、资金、队伍、交互、日志。
+关键词：MainHud、UIFollower、Overlay、屏幕血条、伤害数字、飘字、暴击、相机跟随、常驻 HUD、地点、资金、队伍、交互、日志。
 
 ## 文档目录
 
@@ -8,9 +8,16 @@
 
 ## 正文
 
+- 正式远征复用动态菜单行提供四档地图规模的新游戏、继续和保存（F5），无额外 prefab 绑定；火炬开关复用相同命令通道（T）。队员卡显示实际等级。流程及存档范围见[远征](Adventure.md)与[存档](CharacterSave.md)。
+
 - `MainHud` 是 Main 层、非模态、缓存的唯一常驻 HUD。`AdventureUIBridge.sync` 打开它并管理故事面板；旧 `AdventureJournal` 与独立 `BattleHUD` 不再在远征流程中同时显示。
 - `MainHudModel` 仅读真实远征／区域／战斗状态：地点、资金、可进入地点、可见搜刮点、设施、附近交互、队伍、可见敌人和经历。按钮沿用 `AdventureRuntimeDemo` 和业务命令；不在 UI 复制背包、血量或事件消费状态。
-- 导航增加[任务与同行者](Narrative.md)入口；大地图提供独立三人叙事示例，NPC 好感/阵营/日程及任务进度由 MissionJournal 展示。近距离同优先级时具名 NPC 交谈优先于设施；招募队员显示其 NPC 名称。
+- `InteractionPrompt.Find` 是附近交互的共同查询，按道路可达距离和稳定优先级选择 NPC、设施、容器或障碍；物体头顶 `HudInteraction`、底部动作及 `area_interact_nearest`（E 键）使用同一结果。仅显示当前可交互目标，已在交互中或战斗中隐藏。`InteractionPromptBridge.Track → MainHudView.TrackPoint` 将只读场景位置交给 UIFollower，在相机更新后投影、缩放和淡出；不查找运行时子节点。
+- `Project Y/UI/同步物体交互按键提示` 已生成并保存 HudInteraction Prefab、PanelConfig 及 Root/Key/Label/Follower 绑定。Widget 归 MainHud 生命周期，提示不拦截鼠标；城镇取消第三人称切换按钮，与其他小地图共用格子移动。
+- 状态获得通知通过 `StatusFeedback.Queue` 进入现有头顶弹字池，沿用命中时序，以每角色独立队列显示名称、层数和配置颜色，不触发伤害数字或震屏。`DamageNumberAnimation.statusInterval/statusFontSize` 控制间隔/字号；状态文字位于伤害数字上方，暂停/跳过/角色复用时与原动画共同处理。状态规则见 [GameEffect](GameEffects.md)。
+- 大地图导航复用现有行按钮显示[旅行](WorldTravel.md)目的地、地形、预计分钟、暂停/继续及 1/2/4 倍速；`hud_follow` 在大地图定位旅行小队，在局部地图仍按原规则跟随。地点命令先旅行，到达后进入；无需新增 Prefab 绑定。
+- 大地图底部的独立“营地”按钮调用 `camp_open`，复用已序列化的 `Restart/RestartText` 绑定。菜单通过既有动态行提供四档规模的新游戏、继续游戏、保存远征和火炬开关，分别走明确命令；流程与存档范围见[远征](Adventure.md)和[存档](CharacterSave.md)。顶部“角色养成”负责学习与加点，队员卡显示当前等级；“技能图鉴 · 浏览”只查询技能。营地面板资源接入见[营地](Camp.md)。
+- 导航增加[任务与同行者](Narrative.md)入口；正式远征采用三人开局，NPC 好感/阵营/日程及任务进度由 MissionJournal 展示。近距离同优先级时具名 NPC 交谈优先于设施；招募队员显示其 NPC 名称。
 - 点击 `HudParty` 队员卡选择角色，`CharacterSkill` Widget 显示其实际拥有且带 `life` 标签的技能；空技能、不可用原因、双用途标签和当前目标选择都有独立投影。点击技能后点击场景目标使用，Esc 或取消按钮退出选择；自己为目标的技能可直接释放。生活技能每页四格，上一页/下一页切换；换角色重置页码。选择状态保存在 Demo，切换角色或阶段清除目标选择。
 - `CombatSkillTable.contexts` 是独立使用场景数组，允许 `{life,battle}`；驯服同时出现在生活栏与战斗栏。`CharacterSkills` 负责所有权、场景、目标、可用性与命令分派，生活效果通过 `Register` 接入处理器，战斗效果复用原 BattleCommand。栏位布局不写死驯服 ID，为以后展示其他技能保留同一查询/执行接口。
 - 技能栏制作脚本为 `Art/ForestAnimals/Scripts/create_skill_hud.cs`，经 Unity MCP 创建 Prefab、登记 Widget、绑定 LuaReference 并导出提示；不调用会全局 Refresh 的 PanelAssets.Generate。`MainHudView.SetCharacterSkillBar` 接收显式绑定的容器统一布局。
@@ -24,9 +31,11 @@
 - `BattleFeedbackSystem` 由 MainHud Prefab 持有，Lua `BattleFeedback.Changed` 只消费结算通知；Demo 在角色快照 Capture 后用同一命中延时提交反馈。每次实际攻击伤害独立排入震屏，下一次命中立即中断并重启当前震屏（包括普通命中打断强震屏），不会合并多次伤害或叠加振幅。镜头先计算基础位置再叠加偏移；二维棋盘叠加同源屏幕偏移。
 - 连射仍同步结算，反馈使用原始 `impact.shot` 序号，在首次命中延时后按 `burstHitInterval`（默认 .2 秒）排开；此项序列化于 MainHud Prefab 的 BattleFeedbackSystem，可在 Inspector 调整。漏掉或未命中的子弹保留原时间空档，不补震屏；低帧率按发生时间顺序处理，以最新一次震屏的剩余进度显示。血条目标值仍合并为本次结算后的值。
 - `impact.critical` 与 `impact.defeated` 分别采用默认 1.7 / 2.5 倍幅度，两者同时出现取较强值；致死伤害（含坐骑及持续伤害致死）只排一次强震屏，后续死亡通知不重复播放。普通持续伤害、未命中、零伤害与治疗不震屏。当前没有暴击判定，未来判定层可传 `GameEffects:ApplyPrepared(plan,{shot=n,critical=true})`；`QueueImpact(shotIndex,critical,defeated)` 是组件表现接口，不修改数值。
+- `BattleFeedback.Changed` 将每笔正伤害的实际 `event.amount` 交给伤害数字队列，配置色通过 `DamageFeedback.Queue` 反射桥接传入，空色仍调用 `QueueDamage` 使用原普通/暴击色；颜色来源见 [GameEffect](GameEffects.md)。每笔伤害独立保存颜色，与震屏共用命中延时及逐发间隔。仅头顶 `HudHealth` 绑定 `DamageNumbers`，持续伤害也飘字，治疗、未命中、零伤害和独立死亡通知不生成数字。绑定同时记录角色/血量身份以接住坐骑持续伤害；下坐骑保留已提交数字，更换角色清空。`DamageNumberAnimation` 复用池内模板，以缩放时间播放弹出、回弹、错位上浮及渐隐；字号随实际伤害按对数增长并封顶，暴击保留配置的数字颜色，额外放大、显示金色辉光/描边、“暴击!”与放射闪光。Overlay 下的辉光由字形网格绘制，不依赖相机 Bloom。模板与 UIFollower 均经资源工具显式绑定；时长、字号范围、伤害参考值、暴击倍率和上浮高度可在 Inspector 调整。
 - `HudHealth` / `HudParty` 绑定 `HealthAnimation` 和 `HealthTrail`，淡色底层位于原生命条下方。`HealthBarAnimation` 协程先按曲线掉前景（默认 .22 秒），再掉底层（.38 秒）；等待命中与动画均使用缩放时间。连续伤害从当前显示值继续，重复投影不重启；治疗直接同步两层，更换角色/坐骑血量身份、隐藏及重开清除旧动效。时长、曲线、震屏像素幅度/频率/时长均可在组件 Inspector 调整。
-- 头顶 Widget 按角色身份复用；已显示角色死亡时在现存目标上保留血条到两层归零，再隐藏，不把尸体加入可交互目标或业务存活列表。离场与清空 HUD 取消反馈，空格跳过局部战斗动作时也结束震屏和血条动画。
+- 头顶 Widget 按角色身份复用；已显示角色死亡时保留到双层血条与待播/活动数字全部结束。Retire 时允许 UIFollower 在头部目标销毁后继续投影最后世界位置，重新绑定/清除时释放，不把尸体加入可交互目标或业务存活列表。离场、隐藏与清空 HUD 取消反馈，空格跳过局部战斗动作时也结束震屏、血条和全部数字。
 - 定向资源迁移 `Project Y/UI/同步战斗受击与双层血条` 仅保存 MainHud、HudHealth、HudParty 与 LuaReference/View 提示，保留现有布局和已调参数。检查入口 `Project Y/UI/验证战斗受击与双层血条` 在 PreviewScene 测试双层血条、逐发中断、漏发空档、暴击/死亡幅度、低帧率、暂停/跳过与具名 UI 动画，不进入 Play；`python -B Tools/Tests/run_lua.py Tools/Tests/battle_feedback.lua` 覆盖事件分类和实际 TrySkill 连射循环。
+- 伤害数字沿用上述资源迁移入口保存 `HudHealth.DamageNumbers` 及模板。`Project Y/UI/验证伤害数字` 定向检查已保存绑定、类型颜色/暴击保色、字号/暴击、逐发空档、池复用色彩重置、坐骑身份、暂停/跳过、真实 xLua 桥接与死亡目标销毁后投影，并输出 `Docs/Previews/DamageNumbers.png`（普通/大伤害/暴击/流血/中毒/燃烧的三个动画阶段）；仅在已有 Editor 的 Edit Mode 执行，代码检查不能代替实际预览验收。
 - 资源菜单 `Project Y/UI/创建 MainHud 与跟随血条` 创建 Prefab 和 LuaReference 绑定，重复执行保留手工布局。嵌套 BattleHUD 保持 Prefab 关联，但根节点必须显式设为单位缩放和零旋转：它作为 Widget 嵌入，不执行独立 LuaPanel.Initialize 的归一化。图标和基础布局继续由原资源同步工具维护。
 - 最小检查：`Project Y/UI/验证 MainHud 与 UIFollower` 在独立 PreviewScene 验证导航、生命更新、战斗命令、缓存重开、战斗内容非零缩放、相机旋转/任意锚点的精确投影，以及重叠目标不会被移位，并输出 map/area/battle 三组截图。必须检查实际可见性，不能仅用 Lua visible 标记代替。此检查不进入 Play。基础战斗规则仍用 `battle_hud_core.lua`。
 
@@ -34,9 +43,12 @@
 
 ## 关键入口
 
+- [共享交互查询](../../Lua/Game/Adventure/InteractionPrompt.lua) / [交互 Widget](../../Lua/UI/Widget/HudInteraction.lua) / [场景位置桥接](../../Assets/GameFramework/Samples/Adventure/InteractionPromptBridge.cs) / [永久资源同步](../../Assets/GameFramework/Editor/InteractionPromptAssets.cs)；最小逻辑检查 [interaction_prompt_core.lua](../../Tools/Tests/interaction_prompt_core.lua)。
+
 - [MainHudModel.lua](../../Lua/Game/Adventure/MainHudModel.lua) / [MainHudCtr.lua](../../Lua/UI/Panel/MainHudCtr.lua)：投影与 UI 生命周期。
 - [CharacterSkills.lua](../../Lua/Game/Adventure/CharacterSkills.lua) / [CharacterSkill.lua](../../Lua/UI/Widget/CharacterSkill.lua) / [技能栏检查](../../Tools/Tests/character_skills_core.lua)：技能上下文、所有权、效果适配与角色技能栏。
 - [MainHudView.cs](../../Assets/GameFramework/Runtime/UI/MainHudView.cs) / [UIFollower.cs](../../Assets/GameFramework/Runtime/UI/UIFollower.cs)：布局、相机投影、缩放与隐藏。
 - [MainHudAssets.cs](../../Assets/GameFramework/Editor/MainHudAssets.cs) / [MainHudValidation.cs](../../Assets/GameFramework/Editor/MainHudValidation.cs)：资源和最小验证。
 - [BattleFeedbackSystem.cs](../../Assets/GameFramework/Runtime/UI/BattleFeedbackSystem.cs) / [BattleFeedback.lua](../../Lua/Game/Battle/BattleFeedback.lua)：战斗反馈调度；[HealthBarAnimation.cs](../../Assets/GameFramework/Runtime/UI/HealthBarAnimation.cs)：双层协程；[BattleFeedbackAssets.cs](../../Assets/GameFramework/Editor/BattleFeedbackAssets.cs)：资源绑定。
+- [DamageNumberAnimation.cs](../../Assets/GameFramework/Runtime/UI/DamageNumberAnimation.cs) / [DamageNumberPopup.cs](../../Assets/GameFramework/Runtime/UI/DamageNumberPopup.cs) / [DamageNumberGlow.cs](../../Assets/GameFramework/Runtime/UI/DamageNumberGlow.cs)：数字池、动效与描边辉光；[DamageNumberValidation.cs](../../Assets/GameFramework/Editor/DamageNumberValidation.cs)：定向检查与预览。
 - [main_hud_integration.lua](../../Tools/Tests/main_hud_integration.lua) / [动作设计](../../Docs/CharacterAnimationPlan.md)。

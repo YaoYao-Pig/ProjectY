@@ -54,7 +54,9 @@ function Model:Snapshot()
         local entry=stock:GetAt(i);local item=self.rules.items:Get(entry.ItemId)
         local reason=entry.Count==0 and '已售罄' or adventure.player.Coins<entry.Price and '金币不足' or ''
         if reason=='' and not adventure.equipment:CanGrant({entry.ItemId},{1}) then reason='背包空间不足' end
-        rows[#rows+1]={id=entry.EntryId,name=item.name,width=item.width,height=item.height,price=entry.Price,count=entry.Count,reason=reason,available=reason==''}
+        local name=item.name
+        if item.kind=='weapon' or item.kind=='wearable' then name=name..' · 随机词缀' end
+        rows[#rows+1]={id=entry.EntryId,name=name,width=item.width,height=item.height,price=entry.Price,count=entry.Count,reason=reason,available=reason==''}
     end
     return {name=name,template=template.name,coins=adventure.player.Coins,refreshDay=(stock.Period+1)*template.refreshDays+1,rows=rows,version=self.data.Revision}
 end

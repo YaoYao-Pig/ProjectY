@@ -21,18 +21,20 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.PreparedCharacterSave);
-			Utils.BeginObjectRegister(type, L, translator, 0, 1, 7, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 1, 9, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetActorAt", _m_GetActorAt);
 			
 			
-			Utils.RegisterFunc(L, Utils.GETTER_IDX, "ActorCount", _g_get_ActorCount);
+			Utils.RegisterFunc(L, Utils.GETTER_IDX, "PartyBonds", _g_get_PartyBonds);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "ActorCount", _g_get_ActorCount);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Equipment", _g_get_Equipment);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Seed", _g_get_Seed);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Coins", _g_get_Coins);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "PlayerLevel", _g_get_PlayerLevel);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Narrative", _g_get_Narrative);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "LegacyNarrative", _g_get_LegacyNarrative);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "LegacyProfessions", _g_get_LegacyProfessions);
             
 			
 			
@@ -110,6 +112,20 @@ namespace XLua.CSObjectWrap
         
         
         
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_PartyBonds(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.PreparedCharacterSave gen_to_be_invoked = (ProjectY.Data.PreparedCharacterSave)translator.FastGetCSObj(L, 1);
+                translator.Push(L, gen_to_be_invoked.PartyBonds);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _g_get_ActorCount(RealStatePtr L)
@@ -203,6 +219,20 @@ namespace XLua.CSObjectWrap
 			
                 ProjectY.Data.PreparedCharacterSave gen_to_be_invoked = (ProjectY.Data.PreparedCharacterSave)translator.FastGetCSObj(L, 1);
                 LuaAPI.lua_pushboolean(L, gen_to_be_invoked.LegacyNarrative);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_LegacyProfessions(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.PreparedCharacterSave gen_to_be_invoked = (ProjectY.Data.PreparedCharacterSave)translator.FastGetCSObj(L, 1);
+                LuaAPI.lua_pushboolean(L, gen_to_be_invoked.LegacyProfessions);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }

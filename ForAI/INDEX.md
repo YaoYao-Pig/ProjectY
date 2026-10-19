@@ -7,6 +7,9 @@
 | 任务关键词 | 按需读取 |
 | --- | --- |
 | Lua 风格、需求澄清、过度防御、Unity MCP、最小测试、编译、SubAgent | [开发约束 Skill](../.agents/skills/lua-code-style/SKILL.md) |
+| 设计盘点、玩法差距、未实现、待办、职业划分、自由转职、跨职业学习、主动选学、触媒、专精、战前部署、准备技能、部署道具、直射、抛射、开发顺序 | [玩法设计与实现差距清单](../Docs/GameplayGapAudit.md)（2026-10-11 盘点，2026-10-13 补充职业、触媒与战前部署设计；含未来方案，不替代模块当前契约） |
+| 职业触媒部署验收、联合存档、基础玩法迭代、Play 验收、准备道具 | [基础玩法迭代验收](../Docs/GameplayFoundationIteration.md)（已执行范围与复验入口） |
+| 营地关系战利品验收、技能图标异常、入口整理、v6验收、待同步资源 | [营地／关系／战利品迭代](../Docs/GameplayExpansionIteration.md)（源码与数据层结果，原生资源及本轮实机验收尚未完成） |
 | LuaConsole、Python、运行时注入、执行片段、调试控制台 | [LuaConsole](Tools/LuaConsole.md) |
 | GM、GMSystem、GM 面板、F8、指定槽位升级、按技能 ID 获取技能、查找 NPC、NPC 搜索、传送定位 | [GM 调试系统](Tools/GM.md) |
 | Blender、MCP、建模、FBX、贴图、材质、模型导入、Prefab | [Blender 资源管线](Tools/Blender.md) |
@@ -21,16 +24,20 @@
 | Mission 编辑器、Web 任务、叙事关系图、Agent 工具、CLI、批量变更、影响分析、4179 | [叙事工坊与 Agent 工具](Tools/Narrative.md) |
 | text、本地化、Language.lua、LuaTxt、UITxt、PrefabTxt、i18n、TMP | [本地化](Framework/Localization.md) |
 | Player、金币、等级、奖励、示例流程、Data、ModelSystem | [玩家示例](Business/Player.md) |
-| Battle、战斗、原地战斗、敌群、回合、行动点、技能、效果、属性、特质、敌方 AI | [六边形战斗](Business/Battle.md) |
-| 战斗 UI、BattleHUD、技能栏、物品槽、行动顺序、AP、Sprite、图标配置、自适应 | [战斗 HUD](Business/BattleHUD.md) |
+| Battle、战斗、分段移动、剩余移动距离、原地战斗、回合、行动点、高地、命中、射程、直射、抛射、弹道、trajectory、拦截概率、35/50、友伤、ProjectileCombat、追踪散射、手选目标、敌方 AI | [六边形战斗](Business/Battle.md) |
+| 战斗 UI、BattleHUD、技能栏、悬停、选中反馈、目标确认、取消多选、命中预览、友伤风险、物品槽、行动顺序、AP、Sprite、图标配置、自适应 | [战斗 HUD](Business/BattleHUD.md) |
 | 巧匠、营造、栅栏、木墙、高台、铲子挖掘、坑洞、壕沟、施工材料、Construction | [巧匠营造与战斗地形](Business/Construction.md) |
-| GameEffect、GAS、持续效果、周期伤害、治疗、Buff、叠层、状态图标、战后保留 | [GameEffect](Business/GameEffects.md) |
-| MainHud、常驻 HUD、Overlay、UIFollower、屏幕血条、双层血条、震屏、BattleFeedbackSystem、相机跟随、地点、队伍、交互提示 | [主 HUD 与跟随 UI](Business/MainHud.md) |
-| 装备、武器分类、等级、属性要求、单手剑、大剑、双手巨剑、推进器、槽位引线、法杖、符文、步枪、弹匣、换弹、搜刮、共享背包、3D 改装、持握动作、EquipmentWorkbench | [装备与改装 Demo](Business/Equipment.md) |
-| 网格背包、Inventory、占格、拖拽、旋转、收纳、满包、头部、身体甲、左右戒指、裤子、鞋子、副手、双持、盾牌、角色预览、模型图标、图标导出 | [网格背包与角色装备](Business/Inventory.md) |
+| BuffTable、Buff、Debuff、追踪、manualEnemyTargets、ignoreProjectileBlockers、再生、流血、中毒、燃烧、潮湿、眩晕、互斥、分钟 Buff、GameEffect、GAS、持续效果、周期伤害、治疗、叠层、状态图标、战后保留 | [GameEffect](Business/GameEffects.md) |
+| 物体交互 HUD、E 提示、交互按键、状态飘字、MainHud、常驻 HUD、Overlay、UIFollower、屏幕血条、双层血条、伤害数字、飘字、暴击、震屏、BattleFeedbackSystem、相机跟随、地点、队伍、交互提示 | [主 HUD 与跟随 UI](Business/MainHud.md) |
+| 装备、品质、词缀、附魔、熟练、传奇、破损、武器分类、等级、属性要求、单手剑、大剑、双手巨剑、扩充槽位、四槽工坊、握柄、柄尾配重、弓臂、弓弦、枪口、枪托、grip、pommel、bowlimb、bowstring、muzzle、stock、槽位引线、法杖、符文、转施、allowTransfer、transferSelf、步枪、弹匣、换弹、搜刮、3D 改装、EquipmentWorkbench | [装备与改装 Demo](Business/Equipment.md) |
+| 网格背包、Inventory、独立堆、分堆、同类合并、占格、拖拽、旋转、收纳、满包、头部、身体甲、左右戒指、裤子、鞋子、副手、双持、盾牌、角色预览、模型图标、图标导出 | [网格背包与角色装备](Business/Inventory.md) |
 | 商店、商人、商品模板、随机商品、库存、售价、购买、补货、刷新天数 | [NPC 商店](Business/Shop.md) |
+| Camp、独立营地入口、建设、生产订单、仓库、物资存取、等待生产 | [营地建设与生产](Business/Camp.md) |
+| 队员关系、真实救援、共战、关系阶段、日期纪事、傲慢消除、守望者 | [队员关系与持久经历](Business/PartyStory.md) |
 | 宝箱生成、容器、陶罐、板条箱、武器架、耐久、破坏、掉落、战利品、概率、掉落池、敌人掉落、战后拾取、旧事件战场 | [宝箱与敌人掉落](Business/Loot.md) |
 | 工具性武器、武器标签、斧子、镐子、铲子、撬棍、清障、石堆、木箱、土堆、开锁 | [工具武器与临时障碍](Business/ToolWeapons.md) |
+| 商队、游荡敌人、追击、强盗、巨狼、岩石巨兽、队伍棋子、旗帜、双向交易、WorldParties | [大地图可见队伍](Business/WorldParties.md) |
+| 大地图旅行、行军、路线、改路、旅行暂停、倍速、沿途事件、随机遇敌、随机战场、WorldTravel | [大地图旅行与随机遭遇](Business/WorldTravel.md) |
 | Adventure、探索事件、触发路径、设施交易、配件获取、选择、条件、营地、远征 Demo、战斗结算 | [探索事件与远征](Business/Adventure.md) |
 | Growth、养成、升级、经验、属性加点、被动、网状天赋、技能池、潜力、经历、特质标签、CharacterGrowth、技艺图谱、技能浏览、两级分类、SkillAtlas、技能前置、技能 Tips | [角色养成与经历](Business/Progression.md) |
 | 动物、动物亲和、魅力、驯服、中立、黄色框、坐骑、亲密度、骑兵、冲击、飞扑、跳跃、森林小地图、哥布林刷新 | [森林动物与骑乘](Business/Animals.md) |
@@ -40,11 +47,11 @@
 | 角色样貌、二次元、杏仁眼、发束、头脸、网格破面、拓扑更新 | [角色定制](Business/PawnCustomization.md) |
 | 建筑优化、木筋房、风车、磨坊、谷仓、麦田、稻草人、TownStylized | [城镇建筑美术](Business/TownArt.md) |
 | 所有建筑可进入、装饰建筑、住宅室内、多门、门楼塔房、TownOpenBuildings | [城镇街区与漫游](Business/TownArea.md) |
-| 角色存档、保存队伍、读取队伍、背包存档、磁盘保存 | [角色与背包存档](Business/CharacterSave.md) |
+| 继续游戏、保存远征、随机开局、探索存档、角色存档、保存队伍、读取队伍、背包存档、磁盘保存 | [远征与角色存档](Business/CharacterSave.md) |
 | 攻击模组、剑盾、共持、双持、枪型、offset、Vector3、武器握点、武器朝向、旋转修正、持握组合 | [持武模组与握点](Business/EquipmentMotion.md) |
 | 角色工坊、角色网页、Character Lab、真实 Unity 资源、随机预览、握点编辑、offset 可视化、自动保存、4177 | [角色网页预览](Tools/CharacterPreview.md) |
-| 城镇小地图、第三人称、高位跟随、二楼、楼梯、楼板剖切、逛街、居民、工匠、巡游、酒馆、铁匠铺、商店、公会、广场、露天摊位、山城、联排、台地、台阶、坡道、上下层道路、街桥、连续室内、真实比例、米制、屋顶隐藏、面包房、药草铺、礼拜堂、仓库、马厩、瞭望塔、TownExpansionLowPoly、TownInteriorLowPoly、TownLowPoly | [城镇街区与漫游](Business/TownArea.md) |
-| 地块材质、铺装、城内外地面、地牢墙地、苔藓、木板、昼夜、天气、黄昏、环境光、雾、室内暖灯、MapEnvironmentController | [地图材质与环境表现](Business/MapPresentation.md) |
+| 城镇小地图、走格子、点击移动、高位跟随、二楼、楼梯、楼板剖切、逛街、居民、工匠、巡游、酒馆、铁匠铺、商店、公会、广场、露天摊位、山城、联排、台地、台阶、坡道、上下层道路、街桥、连续室内、真实比例、米制、屋顶隐藏、面包房、药草铺、礼拜堂、仓库、马厩、瞭望塔、TownExpansionLowPoly、TownInteriorLowPoly、TownLowPoly | [城镇街区与漫游](Business/TownArea.md) |
+| 地块材质、地貌贴图、自然分布、灌木、草束、蝴蝶、虫群、铺装、城内外地面、地牢墙地、苔藓、木板、昼夜、天气、黄昏、环境光、雾、室内暖灯、火炬、便携照明、MapEnvironmentController | [地图材质与环境表现](Business/MapPresentation.md) |
 | 装饰物、倒木、芦苇、石井、货车、晾晒架、矿道木架、遗骨、晶簇、MapDressingLowPoly | [地图环境装饰](Business/MapDressing.md) |
 | 王城、最高档城镇、宫殿、御苑、非对称城市、分区生长、临街选址、等高线、街网、RoyalTown | [王城 MapArea](Business/RoyalTown.md) |
 | MapArea、小地图、局部探索、地牢内部、三层混合生成、功能分区、组团、预设房间、变宽通道、多格设施、陈设、墙壁、迷雾、视线、探索格子高亮、距离渐隐、原地战斗、96×96 | [MapArea 局部地图](Business/MapArea.md) |

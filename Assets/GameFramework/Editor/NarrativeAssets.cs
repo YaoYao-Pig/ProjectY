@@ -26,6 +26,19 @@ namespace ProjectY.Editor
             if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Shop UI requires Edit Mode.");
             Entry("Shop",false,false,"Shop");AssetDatabase.SaveAssets();
         }
+        [MenuItem("Project Y/营地/同步营地界面")]
+        public static void CreateCamp()
+        {
+            if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Camp UI requires Edit Mode.");
+            LuaViewHints.Register(typeof(NarrativeView),"CS.ProjectY.UI.NarrativeView");
+            Entry("NarrativeEntry",true,false);Entry("Camp",false,false,"Camp");AssetDatabase.SaveAssets();
+        }
+        [MenuItem("Project Y/大地图/同步队伍交互界面")]
+        public static void CreateWorldParty()
+        {
+            if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("World party UI requires Edit Mode.");
+            Entry("NarrativeEntry",true,false);Entry("WorldParty",false,false,"WorldParty");AssetDatabase.SaveAssets();
+        }
         private static void Entry(string name,bool widget,bool right,string module="Narrative")
         {
             var config=PanelAssets.LoadOrCreate();var entry=config.Entries.Find(e=>e.Name==name);

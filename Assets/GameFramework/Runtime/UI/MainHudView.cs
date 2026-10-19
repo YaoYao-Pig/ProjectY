@@ -41,6 +41,8 @@ namespace ProjectY.UI
         public void TrackScreen(UIFollower follower,Vector2 point)
         {if(!followers.Contains(follower)) followers.Add(follower);follower.BindScreen(layout.Canvas,point);}
         public void Untrack(UIFollower follower) {followers.Remove(follower);follower.Clear();}
+        internal void TrackPoint(UIFollower follower,Camera camera,Vector3 point)
+        {if(!followers.Contains(follower))followers.Add(follower);follower.BindPoint(camera,point,layout.Canvas);}
         public void SetHealth(Image fill,float fraction) {fill.rectTransform.anchorMax=new Vector2(Mathf.Clamp01(fraction),1);}
         public void ApplyLayout()
         {

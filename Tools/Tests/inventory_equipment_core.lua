@@ -25,7 +25,7 @@ data.main=main;data.off=off;assert(not system:HandAllowed(1,large,'weapon'))
 data.off=nil;data.shield=shield;assert(not system:HandAllowed(1,large,'weapon'))
 data.shield=nil;assert(system:HandAllowed(1,large,'weapon'));data.off=off
 print('PASS single-hand, shield and two-hand conflicts in both directions')
-local actor={Id=1,Team=1,Growth=EmptyGrowth(),TemplateId=1,TraitCount=0,ActionTemplateId=1,ActionSequence=0,ActionShots=0,ActionTargetQ=0,ActionTargetR=0}
+local actor={Id=1,Team=1,Growth=EmptyGrowth(),Effects={Count=0},TemplateId=1,TraitCount=0,ActionTemplateId=1,ActionSequence=0,ActionShots=0,ActionTargetQ=0,ActionTargetR=0}
 local ids=rules:SkillIds(actor,stats:Template(actor));local count=0
 for _,id in ipairs(ids) do if id==13 then count=count+1 end end
 assert(count==1)

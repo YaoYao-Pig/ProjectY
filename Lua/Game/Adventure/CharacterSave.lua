@@ -1,6 +1,9 @@
 -- 外部文件先完整准备和校验，再创建新地图并提交；失败不改当前队伍。
 local Save={}
 function Save.Validate(adventure,prepared)
+    require('Game.Adventure.Torch').ValidateSaved(prepared)
+    adventure.camp.rules:ValidateSaved(CS.ProjectY.Data.CampData.Prepared(prepared),prepared.LegacyNarrative and 0 or prepared.Narrative.Minutes)
+    adventure.partyStory:ValidateSaved(prepared)
     if adventure.shop then adventure.shop.rules:ValidateSaved(CS.ProjectY.Data.ShopData.Prepared(prepared),prepared.LegacyNarrative and 0 or prepared.Narrative.Minutes) end
     if adventure.narrative and not prepared.LegacyNarrative then require('Game.Narrative.NarrativeSave').Validate(adventure.narrative,prepared) end
     local config=adventure.config;local equipment=require('Game.Equipment.EquipmentRules').New(config,prepared.Equipment)
@@ -14,6 +17,9 @@ function Save.Validate(adventure,prepared)
         assert(adventure.appearances.templates[actor.TemplateId],'存档角色没有外观模板')
         for j=0,actor.TraitCount-1 do config:GetTable('CombatTraitTable'):Get(actor:GetTraitAt(j)) end
         local growth=actor.Growth
+        if prepared.LegacyProfessions then adventure.growth:InitializeProfession(actor) end
+        stats.growth.professions.professions:Get(growth.CurrentProfessionId)
+        for j=0,growth.ProfessionCount-1 do stats.growth.professions.professions:Get(growth:GetProfessionAt(j)) end
         for j=0,growth.AttributeCount-1 do assert(attributes[growth:GetAttributeNameAt(j)],'存档属性已不在配置中') end
         for j=0,growth.TreeCount-1 do config:GetTable('TalentTreeTable'):Get(growth:GetTreeAt(j)) end
         for j=0,growth.TalentCount-1 do local id=growth:GetTalentAt(j);local row=config:GetTable('TalentNodeTable'):Get(id);assert(growth:GetRank(id)<=row.maxRank,'存档天赋等级超过配置') end
@@ -31,6 +37,7 @@ function Save.Validate(adventure,prepared)
     local data=prepared.Equipment
     for i=0,data.WeaponCount-1 do
         local weapon=data:GetWeaponAt(i);local definition=equipment.weapons:Get(weapon.ItemId)
+        equipment.affixes:Of(weapon)
         assert(equipment.items:Get(weapon.ItemId).kind=='weapon','存档武器类型无效')
         if weapon.Hand=='offhand' then assert(definition.hands==1,'双手武器不能在副手') end
         if weapon.Hand=='weapon' and definition.hands==2 then assert(not data:Offhand(weapon.OwnerActorId) and not data:Worn(weapon.OwnerActorId,'offhand'),'存档双手武器与副手冲突') end
@@ -42,30 +49,38 @@ function Save.Validate(adventure,prepared)
         end
     end
     for i=0,data.WearableCount-1 do local item=data:GetWearableAt(i);local definition=equipment.wearables:Get(item.ItemId)
+        equipment.affixes:Of(item)
         if item.OwnerActorId~=0 then assert(definition.slot==((item.Slot=='leftRing' or item.Slot=='rightRing') and 'ring' or item.Slot),'存档防具槽不兼容') end
     end
     for i=0,data.MagazineCount-1 do local item=data:GetMagazineAt(i);local definition=equipment.magazines:Get(item.ItemId)
         assert(item.Capacity==definition.capacity and item.AmmoItemId==definition.ammoItemId,'存档弹匣规格与配置不符') end
     for i=0,data.StackCount-1 do local row=data:GetStackAt(i);local item=equipment.items:Get(row.ItemId)
-        assert(item.kind=='rune' or item.kind=='module' or item.kind=='ammo' or item.kind=='material','存档堆叠类型无效') end
+        assert(item.kind=='rune' or item.kind=='module' or item.kind=='ammo' or item.kind=='material' or item.kind=='consumable','存档堆叠类型无效') end
 end
 function Save.Write(adventure)
+    if adventure.parties.data.IsOpen then return false,'请先结束队伍交互再保存' end
+    if adventure.equipment.worldLoot.session.Active then return false,'请先关闭战利品窗口再保存' end
+    if adventure.camp.data.IsOpen then return false,'请先关闭营地再保存' end
     if adventure.shop and adventure.shop.data.IsOpen then return false,'请先关闭商店再保存' end
     if adventure.narrative and adventure.narrative.data.DialogueOpen then return false,'请先结束对话再保存' end
-    if adventure.data.Phase~='map' and adventure.data.Phase~='area' then return false,'只能在探索期间保存队伍' end
+    if adventure.data.Phase~='map' and adventure.data.Phase~='area' then return false,'只能在大地图或区域探索期间保存远征' end
     local ok,err=pcall(function() adventure.characterSaves:Save(adventure.data,adventure.player) end)
     return ok,ok and '' or tostring(err)
 end
 function Save.Read(adventure)
+    if adventure.parties.data.IsOpen then return false,'请先结束队伍交互再读取' end
+    if adventure.equipment.worldLoot.session.Active then return false,'请先关闭战利品窗口再读取' end
+    if adventure.camp.data.IsOpen then return false,'请先关闭营地再读取' end
     if adventure.shop and adventure.shop.data.IsOpen then return false,'请先关闭商店再读取' end
     if adventure.narrative and adventure.narrative.data.DialogueOpen then return false,'请先结束对话再读取' end
     if adventure.data.Phase~='map' and adventure.data.Phase~='area' then return false,'只能在探索期间读取队伍' end
-    local ok,prepared=pcall(function()
-        local candidate=adventure.characterSaves:Prepare(adventure.data.Equipment);Save.Validate(adventure,candidate);return candidate
+    local ok,result=pcall(function()
+        local candidate=adventure.characterSaves:Prepare(adventure.data.Equipment);Save.Validate(adventure,candidate)
+        return {prepared=candidate,world=require('Game.Adventure.ExpeditionSave').Prepare(adventure,candidate)}
     end)
-    if not ok then return false,tostring(prepared) end
-    adventure:Start(prepared.Seed)
-    adventure.characterSaves:Apply(prepared,adventure.data,adventure.player)
+    if not ok then return false,tostring(result) end
+    local prepared,world=result.prepared,result.world
+    adventure:RestorePrepared(prepared,world)
     if adventure.narrative then adventure.narrative.lastRevision=nil;adventure.narrative:Refresh() end
     return true
 end

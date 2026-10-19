@@ -11,7 +11,7 @@ end
 function AreaSystem:SquadFootprint(layout,ids)
     local animals=self.combatStats.animals;local species,caches,bySpecies={},{},{}
     for i,id in ipairs(ids) do
-        local row=animals:Species(self:PartyActor(id));species[i]=row
+        local row=animals:Shape(self:PartyActor(id));species[i]=row
         local key=row and #row.footprintQ>1 and row or false
         if not bySpecies[key] then bySpecies[key]={} end
         caches[i]=bySpecies[key]
@@ -136,6 +136,7 @@ function AreaSystem:Activate(site,worldSeed,fromEvent)
         layout=self.construction:Layout(layout,site.id);self.layouts[site.id]=layout
     end
     local state=self.data:Enter(site.id,#layout.cells,layout.entryIndex)
+    CS.ProjectY.Data.ExpeditionPersistence.Definition(state,layout.configId)
     self:InitializeEncounters(layout,state)
     if state.NpcCount==0 then for _,npc in ipairs(layout.npcs) do state:AddNpc(npc.id,npc.spawnIndex) end end
     if self.narrative then self.narrative.npcs:SyncPresence() end
@@ -178,8 +179,9 @@ function AreaSystem:InitializeEncounters(layout,state)
                     actor:Deploy(plan.team or 2,cell.q,cell.r)
                 else
                     assert(not plan.team or plan.team==2,'Only animals can be neutral encounter actors')
-                    self.characterAppearances:Assign(actor,appearanceGroup)
+                    if not self.combatStats.animals:IsStaticBody(actor) then self.characterAppearances:Assign(actor,appearanceGroup) end
                 end
+                self.context.systems:Get('Equipment'):InitializeEnemy(actor)
                 actor:SetMaxHP(self.combatStats:MaximumHP(actor));actor:Restore()
             end
         end
@@ -196,6 +198,50 @@ function AreaSystem:EnemyOccupancy(layout,state,exceptGroup)
                 for _,cell in ipairs(assert(self.combatStats.animals:Cells(actor,layout))) do occupied[cell.index]=true end
             end
         end end
+    end
+    return occupied
+end
+-- 每次攻击读取当前权威位置；战斗中的队员用战斗坐标，探索中用编队坐标。
+function AreaSystem:ShotOccupancy(sourceId,targetId,battle,layer)
+    local area,state=self:ActiveLayout(),self.data.Active
+    local Hex=require('Game.Map.HexGrid');local occupied={}
+    local function addCell(cell,descriptor)
+        if cell.layer==layer then
+            local entry={};for key,value in pairs(descriptor)do entry[key]=value end
+            entry.cell=cell;occupied[Hex.Key(cell.q,cell.r)]=entry
+        end
+    end
+    local function addActor(actor,cell)
+        if actor.Id~=sourceId and actor.Id~=targetId and actor.HP>0 and actor.AnimalOwnerId==0 then
+            local descriptor={kind='actor',key='actor:'..actor.Id,actor=actor}
+            for _,part in ipairs(assert(self.combatStats.animals:Cells(actor,area,cell.q,cell.r,cell.layer))) do addCell(part,descriptor) end
+        end
+    end
+    for i=0,state.MemberCount-1 do
+        local actor=self:PartyActor(state:GetMemberIdAt(i))
+        local cell=battle and assert(area:Find(actor.Q,actor.R,layer)) or area.cells[state:GetMemberCellAt(i)]
+        addActor(actor,cell)
+    end
+    for i=0,state.EncounterCount-1 do local group=state:GetEncounterAt(i)
+        for j=0,group.EnemyCount-1 do local actor=group:GetEnemyAt(j)
+            addActor(actor,assert(area:Find(actor.Q,actor.R)))
+        end
+    end
+    for i=0,state.NpcCount-1 do local npc=state:GetNpcAt(i)
+        if npc.Present then
+            local definition=area.npcs and area.npcs[i+1]
+            local name=definition and self.config and self.config:GetTable('MapAreaTownNpcTable'):Get(definition.templateId).name or '居民'
+            addCell(area.cells[npc.CellIndex],{kind='npc',key='npc:'..self.data.ActiveSiteId..':'..(npc.Id or i+1),name=name})
+        end
+    end
+    if self.obstacles then
+        local site=self.data.ActiveSiteId
+        for i=1,self.obstacles.data:Count(site)do local row=self.obstacles.data:Get(site,i)
+            if row.BlocksMovement and not row.Cleared then
+                local descriptor={kind='obstacle',key='obstacle:'..site..':'..row.Id,obstacle=row,name=self.obstacles.rules:Get(row.RuleId).name}
+                for j=0,row.CellCount-1 do addCell(area.cells[row:GetCellAt(j)],descriptor)end
+            end
+        end
     end
     return occupied
 end
@@ -237,6 +283,8 @@ function AreaSystem:StartBattle(battle,group)
     for _,row in ipairs(party) do radius=math.max(radius,Hex.Distance(center.q,center.r,row.q,row.r)) end
     for _,actor in ipairs(enemies) do radius=math.max(radius,Hex.Distance(center.q,center.r,actor.Q,actor.R)) end
     local board=self:BattleWindow(center.index,radius+rule.battleMargin)
+    board.lootStartCount=state.LootCount
+    board.shotOccupancy=function(sourceId,targetId) return self:ShotOccupancy(sourceId,targetId,battle,board.originLayer) end
     board.onRoundCompleted=function() state:CompleteWorldRound() end
     local obstacles=self.obstacles and self.obstacles:BlockedCells() or {}
     board.allowed=function(cell) return state:IsKnown(cell.index) and not obstacles[cell.index] end

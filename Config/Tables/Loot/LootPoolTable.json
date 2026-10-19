@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "LootPoolTable",
-  "description": "每个条目独立判定的掉落池；可能同时命中多项，也可能为空。",
+  "description": "普通容器提供稳定补给与随机装备，首领奖励和武器架按权重抽取；生成后固定内容。",
   "key": "id",
   "fields": [
     {
@@ -62,7 +62,7 @@
     },
     {
       "id": 5,
-      "name": "首领奖励武器",
+      "name": "守卫宝库 · 进阶装备",
       "seedSalt": 719,
       "mode": "weighted",
       "drawCount": 2
@@ -72,6 +72,13 @@
       "name": "武器架",
       "seedSalt": 811,
       "mode": "weighted",
+      "drawCount": 1
+    },
+    {
+      "id": 7,
+      "name": "散落生活补给",
+      "seedSalt": 929,
+      "mode": "independent",
       "drawCount": 1
     }
   ]

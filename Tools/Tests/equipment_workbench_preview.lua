@@ -1,16 +1,19 @@
 -- Read-only workbench queries against actual configuration; no Editor or player inventory.
 package.path='Lua/?.lua;'..package.path
 local config=require('Config.ConfigSystem')()
+CS={ProjectY={Data={EquipmentConditionData={Of=function(item)return assert(item.condition,'Fixture equipment requires durability')end},
+    EquipmentAffixData={Of=function(item)return assert(item.affixId,'Fixture equipment requires an affix')end}}}}
+local function condition()return {Current=100,Maximum=100,BaseMaximum=100,Broken=false,Efficiency=1}end
 config:OnInit({services={ReadConfig=function(_,name)
     local file=assert(io.open('Assets/GameFramework/Resources/_Gen/Config/'..name..'.bytes','rb'))
     local bytes=file:read('*a');file:close();return bytes
 end}})
 local function weapon(id,itemId,runes)
-    return {Id=id,ItemId=itemId,OwnerActorId=0,Hand='',MagazineId=0,GetRune=function(_,slot)return runes and runes[slot] or 0 end}
+    return {Id=id,ItemId=itemId,OwnerActorId=0,Hand='',MagazineId=0,affixId=1,condition=condition(),GetRune=function(_,slot)return runes and runes[slot] or 0 end}
 end
 local main,off,staff=weapon(1,40),weapon(2,41),weapon(3,1,{[1]=11,[2]=12})
 main.OwnerActorId=7;main.Hand='weapon';off.OwnerActorId=7;off.Hand='offhand'
-local shield={Id=4,ItemId=57,OwnerActorId=7,Slot='offhand'}
+local shield={Id=4,ItemId=57,OwnerActorId=7,Slot='offhand',affixId=1,condition=condition()}
 local data={main=main,shield=shield,Revision=19,WearableCount=1}
 function data:Equipped(id)assert(id==7);return self.main end
 function data:Offhand(id)assert(id==7);return self.off end

@@ -20,6 +20,7 @@ namespace ProjectY.Data
         public int EncounterId { get; private set; }
         public int MaxRounds { get; private set; }
         public int Round { get; private set; }
+        public string Phase { get; private set; } = "idle";
         public int ActiveId { get; private set; }
         public int TurnIndex { get; private set; }
         public string Winner { get; private set; } = "";
@@ -33,6 +34,7 @@ namespace ProjectY.Data
         {
             units.Clear(); order.Clear(); logs.Clear();
             EncounterId = 0; MaxRounds = 0; Round = 0; ActiveId = 0; TurnIndex = 0; Winner = "";
+            Phase = "idle";
         }
         public void Reset(int encounterId, int maxRounds)
         {
@@ -41,7 +43,7 @@ namespace ProjectY.Data
         }
         public void AddUnit(CombatActorData unit, int team, int q, int r)
         {
-            if (unit == null || Round != 0 || EncounterId == 0) throw new InvalidOperationException("Invalid deployment.");
+            if (unit == null || Phase != "idle" || Round != 0 || EncounterId == 0) throw new InvalidOperationException("Invalid deployment.");
             foreach (var other in units)
                 if (other.Id == unit.Id || (other.Q == q && other.R == r)) throw new InvalidOperationException("Duplicate actor or spawn.");
             unit.Deploy(team, q, r); units.Add(unit);
@@ -50,10 +52,15 @@ namespace ProjectY.Data
         {
             var unit = new CombatActorData(id, templateId); AddUnit(unit, 2, q, r); return unit;
         }
+        public void BeginDeployment()
+        {
+            if (Phase != "idle" || EncounterId == 0 || units.Count == 0) throw new InvalidOperationException("Battle cannot deploy.");
+            Phase = "deployment"; order.Clear();
+        }
         public void BeginRound()
         {
-            if (Winner != "" || Round >= MaxRounds) throw new InvalidOperationException("Battle cannot advance.");
-            Round++; order.Clear();
+            if ((Phase != "deployment" && Phase != "combat") || Winner != "" || Round >= MaxRounds) throw new InvalidOperationException("Battle cannot advance.");
+            Phase = "combat"; Round++; order.Clear();
         }
         public void AddTurn(int id)
         {
@@ -66,7 +73,7 @@ namespace ProjectY.Data
         {
             if (Winner != "" || (winner != "victory" && winner != "defeat" && winner != "draw"))
                 throw new InvalidOperationException("Invalid or duplicate battle result.");
-            Winner = winner;
+            Winner = winner; Phase = "ended";
         }
         public void AddLog(string message)
         {

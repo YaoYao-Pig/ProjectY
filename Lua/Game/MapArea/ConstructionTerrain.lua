@@ -32,17 +32,36 @@ local function projection(base,definition,lazy)
         if b and (b.kind~='platform' or climb) then extra=math.max(extra,b.moveExtra) end
         return 1+extra
     end
-    function area:CanSee(origin,target,query)
-        if not base:CanSee(origin,target,query) then return false end
+    local function ownClear(origin,target,includeCell)
         local distance=Hex.Distance(origin.q,origin.r,target.q,target.r)
         if distance<=1 then return true end
         local ax,_,az=Hex.ToWorld(origin.q,origin.r,0,1);local bx,_,bz=Hex.ToWorld(target.q,target.r,0,1)
         for _,epsilon in ipairs({-.000001,.000001}) do for step=1,distance-1 do
             local t=step/distance;local q,r=Hex.FromWorld(ax+(bx-ax)*t+epsilon,az+(bz-az)*t+epsilon,1)
-            local cell=self:Find(q,r);local row=cell and definition(cell)
-            if row and row.blocksSight and cell.baseHeight+row.height>=origin.height+1+(target.height-origin.height)*t then return false end
+            if not includeCell or includeCell(q,r) then
+                local cell=area:Find(q,r,origin.layer);local row=cell and definition(cell)
+                if row and row.blocksSight and cell.baseHeight+row.height>=origin.height+1+(target.height-origin.height)*t then return false end
+            end
         end end
         return true
+    end
+    function area:CanTrace(origin,target,query,includeCell)
+        return base:CanTrace(origin,target,query,includeCell) and ownClear(origin,target,includeCell)
+    end
+    function area:ProjectileBlockers(origin,target,cell)
+        local include=function(q,r)return q==cell.q and r==cell.r end
+        local result={}
+        if base.ProjectileBlockers then result=base:ProjectileBlockers(origin,target,cell)
+        elseif not base:CanTrace(origin,target,nil,include) then
+            result[1]={kind='terrain',key='terrain:'..(cell.layer or 0)..':'..Hex.Key(cell.q,cell.r),cell=cell,name='地形或陈设'}
+        end
+        if not ownClear(origin,target,include) then
+            local record=assert(self.construction:Record(self.constructionSite,cell.index),'Construction blocker lost its record')
+            local name=self.construction.skills and self.construction.skills:Get(record.SkillId).name or '工事'
+            result[#result+1]={kind='construction',key='construction:'..self.constructionSite..':'..cell.index,
+                cell=self.cells[cell.index],record=record,name=name}
+        end
+        return result
     end
     return setmetatable(area,{__index=function(_,key) return Layout[key] or base[key] end})
 end

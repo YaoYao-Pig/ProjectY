@@ -133,25 +133,40 @@ function Town.Generate(area,row,random,config)
         area.rooms[#area.rooms+1]={id=#area.rooms+1,name='第 '..anchor.band..' 层 · '..block.name,tier=3,presetId=block.id,center=buildingCenter.index}
         for i,dq in ipairs(block.decorQ) do local x,y=terrain:World(aq+dq,anchor.r+block.decorR[i]);streetSlots[#streetSlots+1]={q=x,r=y,rotation=terrain.turn} end
     end
-    local homes=0
+    local homes=0;local searches={}
+    local function nextHome(search)
+        if homes+search.lot.houseUnits>row.houseCount then return false end
+        while search.next<=#search.candidates do
+            local candidate=search.candidates[search.next];search.next=search.next+1
+            local door=place(search.lot,candidate.q,candidate.r,search.rotation,true)
+            if door then homes=homes+search.lot.houseUnits;doors[#doors+1]=door;return true end
+        end
+        return false
+    end
     for _,slot in ipairs(shuffled(slots,random)) do
         if homes>=row.houseCount then break end
         local lot=lots:Get(row.houseLotIds[random:Integer(1,#row.houseLotIds)])
         assert(lot.houseUnits>0,'Residential lot has no house units')
-        local door=place(lot,slot.q,slot.r,slot.rotation,true)
         -- 以预设街区为生长中心，在有限范围内为完整联排找空地；大店铺和桥头净空优先。
         local candidates={}
-        if not door then Geometry.Disk(slot.q,slot.r,row.houseSearchRadius,function(q,r,dq,dr)
+        Geometry.Disk(slot.q,slot.r,row.houseSearchRadius,function(q,r,dq,dr)
             candidates[#candidates+1]={q=q,r=r,distance=Hex.Distance(0,0,dq,dr)}
-        end) end
+        end)
         table.sort(candidates,function(a,b)return a.distance<b.distance or a.distance==b.distance and (a.r<b.r or a.r==b.r and a.q<b.q)end)
-        for _,candidate in ipairs(candidates) do
-            if door then break end
-            door=place(lot,candidate.q,candidate.r,slot.rotation,true)
-        end
-        if door then homes=homes+lot.houseUnits;doors[#doors+1]=door end
+        local search={lot=lot,rotation=slot.rotation,candidates=candidates,next=1}
+        searches[#searches+1]=search;nextHome(search)
     end
-    assert(homes==row.houseCount,'Town presets cannot fit configured residential groups: '..homes..'/'..row.houseCount)
+    -- 先让各预设长出一组；有预设受阻时，继续消耗其他预设范围内尚未尝试的合法地块。
+    -- 游标只前进，不反复重试失败候选；仍使用完整占地、门洞和公共街道连通检查。
+    while homes<row.houseCount do
+        local added=false
+        for _,search in ipairs(searches) do
+            if homes>=row.houseCount then break end
+            if nextHome(search) then added=true end
+        end
+        if not added then break end
+    end
+    assert(homes==row.houseCount,'Town presets cannot fit configured residential groups: '..homes..'/'..row.houseCount..' (profile='..row.id..', seed='..area.seed..')')
     local knownDoors={};for _,door in ipairs(doors) do knownDoors[door.index]=true end
     for _,room in ipairs(area.interiors) do for _,index in ipairs(room.doorIndices) do
         if not knownDoors[index] then doors[#doors+1]=area.cells[index];knownDoors[index]=true end

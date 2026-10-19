@@ -24,6 +24,7 @@ namespace ProjectY.Samples
             public readonly Matrix4x4[] Matrices = new Matrix4x4[1023];
             public readonly Vector4[] Colors = new Vector4[1023];
             public Vector4[] WaterFlows;
+            public Vector4[] GroundData;
             public readonly MaterialPropertyBlock Properties = new MaterialPropertyBlock();
         }
         private readonly Dictionary<GameObject, Model> models = new Dictionary<GameObject, Model>();
@@ -36,6 +37,8 @@ namespace ProjectY.Samples
         private Mesh waterMesh;
         private readonly List<Material> waterMaterials = new List<Material>();
         private readonly MapWaterEffects waterEffects;
+        private readonly MapGroundPresentation groundPresentation;
+        private readonly MapNatureRenderer natureRenderer;
         public Bounds Bounds { get; private set; }
 
         public MapPreviewRenderer(Shader shader, Transform owner)
@@ -44,6 +47,8 @@ namespace ProjectY.Samples
             if (shader == null || !shader.isSupported) throw new InvalidOperationException("地图预览 Shader 缺失或不受支持。");
             material = new Material(shader) { name = "地图预览_实例材质", enableInstancing = true };
             waterEffects = new MapWaterEffects(owner);
+            groundPresentation = new MapGroundPresentation();
+            natureRenderer = new MapNatureRenderer(owner);
             roadMaterial = new Material(shader) { name = "地图预览_道路", color = new Color32(210, 180, 136, 255) };
             roadObject = new GameObject("生成的道路", typeof(MeshFilter), typeof(MeshRenderer));
             roadObject.transform.SetParent(owner, false);
@@ -71,7 +76,7 @@ namespace ProjectY.Samples
         }
 
         private void Add(GameObject prefab, Kind kind, Vector3 position, Vector3 scale, Quaternion rotation,
-            Color? ground = null, string tintMaterial = null, Vector4 waterFlow = default)
+            Color? ground = null, string tintMaterial = null, Vector4 waterFlow = default, Vector4 groundData = default)
         {
             var model = GetModel(prefab);
             if (!model.Groups.TryGetValue(kind, out var groups))
@@ -86,7 +91,8 @@ namespace ProjectY.Samples
                 if (group.Count == 0 || group[group.Count - 1].Count == 1023)
                 {
                     var added = new Batch { Mesh = model.Mesh, Submesh = slot, Kind = kind,
-                        WaterFlows = kind == Kind.Water ? new Vector4[1023] : null };
+                        WaterFlows = kind == Kind.Water ? new Vector4[1023] : null,
+                        GroundData = kind == Kind.Terrain ? new Vector4[1023] : null };
                     group.Add(added); batches.Add(added);
                 }
                 var batch = group[group.Count - 1];
@@ -99,6 +105,7 @@ namespace ProjectY.Samples
                 // SetVectorArray 不执行 Color 的颜色空间转换，线性项目须显式转换。
                 batch.Colors[batch.Count] = QualitySettings.activeColorSpace == ColorSpace.Linear ? color.linear : color;
                 if (kind == Kind.Water) batch.WaterFlows[batch.Count] = waterFlow;
+                if (kind == Kind.Terrain) batch.GroundData[batch.Count] = groundData;
                 batch.Matrices[batch.Count++] = Matrix4x4.TRS(position, rotation, scale);
             }
         }
@@ -119,6 +126,8 @@ namespace ProjectY.Samples
             batches.Clear();
             foreach (var model in models.Values) model.Groups.Clear();
             waterEffects.Build(map);
+            groundPresentation.Build(map);
+            natureRenderer.Build(map);
             Bounds = new Bounds(map.Cells[0].Position, Vector3.zero);
             var bottom = map.Cells[0].Position.y;
             foreach (var cell in map.Cells) { Bounds = Encapsulate(Bounds, cell.Position); bottom = Mathf.Min(bottom, cell.Position.y); }
@@ -128,7 +137,7 @@ namespace ProjectY.Samples
                 var cell = map.Cells[cellIndex];
                 Add(prefabs[cell.TerrainAssetId], Kind.Terrain, cell.Position,
                     new Vector3(map.Radius, cell.Position.y - bottom, map.Radius), Quaternion.identity,
-                    cell.Color, assets[cell.TerrainAssetId].TintMaterial);
+                    cell.Color, assets[cell.TerrainAssetId].TintMaterial, groundData: groundPresentation.GetData(cell));
                 if (cell.HasWater)
                     Add(prefabs[cell.WaterAssetId], Kind.Water, new Vector3(cell.Position.x, cell.WaterLevel, cell.Position.z),
                         new Vector3(map.Radius, 1, map.Radius), Quaternion.identity, waterFlow: waterEffects.Flows[cellIndex]);
@@ -167,6 +176,7 @@ namespace ProjectY.Samples
             {
                 batch.Properties.SetVectorArray("_Color", batch.Colors);
                 if (batch.Kind == Kind.Water) batch.Properties.SetVectorArray("_WaterFlow", batch.WaterFlows);
+                if (batch.Kind == Kind.Terrain) batch.Properties.SetVectorArray("_GroundData", batch.GroundData);
             }
             BuildRoads(map);
             BuildWaterEdges(map, prefabs, assets);
@@ -324,6 +334,7 @@ namespace ProjectY.Samples
         public void SetVisible(bool visible)
         {
             roadObject.SetActive(visible); waterEdges.SetActive(visible); waterEffects.SetVisible(visible);
+            natureRenderer.SetVisible(visible);
         }
 
         public void Draw(Camera camera, bool water, bool buildings, bool roads, bool decorations)
@@ -332,11 +343,14 @@ namespace ProjectY.Samples
             waterEdges.SetActive(water);
             waterEffects.SetVisible(water);
             waterEffects.Tick(camera, Time.deltaTime);
+            natureRenderer.SetVisible(decorations);
+            natureRenderer.Draw(camera, decorations);
             foreach (var batch in batches)
             {
                 if (batch.Kind == Kind.Water && !water || batch.Kind == Kind.Building && !buildings ||
                     batch.Kind == Kind.Decoration && !decorations) continue;
-                var batchMaterial = batch.Kind == Kind.Water ? waterEffects.SurfaceMaterial : material;
+                var batchMaterial = batch.Kind == Kind.Water ? waterEffects.SurfaceMaterial
+                    : batch.Kind == Kind.Terrain ? groundPresentation.Material : material;
                 Graphics.DrawMeshInstanced(batch.Mesh, batch.Submesh, batchMaterial, batch.Matrices, batch.Count, batch.Properties,
                     batch.Kind == Kind.Water ? ShadowCastingMode.Off : ShadowCastingMode.On, true, 0, camera,
                     LightProbeUsage.Off);
@@ -349,6 +363,7 @@ namespace ProjectY.Samples
             foreach (var value in waterMaterials) Release(value);
             waterMaterials.Clear(); Release(waterEdges);
             waterEffects.Dispose();
+            natureRenderer.Dispose(); groundPresentation.Dispose();
             Release(roadObject); Release(material); Release(roadMaterial);
             batches.Clear(); models.Clear();
         }

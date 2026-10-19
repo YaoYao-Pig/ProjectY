@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using System.Linq;
 using XLua;
 
 namespace ProjectY.Data
@@ -28,8 +29,27 @@ namespace ProjectY.Data
         public void Record(string kind, string title, string body, string location, int eventId, int choiceId, int subjectId, bool shared)
         {
             if (subjectId != 0 && !party.Exists(actor => actor.Id == subjectId)) throw new ArgumentException("Unknown chronicle subject.");
+            if (!shared && subjectId == 0) throw new ArgumentException("A personal chronicle needs a subject.");
             var participants = shared ? party.ConvertAll(actor => actor.Id).ToArray() : new[] { subjectId };
-            journal.Add(new ChronicleEntryData(journal.Count + 1, kind, title, body, location, eventId, choiceId, subjectId, participants));
+            journal.Add(new ChronicleEntryData(journal.Count + 1, kind, title, body, location, eventId, choiceId, subjectId, Narrative.Minutes, 0, 0, participants));
+        }
+        public void RecordPair(string kind, string title, string body, string location, int eventId, int choiceId, int subjectId, int objectId, int relationDelta)
+        {
+            if (subjectId == objectId || !party.Exists(actor => actor.Id == subjectId) || !party.Exists(actor => actor.Id == objectId))
+                throw new ArgumentException("A pair chronicle needs two known party actors.");
+            journal.Add(new ChronicleEntryData(journal.Count + 1, kind, title, body, location, eventId, choiceId, subjectId,
+                Narrative.Minutes, objectId, relationDelta, new[] { subjectId, objectId }));
+        }
+        internal ChronicleSave[] CaptureJournal() => journal.Select(entry => entry.Capture()).ToArray();
+        internal static ChronicleEntryData[] PrepareJournal(ChronicleSave[] saved, HashSet<int> actorIds)
+        {
+            var rows = SaveCheck.Rows(saved, 10000, "经历条数");
+            return rows.Select((row, index) => ChronicleEntryData.Prepare(row, index + 1, actorIds)).ToArray();
+        }
+        internal void RestoreJournal(ChronicleEntryData[] prepared)
+        {
+            if (prepared == null) throw new ArgumentNullException(nameof(prepared));
+            journal.Clear(); journal.AddRange(prepared);
         }
         public BattleData Battle { get; } = new BattleData();
         public MapAreaData Areas { get; } = new MapAreaData();
@@ -47,7 +67,7 @@ namespace ProjectY.Data
         public bool HasVisited(int siteId) => visited.Contains(siteId);
         public void Reset(uint seed)
         {
-            Seed = seed; party.Clear(); visited.Clear(); journal.Clear(); storyTriggers.Clear(); Battle.Clear(); Areas.Clear(); Equipment.Clear(); Narrative.Clear(); Shops.Clear();
+            Seed = seed; party.Clear(); visited.Clear(); journal.Clear(); storyTriggers.Clear(); Battle.Clear(); Areas.Clear(); Equipment.Clear(); Equipment.AffixSeed=seed; Narrative.Clear(); Shops.Clear(); Camp.Clear(); PartyBonds.Clear(); WorldParties.Clear();
             EventReturnPhase = "map"; StoryTriggerKey = "";
             EventActorId = 0; EventLocation = "";
             Phase = "map"; SiteId = 0; EventId = 0; ChoiceId = 0; AreaEncounterId = 0; ResultText = "";

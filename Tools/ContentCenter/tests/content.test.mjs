@@ -19,6 +19,7 @@ test('model-first recipe clones all supported item kinds and isolates weapon rel
     const state=snapshot(root),recipe=createAuthoring(state.tables).item({name:'新物品 '+templateId,modelPath:'Assets/Models/Test.fbx',templateId}),patch={revision:state.revision,operations:recipe.operations};
     assert.equal(review(root,patch).valid,true);assert.equal(snapshot(root).revision,state.revision);
     if(templateId===1){const weapon=recipe.operations.find(o=>o.table==='EquipmentWeaponTable').row,old=state.tables.find(t=>t.name==='EquipmentWeaponTable').rows.find(r=>r.id===1);assert.notEqual(weapon.gripId,old.gripId);assert.notEqual(weapon.requirementId,old.requirementId);assert(weapon.socketIds.every(id=>!old.socketIds.includes(id)));}
+    if(templateId===51){const wearable=recipe.operations.find(o=>o.table==='EquipmentWearableTable').row,old=state.tables.find(t=>t.name==='EquipmentWearableTable').rows.find(r=>r.id===51);assert.notEqual(wearable.requirementId,old.requirementId);}
     const saved=save(root,patch);assert(saved.sourceSaved);assert(impact(root,`EquipmentAssetTable:${recipe.operations[0].row.id}`).affected.some(n=>n.table==='EquipmentItemTable'));
     assert.throws(()=>save(root,patch),e=>e.status===409);
   }

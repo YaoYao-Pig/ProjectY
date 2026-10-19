@@ -262,16 +262,13 @@
     },
     {
       "id": 12,
-      "name": "勘探工具箱",
+      "name": "勘探队工具补给",
       "kind": "chest",
       "assetId": 7,
       "openedAssetId": 8,
       "itemIds": [
         70,
-        71,
         72,
-        73,
-        74,
         81,
         82,
         83
@@ -279,12 +276,9 @@
       "counts": [
         1,
         1,
-        1,
-        1,
-        1,
-        30,
-        10,
-        6
+        6,
+        3,
+        2
       ],
       "poolId": 0,
       "maxDurability": 45
@@ -308,7 +302,7 @@
       "openedAssetId": 200,
       "itemIds": [],
       "counts": [],
-      "poolId": 2,
+      "poolId": 7,
       "interaction": "break",
       "toolTag": "",
       "maxDurability": 12,
@@ -482,7 +476,7 @@
       "openedAssetId": 206,
       "itemIds": [],
       "counts": [],
-      "poolId": 2,
+      "poolId": 7,
       "interaction": "search",
       "toolTag": "",
       "maxDurability": 40,
@@ -533,6 +527,16 @@
       "footprintR": [
         0
       ]
+    },
+    {
+      "id": 102,
+      "name": "落地装备",
+      "kind": "ground",
+      "assetId": 8,
+      "openedAssetId": 8,
+      "itemIds": [],
+      "counts": [],
+      "poolId": 0
     }
   ]
 }

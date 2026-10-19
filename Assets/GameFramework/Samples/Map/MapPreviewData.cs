@@ -12,6 +12,16 @@ namespace ProjectY.Samples
         {
             public Vector3 Position; public Color Color; public bool HasWater, IsRiver; public float WaterLevel, WaterDepth;
             public int TerrainAssetId, WaterAssetId, RiverId; public int FlowTo = -1; public int[] Neighbors;
+            public int SurfaceA, SurfaceB; public float SurfaceBlend;
+        }
+        public sealed class Surface
+        {
+            public int Id; public string GroundTexture; public Color Color;
+            public float TextureWorldSize, TextureStrength, WindStrength;
+        }
+        public sealed class Cover
+        {
+            public int Cell, Kind; public float OffsetX, OffsetZ, Scale, Yaw, Phase;
         }
         public sealed class Decoration { public int Cell, AssetId; public float Scale, Yaw, Height; }
         public sealed class Waterfall { public int From, To; public float Drop; }
@@ -30,6 +40,8 @@ namespace ProjectY.Samples
         public Asset[] Assets;
         public Decoration[] Decorations;
         public Waterfall[] Waterfalls;
+        public Surface[] Surfaces;
+        public Cover[] Groundcover;
         public float Radius;
         public int RegionCount, GenerationVersion, RiverCount;
         public uint Seed;
@@ -71,6 +83,7 @@ namespace ProjectY.Samples
                 HasWater = row.Get<bool>("hasWater"), WaterLevel = row.Get<float>("waterLevel"), Color = color,
                 IsRiver = row.Get<bool>("isRiver"), RiverId = row.Get<int>("riverId"),
                 FlowTo = row.Get<int>("flowTo") - 1, WaterDepth = row.Get<float>("waterDepth"),
+                SurfaceA = row.Get<int>("surfaceA"), SurfaceB = row.Get<int>("surfaceB"), SurfaceBlend = row.Get<float>("surfaceBlend"),
                 TerrainAssetId = row.Get<int>("terrainAssetId"), WaterAssetId = row.Get<int>("waterAssetId"),
                 Neighbors = ReadIndices(row, "neighbors") };
         }
@@ -99,6 +112,13 @@ namespace ProjectY.Samples
                     Seed = root.Get<uint>("seed"), Radius = root.Get<float>("hexRadius"),
                     GenerationVersion = root.Get<int>("generationVersion"), RegionCount = root.Get<int>("regionCount"),
                     RiverCount = ReadArray(root, "rivers", row => row.Get<string>("kind")).Length,
+                    Surfaces = ReadArray(root, "surfaces", row => new Surface {
+                        Id = row.Get<int>("id"), GroundTexture = row.Get<string>("groundTexture"),
+                        Color = ParseColor(row.Get<string>("groundColor")), TextureWorldSize = row.Get<float>("textureWorldSize"),
+                        TextureStrength = row.Get<float>("textureStrength"), WindStrength = row.Get<float>("windStrength") }),
+                    Groundcover = ReadArray(root, "groundcover", row => new Cover {
+                        Cell = row.Get<int>("cell") - 1, Kind = row.Get<int>("kind"), OffsetX = row.Get<float>("offsetX"),
+                        OffsetZ = row.Get<float>("offsetZ"), Scale = row.Get<float>("scale"), Yaw = row.Get<float>("yaw"), Phase = row.Get<float>("phase") }),
                     Assets = ReadArray(root, "assets", row => new Asset { Id = row.Get<int>("id"),
                         Path = row.Get<string>("prefabPath"), ReferenceHeight = row.Get<float>("referenceHeight"),
                         TintMaterial = row.Get<string>("tintMaterial") }),

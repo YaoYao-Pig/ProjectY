@@ -21,8 +21,9 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.EquipmentData);
-			Utils.BeginObjectRegister(type, L, translator, 0, 31, 6, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 32, 6, 0);
 			
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "ConsumeStack", _m_ConsumeStack);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetWearableAt", _m_GetWearableAt);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetWearable", _m_GetWearable);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Worn", _m_Worn);
@@ -107,6 +108,35 @@ namespace XLua.CSObjectWrap
         
         
         
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_ConsumeStack(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.EquipmentData gen_to_be_invoked = (ProjectY.Data.EquipmentData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _itemId = LuaAPI.xlua_tointeger(L, 2);
+                    int _count = LuaAPI.xlua_tointeger(L, 3);
+                    
+                    gen_to_be_invoked.ConsumeStack( _itemId, _count );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _m_GetWearableAt(RealStatePtr L)

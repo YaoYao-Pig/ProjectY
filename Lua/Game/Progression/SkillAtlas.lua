@@ -6,11 +6,15 @@ function Atlas.New(config)
         disciplines=config:GetTable('SkillDisciplineTable'),categories=config:GetTable('SkillCategoryTable'),
         pools=config:GetTable('ActiveSkillPoolTable'),attributes=config:GetTable('GrowthAttributeTable'),
         construction=config:GetTable('ConstructionTable'),items=config:GetTable('EquipmentItemTable'),children={},universal={}},Atlas)
+    self.professions=require('Game.Progression.ProfessionRules').New(config)
+    local glyphs={}
+    for _,attribute in ipairs(self.attributes:All()) do glyphs[attribute.code]=true end
     for _,row in ipairs(self.construction:All()) do if row.kind=='demolish' then self.universal[row.id]=true end end
     for _,category in ipairs(self.categories:All()) do self.disciplines:Get(category.disciplineId) end
     for _,skill in ipairs(self.skills:All()) do self.nodes:Get(skill.id);self.children[skill.id]={} end
     for _,node in ipairs(self.nodes:All()) do
         self.skills:Get(node.id);self.categories:Get(node.categoryId)
+        assert(glyphs[node.glyphCode],'Invalid atlas glyph for skill '..node.id..': '..tostring(node.glyphCode))
         local seen={}
         for _,id in ipairs(node.relatedCategoryIds) do assert(id~=node.categoryId and not seen[id],'Duplicate skill category');self.categories:Get(id);seen[id]=true end
         seen={}
@@ -78,22 +82,32 @@ function Atlas:Related(id)
     return result
 end
 function Atlas:State(id,actor,stats,owned)
-    if owned[id] then return 'owned',actor.Growth:HasSkill(id) and '已掌握' or '当前可用' end
-    if not self:Prerequisites(id,owned) then return 'locked','前置未满足' end
-    local hasPool=false
-    for _,pool in ipairs(self.pools:All()) do if pool.skillId==id then
-        hasPool=true
-        local value=stats:Get(actor,self.attributes:Get(pool.attributeId).code,not stats.growth.settings.includeEquipment)
-        if value>=pool.minValue and value<=pool.maxValue then return 'eligible','满足研习条件' end
-    end end
-    return hasPool and 'locked' or 'source',hasPool and '属性未满足' or '特定途径获取'
+    if owned[id] then
+        if actor.Growth:HasSkill(id) then return 'owned','已掌握' end
+        for _,skillId in ipairs(stats:Template(actor).skillIds) do if skillId==id then return 'owned','固有技能' end end
+        if self.universal[id] then return 'owned','通用动作' end
+        if stats.animals and stats.animals.bySkill[id] then return 'owned','骑乘能力' end
+        return 'owned','装备授予'
+    end
+    if not self.professions.bySkill[id] then return 'source','特定途径获取' end
+    local ok,reason=self.professions:Requirements(actor,id,stats,self,owned)
+    return ok and 'eligible' or 'locked',ok and '可在角色养成 → 职业技能中学习' or reason
+end
+function Atlas:EquipmentCondition(skill,actor,stats)
+    if skill.catalystKind=='none' then return nil end
+    local allowed,reason=stats.equipment:CheckSkillEquipment(actor,skill,stats)
+    return '施放条件：'..(allowed and '触媒就绪' or reason)
 end
 function Atlas:Details(id,actor,stats,owned)
     local skill=self.skills:Get(id);local node=self.nodes:Get(id)
     local _,status=self:State(id,actor,stats,owned)
-    local contexts={};for _,value in ipairs(skill.contexts) do contexts[#contexts+1]=value=='battle' and '战斗' or '探索' end
-    local lines={table.concat(contexts,' / ')..' · '..(skill.action=='main' and '主要行动' or '次要行动'),
+    local contexts={};for _,value in ipairs(skill.contexts) do contexts[#contexts+1]=value=='battle' and '战斗' or (value=='preparation' and '战前部署' or '探索') end
+    local kind=skill.skillKind=='preparation' and '准备技能' or (skill.skillKind=='item' and '道具动作' or '主动技能')
+    local lines={kind..' · '..table.concat(contexts,' / ')..' · '..(skill.action=='main' and '主要行动' or '次要行动'),
         '行动点 '..skill.cost..'    距离 '..skill.range..' 格    冷却 '..skill.cooldownTurns..' 回合',skill.description}
+    local equipmentCondition=self:EquipmentCondition(skill,actor,stats)
+    if equipmentCondition then lines[#lines+1]=equipmentCondition end
+    if skill.trajectory~='sight' then lines[#lines+1]=require('Game.Battle.SkillTrajectory').Description(skill.trajectory) end
     local construction=self.construction:Find(id)
     if construction then
         local material={}
@@ -104,13 +118,18 @@ function Atlas:Details(id,actor,stats,owned)
         if construction.kind~='demolish' then lines[#lines+1]='占地：1 格 · 保留至本次远征结束' end
         if construction.kind=='demolish' then lines[#lines+1]='探索时每次消耗 '..construction.workRounds..' 回合，可清理战后遗留工事' end
     end
-    local requirements,seen={},{}
-    for _,pool in ipairs(self.pools:All()) do if pool.skillId==id then
-        local row=self.attributes:Get(pool.attributeId);local text=row.name..' ≥ '..pool.minValue
-        if not seen[text] then seen[text]=true;requirements[#requirements+1]=text end
-    end end
-    if #requirements>0 then lines[#lines+1]='研习属性（任一）：'..table.concat(requirements,' / ');lines[#lines+1]='获取：升级研习中随机出现，点击图谱不会学习'
+    local courses=self.professions.bySkill[id]
+    if courses then
+        for _,course in ipairs(courses) do
+            local requirements={'角色等级 '..course.minLevel}
+            for i,name in ipairs(course.attributeNames) do
+                requirements[#requirements+1]=stats.growth.attributeByCode[name].name..' ≥ '..course.attributeValues[i]
+            end
+            lines[#lines+1]=self.professions.professions:Get(course.professionId).name..'：'..table.concat(requirements,'、')
+        end
+        lines[#lines+1]='获取：角色养成 → 职业与天赋 → 职业技能，转入对应职业后选学；消耗 1 次学习机会'
     elseif self.universal[id] then lines[#lines+1]='获取：战斗中的通用动作'
+    elseif skill.skillKind=='item' then lines[#lines+1]='获取：消耗背包中的对应道具，不能研习'
     else lines[#lines+1]='获取：角色固有、装备或骑乘能力' end
     lines[#lines+1]=status
     return table.concat(lines,'\n\n'),node

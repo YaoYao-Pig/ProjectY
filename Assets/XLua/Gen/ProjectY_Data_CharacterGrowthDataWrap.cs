@@ -21,8 +21,10 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.CharacterGrowthData);
-			Utils.BeginObjectRegister(type, L, translator, 0, 21, 14, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 26, 16, 0);
 			
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetProfessionAt", _m_GetProfessionAt);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "HasProfession", _m_HasProfession);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetTalentAt", _m_GetTalentAt);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetTreeAt", _m_GetTreeAt);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetSkillAt", _m_GetSkillAt);
@@ -40,6 +42,9 @@ namespace XLua.CSObjectWrap
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "UnlockTree", _m_UnlockTree);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "UnlockPotential", _m_UnlockPotential);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "AddOffer", _m_AddOffer);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "JoinProfession", _m_JoinProfession);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "AddLearningOpportunity", _m_AddLearningOpportunity);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "LearnSelected", _m_LearnSelected);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "LearnOffer", _m_LearnOffer);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GrantSkill", _m_GrantSkill);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "FinishEmptyOffer", _m_FinishEmptyOffer);
@@ -53,6 +58,8 @@ namespace XLua.CSObjectWrap
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "TalentPoints", _g_get_TalentPoints);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "LockedPotential", _g_get_LockedPotential);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Revision", _g_get_Revision);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "CurrentProfessionId", _g_get_CurrentProfessionId);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "ProfessionCount", _g_get_ProfessionCount);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "TalentCount", _g_get_TalentCount);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "TreeCount", _g_get_TreeCount);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "SkillCount", _g_get_SkillCount);
@@ -105,6 +112,64 @@ namespace XLua.CSObjectWrap
         
         
         
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_GetProfessionAt(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.CharacterGrowthData gen_to_be_invoked = (ProjectY.Data.CharacterGrowthData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _index = LuaAPI.xlua_tointeger(L, 2);
+                    
+                        var gen_ret = gen_to_be_invoked.GetProfessionAt( _index );
+                        LuaAPI.xlua_pushinteger(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_HasProfession(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.CharacterGrowthData gen_to_be_invoked = (ProjectY.Data.CharacterGrowthData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _id = LuaAPI.xlua_tointeger(L, 2);
+                    
+                        var gen_ret = gen_to_be_invoked.HasProfession( _id );
+                        LuaAPI.lua_pushboolean(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _m_GetTalentAt(RealStatePtr L)
@@ -602,6 +667,90 @@ namespace XLua.CSObjectWrap
         }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_JoinProfession(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.CharacterGrowthData gen_to_be_invoked = (ProjectY.Data.CharacterGrowthData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _id = LuaAPI.xlua_tointeger(L, 2);
+                    
+                    gen_to_be_invoked.JoinProfession( _id );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_AddLearningOpportunity(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.CharacterGrowthData gen_to_be_invoked = (ProjectY.Data.CharacterGrowthData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _level = LuaAPI.xlua_tointeger(L, 2);
+                    
+                    gen_to_be_invoked.AddLearningOpportunity( _level );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_LearnSelected(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.CharacterGrowthData gen_to_be_invoked = (ProjectY.Data.CharacterGrowthData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _skillId = LuaAPI.xlua_tointeger(L, 2);
+                    
+                    gen_to_be_invoked.LearnSelected( _skillId );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _m_LearnOffer(RealStatePtr L)
         {
 		    try {
@@ -809,6 +958,34 @@ namespace XLua.CSObjectWrap
 			
                 ProjectY.Data.CharacterGrowthData gen_to_be_invoked = (ProjectY.Data.CharacterGrowthData)translator.FastGetCSObj(L, 1);
                 LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.Revision);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_CurrentProfessionId(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.CharacterGrowthData gen_to_be_invoked = (ProjectY.Data.CharacterGrowthData)translator.FastGetCSObj(L, 1);
+                LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.CurrentProfessionId);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_ProfessionCount(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.CharacterGrowthData gen_to_be_invoked = (ProjectY.Data.CharacterGrowthData)translator.FastGetCSObj(L, 1);
+                LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.ProfessionCount);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }

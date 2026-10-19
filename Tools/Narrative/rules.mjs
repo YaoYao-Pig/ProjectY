@@ -1,6 +1,6 @@
 // 纯数据校验与关系投影；ConfigEditor、导表器、叙事 Web 和 Agent CLI 共用。
 export const narrativeTables = ['MissionTable','QuestTable','ConditionTable','NarrativeActionTable','NpcTable','FactionTable','NpcPlacementTable','NpcScheduleTable','DialogueTable','DialogueNodeTable','DialogueChoiceTable','DialogueCameraTable','NarrativeSettingsTable'];
-export const conditionTargets = {mission_state:'MissionTable',quest_state:'QuestTable',item_count:'EquipmentItemTable',kill_count:'CombatUnitTable',npc_relation:'NpcTable',faction_reputation:'FactionTable',npc_recruited:'NpcTable'};
+export const conditionTargets = {mission_state:'MissionTable',quest_state:'QuestTable',item_count:'EquipmentItemTable',kill_count:'CombatUnitTable',npc_relation:'NpcTable',faction_reputation:'FactionTable',npc_recruited:'NpcTable',party_attribute:'GrowthAttributeTable'};
 export const actionTargets = {grant_item:'EquipmentItemTable',accept_mission:'MissionTable',claim_mission:'MissionTable',recruit_npc:'NpcTable',add_relation:'NpcTable',add_reputation:'FactionTable'};
 const requireRule = (test, message) => { if (!test) throw new Error(message); };
 export function validateNarrative(tables) {
@@ -24,6 +24,7 @@ export function validateNarrative(tables) {
       requireRule(row.conditionIds.length===0,`Condition ${id}: leaf has children`);
       if (conditionTargets[row.kind]) get(conditionTargets[row.kind],row.targetId);
       if (['item_count','kill_count','coins'].includes(row.kind)) requireRule(row.value>0,`Condition ${id}: threshold must be positive`);
+      if (row.kind==='party_attribute') requireRule(row.value>0&&row.key===''&&row.state==='',`Condition ${id}: party_attribute requires positive value and targetId only`);
       if (row.kind==='flag') requireRule(/^[A-Za-z_][A-Za-z0-9_]*$/.test(row.key),`Condition ${id}: invalid flag key`);
       if (['mission_state','quest_state'].includes(row.kind)) requireRule(['inactive','active','ready','completed'].includes(row.state),`Condition ${id}: unknown progress state`);
       if (row.kind==='time_window') requireRule(row.targetId>=0&&row.targetId<row.value&&row.value<=1440,`Condition ${id}: invalid time window`);
@@ -40,6 +41,7 @@ export function validateNarrative(tables) {
   for(const action of rows('NarrativeActionTable')) {
     if(actionTargets[action.kind])get(actionTargets[action.kind],action.targetId);
     if(action.kind==='grant_item')requireRule(action.value>0,`Action ${action.id}: grant must be positive`);
+    if(action.kind==='grant_experience')requireRule(action.value>0&&action.targetId===0&&action.key==='',`Action ${action.id}: experience requires positive value and whole-party target`);
     if(action.kind==='set_flag')requireRule(/^[A-Za-z_][A-Za-z0-9_]*$/.test(action.key),`Action ${action.id}: invalid flag`);
     if(action.kind==='recruit_npc')requireRule(get('NpcTable',action.targetId).recruitable,`Action ${action.id}: NPC cannot recruit`);
   }

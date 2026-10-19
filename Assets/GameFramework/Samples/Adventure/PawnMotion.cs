@@ -12,6 +12,8 @@ namespace ProjectY.Samples
         private readonly MapAreaViewData layout;
         private readonly Transform target;
         public float Speed;
+        public Vector3 VisualOffset;
+        public bool FixedFacing;
         private bool jumping;
         private Vector3 jumpStart,jumpEnd;
         private float jumpTime,jumpDuration;
@@ -21,9 +23,9 @@ namespace ProjectY.Samples
             this.target = target; this.cell = destination = cell; this.layout = layout;
             target.position = Position(cell);
         }
-        private Vector3 Position(int index) => layout.IsTown || layout.Cells[index].UsesSurfaceMesh
+        private Vector3 Position(int index) => VisualOffset+(layout.IsTown || layout.Cells[index].UsesSurfaceMesh
             ? TownSurfaceRenderer.Ground(layout, index, index, layout.Cells[index].Position)
-            : layout.Cells[index].Position + Vector3.up * .015f;
+            : layout.Cells[index].Position + Vector3.up * .015f);
         public void SetDestination(int value, HashSet<int> occupied, HashSet<int> allowed = null, string movement = null)
         {
             if (value == destination)
@@ -104,7 +106,7 @@ namespace ProjectY.Samples
             {
                 jumpTime=Mathf.Min(jumpDuration,jumpTime+deltaTime);float t=jumpTime/jumpDuration;
                 target.position=Vector3.Lerp(jumpStart,jumpEnd,t)+Vector3.up*Mathf.Sin(t*Mathf.PI)*Mathf.Min(1.6f,Vector3.Distance(jumpStart,jumpEnd)*.35f);
-                var direction=jumpEnd-jumpStart;direction.y=0;if(direction.sqrMagnitude>.001f)target.rotation=Quaternion.LookRotation(direction);
+                var direction=jumpEnd-jumpStart;direction.y=0;if(!FixedFacing && direction.sqrMagnitude>.001f)target.rotation=Quaternion.LookRotation(direction);
                 if(t>=1) {jumping=false;cell=destination;target.position=jumpEnd;}
                 return Vector3.Distance(jumpStart,jumpEnd)/jumpDuration;
             }
@@ -115,7 +117,7 @@ namespace ProjectY.Samples
                 int next = path[0]; var to = Position(next);
                 var from = target.position; var direction = to - from; direction.y = 0;
                 float length = direction.magnitude, step = Mathf.Min(length, distance);
-                if (length > .001f) target.rotation = Quaternion.Slerp(target.rotation, Quaternion.LookRotation(direction), 1 - Mathf.Exp(-deltaTime * 18));
+                if (!FixedFacing && length > .001f) target.rotation = Quaternion.Slerp(target.rotation, Quaternion.LookRotation(direction), 1 - Mathf.Exp(-deltaTime * 18));
                 var point = length > .001f ? Vector3.Lerp(from, to, step / length) : to;
                 target.position = layout.IsTown || layout.Cells[cell].UsesSurfaceMesh || layout.Cells[next].UsesSurfaceMesh
                     ? TownSurfaceRenderer.Ground(layout, cell, next, point) : point;

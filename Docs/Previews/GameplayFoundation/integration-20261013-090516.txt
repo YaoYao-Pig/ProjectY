@@ -1,0 +1,28 @@
+fixture_directory=C:\Users\yyz\AppData\Local\Temp\project-y-ux-foundation-ca38f4d4308047358835dc681162e01f
+FAIL Tools/Tests/area_battle_integration.lua
+XLua.LuaException: Tools/Tests/area_battle_integration.lua:123: assertion failed!
+stack traceback:
+	[C]: in function 'assert'
+	Tools/Tests/area_battle_integration.lua:123: in upvalue 'prepareNext'
+	Tools/Tests/area_battle_integration.lua:126: in local 'run'
+	Tools/Tests/area_battle_integration.lua:15: in upvalue 'test'
+	Tools/Tests/area_battle_integration.lua:125: in function <Tools/Tests/area_battle_integration.lua:16>
+	[C]: in function 'xpcall'
+	Tools/Tests/area_battle_integration.lua:16: in main chunk
+stack traceback:
+	[C]: in function 'error'
+	Tools/Tests/area_battle_integration.lua:147: in main chunk
+  at XLua.LuaEnv.ThrowExceptionFromError (System.Int32 oldTop) [0x00040] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:441 
+  at XLua.LuaEnv.DoString (System.Byte[] chunk, System.String chunkName, XLua.LuaTable env) [0x00078] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:274 
+  at XLua.LuaEnv.DoString (System.String chunk, System.String chunkName, XLua.LuaTable env) [0x0000d] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:288 
+  at MCPDynamicCode.Execute () [0x00156] in <3cf3c782252248a7ae1bdbf9cd7dc35a>:0 
+PASS Tools/Tests/construction_integration.lua
+PASS invalid material placement preserves AP, stacks and construction state
+PASS high platform changes standing height and ranged reach; demolition restores ground
+PASS digging requires an equipped shovel and an allowed surface
+PASS C# material transaction is atomic and reset clears the terrain
+PASS persistent barriers remain removable after battle through the exploration skill bar
+PASS material stacks pass character-save validation without changing user saves
+PASS enemy AI breaks a reachable barrier when every route to the party is sealed
+PASS Tools/Tests/game_effects_integration.lua
+PASS real C# GameEffect instances, attribute projection, capped/independent stacks, battle cleanup, v3 save round-trip/v2 migration, exploration/idle clocks and lethal turn-start advancement

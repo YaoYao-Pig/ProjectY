@@ -1,0 +1,298 @@
+{
+  "version": 1,
+  "name": "EquipmentAffixTable",
+  "description": "装备单词缀品质；实例生成时按类型和权重确定，维修不改变词缀。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "min": 1,
+      "description": "稳定词缀 ID；1 固定为普通，兼容旧存档"
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "装备名称前缀，普通不显示"
+    },
+    {
+      "name": "color",
+      "type": "string",
+      "description": "品质显示色；支持带或不带 # 的 RGB/RGBA/RRGGBB/RRGGBBAA 十六进制",
+      "default": "#B8C4D1"
+    },
+    {
+      "name": "targetTypes",
+      "type": "enum[]",
+      "values": [
+        "melee",
+        "bow",
+        "gun",
+        "staff",
+        "armor",
+        "shield",
+        "ring"
+      ],
+      "description": "适用类型；armor 为头、身、腿、脚，shield 为副手防具"
+    },
+    {
+      "name": "weight",
+      "type": "int",
+      "min": 0,
+      "max": 100000,
+      "description": "适用池内的相对抽取权重；0 不随机出现但仍可读档"
+    },
+    {
+      "name": "damageMultiplier",
+      "type": "float",
+      "default": 1,
+      "min": 0.01,
+      "max": 10,
+      "description": "本武器攻击或本触媒法术的伤害倍率"
+    },
+    {
+      "name": "hitBonus",
+      "type": "int",
+      "default": 0,
+      "min": -100,
+      "max": 100,
+      "description": "对应攻击或法术的命中百分点加减，最终限制 0–100"
+    },
+    {
+      "name": "attributeIds",
+      "type": "int[]",
+      "ref": "EquipmentAttributeTable",
+      "description": "穿戴属性增减的属性 ID"
+    },
+    {
+      "name": "attributeValues",
+      "type": "int[]",
+      "description": "与属性 ID 一一对应的有符号加成；计入耐久效能"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "普通",
+      "targetTypes": [
+        "melee",
+        "bow",
+        "gun",
+        "staff",
+        "armor",
+        "shield",
+        "ring"
+      ],
+      "weight": 40,
+      "damageMultiplier": 1,
+      "hitBonus": 0,
+      "attributeIds": [],
+      "attributeValues": [],
+      "color": "#B8C4D1"
+    },
+    {
+      "id": 2,
+      "name": "熟练",
+      "targetTypes": [
+        "melee",
+        "bow",
+        "gun",
+        "staff"
+      ],
+      "weight": 16,
+      "damageMultiplier": 1.05,
+      "hitBonus": 5,
+      "attributeIds": [],
+      "attributeValues": [],
+      "color": "#63CFA7"
+    },
+    {
+      "id": 3,
+      "name": "锋利",
+      "targetTypes": [
+        "melee"
+      ],
+      "weight": 12,
+      "damageMultiplier": 1.12,
+      "hitBonus": 0,
+      "attributeIds": [],
+      "attributeValues": [],
+      "color": "#81B6F5"
+    },
+    {
+      "id": 4,
+      "name": "精准",
+      "targetTypes": [
+        "melee",
+        "bow",
+        "gun",
+        "staff"
+      ],
+      "weight": 10,
+      "damageMultiplier": 1,
+      "hitBonus": 10,
+      "attributeIds": [],
+      "attributeValues": [],
+      "color": "#73D3E8"
+    },
+    {
+      "id": 5,
+      "name": "凶猛",
+      "targetTypes": [
+        "melee",
+        "bow",
+        "gun",
+        "staff"
+      ],
+      "weight": 8,
+      "damageMultiplier": 1.2,
+      "hitBonus": -10,
+      "attributeIds": [],
+      "attributeValues": [],
+      "color": "#F09678"
+    },
+    {
+      "id": 6,
+      "name": "传奇",
+      "targetTypes": [
+        "melee",
+        "bow",
+        "gun",
+        "staff"
+      ],
+      "weight": 1,
+      "damageMultiplier": 1.2,
+      "hitBonus": 10,
+      "attributeIds": [],
+      "attributeValues": [],
+      "color": "#F0C56F"
+    },
+    {
+      "id": 7,
+      "name": "坚固",
+      "targetTypes": [
+        "armor",
+        "shield"
+      ],
+      "weight": 16,
+      "damageMultiplier": 1,
+      "hitBonus": 0,
+      "attributeIds": [
+        5
+      ],
+      "attributeValues": [
+        1
+      ],
+      "color": "#99ADE5"
+    },
+    {
+      "id": 8,
+      "name": "厚重",
+      "targetTypes": [
+        "armor",
+        "shield"
+      ],
+      "weight": 10,
+      "damageMultiplier": 1,
+      "hitBonus": 0,
+      "attributeIds": [
+        5,
+        4
+      ],
+      "attributeValues": [
+        2,
+        -1
+      ],
+      "color": "#BCA68C"
+    },
+    {
+      "id": 9,
+      "name": "轻巧",
+      "targetTypes": [
+        "armor"
+      ],
+      "weight": 10,
+      "damageMultiplier": 1,
+      "hitBonus": 0,
+      "attributeIds": [
+        4,
+        5
+      ],
+      "attributeValues": [
+        1,
+        -1
+      ],
+      "color": "#A1D6AE"
+    },
+    {
+      "id": 10,
+      "name": "睿智",
+      "targetTypes": [
+        "staff",
+        "ring"
+      ],
+      "weight": 12,
+      "damageMultiplier": 1,
+      "hitBonus": 0,
+      "attributeIds": [
+        3
+      ],
+      "attributeValues": [
+        1
+      ],
+      "color": "#BC9CF3"
+    },
+    {
+      "id": 11,
+      "name": "活力",
+      "targetTypes": [
+        "armor",
+        "ring"
+      ],
+      "weight": 16,
+      "damageMultiplier": 1,
+      "hitBonus": 0,
+      "attributeIds": [
+        6
+      ],
+      "attributeValues": [
+        1
+      ],
+      "color": "#DFA6CC"
+    },
+    {
+      "id": 12,
+      "name": "破损",
+      "targetTypes": [
+        "melee",
+        "bow",
+        "gun",
+        "staff"
+      ],
+      "weight": 8,
+      "damageMultiplier": 0.85,
+      "hitBonus": 0,
+      "attributeIds": [],
+      "attributeValues": [],
+      "color": "#BA8C91"
+    },
+    {
+      "id": 13,
+      "name": "破损",
+      "targetTypes": [
+        "armor",
+        "shield"
+      ],
+      "weight": 8,
+      "damageMultiplier": 1,
+      "hitBonus": 0,
+      "attributeIds": [
+        5
+      ],
+      "attributeValues": [
+        -1
+      ],
+      "color": "#BA8C91"
+    }
+  ]
+}

@@ -5,7 +5,8 @@ function Equipment:OnInit(context)
     System.OnInit(self,context)
     self.adventure=context.services.Adventure;self.data=self.adventure.Equipment
     self.config=context.systems:Get('Config');self.rules=require('Game.Equipment.EquipmentRules').New(self.config,self.data)
-    self.initialLoadouts=require('Game.Equipment.InitialLoadout').New(self.config)
+    self.rules.affixes:Define(self.data)
+    self.initialLoadouts=require('Game.Equipment.InitialLoadout').New(self.config,self.rules,function() return self.context.systems:Get('Battle').stats end)
     self.recipe=self.config:GetTable('EquipmentDemoTable'):Get(1)
     self.loot=self.config:GetTable('EquipmentLootTable')
     self.worldLoot=require('Game.Loot.MapLoot').New(self.config,self)
@@ -27,22 +28,59 @@ function Equipment:Grant(itemId,count)
     else self.data:AddStack(itemId,count) end
     return true
 end
-function Equipment:Start()
+function Equipment:Start(recipeId)
+    self.recipe=self.config:GetTable('EquipmentDemoTable'):Get(recipeId or 1)
     self.data.Grid:Configure(self.recipe.bagWidth,self.recipe.bagHeight)
     assert(self:CanGrant(self.recipe.starterItemIds,self.recipe.starterCounts),'Starter items exceed backpack capacity')
     for i,id in ipairs(self.recipe.starterItemIds) do assert(self:Grant(id,self.recipe.starterCounts[i])) end
 end
 function Equipment:StartPartyLoadouts()
+    local starters=require('Game.Equipment.StarterWeapons')
+    local plan=starters.Plan(self.recipe,self.data,self.adventure,self.rules,self.context.systems:Get('Battle').stats,self.initialLoadouts)
     local ids,counts={},{}
     for i=0,self.adventure.PartyCount-1 do
-        local items=self.initialLoadouts:Items(self.adventure:GetPartyAt(i).TemplateId)
+        local actor=self.adventure:GetPartyAt(i)
+        assert(self.initialLoadouts:Validate(actor))
+        local items=self.initialLoadouts:Items(actor.TemplateId)
         for _,id in ipairs(items) do ids[#ids+1]=id;counts[#counts+1]=1 end
     end
     assert(self:CanGrant(ids,counts),'Initial character equipment exceeds backpack capacity')
     for i=0,self.adventure.PartyCount-1 do self.initialLoadouts:Apply(self.data,self.adventure:GetPartyAt(i)) end
+    starters.Apply(self.data,plan)
 end
 function Equipment:Actor(id)
     for i=0,self.adventure.PartyCount-1 do local actor=self.adventure:GetPartyAt(i);if actor.Id==id then return actor end end
+end
+function Equipment:IsCarriedWeapon(weapon)
+    return weapon.OwnerActorId==0 and self.data.Grid:Find('w'..weapon.Id)~=nil or self:Actor(weapon.OwnerActorId)~=nil
+end
+function Equipment:IsCarriedMagazine(magazine)
+    local owner=self.data:MagazineWeapon(magazine.Id)
+    return owner==0 and self.data.Grid:Find('m'..magazine.Id)~=nil or owner~=0 and self:IsCarriedWeapon(self.data:GetWeapon(owner))
+end
+function Equipment:InitializeEnemy(actor) self.initialLoadouts:ApplyEnemy(self.data,actor) end
+function Equipment:RepairQuote(key)
+    if type(key)~='string' or not key:match('^[wg]%d+$') then return nil end
+    local id=tonumber(key:sub(2));local item=key:sub(1,1)=='w' and self.data:GetWeapon(id) or self.data:GetWearable(id)
+    local condition=self.rules:Condition(item)
+    local service=CS.ProjectY.Data.EquipmentCombatState
+    return {condition=condition,materials=service.RepairMaterials(condition),coins=service.RepairCoins(condition),item=item}
+end
+function Equipment:Repair(actorId,key)
+    if self.adventure.Phase~='map' and self.adventure.Phase~='area' then return false,'只能在探索期间维修装备' end
+    if not self:Actor(actorId) then return false,'无效队员' end
+    local quote=self:RepairQuote(key)
+    if not quote or (not self.data.Grid:Find(key) and not self:Actor(quote.item.OwnerActorId)) then return false,'只能维修共享背包或队员身上的装备' end
+    if quote.materials==0 then return false,'装备耐久已满' end
+    local player=self.context.services.Player
+    if self.data:CountItem(83)<quote.materials or player.Coins<quote.coins then return false,string.format('维修需要铁件 %d 与金币 %d',quote.materials,quote.coins) end
+    assert(CS.ProjectY.Data.EquipmentCombatState.Repair(self.data,player,key,83),'Repair budget changed after validation')
+    local owner=self:Actor(quote.item.OwnerActorId)
+    if owner then self:RefreshEquipmentHP(owner,self.context.systems:Get('Battle').stats) end
+    return true,string.format('维修完成：耐久 %d / %d，永久损伤保留',quote.condition.Current,quote.condition.Maximum)
+end
+function Equipment:RefreshEquipmentHP(actor,stats)
+    CS.ProjectY.Data.EquipmentCombatState.RefreshMaximum(actor,stats:MaximumHP(actor))
 end
 function Equipment:HandAllowed(actorId,weapon,slot)
     local main=self.data:Equipped(actorId)
@@ -59,16 +97,28 @@ function Equipment:Command(command,actorId,weaponId,socketId,value)
     if self.adventure.Phase~='map' and self.adventure.Phase~='area' then return false,'只能在探索期间整理装备' end
     local actor=self:Actor(actorId)
     if not actor then return false,'无效队员' end
-    if command=='unequip' then return self.data:Equip(actorId,0),'背包空间不足，无法卸下武器' end
-    if command=='unequip_offhand' then return self.data:EquipOffhand(actorId,0),'背包空间不足，无法卸下副手' end
+    if command=='unequip' or command=='unequip_offhand' then
+        local ok
+        if command=='unequip' then ok=self.data:Equip(actorId,0) else ok=self.data:EquipOffhand(actorId,0) end
+        if ok then actor:SetMaxHP(self.context.systems:Get('Battle').stats:MaximumHP(actor)) end
+        return ok,'背包空间不足，无法卸下装备'
+    end
     local weapon
     for i=0,self.data.WeaponCount-1 do local row=self.data:GetWeaponAt(i);if row.Id==weaponId then weapon=row;break end end
-    if not weapon then return false,'请选择背包中的武器' end
+    if not weapon or not self:IsCarriedWeapon(weapon) then return false,'请选择共享背包或队员身上的武器' end
     local definition=self.rules.weapons:Get(weapon.ItemId)
     if command=='equip' or command=='equip_offhand' then
         local allowed,reason=self:HandAllowed(actorId,weapon,command=='equip' and 'weapon' or 'offhand')
         if not allowed then return false,reason end
-        return command=='equip' and self.data:Equip(actorId,weaponId) or command=='equip_offhand' and self.data:EquipOffhand(actorId,weaponId),'背包空间不足，无法放回原装备'
+        allowed,reason=self.rules:CanEquip(actor,weapon.ItemId,self.context.systems:Get('Battle').stats)
+        if not allowed then return false,reason end
+        local previous=self:Actor(weapon.OwnerActorId);local ok
+        if command=='equip' then ok=self.data:Equip(actorId,weaponId) else ok=self.data:EquipOffhand(actorId,weaponId) end
+        if ok then
+            local stats=self.context.systems:Get('Battle').stats;actor:SetMaxHP(stats:MaximumHP(actor))
+            if previous and previous~=actor then previous:SetMaxHP(stats:MaximumHP(previous)) end
+        end
+        return ok,'背包空间不足，无法放回原装备'
     end
     local socket
     for _,id in ipairs(definition.socketIds) do if id==socketId then socket=self.rules.sockets:Get(id) end end

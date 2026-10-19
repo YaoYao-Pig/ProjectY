@@ -2,6 +2,7 @@ local Class=require('Core.Class')
 local Panel=require('UI.UIPanelCtrl')
 local BagModel=require('Game.Equipment.InventoryModel')
 local LootModel=require('Game.Loot.LootModel')
+local Text=require('Game.Equipment.EquipmentPresentation')
 local Loot=Class('LootCtr',Panel)
 function Loot:Bind()
     self.adventure=self.context.systems:Get('Adventure');self.equipment=self.adventure.equipment
@@ -65,8 +66,9 @@ function Loot:Details()
     for _,rows in ipairs({self.bagRows,self.lootRows}) do
         for _,row in ipairs(rows) do if row.key==self.selected and row.count>0 then selected=row end end
     end
-    self.view.ItemName.text=selected and selected.name or '选择物品查看详情'
-    self.view.ItemDetail.text=selected and (selected.revealed==false and selected.detail or string.format('%d × %d 格  ·  数量 %d  ·  %s',selected.width,selected.height,selected.count,selected.detail)) or '先整理左侧空间，再把需要的战利品拖入背包。'
+    self.view.ItemName.text=selected and selected.displayName or '选择物品查看详情'
+    self.view.ItemDetail.text=selected and (selected.revealed==false and Text.Note(selected.detail) or selected.detail..'\n\n'..Text.Note(string.format('%d × %d 格 · 数量 %d',selected.width,selected.height,selected.count))) or Text.Note('选择已搜索的物品查看属性。\n\n拖入左侧背包即可领取。')
+    if self.detailsKey~=self.selected then self.view.ItemDetail.rectTransform.anchoredPosition=CS.UnityEngine.Vector2.zero;self.detailsKey=self.selected end
     self.view.Status.text=self.message
 end
 function Loot:Command(action)

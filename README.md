@@ -4,6 +4,10 @@ Unity **2022.3.55f1c1**，首个验证目标为 **Windows x64**。xLua 已随工
 
 AI 开发入口：[ForAI 短索引](ForAI/INDEX.md)。按关键词选择模块后再读必要代码；文档写法见 [维护约定](ForAI/MAINTENANCE.md)。
 
+设计与待办：[玩法设计与实现差距清单](Docs/GameplayGapAudit.md)（2026-10-11 盘点，2026-10-13 补充职业、触媒与战前部署设计），对照设计笔记区分已有机制、未完成闭环与待定方案。
+
+职业／触媒／战前部署首版已接通；使用方式、实际检查及场景验证见 [基础玩法迭代验收](Docs/GameplayFoundationIteration.md)。
+
 ## 立即运行
 
 游戏入口：打开 `Assets/GameFramework/Samples/Adventure/AdventureDemo.unity` 后点击 Play，或使用 **Project Y → 远征 → 打开战斗与事件 Demo**。

@@ -21,8 +21,9 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.ChronicleEntryData);
-			Utils.BeginObjectRegister(type, L, translator, 0, 1, 8, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 2, 13, 0);
 			
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetParticipantAt", _m_GetParticipantAt);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Involves", _m_Involves);
 			
 			
@@ -34,6 +35,11 @@ namespace XLua.CSObjectWrap
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "EventId", _g_get_EventId);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "ChoiceId", _g_get_ChoiceId);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "SubjectId", _g_get_SubjectId);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "ObjectId", _g_get_ObjectId);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "RelationDelta", _g_get_RelationDelta);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "Minutes", _g_get_Minutes);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "Day", _g_get_Day);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "ParticipantCount", _g_get_ParticipantCount);
             
 			
 			
@@ -62,6 +68,35 @@ namespace XLua.CSObjectWrap
         
         
         
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_GetParticipantAt(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.ChronicleEntryData gen_to_be_invoked = (ProjectY.Data.ChronicleEntryData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _index = LuaAPI.xlua_tointeger(L, 2);
+                    
+                        var gen_ret = gen_to_be_invoked.GetParticipantAt( _index );
+                        LuaAPI.xlua_pushinteger(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _m_Involves(RealStatePtr L)
@@ -201,6 +236,76 @@ namespace XLua.CSObjectWrap
 			
                 ProjectY.Data.ChronicleEntryData gen_to_be_invoked = (ProjectY.Data.ChronicleEntryData)translator.FastGetCSObj(L, 1);
                 LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.SubjectId);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_ObjectId(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.ChronicleEntryData gen_to_be_invoked = (ProjectY.Data.ChronicleEntryData)translator.FastGetCSObj(L, 1);
+                LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.ObjectId);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_RelationDelta(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.ChronicleEntryData gen_to_be_invoked = (ProjectY.Data.ChronicleEntryData)translator.FastGetCSObj(L, 1);
+                LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.RelationDelta);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_Minutes(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.ChronicleEntryData gen_to_be_invoked = (ProjectY.Data.ChronicleEntryData)translator.FastGetCSObj(L, 1);
+                LuaAPI.lua_pushnumber(L, gen_to_be_invoked.Minutes);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_Day(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.ChronicleEntryData gen_to_be_invoked = (ProjectY.Data.ChronicleEntryData)translator.FastGetCSObj(L, 1);
+                LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.Day);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_ParticipantCount(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.ChronicleEntryData gen_to_be_invoked = (ProjectY.Data.ChronicleEntryData)translator.FastGetCSObj(L, 1);
+                LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.ParticipantCount);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }

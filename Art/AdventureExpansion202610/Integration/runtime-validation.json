@@ -1,0 +1,16 @@
+{
+  "date": "2026-10-18",
+  "eventCount": 20,
+  "simpleCount": 8,
+  "complexCount": 12,
+  "choiceCount": 46,
+  "worldTravelEntries": 20,
+  "checks": [
+    "adventure_expansion_content.py --applied: references, unique scenes, free exits, puzzle spoilers, source equality, authoring idempotence and collision rejection",
+    "event_choice_effects.lua: real event/effect/config pipeline, preflight before spending, elapsed time once, full 60-minute regeneration after the time cost, recipient scope, death, duplicate submission and immutable config",
+    "world_travel_event_ui.lua: simple result stays visible, choices resolve once, four-option puzzle hides rewards while showing unavailable reasons",
+    "Unity Edit Mode: actual saved StoryChoice and StoryEvent text measured; 46 titles and 20 descriptions fit with no overflow"
+  ],
+  "playModeRun": false,
+  "projectCompilationRequested": false
+}

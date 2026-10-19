@@ -32,7 +32,7 @@ namespace ProjectY.UI
         internal void Show(IInventoryItemOwner panel,InventoryPanelView.Item item,Font font,Sprite sprite,bool selected)
         {
             owner=panel;Item=item;title.font=amount.font=font;
-            title.text=item.Name;amount.text=item.Count>1?"×"+item.Count:item.Kind=="magazine"?item.Detail:"";
+            title.supportRichText=true;title.text=item.Name;amount.text=item.Count>1?"×"+item.Count:item.Kind=="magazine"?item.Detail:"";
             title.fontSize=15;amount.fontSize=12;
             title.resizeTextForBestFit=true;title.resizeTextMinSize=11;title.resizeTextMaxSize=title.fontSize;
             background.color=selected?new Color(.34f,.32f,.21f):item.Kind=="wearable"?new Color(.17f,.23f,.26f):item.Kind=="weapon"?new Color(.23f,.24f,.19f):new Color(.18f,.21f,.18f);

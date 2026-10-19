@@ -10,7 +10,10 @@ local function copy(row)
 end
 function Presentation.Snapshot(config)
     local row=config:GetTable('MapEnvironmentTable'):Get(1)
-    local result={profile=copy(row),keys={},weather={}}
+    local torch=config:GetTable('TorchTable'):Get(1)
+    assert(config:GetTable('EquipmentItemTable'):Get(torch.itemId).kind=='material','Torch needs a portable inventory stack')
+    assert(torch.range>0 and torch.intensity>0 and torch.height>0,'Torch light needs positive range, intensity and height')
+    local result={profile=copy(row),torch=copy(torch),keys={},weather={}}
     local previous=-1
     for i,id in ipairs(row.keyIds) do
         local key=config:GetTable('MapLightKeyTable'):Get(id)

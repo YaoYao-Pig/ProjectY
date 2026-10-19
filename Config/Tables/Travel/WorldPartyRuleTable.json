@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "name": "WorldPartyRuleTable",
+  "description": "队伍接触、脱战保护和主角棋子。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "min": 1
+    },
+    {
+      "name": "playerModelPath",
+      "type": "string"
+    },
+    {
+      "name": "contactRadius",
+      "type": "int",
+      "min": 1
+    },
+    {
+      "name": "spawnSafeRadius",
+      "type": "int",
+      "min": 1
+    },
+    {
+      "name": "retreatSafeMinutes",
+      "type": "float",
+      "min": 1
+    },
+    {
+      "name": "sellMultiplier",
+      "type": "float",
+      "min": 0,
+      "max": 1
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "playerModelPath": "Assets/DynamicAsset/WorldPartyLowPoly/Models/WorldParty_Flag.fbx",
+      "contactRadius": 1,
+      "spawnSafeRadius": 8,
+      "retreatSafeMinutes": 120,
+      "sellMultiplier": 0.5
+    }
+  ]
+}

@@ -13,6 +13,7 @@ namespace ProjectY.Data
         private readonly List<int> talentIds = new List<int>();
         private readonly List<int> trees = new List<int>();
         private readonly List<int> skills = new List<int>();
+        private readonly List<int> professions = new List<int>();
         private readonly Queue<int> pendingLevels = new Queue<int>();
         private readonly List<int> offers = new List<int>();
         private uint randomState = 1;
@@ -23,6 +24,10 @@ namespace ProjectY.Data
         public int TalentPoints { get; private set; }
         public int LockedPotential { get; private set; }
         public int Revision { get; private set; }
+        public int CurrentProfessionId { get; private set; }
+        public int ProfessionCount => professions.Count;
+        public int GetProfessionAt(int index) => professions[index];
+        public bool HasProfession(int id) => professions.Contains(id);
         public int TalentCount => talentIds.Count;
         public int TreeCount => trees.Count;
         public int SkillCount => skills.Count;
@@ -89,6 +94,23 @@ namespace ProjectY.Data
         {
             if (PendingCount == 0 || skillId < 1 || HasSkill(skillId) || offers.Contains(skillId)) throw new InvalidOperationException("Invalid skill offer.");
             offers.Add(skillId); Revision++;
+        }
+        public void JoinProfession(int id)
+        {
+            if (!Initialized || id < 1) throw new InvalidOperationException("Invalid profession.");
+            if (!professions.Contains(id)) professions.Add(id);
+            if (CurrentProfessionId == id) return;
+            CurrentProfessionId = id; Revision++;
+        }
+        public void AddLearningOpportunity(int level)
+        {
+            if (!Initialized || level < 1 || level > Level) throw new InvalidOperationException("Invalid learning opportunity.");
+            pendingLevels.Enqueue(level); Revision++;
+        }
+        public void LearnSelected(int skillId)
+        {
+            if (!Initialized || PendingCount == 0 || skillId < 1 || HasSkill(skillId)) throw new InvalidOperationException("Invalid selected skill.");
+            skills.Add(skillId); offers.Clear(); pendingLevels.Dequeue(); Revision++;
         }
         public void LearnOffer(int skillId)
         {

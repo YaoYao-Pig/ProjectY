@@ -37,5 +37,7 @@
 ---@field CategoryText CS.UnityEngine.UI.Text
 ---@field Requirements CS.UnityEngine.UI.Text
 ---@field TagSlots CS.UnityEngine.RectTransform
+---@field Socket4 CS.UnityEngine.UI.Button
+---@field SocketText4 CS.UnityEngine.UI.Text
 local View = {}
 return View

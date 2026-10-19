@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.BattleData);
-			Utils.BeginObjectRegister(type, L, translator, 0, 14, 9, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 15, 10, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SetRandomSeed", _m_SetRandomSeed);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "RollPercent", _m_RollPercent);
@@ -32,6 +32,7 @@ namespace XLua.CSObjectWrap
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Reset", _m_Reset);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "AddUnit", _m_AddUnit);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "AddEnemy", _m_AddEnemy);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "BeginDeployment", _m_BeginDeployment);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "BeginRound", _m_BeginRound);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "AddTurn", _m_AddTurn);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SelectTurn", _m_SelectTurn);
@@ -42,6 +43,7 @@ namespace XLua.CSObjectWrap
 			Utils.RegisterFunc(L, Utils.GETTER_IDX, "EncounterId", _g_get_EncounterId);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "MaxRounds", _g_get_MaxRounds);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Round", _g_get_Round);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "Phase", _g_get_Phase);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "ActiveId", _g_get_ActiveId);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "TurnIndex", _g_get_TurnIndex);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Winner", _g_get_Winner);
@@ -357,6 +359,33 @@ namespace XLua.CSObjectWrap
         }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_BeginDeployment(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.BattleData gen_to_be_invoked = (ProjectY.Data.BattleData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    
+                    gen_to_be_invoked.BeginDeployment(  );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _m_BeginRound(RealStatePtr L)
         {
 		    try {
@@ -534,6 +563,20 @@ namespace XLua.CSObjectWrap
 			
                 ProjectY.Data.BattleData gen_to_be_invoked = (ProjectY.Data.BattleData)translator.FastGetCSObj(L, 1);
                 LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.Round);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_Phase(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.BattleData gen_to_be_invoked = (ProjectY.Data.BattleData)translator.FastGetCSObj(L, 1);
+                LuaAPI.lua_pushstring(L, gen_to_be_invoked.Phase);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }

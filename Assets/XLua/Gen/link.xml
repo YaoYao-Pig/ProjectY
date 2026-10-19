@@ -5,15 +5,21 @@
 	<assembly fullname="Assembly-CSharp">
 	    <type fullname="ProjectY.FrameworkServices" preserve="all"/>
 		<type fullname="ProjectY.Samples.AdventureRuntimeDemo" preserve="all"/>
+		<type fullname="ProjectY.UI.AnimationWrap" preserve="all"/>
+		<type fullname="ProjectY.UI.BattleFeedbackSystem" preserve="all"/>
 		<type fullname="ProjectY.UI.BattleHUDView" preserve="all"/>
+		<type fullname="ProjectY.UI.DamageNumberAnimation" preserve="all"/>
 		<type fullname="ProjectY.UI.EquipmentWorkbenchView" preserve="all"/>
+		<type fullname="ProjectY.UI.HealthBarAnimation" preserve="all"/>
 		<type fullname="ProjectY.UI.InventoryCharacterView" preserve="all"/>
 		<type fullname="ProjectY.UI.InventoryPanelView" preserve="all"/>
+		<type fullname="ProjectY.UI.LootPanelView" preserve="all"/>
 		<type fullname="ProjectY.UI.LuaPanel" preserve="all"/>
 		<type fullname="ProjectY.UI.LuaReference" preserve="all"/>
 		<type fullname="ProjectY.UI.MainHudView" preserve="all"/>
 		<type fullname="ProjectY.UI.NarrativeView" preserve="all"/>
 		<type fullname="ProjectY.UI.PanelDefinition" preserve="all"/>
+		<type fullname="ProjectY.UI.SkillAtlasView" preserve="all"/>
 		<type fullname="ProjectY.UI.StoryGrowthView" preserve="all"/>
 		<type fullname="ProjectY.UI.UIFollower" preserve="all"/>
 		<type fullname="ProjectY.UI.UIHost" preserve="all"/>
@@ -21,6 +27,10 @@
 		<type fullname="ProjectY.UI.UITxt" preserve="all"/>
 		<type fullname="ProjectY.Data.AdventureData" preserve="all"/>
 		<type fullname="ProjectY.Data.BattleData" preserve="all"/>
+		<type fullname="ProjectY.Data.CampLevelData" preserve="all"/>
+		<type fullname="ProjectY.Data.CampStackData" preserve="all"/>
+		<type fullname="ProjectY.Data.CampJobData" preserve="all"/>
+		<type fullname="ProjectY.Data.CampData" preserve="all"/>
 		<type fullname="ProjectY.Data.CharacterAppearanceService" preserve="all"/>
 		<type fullname="ProjectY.Data.CharacterGrowthData" preserve="all"/>
 		<type fullname="ProjectY.Data.PreparedCharacterSave" preserve="all"/>
@@ -31,6 +41,9 @@
 		<type fullname="ProjectY.Data.EquipmentData" preserve="all"/>
 		<type fullname="ProjectY.Data.PlayerData" preserve="all"/>
 		<type fullname="ProjectY.Data.ChronicleEntryData" preserve="all"/>
+		<type fullname="ProjectY.Data.ConstructionRecord" preserve="all"/>
+		<type fullname="ProjectY.Data.ConstructionData" preserve="all"/>
+		<type fullname="ProjectY.Data.ContainerState" preserve="all"/>
 		<type fullname="ProjectY.Data.InventoryStackData" preserve="all"/>
 		<type fullname="ProjectY.Data.EquipmentWearableData" preserve="all"/>
 		<type fullname="ProjectY.Data.EquipmentMagazineData" preserve="all"/>
@@ -38,14 +51,24 @@
 		<type fullname="ProjectY.Data.GameEffectCollectionData" preserve="all"/>
 		<type fullname="ProjectY.Data.InventoryPlacementData" preserve="all"/>
 		<type fullname="ProjectY.Data.LocalizationService" preserve="all"/>
+		<type fullname="ProjectY.Data.LootItemData" preserve="all"/>
+		<type fullname="ProjectY.Data.LootSessionData" preserve="all"/>
 		<type fullname="ProjectY.Data.MapAreaLootData" preserve="all"/>
 		<type fullname="ProjectY.Data.MapAreaEncounterData" preserve="all"/>
 		<type fullname="ProjectY.Data.MapAreaNpcData" preserve="all"/>
 		<type fullname="ProjectY.Data.MapAreaStateData" preserve="all"/>
 		<type fullname="ProjectY.Data.MapAreaData" preserve="all"/>
+		<type fullname="ProjectY.Data.MapObstacleRecord" preserve="all"/>
+		<type fullname="ProjectY.Data.MapObstacleData" preserve="all"/>
 		<type fullname="ProjectY.Data.NarrativeProgressData" preserve="all"/>
 		<type fullname="ProjectY.Data.DialogueLineData" preserve="all"/>
 		<type fullname="ProjectY.Data.NarrativeData" preserve="all"/>
+		<type fullname="ProjectY.Data.PartyBondData" preserve="all"/>
+		<type fullname="ProjectY.Data.PartyHonorData" preserve="all"/>
+		<type fullname="ProjectY.Data.PartyStoryData" preserve="all"/>
+		<type fullname="ProjectY.Data.ShopStockEntry" preserve="all"/>
+		<type fullname="ProjectY.Data.ShopStock" preserve="all"/>
+		<type fullname="ProjectY.Data.ShopData" preserve="all"/>
 		
 	</assembly>
 

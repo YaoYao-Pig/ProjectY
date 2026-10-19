@@ -23,11 +23,13 @@ function Event:Refresh()
         local rewards={}
         if row.obstacleAction~='' then rewards[#rewards+1]=self.adventure.obstacles:ChoiceDetails(row.obstacleAction) end
         if row.costCoins>0 then rewards[#rewards+1]='消耗 '..row.costCoins..' 金币' end
+        if row.timeMinutes>0 then rewards[#rewards+1]='用时 '..row.timeMinutes..' 分钟' end
+        for _,effectId in ipairs(row.effectIds)do rewards[#rewards+1]=events.effectDefinitions:Get(effectId).name end
         for i,itemId in ipairs(row.itemIds) do rewards[#rewards+1]=events.equipment.rules.items:Get(itemId).name..' ×'..row.itemCounts[i] end
         if row.experience>0 then rewards[#rewards+1]='经验 +'..row.experience end
         if #row.unlockTreeIds>0 then rewards[#rewards+1]='开启新的天赋道路' end
         if row.potentialPoints>0 then rewards[#rewards+1]='可能唤醒潜力' end
-        choices[#choices+1]={id=id,title=events:Text(row.label),body=ok and table.concat(rewards,' · ') or reason,available=ok}
+        choices[#choices+1]={id=id,title=events:Text(row.label),body=ok and (row.hideRewards and '' or table.concat(rewards,' · ')) or reason,available=ok}
     end end
     Widgets.Rows(self,'Choices','StoryChoice',choices,function(row) self.demo:SendCommand('choose',row.id,0) end)
     self.view.Hint.text=self.demo.LastError or '';self.revision=self.demo.BattleHUDRevision

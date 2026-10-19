@@ -6,9 +6,10 @@ end}})
 for _,path in ipairs({'Lua/Game/Loot/MapLoot.lua','Lua/Game/Loot/ContainerCombat.lua','Lua/Game/Loot/ContainerTerrain.lua',
     'Lua/Game/MapArea/MapAreaSystem.lua','Lua/Game/Adventure/CharacterSkills.lua','Lua/Game/Adventure/AdventureSystem.lua','Lua/Game/Battle/BattleSystem.lua'}) do assert(loadfile(path)) end
 local rules=require('Game.Loot.LootRules').New(config)
+local bossItems={};for _,entry in ipairs(rules.entries[rules.containers:Get(204).poolId])do bossItems[entry.itemId]=true end
 for seed=1,12 do
     local ids,counts=rules:Roll(204,seed);local total=0
-    for i,id in ipairs(ids) do assert(id==40 or id==46);total=total+counts[i] end
+    for i,id in ipairs(ids) do assert(bossItems[id],'Boss loot is outside its configured upgraded equipment pool');total=total+counts[i] end
     assert(total==2,'Boss weighted pool must produce its two guaranteed draws')
     ids,counts=rules:Roll(201,seed,6);assert(#ids==1 and counts[1]==1,'Placement pool override was ignored')
 end

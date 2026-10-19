@@ -91,7 +91,7 @@ namespace ProjectY.Editor
             var rows=Scroll(root,"NavigationRows",navigation,12,48,270,444);
             var footer=Rect("AreaActions",safe,0,0,640,34);footer.anchorMin=footer.anchorMax=new Vector2(.5f,1);footer.anchoredPosition=new Vector2(-190,-98);
             Button(root,"Leave",footer,"返回大地图",0,0,126,34);Button(root,"Stop",footer,"停止  Space",136,0,126,34);
-            Button(root,"CameraMode",footer,"切换视角  V",272,0,126,34);Button(root,"Restart",footer,"新的远征",0,0,126,34);
+            Button(root,"CameraMode",footer,"切换视角  V",272,0,126,34);Button(root,"Restart",footer,"营地",0,0,126,34);
             var party=Rect("PartyRows",safe,16,648,712,56);var grid=party.gameObject.AddComponent<GridLayoutGroup>();grid.constraint=GridLayoutGroup.Constraint.FixedColumnCount;grid.constraintCount=4;grid.cellSize=new Vector2(172,56);grid.spacing=new Vector2(8,6);Bind(root,"PartyRows",party);
             var journal=Rect("Journal",safe,924,516,324,188);Paint(journal,Ink,true);Label("JournalTitle",journal,"旅 途 见 闻",14,10,296,25,16,Gold);
             Bind(root,"Logs",Label("Logs",journal,"",14,44,296,132,13,Muted));

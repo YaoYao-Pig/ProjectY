@@ -22,6 +22,7 @@ function Story:OnStart()
     end)
 end
 function Story:Start()
+    self.lastBuffMinute=nil
     self.data:Clear(); self.data:AdvanceMinutes(self.rules.environment.startHour * 60)
     for _, npc in ipairs(self.rules.npcs:All()) do self.data:SetValue('relation:'..npc.id,npc.initialRelation) end
     for _, faction in ipairs(self.rules.factions:All()) do self.data:SetValue('reputation:'..faction.id,faction.initialValue) end
@@ -85,11 +86,34 @@ function Story:Refresh()
 end
 function Story:Tick(dt)
     local ui=self.context.services.UI
-    if not self.adventure.map or (ui and ui.IsWorldPaused) or self.data.DialogueOpen or self.adventure.shop.data.IsOpen then return end
+    if not self.adventure.map then return end
     if self.adventure.data.Phase ~= 'map' and self.adventure.data.Phase ~= 'area' then return end
-    if self.rules.environment.autoCycle then self.data:AdvanceMinutes(dt * 1440 / self.rules.environment.cycleSeconds) end
+    local paused=(ui and ui.IsWorldPaused) or self.data.DialogueOpen or self.adventure.shop.data.IsOpen
+    if not paused and self.adventure.data.Phase~='map' and self.rules.environment.autoCycle then self:AdvanceMinutes(dt * 1440 / self.rules.environment.cycleSeconds) end
+    self:TickBuffs()
+    if paused then return end
     local revision = self.data.Revision..':'..self.adventure.data.Equipment.Revision..':'..self.adventure.player.Coins..':'..math.floor(self.data.Minutes)
     if revision ~= self.lastRevision then self:Refresh(); self.lastRevision = revision end
+end
+function Story:AdvanceMinutes(minutes)
+    self.data:AdvanceMinutes(minutes);self:TickBuffs()
+end
+function Story:TickBuffs()
+    local now=self.data.Minutes
+    if self.lastBuffMinute==now then return end
+    self.lastBuffMinute=now
+    local adventure=self.adventure;local changed={}
+    local function visit(actor)if adventure.battle.gameEffects:TickWorldActor(actor,now)then changed[#changed+1]=actor end end
+    for i=0,adventure.data.PartyCount-1 do visit(adventure.data:GetPartyAt(i)) end
+    if adventure.data.Phase=='area' then local state=adventure.data.Areas.Active
+        for i=0,state.EncounterCount-1 do local group=state:GetEncounterAt(i)
+            for j=0,group.EnemyCount-1 do local actor=group:GetEnemyAt(j);if actor.AnimalOwnerId==0 then visit(actor) end end
+        end
+    end
+    if #changed>0 and adventure.data.Phase=='area' then
+        adventure.equipment:GenerateActorDrops(adventure.areas,changed,adventure.battle.stats)
+        adventure.areas:RefreshLivingSquad()
+    end
 end
 function Story:Rows()
     local result = {}

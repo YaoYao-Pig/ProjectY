@@ -51,7 +51,8 @@ local ok,err=xpcall(function()
     function demo:SendCommand(command,a,b,c)
         if command=='hud_follow' then self.focused=true;return end
         local success,why
-        if command=='visit' then success,why=adventure:Visit(a)
+        if command=='camp_open' then success,why=adventure.camp:Open()
+        elseif command=='visit' then success,why=adventure:Visit(a)
         elseif command=='character_skill' then success,why=adventure.characterSkills:Use(a,b,c);self:CancelCharacterSkill()
         elseif command:sub(1,5)=='area_' then success,why=adventure:AreaCommand(command,a,b)
         else success,why=adventure:BattleCommand(command,a,b) end
@@ -64,6 +65,13 @@ local ok,err=xpcall(function()
         assert(demo.mainHud~=nil and not hud.battleContent.visible)
         hud.view.Inventory.onClick:Invoke();assert(demo.opened=='equipment')
         hud.view.Growth.onClick:Invoke();assert(demo.opened=='growth')
+        assert(hud.view.RestartText.text=='营地' and hud.view.Restart.gameObject.activeSelf)
+        for _,widget in ipairs(hud.pools.MenuRows) do
+            assert(widget.row.command~='camp_open','Camp should have one dedicated entrance')
+        end
+        local seed=adventure.data.Seed;hud.view.Restart.onClick:Invoke()
+        assert(adventure.camp.data.IsOpen and adventure.data.Seed==seed,'Camp button must not restart the expedition')
+        assert(adventure.camp:Close());demo.commands=0
         local row;for _,widget in ipairs(hud.pools.NavigationRows) do if widget.row.a==areaSite.id then row=widget;break end end
         assert(row and row.row.command=='visit')
         row.view.Button.onClick:Invoke();ui:Tick(0,0)

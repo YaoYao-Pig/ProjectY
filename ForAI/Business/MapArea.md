@@ -15,6 +15,7 @@
 - 生成器允许调用方提供可选 `decorate(area)`，在静态几何完成、`Layout.Freeze` 前补充配置对象。[叙事 NPC](Narrative.md)通过此入口安置，冻结后仍禁止修改布局；运行期位置/存在状态归 C# MapAreaData。
 
 - 容器在 `ContainerLayout.Populate` 中于冻结前安置，运行期由 `ContainerTerrain` 叠加耐久对应的动态阻挡；攻击、搜刮、概率配置和陈设关联见[容器与掉落](Loot.md)。旧事件 `Battlefield` 保留原半径六边形棋盘，实际 cells 不使用定义表方形采样尺寸。
+- `CanTrace(origin,target,query,includeCell)` 是地形及工事/容器投影共享的几何查询，可筛选弹道中间格；`CanSee` 始终不传筛选，保留探索视野。`ShotOccupancy` 查询当前存活队员、敌群/动物、在场 NPC 和未清除工具障碍，区分楼层；战斗用角色实时坐标，探索用编队格。规则和最小检查见[战斗弹道](Battle.md)，不在地图状态中另存弹道或占位副本。
 
 - `Forest` 独立策略及区域入口、动物与哥布林刷新、驯服与骑乘见[森林动物与骑乘](Animals.md)，复用当前单层原地战斗与探索状态。
 
@@ -29,7 +30,7 @@
 - `MapAreaPropTable` 映射模型、缩放、视线和摆放方式。`footprintQ/footprintR` 成对定义可旋转占地，替代旧 footprintRadius；必须含原点且不重复，大型设施使用 13/19 格。固定陈设冲突直接报错；随机陈设先大后小，以覆盖率为目标，沿墙/建筑轴或天然成片摆放，避开保留区，切断地面连通则回滚。`cell.blocked` 决定移动，`blocksSight` 决定视线；物件格仍是地板，不按 blocked 挤出墙。资源见[地图模型](MapArt.md)。
 - `MapAreaThemeTable` 将 Region 类型映射到墙高、房间尺度、走廊曲折、细微高度、材质配方及柱模型。几何使用入口主 Region，基础颜色支持地貌权重融合；当前墙地配方覆盖基础色，按房间功能和 Region 选择连续材质，见[材质表现](MapPresentation.md)。固定模板不随 Region 缩放其格罩与摆件。
 - `DungeonProps.Dress` 在原功能设施后追加环境陈设，三级混合房间各自配置池与预算；`scaleMode=meters` 的新增小件保持真实米制，旧 `grid` 件沿用格子缩放。城镇追加陈设在居民路线前完成，细节见[环境装饰](MapDressing.md)。
-- `MapAreaSystem` 保存冻结后的静态布局；`AdventureData.Areas` 的 C# `MapAreaData/MapAreaStateData` 保存唯一可变状态：当前地点、成员 ID/占格、领队格、已发现格、可见格、同步路径帧、移动时钟，以及城镇 NPC/交互状态。`CellIndex` 保持首名存活队员的格子。重进保留每个人的位置；存活名单变化时在当前锚点附近避开 NPC 重新部署，开始新远征统一清空。当前无跨运行存档。
+- `MapAreaSystem` 保存冻结后的静态布局；`AdventureData.Areas` 的 C# `MapAreaData/MapAreaStateData` 保存唯一可变状态：当前地点、成员 ID/占格、领队格、已发现格、可见格、同步路径帧、移动时钟，以及城镇 NPC/交互状态。`CellIndex` 保持首名存活队员的格子。重进保留每个人的位置；存活名单变化时在当前锚点附近避开 NPC 重新部署，开始新远征统一清空。v9 [远征存档](CharacterSave.md)恢复探索/敌群/容器等持久状态，区域行走路径不续走。
 - 探索仅部署 1–4 名存活队员，全员倒地时要求先回营地。点击已发现地面以六邻接 BFS 规划领队路径；`SquadMovement` 用局部距离场和同帧占位组合让同伴保持后方队形，侧格受阻时跟随前一人足迹。每步最多一格，不重格、不迎面交换，离领队的可行走距离不超过 4 格；领队可等待让位，抵达后同伴收拢。规划失败保留旧路线并说明原因，不传送或穿墙。
 - 路径所有成员都只能经过已发现且无 NPC 的格。`SetSquadRoute` 接收按帧展开的全员位置并在 C# 中一次验证/保存，`Advance` 按游戏 Tick 同时推进整队；停止与重新点目标都从当前真实位置开始。地牢墙体挡视线，面对的墙格可见，当前视野为全员视野并集；城镇 discovery=open 进场一次公开全部地格。Lua 规划临时表不作为第二份可变状态。
 - `MapAreaEncounterTable` 为指定地牢配置敌群数、遭遇模板、警戒距离和战场边距；未配置的区域不生成敌人。`DungeonEncounters` 用独立种子从远离入口的非入口房间生成敌群，当前默认 3 组，每组复用两名近战和一名弓手。`MapAreaEncounterData` 保存唯一敌人实例、HP 和位置，重进不刷新；新远征统一清空。
@@ -46,7 +47,7 @@
 - 探索视野的整队揭示同样使用单次 `NavigationView()`，包括普通单层地图；每次揭示只读取一次工事版本，不能在逐格射线中重复跨 C# 查询。容器投影读取静态字段不查询耐久，`CanSee` 必须向内层传递同一个多层视野 query，保持几何缓存复用。下一次揭示重新取得视图，仍即时观察工事和容器变化。
 - `SquadPawnRenderer` 按 `members(actorId,cellIndex)` 显示独立棋子，平滑位置和朝向，不决定占格。模型高度固定，地格半径 1.5；进入区域创建，离开/销毁时释放，身体和装备通过显式 Prefab 挂点组合。资源与同步菜单见[棋子资源](PawnArt.md)。
 - `ExplorationGridRenderer` 在 `phase=area` 时显示小队附近当前可见、可行走且与成员同层的六边形半透明面片；进入战斗关闭。距离取全员平滑显示位置的最近水平距离，默认 3 格内清晰、3–6 格平滑渐隐（格单位为相邻格中心间距）。`AdventureRuntimeDemo.explorationGrid` 配置范围、格边留缝比例和颜色；面片沿 `TownSurfaceRenderer.AppendOverlay` 贴合斜坡/台阶，shader 经 Resources 加载，进入区域创建、离开/销毁时释放。它不决定移动范围或修改迷雾。
-- 悬停面片用 `HoverColor`（亮青）、成功点击移动后的选中目标用 `SelectedColor`（亮绿），选中优先；目标保留到下一次成功选择，停止、第三人称行走、进入战斗或离开地图会清除。交互高亮仅显示可见且可行走的被指向格，允许在基础渐隐半径外及被明确拾取的其他层显示；不扩大周围可见范围。鼠标经过背包、侧栏及第三人称面板时取消悬停。
+- 悬停面片用 `HoverColor`（亮青）、成功点击移动后的选中目标用 `SelectedColor`（亮绿），选中优先；目标保留到下一次成功选择，停止、进入战斗或离开地图会清除。交互高亮仅显示可见且可行走的被指向格，允许在基础渐隐半径外及被明确拾取的其他层显示；不扩大周围可见范围。鼠标经过背包、侧栏及模态面板时取消悬停。
 - 原地战斗期间保持同一 `MapAreaRenderer`，快照 `members` 取存活参战队员的真实位置；`AreaCombatRenderer` 只显示当前可见敌人，并显示移动/目标/当前行动格。静态棋子在战斗命令后直接落到目标格，尚无行走/攻击动画；调试全图不公开隐藏敌人。
 - 新 C# Data/API 先编译，再使用真正的 `XLua/Generate Code` 生成桥接并等待编译；不得手改 Gen。改表仍经现有 exporter，Lua schema、bytes、清单分别导出到现有 `_Gen` 目录。
 - 最小算法检查：`python -B Tools/Tests/run_lua.py Tools/Tests/maparea_core.lua`，覆盖六种 Region、代表性种子、连通、确定性、视线、共享坐标、通道净宽、战斗区与模板完整性。真实 C# 状态/显示快照检查：Edit Mode 菜单 `Project Y/地图/验证 MapArea 地牢`；不切场景、不进入 Play。修改建筑资源后在远征场景执行“同步地图资源引用”。

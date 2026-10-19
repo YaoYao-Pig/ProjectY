@@ -1,6 +1,7 @@
 local Class=require('Core.Class')
 local Panel=require('UI.UIPanelCtrl')
 local Model=require('Game.Equipment.InventoryModel')
+local Text=require('Game.Equipment.EquipmentPresentation')
 local Inventory=Class('InventoryCtr',Panel)
 function Inventory:Bind()
     self.system=self.context.systems:Get('Equipment');self.stats=self.context.systems:Get('Battle').stats
@@ -38,6 +39,7 @@ function Inventory:Bind()
         self:Command('equip:'..slot,row.key)
     end)
     self:Listen(self.view.Unequip,function() self:Command('unequip',self.selected) end)
+    self:Listen(self.view.Repair,function() self:Command('repair',self.selected) end)
     self:Listen(self.view.Rotate,function()
         local row=self:Selected();if row then self:Command('move',row.key,row.x,row.y,not row.rotated) end
     end)
@@ -53,7 +55,7 @@ function Inventory:Selected()
 end
 function Inventory:Command(command,key,x,y,rotated)
     local ok,reason=self.model:Command(command,self.actorId,key,x or 0,y or 0,rotated==true)
-    self.message=ok and '已保存收纳与装备变更' or reason
+    self.message=ok and (command=='repair' and reason or '已保存收纳与装备变更') or reason
     self.selected=key
     if ok then self.demo:SendCommand('snapshot') end
     self:Refresh()
@@ -75,12 +77,20 @@ function Inventory:Refresh()
     self.view.ActorStats.text=string.format('生命 %d / %d\n',actor.HP,actor.MaxHP)..table.concat(lines,'    ')
     local occupied=0;for i=0,data.Grid.Count-1 do local p=data.Grid:GetAt(i);occupied=occupied+p.Width*p.Height end
     self.view.Capacity.text=string.format('%d × %d  /  已用 %d 格 · 剩余 %d 格',data.Grid.Width,data.Grid.Height,occupied,data.Grid.Width*data.Grid.Height-occupied)
-    self.view.ItemName.text=selected and selected.name or '选择一件物品'
-    self.view.ItemDetail.text=selected and string.format('%d × %d 格  ·  数量 %d\n\n%s\n\n%s',selected.width,selected.height,selected.count,selected.detail,
-        selected.slot~='' and ('已穿戴：'..Model.slotNames[selected.slot]) or selected.compatible~='' and '拖到左侧对应槽位即可穿戴' or '组件与弹药可在武器工坊中使用') or '点击查看物品\n\n矩形占位 · 支持旋转\n装备后释放背包空间\n空间不足时保留原状'
+    self.view.ItemName.text=selected and selected.displayName or '选择一件物品'
+    self.view.ItemDetail.text=selected and (selected.detail..'\n\n'..Text.Note(string.format('%d × %d 格 · 数量 %d',selected.width,selected.height,selected.count))..'\n'..
+        Text.Note(selected.slot~='' and ('已穿戴 · '..Model.slotNames[selected.slot]) or selected.compatible~='' and '拖动至装备槽即可穿戴' or '可在武器工坊中使用')) or
+        Text.Heading('物品详情')..'\n\n'..Text.Note('点击物品查看属性与品质\n\n拖动整理 · R 旋转\n装备后释放背包空间')
+    if self.detailsKey~=self.selected then self.view.ItemDetail.rectTransform.anchoredPosition=CS.UnityEngine.Vector2.zero;self.detailsKey=self.selected end
     self.view.Equip.interactable=selected~=nil and selected.compatible~='' and selected.slot==''
     self.view.Unequip.interactable=selected~=nil and selected.slot~=''
     self.view.Rotate.interactable=selected~=nil and selected.slot=='' and selected.width~=selected.height
+    local quote=selected and self.system:RepairQuote(selected.key)
+    self.view.Repair.interactable=quote~=nil and quote.materials>0
+    self.view.RepairText.text=quote and quote.materials>0 and string.format('维修 · 铁件%d / 金币%d',quote.materials,quote.coins) or '维修装备'
+    local hasWeapon=false
+    for i=0,data.WeaponCount-1 do if self.system:IsCarriedWeapon(data:GetWeaponAt(i)) then hasWeapon=true;break end end
+    self.view.Workbench.interactable=hasWeapon
     self.view.Status.text=self.message;self.revision=data.Revision
 end
 function Inventory:Tick()

@@ -1,0 +1,273 @@
+{
+  "version": 1,
+  "name": "WorldTravelEventTable",
+  "description": "旅行随机池；事件与直接遇敌二选一，进入独立随机战场。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "规则ID"
+    },
+    {
+      "name": "regionTypes",
+      "type": "enum[]",
+      "description": "适用地域，空为全部",
+      "enumRef": "Map.E_MapRegion"
+    },
+    {
+      "name": "weight",
+      "type": "int",
+      "description": "相对抽取权重",
+      "min": 0
+    },
+    {
+      "name": "eventId",
+      "type": "int",
+      "description": "叙事事件ID；直接遇敌为0"
+    },
+    {
+      "name": "encounterId",
+      "type": "int",
+      "description": "敌群ID；叙事事件为0"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "regionTypes": [],
+      "weight": 15,
+      "eventId": 5,
+      "encounterId": 0
+    },
+    {
+      "id": 2,
+      "regionTypes": [
+        1,
+        5
+      ],
+      "weight": 20,
+      "eventId": 6,
+      "encounterId": 0
+    },
+    {
+      "id": 3,
+      "regionTypes": [],
+      "weight": 50,
+      "eventId": 0,
+      "encounterId": 1
+    },
+    {
+      "id": 4,
+      "regionTypes": [
+        5
+      ],
+      "weight": 30,
+      "eventId": 0,
+      "encounterId": 204
+    },
+    {
+      "id": 201,
+      "regionTypes": [
+        1,
+        5
+      ],
+      "weight": 7,
+      "eventId": 201,
+      "encounterId": 0
+    },
+    {
+      "id": 202,
+      "regionTypes": [
+        5
+      ],
+      "weight": 7,
+      "eventId": 202,
+      "encounterId": 0
+    },
+    {
+      "id": 203,
+      "regionTypes": [
+        1,
+        2,
+        5
+      ],
+      "weight": 6,
+      "eventId": 203,
+      "encounterId": 0
+    },
+    {
+      "id": 204,
+      "regionTypes": [
+        2,
+        5,
+        6
+      ],
+      "weight": 6,
+      "eventId": 204,
+      "encounterId": 0
+    },
+    {
+      "id": 205,
+      "regionTypes": [
+        1,
+        2
+      ],
+      "weight": 7,
+      "eventId": 205,
+      "encounterId": 0
+    },
+    {
+      "id": 206,
+      "regionTypes": [
+        1,
+        2
+      ],
+      "weight": 4,
+      "eventId": 206,
+      "encounterId": 0
+    },
+    {
+      "id": 207,
+      "regionTypes": [
+        2,
+        6
+      ],
+      "weight": 4,
+      "eventId": 207,
+      "encounterId": 0
+    },
+    {
+      "id": 208,
+      "regionTypes": [
+        1
+      ],
+      "weight": 6,
+      "eventId": 208,
+      "encounterId": 0
+    },
+    {
+      "id": 209,
+      "regionTypes": [
+        1,
+        5
+      ],
+      "weight": 6,
+      "eventId": 209,
+      "encounterId": 0
+    },
+    {
+      "id": 210,
+      "regionTypes": [
+        2,
+        5
+      ],
+      "weight": 6,
+      "eventId": 210,
+      "encounterId": 0
+    },
+    {
+      "id": 211,
+      "regionTypes": [
+        1,
+        2,
+        5
+      ],
+      "weight": 5,
+      "eventId": 211,
+      "encounterId": 0
+    },
+    {
+      "id": 212,
+      "regionTypes": [
+        1,
+        2
+      ],
+      "weight": 5,
+      "eventId": 212,
+      "encounterId": 0
+    },
+    {
+      "id": 213,
+      "regionTypes": [
+        2,
+        6
+      ],
+      "weight": 6,
+      "eventId": 213,
+      "encounterId": 0
+    },
+    {
+      "id": 214,
+      "regionTypes": [
+        5
+      ],
+      "weight": 6,
+      "eventId": 214,
+      "encounterId": 0
+    },
+    {
+      "id": 215,
+      "regionTypes": [
+        1,
+        2
+      ],
+      "weight": 5,
+      "eventId": 215,
+      "encounterId": 0
+    },
+    {
+      "id": 216,
+      "regionTypes": [
+        1,
+        5
+      ],
+      "weight": 5,
+      "eventId": 216,
+      "encounterId": 0
+    },
+    {
+      "id": 217,
+      "regionTypes": [
+        1,
+        2,
+        5
+      ],
+      "weight": 6,
+      "eventId": 217,
+      "encounterId": 0
+    },
+    {
+      "id": 218,
+      "regionTypes": [
+        1,
+        2,
+        5,
+        6
+      ],
+      "weight": 5,
+      "eventId": 218,
+      "encounterId": 0
+    },
+    {
+      "id": 219,
+      "regionTypes": [
+        1,
+        2
+      ],
+      "weight": 4,
+      "eventId": 219,
+      "encounterId": 0
+    },
+    {
+      "id": 220,
+      "regionTypes": [
+        2,
+        6
+      ],
+      "weight": 6,
+      "eventId": 220,
+      "encounterId": 0
+    }
+  ]
+}

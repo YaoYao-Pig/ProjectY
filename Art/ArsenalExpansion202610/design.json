@@ -1,0 +1,2923 @@
+{
+  "version": 1,
+  "status": "config_design_ready",
+  "rules": "New assets use existing weapon classifications and base weapon scale, origin and grip. Conditions inspect the original attack target; source recipients still require that attack to hit. Health percent variables use 0..100.",
+  "weapons": [
+    {
+      "id": 601,
+      "name": "潮汐引雷杖",
+      "model": "Arsenal_TideConductor",
+      "baseWeaponId": 1,
+      "class": "staff",
+      "categoryId": 1,
+      "mounts": [
+        "head",
+        "shaft"
+      ],
+      "visual": "Slender sea-green staff; open crescent copper fork with three hanging water-drop rods; a small blue reservoir below the fork, clear center gap. Keep base staff grip and overall length.",
+      "rationale": "潮湿铺垫与导电终结两段法术；消耗潮湿换取伤害与一回合眩晕。",
+      "skillIds": [
+        6,
+        1601,
+        1621
+      ],
+      "damageMultiplier": 1.0,
+      "level": 2,
+      "value": 160,
+      "shopChance": 12,
+      "description": "专属技：潮湿铺垫与导电终结两段法术；消耗潮湿换取伤害与一回合眩晕。",
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_TideConductor.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_TideConductor.fbx",
+      "socketIds": [
+        101,
+        102
+      ]
+    },
+    {
+      "id": 602,
+      "name": "灰烬司炉杖",
+      "model": "Arsenal_AshKilnStaff",
+      "baseWeaponId": 1,
+      "class": "staff",
+      "categoryId": 1,
+      "mounts": [
+        "head",
+        "shaft"
+      ],
+      "visual": "Dark iron staff topped by an asymmetric miniature brick-kiln chamber, short side chimney, amber slit and ceramic collar; distinct block-and-chimney silhouette.",
+      "rationale": "先点燃再引爆燃烧；引爆会消耗持续伤害，不是白送额外伤害。",
+      "skillIds": [
+        6,
+        1602,
+        1622
+      ],
+      "damageMultiplier": 1.0,
+      "level": 2,
+      "value": 170,
+      "shopChance": 12,
+      "description": "专属技：先点燃再引爆燃烧；引爆会消耗持续伤害，不是白送额外伤害。",
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_AshKilnStaff.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_AshKilnStaff.fbx",
+      "socketIds": [
+        103,
+        104
+      ]
+    },
+    {
+      "id": 603,
+      "name": "回枝医者杖",
+      "model": "Arsenal_ReturningBough",
+      "baseWeaponId": 1,
+      "class": "staff",
+      "categoryId": 1,
+      "mounts": [
+        "head",
+        "shaft"
+      ],
+      "visual": "Pale wooden staff curving into two unequal living branches around a suspended jade bowl, small folded leaf plates and ivory bindings; botanical open shape.",
+      "rationale": "专属友军净化治疗；基础奥术攻击保留。",
+      "skillIds": [
+        6,
+        1603
+      ],
+      "damageMultiplier": 1.0,
+      "level": 2,
+      "value": 165,
+      "shopChance": 12,
+      "description": "专属技：专属友军净化治疗；基础奥术攻击保留。",
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_ReturningBough.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_ReturningBough.fbx",
+      "socketIds": [
+        105,
+        106
+      ]
+    },
+    {
+      "id": 604,
+      "name": "镂甲线膛枪",
+      "model": "Arsenal_ArmorBorer",
+      "baseWeaponId": 2,
+      "class": "gun",
+      "categoryId": 2,
+      "mounts": [
+        "magazine",
+        "rail"
+      ],
+      "visual": "Long narrow rifle barrel with offset drill-like muzzle sleeve, triangular bronze receiver braces, dark squared stock and compact top sight. Preserve reference rifle trigger, barrel axis, magazine interface and foregrip.",
+      "rationale": "定点破甲射击降低目标防御，随后队友可利用弱点。",
+      "skillIds": [
+        7,
+        9,
+        1604
+      ],
+      "damageMultiplier": 1.0,
+      "level": 2,
+      "value": 175,
+      "shopChance": 12,
+      "description": "专属技：定点破甲射击降低目标防御，随后队友可利用弱点。",
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_ArmorBorer.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_ArmorBorer.fbx",
+      "socketIds": [
+        107,
+        108
+      ]
+    },
+    {
+      "id": 605,
+      "name": "钟摆守望枪",
+      "model": "Arsenal_PendulumWatch",
+      "baseWeaponId": 2,
+      "class": "gun",
+      "categoryId": 2,
+      "mounts": [
+        "magazine",
+        "rail"
+      ],
+      "visual": "Rifle with split curved stock tail, pendulum-shaped underbarrel counterweight near receiver, parallel brass barrel rails and a small circular sight. Keep trigger and magazine clear.",
+      "rationale": "双发压制并获得护卫；用两发弹药换防守稳定性。",
+      "skillIds": [
+        7,
+        9,
+        1605
+      ],
+      "damageMultiplier": 0.95,
+      "level": 2,
+      "value": 165,
+      "shopChance": 12,
+      "description": "专属技：双发压制并获得护卫；用两发弹药换防守稳定性。",
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_PendulumWatch.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_PendulumWatch.fbx",
+      "socketIds": [
+        109,
+        110
+      ]
+    },
+    {
+      "id": 606,
+      "name": "暮线猎杀枪",
+      "model": "Arsenal_DuskFinisher",
+      "baseWeaponId": 2,
+      "class": "gun",
+      "categoryId": 2,
+      "mounts": [
+        "magazine",
+        "rail"
+      ],
+      "visual": "Broad octagonal muzzle, shortened angular upper shroud, long dark stock with crimson inset and tall forked iron sight; hunter silhouette unlike slim rifle.",
+      "rationale": "高弹耗终结弹按目标已失生命增伤，有额外冷却。",
+      "skillIds": [
+        7,
+        9,
+        1606
+      ],
+      "damageMultiplier": 1.0,
+      "level": 2,
+      "value": 180,
+      "shopChance": 12,
+      "description": "专属技：高弹耗终结弹按目标已失生命增伤，有额外冷却。",
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_DuskFinisher.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_DuskFinisher.fbx",
+      "socketIds": [
+        111,
+        112
+      ]
+    },
+    {
+      "id": 607,
+      "name": "仪典断咒剑",
+      "model": "Arsenal_CeremonyBreaker",
+      "baseWeaponId": 40,
+      "class": "melee",
+      "categoryId": 3,
+      "mounts": [
+        "catalyst",
+        "edge"
+      ],
+      "visual": "Slim straight ivory-silver sword with broken-ring guard, small suspended purple seal at guard center, stepped blade shoulder and squared pommel. Preserve iron-sword hilt dimensions and centerline.",
+      "rationale": "命中后驱散敌方增益；伤害略低，面向强化敌人。",
+      "skillIds": [
+        10,
+        1607
+      ],
+      "damageMultiplier": 1.05,
+      "level": 2,
+      "value": 130,
+      "shopChance": 12,
+      "description": "专属技：命中后驱散敌方增益；伤害略低，面向强化敌人。",
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_CeremonyBreaker.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_CeremonyBreaker.fbx",
+      "socketIds": [
+        113,
+        114
+      ]
+    },
+    {
+      "id": 608,
+      "name": "赤线采血剑",
+      "model": "Arsenal_RedThread",
+      "baseWeaponId": 40,
+      "class": "melee",
+      "categoryId": 3,
+      "mounts": [
+        "catalyst",
+        "edge"
+      ],
+      "visual": "Single-edged narrow sword with gently hooked tip, a deep red fuller channel, thin crescent handguard and teardrop pommel; no gore. Same blade length and hilt anchors as reference.",
+      "rationale": "专属采血命中恢复自身4生命，并有75%概率流血；用较弱直伤换持续续航。",
+      "skillIds": [
+        10,
+        1608
+      ],
+      "damageMultiplier": 1.0,
+      "level": 2,
+      "value": 140,
+      "shopChance": 12,
+      "description": "专属技：专属采血命中恢复自身4生命，并有75%概率流血；用较弱直伤换持续续航。",
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_RedThread.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_RedThread.fbx",
+      "socketIds": [
+        115,
+        116
+      ]
+    },
+    {
+      "id": 609,
+      "name": "荆冠赦令剑",
+      "model": "Arsenal_ThornPardon",
+      "baseWeaponId": 40,
+      "class": "melee",
+      "categoryId": 3,
+      "mounts": [
+        "catalyst",
+        "edge"
+      ],
+      "visual": "Broad leaf-shaped sword with three scalloped shoulders near the base, green enamel thorn-crown guard and a hollow diamond pommel; hilt remains reference sized.",
+      "rationale": "攻击成功后清除自身减益，必须命中才能自救。",
+      "skillIds": [
+        10,
+        1609
+      ],
+      "damageMultiplier": 1.0,
+      "level": 2,
+      "value": 145,
+      "shopChance": 12,
+      "description": "专属技：攻击成功后清除自身减益，必须命中才能自救。",
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_ThornPardon.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_ThornPardon.fbx",
+      "socketIds": [
+        117,
+        118
+      ]
+    },
+    {
+      "id": 610,
+      "name": "钳口压锋大剑",
+      "model": "Arsenal_ViseJaw",
+      "baseWeaponId": 42,
+      "class": "melee",
+      "categoryId": 4,
+      "mounts": [
+        "edge"
+      ],
+      "visual": "Two-handed sword with twin blunt jaws flanking the upper blade, a negative-space slit, heavy parallel crossguard and dark wrapped long grip; keep grip and reach reference aligned.",
+      "rationale": "重斩附加虚弱，降低敌方力量而非只增加伤害。",
+      "skillIds": [
+        11,
+        1610
+      ],
+      "damageMultiplier": 1.15,
+      "level": 2,
+      "value": 185,
+      "shopChance": 12,
+      "description": "专属技：重斩附加虚弱，降低敌方力量而非只增加伤害。",
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_ViseJaw.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_ViseJaw.fbx",
+      "socketIds": [
+        119
+      ]
+    },
+    {
+      "id": 611,
+      "name": "风车巡阵大剑",
+      "model": "Arsenal_WindmillSweep",
+      "baseWeaponId": 42,
+      "class": "melee",
+      "categoryId": 4,
+      "mounts": [
+        "edge"
+      ],
+      "visual": "Long swept falchion-like two-handed blade with four blade-shoulder fins reminiscent of a windmill, blue cloth-free enamel accents and open circular guard center.",
+      "rationale": "扇扫最多三个近邻目标，单体威力较低。",
+      "skillIds": [
+        11,
+        1611
+      ],
+      "damageMultiplier": 1.1,
+      "level": 2,
+      "value": 190,
+      "shopChance": 12,
+      "description": "专属技：扇扫最多三个近邻目标，单体威力较低。",
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_WindmillSweep.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_WindmillSweep.fbx",
+      "socketIds": [
+        120
+      ]
+    },
+    {
+      "id": 612,
+      "name": "残烛守誓大剑",
+      "model": "Arsenal_LastCandle",
+      "baseWeaponId": 42,
+      "class": "melee",
+      "categoryId": 4,
+      "mounts": [
+        "edge"
+      ],
+      "visual": "Long dark tapering sword with a narrow amber candle-like central core, asymmetrical melted-wax bronze guard and a short bell-shaped pommel. Keep a solid usable edge and reference long grip.",
+      "rationale": "失血越多斩击越强；强化有上限，不提供无条件优势。",
+      "skillIds": [
+        11,
+        1612
+      ],
+      "damageMultiplier": 1.15,
+      "level": 2,
+      "value": 195,
+      "shopChance": 12,
+      "description": "专属技：失血越多斩击越强；强化有上限，不提供无条件优势。",
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_LastCandle.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_LastCandle.fbx",
+      "socketIds": [
+        121
+      ]
+    },
+    {
+      "id": 613,
+      "name": "钉城破壁巨剑",
+      "model": "Arsenal_SiegeRivet",
+      "baseWeaponId": 44,
+      "class": "melee",
+      "categoryId": 5,
+      "mounts": [
+        "thruster",
+        "edge"
+      ],
+      "visual": "Very broad rectangular siege blade with riveted iron plates, a stepped hammer-like square tip, two large bronze bolts and heavy lower brace. Same giant-sword grip and footprint as base44.",
+      "rationale": "高耐久破坏重击，用低命中和武器磨损换装备破坏。",
+      "skillIds": [
+        12,
+        1613
+      ],
+      "damageMultiplier": 1.35,
+      "level": 2,
+      "value": 240,
+      "shopChance": 12,
+      "description": "专属技：高耐久破坏重击，用低命中和武器磨损换装备破坏。",
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_SiegeRivet.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_SiegeRivet.fbx",
+      "socketIds": [
+        122,
+        123
+      ]
+    },
+    {
+      "id": 614,
+      "name": "寒钟震霜巨剑",
+      "model": "Arsenal_FrostBell",
+      "baseWeaponId": 44,
+      "class": "melee",
+      "categoryId": 5,
+      "mounts": [
+        "thruster",
+        "edge"
+      ],
+      "visual": "Giant blade with broad bell-shaped blade shoulder, ice-blue faceted inset, open iron bell yoke crossguard and staggered small icicle plates, no transparency needed.",
+      "rationale": "命中施加寒滞；潮湿目标额外被眩晕且潮湿被消耗。",
+      "skillIds": [
+        12,
+        1614
+      ],
+      "damageMultiplier": 1.3,
+      "level": 2,
+      "value": 250,
+      "shopChance": 12,
+      "description": "专属技：命中施加寒滞；潮湿目标额外被眩晕且潮湿被消耗。",
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_FrostBell.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_FrostBell.fbx",
+      "socketIds": [
+        124,
+        125
+      ]
+    },
+    {
+      "id": 615,
+      "name": "赤潮汲流巨剑",
+      "model": "Arsenal_CrimsonTide",
+      "baseWeaponId": 44,
+      "class": "melee",
+      "categoryId": 5,
+      "mounts": [
+        "thruster",
+        "edge"
+      ],
+      "visual": "Giant crescent-cleaver profile with a broad hooked upper tip, three red vent slits near the spine, open wave-shaped guard and bronze conduit along one side.",
+      "rationale": "收割流血目标的状态，追加伤害并治疗自己。",
+      "skillIds": [
+        12,
+        1615
+      ],
+      "damageMultiplier": 1.3,
+      "level": 2,
+      "value": 255,
+      "shopChance": 12,
+      "description": "专属技：收割流血目标的状态，追加伤害并治疗自己。",
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_CrimsonTide.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_CrimsonTide.fbx",
+      "socketIds": [
+        126,
+        127
+      ]
+    },
+    {
+      "id": 616,
+      "name": "蛛纹缚足弓",
+      "model": "Arsenal_WebweaverBow",
+      "baseWeaponId": 46,
+      "class": "bow",
+      "categoryId": 6,
+      "mounts": [
+        "rail"
+      ],
+      "visual": "Recurve bow with asymmetric spider-leg-like limb braces, three pale tension cords forming a small web near each limb tip, green central grip; match reference grip, bow plane, tips and string path.",
+      "rationale": "带线箭附加迟缓，降低目标速度并改变后续回合排序。",
+      "skillIds": [
+        2,
+        1616
+      ],
+      "damageMultiplier": 1.0,
+      "level": 2,
+      "value": 135,
+      "shopChance": 12,
+      "description": "专属技：带线箭附加迟缓，降低目标速度并改变后续回合排序。",
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_WebweaverBow.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_WebweaverBow.fbx",
+      "socketIds": [
+        128
+      ]
+    },
+    {
+      "id": 617,
+      "name": "白鹭分羽弓",
+      "model": "Arsenal_EgretSplitBow",
+      "baseWeaponId": 46,
+      "class": "bow",
+      "categoryId": 6,
+      "mounts": [
+        "rail"
+      ],
+      "visual": "Elegant ivory bow with split forked upper and lower limb ends suggesting egret feathers, cyan inlaid grip and short clean feather-shaped plates; reference bow string stays unobstructed.",
+      "rationale": "分羽箭对两个邻近目标精准射击，保持敌装不受额外磨损。",
+      "skillIds": [
+        2,
+        1617
+      ],
+      "damageMultiplier": 1.0,
+      "level": 2,
+      "value": 145,
+      "shopChance": 12,
+      "description": "专属技：分羽箭对两个邻近目标精准射击，保持敌装不受额外磨损。",
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_EgretSplitBow.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_EgretSplitBow.fbx",
+      "socketIds": [
+        129
+      ]
+    },
+    {
+      "id": 618,
+      "name": "巡墓萃毒弓",
+      "model": "Arsenal_GraveDistiller",
+      "baseWeaponId": 46,
+      "class": "bow",
+      "categoryId": 6,
+      "mounts": [
+        "rail"
+      ],
+      "visual": "Dark bone-and-wood recurved bow with two small green sealed reservoirs near grip, downward thorn tip shapes and bronze fluid clips; no large object crossing string.",
+      "rationale": "毒箭铺垫与萃毒终结，终结消耗中毒并追加伤害。",
+      "skillIds": [
+        2,
+        1618,
+        1623
+      ],
+      "damageMultiplier": 1.0,
+      "level": 2,
+      "value": 155,
+      "shopChance": 12,
+      "description": "专属技：毒箭铺垫与萃毒终结，终结消耗中毒并追加伤害。",
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_GraveDistiller.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_GraveDistiller.fbx",
+      "socketIds": [
+        130
+      ]
+    },
+    {
+      "id": 619,
+      "name": "窑工回火斧",
+      "model": "Arsenal_KilnQuenchAxe",
+      "baseWeaponId": 70,
+      "class": "melee",
+      "categoryId": 7,
+      "mounts": [
+        "edge"
+      ],
+      "visual": "One-handed axe with wide ceramic-backed wedge head, crescent cutting face, amber kiln slit near eye and an iron scoop-like rear poll; preserve axe70 shaft, hand region and head envelope.",
+      "rationale": "仍可伐木清障；回火劈砍从燃烧目标提取热量并扑灭火焰。",
+      "skillIds": [
+        10,
+        1619
+      ],
+      "damageMultiplier": 0.95,
+      "level": 2,
+      "value": 120,
+      "shopChance": 12,
+      "description": "专属技：仍可伐木清障；回火劈砍从燃烧目标提取热量并扑灭火焰。",
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_KilnQuenchAxe.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_KilnQuenchAxe.fbx",
+      "socketIds": [
+        131
+      ]
+    },
+    {
+      "id": 620,
+      "name": "断层寻脉镐",
+      "model": "Arsenal_FaultfinderPick",
+      "baseWeaponId": 72,
+      "class": "melee",
+      "categoryId": 7,
+      "mounts": [
+        "edge"
+      ],
+      "visual": "Two-handed mining pick with an offset split pointed head, small bronze survey dial at the haft junction, turquoise mineral seam inset and a squared hammer back; preserve two-handed shaft grip anchors.",
+      "rationale": "仍可清理石障；寻脉打击无视目标防御（护卫仍减免），并破坏护甲耐久。",
+      "skillIds": [
+        11,
+        1620
+      ],
+      "damageMultiplier": 1.0,
+      "level": 2,
+      "value": 135,
+      "shopChance": 12,
+      "description": "专属技：仍可清理石障；寻脉打击无视目标防御（护卫仍减免），并破坏护甲耐久。",
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_FaultfinderPick.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_FaultfinderPick.fbx",
+      "socketIds": [
+        132
+      ]
+    }
+  ],
+  "attachments": [
+    {
+      "id": 701,
+      "name": "蒸汽蒸馏冠",
+      "model": "Arsenal_SteamStill",
+      "slotKind": "head",
+      "skillGroup": "spell",
+      "visual": "Offset spiral still tube around a squat cyan chamber, broad open funnel and single drip nozzle; compact staff-head mount.",
+      "rationale": "消耗目标潮湿，追加蒸汽伤害。",
+      "description": "法术命中潮湿目标时追加4点基础蒸汽伤害并移除潮湿；直伤降低10%。",
+      "damageMultiplier": 0.9,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "onHitEffectIds": [
+        1345,
+        1304
+      ],
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "value": 115,
+      "shopChance": 15,
+      "inventoryWidth": 2,
+      "inventoryHeight": 2,
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_SteamStill.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_SteamStill.fbx"
+    },
+    {
+      "id": 702,
+      "name": "逆燃熄火冠",
+      "model": "Arsenal_BackburnSnuffer",
+      "slotKind": "head",
+      "skillGroup": "spell",
+      "visual": "Upside-down angular candle-snuffer hood, crimson inner plate and two opposing exhaust horns; distinctive inverted cone silhouette.",
+      "rationale": "引爆并移除燃烧，爆发与持续伤害取舍。",
+      "description": "法术命中燃烧目标时追加5点基础火伤并移除燃烧；直伤降低10%。",
+      "damageMultiplier": 0.9,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "onHitEffectIds": [
+        1346,
+        1309
+      ],
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "value": 115,
+      "shopChance": 15,
+      "inventoryWidth": 2,
+      "inventoryHeight": 2,
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_BackburnSnuffer.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_BackburnSnuffer.fbx"
+    },
+    {
+      "id": 703,
+      "name": "净秽孔雀冠",
+      "model": "Arsenal_PeacockCleanser",
+      "slotKind": "head",
+      "skillGroup": "spell",
+      "visual": "Five short peacock-eye bronze paddles in an upright crown, violet oval center and open fan gaps; no previous prism-fan geometry reuse.",
+      "rationale": "攻击命中驱散目标的增益状态。",
+      "description": "法术命中后移除目标增益；直伤降低15%。",
+      "damageMultiplier": 0.85,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "onHitEffectIds": [
+        1318
+      ],
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "value": 115,
+      "shopChance": 15,
+      "inventoryWidth": 2,
+      "inventoryHeight": 2,
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_PeacockCleanser.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_PeacockCleanser.fbx"
+    },
+    {
+      "id": 704,
+      "name": "蜜髓啄喙冠",
+      "model": "Arsenal_NectarBeak",
+      "slotKind": "head",
+      "skillGroup": "spell",
+      "visual": "Curved bird-beak spout with amber honeycomb capsule, ivory three-prong perch and tiny throat reservoir.",
+      "rationale": "命中汲取生命，直伤下降换取自疗。",
+      "description": "法术每次命中恢复自身2生命；直伤降低20%。",
+      "damageMultiplier": 0.8,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "onHitEffectIds": [
+        1347
+      ],
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "value": 115,
+      "shopChance": 15,
+      "inventoryWidth": 2,
+      "inventoryHeight": 2,
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_NectarBeak.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_NectarBeak.fbx"
+    },
+    {
+      "id": 705,
+      "name": "纺血绕线夹",
+      "model": "Arsenal_BloodSpindle",
+      "slotKind": "shaft",
+      "skillGroup": "spell",
+      "visual": "Side-mounted small bobbin with three angular red threads, two narrow guide wheels and brass spindle fork.",
+      "rationale": "专门追击流血目标，追加伤害但不再附加流血。",
+      "description": "法术命中流血目标时追加3点基础伤害，保留流血；直伤降低5%。",
+      "damageMultiplier": 0.95,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "onHitEffectIds": [
+        1348
+      ],
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "value": 115,
+      "shopChance": 15,
+      "inventoryWidth": 1,
+      "inventoryHeight": 2,
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_BloodSpindle.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_BloodSpindle.fbx"
+    },
+    {
+      "id": 706,
+      "name": "棘藜解毒夹",
+      "model": "Arsenal_ThistleAntidote",
+      "slotKind": "shaft",
+      "skillGroup": "spell",
+      "visual": "An ivory thistle cage enclosing three jade antidote beads, hooked drain stem and half-circle mounting cuff.",
+      "rationale": "攻击命中时清除自身中毒；保持攻击压力来解毒。",
+      "description": "法术命中后清除自身中毒；直伤降低5%。",
+      "damageMultiplier": 0.95,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "onHitEffectIds": [
+        1349
+      ],
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "value": 130,
+      "shopChance": 15,
+      "inventoryWidth": 1,
+      "inventoryHeight": 2,
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_ThistleAntidote.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_ThistleAntidote.fbx"
+    },
+    {
+      "id": 707,
+      "name": "风眼护持夹",
+      "model": "Arsenal_StormEyeGuard",
+      "slotKind": "shaft",
+      "skillGroup": "spell",
+      "visual": "Flattened eye-shaped metal loop with two opposed curved fins, central turquoise pupil shield and short cuff.",
+      "rationale": "命中后为自身获得护卫，降低直伤以稳住站位。",
+      "description": "法术命中后将自身护卫提升至至少2点，不叠加；直伤降低15%。",
+      "damageMultiplier": 0.85,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "onHitEffectIds": [
+        1350
+      ],
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "value": 130,
+      "shopChance": 15,
+      "inventoryWidth": 1,
+      "inventoryHeight": 2,
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_StormEyeGuard.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_StormEyeGuard.fbx"
+    },
+    {
+      "id": 708,
+      "name": "回春飞锤",
+      "model": "Arsenal_RestoringHammer",
+      "slotKind": "thruster",
+      "skillGroup": "slash",
+      "visual": "Small off-center square hammer head sliding on an open bronze arc, jade spring block and short piston foot.",
+      "rationale": "近战命中自身回血；不依赖施法。",
+      "description": "劈砍命中恢复自身3生命；直伤降低15%。",
+      "damageMultiplier": 0.85,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "onHitEffectIds": [
+        1351
+      ],
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "value": 130,
+      "shopChance": 15,
+      "inventoryWidth": 1,
+      "inventoryHeight": 2,
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_RestoringHammer.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_RestoringHammer.fbx"
+    },
+    {
+      "id": 709,
+      "name": "断咒铡刀架",
+      "model": "Arsenal_SpellGuillotine",
+      "slotKind": "thruster",
+      "skillGroup": "slash",
+      "visual": "Miniature open guillotine frame with diagonal violet plate, twin guide rails and a broad sword-spine clamp.",
+      "rationale": "近战命中有概率移除目标增益。",
+      "description": "劈砍命中有50%概率驱散目标增益；直伤降低5%。",
+      "damageMultiplier": 0.95,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "onHitEffectIds": [
+        1352
+      ],
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "value": 130,
+      "shopChance": 15,
+      "inventoryWidth": 1,
+      "inventoryHeight": 2,
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_SpellGuillotine.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_SpellGuillotine.fbx"
+    },
+    {
+      "id": 710,
+      "name": "沸血压舱器",
+      "model": "Arsenal_BloodBallast",
+      "slotKind": "thruster",
+      "skillGroup": "slash",
+      "visual": "Heavy asymmetrical kidney-shaped red chamber with gauge needle, two downward iron keel fins and broad mounting foot.",
+      "rationale": "自身血量越低追加伤害越高，牺牲命中。",
+      "description": "自身每失去20%生命，劈砍命中追加1点基础伤害；直伤降低5%，命中-8。",
+      "damageMultiplier": 0.95,
+      "rangeBonus": 0,
+      "hitBonus": -8,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "onHitEffectIds": [
+        1353
+      ],
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "value": 130,
+      "shopChance": 15,
+      "inventoryWidth": 1,
+      "inventoryHeight": 2,
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_BloodBallast.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_BloodBallast.fbx"
+    },
+    {
+      "id": 711,
+      "name": "雨痕导电触媒",
+      "model": "Arsenal_RainCircuitSeal",
+      "slotKind": "catalyst",
+      "skillGroup": "spell",
+      "visual": "Open zigzag lightning frame around a cyan droplet, bronze sword clip with two ceramic insulators.",
+      "rationale": "提供奥术触媒，法术对潮湿目标追加电伤但保留潮湿。",
+      "description": "提供奥术触媒；法术命中潮湿目标追加3点基础电伤，保留潮湿；直伤降低5%。",
+      "damageMultiplier": 0.95,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "onHitEffectIds": [
+        1354
+      ],
+      "catalystKind": "arcane",
+      "requiredTalentId": 301,
+      "value": 145,
+      "shopChance": 15,
+      "inventoryWidth": 1,
+      "inventoryHeight": 2,
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_RainCircuitSeal.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_RainCircuitSeal.fbx"
+    },
+    {
+      "id": 712,
+      "name": "赦毒骨铃触媒",
+      "model": "Arsenal_PardonBoneBell",
+      "slotKind": "catalyst",
+      "skillGroup": "spell",
+      "visual": "Two mismatched ivory bell shells suspended from a violet triangular bracket, tiny green clapper and sword-side clip.",
+      "rationale": "提供奥术触媒，命中后清除自身流血与中毒。",
+      "description": "提供奥术触媒；法术命中后清除自身流血与中毒；直伤降低10%。",
+      "damageMultiplier": 0.9,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "onHitEffectIds": [
+        1355
+      ],
+      "catalystKind": "arcane",
+      "requiredTalentId": 301,
+      "value": 145,
+      "shopChance": 15,
+      "inventoryWidth": 1,
+      "inventoryHeight": 2,
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_PardonBoneBell.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_PardonBoneBell.fbx"
+    },
+    {
+      "id": 713,
+      "name": "裂伤描线导轨",
+      "model": "Arsenal_WoundTracerRail",
+      "slotKind": "rail",
+      "skillGroup": "physical",
+      "visual": "Narrow horizontal rail carrying a split crimson aiming needle and two small open diamond sights; compact gun/bow-compatible footprint.",
+      "rationale": "物理远程命中流血目标时追加伤害。",
+      "description": "枪弓物理命中流血目标追加3点基础伤害，保留流血；直伤降低5%。",
+      "damageMultiplier": 0.95,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "onHitEffectIds": [
+        1348
+      ],
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "value": 145,
+      "shopChance": 15,
+      "inventoryWidth": 1,
+      "inventoryHeight": 2,
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_WoundTracerRail.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_WoundTracerRail.fbx"
+    },
+    {
+      "id": 714,
+      "name": "解甲楔形导轨",
+      "model": "Arsenal_ArmorWedgeRail",
+      "slotKind": "rail",
+      "skillGroup": "physical",
+      "visual": "Short top rail with three staggered brass wedges and an offset square receiver plate, distinct low wedge silhouette.",
+      "rationale": "命中附加破甲状态，降低目标防御。",
+      "description": "枪弓物理命中有35%概率施加2回合破甲（防御-2）；直伤降低10%。",
+      "damageMultiplier": 0.9,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "onHitEffectIds": [
+        1356
+      ],
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "value": 145,
+      "shopChance": 15,
+      "inventoryWidth": 1,
+      "inventoryHeight": 2,
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_ArmorWedgeRail.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_ArmorWedgeRail.fbx"
+    },
+    {
+      "id": 715,
+      "name": "回声分叉导轨",
+      "model": "Arsenal_EchoForkRail",
+      "slotKind": "rail",
+      "skillGroup": "physical",
+      "visual": "Two diverging blue fork vanes from a low center rail, small paired tuning discs and a clear central aiming channel.",
+      "rationale": "以直伤换取一个邻近追加目标，枪弓共用。",
+      "description": "枪弓物理伤害降低30%，可命中主目标1格内的合法敌人，目标总上限提高至至少2人；已有更高上限时不叠加，冷却+1。",
+      "damageMultiplier": 0.7,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 1,
+      "maxTargets": 2,
+      "splashRadius": 1,
+      "onHitEffectIds": [],
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "value": 145,
+      "shopChance": 15,
+      "inventoryWidth": 1,
+      "inventoryHeight": 2,
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_EchoForkRail.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_EchoForkRail.fbx"
+    },
+    {
+      "id": 716,
+      "name": "末程刻度导轨",
+      "model": "Arsenal_LastMileRail",
+      "slotKind": "rail",
+      "skillGroup": "physical",
+      "visual": "Long thin dark rail with tall crescent terminal sight, ivory notched gauge spine and a small amber end bead.",
+      "rationale": "目标生命越低追加伤害越高，牺牲射程。",
+      "description": "每8点目标已失生命追加1点基础伤害，最多6点；直伤降低5%，射程-1。",
+      "damageMultiplier": 0.95,
+      "rangeBonus": -1,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "onHitEffectIds": [
+        1357
+      ],
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "value": 160,
+      "shopChance": 15,
+      "inventoryWidth": 1,
+      "inventoryHeight": 2,
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_LastMileRail.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_LastMileRail.fbx"
+    },
+    {
+      "id": 717,
+      "name": "盐晶止血刃夹",
+      "model": "Arsenal_SaltCrystalEdge",
+      "slotKind": "edge",
+      "skillGroup": "physical",
+      "visual": "Twin ivory salt-crystal plates in a small bronze edge saddle, flat red wick beneath and a tiny curved drain.",
+      "rationale": "近战命中流血目标后回血并消耗流血。",
+      "description": "攻击命中后，若目标仍存活且流血，则恢复自身4生命并清除其全部流血；直伤降低10%。",
+      "damageMultiplier": 0.9,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "onHitEffectIds": [
+        1358,
+        1333
+      ],
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "value": 160,
+      "shopChance": 15,
+      "inventoryWidth": 1,
+      "inventoryHeight": 2,
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_SaltCrystalEdge.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_SaltCrystalEdge.fbx"
+    },
+    {
+      "id": 718,
+      "name": "裂甲铆钉刃夹",
+      "model": "Arsenal_RivetBreakerEdge",
+      "slotKind": "edge",
+      "skillGroup": "physical",
+      "visual": "Three heavy offset iron rivet punches with small serrated brass foot, compact one-sided edge mounting bracket.",
+      "rationale": "追加低伤害破甲打击，重点增加目标装备磨损。",
+      "description": "近战命中追加1点基础伤害，扣血时额外损伤目标装备12耐久；直伤降低10%。",
+      "damageMultiplier": 0.9,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "onHitEffectIds": [
+        1359
+      ],
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "value": 160,
+      "shopChance": 15,
+      "inventoryWidth": 1,
+      "inventoryHeight": 2,
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_RivetBreakerEdge.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_RivetBreakerEdge.fbx"
+    },
+    {
+      "id": 719,
+      "name": "雾水淬锋刃夹",
+      "model": "Arsenal_MistQuenchEdge",
+      "slotKind": "edge",
+      "skillGroup": "physical",
+      "visual": "Flattened cyan water capsule feeding two tiny curved nozzles across an ivory U-shaped blade clamp.",
+      "rationale": "命中施加潮湿，可灭火并配合导电武器。",
+      "description": "近战命中施加潮湿，扑灭燃烧并阻止点燃；直伤降低10%。",
+      "damageMultiplier": 0.9,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "onHitEffectIds": [
+        1302
+      ],
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "value": 160,
+      "shopChance": 15,
+      "inventoryWidth": 1,
+      "inventoryHeight": 2,
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_MistQuenchEdge.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_MistQuenchEdge.fbx"
+    },
+    {
+      "id": 720,
+      "name": "猎毒刻槽刃夹",
+      "model": "Arsenal_VenomGrooveEdge",
+      "slotKind": "edge",
+      "skillGroup": "physical",
+      "visual": "Three stepped jade channels held inside a dark open triangular clamp, small upward fang and bronze drain cup.",
+      "rationale": "对中毒目标追加伤害后消耗中毒，转化持续伤害为爆发。",
+      "description": "近战命中中毒目标追加4点基础伤害并消耗全部中毒；直伤降低5%。",
+      "damageMultiplier": 0.95,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "onHitEffectIds": [
+        1360,
+        1338
+      ],
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "value": 160,
+      "shopChance": 15,
+      "inventoryWidth": 1,
+      "inventoryHeight": 2,
+      "sourceFbx": "Art/ArsenalExpansion202610/Staging/Arsenal_VenomGrooveEdge.fbx",
+      "unityFbx": "Assets/DynamicAsset/ArsenalExpansion202610/Models/Arsenal_VenomGrooveEdge.fbx"
+    }
+  ],
+  "effects": [
+    {
+      "id": 1301,
+      "kind": "damage",
+      "name": "凝潮飞矢",
+      "description": "凝潮飞矢",
+      "amount": "max(1, floor(5+intellect+proficiency/2-defense/2-guard))",
+      "damageColor": "#6DB9D9",
+      "affectsContainers": false
+    },
+    {
+      "id": 1302,
+      "kind": "apply_buff",
+      "name": "引潮",
+      "description": "引潮",
+      "amount": "0",
+      "buffId": 10005,
+      "affectsContainers": false
+    },
+    {
+      "id": 1303,
+      "kind": "damage",
+      "name": "导电余波",
+      "description": "导电余波",
+      "amount": "max(1, floor(4+intellect/2))",
+      "requiredTags": [
+        "wet"
+      ],
+      "damageColor": "#A7DFFF",
+      "affectsContainers": false
+    },
+    {
+      "id": 1304,
+      "kind": "remove_buffs",
+      "name": "蒸发潮湿",
+      "description": "蒸发潮湿",
+      "amount": "0",
+      "removeTags": [
+        "wet"
+      ],
+      "affectsContainers": false
+    },
+    {
+      "id": 1305,
+      "kind": "apply_buff",
+      "name": "潮导震晕",
+      "description": "潮导震晕",
+      "amount": "0",
+      "buffId": 10104,
+      "requiredTags": [
+        "wet"
+      ],
+      "affectsContainers": false
+    },
+    {
+      "id": 1306,
+      "kind": "damage",
+      "name": "炉火打击",
+      "description": "炉火打击",
+      "amount": "max(1, floor(6+intellect+proficiency/2-defense/2-guard))",
+      "damageColor": "#F4A160",
+      "equipmentDamage": 8,
+      "affectsContainers": false
+    },
+    {
+      "id": 1307,
+      "kind": "apply_buff",
+      "name": "引燃炉火",
+      "description": "引燃炉火",
+      "amount": "0",
+      "buffId": 10004,
+      "affectsContainers": false
+    },
+    {
+      "id": 1308,
+      "kind": "damage",
+      "name": "燃烧引爆",
+      "description": "燃烧引爆",
+      "amount": "max(1, floor(6+intellect/2))",
+      "requiredTags": [
+        "burning"
+      ],
+      "damageColor": "#FFB05B",
+      "affectsContainers": false
+    },
+    {
+      "id": 1309,
+      "kind": "remove_buffs",
+      "name": "耗尽燃烧",
+      "description": "耗尽燃烧",
+      "amount": "0",
+      "removeTags": [
+        "burning"
+      ],
+      "affectsContainers": false
+    },
+    {
+      "id": 1310,
+      "kind": "remove_buffs",
+      "name": "回枝净化",
+      "description": "回枝净化",
+      "amount": "0",
+      "removeCategories": [
+        "debuff",
+        "control"
+      ],
+      "affectsContainers": false
+    },
+    {
+      "id": 1311,
+      "kind": "heal",
+      "name": "回枝治疗",
+      "description": "回枝治疗",
+      "amount": "8+intellect",
+      "affectsContainers": false
+    },
+    {
+      "id": 1312,
+      "kind": "damage",
+      "name": "镂甲弹",
+      "description": "镂甲弹",
+      "amount": "max(1, floor(6+strength+proficiency/2-defense*0.6-guard))",
+      "equipmentDamage": 6,
+      "affectsContainers": false
+    },
+    {
+      "id": 1313,
+      "kind": "apply_buff",
+      "name": "破甲",
+      "description": "破甲",
+      "amount": "0",
+      "buffId": 10101,
+      "affectsContainers": false
+    },
+    {
+      "id": 1314,
+      "kind": "damage",
+      "name": "钟摆压制弹",
+      "description": "钟摆压制弹",
+      "amount": "max(1, floor(4+strength+proficiency/3-defense-guard))",
+      "equipmentDamage": 3,
+      "affectsContainers": false
+    },
+    {
+      "id": 1315,
+      "kind": "guard",
+      "name": "命中护持",
+      "description": "命中护持",
+      "amount": "3",
+      "recipient": "source",
+      "affectsContainers": false
+    },
+    {
+      "id": 1316,
+      "kind": "damage",
+      "name": "暮线终结弹",
+      "description": "暮线终结弹",
+      "amount": "max(1, floor(5+strength+proficiency/2+min(10,targetMissingHealth*0.3)-defense-guard))",
+      "equipmentDamage": 5,
+      "affectsContainers": false
+    },
+    {
+      "id": 1317,
+      "kind": "damage",
+      "name": "断咒剑锋",
+      "description": "断咒剑锋",
+      "amount": "max(1, floor(5+strength+proficiency/2-defense-guard))",
+      "equipmentDamage": 2,
+      "affectsContainers": false
+    },
+    {
+      "id": 1318,
+      "kind": "remove_buffs",
+      "name": "断咒",
+      "description": "断咒",
+      "amount": "0",
+      "removeCategories": [
+        "buff"
+      ],
+      "affectsContainers": false
+    },
+    {
+      "id": 1319,
+      "kind": "damage",
+      "name": "采血切口",
+      "description": "采血切口",
+      "amount": "max(1, floor(4+strength+proficiency*0.4-defense-guard))",
+      "equipmentDamage": 0,
+      "affectsContainers": false
+    },
+    {
+      "id": 1320,
+      "kind": "heal",
+      "name": "采血回流",
+      "description": "采血回流",
+      "amount": "4",
+      "recipient": "source",
+      "affectsContainers": false
+    },
+    {
+      "id": 1321,
+      "kind": "apply_buff",
+      "name": "赤线流血",
+      "description": "赤线流血",
+      "amount": "0",
+      "buffId": 10002,
+      "chance": 75,
+      "affectsContainers": false
+    },
+    {
+      "id": 1322,
+      "kind": "remove_buffs",
+      "name": "赦令自净",
+      "description": "赦令自净",
+      "amount": "0",
+      "recipient": "source",
+      "removeCategories": [
+        "debuff",
+        "control"
+      ],
+      "affectsContainers": false
+    },
+    {
+      "id": 1323,
+      "kind": "damage",
+      "name": "钳口重击",
+      "description": "钳口重击",
+      "amount": "max(1, floor(7+strength+proficiency*0.6-defense-guard))",
+      "equipmentDamage": 6,
+      "affectsContainers": false
+    },
+    {
+      "id": 1324,
+      "kind": "apply_buff",
+      "name": "压锋虚弱",
+      "description": "压锋虚弱",
+      "amount": "0",
+      "buffId": 10102,
+      "affectsContainers": false
+    },
+    {
+      "id": 1325,
+      "kind": "damage",
+      "name": "巡阵横扫",
+      "description": "巡阵横扫",
+      "amount": "max(1, floor(5+strength+proficiency/2-defense-guard))",
+      "equipmentDamage": 3,
+      "affectsContainers": false
+    },
+    {
+      "id": 1326,
+      "kind": "damage",
+      "name": "残烛誓斩",
+      "description": "残烛誓斩",
+      "amount": "max(1, floor(8+strength+proficiency/2+min(10,sourceMissingHealth*0.25)-defense-guard))",
+      "equipmentDamage": 5,
+      "affectsContainers": false
+    },
+    {
+      "id": 1327,
+      "kind": "damage",
+      "name": "钉城破壁",
+      "description": "钉城破壁",
+      "amount": "max(1, floor(11+strength*1.1+proficiency/2-defense-guard))",
+      "equipmentDamage": 30,
+      "killEquipmentDamage": 20,
+      "affectsContainers": false
+    },
+    {
+      "id": 1328,
+      "kind": "damage",
+      "name": "寒钟撞击",
+      "description": "寒钟撞击",
+      "amount": "max(1, floor(8+strength+proficiency/2-defense-guard))",
+      "damageColor": "#A7DFFF",
+      "equipmentDamage": 6,
+      "affectsContainers": false
+    },
+    {
+      "id": 1329,
+      "kind": "apply_buff",
+      "name": "寒滞迟缓",
+      "description": "寒滞迟缓",
+      "amount": "0",
+      "buffId": 10103,
+      "affectsContainers": false
+    },
+    {
+      "id": 1330,
+      "kind": "damage",
+      "name": "赤潮收割",
+      "description": "赤潮收割",
+      "amount": "max(1, floor(7+strength+proficiency/2-defense-guard))",
+      "equipmentDamage": 4,
+      "affectsContainers": false
+    },
+    {
+      "id": 1331,
+      "kind": "damage",
+      "name": "流血收割",
+      "description": "流血收割",
+      "amount": "max(1, floor(6))",
+      "requiredTags": [
+        "bleeding"
+      ],
+      "damageColor": "#FF3B42",
+      "affectsContainers": false
+    },
+    {
+      "id": 1332,
+      "kind": "heal",
+      "name": "赤潮回流",
+      "description": "赤潮回流",
+      "amount": "6",
+      "recipient": "source",
+      "requiredTags": [
+        "bleeding"
+      ],
+      "affectsContainers": false
+    },
+    {
+      "id": 1333,
+      "kind": "remove_buffs",
+      "name": "收束流血",
+      "description": "收束流血",
+      "amount": "0",
+      "removeTags": [
+        "bleeding"
+      ],
+      "affectsContainers": false
+    },
+    {
+      "id": 1334,
+      "kind": "damage",
+      "name": "箭矢命中",
+      "description": "箭矢命中",
+      "amount": "max(1, floor(5+strength+proficiency/2-defense-guard))",
+      "equipmentDamage": 2,
+      "affectsContainers": false
+    },
+    {
+      "id": 1335,
+      "kind": "damage",
+      "name": "白鹭分羽",
+      "description": "白鹭分羽",
+      "amount": "max(1, floor(4+strength+proficiency/2-defense-guard))",
+      "equipmentDamage": 0,
+      "killEquipmentDamage": 0,
+      "affectsContainers": false
+    },
+    {
+      "id": 1336,
+      "kind": "apply_buff",
+      "name": "巡墓毒箭",
+      "description": "巡墓毒箭",
+      "amount": "0",
+      "buffId": 10003,
+      "affectsContainers": false
+    },
+    {
+      "id": 1337,
+      "kind": "damage",
+      "name": "萃毒爆发",
+      "description": "萃毒爆发",
+      "amount": "max(1, floor(7))",
+      "requiredTags": [
+        "poison"
+      ],
+      "damageColor": "#6FCF45",
+      "affectsContainers": false
+    },
+    {
+      "id": 1338,
+      "kind": "remove_buffs",
+      "name": "萃尽毒素",
+      "description": "萃尽毒素",
+      "amount": "0",
+      "removeTags": [
+        "poison"
+      ],
+      "affectsContainers": false
+    },
+    {
+      "id": 1339,
+      "kind": "damage",
+      "name": "窑工劈斩",
+      "description": "窑工劈斩",
+      "amount": "max(1, floor(5+strength+proficiency/2-defense-guard))",
+      "equipmentDamage": 4,
+      "affectsContainers": false
+    },
+    {
+      "id": 1340,
+      "kind": "guard",
+      "name": "回火护持",
+      "description": "回火护持",
+      "amount": "4",
+      "recipient": "source",
+      "requiredTags": [
+        "burning"
+      ],
+      "affectsContainers": false
+    },
+    {
+      "id": 1341,
+      "kind": "damage",
+      "name": "寻脉穿甲",
+      "description": "寻脉穿甲",
+      "amount": "max(1, floor(5+strength+proficiency/2-guard))",
+      "equipmentDamage": 16,
+      "killEquipmentDamage": 8,
+      "affectsContainers": false
+    },
+    {
+      "id": 1342,
+      "kind": "modifier",
+      "name": "破甲防御降低",
+      "description": "破甲防御降低",
+      "amount": "-2",
+      "attribute": "defense",
+      "duration": "duration",
+      "durationTurns": 2,
+      "tickPhase": "turn_end",
+      "affectsContainers": false,
+      "periodTurns": 0
+    },
+    {
+      "id": 1343,
+      "kind": "modifier",
+      "name": "虚弱力量降低",
+      "description": "虚弱力量降低",
+      "amount": "-3",
+      "attribute": "strength",
+      "duration": "duration",
+      "durationTurns": 2,
+      "tickPhase": "turn_end",
+      "affectsContainers": false,
+      "periodTurns": 0
+    },
+    {
+      "id": 1344,
+      "kind": "modifier",
+      "name": "迟缓速度降低",
+      "description": "迟缓速度降低",
+      "amount": "-3",
+      "attribute": "speed",
+      "duration": "duration",
+      "durationTurns": 2,
+      "tickPhase": "turn_end",
+      "affectsContainers": false,
+      "periodTurns": 0
+    },
+    {
+      "id": 1345,
+      "kind": "damage",
+      "name": "蒸馏蒸汽",
+      "description": "蒸馏蒸汽",
+      "amount": "max(1, floor(4))",
+      "requiredTags": [
+        "wet"
+      ],
+      "damageColor": "#D4F0EF",
+      "affectsContainers": false
+    },
+    {
+      "id": 1346,
+      "kind": "damage",
+      "name": "逆燃爆发",
+      "description": "逆燃爆发",
+      "amount": "max(1, floor(5))",
+      "requiredTags": [
+        "burning"
+      ],
+      "damageColor": "#FFB05B",
+      "affectsContainers": false
+    },
+    {
+      "id": 1347,
+      "kind": "heal",
+      "name": "蜜髓回流",
+      "description": "蜜髓回流",
+      "amount": "2",
+      "recipient": "source",
+      "affectsContainers": false
+    },
+    {
+      "id": 1348,
+      "kind": "damage",
+      "name": "纺血追伤",
+      "description": "纺血追伤",
+      "amount": "max(1, floor(3))",
+      "requiredTags": [
+        "bleeding"
+      ],
+      "damageColor": "#FF3B42",
+      "affectsContainers": false
+    },
+    {
+      "id": 1349,
+      "kind": "remove_buffs",
+      "name": "棘藜解毒",
+      "description": "棘藜解毒",
+      "amount": "0",
+      "recipient": "source",
+      "removeTags": [
+        "poison"
+      ],
+      "affectsContainers": false
+    },
+    {
+      "id": 1350,
+      "kind": "guard",
+      "name": "风眼护卫",
+      "description": "风眼护卫",
+      "amount": "2",
+      "recipient": "source",
+      "affectsContainers": false
+    },
+    {
+      "id": 1351,
+      "kind": "heal",
+      "name": "飞锤回春",
+      "description": "飞锤回春",
+      "amount": "3",
+      "recipient": "source",
+      "affectsContainers": false
+    },
+    {
+      "id": 1352,
+      "kind": "remove_buffs",
+      "name": "铡架断咒",
+      "description": "铡架断咒",
+      "amount": "0",
+      "removeCategories": [
+        "buff"
+      ],
+      "chance": 50,
+      "affectsContainers": false
+    },
+    {
+      "id": 1353,
+      "kind": "damage",
+      "name": "沸血压舱",
+      "description": "沸血压舱",
+      "amount": "max(0,floor((100-sourceHealthPercent)/20))",
+      "damageColor": "#E96968",
+      "affectsContainers": false
+    },
+    {
+      "id": 1354,
+      "kind": "damage",
+      "name": "雨痕导电",
+      "description": "雨痕导电",
+      "amount": "max(1, floor(3))",
+      "requiredTags": [
+        "wet"
+      ],
+      "damageColor": "#A7DFFF",
+      "affectsContainers": false
+    },
+    {
+      "id": 1355,
+      "kind": "remove_buffs",
+      "name": "赦毒自净",
+      "description": "赦毒自净",
+      "amount": "0",
+      "recipient": "source",
+      "removeTags": [
+        "poison",
+        "bleeding"
+      ],
+      "affectsContainers": false
+    },
+    {
+      "id": 1356,
+      "kind": "apply_buff",
+      "name": "楔轨破甲",
+      "description": "楔轨破甲",
+      "amount": "0",
+      "buffId": 10101,
+      "chance": 35,
+      "affectsContainers": false
+    },
+    {
+      "id": 1357,
+      "kind": "damage",
+      "name": "末程追击",
+      "description": "末程追击",
+      "amount": "min(6,floor(targetMissingHealth/8))",
+      "damageColor": "#D7B67B",
+      "affectsContainers": false
+    },
+    {
+      "id": 1358,
+      "kind": "heal",
+      "name": "盐晶收血",
+      "description": "盐晶收血",
+      "amount": "4",
+      "recipient": "source",
+      "requiredTags": [
+        "bleeding"
+      ],
+      "affectsContainers": false
+    },
+    {
+      "id": 1359,
+      "kind": "damage",
+      "name": "铆钉破装",
+      "description": "铆钉破装",
+      "amount": "max(1, floor(1))",
+      "equipmentDamage": 12,
+      "affectsContainers": false
+    },
+    {
+      "id": 1360,
+      "kind": "damage",
+      "name": "刻槽萃毒",
+      "description": "刻槽萃毒",
+      "amount": "max(1, floor(4))",
+      "requiredTags": [
+        "poison"
+      ],
+      "damageColor": "#6FCF45",
+      "affectsContainers": false
+    }
+  ],
+  "buffs": [
+    {
+      "iconId": 1,
+      "category": "debuff",
+      "scope": "battle",
+      "clock": "turns",
+      "durationTurns": 2,
+      "durationMinutes": 0,
+      "tickPhase": "turn_end",
+      "periodTurns": 0,
+      "periodMinutes": 0,
+      "stacking": "refresh",
+      "maxStacks": 1,
+      "removeOnDeath": true,
+      "periodicEffectIds": [],
+      "modifierEffectIds": [
+        1342
+      ],
+      "onApplyEffectIds": [],
+      "blockedByTags": [],
+      "removeTags": [],
+      "skipTurn": false,
+      "id": 10101,
+      "name": "破甲",
+      "description": "防御降低2，持续2回合。",
+      "color": "#D4B48D",
+      "tags": [
+        "armor_break"
+      ]
+    },
+    {
+      "iconId": 1,
+      "category": "debuff",
+      "scope": "battle",
+      "clock": "turns",
+      "durationTurns": 2,
+      "durationMinutes": 0,
+      "tickPhase": "turn_end",
+      "periodTurns": 0,
+      "periodMinutes": 0,
+      "stacking": "refresh",
+      "maxStacks": 1,
+      "removeOnDeath": true,
+      "periodicEffectIds": [],
+      "modifierEffectIds": [
+        1343
+      ],
+      "onApplyEffectIds": [],
+      "blockedByTags": [],
+      "removeTags": [],
+      "skipTurn": false,
+      "id": 10102,
+      "name": "虚弱",
+      "description": "力量降低3，持续2回合。",
+      "color": "#B79ABE",
+      "tags": [
+        "weakness"
+      ]
+    },
+    {
+      "iconId": 1,
+      "category": "debuff",
+      "scope": "battle",
+      "clock": "turns",
+      "durationTurns": 2,
+      "durationMinutes": 0,
+      "tickPhase": "turn_end",
+      "periodTurns": 0,
+      "periodMinutes": 0,
+      "stacking": "refresh",
+      "maxStacks": 1,
+      "removeOnDeath": true,
+      "periodicEffectIds": [],
+      "modifierEffectIds": [
+        1344
+      ],
+      "onApplyEffectIds": [],
+      "blockedByTags": [],
+      "removeTags": [],
+      "skipTurn": false,
+      "id": 10103,
+      "name": "迟缓",
+      "description": "速度降低3，持续2回合；影响后续回合排序。",
+      "color": "#8CB8D6",
+      "tags": [
+        "slow"
+      ]
+    },
+    {
+      "iconId": 1,
+      "category": "control",
+      "scope": "battle",
+      "clock": "turns",
+      "durationTurns": 1,
+      "durationMinutes": 0,
+      "tickPhase": "turn_end",
+      "periodTurns": 0,
+      "periodMinutes": 0,
+      "stacking": "refresh",
+      "maxStacks": 1,
+      "removeOnDeath": true,
+      "periodicEffectIds": [],
+      "modifierEffectIds": [],
+      "onApplyEffectIds": [],
+      "blockedByTags": [],
+      "removeTags": [],
+      "skipTurn": true,
+      "id": 10104,
+      "name": "震晕",
+      "description": "跳过接下来的1个行动回合。",
+      "color": "#D9B4FA",
+      "tags": [
+        "stunned"
+      ]
+    }
+  ],
+  "skills": [
+    {
+      "id": 1601,
+      "baseSkillId": 6,
+      "name": "引潮飞矢",
+      "description": "命中造成水系伤害并施加3回合潮湿，扑灭燃烧。",
+      "effectIds": [
+        1301,
+        1302
+      ],
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "cost": 2,
+      "range": 3,
+      "hitChance": 90,
+      "cooldownTurns": 1
+    },
+    {
+      "id": 1621,
+      "baseSkillId": 6,
+      "name": "导电裁决",
+      "description": "造成奥术伤害；潮湿目标额外受电伤并震晕1回合，随后消耗潮湿。",
+      "effectIds": [
+        1301,
+        1303,
+        1305,
+        1304
+      ],
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "cost": 3,
+      "range": 3,
+      "hitChance": 90,
+      "cooldownTurns": 3
+    },
+    {
+      "id": 1602,
+      "baseSkillId": 6,
+      "name": "引炉火",
+      "description": "命中造成火焰伤害并点燃3回合；潮湿目标不能被点燃。",
+      "effectIds": [
+        1306,
+        1307
+      ],
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "cost": 2,
+      "range": 3,
+      "hitChance": 85,
+      "cooldownTurns": 1
+    },
+    {
+      "id": 1622,
+      "baseSkillId": 6,
+      "name": "炉心引爆",
+      "description": "造成火焰伤害；燃烧目标承受额外伤害，随后移除燃烧。",
+      "effectIds": [
+        1306,
+        1308,
+        1309
+      ],
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "cost": 3,
+      "range": 3,
+      "hitChance": 90,
+      "cooldownTurns": 2
+    },
+    {
+      "id": 1603,
+      "baseSkillId": 6,
+      "name": "回枝赦伤",
+      "description": "净化一名友军的减益和控制状态，再恢复8+智力的生命；不能复活。",
+      "effectIds": [
+        1310,
+        1311
+      ],
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "target": "ally",
+      "cost": 3,
+      "range": 3,
+      "hitChance": 100,
+      "cooldownTurns": 3
+    },
+    {
+      "id": 1604,
+      "baseSkillId": 7,
+      "name": "镂甲定点射击",
+      "description": "消耗1发，伤害只计入目标60%防御；命中施加2回合破甲（防御-2）。",
+      "effectIds": [
+        1312,
+        1313
+      ],
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "cost": 3,
+      "range": 5,
+      "hitChance": 90,
+      "cooldownTurns": 2
+    },
+    {
+      "id": 1605,
+      "baseSkillId": 7,
+      "name": "钟摆双发",
+      "description": "连续射击2发，每发独立命中并造成较低伤害；每次命中令自身护卫提升至至少3点，不叠加。",
+      "effectIds": [
+        1314,
+        1315
+      ],
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "cost": 3,
+      "range": 4,
+      "hitChance": 90,
+      "cooldownTurns": 2,
+      "shots": 2,
+      "damageScale": 0.8
+    },
+    {
+      "id": 1606,
+      "baseSkillId": 7,
+      "name": "暮线终结弹",
+      "description": "消耗2发弹药凝成一次射击；按目标已失生命的30%追加伤害，至多10点基础值。",
+      "effectIds": [
+        1316
+      ],
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "cost": 3,
+      "range": 5,
+      "hitChance": 90,
+      "cooldownTurns": 2,
+      "ammoPerShot": 2
+    },
+    {
+      "id": 1607,
+      "baseSkillId": 10,
+      "name": "仪典断咒",
+      "description": "命中造成伤害，随后移除目标的增益状态。",
+      "effectIds": [
+        1317,
+        1318
+      ],
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "cost": 2,
+      "hitChance": 90,
+      "cooldownTurns": 2
+    },
+    {
+      "id": 1608,
+      "baseSkillId": 10,
+      "name": "赤线采血",
+      "description": "命中恢复自身4点生命，并有75%概率使目标流血；直接伤害较低且不磨损目标装备。",
+      "effectIds": [
+        1319,
+        1320,
+        1321
+      ],
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "cost": 2,
+      "hitChance": 90,
+      "cooldownTurns": 2
+    },
+    {
+      "id": 1609,
+      "baseSkillId": 10,
+      "name": "荆冠赦令",
+      "description": "命中敌人后，清除自身的减益和控制状态；未命中无净化。",
+      "effectIds": [
+        1317,
+        1322
+      ],
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "cost": 2,
+      "hitChance": 85,
+      "cooldownTurns": 2
+    },
+    {
+      "id": 1610,
+      "baseSkillId": 11,
+      "name": "钳口压锋",
+      "description": "重击并令目标虚弱2回合，力量降低3。",
+      "effectIds": [
+        1323,
+        1324
+      ],
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "cost": 3,
+      "hitChance": 90,
+      "cooldownTurns": 2
+    },
+    {
+      "id": 1611,
+      "baseSkillId": 11,
+      "name": "巡阵扇扫",
+      "description": "攻击主目标及其1格内最多两名合法敌人；每名目标必须仍在自身1格射程与视线内。",
+      "effectIds": [
+        1325
+      ],
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "maxTargets": 3,
+      "splashRadius": 1,
+      "cost": 3,
+      "range": 1,
+      "hitChance": 85,
+      "cooldownTurns": 2
+    },
+    {
+      "id": 1612,
+      "baseSkillId": 11,
+      "name": "残烛誓斩",
+      "description": "按自身已失生命的25%增加伤害，至多10点基础值；伤势越重威力越大。",
+      "effectIds": [
+        1326
+      ],
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "cost": 3,
+      "hitChance": 85,
+      "cooldownTurns": 2
+    },
+    {
+      "id": 1613,
+      "baseSkillId": 12,
+      "name": "钉城破壁",
+      "description": "沉重一击：命中扣血后使目标身体甲、头盔、盾牌各损失30耐久，致死追加20；自身武器损耗3。",
+      "effectIds": [
+        1327
+      ],
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "cost": 4,
+      "hitChance": 75,
+      "cooldownTurns": 3,
+      "weaponWear": 3
+    },
+    {
+      "id": 1614,
+      "baseSkillId": 12,
+      "name": "寒钟震霜",
+      "description": "命中施加2回合迟缓（速度-3）；若目标潮湿，额外震晕1回合并消耗潮湿。",
+      "effectIds": [
+        1328,
+        1329,
+        1305,
+        1304
+      ],
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "cost": 3,
+      "hitChance": 85,
+      "cooldownTurns": 3
+    },
+    {
+      "id": 1615,
+      "baseSkillId": 12,
+      "name": "赤潮汲流",
+      "description": "命中判定成功后，先从流血目标汲取6点生命并追加6点基础伤害，再完成斩击，最后清除目标全部流血。",
+      "effectIds": [
+        1332,
+        1331,
+        1330,
+        1333
+      ],
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "cost": 3,
+      "hitChance": 85,
+      "cooldownTurns": 2
+    },
+    {
+      "id": 1616,
+      "baseSkillId": 2,
+      "name": "蛛纹缚足箭",
+      "description": "命中施加2回合迟缓，速度降低3；不限制移动距离。",
+      "effectIds": [
+        1334,
+        1329
+      ],
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "cost": 2,
+      "range": 4,
+      "hitChance": 95,
+      "cooldownTurns": 2
+    },
+    {
+      "id": 1617,
+      "baseSkillId": 2,
+      "name": "白鹭分羽",
+      "description": "射向主目标及其1格内另一名合法敌人，最多两目标；不磨损目标装备。",
+      "effectIds": [
+        1335
+      ],
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "maxTargets": 2,
+      "splashRadius": 1,
+      "cost": 3,
+      "range": 4,
+      "hitChance": 95,
+      "cooldownTurns": 2
+    },
+    {
+      "id": 1618,
+      "baseSkillId": 2,
+      "name": "巡墓毒箭",
+      "description": "命中施加中毒，可叠加到3层，持续4回合。",
+      "effectIds": [
+        1334,
+        1336
+      ],
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "cost": 2,
+      "range": 3,
+      "hitChance": 90,
+      "cooldownTurns": 1
+    },
+    {
+      "id": 1623,
+      "baseSkillId": 2,
+      "name": "萃毒终结箭",
+      "description": "命中中毒目标时追加7点基础伤害，随后清除目标全部中毒。",
+      "effectIds": [
+        1334,
+        1337,
+        1338
+      ],
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "cost": 2,
+      "range": 4,
+      "hitChance": 90,
+      "cooldownTurns": 2
+    },
+    {
+      "id": 1619,
+      "baseSkillId": 10,
+      "name": "窑工回火",
+      "description": "命中判定成功后，先从燃烧目标提取热量，将自身护卫提升至至少4点并追加5点基础伤害，再完成劈砍并扑灭目标燃烧。",
+      "effectIds": [
+        1340,
+        1346,
+        1339,
+        1309
+      ],
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "cost": 2,
+      "hitChance": 90,
+      "cooldownTurns": 2
+    },
+    {
+      "id": 1620,
+      "baseSkillId": 11,
+      "name": "断层寻脉",
+      "description": "寻脉打击无视目标防御（仍受护卫减免），扣血时破坏16装备耐久，致死追加8。",
+      "effectIds": [
+        1341
+      ],
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "cost": 3,
+      "hitChance": 85,
+      "cooldownTurns": 2,
+      "weaponWear": 2
+    }
+  ],
+  "loot": [
+    {
+      "id": 601,
+      "poolId": 5,
+      "itemId": 604,
+      "weight": 3
+    },
+    {
+      "id": 602,
+      "poolId": 5,
+      "itemId": 609,
+      "weight": 3
+    },
+    {
+      "id": 603,
+      "poolId": 5,
+      "itemId": 614,
+      "weight": 2
+    },
+    {
+      "id": 604,
+      "poolId": 6,
+      "itemId": 619,
+      "weight": 4
+    },
+    {
+      "id": 605,
+      "poolId": 6,
+      "itemId": 616,
+      "weight": 4
+    },
+    {
+      "id": 701,
+      "poolId": 5,
+      "itemId": 701,
+      "weight": 2
+    },
+    {
+      "id": 702,
+      "poolId": 5,
+      "itemId": 714,
+      "weight": 2
+    },
+    {
+      "id": 703,
+      "poolId": 5,
+      "itemId": 718,
+      "weight": 2
+    }
+  ],
+  "sockets": [
+    {
+      "id": 101,
+      "name": "杖头组件",
+      "weaponItemId": 601,
+      "kind": "head",
+      "position": [
+        0,
+        1.25,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 102,
+      "name": "杖身组件",
+      "weaponItemId": 601,
+      "kind": "shaft",
+      "position": [
+        0,
+        0.43,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 103,
+      "name": "杖头组件",
+      "weaponItemId": 602,
+      "kind": "head",
+      "position": [
+        0,
+        1.27,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 104,
+      "name": "杖身组件",
+      "weaponItemId": 602,
+      "kind": "shaft",
+      "position": [
+        0,
+        0.43,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 105,
+      "name": "杖头组件",
+      "weaponItemId": 603,
+      "kind": "head",
+      "position": [
+        0,
+        1.3,
+        -0.025
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 106,
+      "name": "杖身组件",
+      "weaponItemId": 603,
+      "kind": "shaft",
+      "position": [
+        0,
+        0.43,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 107,
+      "name": "弹匣仓",
+      "weaponItemId": 604,
+      "kind": "magazine",
+      "position": [
+        0,
+        0.04,
+        0.22
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 108,
+      "name": "枪弓导轨",
+      "weaponItemId": 604,
+      "kind": "rail",
+      "position": [
+        -0.105,
+        0.18,
+        0.12
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 109,
+      "name": "弹匣仓",
+      "weaponItemId": 605,
+      "kind": "magazine",
+      "position": [
+        0,
+        0.04,
+        0.22
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 110,
+      "name": "枪弓导轨",
+      "weaponItemId": 605,
+      "kind": "rail",
+      "position": [
+        -0.105,
+        0.18,
+        0.12
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 111,
+      "name": "弹匣仓",
+      "weaponItemId": 606,
+      "kind": "magazine",
+      "position": [
+        0,
+        0.04,
+        0.22
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 112,
+      "name": "枪弓导轨",
+      "weaponItemId": 606,
+      "kind": "rail",
+      "position": [
+        -0.105,
+        0.18,
+        0.12
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 113,
+      "name": "剑脊 · 奥术触媒",
+      "weaponItemId": 607,
+      "kind": "catalyst",
+      "position": [
+        0,
+        0.31,
+        -0.045
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 114,
+      "name": "刃面配件",
+      "weaponItemId": 607,
+      "kind": "edge",
+      "position": [
+        0,
+        0.72,
+        0.038
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 115,
+      "name": "剑脊 · 奥术触媒",
+      "weaponItemId": 608,
+      "kind": "catalyst",
+      "position": [
+        0,
+        0.31,
+        -0.045
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 116,
+      "name": "刃面配件",
+      "weaponItemId": 608,
+      "kind": "edge",
+      "position": [
+        0,
+        0.72,
+        0.038
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 117,
+      "name": "剑脊 · 奥术触媒",
+      "weaponItemId": 609,
+      "kind": "catalyst",
+      "position": [
+        0,
+        0.31,
+        -0.045
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 118,
+      "name": "刃面配件",
+      "weaponItemId": 609,
+      "kind": "edge",
+      "position": [
+        0,
+        0.72,
+        0.045
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 119,
+      "name": "刃面配件",
+      "weaponItemId": 610,
+      "kind": "edge",
+      "position": [
+        0,
+        0.68,
+        0.055
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 120,
+      "name": "刃面配件",
+      "weaponItemId": 611,
+      "kind": "edge",
+      "position": [
+        0,
+        0.68,
+        0.052
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 121,
+      "name": "刃面配件",
+      "weaponItemId": 612,
+      "kind": "edge",
+      "position": [
+        0,
+        0.68,
+        0.058
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 122,
+      "name": "剑脊 · 机械组件",
+      "weaponItemId": 613,
+      "kind": "thruster",
+      "position": [
+        0,
+        0.7,
+        -0.09
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 123,
+      "name": "刃面配件",
+      "weaponItemId": 613,
+      "kind": "edge",
+      "position": [
+        0,
+        1.06,
+        0.078
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 124,
+      "name": "剑脊 · 机械组件",
+      "weaponItemId": 614,
+      "kind": "thruster",
+      "position": [
+        0,
+        0.7,
+        -0.09
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 125,
+      "name": "刃面配件",
+      "weaponItemId": 614,
+      "kind": "edge",
+      "position": [
+        0,
+        1.06,
+        0.085
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 126,
+      "name": "剑脊 · 机械组件",
+      "weaponItemId": 615,
+      "kind": "thruster",
+      "position": [
+        0,
+        0.7,
+        -0.09
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 127,
+      "name": "刃面配件",
+      "weaponItemId": 615,
+      "kind": "edge",
+      "position": [
+        -0.04,
+        1.06,
+        0.075
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "left"
+    },
+    {
+      "id": 128,
+      "name": "枪弓导轨",
+      "weaponItemId": 616,
+      "kind": "rail",
+      "position": [
+        -0.06,
+        0.23,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 129,
+      "name": "枪弓导轨",
+      "weaponItemId": 617,
+      "kind": "rail",
+      "position": [
+        -0.06,
+        0.23,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 130,
+      "name": "枪弓导轨",
+      "weaponItemId": 618,
+      "kind": "rail",
+      "position": [
+        -0.06,
+        0.23,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 131,
+      "name": "刃面配件",
+      "weaponItemId": 619,
+      "kind": "edge",
+      "position": [
+        -0.18,
+        0.79,
+        0.08
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    },
+    {
+      "id": 132,
+      "name": "刃面配件",
+      "weaponItemId": 620,
+      "kind": "edge",
+      "position": [
+        0.16,
+        1.1,
+        0.083
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "calloutSide": "right"
+    }
+  ],
+  "anchorSource": "Art/ArsenalExpansion202610/Integration/anchors.json"
+}

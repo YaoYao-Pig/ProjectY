@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "name": "PartyHonorTable",
+  "description": "角色以真实行为取得的自动荣誉；不产生实体勋章，也不可转授。",
+  "key": "id",
+  "fields": [
+    {"name":"id","type":"int","description":"荣誉 ID","min":1},
+    {"name":"name","type":"text","description":"荣誉名称"},
+    {"name":"description","type":"text","description":"荣誉说明"},
+    {"name":"counter","type":"string","description":"挑战事实来源，当前 rescue_count"},
+    {"name":"required","type":"int","description":"需要的真实行为次数","min":1}
+  ],
+  "rows": [{"id":1,"name":"守望者","description":"在正式战斗中三次救助生命濒危的同伴。荣誉永久记入角色手记。","counter":"rescue_count","required":3}]
+}

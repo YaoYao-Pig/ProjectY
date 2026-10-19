@@ -4,14 +4,21 @@ local function tableOf(rows)return {All=function()return rows end,Get=function(_
 local rows={{id=1,unitId=8,weaponId=40,offhandWeaponId=41,wearableIds={51},appearanceJson=''}}
 local tables={CharacterLoadoutTable=tableOf(rows),EquipmentWeaponTable=tableOf({{id=40,hands=1},{id=41,hands=1},{id=44,hands=2}}),EquipmentWearableTable=tableOf({{id=51,slot='head'},{id=57,slot='offhand'}})}
 local config={GetTable=function(_,name)return assert(tables[name])end}
-local loadout=Loadout.New(config)
+local allowEquipment=true
+local equipmentRules={CanEquip=function()return allowEquipment,allowEquipment and nil or '属性不足' end}
+local function makeLoadout()return Loadout.New(config,equipmentRules,function()return {}end)end
+local loadout=makeLoadout()
 local ids,counts=loadout:Items(8);assert(#ids==3 and ids[1]==40 and ids[2]==41 and ids[3]==51 and counts[3]==1)
 assert(#loadout:Items(9)==0)
 local calls={};local data={AddWeapon=function(_,id)calls[#calls+1]='weapon:'..id;return {Id=id+100}end,AddWearable=function(_,id)calls[#calls+1]='wearable:'..id;return {Id=id+100}end,
 Equip=function(_,actor,id)assert(actor==10008 and id==140);return true end,EquipOffhand=function(_,actor,id)assert(actor==10008 and id==141);return true end,Wear=function(_,actor,slot,id)assert(actor==10008 and slot=='head' and id==151);return true end}
 loadout:Apply(data,{Id=10008,TemplateId=8});assert(#calls==3)
-rows[1].weaponId=44;assert(not pcall(Loadout.New,config));rows[1].weaponId=40
-rows[1].wearableIds={51,51};assert(not pcall(Loadout.New,config));rows[1].wearableIds={51}
+allowEquipment=false
+assert(not loadout:Validate({TemplateId=8}))
+local before=#calls;assert(not pcall(function()loadout:Apply(data,{Id=10008,TemplateId=8})end));assert(#calls==before,'Invalid initial equipment cannot partially grant items')
+allowEquipment=true
+rows[1].weaponId=44;assert(not pcall(makeLoadout));rows[1].weaponId=40
+rows[1].wearableIds={51,51};assert(not pcall(makeLoadout));rows[1].wearableIds={51}
 local Actions=require('Game.Narrative.NarrativeActions')
 local state,mutations={PartyCount=1,GetValue=function()return 0 end},0
 local actor={Id=10008,TemplateId=8}

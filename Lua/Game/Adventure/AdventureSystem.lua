@@ -26,19 +26,22 @@ function Adventure:OnInit(context)
     self.explorationEvents = require('Game.Adventure.ExplorationEvents').New(config,self)
     self.characterSkills=require('Game.Adventure.CharacterSkills').New(self)
     self.shop=require('Game.Shop.ShopModel').New(self)
+    self.camp=require('Game.Camp.CampModel').New(self)
+    self.partyStory=require('Game.Progression.PartyStory').New(self)
+    self.travel=require('Game.Adventure.WorldTravel').New(self)
+    self.parties=require('Game.Adventure.WorldParties').New(self)
     assert(self.recipe.maxPartySize<=4 and #self.recipe.partyIds > 0 and #self.recipe.partyIds <= self.recipe.maxPartySize, 'Invalid demo party size')
     assert(#self.recipe.buildingIds == #self.recipe.buildingEventIds, 'Building event mapping differs')
 end
-function Adventure:Start(seed,recipeId)
-    self.equipment.worldLoot.session:Close()
-    self.recipe = self.config:GetTable('AdventureDemoTable'):Get(recipeId or 1)
-    seed = seed or self.recipe.seed
-    local map = self.mapSystem:Generate(seed, self.recipe.regionIds)
+function Adventure:OnStart() self.partyStory:Start() end
+function Adventure:BuildWorld(seed,recipeId,targetCells)
+    local recipe = self.config:GetTable('AdventureDemoTable'):Get(recipeId or 1)
+    local map = self.mapSystem:Generate(seed, recipe.regionIds,targetCells)
     local sites, dry = {}, {}
     for _, cell in ipairs(map:GetCells()) do
         if not cell.waterLevel and not cell.buildingId then dry[#dry + 1] = cell end
     end
-    assert(#dry > #self.recipe.wildEventIds, 'Map needs dry cells for adventure sites')
+    assert(#dry > #recipe.wildEventIds, 'Map needs dry cells for adventure sites')
     local function addSite(eventId, cell, name)
         local x, y, z = map:GetCellWorldPosition(cell.q, cell.r)
         sites[#sites + 1] = {id = #sites + 1, eventId = eventId, q = cell.q, r = cell.r,
@@ -49,8 +52,8 @@ function Adventure:Start(seed,recipeId)
         local distance = Hex.Distance(0, 0, cell.q, cell.r)
         if not closest or distance < closest then camp, closest = cell, distance end
     end
-    addSite(self.recipe.campEventId, camp)
-    for _, eventId in ipairs(self.recipe.wildEventIds) do
+    addSite(recipe.campEventId, camp)
+    for _, eventId in ipairs(recipe.wildEventIds) do
         local selected, furthest
         for _, cell in ipairs(dry) do
             local nearest = math.huge
@@ -64,26 +67,71 @@ function Adventure:Start(seed,recipeId)
     for _,site in ipairs(self.areas:Entrances(map)) do
         site.id=#sites+1;sites[#sites+1]=site;areaTowns[site.pointId]=true
     end
+    if recipe.startAreaId>0 then
+        local market
+        local areaId=recipe.startAreaId
+        for _,site in ipairs(sites) do if site.areaConfigId==areaId then market=site;break end end
+        assert(market,'本次地图没有剧情集市；请选择更大地图规模')
+        local town=map:GetCell(market.q,market.r);local start
+        for direction=1,6 do local q,r=Hex.Neighbor(town.q,town.r,direction);local cell=map:FindCell(q,r)
+            if cell and not cell.waterLevel and math.abs(cell.height-town.height)<=self.travel.maxStep then start=cell;break end
+        end
+        assert(start,'剧情集市周围没有可通行营地位置')
+        sites[1].q=start.q;sites[1].r=start.r;sites[1].x,sites[1].y,sites[1].z=map:GetCellWorldPosition(start.q,start.r)
+    end
     local mapping = {}
-    for i, id in ipairs(self.recipe.buildingIds) do mapping[id] = self.recipe.buildingEventIds[i] end
+    for i, id in ipairs(recipe.buildingIds) do mapping[id] = recipe.buildingEventIds[i] end
     for _, building in ipairs(map:GetBuildings()) do
         local eventId = mapping[building.configId]
         if eventId and not areaTowns[building.townId] and #sites < 10 then addSite(eventId, building.cell) end
     end
+    return {map=map,sites=sites,recipe=recipe,seed=seed,targetCells=targetCells or 0}
+end
+function Adventure:Start(seed,recipeId,targetCells,preparedWorld)
+    local recipe=self.config:GetTable('AdventureDemoTable'):Get(recipeId or 1)
+    seed=seed or recipe.seed
+    local world=preparedWorld or self:BuildWorld(seed,recipe.id,targetCells)
+    self.equipment.worldLoot.session:Close()
+    self.recipe=world.recipe
     self.areas:Clear();self.construction.data:Clear();self.data:Reset(seed)
+    local map,sites=world.map,world.sites
     self.map, self.sites = map, sites
+    CS.ProjectY.Data.ExpeditionPersistence.Configure(self.data,self.construction.data,self.obstacles.data,self.recipe.id,world.targetCells)
+    self.travel:Reset(map,sites)
+    self.parties:Bind(map,sites)
+    self.partyStory:Reset()
     for i, id in ipairs(self.recipe.partyIds) do
         local actor = self.data:AddPartyActor(i, id)
         self.characterAppearances:Party(actor,seed)
-        self.growth:Initialize(actor)
+        self.growth:PrepareActor(actor)
         actor:SetMaxHP(self.battle.stats:MaximumHP(actor)); actor:Restore()
     end
-    self.equipment:Start()
+    self.equipment:Start(self.recipe.equipmentRecipeId)
     self.equipment:StartPartyLoadouts()
     for i=0,self.data.PartyCount-1 do local actor=self.data:GetPartyAt(i);actor:SetMaxHP(self.battle.stats:MaximumHP(actor));actor:Restore() end
     if self.narrative then self.narrative:Start() end
+    self.parties:Initialize()
+    for i=0,self.data.PartyCount-1 do self.growth:RecordJoined(self.data:GetPartyAt(i),'营地') end
+end
+function Adventure:RestorePrepared(prepared,world)
+    self.equipment.worldLoot.session:Close()
+    self.areas:Clear();self.construction.data:Clear();self.data:Reset(prepared.Seed)
+    self.recipe=world.recipe;self.map=world.map;self.sites=world.sites
+    CS.ProjectY.Data.ExpeditionPersistence.Configure(self.data,self.construction.data,self.obstacles.data,self.recipe.id,world.targetCells)
+    self.travel:Reset(world.map,world.sites);self.partyStory:Reset()
+    self.parties:Bind(world.map,world.sites)
+    if self.narrative then self.narrative.lastBuffMinute=nil;self.narrative.npcs:BindWorld(world.sites) end
+    require('Game.Adventure.ExpeditionSave').BindLayouts(self,world)
+    if prepared.LegacyNarrative and self.narrative then self.narrative:Start() end
+    self.characterSaves:Apply(prepared,self.data,self.player)
+    require('Game.Adventure.ExpeditionSave').RestoreLayouts(self,world)
+    self.parties:Initialize()
 end
 function Adventure:Visit(siteId)
+    return self.travel:Visit(siteId)
+end
+function Adventure:EnterSite(siteId)
+    if self.camp.data.IsOpen then return false,'请先关闭营地面板' end
     local site = self.sites[siteId]
     if not site then return false, '未知地点' end
     if self.areas:AreaId(site) then
@@ -98,13 +146,14 @@ function Adventure:Visit(siteId)
         ok,reason = self:Choose(event.choiceIds[1])
         -- 简单事件的条件应在配置层保证可结算；失败时保留当前状态并显示原因。
         if not ok then return false,reason end
-        self:ReturnToMap()
+        -- 保留结果阶段，让异步旅行轮询能打开 StoryEvent；玩家确认后再返回大地图。
     end
     return true
 end
 function Adventure:AreaCommand(command,a,b)
     if self.shop.data.IsOpen then return false,'请先关闭商店' end
     if self.narrative and self.narrative.data.DialogueOpen then return false,'请先结束当前对话' end
+    if command=='area_interact_nearest' then return require('Game.Adventure.InteractionPrompt').Execute(self) end
     if command=='area_tame' then return self.areas:Tame(a,b) end
     if command=='area_obstacle' then return self.obstacles:Begin(a) end
     if command=='area_loot' then
@@ -189,6 +238,7 @@ function Adventure:SettleBattle()
     self.data:BeginSettlement()
     local encounter = self.battle.encounters:Get(self.data.Battle.EncounterId)
     local location = assert(self.sites[self.data.SiteId]).name
+    self.partyStory:Settle(result,location)
     self.growth.chronicle:Record('battle',nil,encounter.name,
         result=='victory' and '小队赢得了战斗。' or (result=='defeat' and '小队败退，带着伤势返回。' or '小队撤出了战斗。'),location,true)
     for _,actor in ipairs(self.battle:Units()) do
@@ -200,8 +250,8 @@ function Adventure:SettleBattle()
         end
     end
     if self.data.AreaEncounterId>0 then
-        local firstLoot=self.areas.data.Active.LootCount
-        local dropped=self.equipment:GenerateEnemyDrops(self.areas,self.battle)
+        local firstLoot=assert(self.battle.board.lootStartCount,'Missing battle loot boundary')
+        local dropped=self.equipment:GenerateEnemyDrops(self.areas,self.battle)+self.parties:Settle(result)
         local message
         if result=='victory' then
             local encounter=self.battle.encounters:Get(self.data.Battle.EncounterId)
@@ -241,6 +291,10 @@ function Adventure:BattleCommand(command, a, b)
         if not cell then return false,'无效地格' end
         ok,reason=self.battle:TryMove(cell.q,cell.r)
     elseif command == 'skill' then ok, reason = self.battle:TrySkill(a, b)
+    elseif command == 'skill_targets' then
+        local ids={};for i=0,b.Length-1 do ids[#ids+1]=b[i] end
+        ok,reason=self.battle:TrySkillTargets(a,ids)
+    elseif command == 'use_item' then ok,reason=self.battle:TryItem(a)
     elseif command == 'skill_container' then ok,reason=self.containerCombat:Battle(self.battle,a,b)
     elseif command == 'skill_cell' then
         local cell=self.battle.board.cells[b]
@@ -256,7 +310,8 @@ function Adventure:BattleCommand(command, a, b)
     end
     return ok, reason
 end
-function Adventure:Tick()
+function Adventure:Tick(dt)
+    if self.map then self.parties:SyncClock();self.travel:Tick(dt) end
     if self.equipment.worldLoot.session.Active then return end
     if self.data.Phase=='battle' and self.data.Battle.Winner~='' then self:SettleBattle();return end
     if self.data.Phase~='area' then return end
@@ -276,7 +331,9 @@ function Adventure:MapSnapshot() return require('Game.Map.MapRenderSnapshot')(as
 function Adventure:Snapshot()
     local result = {phase = self.data.Phase, coins = self.player.Coins, result = self.data.ResultText,
         sites = {}, party = {}, units = {}, cells = {}, reachable = {}, skills = {}, logs = {}, choices = {},
-        eventTitle = '', eventText = '', encounter = '', round = 0, activeId = 0, radius = 0}
+        eventTitle = '', eventText = '', encounter = '', round = 0, activeId = 0, radius = 0,battlePhase=self.data.Battle.Phase}
+    result.travel=self.travel:Snapshot()
+    result.worldParties=self.parties:Snapshot()
     -- cells 和 reachable 都由 C# ReadCell 读取，必须包含相同的值类型字段。
     local function cellView(cell) return {q = cell.q, r = cell.r, blocked = cell.blocked,cellIndex=cell.index or 0} end
     local function actorView(actor)
@@ -298,9 +355,9 @@ function Adventure:Snapshot()
             local areaType=self.areas.generator.definitions:Get(areaId).areaType
             kind=areaType==self.areas.shipwreckType and 'shipwreck' or (areaType==self.areas.townType and 'town' or 'dungeon')
         end
-        result.sites[#result.sites + 1] = {id = site.id, name = site.name, x = site.x, y = site.y, z = site.z,
+        if not site.travelStop or areaId then result.sites[#result.sites + 1] = {id = site.id, name = site.name, x = site.x, y = site.y, z = site.z,
             available = available, visited = self.data:HasVisited(site.id),areaConfigId=areaId or 0,reason=reason or '',
-            kind=kind}
+            kind=kind} end
     end
     if self.data.Areas.ActiveSiteId>0 then
         result.area=self.areas:Snapshot(self.data.Phase=='battle' and self.battle or nil)
@@ -331,20 +388,26 @@ function Adventure:Snapshot()
         for _, cell in ipairs(self.battle:Reachable()) do result.reachable[#result.reachable + 1] = cellView(cell) end
         if self.data.Phase == 'battle' then
             for _, id in ipairs(self.battle:SkillIds(self.battle:Active())) do
-                local skill, targets = self.battle:Skill(self.battle:Active(),id), {}
-                for _, actor in ipairs(self.battle:Units()) do if self.battle:CanUseSkill(id, actor.Id) then targets[#targets + 1] = actor.Id end end
+                local skill, targets,previews = self.battle:Skill(self.battle:Active(),id), {},{}
+                for _, actor in ipairs(self.battle:Units()) do if self.battle:CanUseSkill(id, actor.Id) then
+                    targets[#targets + 1] = actor.Id;previews[#previews+1]=self.battle:ShotPreview(self.battle:Active(),actor,skill)
+                end end
                 local targetCells={}
                 for _,cell in ipairs(self.battle:SkillCells(id)) do targetCells[#targetCells+1]=cell.index or 0 end
                 result.skills[#result.skills + 1] = {id = id, name = skill.name, description = skill.description,
                     cost = skill.cost, action = skill.action, targets = targets,targetCells=targetCells,
+                    manualTargets=skill.manualTargets,maxTargets=skill.maxTargets,guided=skill.guided,targetPreviews=previews,
                     containerTargets=self.containerCombat:Targets(self.battle:Active(),id,self.battle)}
             end
         end
         for i = 0, self.data.Battle.LogCount - 1 do result.logs[#result.logs + 1] = self.data.Battle:GetLogAt(i) end
     end
+    result.torch=require('Game.Adventure.Torch').Snapshot(self)
     return result
 end
 function Adventure:OnShutdown()
+    if self.partyStory then self.partyStory:Dispose() end
+    if self.camp then self.camp:Close() end
     if self.battle then self.battle.containerCombat=nil end
     if self.construction then self.construction.data:Clear();self.battle.construction=nil;self.areas.construction=nil end
     self.map = nil; self.sites = nil

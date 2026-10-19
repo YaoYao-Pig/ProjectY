@@ -17,6 +17,11 @@
       "ref": "SkillCategoryTable"
     },
     {
+      "name": "glyphCode",
+      "type": "string",
+      "description": "图鉴图标代码，显式对应 GrowthAttributeTable.code；与伤害熟练度独立"
+    },
+    {
       "name": "relatedCategoryIds",
       "type": "int[]",
       "description": "关联目录，只跳转同一技能",
@@ -67,7 +72,8 @@
       "tags": [
         "sword",
         "战斗"
-      ]
+      ],
+      "glyphCode": "sword"
     },
     {
       "id": 2,
@@ -80,7 +86,8 @@
       "tags": [
         "bow",
         "战斗"
-      ]
+      ],
+      "glyphCode": "bow"
     },
     {
       "id": 3,
@@ -93,7 +100,8 @@
       "tags": [
         "staff",
         "战斗"
-      ]
+      ],
+      "glyphCode": "staff"
     },
     {
       "id": 4,
@@ -108,7 +116,8 @@
       "tags": [
         "sword",
         "战斗"
-      ]
+      ],
+      "glyphCode": "sword"
     },
     {
       "id": 5,
@@ -121,7 +130,8 @@
       "tags": [
         "staff",
         "战斗"
-      ]
+      ],
+      "glyphCode": "staff"
     },
     {
       "id": 6,
@@ -134,7 +144,8 @@
       "tags": [
         "staff",
         "战斗"
-      ]
+      ],
+      "glyphCode": "staff"
     },
     {
       "id": 7,
@@ -147,7 +158,8 @@
       "tags": [
         "firearms",
         "战斗"
-      ]
+      ],
+      "glyphCode": "firearms"
     },
     {
       "id": 8,
@@ -160,7 +172,8 @@
       "tags": [
         "firearms",
         "战斗"
-      ]
+      ],
+      "glyphCode": "firearms"
     },
     {
       "id": 9,
@@ -173,7 +186,8 @@
       "tags": [
         "firearms",
         "战斗"
-      ]
+      ],
+      "glyphCode": "firearms"
     },
     {
       "id": 10,
@@ -186,7 +200,8 @@
       "tags": [
         "sword",
         "战斗"
-      ]
+      ],
+      "glyphCode": "sword"
     },
     {
       "id": 11,
@@ -199,7 +214,8 @@
       "tags": [
         "greatsword",
         "战斗"
-      ]
+      ],
+      "glyphCode": "greatsword"
     },
     {
       "id": 12,
@@ -212,7 +228,8 @@
       "tags": [
         "greatsword",
         "战斗"
-      ]
+      ],
+      "glyphCode": "greatsword"
     },
     {
       "id": 13,
@@ -225,7 +242,8 @@
       "tags": [
         "sword",
         "战斗"
-      ]
+      ],
+      "glyphCode": "sword"
     },
     {
       "id": 101,
@@ -238,7 +256,8 @@
       "tags": [
         "sword",
         "战斗"
-      ]
+      ],
+      "glyphCode": "sword"
     },
     {
       "id": 102,
@@ -251,7 +270,8 @@
       "tags": [
         "sword",
         "战斗"
-      ]
+      ],
+      "glyphCode": "sword"
     },
     {
       "id": 103,
@@ -264,7 +284,8 @@
       "tags": [
         "staff",
         "战斗"
-      ]
+      ],
+      "glyphCode": "staff"
     },
     {
       "id": 104,
@@ -277,7 +298,8 @@
       "tags": [
         "staff",
         "战斗"
-      ]
+      ],
+      "glyphCode": "staff"
     },
     {
       "id": 105,
@@ -290,7 +312,8 @@
       "tags": [
         "bow",
         "战斗"
-      ]
+      ],
+      "glyphCode": "bow"
     },
     {
       "id": 106,
@@ -303,7 +326,8 @@
       "tags": [
         "bow",
         "战斗"
-      ]
+      ],
+      "glyphCode": "bow"
     },
     {
       "id": 107,
@@ -316,7 +340,8 @@
       "tags": [
         "staff",
         "战斗"
-      ]
+      ],
+      "glyphCode": "staff"
     },
     {
       "id": 108,
@@ -331,7 +356,8 @@
       "tags": [
         "sword",
         "战斗"
-      ]
+      ],
+      "glyphCode": "sword"
     },
     {
       "id": 201,
@@ -344,7 +370,8 @@
       "tags": [
         "animalAffinity",
         "战斗"
-      ]
+      ],
+      "glyphCode": "animalAffinity"
     },
     {
       "id": 202,
@@ -357,7 +384,8 @@
       "tags": [
         "unarmed",
         "战斗"
-      ]
+      ],
+      "glyphCode": "unarmed"
     },
     {
       "id": 203,
@@ -370,7 +398,8 @@
       "tags": [
         "unarmed",
         "战斗"
-      ]
+      ],
+      "glyphCode": "unarmed"
     },
     {
       "id": 204,
@@ -383,7 +412,8 @@
       "tags": [
         "unarmed",
         "战斗"
-      ]
+      ],
+      "glyphCode": "unarmed"
     },
     {
       "id": 205,
@@ -396,7 +426,8 @@
       "tags": [
         "unarmed",
         "战斗"
-      ]
+      ],
+      "glyphCode": "unarmed"
     },
     {
       "id": 301,
@@ -409,7 +440,8 @@
       "tags": [
         "crafting",
         "战斗"
-      ]
+      ],
+      "glyphCode": "crafting"
     },
     {
       "id": 302,
@@ -424,7 +456,8 @@
       "tags": [
         "crafting",
         "战斗"
-      ]
+      ],
+      "glyphCode": "crafting"
     },
     {
       "id": 303,
@@ -437,7 +470,8 @@
       "tags": [
         "crafting",
         "战斗"
-      ]
+      ],
+      "glyphCode": "crafting"
     },
     {
       "id": 304,
@@ -452,7 +486,8 @@
       "tags": [
         "crafting",
         "战斗"
-      ]
+      ],
+      "glyphCode": "crafting"
     },
     {
       "id": 305,
@@ -465,7 +500,8 @@
       "tags": [
         "crafting",
         "战斗"
-      ]
+      ],
+      "glyphCode": "crafting"
     },
     {
       "id": 306,
@@ -480,7 +516,8 @@
       "tags": [
         "crafting",
         "战斗"
-      ]
+      ],
+      "glyphCode": "crafting"
     },
     {
       "id": 307,
@@ -493,7 +530,640 @@
       "tags": [
         "crafting",
         "战斗"
-      ]
+      ],
+      "glyphCode": "crafting"
+    },
+    {
+      "id": 401,
+      "categoryId": 16,
+      "relatedCategoryIds": [],
+      "x": 700,
+      "y": 350,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "战士",
+        "准备"
+      ],
+      "glyphCode": "strength"
+    },
+    {
+      "id": 402,
+      "categoryId": 61,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 92,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "游侠",
+        "准备"
+      ],
+      "glyphCode": "scouting"
+    },
+    {
+      "id": 403,
+      "categoryId": 21,
+      "relatedCategoryIds": [],
+      "x": 700,
+      "y": 350,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "法师",
+        "准备"
+      ],
+      "glyphCode": "intellect"
+    },
+    {
+      "id": 404,
+      "categoryId": 31,
+      "relatedCategoryIds": [],
+      "x": 700,
+      "y": 350,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "巧匠",
+        "准备"
+      ],
+      "glyphCode": "crafting"
+    },
+    {
+      "id": 701,
+      "categoryId": 63,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 260,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "道具",
+        "部署"
+      ],
+      "glyphCode": "vitality"
+    },
+    {
+      "id": 702,
+      "categoryId": 63,
+      "relatedCategoryIds": [],
+      "x": 380,
+      "y": 260,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "道具",
+        "部署"
+      ],
+      "glyphCode": "endurance"
+    },
+    {
+      "id": 501,
+      "categoryId": 11,
+      "relatedCategoryIds": [],
+      "x": 230,
+      "y": 420,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "缴械",
+        "战斗"
+      ],
+      "glyphCode": "sword"
+    },
+    {
+      "id": 502,
+      "categoryId": 11,
+      "relatedCategoryIds": [],
+      "x": 380,
+      "y": 420,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "保甲",
+        "战斗"
+      ],
+      "glyphCode": "sword"
+    },
+    {
+      "id": 503,
+      "categoryId": 16,
+      "relatedCategoryIds": [],
+      "x": 230,
+      "y": 420,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "拾取",
+        "战斗"
+      ],
+      "glyphCode": "sword"
+    },
+    {
+      "id": 504,
+      "categoryId": 16,
+      "relatedCategoryIds": [],
+      "x": 380,
+      "y": 420,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "徒手",
+        "战斗"
+      ],
+      "glyphCode": "sword"
+    },
+    {
+      "id": 505,
+      "categoryId": 21,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 510,
+      "prerequisiteIds": [
+        6
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "buff",
+        "法术",
+        "状态"
+      ],
+      "glyphCode": "staff"
+    },
+    {
+      "id": 506,
+      "categoryId": 21,
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 510,
+      "prerequisiteIds": [
+        6
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "buff",
+        "法术",
+        "状态"
+      ],
+      "glyphCode": "staff"
+    },
+    {
+      "id": 507,
+      "categoryId": 21,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 670,
+      "prerequisiteIds": [
+        6
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "buff",
+        "法术",
+        "状态"
+      ],
+      "glyphCode": "staff"
+    },
+    {
+      "id": 508,
+      "categoryId": 21,
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 670,
+      "prerequisiteIds": [
+        6
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "buff",
+        "法术",
+        "状态"
+      ],
+      "glyphCode": "staff"
+    },
+    {
+      "id": 509,
+      "categoryId": 21,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 830,
+      "prerequisiteIds": [
+        6
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "fire",
+        "法术",
+        "燃烧"
+      ],
+      "glyphCode": "staff"
+    },
+    {
+      "id": 1601,
+      "categoryId": 21,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 1010,
+      "prerequisiteIds": [
+        6
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "武器专属",
+        "潮汐引雷杖",
+        "staff"
+      ],
+      "glyphCode": "staff"
+    },
+    {
+      "id": 1621,
+      "categoryId": 21,
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 1010,
+      "prerequisiteIds": [
+        6
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "武器专属",
+        "潮汐引雷杖",
+        "staff"
+      ],
+      "glyphCode": "staff"
+    },
+    {
+      "id": 1602,
+      "categoryId": 21,
+      "relatedCategoryIds": [],
+      "x": 585,
+      "y": 1010,
+      "prerequisiteIds": [
+        6
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "武器专属",
+        "灰烬司炉杖",
+        "staff"
+      ],
+      "glyphCode": "staff"
+    },
+    {
+      "id": 1622,
+      "categoryId": 21,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 1170,
+      "prerequisiteIds": [
+        6
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "武器专属",
+        "灰烬司炉杖",
+        "staff"
+      ],
+      "glyphCode": "staff"
+    },
+    {
+      "id": 1603,
+      "categoryId": 21,
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 1170,
+      "prerequisiteIds": [
+        6
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "武器专属",
+        "回枝医者杖",
+        "staff"
+      ],
+      "glyphCode": "staff"
+    },
+    {
+      "id": 1604,
+      "categoryId": 15,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 272,
+      "prerequisiteIds": [
+        7
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "武器专属",
+        "镂甲线膛枪",
+        "firearms"
+      ],
+      "glyphCode": "firearms"
+    },
+    {
+      "id": 1605,
+      "categoryId": 15,
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 272,
+      "prerequisiteIds": [
+        7
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "武器专属",
+        "钟摆守望枪",
+        "firearms"
+      ],
+      "glyphCode": "firearms"
+    },
+    {
+      "id": 1606,
+      "categoryId": 15,
+      "relatedCategoryIds": [],
+      "x": 585,
+      "y": 272,
+      "prerequisiteIds": [
+        7
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "武器专属",
+        "暮线猎杀枪",
+        "firearms"
+      ],
+      "glyphCode": "firearms"
+    },
+    {
+      "id": 1607,
+      "categoryId": 11,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 600,
+      "prerequisiteIds": [
+        10
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "武器专属",
+        "仪典断咒剑",
+        "sword"
+      ],
+      "glyphCode": "sword"
+    },
+    {
+      "id": 1608,
+      "categoryId": 11,
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 600,
+      "prerequisiteIds": [
+        10
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "武器专属",
+        "赤线采血剑",
+        "sword"
+      ],
+      "glyphCode": "sword"
+    },
+    {
+      "id": 1609,
+      "categoryId": 11,
+      "relatedCategoryIds": [],
+      "x": 585,
+      "y": 600,
+      "prerequisiteIds": [
+        10
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "武器专属",
+        "荆冠赦令剑",
+        "sword"
+      ],
+      "glyphCode": "sword"
+    },
+    {
+      "id": 1610,
+      "categoryId": 12,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 272,
+      "prerequisiteIds": [
+        11
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "武器专属",
+        "钳口压锋大剑",
+        "greatsword"
+      ],
+      "glyphCode": "greatsword"
+    },
+    {
+      "id": 1611,
+      "categoryId": 12,
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 272,
+      "prerequisiteIds": [
+        11
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "武器专属",
+        "风车巡阵大剑",
+        "greatsword"
+      ],
+      "glyphCode": "greatsword"
+    },
+    {
+      "id": 1612,
+      "categoryId": 12,
+      "relatedCategoryIds": [],
+      "x": 585,
+      "y": 272,
+      "prerequisiteIds": [
+        11
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "武器专属",
+        "残烛守誓大剑",
+        "greatsword"
+      ],
+      "glyphCode": "greatsword"
+    },
+    {
+      "id": 1613,
+      "categoryId": 12,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 432,
+      "prerequisiteIds": [
+        12
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "武器专属",
+        "钉城破壁巨剑",
+        "greatsword"
+      ],
+      "glyphCode": "greatsword"
+    },
+    {
+      "id": 1614,
+      "categoryId": 12,
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 432,
+      "prerequisiteIds": [
+        12
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "武器专属",
+        "寒钟震霜巨剑",
+        "greatsword"
+      ],
+      "glyphCode": "greatsword"
+    },
+    {
+      "id": 1615,
+      "categoryId": 12,
+      "relatedCategoryIds": [],
+      "x": 585,
+      "y": 432,
+      "prerequisiteIds": [
+        12
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "武器专属",
+        "赤潮汲流巨剑",
+        "greatsword"
+      ],
+      "glyphCode": "greatsword"
+    },
+    {
+      "id": 1616,
+      "categoryId": 14,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 272,
+      "prerequisiteIds": [
+        2
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "武器专属",
+        "蛛纹缚足弓",
+        "bow"
+      ],
+      "glyphCode": "bow"
+    },
+    {
+      "id": 1617,
+      "categoryId": 14,
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 272,
+      "prerequisiteIds": [
+        2
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "武器专属",
+        "白鹭分羽弓",
+        "bow"
+      ],
+      "glyphCode": "bow"
+    },
+    {
+      "id": 1618,
+      "categoryId": 14,
+      "relatedCategoryIds": [],
+      "x": 585,
+      "y": 272,
+      "prerequisiteIds": [
+        2
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "武器专属",
+        "巡墓萃毒弓",
+        "bow"
+      ],
+      "glyphCode": "bow"
+    },
+    {
+      "id": 1623,
+      "categoryId": 14,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 432,
+      "prerequisiteIds": [
+        2
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "武器专属",
+        "巡墓萃毒弓",
+        "bow"
+      ],
+      "glyphCode": "bow"
+    },
+    {
+      "id": 1619,
+      "categoryId": 11,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 760,
+      "prerequisiteIds": [
+        10
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "武器专属",
+        "窑工回火斧",
+        "sword"
+      ],
+      "glyphCode": "sword"
+    },
+    {
+      "id": 1620,
+      "categoryId": 12,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 592,
+      "prerequisiteIds": [
+        11
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "武器专属",
+        "断层寻脉镐",
+        "greatsword"
+      ],
+      "glyphCode": "greatsword"
+    },
+    {
+      "id": 1624,
+      "categoryId": 21,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 1330,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "追踪",
+        "转施",
+        "法师",
+        "战斗"
+      ],
+      "glyphCode": "staff"
     }
   ]
 }

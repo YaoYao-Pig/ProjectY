@@ -73,6 +73,20 @@
       "label": "获得",
       "color": "CBB175",
       "template": "{location}：{detail}"
+    },
+    {
+      "id": 7,
+      "kind": "relationship",
+      "label": "情谊",
+      "color": "97BDA4",
+      "template": "{actor}与{other}在{location}：{detail}"
+    },
+    {
+      "id": 8,
+      "kind": "honor",
+      "label": "荣誉",
+      "color": "DFC47C",
+      "template": "{actor}：{detail}"
     }
   ]
 }

@@ -1,0 +1,69 @@
+fixture_directory=C:\Users\yyz\AppData\Local\Temp\project-y-foundation-539034e459f34ddea4f6583381daaf63
+PASS Tools/Tests/growth_integration.lua
+PASS initial points and passive investments change real combat stats and preserve wounds
+PASS initial professions grant one preparation and configurable learning opportunities
+PASS active learning is deterministic, profession scoped and keeps cross-profession skills
+PASS event context gates options; result applies traits, potential and tree once
+PASS simple discovery auto-resolves to map and never awards twice
+PASS history records actual participants and freezes its text after later trait changes
+PASS exhausted profession preserves all opportunities until another course is selected
+PASS Tools/Tests/adventure_integration.lua
+Adventure integration: 7 checks passed
+PASS C# actor rejects overspending without mutation; healing cannot resurrect
+PASS adventure sites refer to the actual generated map; unavailable choice leaves state intact
+PASS event rewards apply once and trait state is shared with battle
+PASS move, range, ownership and action budgets use the same C# battle state
+PASS player commands and enemy AI finish a battle and settle rewards only once
+PASS camp restores defeated characters; guard expires at next turn; dead turns are skipped
+PASS defeat and round limit produce no victory rewards
+FAIL Tools/Tests/area_battle_integration.lua
+XLua.LuaException: D:/Program/Unity/Project Y/Lua/Game/Adventure/CharacterAppearance.lua:12: Character appearance service is unavailable; compile and regenerate xLua bindings
+stack traceback:
+	[C]: in function 'assert'
+	D:/Program/Unity/Project Y/Lua/Game/Adventure/CharacterAppearance.lua:12: in function 'Game.Adventure.CharacterAppearance.New'
+	D:/Program/Unity/Project Y/Lua/Game/MapArea/MapAreaSystem.lua:37: in function 'Game.MapArea.MapAreaSystem.OnInit'
+	D:/Program/Unity/Project Y/Lua/Core/SystemRegistry.lua:33: in function <D:/Program/Unity/Project Y/Lua/Core/SystemRegistry.lua:28>
+	[C]: in function 'xpcall'
+	D:/Program/Unity/Project Y/Lua/Core/SystemRegistry.lua:28: in function 'Core.SystemRegistry.Start'
+	Tools/Tests/area_battle_integration.lua:18: in function <Tools/Tests/area_battle_integration.lua:17>
+	[C]: in function 'xpcall'
+	Tools/Tests/area_battle_integration.lua:17: in main chunk
+stack traceback:
+	[C]: in function 'error'
+	D:/Program/Unity/Project Y/Lua/Core/SystemRegistry.lua:37: in function 'Core.SystemRegistry.Start'
+	Tools/Tests/area_battle_integration.lua:18: in function <Tools/Tests/area_battle_integration.lua:17>
+	[C]: in function 'xpcall'
+	Tools/Tests/area_battle_integration.lua:17: in main chunk
+stack traceback:
+	[C]: in function 'error'
+	Tools/Tests/area_battle_integration.lua:148: in main chunk
+  at XLua.LuaEnv.ThrowExceptionFromError (System.Int32 oldTop) [0x00040] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:441 
+  at XLua.LuaEnv.DoString (System.Byte[] chunk, System.String chunkName, XLua.LuaTable env) [0x00078] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:274 
+  at XLua.LuaEnv.DoString (System.String chunk, System.String chunkName, XLua.LuaTable env) [0x0000d] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:288 
+  at MCPDynamicCode.Execute () [0x00166] in <81f3420e73b547a0905e96cddda2ecb9>:0 
+FAIL Tools/Tests/construction_integration.lua
+XLua.LuaException: Tools/Tests/construction_integration.lua:100: D:/Program/Unity/Project Y/Lua/Game/Shop/ShopRules.lua:49: attempt to index a nil value (local 'data')
+stack traceback:
+	D:/Program/Unity/Project Y/Lua/Game/Shop/ShopRules.lua:49: in function 'Game.Shop.ShopRules.ValidateSaved'
+	D:/Program/Unity/Project Y/Lua/Game/Adventure/CharacterSave.lua:4: in function 'Game.Adventure.CharacterSave.Validate'
+	Tools/Tests/construction_integration.lua:85: in local 'run'
+	Tools/Tests/construction_integration.lua:5: in upvalue 'test'
+	Tools/Tests/construction_integration.lua:83: in function <Tools/Tests/construction_integration.lua:6>
+	[C]: in function 'xpcall'
+	Tools/Tests/construction_integration.lua:6: in main chunk
+stack traceback:
+	[C]: in function 'error'
+	Tools/Tests/construction_integration.lua:100: in main chunk
+  at XLua.LuaEnv.ThrowExceptionFromError (System.Int32 oldTop) [0x00040] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:441 
+  at XLua.LuaEnv.DoString (System.Byte[] chunk, System.String chunkName, XLua.LuaTable env) [0x00078] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:274 
+  at XLua.LuaEnv.DoString (System.String chunk, System.String chunkName, XLua.LuaTable env) [0x0000d] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:288 
+  at MCPDynamicCode.Execute () [0x00166] in <81f3420e73b547a0905e96cddda2ecb9>:0 
+FAIL Tools/Tests/game_effects_integration.lua
+XLua.LuaException: Tools/Tests/game_effects_integration.lua:1: Use a dedicated project-y-ux-* temporary save path
+stack traceback:
+	[C]: in function 'assert'
+	Tools/Tests/game_effects_integration.lua:1: in main chunk
+  at XLua.LuaEnv.ThrowExceptionFromError (System.Int32 oldTop) [0x00040] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:441 
+  at XLua.LuaEnv.DoString (System.Byte[] chunk, System.String chunkName, XLua.LuaTable env) [0x00078] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:274 
+  at XLua.LuaEnv.DoString (System.String chunk, System.String chunkName, XLua.LuaTable env) [0x0000d] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:288 
+  at MCPDynamicCode.Execute () [0x00166] in <81f3420e73b547a0905e96cddda2ecb9>:0 

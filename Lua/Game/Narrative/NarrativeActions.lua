@@ -1,6 +1,6 @@
 local Actions = {}
 function Actions.Prepare(story, ids)
-    local plan = {steps={}, items={}, counts={}, recruits={}, coins=story.adventure.player.Coins, members=story.adventure.data.PartyCount, facts={}, progress={}}
+    local plan = {steps={}, items={}, counts={}, recruits={}, experience={}, coins=story.adventure.player.Coins, members=story.adventure.data.PartyCount, facts={}, progress={}}
     local function append(id)
         local row = story.rules.actions:Get(id); local kind = row.kind
         if kind == 'accept_mission' then
@@ -29,6 +29,16 @@ function Actions.Prepare(story, ids)
         elseif kind == 'grant_item' then
             plan.items[#plan.items+1] = row.targetId; plan.counts[#plan.counts+1] = row.value
             plan.steps[#plan.steps+1] = {kind=kind, row=row}
+        elseif kind == 'grant_experience' then
+            local actors = {}
+            for i=0,story.adventure.data.PartyCount-1 do
+                local actor = story.adventure.data:GetPartyAt(i)
+                assert(actor.Growth.Initialized, 'Narrative experience requires initialized growth')
+                local total = (plan.experience[actor.Id] or 0) + row.value
+                if actor.Growth.Experience + total > 2147483647 then return nil, '队员经验超过上限' end
+                plan.experience[actor.Id] = total; actors[#actors+1] = actor
+            end
+            plan.steps[#plan.steps+1] = {kind=kind, actors=actors, amount=row.value}
         elseif kind == 'add_coins' then
             plan.coins = plan.coins + row.value
             if plan.coins < 0 or plan.coins > 2147483647 then return false, '金币不足或超过上限' end
@@ -62,6 +72,8 @@ function Actions.Apply(story, plan)
         elseif step.kind == 'recruit' then story.npcs:Recruit(step.prepared)
         elseif step.kind == 'fact' then story.data:SetValue(step.key,step.value)
         elseif step.kind == 'grant_item' then assert(story.adventure.equipment:Grant(step.row.targetId,step.row.value))
+        elseif step.kind == 'grant_experience' then
+            for _, actor in ipairs(step.actors) do story.adventure.growth:AddExperience(actor,step.amount,'任务历程') end
         elseif step.kind == 'add_coins' then
             if step.row.value < 0 then assert(story.adventure.player:TrySpendCoins(-step.row.value))
             else story.adventure.player:AddCoins(step.row.value) end

@@ -1,0 +1,35 @@
+{
+  "version": 1,
+  "name": "ProjectileCoverTable",
+  "description": "非追踪弹体遭遇沿途角色或物体时的拦截概率，按百分比配置。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "min": 1,
+      "description": "规则ID"
+    },
+    {
+      "name": "actorChance",
+      "type": "int",
+      "min": 0,
+      "max": 100,
+      "description": "沿途角色拦截概率（百分比）"
+    },
+    {
+      "name": "objectChance",
+      "type": "int",
+      "min": 0,
+      "max": 100,
+      "description": "沿途物体拦截概率（百分比）"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "actorChance": 35,
+      "objectChance": 50
+    }
+  ]
+}

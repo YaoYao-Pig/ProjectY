@@ -6,7 +6,7 @@ namespace ProjectY.Data
 {
     /// <summary>Owned by the original loot record; reflection bridge avoids editing generated xLua wrappers.</summary>
     [LuaCallCSharp]
-    public sealed class ContainerState
+    public sealed partial class ContainerState
     {
         private readonly int cellIndex;
         private int[] cells;

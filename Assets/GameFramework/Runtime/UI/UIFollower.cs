@@ -26,6 +26,8 @@ namespace ProjectY.UI
         private Vector2 projected;
         private bool screenMode;
         private Vector2 screenPoint;
+        private bool retainPosition;
+        private Vector3 lastTargetPosition;
         public bool ProjectedVisible { get; private set; }
         public float Depth { get; private set; }
         public Rect Bounds => new Rect((Vector2)content.localPosition-Vector2.Scale(content.pivot,content.rect.size)*content.localScale.x,content.rect.size*content.localScale.x);
@@ -35,16 +37,27 @@ namespace ProjectY.UI
             if(orthographicFade.x<=0||orthographicFade.y<=orthographicFade.x||perspectiveFade.x<=0||perspectiveFade.y<=perspectiveFade.x)
                 throw new InvalidOperationException("UIFollower fade ranges require 0 < start < end.");
             worldCamera=camera;target=anchor;canvas=overlay.rootCanvas;container=(RectTransform)content.parent;
-            screenMode=false;
+            screenMode=false;retainPosition=false;lastTargetPosition=anchor.position;
             if(canvas.renderMode==RenderMode.WorldSpace) throw new InvalidOperationException("UIFollower requires a screen-space Canvas.");
         }
         public void BindScreen(Canvas overlay,Vector2 point)
         {
             if(overlay==null||overlay.rootCanvas.renderMode==RenderMode.WorldSpace) throw new ArgumentException("Screen point requires screen Canvas.");
-            canvas=overlay.rootCanvas;container=(RectTransform)content.parent;screenPoint=point;screenMode=true;target=null;worldCamera=null;
+            canvas=overlay.rootCanvas;container=(RectTransform)content.parent;screenPoint=point;screenMode=true;target=null;worldCamera=null;retainPosition=false;
+        }
+        internal void BindPoint(Camera camera,Vector3 point,Canvas overlay)
+        {
+            if(camera==null || overlay==null || overlay.rootCanvas.renderMode==RenderMode.WorldSpace)throw new ArgumentException("World point requires camera and screen Canvas.");
+            if(orthographicFade.x<=0 || orthographicFade.y<=orthographicFade.x || perspectiveFade.x<=0 || perspectiveFade.y<=perspectiveFade.x)
+                throw new InvalidOperationException("UIFollower fade ranges require 0 < start < end.");
+            worldCamera=camera;canvas=overlay.rootCanvas;container=(RectTransform)content.parent;target=null;
+            screenMode=false;retainPosition=true;lastTargetPosition=point;
         }
         public void SetScreenPoint(Vector2 point) {screenPoint=point;}
-        public void Clear() {target=null;worldCamera=null;canvas=null;screenMode=false;SetVisible(false);}
+        public void Clear() {target=null;worldCamera=null;canvas=null;screenMode=false;retainPosition=false;SetVisible(false);}
+        // A retiring presentation can finish after its world object has been released.
+        internal void RetainLastWorldPosition()
+        {if(target!=null)lastTargetPosition=target.position;retainPosition=true;}
         public bool Project()
         {
             if(screenMode&&canvas!=null)
@@ -54,8 +67,9 @@ namespace ProjectY.UI
                 {SetVisible(false);return false;}
                 projected+=screenOffset;content.localScale=Vector3.one;content.localRotation=Quaternion.identity;content.localPosition=new Vector3(projected.x,projected.y,0);Depth=0;SetVisible(true);return true;
             }
-            if(target==null||worldCamera==null||canvas==null) {SetVisible(false);return false;}
-            var screen=worldCamera.WorldToScreenPoint(target.position+worldOffset);Depth=screen.z;
+            if((target==null&&!retainPosition)||worldCamera==null||canvas==null) {SetVisible(false);return false;}
+            if(target!=null)lastTargetPosition=target.position;
+            var screen=worldCamera.WorldToScreenPoint(lastTargetPosition+worldOffset);Depth=screen.z;
             var rect=worldCamera.pixelRect;
             if(screen.z<=worldCamera.nearClipPlane||screen.z>=worldCamera.farClipPlane||!rect.Contains(new Vector2(screen.x,screen.y)))
             {SetVisible(false);return false;}

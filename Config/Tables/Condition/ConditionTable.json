@@ -297,6 +297,2137 @@
       "targetId": 104,
       "state": "completed",
       "reason": "还没了解莱雅的过去"
+    },
+    {
+      "id": 3000,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 309,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「在灰烬上签字」"
+    },
+    {
+      "id": 3001,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "ash_brief",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：ash_brief"
+    },
+    {
+      "id": 3002,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 301,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「焦黑的求援信」"
+    },
+    {
+      "id": 3003,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "ash_witness_seen",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：ash_witness_seen"
+    },
+    {
+      "id": 3004,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "ash_ledger_read",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：ash_ledger_read"
+    },
+    {
+      "id": 3005,
+      "kind": "item_count",
+      "conditionIds": [],
+      "targetId": 81,
+      "key": "",
+      "value": 4,
+      "state": "",
+      "reason": "共享背包需要营造木料 ×4"
+    },
+    {
+      "id": 3006,
+      "kind": "item_count",
+      "conditionIds": [],
+      "targetId": 91,
+      "key": "",
+      "value": 1,
+      "state": "",
+      "reason": "共享背包需要急救包 ×1"
+    },
+    {
+      "id": 3007,
+      "kind": "all",
+      "conditionIds": [
+        3005,
+        3006
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3008,
+      "kind": "kill_count",
+      "conditionIds": [],
+      "targetId": 4,
+      "key": "",
+      "value": 3,
+      "state": "",
+      "reason": "本阶段激活后击败废墟掠夺者 ×3"
+    },
+    {
+      "id": 3009,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 302,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「幸存者的名字」"
+    },
+    {
+      "id": 3010,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 303,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「两本账的差额」"
+    },
+    {
+      "id": 3011,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 304,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「救济物资盘点」"
+    },
+    {
+      "id": 3012,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 305,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「清出归途」"
+    },
+    {
+      "id": 3013,
+      "kind": "all",
+      "conditionIds": [
+        3009,
+        3010,
+        3011,
+        3012
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3014,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "ash_witness_safe",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：ash_witness_safe"
+    },
+    {
+      "id": 3015,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 306,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「证人的条件」"
+    },
+    {
+      "id": 3016,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "ash_verdict",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：ash_verdict"
+    },
+    {
+      "id": 3017,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "ash_verdict",
+      "value": 2,
+      "state": "",
+      "reason": "尚未达成：ash_verdict"
+    },
+    {
+      "id": 3018,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "ash_verdict",
+      "value": 3,
+      "state": "",
+      "reason": "尚未达成：ash_verdict"
+    },
+    {
+      "id": 3019,
+      "kind": "any",
+      "conditionIds": [
+        3016,
+        3017,
+        3018
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "完成任一替代路线"
+    },
+    {
+      "id": 3020,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 307,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「账本归谁」"
+    },
+    {
+      "id": 3021,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "ash_guard_report",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：ash_guard_report"
+    },
+    {
+      "id": 3022,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 308,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「让守卫知情」"
+    },
+    {
+      "id": 3023,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "ash_receipt",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：ash_receipt"
+    },
+    {
+      "id": 3024,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 301,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「焦黑的求援信」"
+    },
+    {
+      "id": 3025,
+      "kind": "all",
+      "conditionIds": [
+        3024,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3026,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 302,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「幸存者的名字」"
+    },
+    {
+      "id": 3027,
+      "kind": "all",
+      "conditionIds": [
+        3026,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3028,
+      "kind": "party_attribute",
+      "conditionIds": [],
+      "targetId": 3,
+      "key": "",
+      "value": 8,
+      "state": "",
+      "reason": "需要任一存活队员智力 ≥ 8"
+    },
+    {
+      "id": 3029,
+      "kind": "party_attribute",
+      "conditionIds": [],
+      "targetId": 15,
+      "key": "",
+      "value": 5,
+      "state": "",
+      "reason": "需要任一存活队员侦察 ≥ 5"
+    },
+    {
+      "id": 3030,
+      "kind": "coins",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "",
+      "value": 20,
+      "state": "",
+      "reason": "需要 20 金币"
+    },
+    {
+      "id": 3031,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 303,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「两本账的差额」"
+    },
+    {
+      "id": 3032,
+      "kind": "all",
+      "conditionIds": [
+        3031,
+        3028
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3033,
+      "kind": "all",
+      "conditionIds": [
+        3031,
+        3029
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3034,
+      "kind": "all",
+      "conditionIds": [
+        3031,
+        3030
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3035,
+      "kind": "party_attribute",
+      "conditionIds": [],
+      "targetId": 19,
+      "key": "",
+      "value": 4,
+      "state": "",
+      "reason": "需要任一存活队员魅力 ≥ 4"
+    },
+    {
+      "id": 3036,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 306,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「证人的条件」"
+    },
+    {
+      "id": 3037,
+      "kind": "all",
+      "conditionIds": [
+        3036,
+        3035
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3038,
+      "kind": "all",
+      "conditionIds": [
+        3036,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3039,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 307,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「账本归谁」"
+    },
+    {
+      "id": 3040,
+      "kind": "all",
+      "conditionIds": [
+        3039,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3041,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 308,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「让守卫知情」"
+    },
+    {
+      "id": 3042,
+      "kind": "all",
+      "conditionIds": [
+        3041,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3043,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 309,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「在灰烬上签字」"
+    },
+    {
+      "id": 3044,
+      "kind": "all",
+      "conditionIds": [
+        3043,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3045,
+      "kind": "mission_state",
+      "conditionIds": [],
+      "targetId": 300,
+      "key": "",
+      "value": 0,
+      "state": "ready",
+      "reason": "先完成任务 300"
+    },
+    {
+      "id": 3046,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 410,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「交还钟楼钥匙」"
+    },
+    {
+      "id": 3047,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bell_brief",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：bell_brief"
+    },
+    {
+      "id": 3048,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 401,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「停摆的钟」"
+    },
+    {
+      "id": 3049,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bell_survey",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：bell_survey"
+    },
+    {
+      "id": 3050,
+      "kind": "item_count",
+      "conditionIds": [],
+      "targetId": 83,
+      "key": "",
+      "value": 3,
+      "state": "",
+      "reason": "共享背包需要铁件 ×3"
+    },
+    {
+      "id": 3051,
+      "kind": "item_count",
+      "conditionIds": [],
+      "targetId": 82,
+      "key": "",
+      "value": 2,
+      "state": "",
+      "reason": "共享背包需要麻绳 ×2"
+    },
+    {
+      "id": 3052,
+      "kind": "all",
+      "conditionIds": [
+        3050,
+        3051
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3053,
+      "kind": "any",
+      "conditionIds": [
+        3052,
+        3017
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "完成任一替代路线"
+    },
+    {
+      "id": 3054,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 402,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「裂痕与暗号」"
+    },
+    {
+      "id": 3055,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bell_plan",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：bell_plan"
+    },
+    {
+      "id": 3056,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bell_plan",
+      "value": 2,
+      "state": "",
+      "reason": "尚未达成：bell_plan"
+    },
+    {
+      "id": 3057,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bell_plan",
+      "value": 3,
+      "state": "",
+      "reason": "尚未达成：bell_plan"
+    },
+    {
+      "id": 3058,
+      "kind": "any",
+      "conditionIds": [
+        3055,
+        3056,
+        3057
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "完成任一替代路线"
+    },
+    {
+      "id": 3059,
+      "kind": "kill_count",
+      "conditionIds": [],
+      "targetId": 5,
+      "key": "",
+      "value": 2,
+      "state": "",
+      "reason": "本阶段激活后击败哨塔弓手 ×2"
+    },
+    {
+      "id": 3060,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 403,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「修钟物资盘点」"
+    },
+    {
+      "id": 3061,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 404,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「钟应为谁而响」"
+    },
+    {
+      "id": 3062,
+      "kind": "all",
+      "conditionIds": [
+        3060,
+        3061
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3063,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bell_calibrated",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：bell_calibrated"
+    },
+    {
+      "id": 3064,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 405,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「压制远处的弓弦」"
+    },
+    {
+      "id": 3065,
+      "kind": "all",
+      "conditionIds": [
+        3054,
+        3064
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3066,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bell_testimony",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：bell_testimony"
+    },
+    {
+      "id": 3067,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 406,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「重校共鸣装置」"
+    },
+    {
+      "id": 3068,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 407,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「暮色中的证词」"
+    },
+    {
+      "id": 3069,
+      "kind": "all",
+      "conditionIds": [
+        3067,
+        3068
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3070,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bell_result",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：bell_result"
+    },
+    {
+      "id": 3071,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bell_result",
+      "value": 2,
+      "state": "",
+      "reason": "尚未达成：bell_result"
+    },
+    {
+      "id": 3072,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bell_result",
+      "value": 3,
+      "state": "",
+      "reason": "尚未达成：bell_result"
+    },
+    {
+      "id": 3073,
+      "kind": "any",
+      "conditionIds": [
+        3070,
+        3071,
+        3072
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "完成任一替代路线"
+    },
+    {
+      "id": 3074,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 408,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「最后一枚铆钉」"
+    },
+    {
+      "id": 3075,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bell_guard_report",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：bell_guard_report"
+    },
+    {
+      "id": 3076,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 409,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「新的警戒规程」"
+    },
+    {
+      "id": 3077,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bell_receipt",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：bell_receipt"
+    },
+    {
+      "id": 3078,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 401,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「停摆的钟」"
+    },
+    {
+      "id": 3079,
+      "kind": "all",
+      "conditionIds": [
+        3078,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3080,
+      "kind": "coins",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "",
+      "value": 15,
+      "state": "",
+      "reason": "需要 15 金币"
+    },
+    {
+      "id": 3081,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 402,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「裂痕与暗号」"
+    },
+    {
+      "id": 3082,
+      "kind": "all",
+      "conditionIds": [
+        3081,
+        3029
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3083,
+      "kind": "all",
+      "conditionIds": [
+        3081,
+        3028
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3084,
+      "kind": "all",
+      "conditionIds": [
+        3081,
+        3080
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3085,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 404,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「钟应为谁而响」"
+    },
+    {
+      "id": 3086,
+      "kind": "all",
+      "conditionIds": [
+        3085,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3087,
+      "kind": "party_attribute",
+      "conditionIds": [],
+      "targetId": 16,
+      "key": "",
+      "value": 4,
+      "state": "",
+      "reason": "需要任一存活队员巧匠 ≥ 4"
+    },
+    {
+      "id": 3088,
+      "kind": "party_attribute",
+      "conditionIds": [],
+      "targetId": 3,
+      "key": "",
+      "value": 9,
+      "state": "",
+      "reason": "需要任一存活队员智力 ≥ 9"
+    },
+    {
+      "id": 3089,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 406,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「重校共鸣装置」"
+    },
+    {
+      "id": 3090,
+      "kind": "all",
+      "conditionIds": [
+        3089,
+        3087
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3091,
+      "kind": "all",
+      "conditionIds": [
+        3089,
+        3088
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3092,
+      "kind": "all",
+      "conditionIds": [
+        3089,
+        3080
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3093,
+      "kind": "time_window",
+      "conditionIds": [],
+      "targetId": 1200,
+      "key": "",
+      "value": 1380,
+      "state": "",
+      "reason": "请在 20:00–23:00 再来；也可选择白日私室"
+    },
+    {
+      "id": 3094,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "ash_named",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：ash_named"
+    },
+    {
+      "id": 3095,
+      "kind": "coins",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "",
+      "value": 10,
+      "state": "",
+      "reason": "需要 10 金币"
+    },
+    {
+      "id": 3096,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 407,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「暮色中的证词」"
+    },
+    {
+      "id": 3097,
+      "kind": "all",
+      "conditionIds": [
+        3096,
+        3093
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3098,
+      "kind": "all",
+      "conditionIds": [
+        3096,
+        3094
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3099,
+      "kind": "all",
+      "conditionIds": [
+        3096,
+        3095
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3100,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 408,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「最后一枚铆钉」"
+    },
+    {
+      "id": 3101,
+      "kind": "all",
+      "conditionIds": [
+        3100,
+        3055
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3102,
+      "kind": "all",
+      "conditionIds": [
+        3100,
+        3056
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3103,
+      "kind": "all",
+      "conditionIds": [
+        3100,
+        3057
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3104,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 409,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「新的警戒规程」"
+    },
+    {
+      "id": 3105,
+      "kind": "all",
+      "conditionIds": [
+        3104,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3106,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 410,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「交还钟楼钥匙」"
+    },
+    {
+      "id": 3107,
+      "kind": "all",
+      "conditionIds": [
+        3106,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3108,
+      "kind": "mission_state",
+      "conditionIds": [],
+      "targetId": 400,
+      "key": "",
+      "value": 0,
+      "state": "ready",
+      "reason": "先完成任务 400"
+    },
+    {
+      "id": 3109,
+      "kind": "mission_state",
+      "conditionIds": [],
+      "targetId": 300,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成任务 300"
+    },
+    {
+      "id": 3110,
+      "kind": "mission_state",
+      "conditionIds": [],
+      "targetId": 400,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成任务 400"
+    },
+    {
+      "id": 3111,
+      "kind": "any",
+      "conditionIds": [
+        3109,
+        3110
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "完成任一替代路线"
+    },
+    {
+      "id": 3112,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 510,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「留给下一位驿使」"
+    },
+    {
+      "id": 3113,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "council_brief",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：council_brief"
+    },
+    {
+      "id": 3114,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 501,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「未完的邀请」"
+    },
+    {
+      "id": 3115,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "council_road",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：council_road"
+    },
+    {
+      "id": 3116,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "council_craft",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：council_craft"
+    },
+    {
+      "id": 3117,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "council_witness",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：council_witness"
+    },
+    {
+      "id": 3118,
+      "kind": "item_count",
+      "conditionIds": [],
+      "targetId": 81,
+      "key": "",
+      "value": 6,
+      "state": "",
+      "reason": "共享背包需要营造木料 ×6"
+    },
+    {
+      "id": 3119,
+      "kind": "item_count",
+      "conditionIds": [],
+      "targetId": 83,
+      "key": "",
+      "value": 4,
+      "state": "",
+      "reason": "共享背包需要铁件 ×4"
+    },
+    {
+      "id": 3120,
+      "kind": "item_count",
+      "conditionIds": [],
+      "targetId": 91,
+      "key": "",
+      "value": 2,
+      "state": "",
+      "reason": "共享背包需要急救包 ×2"
+    },
+    {
+      "id": 3121,
+      "kind": "all",
+      "conditionIds": [
+        3118,
+        3119,
+        3120
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3122,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "council_supplies",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：council_supplies"
+    },
+    {
+      "id": 3123,
+      "kind": "any",
+      "conditionIds": [
+        3121,
+        3122
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "完成任一替代路线"
+    },
+    {
+      "id": 3124,
+      "kind": "kill_count",
+      "conditionIds": [],
+      "targetId": 4,
+      "key": "",
+      "value": 4,
+      "state": "",
+      "reason": "本阶段激活后击败废墟掠夺者 ×4"
+    },
+    {
+      "id": 3125,
+      "kind": "all",
+      "conditionIds": [
+        3124,
+        3059
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3126,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 502,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「驿路席位」"
+    },
+    {
+      "id": 3127,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 503,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「工匠席位」"
+    },
+    {
+      "id": 3128,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 504,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「无名者席位」"
+    },
+    {
+      "id": 3129,
+      "kind": "all",
+      "conditionIds": [
+        3126,
+        3127,
+        3128
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3130,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "council_draft",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：council_draft"
+    },
+    {
+      "id": 3131,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "council_draft",
+      "value": 2,
+      "state": "",
+      "reason": "尚未达成：council_draft"
+    },
+    {
+      "id": 3132,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "council_draft",
+      "value": 3,
+      "state": "",
+      "reason": "尚未达成：council_draft"
+    },
+    {
+      "id": 3133,
+      "kind": "any",
+      "conditionIds": [
+        3130,
+        3131,
+        3132
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "完成任一替代路线"
+    },
+    {
+      "id": 3134,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 505,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「远行储备」"
+    },
+    {
+      "id": 3135,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 506,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「议约前的长路」"
+    },
+    {
+      "id": 3136,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 507,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「写下代价」"
+    },
+    {
+      "id": 3137,
+      "kind": "all",
+      "conditionIds": [
+        3134,
+        3135,
+        3136
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3138,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "council_ending",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：council_ending"
+    },
+    {
+      "id": 3139,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "council_ending",
+      "value": 2,
+      "state": "",
+      "reason": "尚未达成：council_ending"
+    },
+    {
+      "id": 3140,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "council_ending",
+      "value": 3,
+      "state": "",
+      "reason": "尚未达成：council_ending"
+    },
+    {
+      "id": 3141,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "council_ending",
+      "value": 4,
+      "state": "",
+      "reason": "尚未达成：council_ending"
+    },
+    {
+      "id": 3142,
+      "kind": "any",
+      "conditionIds": [
+        3138,
+        3139,
+        3140,
+        3141
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "完成任一替代路线"
+    },
+    {
+      "id": 3143,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 508,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「三方议决」"
+    },
+    {
+      "id": 3144,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "council_echo",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：council_echo"
+    },
+    {
+      "id": 3145,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 509,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "先完成「广场上的回声」"
+    },
+    {
+      "id": 3146,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "council_archive",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：council_archive"
+    },
+    {
+      "id": 3147,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 501,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「未完的邀请」"
+    },
+    {
+      "id": 3148,
+      "kind": "all",
+      "conditionIds": [
+        3147,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3149,
+      "kind": "all",
+      "conditionIds": [
+        3109,
+        3035
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3150,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 502,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「驿路席位」"
+    },
+    {
+      "id": 3151,
+      "kind": "all",
+      "conditionIds": [
+        3150,
+        3149
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3152,
+      "kind": "all",
+      "conditionIds": [
+        3150,
+        3109
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3153,
+      "kind": "all",
+      "conditionIds": [
+        3110,
+        3087
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3154,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 503,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「工匠席位」"
+    },
+    {
+      "id": 3155,
+      "kind": "all",
+      "conditionIds": [
+        3154,
+        3153
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3156,
+      "kind": "all",
+      "conditionIds": [
+        3154,
+        3110
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3157,
+      "kind": "all",
+      "conditionIds": [
+        3109,
+        3094
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3158,
+      "kind": "party_attribute",
+      "conditionIds": [],
+      "targetId": 19,
+      "key": "",
+      "value": 5,
+      "state": "",
+      "reason": "需要任一存活队员魅力 ≥ 5"
+    },
+    {
+      "id": 3159,
+      "kind": "npc_relation",
+      "conditionIds": [],
+      "targetId": 5,
+      "key": "",
+      "value": 9,
+      "state": "",
+      "reason": "此人好感需要 9"
+    },
+    {
+      "id": 3160,
+      "kind": "all",
+      "conditionIds": [
+        3109,
+        3158,
+        3159
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3161,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 504,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「无名者席位」"
+    },
+    {
+      "id": 3162,
+      "kind": "all",
+      "conditionIds": [
+        3161,
+        3157
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3163,
+      "kind": "all",
+      "conditionIds": [
+        3161,
+        3160
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3164,
+      "kind": "all",
+      "conditionIds": [
+        3161,
+        3109
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3165,
+      "kind": "coins",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "",
+      "value": 80,
+      "state": "",
+      "reason": "需要 80 金币"
+    },
+    {
+      "id": 3166,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 505,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「远行储备」"
+    },
+    {
+      "id": 3167,
+      "kind": "all",
+      "conditionIds": [
+        3166,
+        3165
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3168,
+      "kind": "party_attribute",
+      "conditionIds": [],
+      "targetId": 3,
+      "key": "",
+      "value": 10,
+      "state": "",
+      "reason": "需要任一存活队员智力 ≥ 10"
+    },
+    {
+      "id": 3169,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 507,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「写下代价」"
+    },
+    {
+      "id": 3170,
+      "kind": "all",
+      "conditionIds": [
+        3169,
+        3168
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3171,
+      "kind": "all",
+      "conditionIds": [
+        3169,
+        3158
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3172,
+      "kind": "all",
+      "conditionIds": [
+        3169,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3173,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "council_named",
+      "value": 1,
+      "state": "",
+      "reason": "尚未达成：council_named"
+    },
+    {
+      "id": 3174,
+      "kind": "npc_recruited",
+      "conditionIds": [],
+      "targetId": 1,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "莱雅尚未入队"
+    },
+    {
+      "id": 3175,
+      "kind": "faction_reputation",
+      "conditionIds": [],
+      "targetId": 1,
+      "key": "",
+      "value": 5,
+      "state": "",
+      "reason": "阵营声望需要 5"
+    },
+    {
+      "id": 3176,
+      "kind": "all",
+      "conditionIds": [
+        3174,
+        3175
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3177,
+      "kind": "any",
+      "conditionIds": [
+        3158,
+        3176
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "完成任一替代路线"
+    },
+    {
+      "id": 3178,
+      "kind": "all",
+      "conditionIds": [
+        3016,
+        3070,
+        3173,
+        3177
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3179,
+      "kind": "faction_reputation",
+      "conditionIds": [],
+      "targetId": 1,
+      "key": "",
+      "value": 10,
+      "state": "",
+      "reason": "阵营声望需要 10"
+    },
+    {
+      "id": 3180,
+      "kind": "faction_reputation",
+      "conditionIds": [],
+      "targetId": 3,
+      "key": "",
+      "value": 10,
+      "state": "",
+      "reason": "阵营声望需要 10"
+    },
+    {
+      "id": 3181,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 508,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「三方议决」"
+    },
+    {
+      "id": 3182,
+      "kind": "all",
+      "conditionIds": [
+        3181,
+        3179
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3183,
+      "kind": "all",
+      "conditionIds": [
+        3181,
+        3180
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3184,
+      "kind": "all",
+      "conditionIds": [
+        3181,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3185,
+      "kind": "all",
+      "conditionIds": [
+        3181,
+        3178
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3186,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 509,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「广场上的回声」"
+    },
+    {
+      "id": 3187,
+      "kind": "all",
+      "conditionIds": [
+        3186,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3188,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 510,
+      "key": "",
+      "value": 0,
+      "state": "active",
+      "reason": "先完成「留给下一位驿使」"
+    },
+    {
+      "id": 3189,
+      "kind": "all",
+      "conditionIds": [
+        3188,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "先完成对应阶段与所列要求"
+    },
+    {
+      "id": 3190,
+      "kind": "mission_state",
+      "conditionIds": [],
+      "targetId": 500,
+      "key": "",
+      "value": 0,
+      "state": "ready",
+      "reason": "先完成任务 500"
     }
   ]
 }

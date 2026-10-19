@@ -10,19 +10,29 @@ namespace ProjectY.Data
     [Serializable] internal sealed class GrowthSave
     {
         public bool initialized; public int level, experience, attributePoints, talentPoints, potential; public uint randomState;
+        public int currentProfessionId; public int[] professions;
         public AttributeEntry[] attributes; public IntEntry[] talents; public int[] trees, skills, pending, offers;
     }
     [Serializable] internal sealed class ActorSave
     { public int id, templateId, hp, maxHP; public string appearance; public int[] traits; public GrowthSave growth; public bool hasMount; public AnimalMountSave mount; public GameEffectSave[] effects; }
     [Serializable] internal sealed class WeaponSave
-    { public int id, itemId, owner, magazine; public string hand; public IntEntry[] runes; }
+    { public int id, itemId, owner, magazine, affixId; public string hand; public IntEntry[] runes; public EquipmentConditionSave condition; }
     [Serializable] internal sealed class MagazineSave { public int id, itemId, ammo, capacity, rounds; }
-    [Serializable] internal sealed class WearableSave { public int id, itemId, owner; public string slot; }
+    [Serializable] internal sealed class WearableSave { public int id, itemId, owner, affixId; public string slot; public EquipmentConditionSave condition; }
+    [Serializable] internal sealed class EquipmentConditionSave
+    {
+        public int current, maximum, baseMaximum; public bool thresholdArmed;
+        internal static EquipmentConditionSave Capture(EquipmentConditionData value) => new EquipmentConditionSave { current=value.Current, maximum=value.Maximum, baseMaximum=value.BaseMaximum, thresholdArmed=value.ThresholdArmed };
+        internal EquipmentConditionData Restore() => EquipmentConditionData.Restore(current,maximum,baseMaximum,thresholdArmed);
+        internal static EquipmentConditionSave Fresh() => Capture(new EquipmentConditionData());
+    }
     [Serializable] internal sealed class PlacementSave { public string key; public int itemId, x, y; public bool rotated; }
+    [Serializable] internal sealed class InventoryPileSave
+    { public int id, itemId, count; }
     [Serializable] internal sealed class EquipmentSave
-    { public int width, height, nextId; public IntEntry[] stacks; public WeaponSave[] weapons; public MagazineSave[] magazines; public WearableSave[] wearables; public PlacementSave[] placements; }
+    { public int width, height, nextId, nextPileId=1; public IntEntry[] stacks; public InventoryPileSave[] piles=Array.Empty<InventoryPileSave>(); public WeaponSave[] weapons; public MagazineSave[] magazines; public WearableSave[] wearables; public PlacementSave[] placements; }
     [Serializable] internal sealed class CharacterSaveDocument
-    { public int version, coins, playerLevel; public uint seed; public string savedAt; public ActorSave[] actors; public EquipmentSave equipment; public NarrativeSave narrative; public ShopStockSave[] shops; }
+    { public int version, coins, playerLevel; public uint seed; public string savedAt; public ActorSave[] actors; public EquipmentSave equipment; public NarrativeSave narrative; public ShopStockSave[] shops; public CampSave camp; public PartyStorySave partyStory; public ChronicleSave[] journal; public ExpeditionSave expedition; }
 
     internal static class SaveCheck
     {
@@ -35,17 +45,20 @@ namespace ProjectY.Data
     public sealed partial class CharacterGrowthData
     {
         internal GrowthSave CaptureSave() => new GrowthSave { initialized = Initialized, level = Level, experience = Experience, attributePoints = AttributePoints,
-            talentPoints = TalentPoints, potential = LockedPotential, randomState = randomState,
+            talentPoints = TalentPoints, potential = LockedPotential, randomState = randomState, currentProfessionId = CurrentProfessionId, professions = professions.ToArray(),
             attributes = attributes.Select(p => new AttributeEntry { name = p.Key, value = p.Value }).ToArray(),
             talents = talentIds.Select(id => new IntEntry { id = id, value = talents[id] }).ToArray(), trees = trees.ToArray(), skills = skills.ToArray(), pending = pendingLevels.ToArray(), offers = offers.ToArray() };
         internal void RestoreSave(GrowthSave row)
         {
             SaveCheck.Require(row != null && row.initialized && row.level >= 1 && row.experience >= 0 && row.attributePoints >= 0 && row.talentPoints >= 0 && row.potential >= 0 && row.randomState != 0, "养成数值");
             SaveCheck.PositiveIds(row.trees, "天赋树"); SaveCheck.PositiveIds(row.skills, "技能"); SaveCheck.PositiveIds(row.offers, "待选技能");
-            SaveCheck.PositiveIds(row.pending, "待选等级"); SaveCheck.Require(row.pending.All(v => v <= row.level) && (row.offers.Length == 0 || row.pending.Length > 0) && !row.offers.Intersect(row.skills).Any(), "技能待选队列");
+            SaveCheck.Rows(row.pending, 10000, "学习机会"); SaveCheck.Require(row.pending.All(v => v >= 1 && v <= row.level) && (row.offers.Length == 0 || row.pending.Length > 0) && !row.offers.Intersect(row.skills).Any(), "技能待选队列");
+            SaveCheck.PositiveIds(row.professions, "职业");
+            SaveCheck.Require((row.currentProfessionId == 0 && row.professions.Length == 0) || row.professions.Contains(row.currentProfessionId), "当前职业");
             foreach (var a in SaveCheck.Rows(row.attributes, 128, "投入属性")) { SaveCheck.Require(a != null && !string.IsNullOrEmpty(a.name) && a.value > 0 && !attributes.ContainsKey(a.name), "重复或无效属性"); attributes.Add(a.name, a.value); }
             foreach (var t in SaveCheck.Rows(row.talents, 10000, "天赋投入")) { SaveCheck.Require(t != null && t.id > 0 && t.value > 0 && !talents.ContainsKey(t.id), "重复或无效天赋"); talents.Add(t.id, t.value); talentIds.Add(t.id); }
             Initialized = true; Level = row.level; Experience = row.experience; AttributePoints = row.attributePoints; TalentPoints = row.talentPoints; LockedPotential = row.potential; randomState = row.randomState;
+            CurrentProfessionId = row.currentProfessionId; professions.AddRange(row.professions);
             trees.AddRange(row.trees); skills.AddRange(row.skills); offers.AddRange(row.offers); foreach (int level in row.pending) pendingLevels.Enqueue(level); Revision++;
         }
         public int AttributeCount => attributes.Count;
@@ -69,8 +82,8 @@ namespace ProjectY.Data
     }
     public sealed partial class EquipmentWeaponData
     {
-        internal WeaponSave CaptureSave() => new WeaponSave { id = Id, itemId = ItemId, owner = OwnerActorId, hand = Hand, magazine = MagazineId,
-            runes = runes.Select(p => new IntEntry { id = p.Key, value = p.Value }).ToArray() };
+        internal WeaponSave CaptureSave() => new WeaponSave { id = Id, itemId = ItemId, owner = OwnerActorId, hand = Hand, magazine = MagazineId, affixId = AffixId,
+            runes = runes.Select(p => new IntEntry { id = p.Key, value = p.Value }).ToArray(), condition=EquipmentConditionSave.Capture(Condition) };
         public int RuneCount => runes.Count;
         public int GetRuneSocketAt(int index) => runes.Keys.ElementAt(index);
     }
@@ -81,25 +94,49 @@ namespace ProjectY.Data
     }
     public sealed partial class EquipmentData
     {
-        internal EquipmentSave CaptureSave() => new EquipmentSave { width = Grid.Width, height = Grid.Height, nextId = nextId,
-            stacks = stacks.Where(s => s.Count > 0).Select(s => new IntEntry { id = s.ItemId, value = s.Count }).ToArray(), weapons = weapons.Select(w => w.CaptureSave()).ToArray(),
-            magazines = magazines.Select(m => new MagazineSave { id = m.Id, itemId = m.ItemId, ammo = m.AmmoItemId, capacity = m.Capacity, rounds = m.Rounds }).ToArray(),
-            wearables = wearables.Select(w => new WearableSave { id = w.Id, itemId = w.ItemId, owner = w.OwnerActorId, slot = w.Slot }).ToArray(),
-            placements = Enumerable.Range(0, Grid.Count).Select(i => Grid.GetAt(i)).Select(p => new PlacementSave { key = p.Key, itemId = p.ItemId, x = p.X, y = p.Y, rotated = p.Rotated }).ToArray() };
+        internal EquipmentSave CaptureSave(HashSet<int> actors)
+        {
+            var keptWeapons=weapons.Where(w=>w.OwnerActorId==0 || actors.Contains(w.OwnerActorId)).ToArray();
+            var enemyMagazines=new HashSet<int>(weapons.Where(w=>w.OwnerActorId!=0 && !actors.Contains(w.OwnerActorId)).Select(w=>w.MagazineId));
+            return new EquipmentSave { width=Grid.Width,height=Grid.Height,nextId=nextId,nextPileId=nextPileId,
+                stacks=stacks.Where(s=>s.Count>0 && s.PileId==0).Select(s=>new IntEntry{id=s.ItemId,value=s.Count}).ToArray(),
+                piles=stacks.Where(s=>s.Count>0 && s.PileId>0).Select(s=>new InventoryPileSave{id=s.PileId,itemId=s.ItemId,count=s.Count}).ToArray(),
+                weapons=keptWeapons.Select(w=>w.CaptureSave()).ToArray(),
+                magazines=magazines.Where(m=>!enemyMagazines.Contains(m.Id)).Select(m=>new MagazineSave{id=m.Id,itemId=m.ItemId,ammo=m.AmmoItemId,capacity=m.Capacity,rounds=m.Rounds}).ToArray(),
+                wearables=wearables.Where(w=>w.OwnerActorId==0 || actors.Contains(w.OwnerActorId)).Select(w=>new WearableSave{id=w.Id,itemId=w.ItemId,owner=w.OwnerActorId,slot=w.Slot,affixId=w.AffixId,condition=EquipmentConditionSave.Capture(w.Condition)}).ToArray(),
+                placements=Enumerable.Range(0,Grid.Count).Select(i=>Grid.GetAt(i)).Select(p=>new PlacementSave{key=p.Key,itemId=p.ItemId,x=p.X,y=p.Y,rotated=p.Rotated}).ToArray() };
+        }
         internal EquipmentData PrepareSave(EquipmentSave row, HashSet<int> actors)
         {
-            SaveCheck.Require(row != null && row.width == Grid.Width && row.height == Grid.Height && row.nextId > 0, "背包尺寸或实例编号");
+            SaveCheck.Require(row != null && row.width == Grid.Width && row.height == Grid.Height && row.nextId > 0 && row.nextPileId>0, "背包尺寸或实例编号");
             var next = new EquipmentData(); Grid.CopyDefinitionsTo(next.Grid); next.Grid.Configure(row.width, row.height);
+            foreach (var pair in affixPools) next.affixPools.Add(pair.Key, pair.Value);
             var ids = new HashSet<int>(); var slots = new HashSet<string>(); var bag = new Dictionary<string, int>();
             Action<int, int> instance = (id, item) => SaveCheck.Require(id > 0 && id < row.nextId && item > 0 && ids.Add(id), "物品实例重复");
             Action<int, string> owner = (id, slot) => SaveCheck.Require(id == 0 ? slot == "" : actors.Contains(id) && slots.Add(id + ":" + slot), "角色所有权或重复装备槽");
+            var totals=new Dictionary<int,long>();
+            Action<int,int> stackTotal=(itemId,count)=>
+            {
+                long total=(totals.TryGetValue(itemId,out var previous)?previous:0)+count;
+                SaveCheck.Require(total<=int.MaxValue,"同类物品总数溢出");totals[itemId]=total;
+            };
             foreach (var item in SaveCheck.Rows(row.stacks, 10000, "堆叠"))
-            { SaveCheck.Require(item != null && item.id > 0 && item.value > 0 && !bag.ContainsKey("s" + item.id), "堆叠物品"); next.stacks.Add(new InventoryStackData(item.id) { Count = item.value }); bag.Add("s" + item.id, item.id); }
+            {
+                SaveCheck.Require(item != null && item.id > 0 && item.value > 0 && !bag.ContainsKey("s" + item.id), "堆叠物品");
+                stackTotal(item.id,item.value);next.stacks.Add(new InventoryStackData(item.id) { Count = item.value });bag.Add("s" + item.id, item.id);
+            }
+            foreach(var item in SaveCheck.Rows(row.piles,10000,"独立物品堆"))
+            {
+                SaveCheck.Require(item!=null && item.id>0 && item.id<row.nextPileId && item.itemId>0 && item.count>0 && !bag.ContainsKey("p"+item.id),"独立堆编号或数量");
+                stackTotal(item.itemId,item.count);next.stacks.Add(new InventoryStackData(item.itemId){PileId=item.id,Count=item.count});bag.Add("p"+item.id,item.itemId);
+            }
             foreach (var item in SaveCheck.Rows(row.weapons, 10000, "武器"))
             {
                 SaveCheck.Require(item != null && (item.owner == 0 ? item.hand == "" : item.hand == "weapon" || item.hand == "offhand"), "武器持握槽");
                 instance(item.id, item.itemId); owner(item.owner, item.hand);
-                var weapon = new EquipmentWeaponData(item.id, item.itemId) { OwnerActorId = item.owner, Hand = item.hand, MagazineId = item.magazine };
+                SaveCheck.Require(affixPools.TryGetValue(item.itemId,out var weaponPool) && Array.IndexOf(weaponPool.Ids,item.affixId)>=0,"武器词缀无效或不适用");
+                var weapon = new EquipmentWeaponData(item.id, item.itemId) { OwnerActorId = item.owner, Hand = item.hand, MagazineId = item.magazine, AffixId = item.affixId };
+                SaveCheck.Require(item.condition!=null,"缺少武器耐久");weapon.Condition=item.condition.Restore();
                 var sockets = new HashSet<int>(); foreach (var rune in SaveCheck.Rows(item.runes, 128, "配件")) { SaveCheck.Require(rune != null && rune.id > 0 && rune.value > 0 && sockets.Add(rune.id), "配件槽"); weapon.SetRune(rune.id, rune.value); }
                 next.weapons.Add(weapon); if (item.owner == 0) bag.Add("w" + item.id, item.itemId);
             }
@@ -113,19 +150,22 @@ namespace ProjectY.Data
             foreach (var item in SaveCheck.Rows(row.wearables, 10000, "防具"))
             {
                 SaveCheck.Require(item != null && (item.owner == 0 || Array.IndexOf(new[] { "head", "body", "legs", "feet", "leftRing", "rightRing", "offhand" }, item.slot) >= 0), "防具槽");
-                instance(item.id, item.itemId); owner(item.owner, item.slot); next.wearables.Add(new EquipmentWearableData(item.id, item.itemId) { OwnerActorId = item.owner, Slot = item.slot }); if (item.owner == 0) bag.Add("g" + item.id, item.itemId);
+                SaveCheck.Require(item.condition!=null,"缺少防具耐久");
+                SaveCheck.Require(affixPools.TryGetValue(item.itemId,out var wearablePool) && Array.IndexOf(wearablePool.Ids,item.affixId)>=0,"防具词缀无效或不适用");
+                instance(item.id, item.itemId); owner(item.owner, item.slot); next.wearables.Add(new EquipmentWearableData(item.id, item.itemId) { OwnerActorId = item.owner, Slot = item.slot, AffixId=item.affixId, Condition=item.condition.Restore() }); if (item.owner == 0) bag.Add("g" + item.id, item.itemId);
             }
             foreach (var place in SaveCheck.Rows(row.placements, 10000, "背包布局"))
             {
                 SaveCheck.Require(place != null && place.key != null && bag.TryGetValue(place.key, out int item) && item == place.itemId, "背包归属");
                 SaveCheck.Require(next.Grid.Insert(place.key, place.itemId, place.x, place.y, place.rotated), "背包越界或重叠"); bag.Remove(place.key);
             }
-            SaveCheck.Require(bag.Count == 0, "背包漏项"); next.nextId = row.nextId; return next;
+            SaveCheck.Require(bag.Count == 0, "背包漏项"); next.nextId = row.nextId;next.nextPileId=row.nextPileId;return next;
         }
         internal void TakePrepared(EquipmentData source)
         {
+            combatOwners.Clear();
             stacks.Clear(); stacks.AddRange(source.stacks); weapons.Clear(); weapons.AddRange(source.weapons); magazines.Clear(); magazines.AddRange(source.magazines);
-            wearables.Clear(); wearables.AddRange(source.wearables); Grid.TakePlacements(source.Grid); nextId = source.nextId; Revision++;
+            wearables.Clear(); wearables.AddRange(source.wearables); Grid.TakePlacements(source.Grid); nextId = source.nextId;nextPileId=source.nextPileId;Revision++;
         }
     }
     public sealed partial class AdventureData

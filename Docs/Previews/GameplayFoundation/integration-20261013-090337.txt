@@ -1,0 +1,30 @@
+fixture_directory=C:\Users\yyz\AppData\Local\Temp\project-y-foundation-ab0bf9e7fcf14a329794bf5e8df9fee0
+FAIL Tools/Tests/character_integration.lua
+XLua.LuaException: Tools/Tests/character_integration.lua:59: Character save/load is not reachable from the HUD
+stack traceback:
+	[C]: in function 'assert'
+	Tools/Tests/character_integration.lua:59: in main chunk
+  at XLua.LuaEnv.ThrowExceptionFromError (System.Int32 oldTop) [0x00040] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:441 
+  at XLua.LuaEnv.DoString (System.Byte[] chunk, System.String chunkName, XLua.LuaTable env) [0x00078] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:274 
+  at XLua.LuaEnv.DoString (System.String chunk, System.String chunkName, XLua.LuaTable env) [0x0000d] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:288 
+  at MCPDynamicCode.Execute () [0x00156] in <4229e8abe850443685fe660c7a701f7a>:0 
+PASS Tools/Tests/inventory_integration.lua
+PASS rotation, overlap and bounds preserve positions on rejected moves
+PASS full bag rejects a larger old weapon without changing ownership
+PASS offhand shield/weapon exchange is atomic when the bag is full
+PASS full bag reload reuses the reserve magazine rectangle and retains rounds
+PASS rune exchange can use the last incoming stack rectangle and refuses overflowing removal
+PASS wearables and shield are placed, slots reject mismatches, rings affect only the owner
+PASS real commands equip dual swords, replace a shield and reject conflicting two-hand weapons
+PASS unfittable loot remains unclaimed with no partial grant
+PASS inventory Panel renders snapshot, changes real equipment and releases its pause lease
+PASS offhand skill deals resolved damage and spends secondary action budget
+PASS Tools/Tests/containers_integration.lua
+PASS reflection bridge, immutable base and initial interaction gates
+PASS exploration damage preserves inventory, consumes time and removes blocking once
+PASS partial looting then destruction retains the same item ownership
+PASS multi-cell side access and cooldown are authoritative
+PASS combat attacks spend normal AP and never add containers to the initiative
+PASS real snapshot carries footprint, durability, visibility and remaining loot
+PASS real rune splash damages a multi-cell container only once per shot
+PASS shared q/r coordinates across floors reject exploration attacks and looting

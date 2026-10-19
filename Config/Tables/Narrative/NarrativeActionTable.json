@@ -22,7 +22,8 @@
         "claim_mission",
         "recruit_npc",
         "add_relation",
-        "add_reputation"
+        "add_reputation",
+        "grant_experience"
       ]
     },
     {
@@ -116,6 +117,958 @@
       "id": 18,
       "kind": "claim_mission",
       "targetId": 200
+    },
+    {
+      "id": 3000,
+      "kind": "add_coins",
+      "targetId": 0,
+      "key": "",
+      "value": 35
+    },
+    {
+      "id": 3001,
+      "kind": "grant_experience",
+      "targetId": 0,
+      "key": "",
+      "value": 35
+    },
+    {
+      "id": 3002,
+      "kind": "grant_item",
+      "targetId": 54,
+      "key": "",
+      "value": 1
+    },
+    {
+      "id": 3003,
+      "kind": "grant_experience",
+      "targetId": 0,
+      "key": "",
+      "value": 8
+    },
+    {
+      "id": 3004,
+      "kind": "grant_experience",
+      "targetId": 0,
+      "key": "",
+      "value": 10
+    },
+    {
+      "id": 3005,
+      "kind": "grant_experience",
+      "targetId": 0,
+      "key": "",
+      "value": 12
+    },
+    {
+      "id": 3006,
+      "kind": "add_coins",
+      "targetId": 0,
+      "key": "",
+      "value": 15
+    },
+    {
+      "id": 3007,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "ash_brief",
+      "value": 1
+    },
+    {
+      "id": 3008,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "ash_witness_seen",
+      "value": 1
+    },
+    {
+      "id": 3009,
+      "kind": "add_relation",
+      "targetId": 5,
+      "key": "",
+      "value": 3
+    },
+    {
+      "id": 3010,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "ash_ledger_read",
+      "value": 1
+    },
+    {
+      "id": 3011,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "ash_method",
+      "value": 1
+    },
+    {
+      "id": 3012,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "ash_ledger_read",
+      "value": 1
+    },
+    {
+      "id": 3013,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "ash_method",
+      "value": 2
+    },
+    {
+      "id": 3014,
+      "kind": "add_coins",
+      "targetId": 0,
+      "key": "",
+      "value": -20
+    },
+    {
+      "id": 3015,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "ash_ledger_read",
+      "value": 1
+    },
+    {
+      "id": 3016,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "ash_method",
+      "value": 3
+    },
+    {
+      "id": 3017,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "ash_witness_safe",
+      "value": 1
+    },
+    {
+      "id": 3018,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "ash_named",
+      "value": 1
+    },
+    {
+      "id": 3019,
+      "kind": "add_relation",
+      "targetId": 5,
+      "key": "",
+      "value": 10
+    },
+    {
+      "id": 3020,
+      "kind": "add_reputation",
+      "targetId": 2,
+      "key": "",
+      "value": 5
+    },
+    {
+      "id": 3021,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "ash_witness_safe",
+      "value": 1
+    },
+    {
+      "id": 3022,
+      "kind": "add_relation",
+      "targetId": 5,
+      "key": "",
+      "value": 6
+    },
+    {
+      "id": 3023,
+      "kind": "add_reputation",
+      "targetId": 2,
+      "key": "",
+      "value": 3
+    },
+    {
+      "id": 3024,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "ash_verdict",
+      "value": 1
+    },
+    {
+      "id": 3025,
+      "kind": "add_reputation",
+      "targetId": 1,
+      "key": "",
+      "value": 8
+    },
+    {
+      "id": 3026,
+      "kind": "add_reputation",
+      "targetId": 2,
+      "key": "",
+      "value": 6
+    },
+    {
+      "id": 3027,
+      "kind": "add_reputation",
+      "targetId": 3,
+      "key": "",
+      "value": -3
+    },
+    {
+      "id": 3028,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "ash_verdict",
+      "value": 2
+    },
+    {
+      "id": 3029,
+      "kind": "add_reputation",
+      "targetId": 2,
+      "key": "",
+      "value": 10
+    },
+    {
+      "id": 3030,
+      "kind": "add_reputation",
+      "targetId": 3,
+      "key": "",
+      "value": 4
+    },
+    {
+      "id": 3031,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "ash_verdict",
+      "value": 3
+    },
+    {
+      "id": 3032,
+      "kind": "add_coins",
+      "targetId": 0,
+      "key": "",
+      "value": 35
+    },
+    {
+      "id": 3033,
+      "kind": "add_reputation",
+      "targetId": 3,
+      "key": "",
+      "value": 10
+    },
+    {
+      "id": 3034,
+      "kind": "add_reputation",
+      "targetId": 2,
+      "key": "",
+      "value": -3
+    },
+    {
+      "id": 3035,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "ash_guard_report",
+      "value": 1
+    },
+    {
+      "id": 3036,
+      "kind": "add_relation",
+      "targetId": 6,
+      "key": "",
+      "value": 5
+    },
+    {
+      "id": 3037,
+      "kind": "add_reputation",
+      "targetId": 1,
+      "key": "",
+      "value": 4
+    },
+    {
+      "id": 3038,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "ash_receipt",
+      "value": 1
+    },
+    {
+      "id": 3039,
+      "kind": "claim_mission",
+      "targetId": 300,
+      "key": "",
+      "value": 0
+    },
+    {
+      "id": 3040,
+      "kind": "add_coins",
+      "targetId": 0,
+      "key": "",
+      "value": 45
+    },
+    {
+      "id": 3041,
+      "kind": "grant_experience",
+      "targetId": 0,
+      "key": "",
+      "value": 45
+    },
+    {
+      "id": 3042,
+      "kind": "grant_item",
+      "targetId": 42,
+      "key": "",
+      "value": 1
+    },
+    {
+      "id": 3043,
+      "kind": "grant_experience",
+      "targetId": 0,
+      "key": "",
+      "value": 10
+    },
+    {
+      "id": 3044,
+      "kind": "grant_experience",
+      "targetId": 0,
+      "key": "",
+      "value": 15
+    },
+    {
+      "id": 3045,
+      "kind": "add_coins",
+      "targetId": 0,
+      "key": "",
+      "value": 20
+    },
+    {
+      "id": 3046,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "bell_brief",
+      "value": 1
+    },
+    {
+      "id": 3047,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "bell_survey",
+      "value": 1
+    },
+    {
+      "id": 3048,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "bell_survey",
+      "value": 1
+    },
+    {
+      "id": 3049,
+      "kind": "add_coins",
+      "targetId": 0,
+      "key": "",
+      "value": -15
+    },
+    {
+      "id": 3050,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "bell_survey",
+      "value": 1
+    },
+    {
+      "id": 3051,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "bell_plan",
+      "value": 1
+    },
+    {
+      "id": 3052,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "bell_plan",
+      "value": 2
+    },
+    {
+      "id": 3053,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "bell_plan",
+      "value": 3
+    },
+    {
+      "id": 3054,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "bell_calibrated",
+      "value": 1
+    },
+    {
+      "id": 3055,
+      "kind": "add_relation",
+      "targetId": 4,
+      "key": "",
+      "value": 8
+    },
+    {
+      "id": 3056,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "bell_calibrated",
+      "value": 1
+    },
+    {
+      "id": 3057,
+      "kind": "add_relation",
+      "targetId": 4,
+      "key": "",
+      "value": 8
+    },
+    {
+      "id": 3058,
+      "kind": "add_coins",
+      "targetId": 0,
+      "key": "",
+      "value": -15
+    },
+    {
+      "id": 3059,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "bell_calibrated",
+      "value": 1
+    },
+    {
+      "id": 3060,
+      "kind": "add_relation",
+      "targetId": 4,
+      "key": "",
+      "value": 5
+    },
+    {
+      "id": 3061,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "bell_testimony",
+      "value": 1
+    },
+    {
+      "id": 3062,
+      "kind": "add_relation",
+      "targetId": 5,
+      "key": "",
+      "value": 4
+    },
+    {
+      "id": 3063,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "bell_testimony",
+      "value": 1
+    },
+    {
+      "id": 3064,
+      "kind": "add_relation",
+      "targetId": 5,
+      "key": "",
+      "value": 4
+    },
+    {
+      "id": 3065,
+      "kind": "add_coins",
+      "targetId": 0,
+      "key": "",
+      "value": -10
+    },
+    {
+      "id": 3066,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "bell_testimony",
+      "value": 1
+    },
+    {
+      "id": 3067,
+      "kind": "add_relation",
+      "targetId": 5,
+      "key": "",
+      "value": 2
+    },
+    {
+      "id": 3068,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "bell_result",
+      "value": 1
+    },
+    {
+      "id": 3069,
+      "kind": "add_reputation",
+      "targetId": 2,
+      "key": "",
+      "value": 8
+    },
+    {
+      "id": 3070,
+      "kind": "add_reputation",
+      "targetId": 1,
+      "key": "",
+      "value": 4
+    },
+    {
+      "id": 3071,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "bell_result",
+      "value": 2
+    },
+    {
+      "id": 3072,
+      "kind": "add_reputation",
+      "targetId": 1,
+      "key": "",
+      "value": 10
+    },
+    {
+      "id": 3073,
+      "kind": "add_reputation",
+      "targetId": 2,
+      "key": "",
+      "value": -2
+    },
+    {
+      "id": 3074,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "bell_result",
+      "value": 3
+    },
+    {
+      "id": 3075,
+      "kind": "add_reputation",
+      "targetId": 3,
+      "key": "",
+      "value": 10
+    },
+    {
+      "id": 3076,
+      "kind": "add_reputation",
+      "targetId": 2,
+      "key": "",
+      "value": 3
+    },
+    {
+      "id": 3077,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "bell_guard_report",
+      "value": 1
+    },
+    {
+      "id": 3078,
+      "kind": "add_relation",
+      "targetId": 6,
+      "key": "",
+      "value": 5
+    },
+    {
+      "id": 3079,
+      "kind": "add_reputation",
+      "targetId": 3,
+      "key": "",
+      "value": 3
+    },
+    {
+      "id": 3080,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "bell_receipt",
+      "value": 1
+    },
+    {
+      "id": 3081,
+      "kind": "claim_mission",
+      "targetId": 400,
+      "key": "",
+      "value": 0
+    },
+    {
+      "id": 3082,
+      "kind": "add_coins",
+      "targetId": 0,
+      "key": "",
+      "value": 80
+    },
+    {
+      "id": 3083,
+      "kind": "grant_experience",
+      "targetId": 0,
+      "key": "",
+      "value": 80
+    },
+    {
+      "id": 3084,
+      "kind": "grant_item",
+      "targetId": 43,
+      "key": "",
+      "value": 1
+    },
+    {
+      "id": 3085,
+      "kind": "grant_experience",
+      "targetId": 0,
+      "key": "",
+      "value": 15
+    },
+    {
+      "id": 3086,
+      "kind": "grant_experience",
+      "targetId": 0,
+      "key": "",
+      "value": 25
+    },
+    {
+      "id": 3087,
+      "kind": "add_coins",
+      "targetId": 0,
+      "key": "",
+      "value": 25
+    },
+    {
+      "id": 3088,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "council_brief",
+      "value": 1
+    },
+    {
+      "id": 3089,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "council_road",
+      "value": 1
+    },
+    {
+      "id": 3090,
+      "kind": "add_reputation",
+      "targetId": 2,
+      "key": "",
+      "value": 6
+    },
+    {
+      "id": 3091,
+      "kind": "add_relation",
+      "targetId": 3,
+      "key": "",
+      "value": 5
+    },
+    {
+      "id": 3092,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "council_road",
+      "value": 1
+    },
+    {
+      "id": 3093,
+      "kind": "add_reputation",
+      "targetId": 2,
+      "key": "",
+      "value": 3
+    },
+    {
+      "id": 3094,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "council_craft",
+      "value": 1
+    },
+    {
+      "id": 3095,
+      "kind": "add_reputation",
+      "targetId": 3,
+      "key": "",
+      "value": 6
+    },
+    {
+      "id": 3096,
+      "kind": "add_relation",
+      "targetId": 4,
+      "key": "",
+      "value": 5
+    },
+    {
+      "id": 3097,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "council_craft",
+      "value": 1
+    },
+    {
+      "id": 3098,
+      "kind": "add_reputation",
+      "targetId": 3,
+      "key": "",
+      "value": 3
+    },
+    {
+      "id": 3099,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "council_witness",
+      "value": 1
+    },
+    {
+      "id": 3100,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "council_named",
+      "value": 1
+    },
+    {
+      "id": 3101,
+      "kind": "add_relation",
+      "targetId": 5,
+      "key": "",
+      "value": 5
+    },
+    {
+      "id": 3102,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "council_witness",
+      "value": 1
+    },
+    {
+      "id": 3103,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "council_named",
+      "value": 1
+    },
+    {
+      "id": 3104,
+      "kind": "add_relation",
+      "targetId": 5,
+      "key": "",
+      "value": 5
+    },
+    {
+      "id": 3105,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "council_witness",
+      "value": 1
+    },
+    {
+      "id": 3106,
+      "kind": "add_relation",
+      "targetId": 5,
+      "key": "",
+      "value": 2
+    },
+    {
+      "id": 3107,
+      "kind": "add_coins",
+      "targetId": 0,
+      "key": "",
+      "value": -80
+    },
+    {
+      "id": 3108,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "council_supplies",
+      "value": 1
+    },
+    {
+      "id": 3109,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "council_draft",
+      "value": 1
+    },
+    {
+      "id": 3110,
+      "kind": "add_reputation",
+      "targetId": 1,
+      "key": "",
+      "value": 4
+    },
+    {
+      "id": 3111,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "council_draft",
+      "value": 2
+    },
+    {
+      "id": 3112,
+      "kind": "add_reputation",
+      "targetId": 2,
+      "key": "",
+      "value": 4
+    },
+    {
+      "id": 3113,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "council_draft",
+      "value": 3
+    },
+    {
+      "id": 3114,
+      "kind": "add_reputation",
+      "targetId": 1,
+      "key": "",
+      "value": 2
+    },
+    {
+      "id": 3115,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "council_ending",
+      "value": 1
+    },
+    {
+      "id": 3116,
+      "kind": "add_reputation",
+      "targetId": 1,
+      "key": "",
+      "value": 10
+    },
+    {
+      "id": 3117,
+      "kind": "add_reputation",
+      "targetId": 2,
+      "key": "",
+      "value": 2
+    },
+    {
+      "id": 3118,
+      "kind": "grant_item",
+      "targetId": 41,
+      "key": "",
+      "value": 1
+    },
+    {
+      "id": 3119,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "council_ending",
+      "value": 2
+    },
+    {
+      "id": 3120,
+      "kind": "add_reputation",
+      "targetId": 3,
+      "key": "",
+      "value": 10
+    },
+    {
+      "id": 3121,
+      "kind": "add_reputation",
+      "targetId": 2,
+      "key": "",
+      "value": 2
+    },
+    {
+      "id": 3122,
+      "kind": "grant_item",
+      "targetId": 53,
+      "key": "",
+      "value": 1
+    },
+    {
+      "id": 3123,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "council_ending",
+      "value": 3
+    },
+    {
+      "id": 3124,
+      "kind": "add_reputation",
+      "targetId": 1,
+      "key": "",
+      "value": 3
+    },
+    {
+      "id": 3125,
+      "kind": "add_reputation",
+      "targetId": 2,
+      "key": "",
+      "value": 3
+    },
+    {
+      "id": 3126,
+      "kind": "add_reputation",
+      "targetId": 3,
+      "key": "",
+      "value": 3
+    },
+    {
+      "id": 3127,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "council_ending",
+      "value": 4
+    },
+    {
+      "id": 3128,
+      "kind": "add_reputation",
+      "targetId": 1,
+      "key": "",
+      "value": 8
+    },
+    {
+      "id": 3129,
+      "kind": "add_reputation",
+      "targetId": 2,
+      "key": "",
+      "value": 8
+    },
+    {
+      "id": 3130,
+      "kind": "add_reputation",
+      "targetId": 3,
+      "key": "",
+      "value": 8
+    },
+    {
+      "id": 3131,
+      "kind": "grant_item",
+      "targetId": 44,
+      "key": "",
+      "value": 1
+    },
+    {
+      "id": 3132,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "council_echo",
+      "value": 1
+    },
+    {
+      "id": 3133,
+      "kind": "grant_experience",
+      "targetId": 0,
+      "key": "",
+      "value": 10
+    },
+    {
+      "id": 3134,
+      "kind": "set_flag",
+      "targetId": 0,
+      "key": "council_archive",
+      "value": 1
+    },
+    {
+      "id": 3135,
+      "kind": "claim_mission",
+      "targetId": 500,
+      "key": "",
+      "value": 0
     }
   ]
 }

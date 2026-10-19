@@ -81,11 +81,17 @@ try
             WaterLevel = river ? 1.6f : wet ? .7f : 0, WaterDepth = river ? .5f : wet ? .7f : 0,
             RiverId = river || i == 3 ? 7 : 0, FlowTo = i == 0 ? 1 : i == 1 ? 3 : i == 3 ? 4 : -1,
             TerrainAssetId = river ? assets[0].Id : assets[1].Id, WaterAssetId = assets[2].Id, Neighbors = neighbors.ToArray() };
+        cells[i].SurfaceA = cells[i].SurfaceB = river ? 4 : 3;
     }
+    var surfaces = Newtonsoft.Json.Linq.JObject.Parse(System.IO.File.ReadAllText("Config/Tables/Map/MapBiomeTable.json"))["rows"]
+        .Select(row => { Color tint; if(!ColorUtility.TryParseHtmlString((string)row["groundColor"],out tint))throw new System.Exception("Invalid biome color");
+            return new ProjectY.Samples.MapPreviewData.Surface { Id=(int)row["id"], GroundTexture=(string)row["groundTexture"], Color=tint,
+                TextureWorldSize=(float)row["textureWorldSize"], TextureStrength=(float)row["textureStrength"], WindStrength=(float)row["windStrength"] }; }).ToArray();
     var map = new ProjectY.Samples.MapPreviewData { Radius = 1, Seed = 173, GenerationVersion = 5, RegionCount = 2, RiverCount = 1,
         Cells = cells, Assets = assets.ToArray(), Towns = System.Array.Empty<ProjectY.Samples.MapPreviewData.Town>(),
         Buildings = System.Array.Empty<ProjectY.Samples.MapPreviewData.Building>(), Roads = System.Array.Empty<ProjectY.Samples.MapPreviewData.Road>(),
         Decorations = System.Array.Empty<ProjectY.Samples.MapPreviewData.Decoration>(),
+        Surfaces = surfaces, Groundcover = System.Array.Empty<ProjectY.Samples.MapPreviewData.Cover>(),
         // 普通水位落差即使没有瀑布标签，也必须获得弧形水幕、白沫和撞水粒子。
         Waterfalls = System.Array.Empty<ProjectY.Samples.MapPreviewData.Waterfall>() };
     var groundShader = UnityEditor.AssetDatabase.LoadAssetAtPath<Shader>("Assets/GameFramework/Samples/Map/MapPreviewInstanced.shader");

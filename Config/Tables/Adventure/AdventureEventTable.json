@@ -264,6 +264,292 @@
       "illustration": "Assets/DynamicAsset/UI/Art/Story/Wayfarers.png",
       "actorAttribute": "",
       "logKind": "event"
+    },
+    {
+      "id": 201,
+      "name": "露珠药圃",
+      "description": "朝露还挂在矮篱上。{actor}认出一片被旅人照料过的银叶草，旁边的陶杯里留着干净的井水。队伍只取了足够的几片叶子，把踩倒的篱笆扶正。",
+      "repeatable": false,
+      "choiceIds": [
+        2011
+      ],
+      "presentation": "simple",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Expansion202610/dew_herb_garden.png",
+      "actorAttribute": "scouting",
+      "logKind": "discovery"
+    },
+    {
+      "id": 202,
+      "name": "啄木鸟的空仓",
+      "description": "一只啄木鸟对着木棚敲得震天响。{actor}拨开藤蔓，发现鸟儿只是想搬开堵在巢口的旧木条。棚里早已没有粮食，却有一捆尚未腐烂的木料。",
+      "repeatable": false,
+      "choiceIds": [
+        2021
+      ],
+      "presentation": "simple",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Expansion202610/woodpecker_storehouse.png",
+      "actorAttribute": "animalAffinity",
+      "logKind": "discovery"
+    },
+    {
+      "id": 203,
+      "name": "渡鸦的找零",
+      "description": "渡鸦叼走了{actor}鞋带上的铜扣，又嫌它不够闪亮。它把铜扣扔回脚边时，巢里一枚不知藏了多久的金币也跟着滚了下来。",
+      "repeatable": false,
+      "choiceIds": [
+        2031
+      ],
+      "presentation": "simple",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Expansion202610/raven_change.png",
+      "actorAttribute": "animalAffinity",
+      "logKind": "discovery"
+    },
+    {
+      "id": 204,
+      "name": "雾中的旧界碑",
+      "description": "雾把前路抹成一片灰白。{actor}在旧界碑背面摸到几道凿痕：每一道都正对一处避风口。那不是王国的边界，而是过去赶山人互相留下的生路。",
+      "repeatable": false,
+      "choiceIds": [
+        2041
+      ],
+      "presentation": "simple",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Expansion202610/mist_boundary_stone.png",
+      "actorAttribute": "scouting",
+      "logKind": "discovery"
+    },
+    {
+      "id": 205,
+      "name": "热石上的薄饼",
+      "description": "路边的牧羊人正在热石上烙薄饼。听说小队还要赶很远的路，她多翻了几张，把最焦脆的边角留给自己；羊群则认真盯着所有人的手。",
+      "repeatable": false,
+      "choiceIds": [
+        2051
+      ],
+      "presentation": "simple",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Expansion202610/hot_stone_flatbread.png",
+      "actorAttribute": "cooking",
+      "logKind": "discovery"
+    },
+    {
+      "id": 206,
+      "name": "雷雨后的玻璃",
+      "description": "昨夜的雷击把一小片砂土熔成了树根状的玻璃。{actor}在裂开的玻璃管旁发现一件被雨水冲出的旧配件，金属骨架还很完整。",
+      "repeatable": false,
+      "choiceIds": [
+        2061
+      ],
+      "presentation": "simple",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Expansion202610/thunder_glass.png",
+      "actorAttribute": "crafting",
+      "logKind": "discovery"
+    },
+    {
+      "id": 207,
+      "name": "无人值守的星盘",
+      "description": "山脊上只剩一座生锈的观星架。{actor}转动卡住的黄铜圆环，天际与刻度忽然严丝合缝。漫长的旅程第一次在心里连成了一条清楚的弧线。",
+      "repeatable": false,
+      "choiceIds": [
+        2071
+      ],
+      "presentation": "simple",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Expansion202610/abandoned_astrolabe.png",
+      "actorAttribute": "intellect",
+      "logKind": "discovery"
+    },
+    {
+      "id": 208,
+      "name": "赶路的纸鸢",
+      "description": "一只断线纸鸢拖着长尾落到路上。纸面画满了圆脸的小人，最末尾还留着一个空位。{actor}添上小队歪歪扭扭的合影，再把纸鸢交给迎面追来的孩子。",
+      "repeatable": false,
+      "choiceIds": [
+        2081
+      ],
+      "presentation": "simple",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Expansion202610/traveling_kite.png",
+      "actorAttribute": "charisma",
+      "logKind": "discovery"
+    },
+    {
+      "id": 209,
+      "name": "两头都收费的桥",
+      "description": "两位磨坊主守在小桥两端，都说自己修过桥，都收一次过路费。{actor}蹲下看了看：桥板确实是新的，支撑桥板的木销却快磨断了。两个人还在为谁的收钱碗更靠近中线争吵。",
+      "repeatable": false,
+      "choiceIds": [
+        2091,
+        2092,
+        2093
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Expansion202610/double_toll_bridge.png",
+      "actorAttribute": "charisma",
+      "logKind": "event"
+    },
+    {
+      "id": 210,
+      "name": "悬在树梢的邮袋",
+      "description": "索道断了，一名信使吊在谷边的树杈上，邮袋比他本人还稳。{actor}能从陡坡直接攀过去，也能花时间沿山羊留下的小径绕到树后。信使只求你们别先扔掉那袋信。",
+      "repeatable": false,
+      "choiceIds": [
+        2101,
+        2102,
+        2103
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Expansion202610/treetop_courier.png",
+      "actorAttribute": "speed",
+      "logKind": "event"
+    },
+    {
+      "id": 211,
+      "name": "无名者的木牌",
+      "description": "风把孤坟前的木牌吹倒了，字迹已经磨平。一个旧匣子从土里露出角，里面有银币和一片卷起的红布。{actor}看不出墓主是谁，也不知道这份钱原本留给谁。",
+      "repeatable": false,
+      "choiceIds": [
+        2111,
+        2112,
+        2113
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Expansion202610/nameless_grave.png",
+      "actorAttribute": "endurance",
+      "logKind": "event"
+    },
+    {
+      "id": 212,
+      "name": "三枚影子的机关",
+      "description": "废塔下的石匣有太阳、月亮、火焰三枚圆钮。匣盖的刻画画着一个人：先迎晨光出门，日落后举灯，最后在月下安睡。三枚钮都能按，锁边也留着一道可撬开的缝。",
+      "repeatable": false,
+      "choiceIds": [
+        2121,
+        2122,
+        2123,
+        2124
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Expansion202610/three_shadow_lock.png",
+      "actorAttribute": "intellect",
+      "logKind": "event"
+    },
+    {
+      "id": 213,
+      "name": "山不喜欢掌声",
+      "description": "前面的客商拍了两下手，想听山谷回声，雪檐却先回了一声闷响。{actor}看见积雪上裂开细线；脚边有一道低矮石坎，远处则是更安全的背风坡。",
+      "repeatable": false,
+      "choiceIds": [
+        2131,
+        2132,
+        2133,
+        2134
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Expansion202610/silent_avalanche_pass.png",
+      "actorAttribute": "scouting",
+      "logKind": "event"
+    },
+    {
+      "id": 214,
+      "name": "一锅汤的赎金",
+      "description": "几只森林哥布林拦住了一辆炊事车，把厨师的大汤勺高高举起。他们大声索要赎金，却又怕锅里的汤煮糊。厨师瞪着他们，小声告诉{actor}：钱能谈，汤勺不能送。",
+      "repeatable": false,
+      "choiceIds": [
+        2141,
+        2142,
+        2143
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Expansion202610/goblin_soup_ransom.png",
+      "actorAttribute": "charisma",
+      "logKind": "event"
+    },
+    {
+      "id": 215,
+      "name": "老兵只教摔倒",
+      "description": "退伍老兵在路边铺了厚草垫，学徒却一个比一个摔得响。他不肯演示漂亮招式，只说：人总会被击倒，先学会怎么落地。{actor}的架势让他忍不住笑出了声。",
+      "repeatable": false,
+      "choiceIds": [
+        2151,
+        2152,
+        2153
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Expansion202610/veteran_falling_lesson.png",
+      "actorAttribute": "strength",
+      "logKind": "event"
+    },
+    {
+      "id": 216,
+      "name": "洪水里的窑火",
+      "description": "山洪退去后，陶工围着半塌的窑棚发愁。最后一炉货正降温，坏掉的风闸却关不住。{actor}看出可以用碎瓦临时封住通风口，也可以帮他们先把干燥燃料搬走。",
+      "repeatable": false,
+      "choiceIds": [
+        2161,
+        2162,
+        2163
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Expansion202610/flooded_kiln.png",
+      "actorAttribute": "crafting",
+      "logKind": "event"
+    },
+    {
+      "id": 217,
+      "name": "路边的第二张担架",
+      "description": "一位巡诊医师的驮兽受了惊，两名病人被留在路边。药箱足够，能抬担架的手却不够。医师已经把小队每个人的伤口看了一遍，开口求助前先说了句：你们也走得够远了。",
+      "repeatable": false,
+      "choiceIds": [
+        2171,
+        2172,
+        2173
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Expansion202610/second_stretcher.png",
+      "actorAttribute": "intellect",
+      "logKind": "event"
+    },
+    {
+      "id": 218,
+      "name": "篝火旁的空座",
+      "description": "过路人的篝火旁留着一个空树墩。有人问{actor}愿不愿意坐下，有人已把杯子递过来。说起最狼狈的旅途，每个人都在笑；{actor}却发现，承认自己也曾害怕，比吹嘘战绩更难。",
+      "repeatable": false,
+      "choiceIds": [
+        2181,
+        2182,
+        2183
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Expansion202610/empty_campfire_seat.png",
+      "actorAttribute": "charisma",
+      "logKind": "event"
+    },
+    {
+      "id": 219,
+      "name": "落星与羊",
+      "description": "一块昨夜落下的蓝色石头把草地烤成圆环，牧人的羊却执意要舔它。石头外壳已经冷了，裂缝里仍透着光。{actor}觉得它的脉动似乎能与武器上的符文呼应。",
+      "repeatable": false,
+      "choiceIds": [
+        2191,
+        2192,
+        2193
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Expansion202610/fallen_star_and_sheep.png",
+      "actorAttribute": "intellect",
+      "logKind": "event"
+    },
+    {
+      "id": 220,
+      "name": "未开张的雪地集市",
+      "description": "两个流动摊贩在雪里僵持着：卖食物的没有火，卖燃料的没带锅，谁也不肯先欠对方人情。{actor}听见两人的肚子同时响了一声。旁边的避风石圈足够容下三堆行李。",
+      "repeatable": false,
+      "choiceIds": [
+        2201,
+        2202,
+        2203
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Expansion202610/snowbound_market.png",
+      "actorAttribute": "cooking",
+      "logKind": "event"
     }
   ]
 }

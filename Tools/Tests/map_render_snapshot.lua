@@ -56,6 +56,9 @@ local fixture = require('Game.Map.Map')(1, 1)
 local HexGrid = require('Game.Map.HexGrid')
 fixture.assets = {{id = 1, prefabPath = 'ground', referenceHeight = 1},
     {id = 2, prefabPath = 'water', referenceHeight = 1}}
+fixture.biomes = {{id = 1, groundTexture = 'MapGround/Grass', textureWorldSize = 4.5,
+    textureStrength = .75, windStrength = 1, groundColor = '#759754'}}
+fixture.groundcover = {}
 for i = 1, 6 do
     local cell = {q = i - 1, r = 0, height = 0, biomeWeights = {{regionType = 1, weight = 1}},
         groundColor = {.2, .3, .4}, terrainAssetId = 1, waterAssetId = 2}

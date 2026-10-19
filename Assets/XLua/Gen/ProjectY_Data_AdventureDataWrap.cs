@@ -21,12 +21,13 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.AdventureData);
-			Utils.BeginObjectRegister(type, L, translator, 0, 22, 17, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 23, 18, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "HasStoryTrigger", _m_HasStoryTrigger);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetJournalAt", _m_GetJournalAt);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SetEventContext", _m_SetEventContext);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Record", _m_Record);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "RecordPair", _m_RecordPair);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetPartyAt", _m_GetPartyAt);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "HasVisited", _m_HasVisited);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Reset", _m_Reset);
@@ -64,6 +65,7 @@ namespace XLua.CSObjectWrap
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "AreaEncounterId", _g_get_AreaEncounterId);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "ResultText", _g_get_ResultText);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "PartyCount", _g_get_PartyCount);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "PartyBonds", _g_get_PartyBonds);
             
 			
 			
@@ -220,6 +222,42 @@ namespace XLua.CSObjectWrap
                     bool _shared = LuaAPI.lua_toboolean(L, 9);
                     
                     gen_to_be_invoked.Record( _kind, _title, _body, _location, _eventId, _choiceId, _subjectId, _shared );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_RecordPair(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.AdventureData gen_to_be_invoked = (ProjectY.Data.AdventureData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    string _kind = LuaAPI.lua_tostring(L, 2);
+                    string _title = LuaAPI.lua_tostring(L, 3);
+                    string _body = LuaAPI.lua_tostring(L, 4);
+                    string _location = LuaAPI.lua_tostring(L, 5);
+                    int _eventId = LuaAPI.xlua_tointeger(L, 6);
+                    int _choiceId = LuaAPI.xlua_tointeger(L, 7);
+                    int _subjectId = LuaAPI.xlua_tointeger(L, 8);
+                    int _objectId = LuaAPI.xlua_tointeger(L, 9);
+                    int _relationDelta = LuaAPI.xlua_tointeger(L, 10);
+                    
+                    gen_to_be_invoked.RecordPair( _kind, _title, _body, _location, _eventId, _choiceId, _subjectId, _objectId, _relationDelta );
                     
                     
                     
@@ -975,6 +1013,20 @@ namespace XLua.CSObjectWrap
 			
                 ProjectY.Data.AdventureData gen_to_be_invoked = (ProjectY.Data.AdventureData)translator.FastGetCSObj(L, 1);
                 LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.PartyCount);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_PartyBonds(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.AdventureData gen_to_be_invoked = (ProjectY.Data.AdventureData)translator.FastGetCSObj(L, 1);
+                translator.Push(L, gen_to_be_invoked.PartyBonds);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }

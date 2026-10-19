@@ -17,7 +17,16 @@
       "values": [
         "head",
         "shaft",
-        "thruster"
+        "thruster",
+        "catalyst",
+        "rail",
+        "edge",
+        "grip",
+        "pommel",
+        "bowlimb",
+        "bowstring",
+        "muzzle",
+        "stock"
       ]
     },
     {
@@ -26,7 +35,8 @@
       "description": "受影响技能组",
       "values": [
         "spell",
-        "slash"
+        "slash",
+        "physical"
       ]
     },
     {
@@ -44,21 +54,21 @@
     {
       "name": "rangeBonus",
       "type": "int",
-      "description": "额外射程",
-      "min": 0
+      "description": "额外射程，可为负；敌方目标技能至少保留1格",
+      "min": -10
     },
     {
       "name": "hitBonus",
       "type": "int",
-      "description": "额外命中百分点",
-      "min": 0,
+      "description": "命中百分点增减，最终限制0至100",
+      "min": -100,
       "max": 100
     },
     {
       "name": "cooldownBonus",
       "type": "int",
-      "description": "额外自身回合冷却",
-      "min": 0
+      "description": "自身回合冷却增减，最终不低于0",
+      "min": -5
     },
     {
       "name": "maxTargets",
@@ -72,6 +82,44 @@
       "type": "int",
       "description": "主目标附近追加目标的六边形半径",
       "min": 0
+    },
+    {
+      "name": "catalystKind",
+      "type": "enum",
+      "values": [
+        "none",
+        "arcane"
+      ],
+      "default": "none",
+      "description": "使当前武器提供的触媒类型；none不提供触媒"
+    },
+    {
+      "name": "requiredTalentId",
+      "type": "int",
+      "min": 0,
+      "default": 0,
+      "description": "启用触媒所需的TalentNode专精；0表示无需专精"
+    },
+    {
+      "name": "onHitEffectIds",
+      "type": "int[]",
+      "default": [],
+      "ref": "CombatEffectTable",
+      "description": "匹配技能组的对敌伤害命中后追加可复用效果；physical匹配weapon/slash；不作用于纯状态、治疗或自身技能"
+    },
+    {
+      "name": "transferSelf",
+      "type": "bool",
+      "default": false,
+      "description": "把允许转施的自身法术改为任意角色目标；不重定向source收益或道具动作"
+    },
+    {
+      "name": "transferRange",
+      "type": "int",
+      "default": 0,
+      "min": 0,
+      "max": 12,
+      "description": "转施后的固定施法距离；启用时必须大于0，覆盖其他射程增减"
     }
   ],
   "rows": [
@@ -85,7 +133,9 @@
       "hitBonus": 0,
       "cooldownBonus": 0,
       "maxTargets": 3,
-      "splashRadius": 2
+      "splashRadius": 2,
+      "catalystKind": "none",
+      "requiredTalentId": 0
     },
     {
       "id": 12,
@@ -97,7 +147,9 @@
       "hitBonus": 20,
       "cooldownBonus": 1,
       "maxTargets": 1,
-      "splashRadius": 0
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0
     },
     {
       "id": 13,
@@ -109,7 +161,1064 @@
       "hitBonus": 0,
       "cooldownBonus": 0,
       "maxTargets": 1,
-      "splashRadius": 0
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0
+    },
+    {
+      "id": 93,
+      "slotKind": "catalyst",
+      "skillGroup": "spell",
+      "description": "装入剑脊后，掌握奥术兵装专精的角色可将该武器作为奥术触媒；不授予法术。主手或副手均可生效。",
+      "damageMultiplier": 1.0,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "arcane",
+      "requiredTalentId": 301
+    },
+    {
+      "id": 501,
+      "slotKind": "head",
+      "skillGroup": "spell",
+      "description": "镂空日轮与四向聚光镜形成宽阔轮廓。集中输出，牺牲命中。",
+      "damageMultiplier": 1.25,
+      "rangeBonus": 0,
+      "hitBonus": -8,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": []
+    },
+    {
+      "id": 502,
+      "slotKind": "head",
+      "skillGroup": "spell",
+      "description": "吊笼包住一枚暖红煤晶，四根弯折护梁与尖顶可辨。命中可点燃。",
+      "damageMultiplier": 0.9,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": [
+        1201
+      ]
+    },
+    {
+      "id": 503,
+      "slotKind": "head",
+      "skillGroup": "spell",
+      "description": "三叉铜电极围住短棱晶，两侧电极高低错落。命中可眩晕。",
+      "damageMultiplier": 0.9,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": [
+        1204
+      ]
+    },
+    {
+      "id": 504,
+      "slotKind": "head",
+      "skillGroup": "spell",
+      "description": "下垂的三根空心铃管、弧顶和悬水滴。攻击为目标附上潮湿。",
+      "damageMultiplier": 0.9,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": [
+        1205
+      ]
+    },
+    {
+      "id": 505,
+      "slotKind": "head",
+      "skillGroup": "spell",
+      "description": "双耳六面药壶带蛇吻式侧流管，绿晶封口。命中可中毒。",
+      "damageMultiplier": 0.9,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": [
+        1203
+      ]
+    },
+    {
+      "id": 506,
+      "slotKind": "head",
+      "skillGroup": "spell",
+      "description": "不对称分叉骨角与倒刺环，中心赤色石珠。命中可流血。",
+      "damageMultiplier": 0.9,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": [
+        1202
+      ]
+    },
+    {
+      "id": 507,
+      "slotKind": "head",
+      "skillGroup": "spell",
+      "description": "五枚展开的薄棱片由短铰链相连，宽扇形轮廓。降低单体伤害，扩散至四目标。",
+      "damageMultiplier": 0.7,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 4,
+      "splashRadius": 1,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": []
+    },
+    {
+      "id": 508,
+      "slotKind": "head",
+      "skillGroup": "spell",
+      "description": "偏置长镜筒、两枚测距小耳与上置瞄环。射程和命中提高，伤害降低。",
+      "damageMultiplier": 0.85,
+      "rangeBonus": 2,
+      "hitBonus": 8,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": []
+    },
+    {
+      "id": 509,
+      "slotKind": "head",
+      "skillGroup": "spell",
+      "description": "高尖黑铁护枪与偏斜尾焰晶簇。重伤害需要更久冷却并牺牲命中。",
+      "damageMultiplier": 1.4,
+      "rangeBonus": 0,
+      "hitBonus": -10,
+      "cooldownBonus": 1,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": []
+    },
+    {
+      "id": 510,
+      "slotKind": "head",
+      "skillGroup": "spell",
+      "description": "双层平行细环托着横向浮晶，中央保持明显空隙。降低威力以缩短冷却。",
+      "damageMultiplier": 0.8,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": -1,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": []
+    },
+    {
+      "id": 511,
+      "slotKind": "shaft",
+      "skillGroup": "spell",
+      "description": "围绕杖身的十字双轴环抵消手部颤动。大幅提高命中，略降伤害，不增加冷却。",
+      "damageMultiplier": 0.95,
+      "rangeBonus": 0,
+      "hitBonus": 35,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": []
+    },
+    {
+      "id": 512,
+      "slotKind": "shaft",
+      "skillGroup": "spell",
+      "description": "五对阶梯状金属鳍片夹着青色导管。降低伤害以缩短冷却。",
+      "damageMultiplier": 0.9,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": -1,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": []
+    },
+    {
+      "id": 513,
+      "slotKind": "shaft",
+      "skillGroup": "spell",
+      "description": "侧置三节伸缩导轨与端部细准星。射程增加，命中略降。",
+      "damageMultiplier": 1,
+      "rangeBonus": 1,
+      "hitBonus": -5,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": []
+    },
+    {
+      "id": 514,
+      "slotKind": "shaft",
+      "skillGroup": "spell",
+      "description": "两只带铜褶的皮囊由横桥相连，底部共用短风嘴。强化近距法术。",
+      "damageMultiplier": 1.15,
+      "rangeBonus": -1,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": []
+    },
+    {
+      "id": 515,
+      "slotKind": "shaft",
+      "skillGroup": "spell",
+      "description": "侧置测绘圆盘与转臂延伸术式的投射距离。专注极远射程，略降伤害并增加冷却。",
+      "damageMultiplier": 0.95,
+      "rangeBonus": 3,
+      "hitBonus": 0,
+      "cooldownBonus": 1,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": []
+    },
+    {
+      "id": 516,
+      "slotKind": "shaft",
+      "skillGroup": "spell",
+      "description": "三根长短不同的并排笛管与穿孔护片。减弱单次伤害，额外击中邻敌。",
+      "damageMultiplier": 0.85,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 2,
+      "splashRadius": 1,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": []
+    },
+    {
+      "id": 517,
+      "slotKind": "shaft",
+      "skillGroup": "spell",
+      "description": "粗链铅坠稳定了高压术式。提高近距伤害和命中，射程缩短且冷却更长。",
+      "damageMultiplier": 1.45,
+      "rangeBonus": -1,
+      "hitBonus": 5,
+      "cooldownBonus": 1,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": []
+    },
+    {
+      "id": 518,
+      "slotKind": "shaft",
+      "skillGroup": "spell",
+      "description": "两瓣沙漏腔和纤细四柱框，横向嵌入杖侧。伤害换取快速精准施法。",
+      "damageMultiplier": 0.75,
+      "rangeBonus": 0,
+      "hitBonus": 10,
+      "cooldownBonus": -1,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": []
+    },
+    {
+      "id": 519,
+      "slotKind": "thruster",
+      "skillGroup": "slash",
+      "description": "双喷口同时点火，带来猛烈的瞬间推进。大幅增伤，但更难命中。",
+      "damageMultiplier": 1.55,
+      "rangeBonus": 0,
+      "hitBonus": -12,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": []
+    },
+    {
+      "id": 520,
+      "slotKind": "thruster",
+      "skillGroup": "slash",
+      "description": "带六根辐条的大飞轮与离心配重，安装在剑脊。高伤害需额外冷却。",
+      "damageMultiplier": 1.45,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 1,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": []
+    },
+    {
+      "id": 521,
+      "slotKind": "thruster",
+      "skillGroup": "slash",
+      "description": "外露活塞杆、短横向冲锤与两根弹簧导柱。命中可能眩晕。",
+      "damageMultiplier": 1.1,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": [
+        1204
+      ]
+    },
+    {
+      "id": 522,
+      "slotKind": "thruster",
+      "skillGroup": "slash",
+      "description": "交错外露的棘轮齿与偏心传动臂。命中可能造成流血。",
+      "damageMultiplier": 1.05,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": [
+        1202
+      ]
+    },
+    {
+      "id": 523,
+      "slotKind": "thruster",
+      "skillGroup": "slash",
+      "description": "小型竖炉带侧烟囱和前排栅格，可见橙色炭芯。命中可能点燃。",
+      "damageMultiplier": 1.1,
+      "rangeBonus": 0,
+      "hitBonus": -5,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": [
+        1201
+      ]
+    },
+    {
+      "id": 524,
+      "slotKind": "thruster",
+      "skillGroup": "slash",
+      "description": "双端外伸锚钩与张紧卷盘构成宽轮廓。降低伤害以延伸近战距离。",
+      "damageMultiplier": 0.9,
+      "rangeBonus": 1,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": []
+    },
+    {
+      "id": 525,
+      "slotKind": "thruster",
+      "skillGroup": "slash",
+      "description": "开放式四叶斜风扇和护框，靠横向气流辅助扫击。减伤扩散至三目标。",
+      "damageMultiplier": 0.8,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 3,
+      "splashRadius": 1,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": []
+    },
+    {
+      "id": 526,
+      "slotKind": "thruster",
+      "skillGroup": "slash",
+      "description": "弯月形流体舱环绕短中轴，两端有细导流管。减伤换快速精准回旋。",
+      "damageMultiplier": 0.85,
+      "rangeBonus": 0,
+      "hitBonus": 8,
+      "cooldownBonus": -1,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": []
+    },
+    {
+      "id": 527,
+      "slotKind": "catalyst",
+      "skillGroup": "spell",
+      "description": "小行星仪式三轴环套着紫晶核，后面是短剑夹。提供稳定奥术触媒。",
+      "damageMultiplier": 1,
+      "rangeBonus": 0,
+      "hitBonus": 5,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "arcane",
+      "requiredTalentId": 301,
+      "onHitEffectIds": []
+    },
+    {
+      "id": 528,
+      "slotKind": "catalyst",
+      "skillGroup": "spell",
+      "description": "双链悬挂的有孔香炉和弯曲烟管，药绿芯清晰可见。法术命中可能中毒。",
+      "damageMultiplier": 0.9,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "arcane",
+      "requiredTalentId": 301,
+      "onHitEffectIds": [
+        1203
+      ]
+    },
+    {
+      "id": 529,
+      "slotKind": "catalyst",
+      "skillGroup": "spell",
+      "description": "偏置三齿钥形骨架包裹长紫晶，顶端是一枚实心环。强化法术并增加冷却。",
+      "damageMultiplier": 1.2,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 1,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "arcane",
+      "requiredTalentId": 301,
+      "onHitEffectIds": []
+    },
+    {
+      "id": 530,
+      "slotKind": "catalyst",
+      "skillGroup": "spell",
+      "description": "单侧羽状导片、尖水滴与细长风向针。法术射程提高并施加潮湿。",
+      "damageMultiplier": 0.9,
+      "rangeBonus": 1,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "arcane",
+      "requiredTalentId": 301,
+      "onHitEffectIds": [
+        1205
+      ]
+    },
+    {
+      "onHitEffectIds": [
+        1345,
+        1304
+      ],
+      "description": "法术命中潮湿目标时追加4点基础蒸汽伤害并移除潮湿；直伤降低10%。",
+      "rangeBonus": 0,
+      "maxTargets": 1,
+      "damageMultiplier": 0.9,
+      "catalystKind": "none",
+      "splashRadius": 0,
+      "id": 701,
+      "requiredTalentId": 0,
+      "hitBonus": 0,
+      "slotKind": "head",
+      "cooldownBonus": 0,
+      "skillGroup": "spell"
+    },
+    {
+      "onHitEffectIds": [
+        1346,
+        1309
+      ],
+      "description": "法术命中燃烧目标时追加5点基础火伤并移除燃烧；直伤降低10%。",
+      "rangeBonus": 0,
+      "maxTargets": 1,
+      "damageMultiplier": 0.9,
+      "catalystKind": "none",
+      "splashRadius": 0,
+      "id": 702,
+      "requiredTalentId": 0,
+      "hitBonus": 0,
+      "slotKind": "head",
+      "cooldownBonus": 0,
+      "skillGroup": "spell"
+    },
+    {
+      "onHitEffectIds": [
+        1318
+      ],
+      "description": "法术命中后移除目标增益；直伤降低15%。",
+      "rangeBonus": 0,
+      "maxTargets": 1,
+      "damageMultiplier": 0.85,
+      "catalystKind": "none",
+      "splashRadius": 0,
+      "id": 703,
+      "requiredTalentId": 0,
+      "hitBonus": 0,
+      "slotKind": "head",
+      "cooldownBonus": 0,
+      "skillGroup": "spell"
+    },
+    {
+      "onHitEffectIds": [
+        1347
+      ],
+      "description": "法术每次命中恢复自身2生命；直伤降低20%。",
+      "rangeBonus": 0,
+      "maxTargets": 1,
+      "damageMultiplier": 0.8,
+      "catalystKind": "none",
+      "splashRadius": 0,
+      "id": 704,
+      "requiredTalentId": 0,
+      "hitBonus": 0,
+      "slotKind": "head",
+      "cooldownBonus": 0,
+      "skillGroup": "spell"
+    },
+    {
+      "onHitEffectIds": [
+        1348
+      ],
+      "description": "法术命中流血目标时追加3点基础伤害，保留流血；直伤降低5%。",
+      "rangeBonus": 0,
+      "maxTargets": 1,
+      "damageMultiplier": 0.95,
+      "catalystKind": "none",
+      "splashRadius": 0,
+      "id": 705,
+      "requiredTalentId": 0,
+      "hitBonus": 0,
+      "slotKind": "shaft",
+      "cooldownBonus": 0,
+      "skillGroup": "spell"
+    },
+    {
+      "onHitEffectIds": [
+        1349
+      ],
+      "description": "法术命中后清除自身中毒；直伤降低5%。",
+      "rangeBonus": 0,
+      "maxTargets": 1,
+      "damageMultiplier": 0.95,
+      "catalystKind": "none",
+      "splashRadius": 0,
+      "id": 706,
+      "requiredTalentId": 0,
+      "hitBonus": 0,
+      "slotKind": "shaft",
+      "cooldownBonus": 0,
+      "skillGroup": "spell"
+    },
+    {
+      "onHitEffectIds": [
+        1350
+      ],
+      "description": "法术命中后将自身护卫提升至至少2点，不叠加；直伤降低15%。",
+      "rangeBonus": 0,
+      "maxTargets": 1,
+      "damageMultiplier": 0.85,
+      "catalystKind": "none",
+      "splashRadius": 0,
+      "id": 707,
+      "requiredTalentId": 0,
+      "hitBonus": 0,
+      "slotKind": "shaft",
+      "cooldownBonus": 0,
+      "skillGroup": "spell"
+    },
+    {
+      "onHitEffectIds": [
+        1351
+      ],
+      "description": "劈砍命中恢复自身3生命；直伤降低15%。",
+      "rangeBonus": 0,
+      "maxTargets": 1,
+      "damageMultiplier": 0.85,
+      "catalystKind": "none",
+      "splashRadius": 0,
+      "id": 708,
+      "requiredTalentId": 0,
+      "hitBonus": 0,
+      "slotKind": "thruster",
+      "cooldownBonus": 0,
+      "skillGroup": "slash"
+    },
+    {
+      "onHitEffectIds": [
+        1352
+      ],
+      "description": "劈砍命中有50%概率驱散目标增益；直伤降低5%。",
+      "rangeBonus": 0,
+      "maxTargets": 1,
+      "damageMultiplier": 0.95,
+      "catalystKind": "none",
+      "splashRadius": 0,
+      "id": 709,
+      "requiredTalentId": 0,
+      "hitBonus": 0,
+      "slotKind": "thruster",
+      "cooldownBonus": 0,
+      "skillGroup": "slash"
+    },
+    {
+      "onHitEffectIds": [
+        1353
+      ],
+      "description": "自身每失去20%生命，劈砍命中追加1点基础伤害；直伤降低5%，命中-8。",
+      "rangeBonus": 0,
+      "maxTargets": 1,
+      "damageMultiplier": 0.95,
+      "catalystKind": "none",
+      "splashRadius": 0,
+      "id": 710,
+      "requiredTalentId": 0,
+      "hitBonus": -8,
+      "slotKind": "thruster",
+      "cooldownBonus": 0,
+      "skillGroup": "slash"
+    },
+    {
+      "onHitEffectIds": [
+        1354
+      ],
+      "description": "提供奥术触媒；法术命中潮湿目标追加3点基础电伤，保留潮湿；直伤降低5%。",
+      "rangeBonus": 0,
+      "maxTargets": 1,
+      "damageMultiplier": 0.95,
+      "catalystKind": "arcane",
+      "splashRadius": 0,
+      "id": 711,
+      "requiredTalentId": 301,
+      "hitBonus": 0,
+      "slotKind": "catalyst",
+      "cooldownBonus": 0,
+      "skillGroup": "spell"
+    },
+    {
+      "onHitEffectIds": [
+        1355
+      ],
+      "description": "提供奥术触媒；法术命中后清除自身流血与中毒；直伤降低10%。",
+      "rangeBonus": 0,
+      "maxTargets": 1,
+      "damageMultiplier": 0.9,
+      "catalystKind": "arcane",
+      "splashRadius": 0,
+      "id": 712,
+      "requiredTalentId": 301,
+      "hitBonus": 0,
+      "slotKind": "catalyst",
+      "cooldownBonus": 0,
+      "skillGroup": "spell"
+    },
+    {
+      "onHitEffectIds": [
+        1348
+      ],
+      "description": "枪弓物理命中流血目标追加3点基础伤害，保留流血；直伤降低5%。",
+      "rangeBonus": 0,
+      "maxTargets": 1,
+      "damageMultiplier": 0.95,
+      "catalystKind": "none",
+      "splashRadius": 0,
+      "id": 713,
+      "requiredTalentId": 0,
+      "hitBonus": 0,
+      "slotKind": "rail",
+      "cooldownBonus": 0,
+      "skillGroup": "physical"
+    },
+    {
+      "onHitEffectIds": [
+        1356
+      ],
+      "description": "枪弓物理命中有35%概率施加2回合破甲（防御-2）；直伤降低10%。",
+      "rangeBonus": 0,
+      "maxTargets": 1,
+      "damageMultiplier": 0.9,
+      "catalystKind": "none",
+      "splashRadius": 0,
+      "id": 714,
+      "requiredTalentId": 0,
+      "hitBonus": 0,
+      "slotKind": "rail",
+      "cooldownBonus": 0,
+      "skillGroup": "physical"
+    },
+    {
+      "onHitEffectIds": [],
+      "description": "枪弓物理伤害降低30%，可命中主目标1格内的合法敌人，目标总上限提高至至少2人；已有更高上限时不叠加，冷却+1。",
+      "rangeBonus": 0,
+      "maxTargets": 2,
+      "damageMultiplier": 0.7,
+      "catalystKind": "none",
+      "splashRadius": 1,
+      "id": 715,
+      "requiredTalentId": 0,
+      "hitBonus": 0,
+      "slotKind": "rail",
+      "cooldownBonus": 1,
+      "skillGroup": "physical"
+    },
+    {
+      "onHitEffectIds": [
+        1357
+      ],
+      "description": "每8点目标已失生命追加1点基础伤害，最多6点；直伤降低5%，射程-1。",
+      "rangeBonus": -1,
+      "maxTargets": 1,
+      "damageMultiplier": 0.95,
+      "catalystKind": "none",
+      "splashRadius": 0,
+      "id": 716,
+      "requiredTalentId": 0,
+      "hitBonus": 0,
+      "slotKind": "rail",
+      "cooldownBonus": 0,
+      "skillGroup": "physical"
+    },
+    {
+      "onHitEffectIds": [
+        1358,
+        1333
+      ],
+      "description": "攻击命中后，若目标仍存活且流血，则恢复自身4生命并清除其全部流血；直伤降低10%。",
+      "rangeBonus": 0,
+      "maxTargets": 1,
+      "damageMultiplier": 0.9,
+      "catalystKind": "none",
+      "splashRadius": 0,
+      "id": 717,
+      "requiredTalentId": 0,
+      "hitBonus": 0,
+      "slotKind": "edge",
+      "cooldownBonus": 0,
+      "skillGroup": "physical"
+    },
+    {
+      "onHitEffectIds": [
+        1359
+      ],
+      "description": "近战命中追加1点基础伤害，扣血时额外损伤目标装备12耐久；直伤降低10%。",
+      "rangeBonus": 0,
+      "maxTargets": 1,
+      "damageMultiplier": 0.9,
+      "catalystKind": "none",
+      "splashRadius": 0,
+      "id": 718,
+      "requiredTalentId": 0,
+      "hitBonus": 0,
+      "slotKind": "edge",
+      "cooldownBonus": 0,
+      "skillGroup": "physical"
+    },
+    {
+      "onHitEffectIds": [
+        1302
+      ],
+      "description": "近战命中施加潮湿，扑灭燃烧并阻止点燃；直伤降低10%。",
+      "rangeBonus": 0,
+      "maxTargets": 1,
+      "damageMultiplier": 0.9,
+      "catalystKind": "none",
+      "splashRadius": 0,
+      "id": 719,
+      "requiredTalentId": 0,
+      "hitBonus": 0,
+      "slotKind": "edge",
+      "cooldownBonus": 0,
+      "skillGroup": "physical"
+    },
+    {
+      "onHitEffectIds": [
+        1360,
+        1338
+      ],
+      "description": "近战命中中毒目标追加4点基础伤害并消耗全部中毒；直伤降低5%。",
+      "rangeBonus": 0,
+      "maxTargets": 1,
+      "damageMultiplier": 0.95,
+      "catalystKind": "none",
+      "splashRadius": 0,
+      "id": 720,
+      "requiredTalentId": 0,
+      "hitBonus": 0,
+      "slotKind": "edge",
+      "cooldownBonus": 0,
+      "skillGroup": "physical"
+    },
+    {
+      "id": 721,
+      "slotKind": "shaft",
+      "skillGroup": "spell",
+      "description": "装入法杖杆部后，允许转施的自身法术可施加给4格内任意角色（自己、队友或敌人），保留原行动消耗。可转施追踪术、战场祈愿与奥术凝聚。",
+      "damageMultiplier": 1,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": [],
+      "transferSelf": true,
+      "transferRange": 4
+    },
+    {
+      "id": 730,
+      "slotKind": "grip",
+      "skillGroup": "physical",
+      "description": "稳定握持，物理伤害降低5%，命中提高10个百分点。",
+      "damageMultiplier": 0.95,
+      "rangeBonus": 0,
+      "hitBonus": 10,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": [],
+      "transferSelf": false,
+      "transferRange": 0
+    },
+    {
+      "id": 731,
+      "slotKind": "grip",
+      "skillGroup": "physical",
+      "description": "物理伤害命中后，使自身护卫提升至至少2点，持续至自身下回合开始；不叠加。",
+      "damageMultiplier": 1,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": [
+        1350
+      ],
+      "transferSelf": false,
+      "transferRange": 0
+    },
+    {
+      "id": 732,
+      "slotKind": "pommel",
+      "skillGroup": "physical",
+      "description": "物理伤害提高15%，命中降低5个百分点。",
+      "damageMultiplier": 1.15,
+      "rangeBonus": 0,
+      "hitBonus": -5,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": [],
+      "transferSelf": false,
+      "transferRange": 0
+    },
+    {
+      "id": 733,
+      "slotKind": "pommel",
+      "skillGroup": "physical",
+      "description": "物理伤害命中后，若目标仍存活且流血，恢复自身4点生命；不消耗目标流血。",
+      "damageMultiplier": 1,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": [
+        1358
+      ],
+      "transferSelf": false,
+      "transferRange": 0
+    },
+    {
+      "id": 734,
+      "slotKind": "bowlimb",
+      "skillGroup": "physical",
+      "description": "弓的物理技能射程增加1格，伤害降低10%。",
+      "damageMultiplier": 0.9,
+      "rangeBonus": 1,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": [],
+      "transferSelf": false,
+      "transferRange": 0
+    },
+    {
+      "id": 735,
+      "slotKind": "bowlimb",
+      "skillGroup": "physical",
+      "description": "弓的物理伤害提高20%，命中降低8个百分点。",
+      "damageMultiplier": 1.2,
+      "rangeBonus": 0,
+      "hitBonus": -8,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": [],
+      "transferSelf": false,
+      "transferRange": 0
+    },
+    {
+      "id": 736,
+      "slotKind": "bowstring",
+      "skillGroup": "physical",
+      "description": "弓的物理技能命中提高12个百分点，伤害降低10%。",
+      "damageMultiplier": 0.9,
+      "rangeBonus": 0,
+      "hitBonus": 12,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": [],
+      "transferSelf": false,
+      "transferRange": 0
+    },
+    {
+      "id": 737,
+      "slotKind": "bowstring",
+      "skillGroup": "physical",
+      "description": "弓的物理伤害命中后，有40%概率施加潮湿3回合，扑灭燃烧并阻止点燃。",
+      "damageMultiplier": 1,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": [
+        1362
+      ],
+      "transferSelf": false,
+      "transferRange": 0
+    },
+    {
+      "id": 738,
+      "slotKind": "muzzle",
+      "skillGroup": "physical",
+      "description": "枪械物理伤害命中后追加1点基础伤害；追加伤害实际扣血时，使目标身体甲、头盔、盾牌各损失12耐久。",
+      "damageMultiplier": 1,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": [
+        1359
+      ],
+      "transferSelf": false,
+      "transferRange": 0
+    },
+    {
+      "id": 739,
+      "slotKind": "muzzle",
+      "skillGroup": "physical",
+      "description": "枪械物理技能目标上限至少2人，可扩散至主目标1格内；已有更高上限时不叠加。伤害降低20%，命中降低5个百分点。",
+      "damageMultiplier": 0.8,
+      "rangeBonus": 0,
+      "hitBonus": -5,
+      "cooldownBonus": 0,
+      "maxTargets": 2,
+      "splashRadius": 1,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": [],
+      "transferSelf": false,
+      "transferRange": 0
+    },
+    {
+      "id": 740,
+      "slotKind": "stock",
+      "skillGroup": "physical",
+      "description": "枪械物理技能射程增加1格、命中提高6个百分点，伤害降低10%。",
+      "damageMultiplier": 0.9,
+      "rangeBonus": 1,
+      "hitBonus": 6,
+      "cooldownBonus": 0,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": [],
+      "transferSelf": false,
+      "transferRange": 0
+    },
+    {
+      "id": 741,
+      "slotKind": "stock",
+      "skillGroup": "physical",
+      "description": "枪械物理技能冷却减少1回合（最低0），伤害降低5%；主要改善有冷却的专属射击，无冷却的基础射击不会额外获益。",
+      "damageMultiplier": 0.95,
+      "rangeBonus": 0,
+      "hitBonus": 0,
+      "cooldownBonus": -1,
+      "maxTargets": 1,
+      "splashRadius": 0,
+      "catalystKind": "none",
+      "requiredTalentId": 0,
+      "onHitEffectIds": [],
+      "transferSelf": false,
+      "transferRange": 0
     }
   ]
 }

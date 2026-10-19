@@ -86,6 +86,57 @@ namespace ProjectY.Editor
             finally { PrefabUtility.UnloadPrefabContents(root); }
             AssetDatabase.SaveAssets();
         }
+        [MenuItem("Project Y/UI/同步战斗技能悬停与选中反馈")]
+        public static void SyncActionFeedback()
+        {
+            RequireEditMode();
+            var entry = PanelAssets.LoadOrCreate().Get("BattleAction");
+            var root = PrefabUtility.LoadPrefabContents(entry.PrefabPath);
+            try
+            {
+                ApplyActionFeedback(root);
+                root.GetComponent<LuaReference>().ValidateBindings();
+                PrefabUtility.SaveAsPrefabAsset(root, entry.PrefabPath);
+            }
+            finally { PrefabUtility.UnloadPrefabContents(root); }
+            AssetDatabase.SaveAssets();
+            Debug.Log("Battle action hover colors, selected frame and selection badge synchronized.");
+        }
+        private static void ApplyActionFeedback(GameObject root)
+        {
+            var reference = root.GetComponent<LuaReference>();
+            var button = reference.GetButton("Button");
+            button.targetGraphic.color = Color.white; button.transition = Selectable.Transition.ColorTint;
+            button.navigation = new Navigation { mode = Navigation.Mode.None };
+            var colors = button.colors;
+            colors.normalColor = Tile; colors.highlightedColor = new Color(.23f, .25f, .19f);
+            colors.pressedColor = new Color(.075f, .085f, .065f); colors.selectedColor = Tile;
+            colors.disabledColor = new Color(.07f, .077f, .07f); colors.colorMultiplier = 1; colors.fadeDuration = .12f;
+            button.colors = colors;
+            var selected = (RectTransform)reference.Get("Selected");
+            // Only this authoring method edits the known frame graphics; runtime uses the existing Selected binding.
+            foreach (var edge in selected.GetComponentsInChildren<Image>(true))
+            {
+                edge.color = Bright; edge.raycastTarget = false;
+                var rect = edge.rectTransform;
+                if (edge.name == "Top") rect.offsetMin = new Vector2(0, -3);
+                else if (edge.name == "Bottom") rect.offsetMax = new Vector2(0, 3);
+                else if (edge.name == "Left") rect.offsetMax = new Vector2(3, 0);
+                else if (edge.name == "Right") rect.offsetMin = new Vector2(-3, 0);
+            }
+            var mark = selected.Find("SelectionMark") as RectTransform;
+            if (mark == null)
+            {
+                mark = Node("SelectionMark", selected);
+                var shortStroke = Plate("ShortStroke", mark, Bright).rectTransform;
+                Box(shortStroke, 14, 9, 7, 2.5f); shortStroke.localRotation = Quaternion.Euler(0, 0, -45);
+                var longStroke = Plate("LongStroke", mark, Bright).rectTransform;
+                Box(longStroke, 18.5f, 4.5f, 12, 2.5f); longStroke.localRotation = Quaternion.Euler(0, 0, 45);
+            }
+            mark.anchorMin = mark.anchorMax = new Vector2(.5f, 1);
+            mark.pivot = new Vector2(.5f, 1); mark.anchoredPosition = new Vector2(0, -4); mark.sizeDelta = new Vector2(42, 14);
+            selected.SetAsLastSibling(); selected.gameObject.SetActive(false);
+        }
         private static RectTransform Node(string name, Transform parent)
         {
             var root = new GameObject(name, typeof(RectTransform)); root.transform.SetParent(parent, false);
@@ -160,6 +211,7 @@ namespace ProjectY.Editor
             var shortcut = Label("Shortcut", rect, 10, Muted, TextAnchor.UpperLeft); Stretch(shortcut.rectTransform, 5, 0, 3, 3);
             Bind(root, Ref("Button", button), Ref("Icon", icon), Ref("Title", title), Ref("Cost", cost),
                 Ref("Shortcut", shortcut), Ref("Selected", selected), Ref("Pointer", root.AddComponent<UIPointerState>()));
+            ApplyActionFeedback(root);
         }
         private static void BuildUnit(GameObject root, bool compact)
         {

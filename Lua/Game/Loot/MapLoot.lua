@@ -6,15 +6,16 @@ function Loot.New(config,equipment)
         session=CS.ProjectY.Data.LootSessionData(),
         chestRules=config:GetTable('MapAreaChestRuleTable'),legacy=config:GetTable('EquipmentDemoTable'):Get(1)},Loot)
 end
-function Loot:Add(state,index,containerId,seed,enemyDrop,name,plan)
+function Loot:Add(state,index,containerId,seed,enemyDrop,name,plan,keepEmpty)
     local row=self.rules.containers:Get(containerId)
     local ids,counts=self.rules:Roll(containerId,seed,plan and plan.poolOverrideId)
-    if enemyDrop and #ids==0 then return false end
+    if enemyDrop and #ids==0 and not keepEmpty then return false end
     state:AddLoot(index,containerId,name or row.name,ids,counts,enemyDrop)
     if plan then
         local cells={};for i,cell in ipairs(plan.cells) do cells[i]=cell end
         CS.ProjectY.Data.ContainerState.Initialize(state,state.LootCount,row.maxDurability,row.interaction=='break',plan.unlockEncounterId,plan.rotation,cells)
     end
+    self:Prepare(state:GetLootAt(state.LootCount-1))
     return true
 end
 function Loot:Initialize(areas)
@@ -68,16 +69,59 @@ end
 function Loot:EnemyDrops(areas,battle)
     return self:ActorDrops(areas,battle:Units(),battle.stats)
 end
+function Loot:ActorHasEquipment(actor)
+    local data=self.equipment.data
+    for i=0,data.WeaponCount-1 do if data:GetWeaponAt(i).OwnerActorId==actor.Id then return true end end
+    for i=0,data.WearableCount-1 do if data:GetWearableAt(i).OwnerActorId==actor.Id then return true end end
+    return false
+end
+function Loot:Disarm(areas,actor,weapon)
+    local area,state=areas:ActiveLayout(),areas.data.Active
+    local cell=assert(area:Find(actor.Q,actor.R),'Disarmed actor is outside the battlefield')
+    state:AddLoot(cell.index,102,'失落的'..self.equipment.rules.affixes:Name(weapon),{}, {},true)
+    local container=state:GetLootAt(state.LootCount-1);self:Prepare(container)
+    CS.ProjectY.Data.EquipmentCombatState.DropWeapon(self.equipment.data,state,container.Id,actor.Id,weapon.Id)
+    return container
+end
+function Loot:Recoverable(areas,actor,stats)
+    if self.equipment.data:Equipped(actor.Id) then return nil,'主手需要空出才能拾起武器' end
+    local area,state=areas:ActiveLayout(),areas.data.Active
+    local source=assert(area:Find(actor.Q,actor.R))
+    for i=0,state.LootCount-1 do local container=state:GetLootAt(i);local cell=area.cells[container.CellIndex]
+        if self.rules.containers:Get(container.TableId).kind=='ground' and container.CanSearch and
+            cell.layer==source.layer and Hex.Distance(source.q,source.r,cell.q,cell.r)<=1 and area:CanSee(source,cell) then
+            local path=source.index==cell.index and {} or area:FindPath(source.index,cell.index)
+            local weapon=CS.ProjectY.Data.EquipmentCombatState.GroundWeapon(container)
+            if weapon and path and #path<=1 then
+                local definition=self.equipment.rules.weapons:Get(weapon.ItemId)
+                local occupied=self.equipment.data:Offhand(actor.Id) or self.equipment.data:Worn(actor.Id,'offhand')
+                if (definition.hands==1 or not occupied) and self.equipment.rules:CanEquip(actor,weapon.ItemId,stats) then return container,weapon end
+            end
+        end
+    end
+    return nil,'相邻地格没有可装备的落地武器'
+end
+function Loot:Recover(areas,actor,stats)
+    local container,weapon=self:Recoverable(areas,actor,stats)
+    if not container then return false,weapon end
+    assert(CS.ProjectY.Data.EquipmentCombatState.RecoverWeapon(self.equipment.data,areas.data.Active,container.Id,actor.Id,weapon.Id),'Ground weapon changed after validation')
+    return true,self.equipment.rules.affixes:Name(weapon)
+end
 function Loot:ActorDrops(areas,actors,stats)
     local area,state=areas:ActiveLayout(),areas.data.Active
     local generated=0
     for _,actor in ipairs(actors) do
         if actor.Team==2 and actor.HP==0 and actor.AnimalOwnerId==0 and not actor.DropResolved then
             local rule=self.rules.enemies[actor.TemplateId]
-            if rule then
+            local equipped=self:ActorHasEquipment(actor)
+            if rule or equipped then
                 local cell=assert(area:Find(actor.Q,actor.R),'Defeated enemy is outside the battlefield')
-                local seed=(area.seed ~ actor.Id*104729 ~ rule.seedSalt) & 0xffffffff
-                if self:Add(state,cell.index,rule.lootTableId,seed,true,stats:Template(actor).name..'的战利品') then generated=generated+1 end
+                local seed=(area.seed ~ actor.Id*104729 ~ (rule and rule.seedSalt or 0)) & 0xffffffff
+                if self:Add(state,cell.index,rule and rule.lootTableId or 102,seed,true,stats:Template(actor).name..'的战利品',nil,equipped) then
+                    local container=state:GetLootAt(state.LootCount-1);self:Prepare(container)
+                    CS.ProjectY.Data.EquipmentCombatState.DropActor(self.equipment.data,state,container.Id,actor.Id)
+                    generated=generated+1
+                end
             end
             actor:ResolveDrop()
         end
@@ -135,6 +179,7 @@ function Loot:Prepare(container)
         kinds[#kinds+1]=item.kind;widths[#widths+1]=item.width;heights[#heights+1]=item.height
     end
     self.session:Prepare(container,kinds,widths,heights)
+    CS.ProjectY.Data.EquipmentAffixData.PrepareLoot(self.equipment.data,container)
 end
 function Loot:OpenBattle(areas,first,summary)
     local state=areas.data.Active;local ids={}
@@ -154,8 +199,9 @@ function Loot:Take(areas,key,x,y,rotated)
         local row=self.equipment.rules.magazines:Get(entry.ItemId);ammo,capacity,rounds=row.ammoItemId,row.capacity,row.spawnRounds
     end
     local count=entry.Count
-    if not session:Take(self.equipment.data,key,x,y,rotated,ammo,capacity,rounds) then return false,'放置位置无效；物品仍在右侧，同类物品请拖到已有堆叠上' end
-    return true,self.equipment.rules.items:Get(entry.ItemId).name..' ×'..count,entry.ContainerId
+    local name=(entry.Kind=='weapon' or entry.Kind=='wearable') and self.equipment.rules.affixes:Name(entry) or self.equipment.rules.items:Get(entry.ItemId).name
+    if not session:Take(self.equipment.data,key,x,y,rotated,ammo,capacity,rounds) then return false,'空地不足、位置被占用或超出背包范围；物品仍在右侧原位' end
+    return true,name..' ×'..count,entry.ContainerId
 end
 function Loot:Move(areas,key,x,y,rotated)
     local session=self.session
@@ -182,6 +228,9 @@ function Loot:Snapshot(areas)
         local physical=self:SyncLock(state,container);local cells,shown={},false
         for j=0,physical.CellCount-1 do local index=physical:GetCellAt(j);cells[#cells+1]=index;shown=shown or visible[index] end
         local assetId=self.session:IsOpened(container) and row.openedAssetId or row.assetId
+        if container.TableId==102 and not container.Looted then
+            for j=0,container.ItemCount-1 do if container:GetCountAt(j)>0 then assetId=self.equipment.rules.items:Get(container:GetItemIdAt(j)).assetId;break end end
+        end
         if container.Looted and row.emptyAssetId>0 then assetId=row.emptyAssetId end
         if physical.Destroyed then
             assetId=row.brokenAssetId

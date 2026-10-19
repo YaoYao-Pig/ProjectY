@@ -17,6 +17,16 @@ function Growth:PrepareActor(actor)
     actor.Growth:Initialize((self.data.Seed+actor.Id*104729)%4294967296,rule.initialAttributePoints,rule.initialTalentPoints,profile.potential)
     for _, id in ipairs(profile.treeIds) do actor.Growth:UnlockTree(id) end
     for _, id in ipairs(profile.traitIds) do actor:AddTrait(id) end
+    self:InitializeProfession(actor)
+    for _=1,rule.initialLearningOpportunities do actor.Growth:AddLearningOpportunity(1) end
+end
+function Growth:InitializeProfession(actor)
+    assert(actor.Growth.CurrentProfessionId==0,'Profession already initialized')
+    local profile=assert(self.rules.profileByUnit[actor.TemplateId],'Missing growth profile')
+    local profession=self.rules.professions.professions:Get(profile.initialProfessionId)
+    actor.Growth:JoinProfession(profession.id)
+    for _,id in ipairs(profession.treeIds) do actor.Growth:UnlockTree(id) end
+    for _,id in ipairs(profession.initialSkillIds) do actor.Growth:GrantSkill(id) end
 end
 function Growth:RecordJoined(actor,location)
     self.chronicle:Record('growth',actor,'旅程伊始','带着自己的来历，加入这次远征。',location,false)
@@ -32,13 +42,8 @@ function Growth:Editable(id)
     return actor
 end
 function Growth:PrepareOffers(actor)
-    local growth = actor.Growth
-    while growth.PendingCount > 0 and growth.OfferCount == 0 do
-        local ids = self.rules:Draw(actor, self.stats)
-        if #ids > 0 then for _, id in ipairs(ids) do growth:AddOffer(id) end; return end
-        self.chronicle:Record('growth',actor,'技能研习','等级 '..growth.PendingLevel..' 的可用技能池已全部掌握或尚未达到门槛。','旅途中',false)
-        growth:FinishEmptyOffer()
-    end
+    -- 保留旧调用入口；主动选学不抽取候选，空目录也不消耗机会或随机数。
+    assert(actor.Growth.Initialized,'Growth is not initialized')
 end
 function Growth:AddExperience(actor, amount, location)
     if amount == 0 then return end
@@ -50,8 +55,6 @@ function Growth:AddExperience(actor, amount, location)
         growth:AdvanceLevel(level.experience,level.attributePoints,level.talentPoints,level.learnSkill)
         self.chronicle:Record('growth',actor,'新的成长','升至 '..growth.Level..' 级，获得 '..level.attributePoints..' 属性点、'..level.talentPoints..' 被动天赋点。',location,false)
     end
-    -- 候选只在获得学习机会/选完上一轮时生成；UI 打开不消耗随机数。
-    self:PrepareOffers(actor)
 end
 function Growth:InvestAttribute(actorId, attributeId)
     local actor, reason = self:Editable(actorId); if not actor then return false, reason end
@@ -72,13 +75,20 @@ function Growth:InvestTalent(actorId, nodeId)
 end
 function Growth:Learn(actorId, skillId)
     local actor, reason = self:Editable(actorId); if not actor then return false, reason end
-    local found = false
-    for i=0,actor.Growth.OfferCount-1 do if actor.Growth:GetOfferAt(i)==skillId then found=true end end
-    if not found then return false, '此技能不在当前学习候选中' end
-    if not self.rules.atlas:Prerequisites(skillId,self.rules.atlas:Owned(actor,self.stats)) then return false,'尚未满足技能前置' end
-    actor.Growth:LearnOffer(skillId)
+    local ok;ok,reason=self.rules.professions:CanLearn(actor,skillId,self.stats,self.rules.atlas)
+    if not ok then return false,reason end
+    actor.Growth:LearnSelected(skillId)
     self.chronicle:Record('growth',actor,'主动技能','学会「'..self.rules.skills:Get(skillId).name..'」。','旅途中',false)
-    self:PrepareOffers(actor)
+    return true
+end
+function Growth:ChangeProfession(actorId,professionId)
+    local actor,reason=self:Editable(actorId);if not actor then return false,reason end
+    local profession=self.rules.professions.professions:Find(professionId)
+    if not profession then return false,'未知职业' end
+    if actor.Growth.CurrentProfessionId==professionId then return false,'当前已经在研习此职业' end
+    actor.Growth:JoinProfession(professionId)
+    for _,id in ipairs(profession.treeIds) do actor.Growth:UnlockTree(id) end
+    self.chronicle:Record('growth',actor,'职业研习','转入「'..profession.name..'」，保留此前掌握的全部技艺。','旅途中',false)
     return true
 end
 return Growth

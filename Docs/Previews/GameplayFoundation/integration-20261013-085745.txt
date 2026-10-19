@@ -1,0 +1,13 @@
+fixture_directory=C:\Users\yyz\AppData\Local\Temp\project-y-foundation-3d316e413d4747b29da5d24830ea3362
+PASS Tools/Tests/battle_preparation_integration.lua
+PASS real battle starts with one bounded deployment round and only player actors
+PASS full health and invalid items do not spend inventory or AP
+PASS preparation skill and item transactions share AP and preserve inventory ownership
+PASS remaining allies can deploy while previous preparation remains and time stays frozen
+PASS formal round one refills budgets, preserves preparation until own turn end and excludes preparation skills
+PASS depletion frees the grid cell and victory clears only battle effects
+PASS Tools/Tests/equipment_catalyst_integration.lua
+PASS actual equipment transaction rejects unmet attributes and accepts trained attributes
+PASS offhand catalyst requires the real installed adapter and retained specialization
+PASS existing hand conflicts and native staff casting remain intact
+PASS production workbench displays the catalyst mount and does not mix in a real offhand

@@ -1,0 +1,17 @@
+{
+  "version": 1,
+  "name": "PartyBondStageTable",
+  "description": "无向队员关系阶段；跨越阈值时在双方的经历中留下记录。",
+  "key": "id",
+  "fields": [
+    {"name":"id","type":"int","description":"关系阶段 ID","min":1},
+    {"name":"minimum","type":"int","description":"阶段最低关系值","min":0,"max":100},
+    {"name":"name","type":"text","description":"阶段名称"},
+    {"name":"description","type":"text","description":"角色手记说明"}
+  ],
+  "rows": [
+    {"id":1,"minimum":0,"name":"同行","description":"还在旅途中相互了解。"},
+    {"id":2,"minimum":30,"name":"信任","description":"共同经历让彼此值得依靠。"},
+    {"id":3,"minimum":60,"name":"生死与共","description":"一次次共同面对危险，结下深厚的情谊。"}
+  ]
+}

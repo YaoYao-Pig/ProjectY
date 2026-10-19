@@ -32,4 +32,16 @@ return function(story)
         return minute >= row.targetId and minute < row.value
     end, function(row) assert(row.targetId >= 0 and row.targetId < row.value and row.value <= 1440, 'Invalid time window') end)
     register('coins', function(row) return story.adventure.player.Coins >= row.value end, positive)
+    register('party_attribute', function(row)
+        local attribute = rules.config:GetTable('GrowthAttributeTable'):Get(row.targetId)
+        local best = 0
+        for i=0,story.adventure.data.PartyCount-1 do
+            local actor = story.adventure.data:GetPartyAt(i)
+            if actor.HP > 0 then best = math.max(best, story.adventure.battle.stats:Get(actor, attribute.code)) end
+        end
+        return best >= row.value, row.reason..'（队伍最高 '..best..' / '..row.value..'）'
+    end, function(row)
+        rules.config:GetTable('GrowthAttributeTable'):Get(row.targetId); positive(row)
+        assert(row.key == '' and row.state == '', 'party_attribute uses targetId/value only')
+    end)
 end

@@ -4,6 +4,7 @@ local Rules={};Rules.__index=Rules
 function Rules.New(config)
     local self=setmetatable({species=config:GetTable('AnimalSpeciesTable'),skills=config:GetTable('AnimalSkillTable'),
         rule=config:GetTable('AnimalRuleTable'):Get(1),byUnit={},bySkill={}},Rules)
+    self.bodies=require('Game.Battle.BodyFootprints').New(config)
     for _,row in ipairs(self.species:All()) do
         assert(not self.byUnit[row.unitId],'Duplicate animal unit template')
         assert(#row.footprintQ>0 and #row.footprintQ==#row.footprintR,'Animal footprint arrays differ')
@@ -43,8 +44,10 @@ function Rules:Species(actor)
     return self.byUnit[mount and mount.TemplateId or actor.TemplateId]
 end
 -- 显式楼层用于探索占格；省略时保留棋盘默认层（战斗窗口可能从桥面创建）。
+function Rules:Shape(actor) return self:Species(actor) or self.bodies[actor.TemplateId] end
+function Rules:IsStaticBody(actor) local body=self.bodies[actor.TemplateId];return body and body.staticModel or false end
 function Rules:Cells(actor,board,q,r,layer)
-    return self:CellsForSpecies(self:Species(actor),board,q or actor.Q,r or actor.R,layer)
+    return self:CellsForSpecies(self:Shape(actor),board,q or actor.Q,r or actor.R,layer)
 end
 -- 同一次规划内物种不会改变，允许调用方复用已查询的占地定义。
 function Rules:CellsForSpecies(species,board,q,r,layer)

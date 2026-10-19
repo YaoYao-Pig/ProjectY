@@ -30,7 +30,7 @@ namespace ProjectY.Data
     }
     /// <summary>一次远征的临时障碍状态；静态地图保持只读，离开地点不清除记录。</summary>
     [LuaCallCSharp]
-    public sealed class MapObstacleData
+    public sealed partial class MapObstacleData
     {
         private readonly Dictionary<int,List<MapObstacleRecord>> sites=new Dictionary<int,List<MapObstacleRecord>>();
         private readonly HashSet<int> initialized=new HashSet<int>();

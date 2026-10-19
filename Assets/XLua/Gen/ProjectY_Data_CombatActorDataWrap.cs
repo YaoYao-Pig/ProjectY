@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.CombatActorData);
-			Utils.BeginObjectRegister(type, L, translator, 0, 26, 28, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 27, 28, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "InitializeAnimal", _m_InitializeAnimal);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "RollAnimalPercent", _m_RollAnimalPercent);
@@ -43,6 +43,7 @@ namespace XLua.CSObjectWrap
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SetMaxHP", _m_SetMaxHP);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Deploy", _m_Deploy);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "BeginTurn", _m_BeginTurn);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "BeginDeploymentTurn", _m_BeginDeploymentTurn);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Move", _m_Move);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SpendAction", _m_SpendAction);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Damage", _m_Damage);
@@ -688,6 +689,34 @@ namespace XLua.CSObjectWrap
                     int _points = LuaAPI.xlua_tointeger(L, 2);
                     
                     gen_to_be_invoked.BeginTurn( _points );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_BeginDeploymentTurn(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.CombatActorData gen_to_be_invoked = (ProjectY.Data.CombatActorData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _points = LuaAPI.xlua_tointeger(L, 2);
+                    
+                    gen_to_be_invoked.BeginDeploymentTurn( _points );
                     
                     
                     

@@ -31,7 +31,7 @@ namespace ProjectY.UI
             public int W(bool rotated) => rotated?Height:Width;
             public int H(bool rotated) => rotated?Width:Height;
             public static Item Read(LuaTable row) => new Item {
-                Key=row.Get<string>("key"),Name=row.Get<string>("name"),Kind=row.Get<string>("kind"),Detail=row.Get<string>("detail"),
+                Key=row.Get<string>("key"),Name=row.Get<string>("displayName"),Kind=row.Get<string>("kind"),Detail=row.Get<string>("detail"),
                 Slot=row.Get<string>("slot"),Compatible=row.Get<string>("compatible"),IconPath=row.Get<string>("iconPath"),
                 ItemId=row.Get<int>("itemId"),Count=row.Get<int>("count"),X=row.Get<int>("x"),Y=row.Get<int>("y"),
                 Width=row.Get<int>("width"),Height=row.Get<int>("height"),EquipMask=row.Get<int>("equipMask"),Rotated=row.Get<bool>("rotated")};
@@ -130,27 +130,22 @@ namespace ProjectY.UI
         private Slot HoverSlot()
         {return Array.Find(layout.Slots,s=>RectTransformUtility.RectangleContainsScreenPoint(s.Rect,pointer,eventCamera));}
         private bool Compatible(Slot slot) => (dragging.EquipMask & slot.Bit)!=0;
-        private void Coordinates(out int x,out int y)
+        private bool Placement(out int x,out int y,out int width,out int height)
         {
             RectTransformUtility.ScreenPointToLocalPointInRectangle(layout.Grid,pointer,eventCamera,out var p);
-            x=Mathf.FloorToInt((p.x-layout.Grid.rect.xMin)/cellSize-grab.x+.5f);
-            y=Mathf.FloorToInt((layout.Grid.rect.yMax-p.y)/cellSize-grab.y+.5f);
-            var merge=MergeTarget();
-            if(merge!=null)
+            float px=(p.x-layout.Grid.rect.xMin)/cellSize,py=(layout.Grid.rect.yMax-p.y)/cellSize;
+            x=Mathf.FloorToInt(px-grab.x+.5f);y=Mathf.FloorToInt(py-grab.y+.5f);
+            width=dragging.W(rotated);height=dragging.H(rotated);
+            if(dragging.Kind!="weapon" && dragging.Kind!="magazine" && dragging.Kind!="wearable")
             {
-                int px=Mathf.FloorToInt((p.x-layout.Grid.rect.xMin)/cellSize),py=Mathf.FloorToInt((layout.Grid.rect.yMax-p.y)/cellSize);
-                if(px>=merge.X && py>=merge.Y && px<merge.X+merge.W(merge.Rotated) && py<merge.Y+merge.H(merge.Rotated)) {x=merge.X;y=merge.Y;}
+                foreach(var other in items)
+                    if(other.Slot=="" && other.Key!=dragging.Key && other.ItemId==dragging.ItemId &&
+                        px>=other.X && py>=other.Y && px<other.X+other.W(other.Rotated) && py<other.Y+other.H(other.Rotated))
+                    {x=other.X;y=other.Y;width=other.W(other.Rotated);height=other.H(other.Rotated);return true;}
             }
-        }
-        private Item MergeTarget() => dragging.External && dragging.Kind!="weapon" && dragging.Kind!="magazine" && dragging.Kind!="wearable"
-            ?items.Find(row=>row.Slot=="" && row.ItemId==dragging.ItemId):null;
-        private bool Fits(int x,int y)
-        {
-            var merge=MergeTarget();
-            if(merge!=null) return x==merge.X && y==merge.Y;
-            int w=dragging.W(rotated),h=dragging.H(rotated);
-            if(x<0||y<0||x+w>columns||y+h>rows) return false;
-            foreach(var other in items) if(other.Slot=="" && other.Key!=dragging.Key && x<other.X+other.W(other.Rotated) && x+w>other.X && y<other.Y+other.H(other.Rotated) && y+h>other.Y) return false;
+            if(x<0 || y<0 || x+width>columns || y+height>rows) return false;
+            foreach(var other in items)
+                if(other.Slot=="" && other.Key!=dragging.Key && x<other.X+other.W(other.Rotated) && x+width>other.X && y<other.Y+other.H(other.Rotated) && y+height>other.Y) return false;
             return true;
         }
         private void Preview()
@@ -166,10 +161,9 @@ namespace ProjectY.UI
             {layout.Preview.transform.SetParent(slot.Rect,false);Place(layout.Preview.rectTransform,1,1,slot.Rect.rect.width-2,slot.Rect.rect.height-2);valid=Compatible(slot);}
             else
             {
-                Coordinates(out int x,out int y);valid=Fits(x,y);
+                valid=Placement(out int x,out int y,out int w,out int h);
                 layout.Preview.transform.SetParent(layout.Grid,false);
-                var merge=valid?MergeTarget():null;
-                Place(layout.Preview.rectTransform,x*cellSize,y*cellSize,(merge?.W(merge.Rotated) ?? dragging.W(rotated))*cellSize,(merge?.H(merge.Rotated) ?? dragging.H(rotated))*cellSize);
+                Place(layout.Preview.rectTransform,x*cellSize,y*cellSize,w*cellSize,h*cellSize);
             }
             layout.Preview.color=valid?new Color(.35f,.8f,.52f,.42f):new Color(.9f,.28f,.23f,.45f);
             layout.Preview.gameObject.SetActive(other || slot!=null || RectTransformUtility.RectangleContainsScreenPoint(layout.Grid,pointer,eventCamera));
@@ -188,11 +182,11 @@ namespace ProjectY.UI
             if(dragging==null) return;
             pointer=e.position;ActionKey=dragging.Key;ActionRotated=rotated;int x,y;string command;
             if(OverOtherGrid)
-            {otherGrid.Placement(dragging,rotated,pointer,eventCamera,grab,out x,out y,out _,out _);command="move_source";}
+            {command=otherGrid.Placement(dragging,rotated,pointer,eventCamera,grab,out x,out y,out _,out _)?"move_source":"cancel";}
             else
             {
-                Coordinates(out x,out y);var slot=HoverSlot();
-                command=slot!=null?"equip:"+slot.Key:RectTransformUtility.RectangleContainsScreenPoint(layout.Grid,pointer,eventCamera)?"move":"cancel";
+                bool valid=Placement(out x,out y,out _,out _);var slot=HoverSlot();
+                command=slot!=null?"equip:"+slot.Key:valid && RectTransformUtility.RectangleContainsScreenPoint(layout.Grid,pointer,eventCamera)?"move":"cancel";
             }
             ActionX=x;ActionY=y;
             CancelDrag();Command.Invoke(command);

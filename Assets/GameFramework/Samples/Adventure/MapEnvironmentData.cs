@@ -23,8 +23,9 @@ namespace ProjectY.Samples
         public Weather[] Weathers;
         public int DefaultWeather, MaxLights;
         public float CycleSeconds, StartHour, Transition, Azimuth, IndoorSun, LampIntensity, LampRange, LampHeight, ShadowDistance;
+        public float TorchIntensity, TorchRange, TorchHeight;
         public bool AutoCycle;
-        public Color IndoorAmbient, LampColor;
+        public Color IndoorAmbient, LampColor, TorchColor;
         private static Color ColorValue(LuaTable row, string name)
         {
             if (!ColorUtility.TryParseHtmlString(row.Get<string>(name), out var value)) throw new InvalidOperationException("光照配色无效：" + name);
@@ -40,6 +41,14 @@ namespace ProjectY.Samples
                 result.Transition = p.Get<float>("transitionSeconds"); result.Azimuth = p.Get<float>("sunAzimuth"); result.IndoorSun = p.Get<float>("indoorSunMultiplier");
                 result.LampIntensity = p.Get<float>("lampIntensity"); result.LampRange = p.Get<float>("lampRange"); result.LampHeight = p.Get<float>("lampHeight");
                 result.ShadowDistance = p.Get<float>("shadowDistance"); result.IndoorAmbient = ColorValue(p, "indoorAmbientColor"); result.LampColor = ColorValue(p, "lampColor");
+            }
+            using (var torch = root.Get<LuaTable>("torch"))
+            {
+                if (torch == null) throw new InvalidOperationException("环境表现缺少火炬照明配置。");
+                result.TorchColor = ColorValue(torch, "color"); result.TorchIntensity = torch.Get<float>("intensity");
+                result.TorchRange = torch.Get<float>("range"); result.TorchHeight = torch.Get<float>("height");
+                if (result.TorchIntensity <= 0 || result.TorchRange <= 0 || result.TorchHeight <= 0)
+                    throw new InvalidOperationException("火炬照明配置必须为正数。");
             }
             using (var rows = root.Get<LuaTable>("keys"))
             {

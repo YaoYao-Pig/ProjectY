@@ -20,6 +20,13 @@ return function(command,demo)
         ui:Open('CharacterGrowth',{demo=assert(demo)})
     elseif command=='sync' then
         if not ui:IsOpen('MainHud') then ui:Open('MainHud',{demo=demo}) end
+        local parties=main:Get('Adventure').parties
+        if parties.data.IsOpen and not ui:IsOpen('WorldParty') then ui:Open('WorldParty',{demo=demo})
+        elseif not parties.data.IsOpen and ui:IsOpen('WorldParty') then ui:Close('WorldParty') end
+        local camp=main:Get('Adventure').camp
+        if camp.data.IsOpen and data.Phase~='map' then camp:Close() end
+        if camp.data.IsOpen and not ui:IsOpen('Camp') then ui:Open('Camp',{demo=demo})
+        elseif not camp.data.IsOpen and ui:IsOpen('Camp') then ui:Close('Camp') end
         local dialogue=main:Get('Narrative').data.DialogueOpen
         if dialogue and not ui:IsOpen('Dialogue') then ui:Open('Dialogue',{demo=demo})
         elseif not dialogue and ui:IsOpen('Dialogue') then ui:Close('Dialogue') end

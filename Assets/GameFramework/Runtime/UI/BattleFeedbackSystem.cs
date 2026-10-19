@@ -11,7 +11,10 @@ namespace ProjectY.UI
     {
         private struct HealthChange { public int HealthId; public float Fraction; }
         private struct Impact { public float Delay, Strength; }
+        private struct Damage { public int ActorId, Amount, Shot; public bool Critical; public Color? Color; }
+        private struct Status { public int ActorId,Shot;public string Text;public Color Color; }
         private sealed class Binding { public int ActorId; public HealthBarAnimation Bar; }
+        private sealed class NumberBinding { public int ActorId, HealthId; public DamageNumberAnimation Numbers; }
         [SerializeField, Min(0)] private float shakePixels = 7;
         [SerializeField, Min(.01f)] private float shakeSeconds = .18f;
         [SerializeField, Min(1)] private float shakeFrequency = 32;
@@ -22,6 +25,9 @@ namespace ProjectY.UI
         private readonly List<Impact> queuedImpacts = new List<Impact>();
         private readonly List<Binding> bindings = new List<Binding>();
         private readonly List<Impact> impacts = new List<Impact>();
+        private readonly List<Damage> queuedDamage = new List<Damage>();
+        private readonly List<Status> queuedStatuses=new List<Status>();
+        private readonly List<NumberBinding> numberBindings = new List<NumberBinding>();
         private float shakeElapsed;
         private float shakeStrength = 1;
         private bool shaking;
@@ -40,6 +46,41 @@ namespace ProjectY.UI
             if (shotIndex < 1) throw new ArgumentOutOfRangeException(nameof(shotIndex));
             float strength = Mathf.Max(critical ? criticalShakeMultiplier : 1, defeated ? deathShakeMultiplier : 1);
             queuedImpacts.Add(new Impact { Delay = (shotIndex - 1) * burstHitInterval, Strength = strength });
+        }
+
+        public void QueueDamage(int actorId, int amount, int shotIndex, bool critical)
+            => AddDamage(actorId, amount, shotIndex, critical, null);
+
+        internal void QueueColoredDamage(int actorId,int amount,int shotIndex,bool critical,string color)
+        {
+            if(!ColorUtility.TryParseHtmlString(color,out var parsed))throw new ArgumentException("Invalid damage feedback color.",nameof(color));
+            AddDamage(actorId,amount,shotIndex,critical,parsed);
+        }
+        private void AddDamage(int actorId,int amount,int shotIndex,bool critical,Color? color)
+        {
+            if (amount <= 0 || shotIndex < 1) throw new ArgumentOutOfRangeException(nameof(amount));
+            queuedDamage.Add(new Damage { ActorId = actorId, Amount = amount, Shot = shotIndex, Critical = critical, Color = color });
+        }
+        internal void QueueStatus(int actorId,string text,string color,int shotIndex)
+        {
+            if(actorId<1 || shotIndex<1 || string.IsNullOrEmpty(text) || !ColorUtility.TryParseHtmlString(color,out var parsed))throw new ArgumentException("Invalid settled status feedback.");
+            queuedStatuses.Add(new Status{ActorId=actorId,Text=text,Color=parsed,Shot=shotIndex});
+        }
+
+        public void BindDamageNumbers(DamageNumberAnimation numbers, int actorId, int healthId, Font font)
+        {
+            if (numbers == null) throw new ArgumentNullException(nameof(numbers));
+            numbers.Prepare(font);
+            var binding = numberBindings.Find(item => item.Numbers == numbers);
+            if (binding == null) { binding = new NumberBinding { Numbers = numbers }; numberBindings.Add(binding); }
+            if (binding.ActorId != actorId) { numbers.Clear(); binding.ActorId = actorId; }
+            binding.HealthId = healthId;
+        }
+
+        public void UnbindDamageNumbers(DamageNumberAnimation numbers)
+        {
+            numberBindings.RemoveAll(item => item.Numbers == numbers);
+            numbers.Clear();
         }
 
         public void BindHealth(HealthBarAnimation bar, int actorId, int healthId, float fraction)
@@ -72,6 +113,16 @@ namespace ProjectY.UI
                 int index = impacts.FindIndex(pending => pending.Delay > impact.Delay);
                 if (index < 0) impacts.Add(impact); else impacts.Insert(index, impact);
             }
+            foreach (var damage in queuedDamage)
+                foreach (var binding in numberBindings)
+                    if (binding.ActorId == damage.ActorId || binding.HealthId == damage.ActorId)
+                        binding.Numbers.Queue(damage.Amount, damage.Critical, impactDelay + (damage.Shot - 1) * burstHitInterval,damage.Color);
+            foreach(var status in queuedStatuses)
+                foreach(var binding in numberBindings)
+                    if(binding.ActorId==status.ActorId || binding.HealthId==status.ActorId)
+                        binding.Numbers.QueueStatus(status.Text,status.Color,impactDelay+(status.Shot-1)*burstHitInterval+.2f);
+            queuedStatuses.Clear();
+            queuedDamage.Clear();
             queuedImpacts.Clear();
             queued.Clear();
         }
@@ -79,6 +130,7 @@ namespace ProjectY.UI
         internal void Tick(float deltaTime)
         {
             if (deltaTime <= 0) return;
+            foreach (var binding in numberBindings) binding.Numbers.Advance(deltaTime);
             if (shaking) shakeElapsed += deltaTime;
             for (int i = 0; i < impacts.Count; i++)
             {
@@ -110,6 +162,9 @@ namespace ProjectY.UI
         public void Skip()
         {
             queued.Clear(); queuedImpacts.Clear(); impacts.Clear(); shaking = false; shakeElapsed = 0; shakeStrength = 1; ScreenOffset = Vector2.zero;
+            queuedDamage.Clear();
+            foreach (var binding in numberBindings) binding.Numbers.Clear();
+            queuedStatuses.Clear();
             foreach (var binding in bindings) binding.Bar.Complete();
         }
         public void Clear()
@@ -117,7 +172,18 @@ namespace ProjectY.UI
             Skip();
             foreach (var binding in bindings) binding.Bar.Clear();
             bindings.Clear();
+            numberBindings.Clear();
         }
         private void OnDisable() => Clear();
+    }
+    public static class DamageFeedback
+    {
+        public static void Queue(BattleFeedbackSystem view,int actorId,int amount,int shotIndex,bool critical,string color)
+            => view.QueueColoredDamage(actorId,amount,shotIndex,critical,color);
+    }
+    public static class StatusFeedback
+    {
+        public static void Queue(BattleFeedbackSystem view,int actorId,string text,string color,int shotIndex)
+            => view.QueueStatus(actorId,text,color,shotIndex);
     }
 }

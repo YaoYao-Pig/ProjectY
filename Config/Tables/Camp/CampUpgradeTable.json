@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "name": "CampUpgradeTable",
+  "description": "设施逐级建设费用，成功后立即生效；失败不扣材料和金币",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "升级配置ID",
+      "min": 1
+    },
+    {
+      "name": "facilityId",
+      "type": "int",
+      "description": "设施",
+      "ref": "CampFacilityTable"
+    },
+    {
+      "name": "level",
+      "type": "int",
+      "description": "目标等级",
+      "min": 1
+    },
+    {
+      "name": "coins",
+      "type": "int",
+      "description": "金币费用",
+      "min": 0
+    },
+    {
+      "name": "itemIds",
+      "type": "int[]",
+      "description": "材料物品",
+      "ref": "EquipmentItemTable"
+    },
+    {
+      "name": "itemCounts",
+      "type": "int[]",
+      "description": "对应材料数量"
+    },
+    {
+      "name": "storageCapacity",
+      "type": "int",
+      "description": "升级后仓库总件数容量；生产设施为零",
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 101,
+      "facilityId": 1,
+      "level": 1,
+      "coins": 15,
+      "itemIds": [
+        81,
+        82,
+        83
+      ],
+      "itemCounts": [
+        6,
+        2,
+        2
+      ],
+      "storageCapacity": 0
+    },
+    {
+      "id": 102,
+      "facilityId": 1,
+      "level": 2,
+      "coins": 30,
+      "itemIds": [
+        81,
+        82,
+        83
+      ],
+      "itemCounts": [
+        10,
+        3,
+        5
+      ],
+      "storageCapacity": 0
+    },
+    {
+      "id": 201,
+      "facilityId": 2,
+      "level": 1,
+      "coins": 15,
+      "itemIds": [
+        81,
+        82,
+        83
+      ],
+      "itemCounts": [
+        4,
+        4,
+        1
+      ],
+      "storageCapacity": 0
+    },
+    {
+      "id": 202,
+      "facilityId": 2,
+      "level": 2,
+      "coins": 30,
+      "itemIds": [
+        81,
+        82,
+        83
+      ],
+      "itemCounts": [
+        8,
+        6,
+        3
+      ],
+      "storageCapacity": 0
+    },
+    {
+      "id": 301,
+      "facilityId": 3,
+      "level": 1,
+      "coins": 20,
+      "itemIds": [
+        81,
+        82,
+        83
+      ],
+      "itemCounts": [
+        8,
+        4,
+        2
+      ],
+      "storageCapacity": 160
+    },
+    {
+      "id": 302,
+      "facilityId": 3,
+      "level": 2,
+      "coins": 40,
+      "itemIds": [
+        81,
+        82,
+        83
+      ],
+      "itemCounts": [
+        14,
+        8,
+        4
+      ],
+      "storageCapacity": 320
+    }
+  ]
+}

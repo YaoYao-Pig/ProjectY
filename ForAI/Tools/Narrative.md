@@ -12,6 +12,7 @@
 - `workspace.mjs` 是 Web/CLI 的共同读写入口；批量保存先完整校验，提交前复查 revision，使用写锁串行化叙事工具自身写入。单文件原子替换，捕获写入异常时回滚本次已写且未被外部改动的文件；多文件保存不是断电原子事务。通用配置编辑器/外部编辑器不受叙事锁控制，因此不要并发修改同一批源文件。
 - `rules.mjs` 接入通用 exporter 的 validateTables，通用配置工作台、导表、Web 与 CLI 使用一致的叙事规则：Condition 环/深度/参数、引用目标、奖励动作限制、对话所有权/可达性、NPC 数值范围/安置/日程/设施。完成状态前置环给警告；任意自定义 Condition 给出需执行对应 Lua 校验的提示，不伪称静态证明其语义正确。
 - 关系图包含表字段引用、条件/动作的动态目标引用，以及 flag 读者到同键写入动作的依赖。`impact` 按反向引用遍历，返回更改某实体可能影响的全部节点。它不是剧情可达性证明，仍需核对实际条件与玩法。
+- `party_attribute` 显式投影到 GrowthAttributeTable，并校验属性 ID、正阈值及空 key/state；`grant_experience` 校验全队目标和正数量。三线剧情的可达性与奖励原子预检由 [narrative_campaign_core.lua](../../Tools/Tests/narrative_campaign_core.lua) 执行真实 Lua 流转验证，不能用关系图无环代替路线验证。
 - [内容中心](ContentCenter.md)复用同一批量保存实现；写锁位于 `Tools/ConfigEditor/.cache/write.lock`，两者相互串行。Narrative 的默认可编辑白名单保持为叙事表，内容中心显式传入源表列表。
 - Agent 命令统一为 `node Tools/Narrative/cli.mjs <command>`：`list [table]`、`get <table> <id>`、`schema [table]`、`graph`、`impact <table:id>`、`snapshot`、`validate`、`review <patch.json>`、`patch <patch.json>`、`export <revision>`。成功输出 JSON，失败输出 error/status 并返回非零退出码；无需启动 Web 服务。
 - Patch 为 `{revision,operations}`；支持 upsert 完整行和 delete ID，同一实体不得重复操作。仅允许叙事表，跨表改动放同组。review 返回 before/after 和诊断且不写盘；patch 不自动导出；export 必须传最新 revision。Agent 工作流见项目 [$mission-authoring](../../.agents/skills/mission-authoring/SKILL.md)。

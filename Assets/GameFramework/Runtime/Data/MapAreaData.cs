@@ -5,7 +5,7 @@ using XLua;
 namespace ProjectY.Data
 {
     [LuaCallCSharp]
-    public sealed class MapAreaLootData
+    public sealed partial class MapAreaLootData
     {
         private int[] itemIds, counts;
         internal LootItemData[] SearchItems;
@@ -73,7 +73,7 @@ namespace ProjectY.Data
     }
     /// <summary>地牢敌群与战斗共享角色实例；离开地点不恢复生命或重新生成。</summary>
     [LuaCallCSharp]
-    public sealed class MapAreaEncounterData
+    public sealed partial class MapAreaEncounterData
     {
         private readonly List<CombatActorData> enemies = new List<CombatActorData>();
         public int Id { get; }
@@ -92,7 +92,7 @@ namespace ProjectY.Data
 
     /// <summary>城镇居民的权威占格、巡游游标和游戏时钟；外观与路线归静态布局。</summary>
     [LuaCallCSharp]
-    public sealed class MapAreaNpcData
+    public sealed partial class MapAreaNpcData
     {
         public int Id { get; }
         public bool Present { get; internal set; } = true;
@@ -113,7 +113,7 @@ namespace ProjectY.Data
 
     /// <summary>单个地点的探索记录与小队移动锚点；不复制 Lua 的静态地形。</summary>
     [LuaCallCSharp]
-    public sealed class MapAreaStateData
+    public sealed partial class MapAreaStateData
     {
         private readonly List<MapAreaLootData> loot = new List<MapAreaLootData>();
         public bool LootInitialized { get; private set; }
@@ -345,7 +345,7 @@ namespace ProjectY.Data
 
     /// <summary>当前远征中各交互点的探索记录；开始新远征时统一释放。</summary>
     [LuaCallCSharp]
-    public sealed class MapAreaData
+    public sealed partial class MapAreaData
     {
         private readonly Dictionary<int, MapAreaStateData> areas = new Dictionary<int, MapAreaStateData>();
         public int ActiveSiteId { get; private set; }

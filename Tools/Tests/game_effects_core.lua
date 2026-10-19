@@ -26,13 +26,13 @@ local definitions={rows={}}
 function definitions:Get(id)return assert(self.rows[id])end
 function definitions:All()local r={};for _,row in pairs(self.rows)do r[#r+1]=row end;return r end
 local function define(id,kind,amount,changes)
-    local r={id=id,name='Effect '..id,description='Test effect',kind=kind,amount={Evaluate=function()return amount end},duration='duration',durationTurns=3,periodTurns=1,tickPhase='turn_start',stacking='refresh',maxStacks=1,removeOnBattleEnd=false,removeOnDeath=true,attribute='',iconId=1}
+    local r={id=id,name='Effect '..id,description='Test effect',kind=kind,amount={Evaluate=function()return amount end},duration='duration',durationTurns=3,periodTurns=1,tickPhase='turn_start',stacking='refresh',maxStacks=1,removeOnBattleEnd=false,removeOnDeath=true,attribute='',iconId=1,buffId=0,chance=100,recipient='target',requiredTags={},forbiddenTags={},removeTags={},removeCategories={},affectsContainers=true,color='#BDA8E8',damageColor='',equipmentDamage=0,killEquipmentDamage=0}
     for k,v in pairs(changes or {})do r[k]=v end;definitions.rows[id]=r;return r
 end
 define(1,'damage',3);define(2,'heal',4,{tickPhase='turn_end'});define(3,'damage',2,{stacking='independent'})
 define(4,'damage',2,{stacking='stack',maxStacks=2});define(5,'damage',1,{duration='infinite',durationTurns=0,periodTurns=2,removeOnBattleEnd=true})
 define(6,'modifier',2,{periodTurns=0,attribute='vitality'});define(7,'damage',5,{duration='instant'})
-local events={};local stats={attributes={[1]={vitality=10}},growth={attributeByCode={}}}
+local events={};local stats={attributes={[1]={vitality=10}},growth={attributeByCode={}},buffs={Find=function()return nil end}}
 function stats:Template(a)return{name='Actor '..a.Id}end
 function stats:EffectVariables()return{}end
 function stats:MaximumHP(a,pending)

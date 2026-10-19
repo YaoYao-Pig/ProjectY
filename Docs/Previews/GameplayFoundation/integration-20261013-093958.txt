@@ -1,0 +1,25 @@
+fixture_directory=C:\Users\yyz\AppData\Local\Temp\project-y-ux-foundation-9df9a27992fc40889c8d8a9beaef086b
+FAIL Tools/Tests/shop_integration.lua
+XLua.LuaException: c# exception:System.ArgumentException: Narrative UI requires a font.
+  at ProjectY.UI.NarrativeView.Prepare (UnityEngine.Font value, System.Single panelWidth) [0x0000c] in D:\Program\Unity\Project Y\Assets\GameFramework\Runtime\UI\NarrativeView.cs:25 
+  at XLua.CSObjectWrap.ProjectYUINarrativeViewWrap._m_Prepare (System.IntPtr L) [0x0003e] in D:\Program\Unity\Project Y\Assets\XLua\Gen\ProjectY_UI_NarrativeViewWrap.cs:94 
+stack traceback:
+	[C]: in method 'Prepare'
+	D:/Program/Unity/Project Y/Lua/UI/Panel/ShopCtr.lua:11: in function 'UI.Panel.ShopCtr.OnShow'
+	D:/Program/Unity/Project Y/Lua/UI/UIWidgetCtrl.lua:59: in function 'UI.UIWidgetCtrl.Show'
+	D:/Program/Unity/Project Y/Lua/UI/UISystem.lua:35: in function <D:/Program/Unity/Project Y/Lua/UI/UISystem.lua:34>
+	[C]: in function 'xpcall'
+	D:/Program/Unity/Project Y/Lua/UI/UISystem.lua:34: in function 'UI.UISystem.Open'
+	Tools/Tests/shop_integration.lua:86: in local 'body'
+	Tools/Tests/shop_integration.lua:5: in local 'test'
+	Tools/Tests/shop_integration.lua:76: in main chunk
+stack traceback:
+	[C]: in function 'error'
+	D:/Program/Unity/Project Y/Lua/UI/UISystem.lua:38: in function 'UI.UISystem.Open'
+	Tools/Tests/shop_integration.lua:86: in local 'body'
+	Tools/Tests/shop_integration.lua:5: in local 'test'
+	Tools/Tests/shop_integration.lua:76: in main chunk
+  at XLua.LuaEnv.ThrowExceptionFromError (System.Int32 oldTop) [0x00040] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:441 
+  at XLua.LuaEnv.DoString (System.Byte[] chunk, System.String chunkName, XLua.LuaTable env) [0x00078] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:274 
+  at XLua.LuaEnv.DoString (System.String chunk, System.String chunkName, XLua.LuaTable env) [0x0000d] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:288 
+  at MCPDynamicCode.Execute () [0x00158] in <4d598b544f6346f1852628c7a5e60d46>:0 

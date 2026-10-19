@@ -9,7 +9,12 @@ local ok,err=xpcall(function()
     registry:Start()
     ui,adventure,growth,data=registry:Get('UI'),registry:Get('Adventure'),registry:Get('Growth'),Services.Adventure
     data:Reset(920)
-    for i,id in ipairs({1,2,3,6}) do local actor=data:AddPartyActor(i,id);growth:Initialize(actor);actor:SetMaxHP(growth.stats:MaximumHP(actor));actor:Restore() end
+    for i,id in ipairs({1,2,3,6}) do
+        local actor=data:AddPartyActor(i,id);adventure.characterAppearances:Party(actor,920);growth:Initialize(actor)
+        actor:SetMaxHP(growth.stats:MaximumHP(actor));actor:Restore()
+    end
+    adventure.equipment:Start();adventure.equipment:StartPartyLoadouts()
+    for i=0,data.PartyCount-1 do local actor=data:GetPartyAt(i);actor:SetMaxHP(growth.stats:MaximumHP(actor));actor:Restore() end
     adventure.sites={{id=1,eventId=6,name='灰烬门廊'},{id=2,eventId=5,name='古老路标'}}
     adapter={BattleHUDRevision=0,LastError='',commands=0}
     function adapter:SetGrowthOpen(value) self.growthOpen=value end
@@ -20,6 +25,7 @@ local ok,err=xpcall(function()
         if command=='growth_attribute' then success,reason=growth:InvestAttribute(a,b)
         elseif command=='growth_talent' then success,reason=growth:InvestTalent(a,b)
         elseif command=='growth_skill' then success,reason=growth:Learn(a,b)
+        elseif command=='growth_profession' then success,reason=growth:ChangeProfession(a,b)
         elseif command=='choose' then success,reason=adventure:Choose(a)
         elseif command=='return' then success,reason=adventure:ReturnToMap();ui:Close('StoryEvent')
         else error('Unexpected growth UI command: '..command) end
@@ -29,7 +35,8 @@ local ok,err=xpcall(function()
     test('overview reads real attributes and trait tags; attribute button mutates once',function()
         assert(adapter.growthOpen and Services.UI.IsWorldPaused)
         assert(panel.view.Summary.text:find('属性点 2',1,true))
-        assert(#panel.pools.Attributes==growth.rules.attributes.Count and #panel.pools.Traits==1)
+        assert(#panel.pools.Attributes==growth.rules.attributes.Count and
+            #panel.pools.Traits==math.max(1,data:GetPartyAt(0).TraitCount)+data.PartyCount-1+adventure.partyStory.rules.honors.Count)
         local seen={}
         for i,row in ipairs(growth.rules.attributes:All()) do
             local widget=panel.pools.Attributes[i]
@@ -42,21 +49,48 @@ local ok,err=xpcall(function()
         assert(actor.MaxHP==hp+4 and actor.Growth.AttributePoints==1 and adapter.commands==1)
     end)
     test('talent nodes and edges use config positions; selection and investment reach real rules',function()
-        panel.view.SkillsTab.onClick:Invoke();assert(#panel.nodes==9 and #panel.edges==11)
+        panel.view.SkillsTab.onClick:Invoke()
+        assert(panel.skillMode=='profession' and not panel.view.GraphScroll.gameObject.activeSelf)
+        assert(panel.view.SkillRowsScroll.viewport.rect.width==570 and panel.view.SkillRowsScroll.viewport.rect.height==337)
+        panel.view.NextTree.onClick:Invoke();assert(#panel.nodes==9 and #panel.edges==11)
+        assert(panel.view.GraphScroll.gameObject.activeSelf and panel.view.SkillRowsScroll.viewport.rect.width==267)
         panel.nodes[1].view.Button.onClick:Invoke();assert(panel.view.Invest.interactable)
         panel.view.Invest.onClick:Invoke();assert(data:GetPartyAt(0).Growth:GetRank(1)==1)
-        panel.view.NextTree.onClick:Invoke();assert(panel.view.TreeTitle.text:find('未解锁',1,true))
+        panel.pools.SkillRows[2].view.Button.onClick:Invoke();assert(panel.view.TreeTitle.text:find('未解锁',1,true))
         panel.nodes[1].view.Button.onClick:Invoke();assert(not panel.view.Invest.interactable)
     end)
-    test('active choices survive cached reopen and learn through the real button',function()
+    test('profession switching and active learning use real buttons and survive cached reopen',function()
         local actor=data:GetPartyAt(0);growth:AddExperience(actor,40,'营火旁')
-        local first=actor.Growth:GetOfferAt(0);ui:Close('CharacterGrowth');assert(not Services.UI.IsWorldPaused)
+        local pending=actor.Growth.PendingCount;ui:Close('CharacterGrowth');assert(not Services.UI.IsWorldPaused)
         panel=ui:Open('CharacterGrowth',{demo=adapter});panel.view.SkillsTab.onClick:Invoke()
-        assert(actor.Growth:GetOfferAt(0)==first)
-        local commands=adapter.commands;panel.pools.SkillRows[1].view.Button.onClick:Invoke()
-        assert(actor.Growth:HasSkill(first) and adapter.commands==commands+1)
+        assert(actor.Growth.PendingCount==pending and actor.Growth.OfferCount==0)
+        local function click(command,id)
+            for _,widget in ipairs(panel.pools.SkillRows) do
+                if widget.row and widget.row.command==command and widget.row.id==id then assert(widget.view.Button.interactable);widget.view.Button.onClick:Invoke();return end
+            end
+            error('Missing learning button '..command..':'..tostring(id))
+        end
+        local commands=adapter.commands;click('select_course',101)
+        assert(actor.Growth.PendingCount==pending and not actor.Growth:HasSkill(101) and adapter.commands==commands)
+        assert(panel.view.Invest.interactable);panel.view.Invest.onClick:Invoke()
+        assert(actor.Growth:HasSkill(101) and actor.Growth.PendingCount==pending-1 and adapter.commands==commands+1)
+        click('choose_profession',nil);click('growth_profession',3);assert(actor.Growth.CurrentProfessionId==3 and not actor.Growth:HasSkill(403))
+        click('select_course',103);assert(panel.view.Invest.interactable);panel.view.Invest.onClick:Invoke()
+        assert(actor.Growth:HasSkill(101) and actor.Growth:HasSkill(103))
+        click('select_course',101);assert(panel.selectedCourse==101 and not panel.view.Invest.interactable)
         panel.view.HistoryTab.onClick:Invoke();assert(#panel.pools.HistoryRows>0)
         panel.view.Close.onClick:Invoke();assert(not adapter.growthOpen and not Services.UI.IsWorldPaused)
+    end)
+    test('atlas keeps the selected actor and returns to the same growth section',function()
+        panel=ui:Open('CharacterGrowth',{demo=adapter})
+        panel.view.Party3.onClick:Invoke();panel.view.SkillsTab.onClick:Invoke();panel.view.NextTree.onClick:Invoke()
+        local tree=panel.treeIndex;panel.view.Atlas.onClick:Invoke()
+        local atlas=ui.panels.SkillAtlas.ctrl
+        assert(atlas.actorIndex==2 and atlas.view.CloseText.text=='返回角色手记')
+        atlas.view.Close.onClick:Invoke();panel=ui.panels.CharacterGrowth.ctrl
+        assert(panel.visible and panel.actorIndex==2 and panel.tab=='Skills' and panel.skillMode=='talent' and panel.treeIndex==tree)
+        assert(Services.UI.IsWorldPaused and adapter.growthOpen)
+        panel.view.Close.onClick:Invoke();assert(not Services.UI.IsWorldPaused)
     end)
     test('complex story prefab binds art and choices; resolution is recorded and modal pause returns',function()
         assert(adventure:Visit(1));local story=ui:Open('StoryEvent',{demo=adapter})

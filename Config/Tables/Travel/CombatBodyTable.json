@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "name": "CombatBodyTable",
+  "description": "非人形战斗身体的通用多格占位，不赋予动物驯服或骑乘身份。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "min": 1
+    },
+    {
+      "name": "unitId",
+      "type": "int",
+      "ref": "CombatUnitTable"
+    },
+    {
+      "name": "footprintQ",
+      "type": "int[]"
+    },
+    {
+      "name": "footprintR",
+      "type": "int[]"
+    },
+    {
+      "name": "staticModel",
+      "type": "bool"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "unitId": 401,
+      "footprintQ": [
+        0,
+        1
+      ],
+      "footprintR": [
+        0,
+        0
+      ],
+      "staticModel": true
+    },
+    {
+      "id": 2,
+      "unitId": 402,
+      "footprintQ": [
+        0,
+        1,
+        0,
+        1
+      ],
+      "footprintR": [
+        0,
+        0,
+        1,
+        1
+      ],
+      "staticModel": true
+    }
+  ]
+}

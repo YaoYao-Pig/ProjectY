@@ -111,6 +111,84 @@
       "missionIds": [
         100
       ]
+    },
+    {
+      "id": 3,
+      "name": "莫琳",
+      "description": "莫琳摊开一封边角烧焦的求援信。她替渡灯互助会记账，也知道每个被抹掉的名字背后是谁。",
+      "townTemplateId": 1,
+      "actorTemplateId": 3,
+      "factionId": 2,
+      "recruitable": false,
+      "relationMin": -100,
+      "relationMax": 100,
+      "initialRelation": 0,
+      "dialogueIds": [
+        13
+      ],
+      "missionIds": [
+        300,
+        500
+      ]
+    },
+    {
+      "id": 4,
+      "name": "赫铎",
+      "description": "赫铎的手指沾着铜屑。他负责警钟的共鸣装置；账本上的铁件短缺，让钟和城外的驿路一起沉默。",
+      "townTemplateId": 2,
+      "actorTemplateId": 6,
+      "factionId": 3,
+      "recruitable": false,
+      "relationMin": -100,
+      "relationMax": 100,
+      "initialRelation": 0,
+      "dialogueIds": [
+        14
+      ],
+      "missionIds": [
+        400,
+        500
+      ]
+    },
+    {
+      "id": 5,
+      "name": "阿苇",
+      "description": "阿苇抱着旧披肩，白日替人递信，入夜回酒馆。她在火灾里活了下来，却不敢把见过的人写进证词。",
+      "townTemplateId": 1,
+      "actorTemplateId": 3,
+      "factionId": 2,
+      "recruitable": false,
+      "relationMin": -100,
+      "relationMax": 100,
+      "initialRelation": 0,
+      "dialogueIds": [
+        15
+      ],
+      "missionIds": [
+        300,
+        400,
+        500
+      ]
+    },
+    {
+      "id": 6,
+      "name": "塞维恩",
+      "description": "塞维恩是值守驿路的老卫队长。他不愿再替空白公文担责，正在寻找能让三方坐到一张桌前的人。",
+      "townTemplateId": 2,
+      "actorTemplateId": 6,
+      "factionId": 1,
+      "recruitable": false,
+      "relationMin": -100,
+      "relationMax": 100,
+      "initialRelation": 0,
+      "dialogueIds": [
+        16
+      ],
+      "missionIds": [
+        300,
+        400,
+        500
+      ]
     }
   ]
 }

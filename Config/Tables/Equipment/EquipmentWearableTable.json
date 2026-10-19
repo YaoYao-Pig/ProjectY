@@ -55,6 +55,13 @@
       "name": "rotation",
       "type": "float[]",
       "description": "相对挂点旋转 XYZ"
+    },
+    {
+      "name": "requirementId",
+      "type": "int",
+      "ref": "EquipmentRequirementTable",
+      "default": 46,
+      "description": "装配属性门槛；按不计装备加成的属性校验"
     }
   ],
   "rows": [
@@ -77,7 +84,8 @@
         0,
         0,
         0
-      ]
+      ],
+      "requirementId": 46
     },
     {
       "id": 52,
@@ -100,7 +108,8 @@
         0,
         0,
         0
-      ]
+      ],
+      "requirementId": 46
     },
     {
       "id": 53,
@@ -121,7 +130,8 @@
         0,
         0,
         0
-      ]
+      ],
+      "requirementId": 46
     },
     {
       "id": 54,
@@ -142,7 +152,8 @@
         0,
         0,
         0
-      ]
+      ],
+      "requirementId": 46
     },
     {
       "id": 55,
@@ -163,7 +174,8 @@
         0,
         0,
         0
-      ]
+      ],
+      "requirementId": 46
     },
     {
       "id": 56,
@@ -184,7 +196,8 @@
         0,
         0,
         0
-      ]
+      ],
+      "requirementId": 46
     },
     {
       "id": 57,
@@ -205,7 +218,8 @@
         0,
         0,
         0
-      ]
+      ],
+      "requirementId": 46
     }
   ]
 }

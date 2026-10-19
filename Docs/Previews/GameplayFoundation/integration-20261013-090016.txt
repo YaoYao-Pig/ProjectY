@@ -1,0 +1,44 @@
+fixture_directory=C:\Users\yyz\AppData\Local\Temp\project-y-foundation-90d98d8b745d4a918f3afecf89ec5614
+PASS Tools/Tests/growth_ui_integration.lua
+PASS overview reads real attributes and trait tags; attribute button mutates once
+PASS talent nodes and edges use config positions; selection and investment reach real rules
+PASS profession switching and active learning use real buttons and survive cached reopen
+PASS complex story prefab binds art and choices; resolution is recorded and modal pause returns
+PASS simple event stays in map; in-game journal displays tagged results
+PASS Tools/Tests/battle_hud_integration.lua
+PASS configured framework prefabs show real resources and blank icons
+PASS button selection, resource refresh and cached reopen release their listeners
+PASS end-turn and automatic/manual AI controls use real turn ownership
+PASS hide closes hover state and returns all battle subscriptions
+FAIL Tools/Tests/inventory_integration.lua
+XLua.LuaException: Tools/Tests/inventory_integration.lua:122: 属性不足，无法装备：力量 2 / 4（不计装备加成）
+stack traceback:
+	[C]: in function 'assert'
+	Tools/Tests/inventory_integration.lua:122: in local 'run'
+	Tools/Tests/inventory_integration.lua:8: in upvalue 'test'
+	Tools/Tests/inventory_integration.lua:119: in function <Tools/Tests/inventory_integration.lua:14>
+	[C]: in function 'xpcall'
+	Tools/Tests/inventory_integration.lua:14: in main chunk
+stack traceback:
+	[C]: in function 'error'
+	Tools/Tests/inventory_integration.lua:136: in main chunk
+  at XLua.LuaEnv.ThrowExceptionFromError (System.Int32 oldTop) [0x00040] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:441 
+  at XLua.LuaEnv.DoString (System.Byte[] chunk, System.String chunkName, XLua.LuaTable env) [0x00078] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:274 
+  at XLua.LuaEnv.DoString (System.String chunk, System.String chunkName, XLua.LuaTable env) [0x0000d] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:288 
+  at MCPDynamicCode.Execute () [0x0015e] in <14285cb4c2fb487b8072ab3b9e4a9012>:0 
+FAIL Tools/Tests/containers_integration.lua
+XLua.LuaException: Tools/Tests/containers_integration.lua:158: Tools/Tests/containers_integration.lua:54: Exploration skill bar must expose container targets
+stack traceback:
+	[C]: in function 'assert'
+	Tools/Tests/containers_integration.lua:54: in local 'run'
+	Tools/Tests/containers_integration.lua:12: in upvalue 'test'
+	Tools/Tests/containers_integration.lua:38: in function <Tools/Tests/containers_integration.lua:13>
+	[C]: in function 'xpcall'
+	Tools/Tests/containers_integration.lua:13: in main chunk
+stack traceback:
+	[C]: in function 'error'
+	Tools/Tests/containers_integration.lua:158: in main chunk
+  at XLua.LuaEnv.ThrowExceptionFromError (System.Int32 oldTop) [0x00040] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:441 
+  at XLua.LuaEnv.DoString (System.Byte[] chunk, System.String chunkName, XLua.LuaTable env) [0x00078] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:274 
+  at XLua.LuaEnv.DoString (System.String chunk, System.String chunkName, XLua.LuaTable env) [0x0000d] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:288 
+  at MCPDynamicCode.Execute () [0x0015e] in <14285cb4c2fb487b8072ab3b9e4a9012>:0 

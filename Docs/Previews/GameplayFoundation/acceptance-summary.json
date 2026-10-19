@@ -1,0 +1,79 @@
+{
+  "date": "2026-10-13",
+  "integrationFiles": {
+    "Tools/Tests/battle_preparation_integration.lua": {
+      "status": "PASS",
+      "evidence": "integration-20261013-085745.txt"
+    },
+    "Tools/Tests/equipment_catalyst_integration.lua": {
+      "status": "PASS",
+      "evidence": "integration-20261013-085745.txt"
+    },
+    "Tools/Tests/growth_integration.lua": {
+      "status": "PASS",
+      "evidence": "integration-20261013-090156.txt"
+    },
+    "Tools/Tests/adventure_integration.lua": {
+      "status": "PASS",
+      "evidence": "integration-20261013-090156.txt"
+    },
+    "Tools/Tests/equipment_integration.lua": {
+      "status": "PASS",
+      "evidence": "integration-20261013-085853.txt"
+    },
+    "Tools/Tests/equipment_melee_integration.lua": {
+      "status": "PASS",
+      "evidence": "integration-20261013-085853.txt"
+    },
+    "Tools/Tests/growth_ui_integration.lua": {
+      "status": "PASS",
+      "evidence": "integration-20261013-090016.txt"
+    },
+    "Tools/Tests/battle_hud_integration.lua": {
+      "status": "PASS",
+      "evidence": "integration-20261013-090016.txt"
+    },
+    "Tools/Tests/inventory_integration.lua": {
+      "status": "PASS",
+      "evidence": "integration-20261013-090337.txt"
+    },
+    "Tools/Tests/containers_integration.lua": {
+      "status": "PASS",
+      "evidence": "integration-20261013-090337.txt"
+    },
+    "Tools/Tests/area_battle_integration.lua": {
+      "status": "PASS",
+      "evidence": "integration-20261013-091951.txt"
+    },
+    "Tools/Tests/construction_integration.lua": {
+      "status": "PASS",
+      "evidence": "integration-20261013-090516.txt"
+    },
+    "Tools/Tests/game_effects_integration.lua": {
+      "status": "PASS",
+      "evidence": "integration-20261013-090516.txt"
+    },
+    "Tools/Tests/character_integration.lua": {
+      "status": "PASS",
+      "evidence": "Art\\PawnCustomization\\Integration\\gameplay-validation.json",
+      "validator": "CharacterIntegrationValidation.Run; v4 migration also asserted"
+    },
+    "Tools/Tests/narrative_integration.lua": {
+      "status": "PASS",
+      "evidence": "integration-20261013-093953.txt"
+    },
+    "Tools/Tests/shop_integration.lua": {
+      "status": "PASS",
+      "evidence": "integration-20261013-094107.txt"
+    },
+    "Tools/Tests/gameplay_foundation_save_integration.lua": {
+      "status": "PASS",
+      "evidence": "integration-20261013-094115.txt"
+    }
+  },
+  "play": "PASS",
+  "playCommands": 81,
+  "playFinalState": "PASS",
+  "editorRestored": true,
+  "playerBuildRun": false
+}

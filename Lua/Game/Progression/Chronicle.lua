@@ -25,13 +25,24 @@ function Chronicle:Record(kind, actor, title, detail, location, shared, eventId,
     values.detail = Chronicle.Format(detail, values)
     self.data:Record(kind,title,Chronicle.Format(template.template,values),location,eventId or 0,choiceId or 0,actor and actor.Id or 0,shared == true)
 end
+function Chronicle:RecordPair(kind,actor,other,title,detail,location,delta)
+    assert(actor and other and actor.Id~=other.Id,'A shared experience needs two different actors')
+    local template=assert(self.templates[kind],'Unknown log kind: '..kind)
+    local values=self:Values(actor,location,title,detail)
+    values.other=self.stats:Template(other).name
+    values.companions=values.other
+    values.detail=Chronicle.Format(detail,values)
+    self.data:RecordPair(kind,title,Chronicle.Format(template.template,values),location,0,0,actor.Id,other.Id,delta or 0)
+end
 function Chronicle:Rows(actorId)
     local rows = {}
     for i = self.data.JournalCount-1, 0, -1 do
         local entry = self.data:GetJournalAt(i)
         if not actorId or entry:Involves(actorId) then
             local template = assert(self.templates[entry.Kind])
-            rows[#rows+1] = {sequence=entry.Sequence,title=entry.Title,body=entry.Body,location=entry.Location,label=template.label,color=template.color}
+            local minute=math.floor(entry.Minutes%1440)
+            rows[#rows+1] = {sequence=entry.Sequence,title=entry.Title,body=entry.Body,location=entry.Location,label=template.label,color=template.color,
+                date=string.format('第%d日 %02d:%02d',entry.Day,math.floor(minute/60),minute%60),subjectId=entry.SubjectId,objectId=entry.ObjectId,relationDelta=entry.RelationDelta}
         end
     end
     return rows

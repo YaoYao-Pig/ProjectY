@@ -26,7 +26,8 @@
         "ammo",
         "module",
         "wearable",
-        "material"
+        "material",
+        "consumable"
       ]
     },
     {
@@ -541,6 +542,1398 @@
         0
       ],
       "iconPadding": 1.15
+    },
+    {
+      "id": 91,
+      "name": "急救包",
+      "kind": "consumable",
+      "assetId": 401,
+      "iconPath": "Assets/DynamicAsset/AssetExpansion202610/Items/Icons/AE_Item_SurgeonSatchel.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "file",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.15
+    },
+    {
+      "id": 92,
+      "name": "备战药剂",
+      "kind": "consumable",
+      "assetId": 402,
+      "iconPath": "Assets/DynamicAsset/AssetExpansion202610/Items/Icons/AE_Item_VioletVigil.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "file",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.15
+    },
+    {
+      "id": 93,
+      "name": "奥术触媒适配器",
+      "kind": "rune",
+      "assetId": 3,
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_12.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "file",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.15
+    },
+    {
+      "id": 94,
+      "name": "旅行火炬",
+      "kind": "material",
+      "assetId": 403,
+      "iconPath": "Assets/DynamicAsset/AssetExpansion202610/ShipwreckProps/Icons/SWP_CabinLantern.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "file",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.15
+    },
+    {
+      "id": 501,
+      "name": "日轮聚焦冠",
+      "kind": "rune",
+      "assetId": 501,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_501.png",
+      "width": 2,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 502,
+      "name": "余烬灯笼冠",
+      "kind": "rune",
+      "assetId": 502,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_502.png",
+      "width": 2,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 503,
+      "name": "雷叉导流冠",
+      "kind": "rune",
+      "assetId": 503,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_503.png",
+      "width": 2,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 504,
+      "name": "潮汐风铃冠",
+      "kind": "rune",
+      "assetId": 504,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_504.png",
+      "width": 2,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 505,
+      "name": "蛇胆药壶冠",
+      "kind": "rune",
+      "assetId": 505,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_505.png",
+      "width": 2,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 506,
+      "name": "荆棘鹿角冠",
+      "kind": "rune",
+      "assetId": 506,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_506.png",
+      "width": 2,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 507,
+      "name": "棱镜折光扇",
+      "kind": "rune",
+      "assetId": 507,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_507.png",
+      "width": 2,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 508,
+      "name": "远望仪冠",
+      "kind": "rune",
+      "assetId": 508,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_508.png",
+      "width": 2,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 509,
+      "name": "彗星矛晶冠",
+      "kind": "rune",
+      "assetId": 509,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_509.png",
+      "width": 2,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 510,
+      "name": "静谧悬环冠",
+      "kind": "rune",
+      "assetId": 510,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_510.png",
+      "width": 2,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 511,
+      "name": "陀螺稳持环",
+      "kind": "rune",
+      "assetId": 511,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_511.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 512,
+      "name": "鱼骨散热夹",
+      "kind": "rune",
+      "assetId": 512,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_512.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 513,
+      "name": "伸缩测距轨",
+      "kind": "rune",
+      "assetId": 513,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_513.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 514,
+      "name": "双囊鼓风夹",
+      "kind": "rune",
+      "assetId": 514,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_514.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 515,
+      "name": "测绘星盘夹",
+      "kind": "rune",
+      "assetId": 515,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_515.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 516,
+      "name": "复调音管夹",
+      "kind": "rune",
+      "assetId": 516,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_516.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 517,
+      "name": "铅坠平衡夹",
+      "kind": "rune",
+      "assetId": 517,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_517.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 518,
+      "name": "漏沙节拍夹",
+      "kind": "rune",
+      "assetId": 518,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_518.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 519,
+      "name": "双联喷口",
+      "kind": "module",
+      "assetId": 519,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_519.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 520,
+      "name": "蓄势飞轮",
+      "kind": "module",
+      "assetId": 520,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_520.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 521,
+      "name": "冲锤活塞",
+      "kind": "module",
+      "assetId": 521,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_521.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 522,
+      "name": "棘齿割轮",
+      "kind": "module",
+      "assetId": 522,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_522.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 523,
+      "name": "熔炉脊匣",
+      "kind": "module",
+      "assetId": 523,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_523.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 524,
+      "name": "锚钩牵引架",
+      "kind": "module",
+      "assetId": 524,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_524.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 525,
+      "name": "四叶导流盘",
+      "kind": "module",
+      "assetId": 525,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_525.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 526,
+      "name": "水银回旋舱",
+      "kind": "module",
+      "assetId": 526,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_526.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 527,
+      "name": "轨道法印",
+      "kind": "rune",
+      "assetId": 527,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_527.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 528,
+      "name": "铭文熏炉",
+      "kind": "rune",
+      "assetId": 528,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_528.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 529,
+      "name": "晶钥插匣",
+      "kind": "rune",
+      "assetId": 529,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_529.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 530,
+      "name": "雨羽触媒",
+      "kind": "rune",
+      "assetId": 530,
+      "iconPath": "Assets/DynamicAsset/EquipmentExpansion202610/Icons/Item_530.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 601,
+      "name": "潮汐引雷杖",
+      "kind": "weapon",
+      "assetId": 601,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_601.png",
+      "width": 1,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 602,
+      "name": "灰烬司炉杖",
+      "kind": "weapon",
+      "assetId": 602,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_602.png",
+      "width": 1,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 603,
+      "name": "回枝医者杖",
+      "kind": "weapon",
+      "assetId": 603,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_603.png",
+      "width": 1,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 604,
+      "name": "镂甲线膛枪",
+      "kind": "weapon",
+      "assetId": 604,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_604.png",
+      "width": 2,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        100,
+        65
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 605,
+      "name": "钟摆守望枪",
+      "kind": "weapon",
+      "assetId": 605,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_605.png",
+      "width": 2,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        100,
+        65
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 606,
+      "name": "暮线猎杀枪",
+      "kind": "weapon",
+      "assetId": 606,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_606.png",
+      "width": 2,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        100,
+        65
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 607,
+      "name": "仪典断咒剑",
+      "kind": "weapon",
+      "assetId": 607,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_607.png",
+      "width": 1,
+      "height": 3,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 608,
+      "name": "赤线采血剑",
+      "kind": "weapon",
+      "assetId": 608,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_608.png",
+      "width": 1,
+      "height": 3,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 609,
+      "name": "荆冠赦令剑",
+      "kind": "weapon",
+      "assetId": 609,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_609.png",
+      "width": 1,
+      "height": 3,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 610,
+      "name": "钳口压锋大剑",
+      "kind": "weapon",
+      "assetId": 610,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_610.png",
+      "width": 2,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 611,
+      "name": "风车巡阵大剑",
+      "kind": "weapon",
+      "assetId": 611,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_611.png",
+      "width": 2,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 612,
+      "name": "残烛守誓大剑",
+      "kind": "weapon",
+      "assetId": 612,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_612.png",
+      "width": 2,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 613,
+      "name": "钉城破壁巨剑",
+      "kind": "weapon",
+      "assetId": 613,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_613.png",
+      "width": 2,
+      "height": 5,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 614,
+      "name": "寒钟震霜巨剑",
+      "kind": "weapon",
+      "assetId": 614,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_614.png",
+      "width": 2,
+      "height": 5,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 615,
+      "name": "赤潮汲流巨剑",
+      "kind": "weapon",
+      "assetId": 615,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_615.png",
+      "width": 2,
+      "height": 5,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 616,
+      "name": "蛛纹缚足弓",
+      "kind": "weapon",
+      "assetId": 616,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_616.png",
+      "width": 1,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 617,
+      "name": "白鹭分羽弓",
+      "kind": "weapon",
+      "assetId": 617,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_617.png",
+      "width": 1,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 618,
+      "name": "巡墓萃毒弓",
+      "kind": "weapon",
+      "assetId": 618,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_618.png",
+      "width": 1,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 619,
+      "name": "窑工回火斧",
+      "kind": "weapon",
+      "assetId": 619,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_619.png",
+      "width": 1,
+      "height": 3,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 620,
+      "name": "断层寻脉镐",
+      "kind": "weapon",
+      "assetId": 620,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_620.png",
+      "width": 2,
+      "height": 3,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 701,
+      "name": "蒸汽蒸馏冠",
+      "kind": "rune",
+      "assetId": 701,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_701.png",
+      "width": 2,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 702,
+      "name": "逆燃熄火冠",
+      "kind": "rune",
+      "assetId": 702,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_702.png",
+      "width": 2,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 703,
+      "name": "净秽孔雀冠",
+      "kind": "rune",
+      "assetId": 703,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_703.png",
+      "width": 2,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 704,
+      "name": "蜜髓啄喙冠",
+      "kind": "rune",
+      "assetId": 704,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_704.png",
+      "width": 2,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 705,
+      "name": "纺血绕线夹",
+      "kind": "rune",
+      "assetId": 705,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_705.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 706,
+      "name": "棘藜解毒夹",
+      "kind": "rune",
+      "assetId": 706,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_706.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 707,
+      "name": "风眼护持夹",
+      "kind": "rune",
+      "assetId": 707,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_707.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 708,
+      "name": "回春飞锤",
+      "kind": "module",
+      "assetId": 708,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_708.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 709,
+      "name": "断咒铡刀架",
+      "kind": "module",
+      "assetId": 709,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_709.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 710,
+      "name": "沸血压舱器",
+      "kind": "module",
+      "assetId": 710,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_710.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 711,
+      "name": "雨痕导电触媒",
+      "kind": "rune",
+      "assetId": 711,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_711.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 712,
+      "name": "赦毒骨铃触媒",
+      "kind": "rune",
+      "assetId": 712,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_712.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 713,
+      "name": "裂伤描线导轨",
+      "kind": "module",
+      "assetId": 713,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_713.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 714,
+      "name": "解甲楔形导轨",
+      "kind": "module",
+      "assetId": 714,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_714.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 715,
+      "name": "回声分叉导轨",
+      "kind": "module",
+      "assetId": 715,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_715.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 716,
+      "name": "末程刻度导轨",
+      "kind": "module",
+      "assetId": 716,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_716.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 717,
+      "name": "盐晶止血刃夹",
+      "kind": "module",
+      "assetId": 717,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_717.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 718,
+      "name": "裂甲铆钉刃夹",
+      "kind": "module",
+      "assetId": 718,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_718.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 719,
+      "name": "雾水淬锋刃夹",
+      "kind": "module",
+      "assetId": 719,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_719.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 720,
+      "name": "猎毒刻槽刃夹",
+      "kind": "module",
+      "assetId": 720,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_720.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 721,
+      "name": "转施符文石",
+      "kind": "rune",
+      "assetId": 3,
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_12.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "file",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.15
+    },
+    {
+      "id": 730,
+      "name": "缠革稳握柄",
+      "kind": "module",
+      "assetId": 730,
+      "iconPath": "Assets/DynamicAsset/SocketExpansion202610/Icons/Item_730.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 731,
+      "name": "护手织带",
+      "kind": "module",
+      "assetId": 731,
+      "iconPath": "Assets/DynamicAsset/SocketExpansion202610/Icons/Item_731.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 732,
+      "name": "破势配重",
+      "kind": "module",
+      "assetId": 732,
+      "iconPath": "Assets/DynamicAsset/SocketExpansion202610/Icons/Item_732.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 733,
+      "name": "汲血配重",
+      "kind": "module",
+      "assetId": 733,
+      "iconPath": "Assets/DynamicAsset/SocketExpansion202610/Icons/Item_733.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 734,
+      "name": "远猎弓臂",
+      "kind": "module",
+      "assetId": 734,
+      "iconPath": "Assets/DynamicAsset/SocketExpansion202610/Icons/Item_734.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 735,
+      "name": "强力弓臂",
+      "kind": "module",
+      "assetId": 735,
+      "iconPath": "Assets/DynamicAsset/SocketExpansion202610/Icons/Item_735.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 736,
+      "name": "校准弓弦",
+      "kind": "module",
+      "assetId": 736,
+      "iconPath": "Assets/DynamicAsset/SocketExpansion202610/Icons/Item_736.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 737,
+      "name": "潮线弓弦",
+      "kind": "module",
+      "assetId": 737,
+      "iconPath": "Assets/DynamicAsset/SocketExpansion202610/Icons/Item_737.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 738,
+      "name": "破甲枪口",
+      "kind": "module",
+      "assetId": 738,
+      "iconPath": "Assets/DynamicAsset/SocketExpansion202610/Icons/Item_738.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 739,
+      "name": "分流枪口",
+      "kind": "module",
+      "assetId": 739,
+      "iconPath": "Assets/DynamicAsset/SocketExpansion202610/Icons/Item_739.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 740,
+      "name": "测距枪托",
+      "kind": "module",
+      "assetId": 740,
+      "iconPath": "Assets/DynamicAsset/SocketExpansion202610/Icons/Item_740.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
+    },
+    {
+      "id": 741,
+      "name": "复进枪托",
+      "kind": "module",
+      "assetId": 741,
+      "iconPath": "Assets/DynamicAsset/SocketExpansion202610/Icons/Item_741.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        22,
+        -10
+      ],
+      "iconPadding": 1.18
     }
   ]
 }

@@ -3,6 +3,8 @@ local System = require('Core.LuaSystem')
 local Signal = require('Core.Signal')
 local Hex = require('Game.Map.HexGrid')
 local Board = require('Game.Battle.BattleBoard')
+local Trajectory = require('Game.Battle.SkillTrajectory')
+local Projectiles = require('Game.Battle.ProjectileCombat')
 local Battle = Class('BattleSystem', System)
 function Battle:OnInit(context)
     System.OnInit(self, context)
@@ -15,11 +17,28 @@ function Battle:OnInit(context)
     self.skills = config:GetTable('CombatSkillTable')
     self.effects = config:GetTable('CombatEffectTable')
     self.encounters = config:GetTable('CombatEncounterTable')
+    self.preparationRules = config:GetTable('BattlePreparationTable'):Get(1)
+    self.consumables = config:GetTable('ConsumableTable')
     self.Changed = Signal(context.log)
-    self.gameEffects=require('Game.Battle.GameEffects').New(self.stats,self.effects,function(...) self:Emit(...) end)
+    self.gameEffects=require('Game.Battle.GameEffects').New(self.stats,self.effects,function(...) self:Emit(...) end,
+        {roll=function()return self.data:RollPercent()end,minutes=function()return adventure.Narrative.Minutes end})
     self.gameEffects:Validate()
     local construction=config:GetTable('ConstructionTable')
-    for _, row in ipairs(self.skills:All()) do assert(#row.effectIds > 0 or construction:Find(row.id), 'Skill needs effects: ' .. row.id) end
+    for _, row in ipairs(self.skills:All()) do
+        assert(#row.effectIds > 0 or construction:Find(row.id) or row.id==501 or row.id==503, 'Skill needs effects: ' .. row.id)
+        Trajectory.Description(row.trajectory)
+        assert(row.trajectory=='sight' or row.target=='enemy' or row.target=='ally','Projectile skill needs an actor target: '..row.id)
+    end
+    for _,row in ipairs(self.consumables:All()) do
+        local skill=self.skills:Get(row.skillId)
+        assert(self.stats.equipment.items:Get(row.id).kind=='consumable','Consumable needs a consumable inventory item: '..row.id)
+        assert(skill.skillKind=='item' and skill.target=='self' and skill.shots==1 and skill.ammoPerShot==0 and skill.cooldownTurns==0,
+            'Consumable skills must be self effects without ammo or cooldown: '..row.id)
+        for _,id in ipairs(skill.effectIds) do
+            local effect=self.effects:Get(id)
+            assert(effect.kind=='heal' or effect.kind=='modifier' or effect.kind=='apply_buff','Consumable must heal, modify attributes or apply a buff: '..row.id)
+        end
+    end
 end
 function Battle:Units()
     local units = {}
@@ -38,7 +57,8 @@ end
 function Battle:Active() return assert(self:FindUnit(self.data.ActiveId), 'No active battle unit') end
 function Battle:Emit(kind, message, sourceId, targetId, amount, target, attackHit, impact)
     self.data:AddLog(message)
-    self.Changed:Emit({kind = kind, sourceId = sourceId, targetId = targetId, amount = amount,target=target,attackHit=attackHit==true,impact=impact})
+    self.Changed:Emit({kind = kind, sourceId = sourceId, targetId = targetId, amount = amount,target=target,attackHit=attackHit==true,impact=impact,
+        hpBefore=impact and impact.hpBefore,hpAfter=impact and impact.hpAfter,periodic=impact and impact.periodic==true})
 end
 function Battle:Start(encounterId, party, seed)
     local encounter = self.encounters:Get(encounterId)
@@ -51,15 +71,18 @@ function Battle:Start(encounterId, party, seed)
     self.board = board
     for i, unit in ipairs(party) do self.data:AddUnit(unit, 1, -board.radius, i - 1) end
     local appearanceGroup=self.appearances:Group(encounter.appearancePoolId,(seed ~ (encounterId*65537)) & 0xffffffff)
+    local deployment=require('Game.Battle.BodyFootprints').Deploy(board,encounter,self.stats.animals)
     for i, templateId in ipairs(encounter.enemyIds) do
-        local unit = self.data:AddEnemy(100 + i, templateId, board.radius, 1 - i)
+        CS.ProjectY.Data.EquipmentCombatState.RemoveActor(self.stats.equipment.data,100+i)
+        local unit = self.data:AddEnemy(100 + i, templateId, deployment[i].q, deployment[i].r)
         local species=self.stats.animals.byUnit[templateId]
         if species then unit:InitializeAnimal(species.id,(seed ~ unit.Id) & 0xffffffff)
-        else self.appearances:Assign(unit,appearanceGroup) end
+        elseif not self.stats.animals:IsStaticBody(unit) then self.appearances:Assign(unit,appearanceGroup) end
+        self.context.systems:Get('Equipment'):InitializeEnemy(unit)
         unit:SetMaxHP(self.stats:MaximumHP(unit)); unit:Restore()
     end
     self:Emit('battle_started', encounter.name)
-    self:NewRound()
+    self:BeginDeployment()
 end
 -- 地牢保持双方真实位置与角色实例；首版只接单层地牢，不折叠桥上/桥下坐标。
 function Battle:StartArea(encounterId, board, party, enemies)
@@ -80,7 +103,30 @@ function Battle:StartArea(encounterId, board, party, enemies)
     self.data:SetRandomSeed((board.area.seed + enemies[1].Id * 1009)%4294967296)
     for _, row in ipairs(party) do self.data:AddUnit(row.actor, 1, row.q, row.r) end
     for _, actor in ipairs(enemies) do self.data:AddUnit(actor, 2, actor.Q, actor.R) end
-    self:Emit('battle_started', encounter.name); self:NewRound()
+    self:Emit('battle_started', encounter.name); self:BeginDeployment()
+end
+function Battle:TurnOrder(playersOnly)
+    local order={}
+    for _,unit in ipairs(self:Units()) do
+        if unit.HP>0 and (not playersOnly or unit.Team==1) then order[#order+1]=unit end
+    end
+    table.sort(order,function(a,b)
+        local sa,sb=self.stats:Get(a,'speed'),self.stats:Get(b,'speed')
+        if sa==sb then return a.Id<b.Id end
+        return sa>sb
+    end)
+    return order
+end
+function Battle:BeginDeployment()
+    self.board.deploymentOrigins={}
+    local order=self:TurnOrder(true)
+    self.data:BeginDeployment()
+    for _,unit in ipairs(order) do
+        self.board.deploymentOrigins[unit.Id]={q=unit.Q,r=unit.R}
+        self.data:AddTurn(unit.Id)
+    end
+    self:Emit('deployment_started','战前部署：调整站位，使用职业准备技能或道具。')
+    self:BeginTurn(0)
 end
 function Battle:NewRound()
     if self.data.Round>0 then
@@ -90,13 +136,7 @@ function Battle:NewRound()
     if self.data.Round >= self.data.MaxRounds then
         self.data:Finish('draw'); self:ClearBattleEffects();self:Emit('battle_ended', '战斗时间耗尽，队伍撤回。'); return
     end
-    local order = {}
-    for _, unit in ipairs(self:Units()) do if unit.HP > 0 then order[#order + 1] = unit end end
-    table.sort(order, function(a, b)
-        local sa, sb = self.stats:Get(a, 'speed'), self.stats:Get(b, 'speed')
-        if sa == sb then return a.Id < b.Id end
-        return sa > sb
-    end)
+    local order = self:TurnOrder(false)
     self.data:BeginRound()
     for _, unit in ipairs(order) do self.data:AddTurn(unit.Id) end
     self:BeginTurn(0)
@@ -104,11 +144,16 @@ end
 function Battle:BeginTurn(index)
     self.data:SelectTurn(index)
     local unit = self:Active()
-    unit:BeginTurn(self.stats:Template(unit).actionPoints)
-    self.gameEffects:TickActor(unit,'turn_start')
+    local skipped=self.data.Phase=='combat' and self.stats.buffs:Skipping(unit)
+    if self.data.Phase=='deployment' then unit:BeginDeploymentTurn(self.stats:Template(unit).actionPoints)
+    else
+        unit:BeginTurn(self.stats:Template(unit).actionPoints)
+        self.gameEffects:TickActor(unit,'turn_start')
+    end
     if self:CheckWinner() then return end
     if unit.HP==0 then self:AdvanceTurn();return end
-    self:Emit('turn_started', self.stats:Template(unit).name .. ' 行动', unit.Id)
+    if skipped then self:Emit('turn_skipped',self.stats:Template(unit).name..' 因「'..skipped.name..'」跳过行动',unit.Id);self:EndTurn();return end
+    self:Emit('turn_started', self.stats:Template(unit).name .. (self.data.Phase=='deployment' and ' 部署' or ' 行动'), unit.Id)
 end
 function Battle:CheckWinner()
     local alive = {[1] = 0, [2] = 0}
@@ -129,15 +174,18 @@ function Battle:ClearBattleEffects()
 end
 function Battle:ApplyEffect(effectId,source,target)
     local ok,reason=self.gameEffects:Apply(effectId,source,target)
-    if ok and self.data.Round>0 and self.data.Winner=='' then
-        if not self:CheckWinner() and self:Active().HP==0 then self:AdvanceTurn() end
+    if ok and self.data.Phase~='idle' and self.data.Winner=='' then
+        if not self:CheckWinner() then
+            if self:Active().HP==0 then self:AdvanceTurn()
+            elseif self.data.Phase=='combat' and self.stats.buffs:Skipping(self:Active()) then self:EndTurn() end
+        end
     end
     return ok,reason
 end
 function Battle:EndTurn()
     if self.data.Winner ~= '' then return false, '战斗已经结束' end
     local unit = self:Active()
-    self.gameEffects:TickActor(unit,'turn_end')
+    if self.data.Phase=='combat' then self.gameEffects:TickActor(unit,'turn_end') end
     self:Emit('turn_ended', self.stats:Template(unit).name .. ' 结束行动', unit.Id)
     if self:CheckWinner() then return true end
     self:AdvanceTurn();return true
@@ -159,29 +207,42 @@ function Battle:Occupied(exceptId)
     end
     return occupied
 end
+function Battle:ShotOccupancy(source,target)
+    if self.board.shotOccupancy then return self.board.shotOccupancy(source.Id,target and target.Id) end
+    local occupied=self:Occupied(source.Id)
+    if target then for key,value in pairs(occupied) do if value==target then occupied[key]=nil end end end
+    return occupied
+end
 function Battle:Reachable()
     if self.data.Winner ~= '' then return {} end
     local unit = self:Active(); local template = self.stats:Template(unit)
-    if unit.Moved or unit.AP < template.moveCost then return {} end
+    if self.data.Phase=='combat' and self.stats.buffs:Skipping(unit) then return {} end
+    local movement=CS.ProjectY.Data.BattleMovement
+    local remaining=movement.Remaining(unit,self.stats.animals:MoveRange(unit,template))
+    if remaining==0 or movement.Spent(unit)==0 and unit.AP<template.moveCost then return {} end
     local occupied=self:Occupied(unit.Id)
-    local cells = self.board:Search(unit.Q, unit.R, occupied, self.stats.animals:MoveRange(unit,template),function(cell)
+    local origin=self.data.Phase=='deployment' and assert(self.board.deploymentOrigins[unit.Id],'Missing deployment origin')
+    local cells,distance = self.board:Search(unit.Q, unit.R, occupied, remaining,function(cell)
+        if origin and Hex.Distance(origin.q,origin.r,cell.q,cell.r)>self.preparationRules.deploymentRadius then return false end
         return self.stats.animals:CanPlace(unit,self.board,cell.q,cell.r,occupied,unit.Team==1 and self.board.allowed or nil)
     end)
     local result = {}
     for _, cell in ipairs(cells) do if cell.q ~= unit.Q or cell.r ~= unit.R then result[#result + 1] = cell end end
-    return result
+    return result,distance
 end
 function Battle:TryMove(q, r)
     Hex.CheckCoordinate(q, r)
-    for _, cell in ipairs(self:Reachable()) do
+    local cells,distance=self:Reachable()
+    for _, cell in ipairs(cells) do
         if cell.q == q and cell.r == r then
             local unit = self:Active()
-            unit:Move(q, r, self.stats:Template(unit).moveCost)
+            local template=self.stats:Template(unit)
+            CS.ProjectY.Data.BattleMovement.Move(unit,q,r,template.moveCost,distance[cell],self.stats.animals:MoveRange(unit,template))
             self:Emit('moved', self.stats:Template(unit).name .. ' 移动', unit.Id)
             return true
         end
     end
-    return false, '无法移动到这里：检查距离、占格、行动点和本回合移动次数'
+    return false, '无法移动到这里：检查剩余移动距离、占格、行动点及是否已施放技能'
 end
 function Battle:SkillIds(actor)
     local ids=self.stats.animals:AddSkills(actor,self.stats.equipment:SkillIds(actor,self.stats:Template(actor)))
@@ -191,11 +252,34 @@ function Battle:SkillIds(actor)
     end
     return ids
 end
-function Battle:Skill(actor,skillId) return self.stats.equipment:Skill(actor,skillId,self.stats) end
+function Battle:Skill(actor,skillId)
+    return self.stats.buffs:ApplySkillModifiers(actor,self.stats.equipment:Skill(actor,skillId,self.stats))
+end
+function Battle:ShotPreview(source,target,skill)
+    local preview=Projectiles.Profile(self,source,skill,assert(self.board:Find(target.Q,target.R)),nil,target)
+    return {id=target.Id,hitChance=preview.hitChance,interceptChance=preview.interceptChance,blockerCount=preview.blockerCount,
+        friendlyRisk=preview.friendlyRisk,description=preview.description}
+end
+function Battle:ActionBudget(skill)
+    if self.data.Winner ~= '' then return false, '战斗已经结束' end
+    local source=self:Active()
+    local blocked=self.data.Phase=='combat' and self.stats.buffs:Skipping(source)
+    if blocked then return false,'受到「'..blocked.name..'」影响，无法行动' end
+    local context=self.data.Phase=='deployment' and 'preparation' or 'battle'
+    if not require('Game.Battle.SkillContext')(skill,context) then
+        return false,self.data.Phase=='deployment' and '部署回合只能使用准备技能和道具' or '此技能不能在正式战斗中使用'
+    end
+    if skill.action == 'main' and source.MainUsed then return false, '本回合主要行动已使用' end
+    if source.AP < skill.cost then return false, '行动点不足' end
+    if skill.cooldownTurns>0 and source:GetCooldown(skill.id)>0 then return false,'技能冷却中：'..source:GetCooldown(skill.id) end
+    local allowed,reason=self.stats.equipment:CheckSkillEquipment(source,skill,self.stats)
+    if not allowed then return false,reason end
+    return self.stats.equipment:CheckAmmo(source,skill)
+end
 function Battle:SkillBudget(skillId)
     if self.data.Winner ~= '' then return false, '战斗已经结束' end
     local source=self:Active();local skill=self:Skill(source,skillId)
-    if not require('Game.Battle.SkillContext')(skill,'battle') then return false,'此技能不能在战斗中使用' end
+    if skill.skillKind=='item' then return false,'请从道具栏使用消耗品' end
     local owns = false
     for _, id in ipairs(self:SkillIds(source)) do if id == skillId then owns = true; break end end
     if not owns then return false, '角色没有这个技能' end
@@ -203,11 +287,39 @@ function Battle:SkillBudget(skillId)
     if cavalry and (not source.MountedAnimal or source.MountedAnimal.AnimalSpeciesId~=cavalry.speciesId) then
         return false,'需要骑乘'..self.stats.animals.species:Get(cavalry.speciesId).name
     end
-    if skill.action == 'main' and source.MainUsed then return false, '本回合主要行动已使用' end
-    if source.AP < skill.cost then return false, '行动点不足' end
-    if skill.cooldownTurns>0 and source:GetCooldown(skillId)>0 then return false,'技能冷却中：'..source:GetCooldown(skillId) end
+    local allowed,reason=self:ActionBudget(skill)
+    if not allowed then return false,reason end
     if self.construction and self.construction.definitions:Find(skillId) then return self.construction:Budget(source,skillId) end
-    return self.stats.equipment:CheckAmmo(source,skill)
+    return true
+end
+function Battle:CanUseItem(itemId)
+    local definition=self.consumables:Find(itemId)
+    if not definition then return false,'这不是可使用的消耗品' end
+    if self:Active().Team~=1 then return false,'等待己方行动' end
+    local skill=self:Skill(self:Active(),definition.skillId)
+    local allowed,reason=self:ActionBudget(skill)
+    if not allowed then return false,reason end
+    if self.stats.equipment.data:CountItem(itemId)<definition.count then return false,'背包中的道具数量不足' end
+    local canBenefit=false
+    for _,id in ipairs(skill.effectIds) do
+        local effect=self.effects:Get(id)
+        if effect.kind~='heal' or self:Active().HP<self:Active().MaxHP then canBenefit=true end
+    end
+    if not canBenefit then return false,'生命已满，无需治疗' end
+    return true
+end
+function Battle:TryItem(itemId)
+    local allowed,reason=self:CanUseItem(itemId)
+    if not allowed then return false,reason end
+    local source=self:Active();local definition=self.consumables:Get(itemId)
+    local skill=self:Skill(source,definition.skillId);local program={}
+    for _,id in ipairs(skill.effectIds) do program[#program+1]=self.gameEffects:Prepare(id,source,source,skill,0) end
+    source:SpendAction(skill.action,skill.cost)
+    self.stats.equipment.data:ConsumeStack(itemId,definition.count)
+    source:RecordAction(skill.actionTemplate,skill.shots,source.Q,source.R)
+    for _,plan in ipairs(program) do assert(self.gameEffects:ApplyPrepared(plan)) end
+    self:Emit('item_used',self.stats:Template(source).name..' 使用 '..self.stats.equipment.items:Get(itemId).name,source.Id)
+    return true
 end
 function Battle:CanUseSkill(skillId, targetId)
     local ok,reason=self:SkillBudget(skillId)
@@ -216,10 +328,18 @@ function Battle:CanUseSkill(skillId, targetId)
     if skill.target=='cell' then return false,'请选择技能落点' end
     local target = self:FindUnit(targetId)
     if not target or target.HP <= 0 then return false, '请选择存活的目标' end
+    if skillId==501 then
+        if not self.board.area then return false,'缴械需要现场地图战斗' end
+        if not self.stats.equipment:Weapon(target) and not self.stats.equipment:Offhand(target) then return false,'目标没有可缴获的武器' end
+    elseif skillId==503 then
+        local container,why=self:RecoverableWeapon(source)
+        if not container then return false,why end
+    end
     if skill.target == 'self' and target.Id ~= source.Id then return false, '只能对自己使用' end
     if skill.target == 'enemy' and target.Team == source.Team then return false, '请选择敌人' end
     if skill.target == 'ally' and target.Team ~= source.Team then return false, '请选择友军' end
     local rangeBonus=self.construction and self.construction:RangeBonus(self.board,source,target,skill) or 0
+    if self.board.area then rangeBonus=math.max(rangeBonus,self.stats.heightAdvantage:RangeBonus(self.board:Find(source.Q,source.R),self.board:Find(target.Q,target.R),skill)) end
     if self.stats.animals:Distance(source,target,self.board) > skill.range+rangeBonus then return false, '目标超出射程' end
     if skillId==self.stats.animals.rule.tameSkillId then
         local tame,why=self.stats.animals:CanTame(source,target);if not tame then return false,why end
@@ -231,16 +351,43 @@ function Battle:CanUseSkill(skillId, targetId)
         local landing,why=self.stats.animals:Landing(source,self.board:Find(target.Q,target.R),self.board,skillId,self:Occupied(source.Id),self.board.allowed)
         if not landing then return false,why end
     end
-    if self.board.area and not self.board.area:CanSee(assert(self.board:Find(source.Q, source.R)), assert(self.board:Find(target.Q, target.R))) then
-        return false, '墙壁或陈设遮挡了目标'
+    local occupied=skill.trajectory~='sight' and self:ShotOccupancy(source,target) or nil
+    if not Trajectory.CanReach(self.board,assert(self.board:Find(source.Q,source.R)),assert(self.board:Find(target.Q,target.R)),skill.trajectory,occupied,skill.guided) then
+        return false, skill.trajectory=='sight' and '墙壁或陈设遮挡了目标' or '物体或角色遮挡了弹道'
     end
     return true
 end
-function Battle:TrySkill(skillId, targetId)
+function Battle:TrySkillTargets(skillId,ids)
+    local skill=self:Skill(self:Active(),skillId)
+    if not skill.manualTargets then return false,'此技能当前不能手动选择多个目标' end
+    if type(ids)~='table' or #ids<1 or #ids>skill.maxTargets then return false,'请选择 1 至 '..skill.maxTargets..' 名不同敌人' end
+    local seen={}
+    for _,id in ipairs(ids)do
+        if type(id)~='number' or not math.tointeger(id) or seen[id]then return false,'目标无效或重复' end
+        seen[id]=true;local ok,reason=self:CanUseSkill(skillId,id);if not ok then return false,reason end
+    end
+    return self:TrySkill(skillId,ids[1],ids)
+end
+function Battle:TrySkill(skillId, targetId, selectedIds)
     local ok, reason = self:CanUseSkill(skillId, targetId)
     if not ok then return false, reason end
     local source, target = self:Active(), self:FindUnit(targetId)
     local skill = self:Skill(source,skillId)
+    if skillId==501 then
+        local weapon=self.stats.equipment:Weapon(target) or self.stats.equipment:Offhand(target)
+        source:SpendAction(skill.action,skill.cost);source:SetCooldown(skillId,skill.cooldownTurns);source:RecordAction(skill.actionTemplate,1,target.Q,target.R)
+        self.stats.equipment:Consume(source,skill)
+        local hitChance=self.stats.heightAdvantage:HitChance(self.board:Find(source.Q,source.R),self.board:Find(target.Q,target.R),skill)
+        if self.data:RollPercent()<hitChance then
+            self.context.systems:Get('Equipment').worldLoot:Disarm(self.context.systems:Get('MapArea'),target,assert(weapon))
+            self:Emit('disarmed',self.stats:Template(target).name..' 的武器落在脚下，可用拾取武器收回',source.Id,target.Id,0,target)
+        else self:Emit('miss',self.stats:Template(source).name..' · 缴械未命中',source.Id,target.Id) end
+        return true
+    elseif skillId==503 then
+        local success,name=self.context.systems:Get('Equipment').worldLoot:Recover(self.context.systems:Get('MapArea'),source,self.stats)
+        assert(success,name);source:SpendAction(skill.action,skill.cost)
+        self:Emit('weapon_recovered',self.stats:Template(source).name..' 拾起并装备 '..name,source.Id);return true
+    end
     if skillId==self.stats.animals.rule.tameSkillId then
         source:SpendAction(skill.action,skill.cost);source:SetCooldown(skillId,skill.cooldownTurns)
         local success,chance=self.stats.animals:Tame(source,target,self.stats)
@@ -254,10 +401,12 @@ function Battle:TrySkill(skillId, targetId)
         assert(landing,'Cavalry landing changed after validation')
     end
     local targets={target}
-    if skill.maxTargets>1 then
+    if selectedIds then
+        targets={};for _,id in ipairs(selectedIds)do targets[#targets+1]=assert(self:FindUnit(id)) end
+    elseif skill.maxTargets>1 and (not skill.manualTargets or source.Team~=1) then
         local others={}
         for _,unit in ipairs(self:Units()) do
-            if unit.Id~=target.Id and Hex.Distance(target.Q,target.R,unit.Q,unit.R)<=skill.splashRadius
+            if unit.Id~=target.Id and (skill.manualTargets or Hex.Distance(target.Q,target.R,unit.Q,unit.R)<=skill.splashRadius)
                 and self:CanUseSkill(skillId,unit.Id) then others[#others+1]=unit end
         end
         table.sort(others,function(a,b)
@@ -267,7 +416,7 @@ function Battle:TrySkill(skillId, targetId)
         for i=1,math.min(#others,skill.maxTargets-1) do targets[#targets+1]=others[i] end
     end
     local containerPlans={}
-    if self.containerCombat and skill.affectsContainers and self.board.area then
+    if not skill.manualTargets and self.containerCombat and skill.affectsContainers and self.board.area then
         containerPlans=self.containerCombat:Splash(source,skill,self.board:Find(target.Q,target.R),0,skill.maxTargets-#targets,self)
     end
     local program={}
@@ -277,27 +426,28 @@ function Battle:TrySkill(skillId, targetId)
         program[#program + 1] = self.gameEffects:Prepare(id,source,victim,skill,travel)
       end
     end
+    Projectiles.PrepareProgram(self,source,skill,program)
+    if self.containerCombat then self.containerCombat:PrepareShots(containerPlans,source,skill,self) end
     source:SpendAction(skill.action, skill.cost)
     if landing then source:RelocateWithSkill(landing.q,landing.r,self.stats.animals.bySkill[skillId].movement);self:Emit('moved','坐骑移动',source.Id) end
     self.stats.equipment:Consume(source,skill)
     source:SetCooldown(skillId,skill.cooldownTurns)
     source:RecordAction(skill.actionTemplate,skill.shots,target.Q,target.R)
     for shot=1,skill.shots do
-    local impact={shot=shot}
-    if self.containerCombat then self.containerCombat:Apply(containerPlans,source,skill,function()return self.data:RollPercent()end,self) end
-    for _, effect in ipairs(program) do
-      local target=effect.target
-      if target.HP>0 then
-        local hit=effect.definition.kind~='damage' or skill.hitChance==100 or self.data:RollPercent()<skill.hitChance
-        if not hit then self:Emit('miss',self.stats:Template(source).name..' · '..skill.name..' 未命中 '..self.stats:Template(target).name,source.Id,target.Id)
-        else
-        self.gameEffects:ApplyPrepared(effect,impact)
-        end
-      end
-    end
+    if self.containerCombat then self.containerCombat:Apply(containerPlans,source,skill,function()return self.data:RollPercent()end,self,shot) end
+    self:ApplyEffectProgram(source,skill,program,shot)
     end
     self:CheckWinner(); return true
 end
+function Battle:ApplyEffectProgram(source,skill,program,shot)
+    Projectiles.ApplyProgram(self,source,skill,program,shot)
+end
+function Battle:RecoverableWeapon(actor)
+    if not self.board.area then return nil,'拾取武器需要现场地图战斗' end
+    return self.context.systems:Get('Equipment').worldLoot:Recoverable(self.context.systems:Get('MapArea'),actor,self.stats)
+end
+function Battle:CanRecoverWeapon(actor) return self:RecoverableWeapon(actor)~=nil end
+function Battle:TryRecoverWeapon() return self:TrySkill(503,self:Active().Id) end
 function Battle:CanUseSkillAt(skillId,q,r)
     local ok,reason=self:SkillBudget(skillId);if not ok then return false,reason end
     local source=self:Active();local skill=self:Skill(source,skillId)
@@ -331,9 +481,14 @@ end
 -- AI 也通过同一套移动/技能命令执行，每次调用只推进一个敌方角色的回合。
 function Battle:StepAI()
     if self.data.Winner ~= '' then return false, '战斗已经结束' end
+    if self.data.Phase=='deployment' then return false,'部署期间敌人不会行动' end
     local actor = self:Active()
     if actor.Team ~= 2 then return false, '等待玩家行动' end
+    if self:CanUseSkill(503,actor.Id) then self:TryRecoverWeapon() end
     local function attack()
+        for _,target in ipairs(self:Units()) do
+            if target.Team~=actor.Team and self.stats.equipment:Weapon(target) and self:CanUseSkill(501,target.Id) then return self:TrySkill(501,target.Id) end
+        end
         for _, skillId in ipairs(self:SkillIds(actor)) do
             if self:Skill(actor,skillId).target == 'enemy' then
                 for _, target in ipairs(self:Units()) do
@@ -361,7 +516,7 @@ function Battle:StepAI()
             end
         end
         if bestPath then
-            local destination;local range=self.stats.animals:MoveRange(actor,self.stats:Template(actor))
+            local destination;local range=CS.ProjectY.Data.BattleMovement.Remaining(actor,self.stats.animals:MoveRange(actor,self.stats:Template(actor)))
             for _,cell in ipairs(bestPath) do if distance[cell]<=range then destination=cell end end
             if destination then self:TryMove(destination.q, destination.r) end
         elseif self.construction and self.board.area then
@@ -377,7 +532,7 @@ function Battle:StepAI()
                 end
             end
             if best then
-                local cursor=approach;local range=self.stats.animals:MoveRange(actor,self.stats:Template(actor))
+                local cursor=approach;local range=CS.ProjectY.Data.BattleMovement.Remaining(actor,self.stats.animals:MoveRange(actor,self.stats:Template(actor)))
                 while previous[cursor] and distance[cursor]>range do cursor=previous[cursor] end
                 if cursor.q~=actor.Q or cursor.r~=actor.R then self:TryMove(cursor.q,cursor.r) end
                 self:TrySkillAt(self.construction.demolitionId,best.q,best.r)
@@ -387,7 +542,8 @@ function Battle:StepAI()
     end
     if self.data.Winner ~= '' then return true end
     for _, skillId in ipairs(self:SkillIds(actor)) do
-        if self:Skill(actor,skillId).target == 'self' and self:CanUseSkill(skillId, actor.Id) then self:TrySkill(skillId, actor.Id); break end
+        local target=self:Skill(actor,skillId).target
+        if (target=='self' or target=='any') and self:CanUseSkill(skillId, actor.Id) then self:TrySkill(skillId, actor.Id); break end
     end
     return self:EndTurn()
 end

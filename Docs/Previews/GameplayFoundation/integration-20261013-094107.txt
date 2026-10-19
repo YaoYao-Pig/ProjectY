@@ -1,0 +1,8 @@
+fixture_directory=C:\Users\yyz\AppData\Local\Temp\project-y-ux-foundation-115a8dc0bbd94ef0a913980c5e9fc09a
+PASS Tools/Tests/shop_integration.lua
+PASS atomic C# purchase rejects insufficient coins, full bag, stale clicks, wrong entries and sold-out stock
+PASS real town merchant enforces distance and routes NPC interaction to stock
+PASS model purchase and close/reopen/reentry preserve the exact remaining stock
+PASS real shop Panel binds entries and buy/close buttons, pauses, handles cache reopen and Back
+PASS save v5 roundtrip preserves stock and clock; old versions migrate; malformed stock is rejected
+PASS new game-day period refreshes once and does not share stock between merchants

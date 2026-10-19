@@ -79,19 +79,21 @@ namespace ProjectY.UI
         {
             Compact=width<1050;
             var deckWidth=Mathf.Min(550,width-190);
-            Place(layout.Deck,Vector2.zero,18,18,deckWidth,140);
+            Place(layout.Deck,Vector2.zero,18,18,deckWidth,242);
             Place(layout.Header,new Vector2(0,1),18,-80,190,62);
             var turnWidth=Mathf.Min(540,width-380);
             Place(layout.Turns,new Vector2(.5f,1),-turnWidth/2,-84,turnWidth,62);
             layout.TurnGrid.constraintCount=4;layout.TurnGrid.cellSize=new Vector2((turnWidth-24)/4,62);
             layout.Party.gameObject.SetActive(false);
-            Place(layout.Skills,Vector2.zero,14,30,deckWidth-28,98);
+            Place(layout.Skills,Vector2.zero,14,132,deckWidth-28,98);
             layout.SkillGrid.constraintCount=4;layout.SkillGrid.cellSize=new Vector2((deckWidth-46)/4,72);
-            layout.Items.gameObject.SetActive(false);
+            layout.Items.gameObject.SetActive(true);
+            Place(layout.Items,Vector2.zero,14,30,deckWidth-28,98);
+            layout.ItemGrid.constraintCount=4;layout.ItemGrid.cellSize=new Vector2((deckWidth-46)/4,72);
             Place(layout.Commands,Vector2.zero,deckWidth+32,18,142,140);
             Place(layout.Hint,Vector2.zero,14,6,deckWidth-28,22);
             Place(layout.Log,new Vector2(1,0),-498,18,480,140);
-            Place(layout.Tooltip,new Vector2(.5f,0),-200,174,400,152);
+            Place(layout.Tooltip,new Vector2(.5f,0),-200,270,400,152);
         }
         private static void Place(RectTransform rect, Vector2 anchor, float x, float y, float width, float height)
         {

@@ -1,0 +1,328 @@
+[
+  {
+    "id": 201,
+    "title": "露珠药圃",
+    "slug": "dew_herb_garden",
+    "presentation": "simple",
+    "theme": "野外药草与长效恢复",
+    "actorAttribute": "scouting",
+    "regionTypes": [1, 5],
+    "weight": 7,
+    "description": "朝露还挂在矮篱上。{actor}认出一片被旅人照料过的银叶草，旁边的陶杯里留着干净的井水。队伍只取了足够的几片叶子，把踩倒的篱笆扶正。",
+    "illustration_scene": "A small forgotten medicinal herb garden at dawn beside a forest path, silver-green leaves holding oversized luminous dew drops, an earthenware cup of clean water on a low stone wall, a humble bent wicker fence being set upright by a cloaked traveler. Gentle hopeful discovery, close foreground plants with the traveling party small in the background, warm sunrise and cool mint greens. No lettering or visible text.",
+    "choices": [
+      {"label": "含服银叶草，继续赶路", "result": "清凉的药香留在齿间。全体存活队员获得长效再生：持续60游戏分钟，每10分钟恢复4点生命；采药耗时5分钟。", "recipient": "party", "effectIds": [807], "timeMinutes": 5}
+    ]
+  },
+  {
+    "id": 202,
+    "title": "啄木鸟的空仓",
+    "slug": "woodpecker_storehouse",
+    "presentation": "simple",
+    "theme": "动物引路与营地材料",
+    "actorAttribute": "animalAffinity",
+    "regionTypes": [5],
+    "weight": 7,
+    "description": "一只啄木鸟对着木棚敲得震天响。{actor}拨开藤蔓，发现鸟儿只是想搬开堵在巢口的旧木条。棚里早已没有粮食，却有一捆尚未腐烂的木料。",
+    "illustration_scene": "A vivid red-headed woodpecker clinging to the roof beam of a tiny abandoned woodland storehouse, ivy covering its tilted roof, a traveler carefully loosening a plank that blocks the bird nest, a bundle of usable sawn timber revealed inside. Playful forest discovery, amber dappled sunlight, moss and worn wood, distinct close-up woodpecker silhouette. No text.",
+    "choices": [
+      {"label": "替它腾出巢口", "result": "鸟儿满意地钻回树洞。小队把棚外可用的木条捆好，获得营造木料×3；整理耗时10分钟。", "itemIds": [81], "itemCounts": [3], "timeMinutes": 10}
+    ]
+  },
+  {
+    "id": 203,
+    "title": "渡鸦的找零",
+    "slug": "raven_change",
+    "presentation": "simple",
+    "theme": "轻喜剧与小额发现",
+    "actorAttribute": "animalAffinity",
+    "regionTypes": [1, 2, 5],
+    "weight": 6,
+    "description": "渡鸦叼走了{actor}鞋带上的铜扣，又嫌它不够闪亮。它把铜扣扔回脚边时，巢里一枚不知藏了多久的金币也跟着滚了下来。",
+    "illustration_scene": "A mischievous raven perched on a weathered milepost, holding a small copper boot buckle in its beak while a single bright gold coin tumbles toward a bewildered traveler's boot. Comical intimate roadside scene, open countryside behind, strong raven silhouette and shining falling coin, late-afternoon light. No signage letters or text.",
+    "choices": [
+      {"label": "捡回铜扣和意外的找零", "result": "铜扣重新系好，渡鸦仍在不服气地叫。小队获得5金币。", "rewardCoins": 5}
+    ]
+  },
+  {
+    "id": 204,
+    "title": "雾中的旧界碑",
+    "slug": "mist_boundary_stone",
+    "presentation": "simple",
+    "theme": "历史痕迹与侦察知识",
+    "actorAttribute": "scouting",
+    "regionTypes": [2, 5, 6],
+    "weight": 6,
+    "description": "雾把前路抹成一片灰白。{actor}在旧界碑背面摸到几道凿痕：每一道都正对一处避风口。那不是王国的边界，而是过去赶山人互相留下的生路。",
+    "illustration_scene": "An ancient boundary stone emerging from dense pale mountain fog, a gloved traveler tracing simple chiseled directional grooves on the reverse side, layered sheltering rock notches faintly visible beyond. Quiet archaeological discovery, cold slate blue mist and a small warm lantern, mysterious but peaceful. Abstract worn marks only, no readable writing.",
+    "choices": [
+      {"label": "把避风口记进旅途笔记", "result": "队员们轮流辨认风向与凿痕。全队获得30经验；记录耗时10分钟。", "recipient": "party", "experience": 30, "timeMinutes": 10}
+    ]
+  },
+  {
+    "id": 205,
+    "title": "热石上的薄饼",
+    "slug": "hot_stone_flatbread",
+    "presentation": "simple",
+    "theme": "陌生人的善意与即时恢复",
+    "actorAttribute": "cooking",
+    "regionTypes": [1, 2],
+    "weight": 7,
+    "description": "路边的牧羊人正在热石上烙薄饼。听说小队还要赶很远的路，她多翻了几张，把最焦脆的边角留给自己；羊群则认真盯着所有人的手。",
+    "illustration_scene": "A cheerful elderly shepherd woman baking rustic flatbread on a broad hot stone over a low roadside fire, passing steaming bread to tired travelers, curious woolly sheep staring at their hands. Warm pastoral midday scene, golden crust, ochre grass and soft cream wool, hospitable atmosphere. No text.",
+    "choices": [
+      {"label": "坐下来分食薄饼", "result": "热食驱散了路上的疲惫。全体存活队员各恢复6点生命；用餐耗时15分钟。", "recipient": "party", "effectIds": [1211], "timeMinutes": 15}
+    ]
+  },
+  {
+    "id": 206,
+    "title": "雷雨后的玻璃",
+    "slug": "thunder_glass",
+    "presentation": "simple",
+    "theme": "自然奇观与装备配件",
+    "actorAttribute": "crafting",
+    "regionTypes": [1, 2],
+    "weight": 4,
+    "description": "昨夜的雷击把一小片砂土熔成了树根状的玻璃。{actor}在裂开的玻璃管旁发现一件被雨水冲出的旧配件，金属骨架还很完整。",
+    "illustration_scene": "Branching fulgurite glass formed by lightning in pale sandy soil after a thunderstorm, a traveler with a small brush revealing a compact forgotten metal weapon attachment beside the glass roots. Dramatic departing violet storm clouds, fresh wet earth reflecting one shaft of sunlight, delicate electric glass shapes. No text.",
+    "choices": [
+      {"label": "小心清理玻璃根须", "result": "泥砂褪去后，金属日轮重新映出晨光。小队获得日轮聚焦冠×1；清理耗时10分钟。", "itemIds": [501], "itemCounts": [1], "timeMinutes": 10}
+    ]
+  },
+  {
+    "id": 207,
+    "title": "无人值守的星盘",
+    "slug": "abandoned_astrolabe",
+    "presentation": "simple",
+    "theme": "观星与潜力觉醒",
+    "actorAttribute": "intellect",
+    "regionTypes": [2, 6],
+    "weight": 4,
+    "description": "山脊上只剩一座生锈的观星架。{actor}转动卡住的黄铜圆环，天际与刻度忽然严丝合缝。漫长的旅程第一次在心里连成了一条清楚的弧线。",
+    "illustration_scene": "A lone ancient brass armillary sphere on a bare mountain observatory terrace beneath a vast star-filled indigo sky, an inquisitive cloaked traveler aligning the rings, one bright constellation mirrored by the instrument. Awe and intellectual discovery, silver stars and restrained golden brass glints, panoramic night composition. No readable symbols or text.",
+    "choices": [
+      {"label": "校准圆环，记住星位", "result": "{actor}释放1点尚未解锁的潜力，转为被动天赋点，并获得20经验；观星耗时20分钟。", "potentialPoints": 1, "experience": 20, "timeMinutes": 20}
+    ]
+  },
+  {
+    "id": 208,
+    "title": "赶路的纸鸢",
+    "slug": "traveling_kite",
+    "presentation": "simple",
+    "theme": "远方问候与同袍成长",
+    "actorAttribute": "charisma",
+    "regionTypes": [1],
+    "weight": 6,
+    "description": "一只断线纸鸢拖着长尾落到路上。纸面画满了圆脸的小人，最末尾还留着一个空位。{actor}添上小队歪歪扭扭的合影，再把纸鸢交给迎面追来的孩子。",
+    "illustration_scene": "A bright handmade kite with a long patchwork ribbon tail caught beside a country path, travelers crouching to draw tiny simple stick figures on it as a laughing child runs toward them. Cheerful breezy spring composition, green hills, yellow and red kite paper dominating the foreground. No written words, no readable text.",
+    "choices": [
+      {"label": "帮它重新乘上风", "result": "孩子跑远了，队员们还在取笑纸鸢上彼此的模样。全队获得15经验；放飞耗时5分钟。", "recipient": "party", "experience": 15, "timeMinutes": 5}
+    ]
+  },
+  {
+    "id": 209,
+    "title": "两头都收费的桥",
+    "slug": "double_toll_bridge",
+    "presentation": "complex",
+    "theme": "协商与公共维修",
+    "actorAttribute": "charisma",
+    "regionTypes": [1, 5],
+    "weight": 6,
+    "description": "两位磨坊主守在小桥两端，都说自己修过桥，都收一次过路费。{actor}蹲下看了看：桥板确实是新的，支撑桥板的木销却快磨断了。两个人还在为谁的收钱碗更靠近中线争吵。",
+    "illustration_scene": "Two stubborn millers arguing from opposite ends of a tiny crooked wooden bridge over a narrow creek, each holding a toll bowl, a traveler kneeling to inspect a visibly worn support peg under fresh bridge planks. Wry negotiation scene, small watermill in the distance, split warm and cool sides of the bridge. No signs or text.",
+    "choices": [
+      {"label": "付一份钱，请他们自己分（8金币）", "result": "你把一枚钱袋放在桥中央，趁他们忙着争论分法过了桥。花费8金币；交涉耗时5分钟。", "costCoins": 8, "timeMinutes": 5},
+      {"label": "指出木销的问题，帮忙加固（30分钟）", "result": "{actor}做了新的木销。两位磨坊主终于开始一起搬木头，把多余的营造木料×2送给小队；全队获得20经验。", "recipient": "party", "experience": 20, "itemIds": [81], "itemCounts": [2], "timeMinutes": 30},
+      {"label": "不争了，走岸边的小路", "result": "小队从浅溪旁的石滩绕行，把桥和争吵都留在身后。"}
+    ]
+  },
+  {
+    "id": 210,
+    "title": "悬在树梢的邮袋",
+    "slug": "treetop_courier",
+    "presentation": "complex",
+    "theme": "救援与风险路线",
+    "actorAttribute": "speed",
+    "regionTypes": [2, 5],
+    "weight": 6,
+    "description": "索道断了，一名信使吊在谷边的树杈上，邮袋比他本人还稳。{actor}能从陡坡直接攀过去，也能花时间沿山羊留下的小径绕到树后。信使只求你们别先扔掉那袋信。",
+    "illustration_scene": "A frightened courier dangling safely but precariously from a branch above a narrow rocky ravine after a ropeway snapped, an oversized leather mailbag wedged securely in the fork, rescuing travelers below considering a steep direct climb and a distant goat path. Tense non-gory rescue, green mountain forest, clear triangular composition. No readable letters or text.",
+    "choices": [
+      {"label": "直接攀上去（主角受4点伤，10分钟）", "result": "树皮划伤了{actor}的手，但人和邮袋都落了地。信使把随身携带的荆棘鹿角冠×1送给小队；{actor}损失4点生命并获得35经验。", "effectIds": [1212], "experience": 35, "itemIds": [506], "itemCounts": [1], "timeMinutes": 10},
+      {"label": "循羊径从背后接近（侦察4，25分钟）", "result": "小队找到树后稳固的落脚点，把信使和邮袋一起拉上岸。他送出随身携带的荆棘鹿角冠×1；全队获得25经验。", "minScouting": 4, "recipient": "party", "experience": 25, "itemIds": [506], "itemCounts": [1], "timeMinutes": 25},
+      {"label": "向谷口喊来附近的樵夫", "result": "樵夫回应了呼喊，带着绳索赶来。小队把位置说明后继续赶路，信使的感谢还在山谷里回荡。"}
+    ]
+  },
+  {
+    "id": 211,
+    "title": "无名者的木牌",
+    "slug": "nameless_grave",
+    "presentation": "complex",
+    "theme": "纪念与利益选择",
+    "actorAttribute": "endurance",
+    "regionTypes": [1, 2, 5],
+    "weight": 5,
+    "description": "风把孤坟前的木牌吹倒了，字迹已经磨平。一个旧匣子从土里露出角，里面有银币和一片卷起的红布。{actor}看不出墓主是谁，也不知道这份钱原本留给谁。",
+    "illustration_scene": "A solitary old roadside grave under a wind-bent tree, fallen blank wooden memorial marker, a half-exposed small iron box containing a few silver coins and a faded red cloth strip. One contemplative traveler kneels in the grass while companions wait at a respectful distance. Reflective muted earth tones and a single red accent, no skeletons, no readable writing.",
+    "choices": [
+      {"label": "扶正木牌，把匣子重新埋好（20分钟）", "result": "{actor}重新压实泥土，系好红布。守住陌生人的最后一处安宁，让他学会了守望：解锁「余烬守望」天赋树，并获得30经验。", "unlockTreeIds": [2], "experience": 30, "timeMinutes": 20},
+      {"label": "取走匣中的散钱", "result": "小队获得18金币。风又吹倒了木牌，{actor}没有回头。", "rewardCoins": 18},
+      {"label": "留下一枝野花，继续前行", "result": "没有名字可念，就让野花替你们在这里多待一会儿。"}
+    ]
+  },
+  {
+    "id": 212,
+    "title": "三枚影子的机关",
+    "slug": "three_shadow_lock",
+    "presentation": "complex",
+    "theme": "可推理解谜与工具代价",
+    "actorAttribute": "intellect",
+    "regionTypes": [1, 2],
+    "weight": 5,
+    "description": "废塔下的石匣有太阳、月亮、火焰三枚圆钮。匣盖的刻画画着一个人：先迎晨光出门，日落后举灯，最后在月下安睡。三枚钮都能按，锁边也留着一道可撬开的缝。",
+    "illustration_scene": "A weathered stone puzzle chest below a ruined watchtower, three large tactile bronze buttons bearing simple sun, moon, and flame emblems, a carved pictorial frieze showing dawn travel, lamplight, and sleeping under the moon. A thoughtful traveler studies the mechanisms, strong golden side light, archaeological close-up with absolutely no written text.",
+    "choices": [
+      {"label": "依次按太阳、火焰、月亮", "result": "圆钮依次陷下，石匣轻轻弹开。小队获得陀螺稳持环×1；{actor}获得40经验，释放1点尚未解锁的潜力；解锁耗时10分钟。", "itemIds": [511], "itemCounts": [1], "experience": 40, "potentialPoints": 1, "timeMinutes": 10, "hideRewards": true},
+      {"label": "依次按月亮、太阳、火焰", "result": "锁芯咔哒复位，侧孔喷出的碎砂擦伤了{actor}。损失4点生命；小队决定不再试错。", "effectIds": [1212], "timeMinutes": 5, "hideRewards": true},
+      {"label": "请过路石匠撬开（15金币，20分钟）", "result": "石匠从锁边取下薄片，完整地抬起匣盖。花费15金币，获得陀螺稳持环×1。", "costCoins": 15, "itemIds": [511], "itemCounts": [1], "timeMinutes": 20, "hideRewards": true},
+      {"label": "让机关继续等待有缘人", "result": "小队离开废塔，三枚圆钮仍在太阳下投出短短的影子。", "hideRewards": true}
+    ]
+  },
+  {
+    "id": 213,
+    "title": "山不喜欢掌声",
+    "slug": "silent_avalanche_pass",
+    "presentation": "complex",
+    "theme": "地形灾害与时间取舍",
+    "actorAttribute": "scouting",
+    "regionTypes": [2, 6],
+    "weight": 6,
+    "description": "前面的客商拍了两下手，想听山谷回声，雪檐却先回了一声闷响。{actor}看见积雪上裂开细线；脚边有一道低矮石坎，远处则是更安全的背风坡。",
+    "illustration_scene": "A snowy mountain pass moments before a small avalanche, a merchant with hands frozen mid-clap, a hairline crack spreading across an overhanging snow cornice, travelers pointing toward a low rock shelter and a distant safe ridge. Suspenseful wide landscape in icy blue with red scarves, airborne powder beginning to fall, no injury or text.",
+    "choices": [
+      {"label": "躲在石坎后，等雪落完（45分钟）", "result": "雪流从石坎上方掠过。队员互相拉住背包，安然等到山谷重新安静；全队获得20经验。", "recipient": "party", "experience": 20, "timeMinutes": 45},
+      {"label": "观察裂纹，从背风坡绕过（侦察5，15分钟）", "result": "{actor}带队避开承压的雪面。小队平安绕过雪檐，全队获得35经验。", "minScouting": 5, "recipient": "party", "experience": 35, "timeMinutes": 15},
+      {"label": "冲向近处的岩缝（全队各受4点伤，5分钟）", "result": "大家赶在雪浪前钻进岩缝，却被飞散的冰块划伤。全体存活队员各损失4点生命。", "recipient": "party", "effectIds": [1212], "timeMinutes": 5},
+      {"label": "退回原路，不冒这个险", "result": "小队慢慢退到安全地带，让赶时间的人先做决定。"}
+    ]
+  },
+  {
+    "id": 214,
+    "title": "一锅汤的赎金",
+    "slug": "goblin_soup_ransom",
+    "presentation": "complex",
+    "theme": "对峙与滑稽谈判",
+    "actorAttribute": "charisma",
+    "regionTypes": [5],
+    "weight": 6,
+    "description": "几只森林哥布林拦住了一辆炊事车，把厨师的大汤勺高高举起。他们大声索要赎金，却又怕锅里的汤煮糊。厨师瞪着他们，小声告诉{actor}：钱能谈，汤勺不能送。",
+    "illustration_scene": "Three small green forest goblins surrounding a traveling cook's wooden wagon, one triumphantly brandishing an absurdly large soup ladle, another nervously stirring a bubbling cauldron, an indignant apron-wearing cook and negotiating travelers. Comic standoff in a woodland clearing, orange soup steam and moss greens, no combat gore, no text.",
+    "choices": [
+      {"label": "付12金币，赎回汤勺", "result": "哥布林收钱走人，厨师给全体存活队员盛上热汤，各恢复6点生命。谈判和用餐耗时15分钟。", "costCoins": 12, "recipient": "party", "effectIds": [1211], "timeMinutes": 15},
+      {"label": "拔出武器，让他们放下汤勺", "result": "哥布林扔下汤勺，抓起了藏在车后的武器。战斗开始；战利品仅在胜利后结算。", "encounterIds": [204]},
+      {"label": "不介入，让厨师继续讨价还价", "result": "厨师深吸一口气，开始向哥布林解释汤勺与金币的区别。小队继续赶路。"}
+    ]
+  },
+  {
+    "id": 215,
+    "title": "老兵只教摔倒",
+    "slug": "veteran_falling_lesson",
+    "presentation": "complex",
+    "theme": "训练、身体代价与成长路线",
+    "actorAttribute": "strength",
+    "regionTypes": [1, 2],
+    "weight": 5,
+    "description": "退伍老兵在路边铺了厚草垫，学徒却一个比一个摔得响。他不肯演示漂亮招式，只说：人总会被击倒，先学会怎么落地。{actor}的架势让他忍不住笑出了声。",
+    "illustration_scene": "A grizzled veteran with a wooden training staff teaching travelers how to fall safely onto thick straw mats beside a country road, one armored apprentice landing awkwardly while others laugh kindly. Lively physical training composition, weathered armor, hay gold and dusty blue, friendly instructor, no injury or text.",
+    "choices": [
+      {"label": "把架子放下，练够一轮（主角受4点伤，40分钟）", "result": "{actor}摔青了胳膊，却终于学会卸去冲击：损失4点生命，获得特质「坚韧」与45经验。", "effectIds": [1212], "traitIds": [2], "experience": 45, "timeMinutes": 40},
+      {"label": "请他带全队练习（18金币，30分钟）", "result": "老兵一个个纠正动作。花费18金币，全队获得35经验；仍有未解锁潜力的队员各释放1点潜力。", "costCoins": 18, "recipient": "party", "experience": 35, "potentialPoints": 1, "timeMinutes": 30},
+      {"label": "道声保重，继续赶路", "result": "老兵挥挥手，继续数下一名学徒摔倒的次数。"}
+    ]
+  },
+  {
+    "id": 216,
+    "title": "洪水里的窑火",
+    "slug": "flooded_kiln",
+    "presentation": "complex",
+    "theme": "工艺救急与材料分配",
+    "actorAttribute": "crafting",
+    "regionTypes": [1, 5],
+    "weight": 5,
+    "description": "山洪退去后，陶工围着半塌的窑棚发愁。最后一炉货正降温，坏掉的风闸却关不住。{actor}看出可以用碎瓦临时封住通风口，也可以帮他们先把干燥燃料搬走。",
+    "illustration_scene": "A half-flooded rural pottery kiln after the water has receded, worried potters around glowing orange furnace bricks, a skilled traveler fitting broken roof tiles into a damaged air vent, stacks of pots and damp bundled fuel nearby. Industrious rescue scene, blue puddles contrasting with warm kiln embers, no text.",
+    "choices": [
+      {"label": "用碎瓦修好风闸（35分钟）", "result": "火候终于稳定，陶工把备用的鼓风双联喷口×1交给小队作谢礼，装到合适的剑脊也能助力挥砍。{actor}获得30经验。", "itemIds": [519], "itemCounts": [1], "experience": 30, "timeMinutes": 35},
+      {"label": "帮忙搬干燥木料（15分钟）", "result": "干燥木料被搬到高地。陶工分出营造木料×3，让小队也能修补自己的营地。", "itemIds": [81], "itemCounts": [3], "timeMinutes": 15},
+      {"label": "把路况告诉他们，继续前行", "result": "陶工谢过提醒，开始把剩下的陶器搬上架子。"}
+    ]
+  },
+  {
+    "id": 217,
+    "title": "路边的第二张担架",
+    "slug": "second_stretcher",
+    "presentation": "complex",
+    "theme": "医疗协作与资源伦理",
+    "actorAttribute": "intellect",
+    "regionTypes": [1, 2, 5],
+    "weight": 6,
+    "description": "一位巡诊医师的驮兽受了惊，两名病人被留在路边。药箱足够，能抬担架的手却不够。医师已经把小队每个人的伤口看了一遍，开口求助前先说了句：你们也走得够远了。",
+    "illustration_scene": "A traveling field physician beside two improvised covered stretchers on a quiet roadside, frightened pack mule in the background, open orderly medical chest, weary adventurers discussing how to help carry the patients. Compassionate non-graphic medical scene, clean linen, muted red medicine bag and afternoon olive landscape. No blood or readable text.",
+    "choices": [
+      {"label": "全队帮忙抬到下一处棚屋（40分钟）", "result": "病人安顿好了。医师为全体存活队员敷上缓释药膏，获得60分钟长效再生，每10分钟恢复4点生命；全队获得20经验。", "recipient": "party", "effectIds": [807], "experience": 20, "timeMinutes": 40},
+      {"label": "出钱雇附近的车夫（16金币）", "result": "车夫赶来接过担架，医师腾出手为全体存活队员处理伤势，各恢复6点生命。安排车马耗时10分钟。", "costCoins": 16, "recipient": "party", "effectIds": [1211], "timeMinutes": 10},
+      {"label": "留出道路，告辞赶路", "result": "医师没有责怪，只请你们路上遇见空车时替他传个口信。"}
+    ]
+  },
+  {
+    "id": 218,
+    "title": "篝火旁的空座",
+    "slug": "empty_campfire_seat",
+    "presentation": "complex",
+    "theme": "队员性格与接受帮助",
+    "actorAttribute": "charisma",
+    "regionTypes": [1, 2, 5, 6],
+    "weight": 5,
+    "description": "过路人的篝火旁留着一个空树墩。有人问{actor}愿不愿意坐下，有人已把杯子递过来。说起最狼狈的旅途，每个人都在笑；{actor}却发现，承认自己也曾害怕，比吹嘘战绩更难。",
+    "illustration_scene": "A welcoming circle of weathered travelers around a small night campfire, an empty tree-stump seat and a steaming cup offered toward the foreground protagonist, companions smiling with quiet understanding. Intimate emotional scene, warm orange firelight against deep blue forest night, faces visible and varied, no text.",
+    "choices": [
+      {"label": "承认自己也需要同伴（需要「傲慢」，25分钟）", "result": "故事讲完，{actor}终于笑了。移除「傲慢」，获得「同袍之谊」，并获得25经验。", "requiredTraitIds": [3], "removeTraitIds": [3], "traitIds": [5], "experience": 25, "timeMinutes": 25},
+      {"label": "接过热茶，听他们说完（15分钟）", "result": "{actor}没有急着插话。热茶让身体暖起来，恢复6点生命并获得15经验。", "effectIds": [1211], "experience": 15, "timeMinutes": 15},
+      {"label": "谢过好意，继续守着自己的路", "result": "杯子被收回，空座仍留在那里。小队的脚步渐渐离开火光。"}
+    ]
+  },
+  {
+    "id": 219,
+    "title": "落星与羊",
+    "slug": "fallen_star_and_sheep",
+    "presentation": "complex",
+    "theme": "奥术发现与保护牲畜",
+    "actorAttribute": "intellect",
+    "regionTypes": [1, 2],
+    "weight": 4,
+    "description": "一块昨夜落下的蓝色石头把草地烤成圆环，牧人的羊却执意要舔它。石头外壳已经冷了，裂缝里仍透着光。{actor}觉得它的脉动似乎能与武器上的符文呼应。",
+    "illustration_scene": "A small luminous blue meteorite in a circular scorched patch of meadow, a stubborn curious sheep trying to lick it while a shepherd gently holds its collar, an arcane-minded traveler inspecting glowing cracks with a tool. Whimsical magical discovery, vivid cyan stone against golden grass, twilight purple horizon, no text.",
+    "choices": [
+      {"label": "研究脉动，不敲碎外壳（30分钟）", "result": "{actor}理解了将魔力引入兵装的第一步：解锁「奥术兵装」天赋树，获得35经验，释放1点尚未解锁的潜力。", "unlockTreeIds": [3], "experience": 35, "potentialPoints": 1, "timeMinutes": 30},
+      {"label": "敲开裂缝取出核心（主角受8点伤）", "result": "一束残余热流灼伤了{actor}，损失8点生命。碎石下露出仍套着三重金属环的核心，小队获得轨道法印×1；取出耗时10分钟。", "effectIds": [1213], "itemIds": [527], "itemCounts": [1], "timeMinutes": 10},
+      {"label": "替牧人圈起落石，继续赶路", "result": "羊终于被赶开，小队用石块围住仍有余温的陨石。这里暂时安全了。"}
+    ]
+  },
+  {
+    "id": 220,
+    "title": "未开张的雪地集市",
+    "slug": "snowbound_market",
+    "presentation": "complex",
+    "theme": "合作生存与物资交换",
+    "actorAttribute": "cooking",
+    "regionTypes": [2, 6],
+    "weight": 6,
+    "description": "两个流动摊贩在雪里僵持着：卖食物的没有火，卖燃料的没带锅，谁也不肯先欠对方人情。{actor}听见两人的肚子同时响了一声。旁边的避风石圈足够容下三堆行李。",
+    "illustration_scene": "Two stubborn traveling merchants with snow-covered stalls facing each other in a sheltered mountain hollow, one with food and an empty cooking pot, the other with bundled firewood, adventurers between them suggesting a shared fire. Lighthearted winter survival scene, frosty blue snow, colorful blankets, a promising small amber spark, no written signs or text.",
+    "choices": [
+      {"label": "张罗一锅公用热汤（30分钟）", "result": "火生好，汤也烧开了。全体存活队员各恢复6点生命；摊贩送来尚未劈开的营造木料×2，作为小队调停的谢礼。", "recipient": "party", "effectIds": [1211], "itemIds": [81], "itemCounts": [2], "timeMinutes": 30},
+      {"label": "买下木料，送一半给食物摊（10金币）", "result": "争吵总算有了台阶。花费10金币，小队收下余下的营造木料×4；交易耗时5分钟。", "costCoins": 10, "itemIds": [81], "itemCounts": [4], "timeMinutes": 5},
+      {"label": "指给他们避风处，继续赶路", "result": "两个摊贩望了望石圈，又望了望对方，终于开始一起搬东西。"}
+    ]
+  }
+]

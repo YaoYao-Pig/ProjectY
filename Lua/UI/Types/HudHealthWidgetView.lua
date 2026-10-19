@@ -12,5 +12,6 @@
 ---@field EffectSlots CS.UnityEngine.RectTransform
 ---@field HealthTrail CS.UnityEngine.UI.Image
 ---@field HealthAnimation CS.ProjectY.UI.HealthBarAnimation
+---@field DamageNumbers CS.ProjectY.UI.DamageNumberAnimation
 local View = {}
 return View

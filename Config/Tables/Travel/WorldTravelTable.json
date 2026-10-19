@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "name": "WorldTravelTable",
+  "description": "大地图旅行时钟、地形成本与途中检查；不扣食物或疲劳。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "规则ID"
+    },
+    {
+      "name": "minutesPerSecond",
+      "type": "float",
+      "description": "1倍速下每现实秒推进游戏分钟",
+      "min": 0.1
+    },
+    {
+      "name": "minutesPerCell",
+      "type": "float",
+      "description": "平地每格旅行分钟",
+      "min": 0.1
+    },
+    {
+      "name": "roadMultiplier",
+      "type": "float",
+      "description": "道路通行耗时倍率",
+      "min": 0.1
+    },
+    {
+      "name": "slopeMinutes",
+      "type": "float",
+      "description": "每单位高差附加分钟",
+      "min": 0
+    },
+    {
+      "name": "checkMinutes",
+      "type": "float",
+      "description": "途中随机检查的累计旅行分钟",
+      "min": 1
+    },
+    {
+      "name": "eventChance",
+      "type": "int",
+      "description": "每次检查触发百分比",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "maxHeightStep",
+      "type": "float",
+      "min": 0,
+      "description": "步行允许的相邻地格最大高差，与道路生成规则独立"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "minutesPerSecond": 12,
+      "minutesPerCell": 8,
+      "roadMultiplier": 0.6,
+      "slopeMinutes": 1.5,
+      "checkMinutes": 90,
+      "eventChance": 35,
+      "maxHeightStep": 1.2
+    }
+  ]
+}

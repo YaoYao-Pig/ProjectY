@@ -20,7 +20,7 @@ namespace ProjectY.Data
 
     /// <summary>远征内的动态工事与挖掘结果。离开地点不清除，Lua 只保存本对象的引用。</summary>
     [LuaCallCSharp]
-    public sealed class ConstructionData
+    public sealed partial class ConstructionData
     {
         private readonly List<ConstructionRecord> records=new List<ConstructionRecord>();
         private readonly Dictionary<long,ConstructionRecord> active=new Dictionary<long,ConstructionRecord>();
@@ -57,13 +57,12 @@ namespace ProjectY.Data
             if(itemIds==null||counts==null||itemIds.Length!=counts.Length)throw new ArgumentException("Material arrays differ.");
             var seen=new HashSet<int>();
             for(int i=0;i<itemIds.Length;i++)
-                if(itemIds[i]<1||counts[i]<1||!seen.Add(itemIds[i])||CountItem(itemIds[i])<counts[i]||Grid.Find("s"+itemIds[i])==null)
-                    throw new InvalidOperationException("Required construction materials are unavailable.");
-            for(int i=0;i<itemIds.Length;i++)
             {
-                var stack=stacks.Find(row=>row.ItemId==itemIds[i]);stack.Count-=counts[i];
-                if(stack.Count==0)Grid.Remove("s"+itemIds[i]);
+                if(itemIds[i]<1||counts[i]<1||!seen.Add(itemIds[i]))
+                    throw new InvalidOperationException("Required construction materials are unavailable.");
+                ValidateStackConsumption(itemIds[i],counts[i]);
             }
+            for(int i=0;i<itemIds.Length;i++) ConsumeStackRows(itemIds[i],counts[i]);
             if(itemIds.Length>0)Revision++;
         }
     }

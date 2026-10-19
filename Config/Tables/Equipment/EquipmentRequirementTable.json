@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "EquipmentRequirementTable",
-  "description": "软门槛：对该武器授予的技能生效，缺口加总；装备命令不拒绝不足属性。",
+  "description": "装配时以不计装备加成的当前属性检查硬门槛；装备后属性不足按规则削弱武器授予技能，不自动卸装。",
   "key": "id",
   "fields": [
     {

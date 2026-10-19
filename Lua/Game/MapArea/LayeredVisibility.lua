@@ -126,13 +126,17 @@ local function rayPath(dq,dr,distance,offset)
     end
     error('Layered visibility hex traversal exceeded its bounded ray length')
 end
-local function clearRay(query,origin,target,path,y,dy)
+local function clearRay(query,origin,target,path,y,dy,includeCell)
     for _,part in ipairs(path) do
-        if columnBlocks(column(query,origin.q+part.q,origin.r+part.r),origin,target,part.x,part.z,path.dx,path.dz,y,dy,part.first,part.last) then return false end
+        local q,r=origin.q+part.q,origin.r+part.r
+        -- 起点和落点的楼板始终检查，距离筛选只作用于中间柱，避免穿过脚下楼板。
+        if not includeCell or (q==origin.q and r==origin.r) or (q==target.q and r==target.r) or includeCell(q,r) then
+            if columnBlocks(column(query,q,r),origin,target,part.x,part.z,path.dx,path.dz,y,dy,part.first,part.last) then return false end
+        end
     end
     return true
 end
-function Visibility.CanSee(area,origin,target,query)
+function Visibility.CanSee(area,origin,target,query,includeCell)
     if origin.index==target.index then return true end
     query=query or newQuery(area)
     if not query.cells[origin.index] then column(query,origin.q,origin.r) end
@@ -143,7 +147,7 @@ function Visibility.CanSee(area,origin,target,query)
     if not paths then paths={rayPath(dq,dr,distance,-epsilon),rayPath(dq,dr,distance,epsilon)};rays[key]=paths end
     local y=stepHeight(origin.height,a.rise)+1.6
     local dy=stepHeight(target.height,b.rise)+1.6-y
-    return clearRay(query,a,b,paths[1],y,dy) and clearRay(query,a,b,paths[2],y,dy)
+    return clearRay(query,a,b,paths[1],y,dy,includeCell) and clearRay(query,a,b,paths[2],y,dy,includeCell)
 end
 function Visibility.NewQuery(area) return newQuery(area) end
 function Visibility.VisibleFrom(area,index,query)

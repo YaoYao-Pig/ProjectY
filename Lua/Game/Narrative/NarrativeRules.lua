@@ -69,6 +69,7 @@ function Rules.New(config)
         elseif kind == 'recruit_npc' then assert(self.npcs:Get(action.targetId).recruitable, 'NPC cannot be recruited')
         elseif kind == 'add_relation' then self.npcs:Get(action.targetId)
         elseif kind == 'add_reputation' then self.factions:Get(action.targetId)
+        elseif kind == 'grant_experience' then assert(action.value > 0 and action.targetId == 0 and action.key == '', 'Experience reward requires positive value and whole-party target')
         else assert(kind == 'add_coins', 'Unknown narrative action') end
     end
     -- 任务奖励只改变事实/物品/NPC；后继任务通过条件响应，不允许递归领取奖励。

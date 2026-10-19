@@ -8,6 +8,8 @@ function Events:OnInit(context)
     self.choices = config:GetTable('AdventureChoiceTable')
     self.encounters = config:GetTable('CombatEncounterTable')
     self.stats = context.systems:Get('Battle').stats
+    self.gameEffects=context.systems:Get('Battle').gameEffects
+    self.effectDefinitions=config:GetTable('CombatEffectTable')
     self.growth = context.systems:Get('Growth')
     self.equipment = context.systems:Get('Equipment')
     self.chronicle = self.growth.chronicle
@@ -27,6 +29,10 @@ function Events:OnInit(context)
         assert(#row.encounterIds <= 1, 'Choice allows at most one encounter')
         assert(#row.itemIds==#row.itemCounts,'Event item arrays differ')
         for _,count in ipairs(row.itemCounts) do assert(count>0,'Event item count must be positive') end
+        for _,id in ipairs(row.effectIds)do
+            local effect=self.effectDefinitions:Get(id)
+            assert(effect.kind=='damage' or effect.kind=='heal' or effect.kind=='apply_buff','Event effects must damage, heal or apply a buff: '..id)
+        end
     end
 end
 function Events:LivingParty()
@@ -99,7 +105,15 @@ function Events:CheckRequirements(choice,subject)
     if scouting < choice.minScouting then return false, '侦察不足，需要 ' .. choice.minScouting end
     if #choice.encounterIds > 0 and #party == 0 then return false, '队伍已倒地，请先到营地休整' end
     if #choice.traitIds > 0 and #party == 0 and not choice.healParty then return false, '没有可获得特质的存活角色' end
+    if #choice.effectIds>0 and not choice.healParty and (choice.recipient=='subject' and subject.HP<=0 or #party==0) then return false,'没有可接受该效果的存活角色' end
     return true
+end
+function Events:Recipients(choice)
+    local result={}
+    if choice.recipient=='party' then
+        for i=0,self.data.PartyCount-1 do result[#result+1]=self.data:GetPartyAt(i) end
+    else result[1]=self:Subject() end
+    return result
 end
 function Events:AwardTraits(ids)
     if #ids == 0 then return end
@@ -118,11 +132,18 @@ function Events:Choose(choiceId)
     if not ok then return false, reason end
     local choice = self.choices:Get(choiceId)
     assert(self.player.Coins - choice.costCoins + choice.rewardCoins <= 2147483647, 'Coin reward overflow')
+    local recipients=self:Recipients(choice);local plans={}
+    for _,actor in ipairs(recipients)do
+        if actor.HP>0 or choice.healParty then
+            for _,id in ipairs(choice.effectIds)do plans[#plans+1]=self.gameEffects:Prepare(id,self:Subject(),actor) end
+        end
+    end
     -- 先离开可选择状态；重复提交同一按钮不会重复扣费或发奖。
     self.data:ResolveChoice(choiceId)
     local resultText
     if choice.obstacleAction~='' then resultText=self.context.systems:Get('Adventure').obstacles:Resolve(choice.obstacleAction) end
     assert(self.player:TrySpendCoins(choice.costCoins), 'Coins changed during event resolution')
+    if choice.timeMinutes>0 then self.context.systems:Get('Adventure').narrative:AdvanceMinutes(choice.timeMinutes) end
     if choice.healParty then
         for i = 0, self.data.PartyCount - 1 do self.data:GetPartyAt(i):Restore() end
     end
@@ -135,10 +156,6 @@ function Events:Choose(choiceId)
         end
         self.chronicle:Record('loot',self:Subject(),'获得物品',table.concat(items,'、'),self.data.EventLocation,true,self.data.EventId,choice.id)
     end
-    local recipients = {}
-    if choice.recipient == 'party' then
-        for i=0,self.data.PartyCount-1 do recipients[#recipients+1]=self.data:GetPartyAt(i) end
-    else recipients[1] = self:Subject() end
     local event = self.events:Get(self.data.EventId)
     self.chronicle:Record(event.logKind,self:Subject(),event.name,resultText or choice.result,self.data.EventLocation,true,event.id,choice.id)
     for _, actor in ipairs(recipients) do
@@ -160,6 +177,7 @@ function Events:Choose(choiceId)
         actor:SetMaxHP(self.stats:MaximumHP(actor))
         self.growth:AddExperience(actor,choice.experience,self.data.EventLocation)
     end
+    for _,plan in ipairs(plans)do if plan.target.HP>0 then assert(self.gameEffects:ApplyPrepared(plan)) end end
     return true, choice, resultText
 end
 return Events

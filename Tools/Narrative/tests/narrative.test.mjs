@@ -39,3 +39,19 @@ test('HTTP and CLI share validation, token and origin protections',async t=>{
   const response=await fetch(url+'/api/patch',{method:'POST',headers:{'Content-Type':'application/json','X-Narrative-Token':state.token},body:JSON.stringify({revision:state.revision,operations:[{op:'upsert',table:'MissionTable',row}]})});
   assert.equal(response.status,200);assert.equal(runCommand(root,'get',['MissionTable','100']).row.name,'HTTP edit');
 });
+test('party attribute and experience contracts are validated and projected in the graph',t=>{
+  const root=fixture(t),state=snapshot(root);
+  const condition={id:990001,kind:'party_attribute',conditionIds:[],targetId:19,key:'',value:5,state:'',reason:'魅力至少 5'};
+  const action={id:990001,kind:'grant_experience',targetId:0,key:'',value:35};
+  const input={revision:state.revision,operations:[{op:'upsert',table:'ConditionTable',row:condition},{op:'upsert',table:'NarrativeActionTable',row:action}]};
+  const review=patchWorkspace(root,input,{dryRun:true});
+  assert(review.graph.edges.some(edge=>edge.from==='ConditionTable:990001'&&edge.to==='GrowthAttributeTable:19'&&edge.label==='party_attribute'));
+  assert.equal(review.diagnostics.warnings.length,0);
+  assert.equal(snapshot(root).revision,state.revision);
+  for(const changes of [{targetId:999999},{value:0},{key:'charisma'},{state:'leader'}]) {
+    assert.throws(()=>patchWorkspace(root,{...input,operations:[{...input.operations[0],row:{...condition,...changes}}]},{dryRun:true}),/missing|party_attribute/);
+  }
+  for(const changes of [{value:0},{value:-1},{targetId:1},{key:'leader'}]) {
+    assert.throws(()=>patchWorkspace(root,{...input,operations:[{...input.operations[1],row:{...action,...changes}}]},{dryRun:true}),/experience/);
+  }
+});

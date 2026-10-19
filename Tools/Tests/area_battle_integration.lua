@@ -1,7 +1,7 @@
 -- Edit Mode 独立 LuaEnv：真实 C# 状态与现有命令贯通探索、原地战斗、结算和重进。
 local Registry=require('Core.SystemRegistry')
-local registry=Registry({Adventure=Services.Adventure,Player=Services.Player,UI={IsWorldPaused=false},
-    ReadConfig=function(_,name) return Services:ReadConfig(name) end,LogError=function(_,message) Services:LogError(message) end})
+local enterCombat=assert(loadfile('Tools/Tests/combat_phase_fixture.lua'))()
+local registry=Registry(Services)
 registry:Register('Config',require('Config.ConfigSystem'))
 registry:Register('PlayerModel',require('Game.PlayerModelSystem'),{'Config'})
 registry:Register('Map',require('Game.Map.MapSystem'),{'Config'})
@@ -70,6 +70,7 @@ local ok,err=xpcall(function()
     local group=state:GetEncounterAt(data.AreaEncounterId-1)
     local initialCoins=player.Coins
     test('same combat commands win in the dungeon and settlement continues exploration exactly once',function()
+        enterCombat(battle)
         local Hex=require('Game.Map.HexGrid')
         local function attack()
             local actor=battle:Active()
@@ -103,6 +104,7 @@ local ok,err=xpcall(function()
             end
         end
         assert(data.Phase=='area' and group.Defeated,'Dungeon strategy did not win: '..data.Phase)
+        if adventure.equipment.worldLoot.session.Active then adventure:CloseLoot();assert(not adventure.equipment.worldLoot.session.Active) end
         assert(player.Coins==initialCoins+35 and data.Battle.UnitCount==0 and battle.board==nil)
         assert(view().Area.ClearedEncounters==1)
         assert(not adventure:BattleCommand('end_turn') and player.Coins==initialCoins+35)

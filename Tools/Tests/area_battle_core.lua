@@ -1,4 +1,6 @@
 local EmptyGrowth=assert(loadfile('Tools/Tests/growth_empty.lua'))()
+local Gear=assert(loadfile('Tools/Tests/equipment_read_fixture.lua'))()
+assert(loadfile('Tools/Tests/battle_movement_fixture.lua'))()
 -- 定向纯 Lua：真实地牢敌群部署、隔墙技能和战后散队收拢。
 package.path='Lua/?.lua;'..package.path
 local config=require('Config.ConfigSystem')()
@@ -40,17 +42,22 @@ local board=require('Game.Battle.BattleBoard').FromArea(flat,4,4,7)
 local hero={Id=1,Growth=EmptyGrowth(),TemplateId=2,Team=1,HP=38,AP=4,MainUsed=false,Moved=false,Q=3,R=4}
 local enemy={Id=101,Growth=EmptyGrowth(),TemplateId=4,Team=2,HP=34,Q=5,R=4}
 hero.AnimalOwnerId=0;enemy.AnimalOwnerId=0
+for _,actor in ipairs({hero,enemy})do actor.TraitCount=0;actor.Effects={Count=0};actor.Guard=0;function actor:GetCooldown()return 0 end end
 local battle=require('Game.Battle.BattleSystem')()
-battle.board=board;battle.skills=config:GetTable('CombatSkillTable');battle.stats=require('Game.Battle.CombatStats')(config)
-battle.data={Winner='',ActiveId=1,UnitCount=2,GetUnitAt=function(_,i) return ({hero,enemy})[i+1] end}
+local bow=Gear(1,46,hero.Id)
+local inventory={WearableCount=0,Equipped=function(_,id)return id==hero.Id and bow or nil end,Offhand=function()return nil end,Worn=function()return nil end}
+battle.board=board;battle.skills=config:GetTable('CombatSkillTable');battle.stats=require('Game.Battle.CombatStats')(config,inventory)
+battle.data={Phase='combat',Winner='',ActiveId=1,UnitCount=2,GetUnitAt=function(_,i) return ({hero,enemy})[i+1] end}
 flat:Find(4,4).blocked=true;flat:Find(4,4).blocksSight=true
-local ok,reason=battle:CanUseSkill(2,101);assert(not ok and reason:find('遮挡') and hero.AP==4)
+local ok=battle:CanUseSkill(2,101);assert(ok and hero.AP==4)
+local preview=battle:ShotPreview(hero,enemy,battle:Skill(hero,2))
+assert(preview.blockerCount==1 and preview.interceptChance==50,'Nearby cover must allow a lobbed shot with interception risk')
 flat:Find(4,4).blocked=false;flat:Find(4,4).blocksSight=false
 assert(battle:CanUseSkill(2,101))
 board.externalOccupied={[Hex.Key(4,4)]=true}
 board.allowed=function(cell) return cell.r<=4 end
 for _,cell in ipairs(battle:Reachable()) do assert(cell.r<=4 and not (cell.q==4 and cell.r==4)) end
-print('PASS area skill line of sight, external enemy occupancy and discovered movement')
+print('PASS area shot interception preview, external enemy occupancy and discovered movement')
 
 local Squad=require('Game.MapArea.SquadMovement')
 local positions={flat:Find(2,2).index,flat:Find(8,2).index,flat:Find(8,3).index,flat:Find(7,4).index}

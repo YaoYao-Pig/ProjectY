@@ -6,11 +6,13 @@ using XLua;
 namespace ProjectY.Data
 {
     [Serializable] internal sealed class GameEffectSave
-    { public int id,effectId,sourceId,amount,remaining,elapsed,stacks;public string sourceName; }
+    { public int id,effectId,sourceId,amount,remaining,elapsed,stacks;public string sourceName;public int[] snapshotIds,snapshotAmounts;public double expiresAt,nextTickAt; }
 
     [LuaCallCSharp]
     public sealed class GameEffectInstanceData
     {
+        internal int[] SnapshotIds=Array.Empty<int>(),SnapshotAmounts=Array.Empty<int>();
+        internal double ExpiresAt,NextTickAt;
         public int Id {get;internal set;}
         public int EffectId {get;internal set;}
         public int SourceId {get;internal set;}
@@ -58,14 +60,15 @@ namespace ProjectY.Data
                 throw new ArgumentException("Invalid game effect instance.");
         }
         internal GameEffectSave[] Capture()=>entries.Select(e=>new GameEffectSave{id=e.Id,effectId=e.EffectId,sourceId=e.SourceId,sourceName=e.SourceName,
-            amount=e.Amount,remaining=e.Remaining,elapsed=e.Elapsed,stacks=e.Stacks}).ToArray();
+            amount=e.Amount,remaining=e.Remaining,elapsed=e.Elapsed,stacks=e.Stacks,snapshotIds=(int[])e.SnapshotIds.Clone(),snapshotAmounts=(int[])e.SnapshotAmounts.Clone(),expiresAt=e.ExpiresAt,nextTickAt=e.NextTickAt}).ToArray();
         internal void Restore(GameEffectSave[] saved)
         {
             foreach(var e in SaveCheck.Rows(saved,256,"持续效果"))
             {
                 SaveCheck.Require(e!=null&&e.id>0&&e.id<int.MaxValue&&e.elapsed>=0&&e.elapsed<=1000000&&e.stacks>0&&e.stacks<=100&&!entries.Any(x=>x.Id==e.id),"持续效果身份/计时/层数");
                 Check(e.effectId,e.sourceId,e.sourceName,e.amount,e.remaining);
-                entries.Add(new GameEffectInstanceData{Id=e.id,EffectId=e.effectId,SourceId=e.sourceId,SourceName=e.sourceName,Amount=e.amount,Remaining=e.remaining,Elapsed=e.elapsed,Stacks=e.stacks});
+                var instance=new GameEffectInstanceData{Id=e.id,EffectId=e.effectId,SourceId=e.sourceId,SourceName=e.sourceName,Amount=e.amount,Remaining=e.remaining,Elapsed=e.elapsed,Stacks=e.stacks};
+                GameBuffState.Configure(instance,e.snapshotIds,e.snapshotAmounts,e.expiresAt,e.nextTickAt);entries.Add(instance);
                 nextId=Math.Max(nextId,e.id+1);
             }
             Revision++;

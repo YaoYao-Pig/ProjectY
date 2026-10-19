@@ -31,11 +31,12 @@ namespace ProjectY.Editor
                 if(root.transform.childCount==0) Build(root);
                 if(root.GetComponent<InventoryPanelView>()==null) throw new InvalidOperationException("现有背包 Prefab 缺少 InventoryPanelView，请检查手工编辑。");
                 UpgradeCharacter(root);
+                EquipmentPresentationAssets.Apply("Inventory",root);
                 root.GetComponent<LuaReference>().ValidateBindings();PrefabUtility.SaveAsPrefabAsset(root,entry.PrefabPath);
                 LuaViewHints.Export(root.GetComponent<LuaReference>(),entry.ViewType);
             }
             finally {PrefabUtility.UnloadPrefabContents(root);}
-            EquipmentAssets.SyncItemIcons();AssetDatabase.SaveAssets();
+            EquipmentAssets.SyncItemIcons();EquipmentRepairAssets.Sync();AssetDatabase.SaveAssets();
             Debug.Log("Inventory panel and LuaReference bindings saved.");
         }
         private static RectTransform Node(string name,Transform parent)

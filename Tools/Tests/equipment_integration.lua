@@ -14,7 +14,7 @@ local ok,err=xpcall(function()
     for i,id in ipairs({1,2,3,6}) do local actor=data:AddPartyActor(i,id);actor:SetMaxHP(battle.stats:MaximumHP(actor));actor:Restore();party[i]=actor end
     eq:Start();local staff,gun=inventory:GetWeaponAt(0),inventory:GetWeaponAt(1)
     test('starter inventory contains physical weapons and two separate loaded spare magazines',function()
-        assert(inventory.WeaponCount==8 and inventory.MagazineCount==2 and inventory:CountItem(31)==24)
+        assert(inventory.WeaponCount==9 and inventory.MagazineCount==2 and inventory:CountItem(31)==24)
         assert(not inventory:Equipped(1) and gun.MagazineId==0 and inventory:GetMagazineAt(0).Rounds==12)
     end)
     test('reachable dungeon loot grants once and survives leaving and reentering',function()
@@ -47,6 +47,7 @@ local ok,err=xpcall(function()
     local function arena(weapon,seed)
         data:Reset(seed);party={};inventory=eq.data
         local actor=data:AddPartyActor(1,3);actor:SetMaxHP(100);actor:Restore();party[1]=actor
+        actor.Growth:Initialize(1,2,0,0);actor.Growth:InvestAttribute('strength',1,2)
         eq:Start();staff,gun=inventory:GetWeaponAt(0),inventory:GetWeaponAt(1)
         assert(eq:Command('equip',1,weapon=='staff' and staff.Id or gun.Id,0,0))
         if weapon=='staff' then eq:Grant(11,1);eq:Grant(12,1);assert(eq:Command('attach',1,staff.Id,1,11));assert(eq:Command('attach',1,staff.Id,2,12))
@@ -54,7 +55,7 @@ local ok,err=xpcall(function()
         battle.board=require('Game.Battle.BattleBoard').Create(4,seed,0)
         battle.data:Reset(1,18);battle.data:SetRandomSeed(seed);battle.data:AddUnit(actor,1,0,0)
         for i,position in ipairs({{1,0},{1,1},{2,0}}) do local enemy=battle.data:AddEnemy(100+i,4,position[1],position[2]);enemy:SetMaxHP(100);enemy:Restore() end
-        battle:NewRound();assert(battle:Active().Id==1)
+        assert(loadfile('Tools/Tests/combat_phase_fixture.lua'))()(battle);assert(battle:Active().Id==1)
         data:BeginEvent(1,1);data:ResolveChoice(1);data:BeginBattle()
         return actor
     end

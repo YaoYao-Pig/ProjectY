@@ -1,0 +1,108 @@
+{
+  "version": 1,
+  "name": "WorldTravelTerrainTable",
+  "description": "按大地图地域配置步行成本与随机战场障碍。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定ID"
+    },
+    {
+      "name": "regionType",
+      "type": "enum",
+      "description": "地域类型",
+      "enumRef": "Map.E_MapRegion"
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "地形显示名"
+    },
+    {
+      "name": "costMultiplier",
+      "type": "float",
+      "description": "该地域通行耗时倍率",
+      "min": 0.1
+    },
+    {
+      "name": "battleObstacleChance",
+      "type": "float",
+      "description": "随机遭遇战场障碍率",
+      "min": 0,
+      "max": 0.4
+    },
+    {
+      "name": "battleSurfaceId",
+      "type": "int",
+      "ref": "MapAreaSurfaceTable",
+      "description": "随机战场地面材质"
+    },
+    {
+      "name": "battlePropIds",
+      "type": "int[]",
+      "ref": "MapAssetTable",
+      "description": "障碍物模型池；空时使用战场岩壁"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "regionType": 1,
+      "name": "平原",
+      "costMultiplier": 1,
+      "battleObstacleChance": 0.08,
+      "battleSurfaceId": 1,
+      "battlePropIds": []
+    },
+    {
+      "id": 2,
+      "regionType": 2,
+      "name": "山地",
+      "costMultiplier": 1.8,
+      "battleObstacleChance": 0.2,
+      "battleSurfaceId": 2,
+      "battlePropIds": []
+    },
+    {
+      "id": 3,
+      "regionType": 3,
+      "name": "湖岸",
+      "costMultiplier": 1.2,
+      "battleObstacleChance": 0.1,
+      "battleSurfaceId": 4,
+      "battlePropIds": []
+    },
+    {
+      "id": 4,
+      "regionType": 4,
+      "name": "河岸",
+      "costMultiplier": 1.2,
+      "battleObstacleChance": 0.12,
+      "battleSurfaceId": 18,
+      "battlePropIds": []
+    },
+    {
+      "id": 5,
+      "regionType": 5,
+      "name": "森林",
+      "costMultiplier": 1.5,
+      "battleObstacleChance": 0.24,
+      "battleSurfaceId": 201,
+      "battlePropIds": [
+        201,
+        202
+      ]
+    },
+    {
+      "id": 6,
+      "regionType": 6,
+      "name": "雪地",
+      "costMultiplier": 1.7,
+      "battleObstacleChance": 0.14,
+      "battleSurfaceId": 12,
+      "battlePropIds": []
+    }
+  ]
+}

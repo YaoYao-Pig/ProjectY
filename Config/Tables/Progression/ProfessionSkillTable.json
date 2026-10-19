@@ -1,0 +1,304 @@
+{
+  "version": 1,
+  "name": "ProfessionSkillTable",
+  "description": "当前职业的主动选学目录；每项消耗一次学习机会，门槛为角色等级、全部属性及图谱前置。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "课程 ID",
+      "min": 1
+    },
+    {
+      "name": "professionId",
+      "type": "int",
+      "description": "所属职业",
+      "ref": "ProfessionTable"
+    },
+    {
+      "name": "skillId",
+      "type": "int",
+      "description": "主动或准备技能",
+      "ref": "CombatSkillTable"
+    },
+    {
+      "name": "minLevel",
+      "type": "int",
+      "description": "角色等级门槛",
+      "min": 1
+    },
+    {
+      "name": "attributeNames",
+      "type": "string[]",
+      "description": "全部需要达到的属性代码"
+    },
+    {
+      "name": "attributeValues",
+      "type": "int[]",
+      "description": "对应属性最小值"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1101,
+      "professionId": 1,
+      "skillId": 101,
+      "minLevel": 1,
+      "attributeNames": [
+        "strength"
+      ],
+      "attributeValues": [
+        0
+      ]
+    },
+    {
+      "id": 1102,
+      "professionId": 1,
+      "skillId": 102,
+      "minLevel": 2,
+      "attributeNames": [
+        "strength"
+      ],
+      "attributeValues": [
+        8
+      ]
+    },
+    {
+      "id": 1107,
+      "professionId": 1,
+      "skillId": 107,
+      "minLevel": 1,
+      "attributeNames": [
+        "vitality"
+      ],
+      "attributeValues": [
+        0
+      ]
+    },
+    {
+      "id": 1108,
+      "professionId": 1,
+      "skillId": 108,
+      "minLevel": 2,
+      "attributeNames": [
+        "endurance"
+      ],
+      "attributeValues": [
+        8
+      ]
+    },
+    {
+      "id": 1401,
+      "professionId": 1,
+      "skillId": 401,
+      "minLevel": 1,
+      "attributeNames": [],
+      "attributeValues": []
+    },
+    {
+      "id": 2105,
+      "professionId": 2,
+      "skillId": 105,
+      "minLevel": 1,
+      "attributeNames": [
+        "speed"
+      ],
+      "attributeValues": [
+        0
+      ]
+    },
+    {
+      "id": 2106,
+      "professionId": 2,
+      "skillId": 106,
+      "minLevel": 2,
+      "attributeNames": [
+        "speed"
+      ],
+      "attributeValues": [
+        8
+      ]
+    },
+    {
+      "id": 2201,
+      "professionId": 2,
+      "skillId": 201,
+      "minLevel": 1,
+      "attributeNames": [
+        "animalAffinity"
+      ],
+      "attributeValues": [
+        5
+      ]
+    },
+    {
+      "id": 2402,
+      "professionId": 2,
+      "skillId": 402,
+      "minLevel": 1,
+      "attributeNames": [],
+      "attributeValues": []
+    },
+    {
+      "id": 3103,
+      "professionId": 3,
+      "skillId": 103,
+      "minLevel": 1,
+      "attributeNames": [
+        "intellect"
+      ],
+      "attributeValues": [
+        0
+      ]
+    },
+    {
+      "id": 3104,
+      "professionId": 3,
+      "skillId": 104,
+      "minLevel": 2,
+      "attributeNames": [
+        "intellect"
+      ],
+      "attributeValues": [
+        8
+      ]
+    },
+    {
+      "id": 3107,
+      "professionId": 3,
+      "skillId": 107,
+      "minLevel": 1,
+      "attributeNames": [
+        "vitality"
+      ],
+      "attributeValues": [
+        0
+      ]
+    },
+    {
+      "id": 3403,
+      "professionId": 3,
+      "skillId": 403,
+      "minLevel": 1,
+      "attributeNames": [],
+      "attributeValues": []
+    },
+    {
+      "id": 4301,
+      "professionId": 4,
+      "skillId": 301,
+      "minLevel": 1,
+      "attributeNames": [
+        "crafting"
+      ],
+      "attributeValues": [
+        0
+      ]
+    },
+    {
+      "id": 4302,
+      "professionId": 4,
+      "skillId": 302,
+      "minLevel": 2,
+      "attributeNames": [
+        "crafting"
+      ],
+      "attributeValues": [
+        8
+      ]
+    },
+    {
+      "id": 4303,
+      "professionId": 4,
+      "skillId": 303,
+      "minLevel": 1,
+      "attributeNames": [
+        "crafting"
+      ],
+      "attributeValues": [
+        3
+      ]
+    },
+    {
+      "id": 4304,
+      "professionId": 4,
+      "skillId": 304,
+      "minLevel": 2,
+      "attributeNames": [
+        "crafting"
+      ],
+      "attributeValues": [
+        12
+      ]
+    },
+    {
+      "id": 4305,
+      "professionId": 4,
+      "skillId": 305,
+      "minLevel": 1,
+      "attributeNames": [
+        "crafting"
+      ],
+      "attributeValues": [
+        0
+      ]
+    },
+    {
+      "id": 4306,
+      "professionId": 4,
+      "skillId": 306,
+      "minLevel": 2,
+      "attributeNames": [
+        "crafting"
+      ],
+      "attributeValues": [
+        8
+      ]
+    },
+    {
+      "id": 4404,
+      "professionId": 4,
+      "skillId": 404,
+      "minLevel": 1,
+      "attributeNames": [],
+      "attributeValues": []
+    },
+    {
+      "id": 1501,
+      "professionId": 1,
+      "skillId": 501,
+      "minLevel": 2,
+      "attributeNames": [
+        "strength"
+      ],
+      "attributeValues": [
+        4
+      ]
+    },
+    {
+      "id": 1502,
+      "professionId": 1,
+      "skillId": 502,
+      "minLevel": 2,
+      "attributeNames": [
+        "strength"
+      ],
+      "attributeValues": [
+        4
+      ]
+    },
+    {
+      "id": 3624,
+      "professionId": 3,
+      "skillId": 1624,
+      "minLevel": 1,
+      "attributeNames": [
+        "intellect"
+      ],
+      "attributeValues": [
+        0
+      ]
+    }
+  ]
+}

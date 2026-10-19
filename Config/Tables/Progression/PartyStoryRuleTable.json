@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "name": "PartyStoryRuleTable",
+  "description": "真实共同战斗和危急救援的关系与特质规则。救援不含自疗、部署和周期治疗，每场每对一次。",
+  "key": "id",
+  "fields": [
+    {"name":"id","type":"int","description":"规则 ID","min":1},
+    {"name":"rescueHealthPercent","type":"int","description":"被救者治疗前生命不高于最大生命的百分比","min":1,"max":99},
+    {"name":"rescueBond","type":"int","description":"真实救援增加的关系值","min":1,"max":100},
+    {"name":"victoryBond","type":"int","description":"共同胜利且双方存活增加的关系值","min":1,"max":100},
+    {"name":"removeTraitIds","type":"int[]","description":"真实获救后移除的特质","ref":"CombatTraitTable"}
+  ],
+  "rows": [{"id":1,"rescueHealthPercent":25,"rescueBond":25,"victoryBond":10,"removeTraitIds":[3,6]}]
+}

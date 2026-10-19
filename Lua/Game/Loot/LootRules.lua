@@ -16,7 +16,14 @@ function Rules.New(config)
     end
     for _,row in ipairs(config:GetTable('EnemyDropTable'):All()) do
         assert(not self.enemies[row.unitId],'Duplicate enemy drop definition')
-        assert(self.containers:Get(row.lootTableId).kind=='ground','Enemy drops need a ground presentation')
+        local container=self.containers:Get(row.lootTableId)
+        assert(container.kind=='ground','Enemy drops need a ground presentation')
+        local function extraItem(id)
+            local kind=items:Get(id).kind
+            assert(kind~='weapon' and kind~='wearable','Enemy equipment must come from its physical loadout, not its extra loot pool: '..row.unitId)
+        end
+        for _,id in ipairs(container.itemIds) do extraItem(id) end
+        if container.poolId>0 then for _,entry in ipairs(self.entries[container.poolId]) do extraItem(entry.itemId) end end
         self.enemies[row.unitId]=row
     end
     return self

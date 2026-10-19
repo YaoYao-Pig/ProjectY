@@ -6,8 +6,11 @@ function Stats:ctor(config, equipmentData)
     self.units = config:GetTable('CombatUnitTable')
     self.traits = config:GetTable('CombatTraitTable')
     self.effects = config:GetTable('CombatEffectTable')
+    self.buffs = require('Game.Battle.BuffRules').New(config)
     self.growth = require('Game.Progression.GrowthRules').New(config)
     self.animals = require('Game.Animals.AnimalRules').New(config)
+    self.heightAdvantage=require('Game.Battle.HeightAdvantage').New(config)
+    self.projectileCover=config:GetTable('ProjectileCoverTable'):Get(1)
     self.attributes = {}
     for _, row in ipairs(self.units:All()) do
         assert(#row.attributeNames == #row.attributeValues, 'Unit attribute arrays differ: ' .. row.id)
@@ -30,10 +33,17 @@ function Stats:Get(unit, name, excludeEquipment, pendingEffect)
         if trait.attribute == name then value = value + trait.amount end
     end
     for i=0,unit.Effects.Count-1 do
-        local instance=unit.Effects:GetAt(i);local effect=self.effects:Get(instance.EffectId)
-        if effect.kind=='modifier' and effect.attribute==name and (not pendingEffect or instance.Id~=pendingEffect.oldId) then value=value+instance.Amount*instance.Stacks end
+        local instance=unit.Effects:GetAt(i)
+        local removed=pendingEffect and (instance.Id==pendingEffect.oldId or pendingEffect.removedIds and pendingEffect.removedIds[instance.Id])
+        if not removed then
+            if self.buffs:Find(instance.EffectId) then value=value+self.buffs:Bonus(instance,name)
+            else local effect=self.effects:Get(instance.EffectId)
+                if effect.kind=='modifier' and effect.attribute==name then value=value+instance.Amount*instance.Stacks end
+            end
+        end
     end
     if pendingEffect and pendingEffect.attribute==name then value=value+pendingEffect.amount*pendingEffect.stacks end
+    if pendingEffect and pendingEffect.buff then value=value+self.buffs:PendingBonus(pendingEffect,name) end
     return math.max(0, value + self.growth:Bonus(unit,name) + (excludeEquipment and 0 or self.equipment:AttributeBonus(unit,name)))
 end
 function Stats:MaximumHP(unit,pendingEffect)

@@ -36,8 +36,16 @@ namespace ProjectY.UI
         public Font Font => font??(font=Font.CreateDynamicFontFromOSFont(new[]{"Microsoft YaHei","Noto Sans CJK SC","Arial"},16));
         public void Prepare()
         {
+            if(layout.Sockets==null || layout.Sockets.Length==0)throw new InvalidOperationException("工坊挂点按钮未绑定。");
             if(layout.SocketDots==null||layout.SocketDots.Length!=layout.Sockets.Length||layout.SocketLeads==null||layout.SocketLeads.Length!=layout.Sockets.Length||layout.SocketTails==null||layout.SocketTails.Length!=layout.Sockets.Length)
                 throw new InvalidOperationException("工坊挂点引线未绑定，请同步装备界面。");
+            for(int i=0;i<layout.Sockets.Length;i++)
+                if(layout.Sockets[i]==null || layout.SocketDots[i]==null || layout.SocketLeads[i]==null || layout.SocketTails[i]==null)
+                    throw new InvalidOperationException("工坊挂点按钮或引线引用缺失："+(i+1));
+            if(socketPoints==null || socketPoints.Length!=layout.Sockets.Length)
+            {
+                socketPoints=new Vector2[layout.Sockets.Length];labelHeights=new float[layout.Sockets.Length];sortedSockets=new int[layout.Sockets.Length];
+            }
             foreach(var text in layout.Labels) text.font=Font;
             Arrange();
         }
@@ -110,9 +118,9 @@ namespace ProjectY.UI
             pivot.localRotation=Quaternion.Euler(tilt,yaw,0);ProjectY.Rendering.UrpCameraRendering.Render(cameraView, renderRequest);
             LayoutCallouts();
         }
-        private readonly Vector2[] socketPoints=new Vector2[3];
-        private readonly float[] labelHeights=new float[3];
-        private readonly int[] sortedSockets=new int[3];
+        private Vector2[] socketPoints;
+        private float[] labelHeights;
+        private int[] sortedSockets;
         private static void BottomPoint(RectTransform rect,Vector2 point)
         {rect.anchorMin=rect.anchorMax=Vector2.zero;rect.anchoredPosition=point;}
         private static void Line(RectTransform rect,Vector2 a,Vector2 b)
@@ -125,6 +133,8 @@ namespace ProjectY.UI
             if(model.Sockets.Length>layout.Sockets.Length) throw new InvalidOperationException("武器挂点超过工坊已绑定的容量。");
             var size=layout.Preview.rect.size;var width=Mathf.Min(144,size.x*.29f);
             var minY=60f;var maxY=Mathf.Max(minY,size.y-110);
+            // Compact previews still reserve two distinct 34px labels in each docking column.
+            if(maxY-minY<44) {minY=Mathf.Max(17,(size.y-44)*.5f);maxY=minY+44;}
             for(int i=0;i<layout.Sockets.Length;i++)
             {
                 var active=i<model.Sockets.Length;layout.Sockets[i].gameObject.SetActive(active);
@@ -140,6 +150,7 @@ namespace ProjectY.UI
                 var side=sideIndex==0?"left":"right";
                 int count=0;
                 for(int i=0;i<model.Sockets.Length;i++) if(model.Sockets[i].CalloutSide==side) sortedSockets[count++]=i;
+                if(count>2)throw new InvalidOperationException("工坊每侧最多支持两个挂点标签，请检查 calloutSide 配置。");
                 for(int i=1;i<count;i++) for(int j=i;j>0&&labelHeights[sortedSockets[j]]<labelHeights[sortedSockets[j-1]];j--)
                 {var temp=sortedSockets[j];sortedSockets[j]=sortedSockets[j-1];sortedSockets[j-1]=temp;}
                 var gap=count>1?Mathf.Min(48,(maxY-minY)/(count-1)):48;

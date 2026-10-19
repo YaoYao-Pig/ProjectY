@@ -18,13 +18,16 @@ function HUD:Bind()
     self.view.GMText.font=self.view.HUD.Font
     self.battleContent=self:AddWidget(require('UI.Widget.BattleHUDContent'),self.view.BattleContent)
     self:Listen(self.view.Inventory,function() self.demo:OpenEquipment() end)
+    self.view.GrowthText.text='角色养成'
     self:Listen(self.view.Growth,function() self.demo:OpenGrowth() end)
     self:Listen(self.view.NavigationToggle,function() self.navigation=not self.navigation;self:Refresh() end)
     self:Listen(self.view.Focus,function() self.demo:FitMap() end)
     self:Listen(self.view.Leave,function() self.demo:SendCommand('area_leave') end)
     self:Listen(self.view.Stop,function() self.demo:SendCommand('area_stop') end)
     self:Listen(self.view.CameraMode,function() self.demo:ToggleTownCamera() end)
-    self:Listen(self.view.Restart,function() self.demo:StartExpedition() end)
+    -- 复用已保存的独立导航按钮；新远征移入菜单，营地不再藏在菜单中。
+    self.view.RestartText.text='营地'
+    self:Listen(self.view.Restart,function() self.demo:SendCommand('camp_open') end)
     self:Listen(self.view.Environment,function() self.demo:ToggleEnvironment() end)
     self:Listen(self.view.Interact,function() local row=self.model.interaction;self.demo:SendCommand(row.command,row.a or 0,row.b or 0) end)
 end
@@ -57,15 +60,22 @@ function HUD:Refresh()
     self.view.Location.text=model.title;self.view.Subtitle.text=model.subtitle;self.view.Coins.text=model.coins..'  金币'
     self.view.NavigationTitle.text=model.phase=='map' and '这 一 程，去 哪 里' or '附 近 与 目 的 地'
     self.view.Leave.gameObject:SetActive(model.phase=='area');self.view.Stop.gameObject:SetActive(model.phase=='area')
-    self.view.CameraMode.gameObject:SetActive(model.phase=='area' and model.town);self.view.Restart.gameObject:SetActive(model.phase=='map')
+    self.view.CameraMode.gameObject:SetActive(false);self.view.Restart.gameObject:SetActive(model.phase=='map')
     self.view.Logs.text=table.concat(model.logs,'\n\n')
+    if not self.prompt then self.prompt=self:CreateWidget('HudInteraction',self.view.Root) end
+    self.prompt:SetData(model.prompt,self.view.HUD,self.demo)
     self.view.Interaction.gameObject:SetActive(model.interaction~=nil and not battle)
     if model.interaction then
         self.view.InteractionTitle.text=model.interaction.title;self.view.InteractionBody.text=model.interaction.body;self.view.InteractText.text=model.interaction.caption
     end
     local errorText=self.demo.LastError or '';self.view.Hint.text=errorText;self.view.Hint.gameObject:SetActive(errorText~='')
     Widgets.Rows(self,'NavigationRows','HudRow',model.rows,function(row) self.demo:SendCommand(row.command,row.a or 0,row.b or 0) end)
-    Widgets.Rows(self,'MenuRows','HudRow',model.menu,function(row) self.menuOpen=false;self.demo:SendCommand(row.command,row.a or 0,row.b or 0);self:Refresh() end)
+    Widgets.Rows(self,'MenuRows','HudRow',model.menu,function(row)
+        self.menuOpen=false
+        if row.command=='start' then self.demo:StartExpedition()
+        else self.demo:SendCommand(row.command,row.a or 0,row.b or 0) end
+        self:Refresh()
+    end)
     for i,row in ipairs(model.party) do
         if not self.party[i] then self.party[i]=self:CreateWidget('HudParty',self.view.PartyRows) end
         self.party[i]:SetData(row,self.view.HUD,row.id==self.demo.SelectedCharacterId,function(id) self.demo:SelectCharacter(id) end,self.view.BattleFeedback)
@@ -83,7 +93,8 @@ function HUD:Refresh()
         widget:SetData(row,self.view.HUD,self.demo,self.battleContent.view.HUD,self.view.BattleFeedback)
     end
     for _,widget in ipairs(self.health) do if not used[widget] then
-        if widget.row and (not widget.row.screen or battle) and widget.view.HealthAnimation.IsAnimating and widget.view.HealthAnimation.TargetFraction==0 then
+        if widget.row and (not widget.row.screen or battle) and widget.view.HealthAnimation.TargetFraction==0
+            and (widget.view.HealthAnimation.IsAnimating or widget.view.DamageNumbers.IsAnimating) then
             widget:Retire();visible=true
         else widget:SetData(nil) end
     end end

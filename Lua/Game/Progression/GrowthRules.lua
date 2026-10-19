@@ -10,6 +10,7 @@ function Rules.New(config)
     end
     self.settings = self.rules:Get(1)
     self.atlas = require('Game.Progression.SkillAtlas').New(config)
+    self.professions = self.atlas.professions
     assert(self.settings.directionMin <= self.settings.directionMax, 'Invalid skill direction count')
     self.attributeByCode, self.profileByUnit, self.incoming, self.neighbors = {}, {}, {}, {}
     self.maxLevel = 1
@@ -22,6 +23,7 @@ function Rules.New(config)
     end
     for _, row in ipairs(self.profiles:All()) do
         assert(not self.profileByUnit[row.unitId], 'Duplicate growth profile'); self.profileByUnit[row.unitId] = row
+        self.professions.professions:Get(row.initialProfessionId)
     end
     for _, row in ipairs(self.passives:All()) do
         assert(#row.attributeNames > 0 and #row.attributeNames == #row.attributeValues, 'Passive attributes differ')

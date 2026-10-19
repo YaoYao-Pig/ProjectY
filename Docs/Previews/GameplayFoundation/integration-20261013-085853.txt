@@ -1,0 +1,46 @@
+fixture_directory=C:\Users\yyz\AppData\Local\Temp\project-y-foundation-1bf4675172cc4b2383640f77a83c5b78
+FAIL Tools/Tests/growth_integration.lua
+XLua.LuaException: D:/Program/Unity/Project Y/Lua/Game/Adventure/AdventureSystem.lua:89: attempt to index a nil value (field 'areas')
+stack traceback:
+	D:/Program/Unity/Project Y/Lua/Game/Adventure/AdventureSystem.lua:89: in function 'Game.Adventure.AdventureSystem.Visit'
+	Tools/Tests/growth_integration.lua:57: in local 'run'
+	Tools/Tests/growth_integration.lua:9: in upvalue 'test'
+	Tools/Tests/growth_integration.lua:54: in function <Tools/Tests/growth_integration.lua:10>
+	[C]: in function 'xpcall'
+	Tools/Tests/growth_integration.lua:10: in main chunk
+stack traceback:
+	[C]: in function 'error'
+	Tools/Tests/growth_integration.lua:75: in main chunk
+  at XLua.LuaEnv.ThrowExceptionFromError (System.Int32 oldTop) [0x00040] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:441 
+  at XLua.LuaEnv.DoString (System.Byte[] chunk, System.String chunkName, XLua.LuaTable env) [0x00078] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:274 
+  at XLua.LuaEnv.DoString (System.String chunk, System.String chunkName, XLua.LuaTable env) [0x0000d] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:288 
+  at MCPDynamicCode.Execute () [0x0015e] in <71e1e1900c0845d883bee9cd41e57652>:0 
+FAIL Tools/Tests/adventure_integration.lua
+XLua.LuaException: Tools/Tests/adventure_integration.lua:40: assertion failed!
+stack traceback:
+	[C]: in function 'assert'
+	Tools/Tests/adventure_integration.lua:40: in local 'run'
+	Tools/Tests/adventure_integration.lua:16: in upvalue 'test'
+	Tools/Tests/adventure_integration.lua:35: in function <Tools/Tests/adventure_integration.lua:21>
+	[C]: in function 'xpcall'
+	Tools/Tests/adventure_integration.lua:21: in main chunk
+stack traceback:
+	[C]: in function 'error'
+	Tools/Tests/adventure_integration.lua:139: in main chunk
+  at XLua.LuaEnv.ThrowExceptionFromError (System.Int32 oldTop) [0x00040] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:441 
+  at XLua.LuaEnv.DoString (System.Byte[] chunk, System.String chunkName, XLua.LuaTable env) [0x00078] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:274 
+  at XLua.LuaEnv.DoString (System.String chunk, System.String chunkName, XLua.LuaTable env) [0x0000d] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:288 
+  at MCPDynamicCode.Execute () [0x0015e] in <71e1e1900c0845d883bee9cd41e57652>:0 
+PASS Tools/Tests/equipment_integration.lua
+PASS starter inventory contains physical weapons and two separate loaded spare magazines
+PASS reachable dungeon loot grants once and survives leaving and reentering
+PASS runes compose resolved skills, reject mismatched slots, and return to shared inventory
+PASS scatter damages three enemies and precision cooldown advances on own turns only
+PASS burst consumes three rounds, reload spends AP and preserves the old magazine
+PASS framework workbench changes actual equipment and releases its modal pause lease
+PASS Tools/Tests/equipment_melee_integration.lua
+PASS three melee categories contain two tiers; swords accept catalysts and colossal blades accept thrusters
+PASS hard gate rejects new equip; restored equipment retains capped penalties without losing support skills
+PASS thruster composes with requirement penalty, rejects other sockets and returns to inventory
+PASS equipped colossal attack deals resolved slash damage and spends its configured action budget
+PASS category controls, catalyst sockets and hard-gate feedback work through Panel/Widget bindings

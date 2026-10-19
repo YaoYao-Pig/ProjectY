@@ -15,11 +15,12 @@ namespace ProjectY.Editor
     {
         public const string CatalogPath="Assets/DynamicAsset/EquipmentDemo/EquipmentAssets.asset";
         private const string Root="Assets/DynamicAsset/EquipmentDemo";
+        private const int WorkbenchSocketCount=4;
         [Serializable] private sealed class AssetRow {public int id;public string modelPath,prefabPath;}
         [Serializable] private sealed class AssetTable {public AssetRow[] rows;}
         [Serializable] private sealed class SocketRow {public int id,weaponItemId;public float[] position,rotation;}
         [Serializable] private sealed class SocketTable {public SocketRow[] rows;}
-        [Serializable] private sealed class ItemRow {public int id,assetId;public string kind,iconPath;}
+        [Serializable] private sealed class ItemRow {public int id,assetId;public string kind,iconPath,iconMode;}
         [Serializable] private sealed class ItemTable {public ItemRow[] rows;}
         private static readonly Color Ink=new Color(.055f,.067f,.065f),Tile=new Color(.095f,.116f,.106f),Gold=new Color(.71f,.59f,.35f),Paper=new Color(.87f,.85f,.76f);
         static EquipmentAssets() {LuaViewHints.Register(typeof(EquipmentWorkbenchView),"CS.ProjectY.UI.EquipmentWorkbenchView");}
@@ -111,6 +112,13 @@ namespace ProjectY.Editor
             }
             catalog.SetIcons(icons.ToArray());EditorUtility.SetDirty(catalog);
         }
+        [MenuItem("Project Y/装备/同步旅行火炬资源")]
+        public static void SyncTorch()
+        {
+            // Register the existing portable-light prefab and authored Sprite; do not rebuild weapon/UI prefabs.
+            SyncSelected(Array.Empty<int>(),new[] {403});
+            Debug.Log("旅行火炬的物品图标与照明工具展示资源已同步。");
+        }
         // Targeted additions preserve the existing equipment, scene bindings and authored UI.
         public static void SyncSelected(int[] itemIds,int[] extraAssetIds)
         {
@@ -173,7 +181,9 @@ namespace ProjectY.Editor
                 entries.Add(new EquipmentAssetCatalog.Entry {Id=asset.id,Path=asset.prefabPath,Prefab=prefab});
             }
             catalog.SetEntries(entries.ToArray());EditorUtility.SetDirty(catalog);AssetDatabase.SaveAssetIfDirty(catalog);
-            EquipmentIconExporter.ExportItems(itemIds);
+            var iconIds=new List<int>();
+            foreach(var item in items)if(selected.Contains(item.assetId) && item.iconMode=="model")iconIds.Add(item.id);
+            EquipmentIconExporter.ExportItems(iconIds.ToArray());
         }
         [MenuItem("Project Y/装备/同步武器标签界面")]
         public static void SyncWeaponTagsUI()
@@ -193,6 +203,23 @@ namespace ProjectY.Editor
             finally {PrefabUtility.UnloadPrefabContents(root);}
             EditorUtility.SetDirty(config);AssetDatabase.SaveAssetIfDirty(config);
         }
+        [MenuItem("Project Y/装备/同步工坊四槽界面")]
+        public static void SyncWorkbenchSlots()
+        {
+            if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("工坊挂点同步需要 Edit Mode。");
+            var config=AssetDatabase.LoadAssetAtPath<PanelConfig>(PanelConfig.AssetPath);
+            var entry=config==null?null:config.Entries.Find(e=>e.Name=="EquipmentWorkbench");
+            if(entry==null || entry.Prefab==null)throw new InvalidOperationException("请先创建装备工坊。");
+            var root=PrefabUtility.LoadPrefabContents(entry.PrefabPath);
+            try
+            {
+                UpgradeWorkbenchSlots(root);
+                var reference=root.GetComponent<LuaReference>();reference.ValidateBindings();
+                PrefabUtility.SaveAsPrefabAsset(root,entry.PrefabPath);LuaViewHints.Export(reference,entry.ViewType);
+            }
+            finally {PrefabUtility.UnloadPrefabContents(root);}
+            Debug.Log("Equipment workbench: four socket buttons and serialized callout references synchronized.");
+        }
         private static void Entry(string name,UIKind kind,Action<GameObject> build)
         {
             var entry=PanelAssets.LoadOrCreate().Entries.Find(e=>e.Name==name);
@@ -207,6 +234,7 @@ namespace ProjectY.Editor
                     var reference=root.GetComponent<LuaReference>();
                     if(!Array.Exists(reference.GetEditorBindings(),e=>e.Key=="Layout")) Bind(root,new List<LuaReference.Entry>{Ref("Layout",root.GetComponent<LayoutElement>())});
                 }
+                EquipmentPresentationAssets.Apply(name,root);
                 root.GetComponent<LuaReference>().ValidateBindings();PrefabUtility.SaveAsPrefabAsset(root,entry.PrefabPath);
                 LuaViewHints.Export(root.GetComponent<LuaReference>(),entry.ViewType);
             }
@@ -249,21 +277,9 @@ namespace ProjectY.Editor
         private static LuaReference.Entry Ref(string key,Component c)=>new LuaReference.Entry(key,c);
         private static void UpgradeWorkbench(GameObject root)
         {
+            UpgradeWorkbenchSlots(root);
             var reference=root.GetComponent<LuaReference>();var view=root.GetComponent<EquipmentWorkbenchView>();var layout=view.EditorLayout;
             var refs=new List<LuaReference.Entry>();
-            if(layout.SocketDots==null||layout.SocketDots.Length==0)
-            {
-                layout.SocketDots=new RectTransform[layout.Sockets.Length];layout.SocketLeads=new RectTransform[layout.Sockets.Length];layout.SocketTails=new RectTransform[layout.Sockets.Length];
-                for(int i=0;i<layout.Sockets.Length;i++)
-                {
-                    var dot=Node("SocketPoint"+i,layout.Preview);dot.sizeDelta=new Vector2(7,7);dot.localRotation=Quaternion.Euler(0,0,45);Paint(dot,Gold);
-                    var lead=Node("SocketLeader"+i,layout.Preview);Paint(lead,new Color(Gold.r,Gold.g,Gold.b,.8f));
-                    var tail=Node("SocketLeaderTail"+i,layout.Preview);Paint(tail,Gold);
-                    layout.SocketDots[i]=dot;layout.SocketLeads[i]=lead;layout.SocketTails[i]=tail;
-                    lead.SetSiblingIndex(0);tail.SetSiblingIndex(0);dot.SetAsLastSibling();
-                    reference.GetText("SocketText"+(i+1)).fontSize=12;
-                }
-            }
             if(!Array.Exists(reference.GetEditorBindings(),e=>e.Key=="CategoryText"))
             {
                 var filter=Node("WeaponCategory",layout.Inventory);filter.anchorMin=new Vector2(0,1);filter.anchorMax=Vector2.one;filter.pivot=new Vector2(.5f,1);filter.anchoredPosition=new Vector2(0,-48);filter.sizeDelta=new Vector2(-24,30);
@@ -291,6 +307,51 @@ namespace ProjectY.Editor
             var subtitle=reference.GetText("Subtitle");subtitle.rectTransform.sizeDelta=new Vector2(340,48);subtitle.fontSize=12;
             var heading=layout.Heading.GetComponent<Text>();heading.resizeTextForBestFit=true;heading.resizeTextMinSize=14;heading.resizeTextMaxSize=22;
             Bind(root,refs);layout.Labels=root.GetComponentsInChildren<Text>(true);EditorUtility.SetDirty(view);
+        }
+        // A narrow, idempotent upgrade: retain all authored layout and the existing three buttons/leaders.
+        private static void UpgradeWorkbenchSlots(GameObject root)
+        {
+            var reference=root.GetComponent<LuaReference>();var view=root.GetComponent<EquipmentWorkbenchView>();var layout=view.EditorLayout;
+            if(layout.Sockets==null || layout.Sockets.Length>WorkbenchSocketCount)throw new InvalidOperationException("工坊挂点布局容量无效。");
+            Array.Resize(ref layout.Sockets,WorkbenchSocketCount);
+            Array.Resize(ref layout.SocketDots,WorkbenchSocketCount);Array.Resize(ref layout.SocketLeads,WorkbenchSocketCount);Array.Resize(ref layout.SocketTails,WorkbenchSocketCount);
+            var bindings=reference.GetEditorBindings();var refs=new List<LuaReference.Entry>();
+            for(int i=0;i<WorkbenchSocketCount;i++)
+            {
+                string socketKey="Socket"+(i+1),textKey="SocketText"+(i+1);
+                bool hasButton=Array.Exists(bindings,e=>e.Key==socketKey),hasText=Array.Exists(bindings,e=>e.Key==textKey);
+                if(hasButton!=hasText)throw new InvalidOperationException("工坊挂点绑定不完整："+socketKey);
+                if(hasButton)
+                {
+                    var button=reference.GetButton(socketKey);var rect=(RectTransform)button.transform;
+                    if(layout.Sockets[i]!=null && layout.Sockets[i]!=rect)throw new InvalidOperationException("工坊挂点布局与 LuaReference 不一致："+socketKey);
+                    layout.Sockets[i]=rect;
+                }
+                else
+                {
+                    if(layout.Sockets[i]!=null)throw new InvalidOperationException("工坊挂点已有按钮但缺少 LuaReference："+socketKey);
+                    Text label;var button=Button(socketKey,layout.Preview,"",out label);var rect=(RectTransform)button.transform;
+                    rect.sizeDelta=new Vector2(144,34);label.color=Gold;label.fontSize=12;layout.Sockets[i]=rect;
+                    refs.Add(Ref(socketKey,button));refs.Add(Ref(textKey,label));
+                }
+                if(layout.SocketDots[i]==null)
+                {
+                    var dot=Node("SocketPoint"+i,layout.Preview);dot.sizeDelta=new Vector2(7,7);dot.localRotation=Quaternion.Euler(0,0,45);Paint(dot,Gold);
+                    layout.SocketDots[i]=dot;dot.SetAsLastSibling();
+                }
+                if(layout.SocketLeads[i]==null)
+                {
+                    var lead=Node("SocketLeader"+i,layout.Preview);Paint(lead,new Color(Gold.r,Gold.g,Gold.b,.8f));
+                    layout.SocketLeads[i]=lead;lead.SetSiblingIndex(0);
+                }
+                if(layout.SocketTails[i]==null)
+                {
+                    var tail=Node("SocketLeaderTail"+i,layout.Preview);Paint(tail,Gold);
+                    layout.SocketTails[i]=tail;tail.SetSiblingIndex(0);
+                }
+            }
+            if(refs.Count>0)Bind(root,refs);
+            layout.Labels=root.GetComponentsInChildren<Text>(true);EditorUtility.SetDirty(view);
         }
         private static void BuildTag(GameObject root)
         {
@@ -325,8 +386,8 @@ namespace ProjectY.Editor
             var preview=Node("Preview",safe);var raw=preview.gameObject.AddComponent<RawImage>();raw.color=Color.white;
             var title=Text("WeaponTitle",preview,"",21);Stretch(title.rectTransform,16,0,16,16);title.rectTransform.anchorMin=new Vector2(0,1);title.rectTransform.offsetMin=new Vector2(16,-50);refs.Add(Ref("Title",title));
             var subtitle=Text("Subtitle",preview,"",12);Box(subtitle.rectTransform,16,52,350,30);subtitle.color=new Color(.54f,.66f,.60f);refs.Add(Ref("Subtitle",subtitle));
-            var socketRects=new RectTransform[3];
-            for(int i=1;i<=3;i++) {var b=Button("Socket"+i,preview,"",out label);var r=(RectTransform)b.transform;r.sizeDelta=new Vector2(144,34);socketRects[i-1]=r;label.color=Gold;refs.Add(Ref("Socket"+i,b));refs.Add(Ref("SocketText"+i,label));}
+            var socketRects=new RectTransform[WorkbenchSocketCount];
+            for(int i=1;i<=WorkbenchSocketCount;i++) {var b=Button("Socket"+i,preview,"",out label);var r=(RectTransform)b.transform;r.sizeDelta=new Vector2(144,34);socketRects[i-1]=r;label.color=Gold;label.fontSize=12;refs.Add(Ref("Socket"+i,b));refs.Add(Ref("SocketText"+i,label));}
             var hint=Text("OrbitHint",preview,"拖动旋转  ·  滚轮缩放  ·  点击挂点",11);Stretch(hint.rectTransform,16,12,16,0);hint.rectTransform.anchorMax=new Vector2(1,0);hint.rectTransform.offsetMax=new Vector2(-16,32);hint.alignment=TextAnchor.MiddleCenter;
             var details=Node("Details",safe);Paint(details,Tile);var content=Scroll(details,12);
             var slotTitle=Text("SocketTitle",content,"",15);Height(slotTitle.rectTransform,30);slotTitle.color=Gold;refs.Add(Ref("SocketTitle",slotTitle));

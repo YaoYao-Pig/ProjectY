@@ -1,0 +1,17 @@
+fixture_directory=C:\Users\yyz\AppData\Local\Temp\project-y-ux-foundation-57a86cb01feb44d58ac6b2a911c86771
+FAIL Tools/Tests/area_battle_integration.lua
+XLua.LuaException: Tools/Tests/area_battle_integration.lua:107: bad argument #1 to 'assert' (value expected)
+stack traceback:
+	[C]: in function 'assert'
+	Tools/Tests/area_battle_integration.lua:107: in local 'run'
+	Tools/Tests/area_battle_integration.lua:15: in upvalue 'test'
+	Tools/Tests/area_battle_integration.lua:72: in function <Tools/Tests/area_battle_integration.lua:16>
+	[C]: in function 'xpcall'
+	Tools/Tests/area_battle_integration.lua:16: in main chunk
+stack traceback:
+	[C]: in function 'error'
+	Tools/Tests/area_battle_integration.lua:148: in main chunk
+  at XLua.LuaEnv.ThrowExceptionFromError (System.Int32 oldTop) [0x00040] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:441 
+  at XLua.LuaEnv.DoString (System.Byte[] chunk, System.String chunkName, XLua.LuaTable env) [0x00078] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:274 
+  at XLua.LuaEnv.DoString (System.String chunk, System.String chunkName, XLua.LuaTable env) [0x0000d] in D:\Program\Unity\Project Y\Assets\ThirdParty\XLua\Src\LuaEnv.cs:288 
+  at MCPDynamicCode.Execute () [0x00146] in <7721352175cf46b5be27748909740b48>:0 

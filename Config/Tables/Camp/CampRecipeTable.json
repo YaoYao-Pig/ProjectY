@@ -1,0 +1,153 @@
+{
+  "version": 1,
+  "name": "CampRecipeTable",
+  "description": "单设施单订单的营地生产配方；按游戏分钟完成，产物领取到真实共享背包",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "配方ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "配方名称"
+    },
+    {
+      "name": "facilityId",
+      "type": "int",
+      "description": "生产设施",
+      "ref": "CampFacilityTable"
+    },
+    {
+      "name": "requiredLevel",
+      "type": "int",
+      "description": "所需设施等级",
+      "min": 1
+    },
+    {
+      "name": "minutes",
+      "type": "int",
+      "description": "生产所需游戏分钟",
+      "min": 1
+    },
+    {
+      "name": "coins",
+      "type": "int",
+      "description": "金币费用",
+      "min": 0
+    },
+    {
+      "name": "itemIds",
+      "type": "int[]",
+      "description": "投入材料物品",
+      "ref": "EquipmentItemTable"
+    },
+    {
+      "name": "itemCounts",
+      "type": "int[]",
+      "description": "对应投入数量"
+    },
+    {
+      "name": "outputIds",
+      "type": "int[]",
+      "description": "产物物品",
+      "ref": "EquipmentItemTable"
+    },
+    {
+      "name": "outputCounts",
+      "type": "int[]",
+      "description": "对应产物数量"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "压制巡猎弹药",
+      "facilityId": 1,
+      "requiredLevel": 1,
+      "minutes": 60,
+      "coins": 2,
+      "itemIds": [
+        83,
+        81
+      ],
+      "itemCounts": [
+        2,
+        1
+      ],
+      "outputIds": [
+        31
+      ],
+      "outputCounts": [
+        12
+      ]
+    },
+    {
+      "id": 2,
+      "name": "制作触媒适配器",
+      "facilityId": 1,
+      "requiredLevel": 2,
+      "minutes": 360,
+      "coins": 8,
+      "itemIds": [
+        83,
+        12
+      ],
+      "itemCounts": [
+        3,
+        1
+      ],
+      "outputIds": [
+        93
+      ],
+      "outputCounts": [
+        1
+      ]
+    },
+    {
+      "id": 3,
+      "name": "制作急救包",
+      "facilityId": 2,
+      "requiredLevel": 1,
+      "minutes": 120,
+      "coins": 6,
+      "itemIds": [
+        82
+      ],
+      "itemCounts": [
+        2
+      ],
+      "outputIds": [
+        91
+      ],
+      "outputCounts": [
+        2
+      ]
+    },
+    {
+      "id": 4,
+      "name": "调配备战药剂",
+      "facilityId": 2,
+      "requiredLevel": 2,
+      "minutes": 180,
+      "coins": 5,
+      "itemIds": [
+        91,
+        83
+      ],
+      "itemCounts": [
+        1,
+        1
+      ],
+      "outputIds": [
+        92
+      ],
+      "outputCounts": [
+        1
+      ]
+    }
+  ]
+}

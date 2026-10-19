@@ -1,6 +1,7 @@
 -- 配置驱动的资源选择和确定性装饰散布；在水体、聚落和道路完成之后执行。
 local Class = require('Core.Class')
 local Random = require('Game.Map.SeededRandom')
+local Groundcover = require('Game.Map.MapGroundcover')
 local Visuals = Class('MapVisuals')
 local function color(text)
     assert(type(text) == 'string' and text:match('^#%x%x%x%x%x%x$'), 'Map color must be #RRGGBB')
@@ -24,6 +25,11 @@ function Visuals:ctor(config, regionTypes)
         self.assets:Get(row.terrainAssetId); self.assets:Get(row.waterAssetId)
         for _, id in ipairs(row.decorationAssetIds) do self.assets:Get(id) end
         assert(row.decorationDensity >= 0 and row.decorationDensity <= 1 and row.minScale > 0 and row.maxScale >= row.minScale, 'Invalid decoration distribution')
+        assert(type(row.groundTexture) == 'string' and row.groundTexture:match('^MapGround/%w+$'), 'Invalid ground texture resource key')
+        assert(row.textureWorldSize > 0 and row.textureStrength >= 0 and row.textureStrength <= 1 and row.windStrength >= 0, 'Invalid ground surface parameters')
+        for _, field in ipairs({'groundcoverDensity', 'shrubDensity', 'butterflyDensity', 'gnatDensity'}) do
+            assert(row[field] >= 0 and row[field] <= 1, 'Invalid groundcover density: ' .. field)
+        end
     end
     if #self.rows > 0 then
         for regionType in pairs(regionTypes) do assert(self.biomes[regionType], 'Missing biome visual profile') end
@@ -35,7 +41,7 @@ function Visuals:ctor(config, regionTypes)
 end
 function Visuals:Build(map)
     map.assets = self.assets:All(); map.biomes = self.rows
-    if #self.rows == 0 then return end
+    if #self.rows == 0 then Groundcover.Build(map); return end
     local random = Random(map.seed ~ 0x26100931)
     for _, cell in ipairs(map.cells) do
         local rgb, dominant = {0,0,0}, nil
@@ -63,5 +69,6 @@ function Visuals:Build(map)
         end
     end
     require('Game.Map.MapDressing').Build(map,self.dressing)
+    Groundcover.Build(map)
 end
 return Visuals

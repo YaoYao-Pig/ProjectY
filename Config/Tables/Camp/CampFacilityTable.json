@@ -1,0 +1,50 @@
+{
+  "version": 1,
+  "name": "CampFacilityTable",
+  "description": "营地设施身份与初始仓库容量；等级及库存由CampData长期保存",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "设施ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "设施名称"
+    },
+    {
+      "name": "description",
+      "type": "string",
+      "description": "设施用途"
+    },
+    {
+      "name": "baseCapacity",
+      "type": "int",
+      "description": "未升级时仓库容量；生产设施为零",
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "工作台",
+      "description": "加工远征弹药，升级后制作奥术触媒适配器。",
+      "baseCapacity": 0
+    },
+    {
+      "id": 2,
+      "name": "医务所",
+      "description": "制作急救包与备战药剂，为下一次远征准备补给。",
+      "baseCapacity": 0
+    },
+    {
+      "id": 3,
+      "name": "营地仓库",
+      "description": "安全存放材料、弹药、药品与组件；材料投入优先使用仓库。",
+      "baseCapacity": 80
+    }
+  ]
+}

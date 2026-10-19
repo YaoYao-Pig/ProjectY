@@ -27,6 +27,7 @@ namespace ProjectY.Editor
                 if(root.transform.childCount==0) Build(root);
                 UpgradeReadability(root);
                 UpgradeStorage(root);
+                EquipmentPresentationAssets.Apply("Loot",root);
                 var reference=root.GetComponent<LuaReference>();
                 if(root.GetComponent<LootPanelView>()==null) throw new InvalidOperationException("搜刮 Prefab 缺少 LootPanelView。");
                 reference.ValidateBindings();PrefabUtility.SaveAsPrefabAsset(root,entry.PrefabPath);LuaViewHints.Export(reference,entry.ViewType);

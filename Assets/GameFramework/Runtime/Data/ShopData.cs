@@ -78,7 +78,7 @@ namespace ProjectY.Data
             if (entry.Count < count) return "商品库存不足或已经售罄";
             long total = (long)entry.Price * count;
             if (total > player.Coins) return "金币不足";
-            bool stack = kind == "rune" || kind == "module" || kind == "ammo" || kind == "material";
+            bool stack = kind == "rune" || kind == "module" || kind == "ammo" || kind == "material" || kind == "consumable";
             if (!stack && kind != "weapon" && kind != "wearable" && kind != "magazine") throw new ArgumentException("Unsupported shop item kind.");
             if (kind == "magazine" && (ammo < 1 || capacity < 1 || rounds < 0 || rounds > capacity)) throw new ArgumentException("Invalid magazine specification.");
             if (stack && (long)equipment.CountItem(entry.ItemId) + count > int.MaxValue) return "物品数量已达上限";

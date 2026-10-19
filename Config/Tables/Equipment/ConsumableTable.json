@@ -1,0 +1,41 @@
+{
+  "version": 1,
+  "name": "ConsumableTable",
+  "description": "共享背包消耗品对应的自用技能；消耗库存和技能AP，不能作为普通已学技能施放",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "消耗品ID",
+      "ref": "EquipmentItemTable",
+      "min": 1
+    },
+    {
+      "name": "skillId",
+      "type": "int",
+      "description": "仅通过物品使用的技能",
+      "ref": "CombatSkillTable",
+      "min": 1
+    },
+    {
+      "name": "count",
+      "type": "int",
+      "description": "每次使用消耗的堆叠数量",
+      "min": 1,
+      "max": 100
+    }
+  ],
+  "rows": [
+    {
+      "id": 91,
+      "skillId": 701,
+      "count": 1
+    },
+    {
+      "id": 92,
+      "skillId": 702,
+      "count": 1
+    }
+  ]
+}

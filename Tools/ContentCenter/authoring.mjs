@@ -19,8 +19,9 @@ export function createAuthoring(tables){
         if(original.kind==='weapon'){
           rule.gripId=clone('EquipmentGripTable',rule.gripId,{name:name+' · 握点'}).id;
           rule.socketIds=rule.socketIds.map(s=>clone('EquipmentSocketTable',s,{weaponItemId:id}).id);
-          rule.requirementId=clone('EquipmentRequirementTable',rule.requirementId).id;
-        }put(subtype,rule);
+        }
+        if(original.kind==='weapon'||original.kind==='wearable')rule.requirementId=clone('EquipmentRequirementTable',rule.requirementId).id;
+        put(subtype,rule);
       }
       return {operations,selection:{table:'EquipmentItemTable',id}};
     },

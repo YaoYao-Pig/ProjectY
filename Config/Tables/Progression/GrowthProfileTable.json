@@ -33,6 +33,12 @@
       "type": "int",
       "description": "等待事件释放的额外天赋点",
       "min": 0
+    },
+    {
+      "name": "initialProfessionId",
+      "type": "int",
+      "description": "角色初始职业",
+      "ref": "ProfessionTable"
     }
   ],
   "rows": [
@@ -45,7 +51,8 @@
       "traitIds": [
         3
       ],
-      "potential": 2
+      "potential": 2,
+      "initialProfessionId": 1
     },
     {
       "id": 2,
@@ -54,7 +61,8 @@
         1
       ],
       "traitIds": [],
-      "potential": 2
+      "potential": 2,
+      "initialProfessionId": 2
     },
     {
       "id": 3,
@@ -63,7 +71,8 @@
         1
       ],
       "traitIds": [],
-      "potential": 2
+      "potential": 2,
+      "initialProfessionId": 3
     },
     {
       "id": 4,
@@ -72,7 +81,8 @@
         1
       ],
       "traitIds": [],
-      "potential": 2
+      "potential": 2,
+      "initialProfessionId": 1
     },
     {
       "id": 5,
@@ -81,7 +91,8 @@
         1
       ],
       "traitIds": [],
-      "potential": 2
+      "potential": 2,
+      "initialProfessionId": 2
     },
     {
       "id": 6,
@@ -90,7 +101,8 @@
         1
       ],
       "traitIds": [],
-      "potential": 2
+      "potential": 2,
+      "initialProfessionId": 1
     }
   ]
 }

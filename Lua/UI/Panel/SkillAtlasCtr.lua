@@ -19,11 +19,26 @@ function Atlas:Bind()
 end
 function Atlas:OnShow(args)
     self.demo=assert(args.demo);self.demo:SetGrowthOpen(true)
-    self.actorIndex,self.disciplineId,self.categoryId,self.selectedId=0,3,31,nil
+    self.actorIndex,self.selectedId,self.returnTo=args.actorIndex or 0,nil,args.returnTo
+    local actor=assert(self.growth.data:GetPartyAt(self.actorIndex))
+    local profession=self.growth.rules.professions.professions:Get(actor.Growth.CurrentProfessionId)
+    local skillId=profession.initialSkillIds[1]
+    if not skillId then
+        for _,course in ipairs(self.growth.rules.professions.courses:All()) do if course.professionId==profession.id then skillId=course.skillId;break end end
+    end
+    local category=skillId and self.atlas.categories:Get(self.atlas.nodes:Get(skillId).categoryId) or self.atlas.categories:All()[1]
+    assert(category,'Skill atlas has no category')
+    self.disciplineId,self.categoryId=category.disciplineId,category.id
     self.domains={};for _,row in ipairs(self.atlas.disciplines:All()) do self.domains[#self.domains+1]=row end
     table.sort(self.domains,function(a,b) return a.order<b.order end)
     assert(#self.domains<=6,'Skill atlas layout supports six primary domains')
-    self.view.Search.text='';self.view.SearchResults.gameObject:SetActive(false);self.view.Geometry:Dismiss();self:Refresh()
+    self.view.CloseText.text=self.returnTo and '返回角色手记' or '关闭  Esc'
+    self.view.Search.text='';self.view.SearchResults.gameObject:SetActive(false);self.view.Geometry:Dismiss();self:Refresh();self.view.Geometry:Focus(0,0)
+end
+function Atlas:Close()
+    local demo,resume=self.demo,self.returnTo
+    Base.Close(self)
+    if resume then resume.demo=demo;self.context.systems:Get('UI'):Open('CharacterGrowth',resume) end
 end
 function Atlas:Deselect() self.selectedId=nil;self.view.Geometry:Dismiss();self:Graph() end
 function Atlas:Refresh()
@@ -59,7 +74,7 @@ function Atlas:Graph()
     for _,row in ipairs(rows) do visible[row.id]=row;width=math.max(width,row.x+100);height=math.max(height,row.y+90) end
     self.view.Graph.sizeDelta=CS.UnityEngine.Vector2(width,height)
     local category=self.atlas.categories:Get(self.categoryId)
-    self.view.TreeTitle.text=self.atlas.disciplines:Get(category.disciplineId).name..' / '..category.name
+    self.view.TreeTitle.text=self.atlas.disciplines:Get(category.disciplineId).name..' / '..category.name..' · 图鉴'
     self.view.Empty.gameObject:SetActive(#rows==0)
     local edgeCount=0
     for _,row in ipairs(rows) do for _,id in ipairs(row.prerequisiteIds) do if visible[id] then
@@ -122,5 +137,5 @@ function Atlas:Tick()
     end
     if self.revision~=self.actor.Growth.Revision or self.equipmentRevision~=self.growth.data.Equipment.Revision then self:Refresh() end
 end
-function Atlas:OnHide() self.view.Geometry:Dismiss();if self.demo then self.demo:SetGrowthOpen(false);self.demo=nil end end
+function Atlas:OnHide() self.view.Geometry:Dismiss();self.returnTo=nil;if self.demo then self.demo:SetGrowthOpen(false);self.demo=nil end end
 return Atlas

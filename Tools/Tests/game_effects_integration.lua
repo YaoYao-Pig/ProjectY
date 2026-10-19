@@ -32,7 +32,7 @@ local ok,result=xpcall(function()
     assert(restored.Effects:Find(901).SourceId==second.Id and restored.Effects:Find(901).SourceName~='')
     effect:ValidateSaved(restored)
     local file=assert(io.open(Services.CharacterSaves.FilePath,'rb'));local saved=file:read('*a');file:close()
-    local legacy,replaced=saved:gsub('"version": 4','"version": 2',1);assert(replaced==1)
+    local legacy,replaced=saved:gsub('"version"%s*:%s*%d+','"version": 2',1);assert(replaced==1)
     file=assert(io.open(Services.CharacterSaves.FilePath,'wb'));file:write(legacy);file:close()
     local old=Services.CharacterSaves:Prepare(adventure.data.Equipment)
     assert(old:GetActorAt(0).Effects.Count==0 and not old.LegacyNarrative,'v2 migrates effects without losing narrative data')
@@ -62,16 +62,18 @@ local ok,result=xpcall(function()
     state:DeployMembers(ids,positions)
     effect:Apply(907,second,victim);effect:Apply(905,second,victim)
     areas:StartBattle(battle,group)
+    assert(loadfile('Tools/Tests/combat_phase_fixture.lua'))()(battle)
     assert(battle.data.Winner=='victory' and group.Defeated,'A retained effect can settle the encounter on its first turn')
     adventure:Tick();assert(adventure.data.Phase=='area','An opening effect victory must settle exactly once')
     assert(areas:Leave())
     while actor.Effects.Count>0 do effect:Remove(actor,actor.Effects:GetAt(0).Id) end
     local party={};for i=0,adventure.data.PartyCount-1 do local unit=adventure.data:GetPartyAt(i);unit:Restore();party[#party+1]=unit end
     battle:Start(1,party,123)
+    assert(loadfile('Tools/Tests/combat_phase_fixture.lua'))()(battle)
     local active=battle:Active();effect:Apply(905,second,active)
     battle:BeginTurn(battle.data.TurnIndex)
     assert(active.HP==0 and (battle.data.Winner~='' or battle:Active().Id~=active.Id),'Start-of-turn damage must skip a defeated actor')
-    return 'PASS real C# GameEffect instances, attribute projection, capped/independent stacks, battle cleanup, v3 save round-trip/v2 migration, exploration/idle clocks and lethal turn-start advancement'
+    return 'PASS real C# GameEffect instances, attribute projection, capped/independent stacks, battle cleanup, v5 save round-trip/v2 migration, exploration/idle clocks and lethal turn-start advancement'
 end,debug.traceback)
 registry:Shutdown()
 if not ok then error(result,0)end

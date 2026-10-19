@@ -1,5 +1,6 @@
 -- 由 Project Y/远征/验证战斗与事件 运行；使用真实 C# Data 和导出配置，无场景/Play 操作。
 local Registry = require('Core.SystemRegistry')
+local enterCombat=assert(loadfile('Tools/Tests/combat_phase_fixture.lua'))()
 local registry = Registry(Services)
 registry:Register('Config', require('Config.ConfigSystem'))
 registry:Register('PlayerModel', require('Game.PlayerModelSystem'), {'Config'})
@@ -36,7 +37,8 @@ local ok, err = xpcall(function()
         assert(data.PartyCount == 4 and #adventure.sites >= 3)
         for _, site in ipairs(adventure.sites) do
             local cell = adventure.map:GetCell(site.q, site.r)
-            assert(not cell.waterLevel)
+            assert(cell,'Site must belong to the generated world')
+            if not site.areaConfigId then assert(not cell.waterLevel,'World story/camp sites require dry ground') end
         end
         -- 独立补给事件夹具复用真实选项条件，不依赖生成时是否出现集会厅。
         assert(events:Begin({id = 999, eventId = 4, name = '独立补给站'}))
@@ -54,6 +56,7 @@ local ok, err = xpcall(function()
     end)
     test('move, range, ownership and action budgets use the same C# battle state', function()
         assert(adventure:Visit(2)); assert(adventure:Choose(1))
+        enterCombat(battle)
         local actor = battle:Active(); assert(actor.Team == 1 and actor.TemplateId == 2)
         local before = actor.AP
         assert(not adventure:BattleCommand('skill', 1, 101)); assert(actor.AP == before) -- 不拥有斩击
@@ -118,6 +121,7 @@ local ok, err = xpcall(function()
         local actor = data:GetPartyAt(0); actor:Damage(actor.HP)
         assert(adventure:Visit(1)); assert(adventure:Choose(4)); assert(actor.HP == actor.MaxHP); assert(adventure:ReturnToMap())
         local party = events:LivingParty(); battle:Start(1, party, 47)
+        enterCombat(battle)
         local current = battle:Active(); current:SetGuard(3); current:BeginTurn(4); assert(current.Guard == 0)
         local nextId = data.Battle:GetTurnAt(1); battle:FindUnit(nextId):Damage(1000000)
         assert(battle:EndTurn()); assert(data.Battle.ActiveId ~= nextId)
@@ -127,6 +131,7 @@ local ok, err = xpcall(function()
         assert(battle:CheckWinner()); assert(data.Battle.Winner == 'defeat' and player.Coins == 47)
         for i = 0, data.PartyCount - 1 do data:GetPartyAt(i):Restore() end
         battle:Start(1, events:LivingParty(), 1)
+        enterCombat(battle)
         while data.Battle.Round < data.Battle.MaxRounds do battle:NewRound() end
         battle:NewRound(); assert(data.Battle.Winner == 'draw' and player.Coins == 47)
     end)

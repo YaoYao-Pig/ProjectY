@@ -1,0 +1,557 @@
+{
+  "version": 1,
+  "name": "BuffTable",
+  "description": "可复用的状态定义：生命周期、周期/属性动作、互斥标签和控制效果。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "持久状态ID，与 CombatEffectTable ID 不重叠",
+      "min": 10000
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "状态名称"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "状态说明"
+    },
+    {
+      "name": "iconId",
+      "type": "int",
+      "description": "图标",
+      "ref": "BattleIconTable"
+    },
+    {
+      "name": "color",
+      "type": "string",
+      "description": "状态与周期伤害飘字色（十六进制）"
+    },
+    {
+      "name": "category",
+      "type": "enum",
+      "description": "状态分类",
+      "values": [
+        "buff",
+        "debuff",
+        "control"
+      ]
+    },
+    {
+      "name": "scope",
+      "type": "enum",
+      "description": "battle 战斗结束移除；persistent 跨战斗保留",
+      "values": [
+        "battle",
+        "persistent"
+      ]
+    },
+    {
+      "name": "clock",
+      "type": "enum",
+      "description": "计时轴：回合、游戏分钟、无时限",
+      "values": [
+        "turns",
+        "minutes",
+        "infinite"
+      ]
+    },
+    {
+      "name": "durationTurns",
+      "type": "int",
+      "description": "回合时长",
+      "min": 0
+    },
+    {
+      "name": "durationMinutes",
+      "type": "float",
+      "description": "游戏分钟时长",
+      "min": 0
+    },
+    {
+      "name": "tickPhase",
+      "type": "enum",
+      "description": "回合计时阶段",
+      "values": [
+        "turn_start",
+        "turn_end"
+      ]
+    },
+    {
+      "name": "periodTurns",
+      "type": "int",
+      "description": "周期回合间隔，无周期为0",
+      "min": 0
+    },
+    {
+      "name": "periodMinutes",
+      "type": "float",
+      "description": "周期游戏分钟间隔，无周期为0",
+      "min": 0
+    },
+    {
+      "name": "stacking",
+      "type": "enum",
+      "description": "刷新、独立实例或叠层",
+      "values": [
+        "refresh",
+        "independent",
+        "stack"
+      ]
+    },
+    {
+      "name": "maxStacks",
+      "type": "int",
+      "description": "最大层数",
+      "min": 1,
+      "max": 100
+    },
+    {
+      "name": "removeOnDeath",
+      "type": "bool",
+      "description": "倒地清除"
+    },
+    {
+      "name": "periodicEffectIds",
+      "type": "int[]",
+      "description": "每周期执行的瞬时伤害/治疗动作",
+      "ref": "CombatEffectTable"
+    },
+    {
+      "name": "modifierEffectIds",
+      "type": "int[]",
+      "description": "持续属性动作；施加时快照数值",
+      "ref": "CombatEffectTable"
+    },
+    {
+      "name": "onApplyEffectIds",
+      "type": "int[]",
+      "description": "成功施加时执行的瞬时动作",
+      "ref": "CombatEffectTable"
+    },
+    {
+      "name": "tags",
+      "type": "string[]",
+      "description": "本状态标签"
+    },
+    {
+      "name": "blockedByTags",
+      "type": "string[]",
+      "description": "目标已有任一标签时拒绝施加"
+    },
+    {
+      "name": "removeTags",
+      "type": "string[]",
+      "description": "成功施加时移除带任一标签的状态"
+    },
+    {
+      "name": "skipTurn",
+      "type": "bool",
+      "description": "整个行动回合不可行动"
+    },
+    {
+      "name": "manualEnemyTargets",
+      "type": "bool",
+      "default": false,
+      "description": "匹配的远程对敌多目标技能可手动选择不同敌人，不限制主目标周边半径"
+    },
+    {
+      "name": "ignoreProjectileBlockers",
+      "type": "bool",
+      "default": false,
+      "description": "匹配的远程对敌技能获得追踪弹道，绕过弹道中的物体与角色阻挡"
+    },
+    {
+      "name": "skillGroups",
+      "type": "string[]",
+      "default": [],
+      "description": "技能能力修饰作用的显式技能组；启用追踪能力时不能为空"
+    }
+  ],
+  "rows": [
+    {
+      "id": 10001,
+      "name": "再生",
+      "description": "每回合恢复生命，持续3回合。",
+      "iconId": 1,
+      "color": "#79D9A7",
+      "category": "buff",
+      "scope": "battle",
+      "clock": "turns",
+      "durationTurns": 3,
+      "durationMinutes": 0,
+      "tickPhase": "turn_start",
+      "periodTurns": 1,
+      "periodMinutes": 0,
+      "stacking": "refresh",
+      "maxStacks": 1,
+      "removeOnDeath": true,
+      "periodicEffectIds": [
+        901
+      ],
+      "modifierEffectIds": [],
+      "onApplyEffectIds": [],
+      "tags": [
+        "regeneration"
+      ],
+      "blockedByTags": [],
+      "removeTags": [],
+      "skipTurn": false
+    },
+    {
+      "id": 10002,
+      "name": "流血",
+      "description": "每回合承受流血伤害，最多3层。",
+      "iconId": 1,
+      "color": "#FF3B42",
+      "category": "debuff",
+      "scope": "battle",
+      "clock": "turns",
+      "durationTurns": 3,
+      "durationMinutes": 0,
+      "tickPhase": "turn_end",
+      "periodTurns": 1,
+      "periodMinutes": 0,
+      "stacking": "stack",
+      "maxStacks": 3,
+      "removeOnDeath": true,
+      "periodicEffectIds": [
+        902
+      ],
+      "modifierEffectIds": [],
+      "onApplyEffectIds": [],
+      "tags": [
+        "bleeding"
+      ],
+      "blockedByTags": [],
+      "removeTags": [],
+      "skipTurn": false
+    },
+    {
+      "id": 10003,
+      "name": "中毒",
+      "description": "每回合承受毒素伤害，最多3层。",
+      "iconId": 1,
+      "color": "#6FCF45",
+      "category": "debuff",
+      "scope": "battle",
+      "clock": "turns",
+      "durationTurns": 4,
+      "durationMinutes": 0,
+      "tickPhase": "turn_end",
+      "periodTurns": 1,
+      "periodMinutes": 0,
+      "stacking": "stack",
+      "maxStacks": 3,
+      "removeOnDeath": true,
+      "periodicEffectIds": [
+        903
+      ],
+      "modifierEffectIds": [],
+      "onApplyEffectIds": [],
+      "tags": [
+        "poison"
+      ],
+      "blockedByTags": [],
+      "removeTags": [],
+      "skipTurn": false
+    },
+    {
+      "id": 10004,
+      "name": "燃烧",
+      "description": "每回合承受火焰伤害；潮湿期间不能点燃。",
+      "iconId": 1,
+      "color": "#F4A160",
+      "category": "debuff",
+      "scope": "battle",
+      "clock": "turns",
+      "durationTurns": 3,
+      "durationMinutes": 0,
+      "tickPhase": "turn_end",
+      "periodTurns": 1,
+      "periodMinutes": 0,
+      "stacking": "refresh",
+      "maxStacks": 1,
+      "removeOnDeath": true,
+      "periodicEffectIds": [
+        904
+      ],
+      "modifierEffectIds": [],
+      "onApplyEffectIds": [],
+      "tags": [
+        "burning"
+      ],
+      "blockedByTags": [
+        "wet"
+      ],
+      "removeTags": [],
+      "skipTurn": false
+    },
+    {
+      "id": 10005,
+      "name": "潮湿",
+      "description": "扑灭燃烧，并在持续期间阻止点燃。",
+      "iconId": 1,
+      "color": "#74CBE8",
+      "category": "debuff",
+      "scope": "battle",
+      "clock": "turns",
+      "durationTurns": 3,
+      "durationMinutes": 0,
+      "tickPhase": "turn_end",
+      "periodTurns": 0,
+      "periodMinutes": 0,
+      "stacking": "refresh",
+      "maxStacks": 1,
+      "removeOnDeath": true,
+      "periodicEffectIds": [],
+      "modifierEffectIds": [],
+      "onApplyEffectIds": [],
+      "tags": [
+        "wet"
+      ],
+      "blockedByTags": [],
+      "removeTags": [
+        "burning"
+      ],
+      "skipTurn": false
+    },
+    {
+      "id": 10006,
+      "name": "眩晕",
+      "description": "跳过接下来的2个行动回合。",
+      "iconId": 1,
+      "color": "#D9B4FA",
+      "category": "control",
+      "scope": "battle",
+      "clock": "turns",
+      "durationTurns": 2,
+      "durationMinutes": 0,
+      "tickPhase": "turn_end",
+      "periodTurns": 0,
+      "periodMinutes": 0,
+      "stacking": "refresh",
+      "maxStacks": 1,
+      "removeOnDeath": true,
+      "periodicEffectIds": [],
+      "modifierEffectIds": [],
+      "onApplyEffectIds": [],
+      "tags": [
+        "stunned"
+      ],
+      "blockedByTags": [],
+      "removeTags": [],
+      "skipTurn": true
+    },
+    {
+      "id": 10007,
+      "name": "长效复苏",
+      "description": "持续60游戏分钟，每10分钟恢复生命。",
+      "iconId": 1,
+      "color": "#A5E1B9",
+      "category": "buff",
+      "scope": "persistent",
+      "clock": "minutes",
+      "durationTurns": 0,
+      "durationMinutes": 60,
+      "tickPhase": "turn_end",
+      "periodTurns": 0,
+      "periodMinutes": 10,
+      "stacking": "refresh",
+      "maxStacks": 1,
+      "removeOnDeath": true,
+      "periodicEffectIds": [
+        901
+      ],
+      "modifierEffectIds": [],
+      "onApplyEffectIds": [],
+      "tags": [
+        "long_regeneration"
+      ],
+      "blockedByTags": [],
+      "removeTags": [],
+      "skipTurn": false
+    },
+    {
+      "id": 10008,
+      "name": "战场祝福",
+      "description": "本场战斗中持续提升力量，战斗结束后移除。",
+      "iconId": 1,
+      "color": "#F2D28B",
+      "category": "buff",
+      "scope": "battle",
+      "clock": "infinite",
+      "durationTurns": 0,
+      "durationMinutes": 0,
+      "tickPhase": "turn_end",
+      "periodTurns": 0,
+      "periodMinutes": 0,
+      "stacking": "refresh",
+      "maxStacks": 1,
+      "removeOnDeath": true,
+      "periodicEffectIds": [],
+      "modifierEffectIds": [
+        401
+      ],
+      "onApplyEffectIds": [],
+      "tags": [
+        "blessing"
+      ],
+      "blockedByTags": [],
+      "removeTags": [],
+      "skipTurn": false
+    },
+    {
+      "iconId": 1,
+      "category": "debuff",
+      "scope": "battle",
+      "clock": "turns",
+      "durationTurns": 2,
+      "durationMinutes": 0,
+      "tickPhase": "turn_end",
+      "periodTurns": 0,
+      "periodMinutes": 0,
+      "stacking": "refresh",
+      "maxStacks": 1,
+      "removeOnDeath": true,
+      "periodicEffectIds": [],
+      "modifierEffectIds": [
+        1342
+      ],
+      "onApplyEffectIds": [],
+      "blockedByTags": [],
+      "removeTags": [],
+      "skipTurn": false,
+      "id": 10101,
+      "name": "破甲",
+      "description": "防御降低2，持续2回合。",
+      "color": "#D4B48D",
+      "tags": [
+        "armor_break"
+      ]
+    },
+    {
+      "iconId": 1,
+      "category": "debuff",
+      "scope": "battle",
+      "clock": "turns",
+      "durationTurns": 2,
+      "durationMinutes": 0,
+      "tickPhase": "turn_end",
+      "periodTurns": 0,
+      "periodMinutes": 0,
+      "stacking": "refresh",
+      "maxStacks": 1,
+      "removeOnDeath": true,
+      "periodicEffectIds": [],
+      "modifierEffectIds": [
+        1343
+      ],
+      "onApplyEffectIds": [],
+      "blockedByTags": [],
+      "removeTags": [],
+      "skipTurn": false,
+      "id": 10102,
+      "name": "虚弱",
+      "description": "力量降低3，持续2回合。",
+      "color": "#B79ABE",
+      "tags": [
+        "weakness"
+      ]
+    },
+    {
+      "iconId": 1,
+      "category": "debuff",
+      "scope": "battle",
+      "clock": "turns",
+      "durationTurns": 2,
+      "durationMinutes": 0,
+      "tickPhase": "turn_end",
+      "periodTurns": 0,
+      "periodMinutes": 0,
+      "stacking": "refresh",
+      "maxStacks": 1,
+      "removeOnDeath": true,
+      "periodicEffectIds": [],
+      "modifierEffectIds": [
+        1344
+      ],
+      "onApplyEffectIds": [],
+      "blockedByTags": [],
+      "removeTags": [],
+      "skipTurn": false,
+      "id": 10103,
+      "name": "迟缓",
+      "description": "速度降低3，持续2回合；影响后续回合排序。",
+      "color": "#8CB8D6",
+      "tags": [
+        "slow"
+      ]
+    },
+    {
+      "iconId": 1,
+      "category": "control",
+      "scope": "battle",
+      "clock": "turns",
+      "durationTurns": 1,
+      "durationMinutes": 0,
+      "tickPhase": "turn_end",
+      "periodTurns": 0,
+      "periodMinutes": 0,
+      "stacking": "refresh",
+      "maxStacks": 1,
+      "removeOnDeath": true,
+      "periodicEffectIds": [],
+      "modifierEffectIds": [],
+      "onApplyEffectIds": [],
+      "blockedByTags": [],
+      "removeTags": [],
+      "skipTurn": true,
+      "id": 10104,
+      "name": "震晕",
+      "description": "跳过接下来的1个行动回合。",
+      "color": "#D9B4FA",
+      "tags": [
+        "stunned"
+      ]
+    },
+    {
+      "iconId": 1,
+      "category": "buff",
+      "scope": "battle",
+      "clock": "turns",
+      "durationTurns": 3,
+      "durationMinutes": 0,
+      "tickPhase": "turn_end",
+      "periodTurns": 0,
+      "periodMinutes": 0,
+      "stacking": "refresh",
+      "maxStacks": 1,
+      "removeOnDeath": true,
+      "periodicEffectIds": [],
+      "modifierEffectIds": [],
+      "onApplyEffectIds": [],
+      "blockedByTags": [],
+      "removeTags": [],
+      "skipTurn": false,
+      "id": 10105,
+      "name": "追踪",
+      "description": "持续自身3回合。远程攻击绕过弹道阻挡；多目标攻击可在射程内自选不同敌人，不受主目标附近范围限制。",
+      "color": "#83D6F4",
+      "tags": [
+        "tracking"
+      ],
+      "manualEnemyTargets": true,
+      "ignoreProjectileBlockers": true,
+      "skillGroups": [
+        "spell",
+        "weapon",
+        "slash"
+      ]
+    }
+  ]
+}

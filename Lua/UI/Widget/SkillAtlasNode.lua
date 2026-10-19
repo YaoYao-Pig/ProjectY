@@ -8,7 +8,7 @@ function Node:SetData(node,skill,state,label,style,geometry,selected,related,act
     self.view.Title.font,self.view.State.font=style.Font,style.Font
     self.view.Title.text=skill.name;self.view.State.text=label
     geometry:Place(self.view.Root,node.x,node.y)
-    style:SetGlyph(self.view.Icon,skill.proficiency)
+    style:SetGlyph(self.view.Icon,node.glyphCode)
     style:Tint(self.view.Background,state=='owned' and '334E40' or state=='eligible' and 'F6EDDA' or 'D5CEBF')
     style:Tint(self.view.Icon,state=='owned' and 'ECDAB2' or '62583F')
     style:Tint(self.view.Border,selected and 'A26C31' or state=='owned' and '8E7955' or 'B8AA8D')

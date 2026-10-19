@@ -95,6 +95,313 @@
       "description": "好感达到 10 后提出入队邀请。",
       "startConditionId": 1,
       "completeConditionId": 123
+    },
+    {
+      "id": 301,
+      "missionId": 300,
+      "name": "焦黑的求援信",
+      "description": "找集市城镇的莫琳，听完焦黑求援信。白日商店附近，晚间公会账房。",
+      "startConditionId": 1,
+      "completeConditionId": 3001,
+      "autoComplete": true,
+      "actionIds": []
+    },
+    {
+      "id": 302,
+      "missionId": 300,
+      "name": "幸存者的名字",
+      "description": "寻找阿苇。白日广场，18:00 后回酒馆。先听她为何不肯具名。",
+      "startConditionId": 3002,
+      "completeConditionId": 3003,
+      "autoComplete": true,
+      "actionIds": [
+        3003
+      ]
+    },
+    {
+      "id": 303,
+      "missionId": 300,
+      "name": "两本账的差额",
+      "description": "回莫琳处核对两本账：智力、侦察或支付 20 金币请旧账房协助均可。",
+      "startConditionId": 3002,
+      "completeConditionId": 3004,
+      "autoComplete": true,
+      "actionIds": []
+    },
+    {
+      "id": 304,
+      "missionId": 300,
+      "name": "救济物资盘点",
+      "description": "在共享背包备齐 4 份营造木料和 1 个急救包，供救济队核验应急能力；盘点不扣除，可继续用于远征。商店、营地生产和搜刮均可补充。",
+      "startConditionId": 3002,
+      "completeConditionId": 3007,
+      "autoComplete": true,
+      "actionIds": [
+        3004
+      ]
+    },
+    {
+      "id": 305,
+      "missionId": 300,
+      "name": "清出归途",
+      "description": "离开城镇，探索荒野或废墟并击败 3 名废墟掠夺者。只统计本阶段激活后的敌方击败；不要只在城里交谈。",
+      "startConditionId": 3002,
+      "completeConditionId": 3008,
+      "autoComplete": true,
+      "actionIds": [
+        3005,
+        3006
+      ]
+    },
+    {
+      "id": 306,
+      "missionId": 300,
+      "name": "证人的条件",
+      "description": "物资与归途落实后再见阿苇，决定让她公开具名或匿名作证。魅力不足时可保护匿名身份，任务照常推进。",
+      "startConditionId": 3013,
+      "completeConditionId": 3014,
+      "autoComplete": true,
+      "actionIds": []
+    },
+    {
+      "id": 307,
+      "missionId": 300,
+      "name": "账本归谁",
+      "description": "与莫琳决定账本去向：公开追责、交互助会保管，或向工匠会交换赔偿。只能决定一次。",
+      "startConditionId": 3015,
+      "completeConditionId": 3019,
+      "autoComplete": true,
+      "actionIds": []
+    },
+    {
+      "id": 308,
+      "missionId": 300,
+      "name": "让守卫知情",
+      "description": "向塞维恩解释账本的处置及证人的保护安排。白日公会，晚间广场。",
+      "startConditionId": 3020,
+      "completeConditionId": 3021,
+      "autoComplete": true,
+      "actionIds": []
+    },
+    {
+      "id": 309,
+      "missionId": 300,
+      "name": "在灰烬上签字",
+      "description": "回莫琳处签收调查记录，随后领取任务报酬。",
+      "startConditionId": 3022,
+      "completeConditionId": 3023,
+      "autoComplete": true,
+      "actionIds": []
+    },
+    {
+      "id": 401,
+      "missionId": 400,
+      "name": "停摆的钟",
+      "description": "找赫铎了解停摆的警钟；白日铁匠铺，晚间商店。",
+      "startConditionId": 1,
+      "completeConditionId": 3047,
+      "autoComplete": true,
+      "actionIds": []
+    },
+    {
+      "id": 402,
+      "missionId": 400,
+      "name": "裂痕与暗号",
+      "description": "在赫铎处检查拆下的钟机与工图；用侦察、智力或 15 金币获得调查结果。",
+      "startConditionId": 3048,
+      "completeConditionId": 3049,
+      "autoComplete": true,
+      "actionIds": []
+    },
+    {
+      "id": 403,
+      "missionId": 400,
+      "name": "修钟物资盘点",
+      "description": "备齐 3 铁件和 2 麻绳供修钟核验；或在账本案选择交互助会封存，取得备料凭据。物资盘点不扣除。",
+      "startConditionId": 3048,
+      "completeConditionId": 3053,
+      "autoComplete": true,
+      "actionIds": [
+        3043
+      ]
+    },
+    {
+      "id": 404,
+      "missionId": 400,
+      "name": "钟应为谁而响",
+      "description": "和赫铎确定警钟用途，只能选择一次；改变信号的接收者，会影响最终议约。",
+      "startConditionId": 3054,
+      "completeConditionId": 3058,
+      "autoComplete": true,
+      "actionIds": []
+    },
+    {
+      "id": 405,
+      "missionId": 400,
+      "name": "压制远处的弓弦",
+      "description": "离城探索敌对据点，击败 2 名哨塔弓手。只统计阶段激活后的敌方击败。",
+      "startConditionId": 3048,
+      "completeConditionId": 3059,
+      "autoComplete": true,
+      "actionIds": [
+        3044,
+        3045
+      ]
+    },
+    {
+      "id": 406,
+      "missionId": 400,
+      "name": "重校共鸣装置",
+      "description": "返回赫铎处校准拆下的钟机：巧匠、智力，或支付 15 金币协作完成。",
+      "startConditionId": 3062,
+      "completeConditionId": 3063,
+      "autoComplete": true,
+      "actionIds": []
+    },
+    {
+      "id": 407,
+      "missionId": 400,
+      "name": "暮色中的证词",
+      "description": "找阿苇核对当晚的钟声。20:00–23:00 她愿意单独开口；公开具名证词可白日核对，也可支付 10 金币安排白日私室。",
+      "startConditionId": 3065,
+      "completeConditionId": 3066,
+      "autoComplete": true,
+      "actionIds": []
+    },
+    {
+      "id": 408,
+      "missionId": 400,
+      "name": "最后一枚铆钉",
+      "description": "回赫铎处落实已经选定的方案，听清每种方案的代价。",
+      "startConditionId": 3069,
+      "completeConditionId": 3073,
+      "autoComplete": true,
+      "actionIds": []
+    },
+    {
+      "id": 409,
+      "missionId": 400,
+      "name": "新的警戒规程",
+      "description": "向塞维恩说明新的警戒规程。",
+      "startConditionId": 3074,
+      "completeConditionId": 3075,
+      "autoComplete": true,
+      "actionIds": []
+    },
+    {
+      "id": 410,
+      "missionId": 400,
+      "name": "交还钟楼钥匙",
+      "description": "回赫铎交还工图并领取任务报酬。",
+      "startConditionId": 3076,
+      "completeConditionId": 3077,
+      "autoComplete": true,
+      "actionIds": []
+    },
+    {
+      "id": 501,
+      "missionId": 500,
+      "name": "未完的邀请",
+      "description": "找塞维恩听取三方议约邀请。可先完成任意一案接到任务，但两案都需要最终了结。",
+      "startConditionId": 1,
+      "completeConditionId": 3113,
+      "autoComplete": true,
+      "actionIds": []
+    },
+    {
+      "id": 502,
+      "missionId": 500,
+      "name": "驿路席位",
+      "description": "完成灰烬账本并领取报酬后，向莫琳争取驿路与救济代表的承诺。",
+      "startConditionId": 3114,
+      "completeConditionId": 3115,
+      "autoComplete": true,
+      "actionIds": []
+    },
+    {
+      "id": 503,
+      "missionId": 500,
+      "name": "工匠席位",
+      "description": "完成钟楼无声并领取报酬后，向赫铎争取工匠代表的承诺。",
+      "startConditionId": 3114,
+      "completeConditionId": 3116,
+      "autoComplete": true,
+      "actionIds": []
+    },
+    {
+      "id": 504,
+      "missionId": 500,
+      "name": "无名者席位",
+      "description": "完成灰烬账本后邀请阿苇；她可公开具名发言，也可让你递交匿名陈述。高好感与魅力能改变她的选择。",
+      "startConditionId": 3114,
+      "completeConditionId": 3117,
+      "autoComplete": true,
+      "actionIds": []
+    },
+    {
+      "id": 505,
+      "missionId": 500,
+      "name": "远行储备",
+      "description": "共享背包备齐 6 木料、4 铁件、2 急救包作远行储备核验（不扣除）；或找塞维恩支付 80 金币委托商队筹办。",
+      "startConditionId": 3114,
+      "completeConditionId": 3123,
+      "autoComplete": true,
+      "actionIds": [
+        3085
+      ]
+    },
+    {
+      "id": 506,
+      "missionId": 500,
+      "name": "议约前的长路",
+      "description": "邀请发出后再次离城探索，击败 4 名废墟掠夺者和 2 名哨塔弓手。前两案的旧击杀不计入此阶段。",
+      "startConditionId": 3114,
+      "completeConditionId": 3125,
+      "autoComplete": true,
+      "actionIds": [
+        3086,
+        3087
+      ]
+    },
+    {
+      "id": 507,
+      "missionId": 500,
+      "name": "写下代价",
+      "description": "各方席位落实后回塞维恩处拟定条款；智力重证据、魅力重共识，普通路线订立可复查的临时章程。",
+      "startConditionId": 3129,
+      "completeConditionId": 3133,
+      "autoComplete": true,
+      "actionIds": []
+    },
+    {
+      "id": 508,
+      "missionId": 500,
+      "name": "三方议决",
+      "description": "向塞维恩提交最终决议。阵营、账本去向、警钟方案、证人与队员能力会开放不同结局；只能选择一次。",
+      "startConditionId": 3137,
+      "completeConditionId": 3142,
+      "autoComplete": true,
+      "actionIds": []
+    },
+    {
+      "id": 509,
+      "missionId": 500,
+      "name": "广场上的回声",
+      "description": "回莫琳处确认普通人如何理解这份协议。",
+      "startConditionId": 3143,
+      "completeConditionId": 3144,
+      "autoComplete": true,
+      "actionIds": []
+    },
+    {
+      "id": 510,
+      "missionId": 500,
+      "name": "留给下一位驿使",
+      "description": "最后找塞维恩封存档案，领取议约报酬。",
+      "startConditionId": 3145,
+      "completeConditionId": 3146,
+      "autoComplete": true,
+      "actionIds": []
     }
   ]
 }

@@ -9,7 +9,7 @@ namespace ProjectY.Samples
 {
     /// <summary>演示输入与显示。所有玩法命令交给现有 Lua 运行时，不持有规则或权威状态。</summary>
     [LuaCallCSharp]
-    public sealed class AdventureRuntimeDemo : MonoBehaviour
+    public sealed partial class AdventureRuntimeDemo : MonoBehaviour
     {
         [SerializeField] private GameBootstrap bootstrap;
         [SerializeField] private Camera mapCamera;
@@ -25,6 +25,12 @@ namespace ProjectY.Samples
         private const string Bridge = "Game.Adventure.DemoBridge";
         private readonly Dictionary<int, MapRuntimeDemo.AssetBinding> assets = new Dictionary<int, MapRuntimeDemo.AssetBinding>();
         private MapPreviewRenderer mapRenderer;
+        private MapPreviewData worldMap;
+        [SerializeField] private WorldPartyView.Binding[] worldPartyBindings;
+        private WorldPartyView worldPartyView;
+        private Vector3 displayedTravel;
+        private float nextTravelPoll;
+        private bool followTravel;
         private MapAreaRenderer areaRenderer;
         private SquadPawnRenderer squadRenderer;
         private ExplorationGridRenderer explorationRenderer;
@@ -86,7 +92,6 @@ namespace ProjectY.Samples
             bootstrap.CallModule("UI.EquipmentUIBridge","open",this);
         }
         private TownNpcRenderer townNpcs;
-        private TownWalkCamera townCamera;
         private DialogueCamera dialogueCamera;
         private ProjectY.Data.NarrativeData narrativeData;
         private int dialogueActorId, dialogueNpcId;
@@ -99,7 +104,6 @@ namespace ProjectY.Samples
             dialogueActorId=actorId;dialogueNpcId=npcId;dialogueShot=shot;dialoguePanelFraction=panelFraction;
         }
         public void EndDialogueCamera(){dialogueCamera?.Return();}
-        private bool thirdPerson, wasWalking;
         private ProjectY.Data.MapAreaStateData areaState;
         private readonly Dictionary<int, MapRuntimeDemo.AssetBinding> pawnAssets = new Dictionary<int, MapRuntimeDemo.AssetBinding>();
         private MapAreaViewData areaLayout;
@@ -153,14 +157,17 @@ namespace ProjectY.Samples
         public void SelectBattleSkill(int id)
         {
             if (view?.Phase != "battle" || view.Active.Team != 1) return;
+            if(selectedSkill==id){CancelBattleSkillSelection();return;}
             var skill = Array.Find(view.Skills, row => row.Id == id);
-            if (skill == null || (skill.Targets.Length == 0 && skill.TargetCells.Length == 0)) return;
-            selectedSkill = id; moveSelected = false; view.Error = ""; BattleHUDRevision++;
+            if (skill == null || (skill.Targets.Length == 0 && skill.TargetCells.Length == 0 && skill.ContainerTargets.Length == 0)) return;
+            ClearBattleTargets();selectedSkill = id; moveSelected = false; view.Error = ""; BattleHUDRevision++;
         }
+        private void CancelBattleSkillSelection()
+        {ClearBattleTargets();selectedSkill=0;moveSelected=view!=null && view.Reachable.Length>0;if(view!=null)view.Error="";BattleHUDRevision++;}
         public void SelectBattleMove()
         {
             if (view?.Phase != "battle" || view.Active.Team != 1 || view.Reachable.Length == 0) return;
-            selectedSkill = 0; moveSelected = true; view.Error = ""; BattleHUDRevision++;
+            ClearBattleTargets();selectedSkill = 0; moveSelected = true; view.Error = ""; BattleHUDRevision++;
         }
         public void SetBattleAutoAI(bool value) { autoAI = value; BattleHUDRevision++; }
         public void FocusBattleActor(int id)
@@ -179,10 +186,9 @@ namespace ProjectY.Samples
             font = Font.CreateDynamicFontFromOSFont(new[] { "Microsoft YaHei", "Noto Sans CJK SC", "Arial" }, 16);
             hexTexture = ShapeTexture(false); circleTexture = ShapeTexture(true);
             mapRenderer = new MapPreviewRenderer(previewShader, transform);
+            using (var root = (LuaTable)bootstrap.CallModule(Bridge, "presentation")[0])
+                environment = new MapEnvironmentController(MapEnvironmentData.Read(root), environmentSun, mapCamera, transform);
             StartExpedition();
-            if (fatalError == null)
-                using (var root = (LuaTable)bootstrap.CallModule(Bridge, "presentation")[0])
-                    environment = new MapEnvironmentController(MapEnvironmentData.Read(root), environmentSun, mapCamera, transform);
         }
         private static Texture2D ShapeTexture(bool circle)
         {
@@ -198,39 +204,51 @@ namespace ProjectY.Samples
             texture.SetPixels(pixels); texture.Apply(false, true); return texture;
         }
         public void StartExpedition()
-        { BuildExpedition("start"); }
-        private void BuildExpedition(string command)
+        { BuildExpedition("campaign_start",10000); }
+        private void BuildExpedition(string command,int a=0)
         {
             Feedback?.Clear();
             try
             {
-                var values = bootstrap.CallModule(Bridge, command);
+                var values = bootstrap.CallModule(Bridge, command,a);
                 narrativeData=(ProjectY.Data.NarrativeData)bootstrap.CallModule("Game.Narrative.Bridge","data")[0];
                 using (var mapRoot = (LuaTable)values[0])
                 using (var stateRoot = (LuaTable)values[1])
                 {
+                    var next=AdventureViewData.Read(stateRoot);
+                    if(!string.IsNullOrEmpty(next.Error)){SetView(next);return;}
                     var map = MapPreviewData.Read(mapRoot);
+                    if(HasArea)ClearAreaView();
+                    worldPartyView?.Dispose();worldPartyView=null;
+                    worldMap=map;
                     mapRenderer.Build(map, asset => {
                         if (!assets.TryGetValue(asset.Id, out var binding) || binding.path != asset.Path || binding.prefab == null)
                             throw new InvalidOperationException("地图资源绑定不一致：" + asset.Id);
                         return binding.prefab;
                     });
-                    SetView(AdventureViewData.Read(stateRoot));
+                    SetView(next);
+                    displayedTravel=view.Travel.Position;followTravel=false;
                 }
                 fatalError = null; FitMap();
             }
-            catch (Exception exception) { Report(exception); }
+            catch (Exception exception)
+            {
+                if(view==null)Report(exception);
+                else {view.Error=exception.Message;BattleHUDRevision++;Debug.LogException(exception,this);}
+            }
         }
         // 也是此 demo 的最小自动化入口：与按钮使用相同命令，不绕过玩法检查。
         public void SendCommand(string command, int a = 0, int b = 0, int c = 0)
+            => SendCommandInternal(command,a,b,c,null);
+        private void SendCommandInternal(string command,int a,int b,int c,int[] targetIds)
         {
             if (fatalError != null) return;
             if(command=="hud_missions"){bootstrap.CallModule("UI.AdventureUIBridge","missions",this);return;}
             if(command=="hud_skill_atlas"){bootstrap.CallModule("UI.AdventureUIBridge","skill_atlas",this);return;}
-            if (command == "load_characters" || command == "start_story")
+            if (command == "load_characters" || command == "start_story" || command=="campaign_start" || command=="campaign_continue")
             {
                 if (view.Phase != "map" && view.Phase != "area") return;
-                BuildExpedition(command); return;
+                BuildExpedition(command,a); return;
             }
             // 对话会暂停世界，不能等待已暂停的角色动画才能选择或关闭。
             var dialogueCommand=command=="dialogue_choose" || command=="dialogue_close" || command=="shop_open" || command=="shop_buy" || command=="shop_close";
@@ -238,12 +256,13 @@ namespace ProjectY.Samples
                 (view.Phase == "battle" ? AnimationBusy : squadRenderer.ActionBusy || combatRenderer.ActionBusy))) return;
             if(command=="hud_follow")
             {
+                if(view.Phase=="map") {followTravel=true;focus=displayedTravel;zoom=20*worldMap.Radius;pitch=52;return;}
                 if(!HasArea) return;
                 followParty=true;focus=displayedParty;zoom=10*areaLayout.Radius;pitch=50;return;
             }
             try
             {
-                var values = bootstrap.CallModule(Bridge, command, a, b, c);
+                var values = bootstrap.CallModule(Bridge, command, a, targetIds==null?(object)b:targetIds, c);
                 using (var root = (LuaTable)values[0])
                 {
                     var next=AdventureViewData.Read(root);
@@ -255,12 +274,14 @@ namespace ProjectY.Samples
                     {
                         var npc=Array.Find(areaLayout.Npcs,row=>row.NarrativeId==a);
                         if(npc==null)throw new InvalidOperationException("GM target NPC is absent from the displayed layout.");
-                        thirdPerson=false;followParty=false;
+                        followParty=false;
                         focus=(townNpcs.Position(npc.Id)+squadRenderer.Position(view.Area.Members[0].ActorId))*.5f;
                         zoom=Mathf.Max(4,areaLayout.Radius*3);pitch=50;yaw=-25;
                     }
                 }
                 if(command=="character_skill")CancelCharacterSkill();
+                if((command=="skill" || command=="skill_targets" || command=="skill_cell" || command=="skill_container" || command=="use_item") && string.IsNullOrEmpty(view.Error))
+                    CancelBattleSkillSelection();
                 if(view.Phase=="area" && string.IsNullOrEmpty(view.Error))
                 {
                     if(!storyOpen && (command=="area_loot" || command=="area_interact")) squadRenderer.Interact(view.Area.Members[0].ActorId,command=="area_interact");
@@ -313,8 +334,6 @@ namespace ProjectY.Samples
                 if (areaLayout.IsTown)
                 {
                     townNpcs = new TownNpcRenderer(transform, pawnPrefab, areaLayout, ResolvePawnPart);
-                    townCamera = new TownWalkCamera(areaLayout, value.Area, areaRenderer.CameraObstacles, areaRenderer.TerrainDistance);
-                    thirdPerson = true; wasWalking = false;
                 }
                 focus = displayedParty = areaLayout.Cells[value.Area.CellIndex].Position;
                 zoom = 10 * areaLayout.Radius; pitch = 50; yaw = -35;
@@ -323,6 +342,7 @@ namespace ProjectY.Samples
             {
                 ClearAreaView();
             }
+            SyncBattleTargets(view,value);
             view = value;
             if(view.Phase!="area") selectedAreaCell=-1;
             float impactDelay=0;
@@ -345,8 +365,14 @@ namespace ProjectY.Samples
             if (resumingExploration) { followParty = true; focus = displayedParty = areaLayout.Cells[view.Area.CellIndex].Position; }
             if (view.ActiveId != lastActor)
             {
-                lastActor = view.ActiveId; moveSelected = true; selectedSkill = 0;
+                lastActor = view.ActiveId; moveSelected = true; selectedSkill = 0;ClearBattleTargets();
                 nextAI = Time.unscaledTime + .8f;
+            }
+            if (view.Phase == "battle" && view.Active.Moved) moveSelected = false;
+            if(worldMap!=null)
+            {
+                if(worldPartyView==null)worldPartyView=new WorldPartyView(transform,worldPartyBindings,worldMap.Radius);
+                worldPartyView.Sync(view);
             }
             BattleHUDRevision++;
             bootstrap.CallModule("UI.AdventureUIBridge", "sync", this);
@@ -362,7 +388,7 @@ namespace ProjectY.Samples
             lootRenderer.Dispose();lootRenderer=null;
             obstacleRenderer.Dispose();obstacleRenderer=null;
             constructionRenderer.Dispose();constructionRenderer=null;
-            townNpcs?.Dispose();townNpcs=null;townCamera=null;thirdPerson=false;wasWalking=false;
+            townNpcs?.Dispose();townNpcs=null;
             environment?.SetArea(null);
             areaRenderer.Dispose();areaRenderer=null;areaLayout=null;
             focus=worldFocus;zoom=worldZoom;yaw=worldYaw;pitch=worldPitch;
@@ -389,6 +415,7 @@ namespace ProjectY.Samples
         }
         public void FitMap()
         {
+            followTravel=false;
             if (HasArea && view.Phase == "battle") { FocusBattle(); return; }
             var bounds = HasArea ? areaRenderer.Bounds : mapRenderer.Bounds; focus = bounds.center;
             if (HasArea) followParty = false;
@@ -404,6 +431,7 @@ namespace ProjectY.Samples
         {
             if(environment!=null && narrativeData!=null){environment.Running=false;environment.Hour=(float)(narrativeData.Minutes/60%24);}
             environment?.Tick(Time.unscaledDeltaTime, view?.Area);
+            environment?.SetTorch(HasArea && view.Torch!=null && view.Torch.Enabled,displayedParty);
             if (view == null || fatalError != null) return;
             if(Input.GetKeyDown(KeyCode.F8))OpenGM();
             if(gmOpen)return;
@@ -415,7 +443,21 @@ namespace ProjectY.Samples
                 if(equipmentOpen) bootstrap.CallModule("UI.EquipmentUIBridge","close");else OpenEquipment();
             }
             if(equipmentOpen) return;
+            if(Input.GetKeyDown(KeyCode.T))SendCommand("torch_toggle");
+            if(Input.GetKeyDown(KeyCode.F5))SendCommand("save_characters");
             Feedback?.Tick(Time.deltaTime);
+            if(view.Phase=="map")
+            {
+                if(Time.unscaledTime>=nextTravelPoll) {SendCommand("snapshot");nextTravelPoll=Time.unscaledTime+.1f;}
+                if(fatalError!=null || view.Phase!="map")return;
+                displayedTravel=Vector3.Lerp(displayedTravel,view.Travel.Position,1-Mathf.Exp(-Time.unscaledDeltaTime*20));
+                worldPartyView.Tick(displayedTravel,Time.unscaledDeltaTime);
+                if(followTravel)focus=displayedTravel;
+                if(Input.GetKeyDown(KeyCode.Space))SendCommand("travel_pause");
+                if(Input.GetKeyDown(KeyCode.Alpha1))SendCommand("travel_speed",1);
+                if(Input.GetKeyDown(KeyCode.Alpha2))SendCommand("travel_speed",2);
+                if(Input.GetKeyDown(KeyCode.Alpha3))SendCommand("travel_speed",4);
+            }
             if (HasArea)
             {
                 // 城镇移动与居民占格变化当帧同步，避免在每个格子之间再等一次轮询。
@@ -423,6 +465,7 @@ namespace ProjectY.Samples
                 { SendCommand("snapshot"); nextAreaPoll = Time.unscaledTime + .10f; }
                 if (fatalError != null) return;
                 displayedParty = Vector3.Lerp(displayedParty, areaLayout.Cells[view.Area.CellIndex].Position, 1 - Mathf.Exp(-Time.unscaledDeltaTime * 18));
+                environment?.SetTorch(view.Torch!=null && view.Torch.Enabled,displayedParty);
                 squadRenderer.Tick(Time.deltaTime);
                 combatRenderer.Tick(Time.deltaTime);
                 if (Input.GetKeyDown(KeyCode.Space) && (view.Phase == "battle" || pendingExitView != null))
@@ -433,48 +476,14 @@ namespace ProjectY.Samples
                 if (followParty) focus = displayedParty;
                 if (view.Phase == "area" && Input.GetKeyDown(KeyCode.Space)) SendCommand("area_stop");
                 if (view.Phase == "area" && Input.GetKeyDown(KeyCode.Escape) && selectedCharacterSkill!=0) CancelCharacterSkill();
-                if(view.Phase=="area"&&!areaLayout.IsTown&&Input.GetKeyDown(KeyCode.E))
-                {
-                    var obstacle=NearestObstacle();
-                    if(obstacle!=null)SendCommand("area_obstacle",obstacle.Id);
-                    else {var loot=NearestLoot();if(loot!=null) SendCommand("area_loot",loot.Id);}
-                }
-                if (townCamera != null)
-                {
-                    if (Input.GetKeyDown(KeyCode.V)) ToggleTownCamera();
-                    if (Input.GetKeyDown(KeyCode.Escape) && view.Area.InteractionKind != 0) SendCommand("area_close");
-                    if (Input.GetKeyDown(KeyCode.E) && view.Area.InteractionKind == 0)
-                    {
-                        NearestInteraction(out var kind, out var id, out _);
-                        if (kind != 0) SendCommand("area_interact", kind, id);
-                        else {var loot=NearestLoot();if(loot!=null)SendCommand("area_loot",loot.Id);}
-                    }
-                    if (thirdPerson)
-                    {
-                        var pointer = new Vector2(Input.mousePosition.x, Screen.height - Input.mousePosition.y);
-                        if (AreaPointerBlocked()) return;
-                        townCamera.Orbit();
-                        if(selectedCharacterSkill!=0 && characterSkillTarget=="container" && Input.GetMouseButtonDown(0))
-                        {
-                            var ray=mapCamera.ScreenPointToRay(Input.mousePosition);var id=PickContainer(ray,areaRenderer.Pick(ray));
-                            if(id!=0)SendCommand("character_skill",selectedCharacter,selectedCharacterSkill,id);
-                            return;
-                        }
-                        if (view.Area.InteractionKind != 0 || Input.GetKey(KeyCode.Space)) { townCamera.ResetSteering(); wasWalking = false; return; }
-                        var direction = townCamera.Direction(areaLayout, view.Area, Time.deltaTime);
-                        if (wasWalking && !townCamera.Walking) SendCommand("area_stop");
-                        wasWalking = townCamera.Walking;
-                        // 当前格的平滑移动结束即可衔接下一格，不另设按键冷却或提前堆积路线。
-                        if (direction != 0 && !squadRenderer.Busy) SendCommand("area_walk", direction);
-                        return;
-                    }
-                }
+                if(view.Phase=="area" && Input.GetKeyDown(KeyCode.E)) SendCommand("area_interact_nearest");
+                if(view.Phase=="area" && Input.GetKeyDown(KeyCode.Escape) && view.Area.InteractionKind!=0) SendCommand("area_close");
             }
             if (view.Phase == "battle" && !AnimationBusy && pendingExitView == null && view.Active.Team == 2 && autoAI && Time.unscaledTime >= nextAI)
             {
                 SendCommand("ai"); nextAI = Time.unscaledTime + .8f;
             }
-            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) return;
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) {SetBattleTargetHover(0);return;}
             if ((view.Phase != "map" && !HasArea) || (view.Phase != "battle" && Input.mousePosition.x <= (mainHud!=null?mainHud.WorldLeftInset:0))) return;
             if (Input.GetKeyDown(KeyCode.F)) FitMap();
             zoom = Mathf.Clamp(zoom * Mathf.Exp(-Input.mouseScrollDelta.y * .12f), 3, 2000);
@@ -482,7 +491,22 @@ namespace ProjectY.Samples
             var step = new Vector3(Input.GetAxisRaw("Horizontal"), 0, Input.GetAxisRaw("Vertical")) * zoom * Time.unscaledDeltaTime;
             if (Input.GetMouseButton(2)) step += new Vector3(-Input.GetAxis("Mouse X"), 0, -Input.GetAxis("Mouse Y")) * zoom * .035f;
             focus += Quaternion.Euler(0, yaw, 0) * step;
+            if(step.sqrMagnitude>0)followTravel=false;
             if (step.sqrMagnitude > 0 && HasArea) followParty = false;
+            if(view.Phase=="map" && Input.GetMouseButtonDown(0))
+            {
+                int partyId=worldPartyView.Pick(mapCamera,Input.mousePosition);
+                if(partyId!=0){SendCommand("world_pursue",partyId);return;}
+                var site=WorldSiteAtPointer();
+                if(site!=null)SendCommand("visit",site.Id);
+                else {var index=WorldTravelView.Pick(worldMap,mapCamera.ScreenPointToRay(Input.mousePosition));if(index>=0)SendCommand("travel_move",index+1);}
+                return;
+            }
+            if(HasArea && view.Phase=="battle" && selectedSkill!=0)
+            {
+                var hoverRay=mapCamera.ScreenPointToRay(Input.mousePosition);
+                SetBattleTargetHover(PickAreaActor(hoverRay,areaRenderer.Pick(hoverRay)));
+            }
             if (HasArea && Input.GetMouseButtonDown(0))
             {
                 var ray=mapCamera.ScreenPointToRay(Input.mousePosition);
@@ -518,8 +542,8 @@ namespace ProjectY.Samples
                         else if(selectedSkill>0)
                         {
                             var targetId=PickAreaActor(ray,index);
-                            if(targetId!=0)SendCommand("skill",selectedSkill,targetId);
-                            else {var container=PickContainer(ray,index);if(container!=0)SendCommand("skill_container",selectedSkill,container);}
+                            if(targetId!=0)ChooseBattleTarget(targetId);
+                            else if(!IsSelectingBattleTargets) {var container=PickContainer(ray,index);if(container!=0)SendCommand("skill_container",selectedSkill,container);}
                         }
                     }
                 }
@@ -551,13 +575,6 @@ namespace ProjectY.Samples
                 dialogueCamera.Tick(squadRenderer.Position(dialogueActorId),townNpcs.Position(dialogueNpcId),dialogueShot,dialoguePanelFraction);
                 mapRenderer.SetVisible(false);areaRenderer.Draw(mapCamera);environment?.ApplyCameraFocus(displayedParty);return;
             }
-            if (thirdPerson)
-            {
-                townCamera.Apply(mapCamera, squadRenderer.Position(view.Area.Members[0].ActorId));
-                environment?.ApplyCameraFocus(displayedParty);
-                mapRenderer.SetVisible(false); areaRenderer.Draw(mapCamera);
-                DrawExplorationGrid(); return;
-            }
             mapCamera.orthographic = true; mapCamera.nearClipPlane = .1f;
             var fraction = view.Phase == "battle" ? 0 : Mathf.Min(.7f, (mainHud!=null?mainHud.WorldLeftInset:0) / Screen.width);
             mapCamera.rect = new Rect(fraction, 0, 1 - fraction, 1);
@@ -572,7 +589,7 @@ namespace ProjectY.Samples
             {
                 areaRenderer.Draw(mapCamera);
                 DrawExplorationGrid();
-                combatRenderer.Draw(mapCamera, view, areaLayout, moveSelected, selectedSkill);
+                combatRenderer.Draw(mapCamera, view, areaLayout, moveSelected, selectedSkill,selectedBattleTargets);
             }
             else if (view.Phase != "battle") mapRenderer.Draw(mapCamera, true, true, true, true);
         }
@@ -618,9 +635,23 @@ namespace ProjectY.Samples
         {
             if(equipmentOpen || growthOpen || storyOpen) return;
             EnsureStyles();
-            if (view == null) { GUI.Label(new Rect(22, 22, Screen.width - 44, 200), fatalError ?? "正在准备远征…", textStyle); return; }
+            if (view == null)
+            {
+                GUI.Label(new Rect(22,22,Screen.width-44,180),fatalError??"正在准备远征…",textStyle);
+                if(fatalError!=null)
+                {
+                    GUILayout.BeginArea(new Rect(22,210,Mathf.Min(540,Screen.width-44),260));
+                    GUILayout.Label("选择规模重新开始",titleStyle);
+                    if(Button("短途边境 · 2500 格"))BuildExpedition("campaign_start",2500);
+                    if(Button("标准远征 · 10000 格"))BuildExpedition("campaign_start",10000);
+                    if(Button("广袤世界 · 30000 格"))BuildExpedition("campaign_start",30000);
+                    if(Button("十万格大陆 · 100000 格"))BuildExpedition("campaign_start",100000);
+                    GUILayout.EndArea();
+                }
+                return;
+            }
             if(view.Phase=="battle"&&!HasArea) DrawBattle();
-            else if(view.Phase=="map") DrawSites();
+            else if(view.Phase=="map") {WorldTravelView.Draw(mapCamera,view.Travel,displayedTravel,textStyle);DrawSites();worldPartyView.DrawHover(mapCamera,textStyle);}
             if(HasArea && !AreaPointerBlocked())
             {
                 var id=lootRenderer.Pick(mapCamera.ScreenPointToRay(Input.mousePosition));
@@ -634,29 +665,22 @@ namespace ProjectY.Samples
             }
             if(showEnvironment) DrawEnvironmentWindow();
         }
+        internal bool TryInteractionPoint(int kind,int id,int cellIndex,out Vector3 point)
+        {
+            point=Vector3.zero;
+            if(!HasArea || view.Phase!="area" || cellIndex<1 || cellIndex>areaLayout.Cells.Length || equipmentOpen || growthOpen || storyOpen || gmOpen)return false;
+            point=areaLayout.Cells[cellIndex-1].Position+Vector3.up*1.4f;
+            if(kind==2)
+            {
+                if(townNpcs==null || !Array.Exists(view.Area.Npcs,npc=>npc.Id==id && npc.Present))return false;
+                point=townNpcs.Position(id)+Vector3.up*2.1f;
+            }
+            return true;
+        }
         public void ToggleTownCamera()
         {
-            SendCommand("area_stop"); townCamera.ResetSteering(); wasWalking = false; thirdPerson = !thirdPerson;
-            followParty = true; focus = displayedParty;
-            if (!thirdPerson) { zoom = 10 * areaLayout.Radius; pitch = 50; }
-        }
-        // 提示使用显示快照，命令仍在 Lua 重新检查距离，不能通过 UI 绕过靠近要求。
-        private void NearestInteraction(out int kind, out int id, out string label)
-        {
-            kind = 0; id = 0; label = ""; var best = int.MaxValue;
-            foreach (var facility in areaLayout.Facilities)
-            {
-                var range = areaLayout.StreetDistance(view.Area.CellIndex, facility.EntryIndex, facility.InteractionRadius);
-                if (range <= facility.InteractionRadius && range < best) { best = range; kind = 1; id = facility.Id; label = facility.Name; }
-            }
-            foreach (var npc in view.Area.Npcs)
-            {
-                if(!npc.Present)continue;
-                var range = areaLayout.StreetDistance(view.Area.CellIndex, npc.CellIndex, 1);
-                var identity=Array.Find(areaLayout.Npcs,value=>value.Id==npc.Id);
-                if (range <= 1 && (range < best || (range==best && identity.NarrativeId>0)))
-                { best = range; kind = 2; id = npc.Id; label = Array.Find(areaLayout.Npcs, value => value.Id == npc.Id).Name; }
-            }
+            if(!HasArea)return;
+            followParty = true; focus = displayedParty;zoom = 10 * areaLayout.Radius; pitch = 50;
         }
         private void DrawEnvironmentControls()
         {
@@ -666,13 +690,24 @@ namespace ProjectY.Samples
             for (var i = 0; i < environment.Data.Weathers.Length; i++)
                 if (GUILayout.Button((environment.WeatherIndex == i ? "● " : "") + environment.Data.Weathers[i].Name, buttonStyle)) environment.SelectWeather(i);
             GUILayout.EndHorizontal();
+            if(view?.Torch!=null && Button(view.Torch.Label,view.Torch.Available))SendCommand("torch_toggle");
         }
         private void DrawEnvironmentWindow()
         {
             if (environment == null) return;
             if (!showEnvironment) return;
-            var rect = new Rect(Screen.width - 308, 106, 290, 196); Fill(rect, Panel);
+            var rect = new Rect(Screen.width - 308, 106, 290, 236); Fill(rect, Panel);
             GUILayout.BeginArea(new Rect(rect.x + 12, rect.y + 10, rect.width - 24, rect.height - 20)); DrawEnvironmentControls(); GUILayout.EndArea();
+        }
+        private AdventureViewData.Site WorldSiteAtPointer()
+        {
+            var mouse=new Vector2(Input.mousePosition.x,Screen.height-Input.mousePosition.y);
+            foreach(var site in view.Sites)
+            {
+                var point=mapCamera.WorldToScreenPoint(site.Position+Vector3.up*.6f);
+                if(point.z>0 && new Rect(point.x-20,Screen.height-point.y-20,40,40).Contains(mouse))return site;
+            }
+            return null;
         }
         private void DrawSites()
         {
@@ -684,7 +719,7 @@ namespace ProjectY.Samples
                 Fill(new Rect(rect.x - 3, rect.y - 3, 40, 40), Background, circleTexture);
                 Fill(rect, site.Available ? Gold : new Color(.4f, .46f, .46f), circleTexture);
                 GUI.Label(rect, site.Id.ToString(), tokenStyle);
-                if (site.Available && GUI.Button(rect, GUIContent.none, GUIStyle.none) && (EventSystem.current==null||!EventSystem.current.IsPointerOverGameObject())) { SendCommand("visit", site.Id); break; }
+                if(rect.Contains(Event.current.mousePosition))GUI.Label(new Rect(rect.x+38,rect.y,240,36),site.Name,smallStyle);
             }
         }
         private Vector2 CellCenter(int q, int r, Vector2 center, float size) => center + new Vector2(1.7320508f * (q + r * .5f), 1.5f * r) * size;
@@ -696,6 +731,7 @@ namespace ProjectY.Samples
             var size = BoardSize();var center = BoardCenter();
             var chosen = Array.Find(view.Skills, skill => skill.Id == selectedSkill);
             AdventureViewData.Cell clicked = null;
+            AdventureViewData.Cell hoveredCell=null;
             foreach (var cell in view.Cells)
             {
                 var position = CellCenter(cell.Q, cell.R, center, size);
@@ -709,11 +745,17 @@ namespace ProjectY.Samples
                 var e = Event.current;
                 var dx = Mathf.Abs(e.mousePosition.x - position.x) / (size * .8660254f);
                 var dy = Mathf.Abs(e.mousePosition.y - position.y) / size;
-                if (e.type == EventType.MouseDown && e.button == 0 && dx <= 1 && dy <= 1 - dx * .5f) clicked = cell;
+                if(dx <= 1 && dy <= 1 - dx * .5f)
+                {
+                    hoveredCell=cell;
+                    if (e.type == EventType.MouseDown && e.button == 0) clicked = cell;
+                }
             }
             // 尸体先画，存活角色在其上方；尸体不阻挡路径。
             foreach (var actor in view.Units) if (actor.HP == 0) DrawActor(actor, center, size, chosen);
             foreach (var actor in view.Units) if (actor.HP > 0) DrawActor(actor, center, size, chosen);
+            var hovered=hoveredCell==null?null:Array.Find(view.Units,actor=>actor.HP>0 && Array.IndexOf(actor.OccupiedCells,hoveredCell.CellIndex)>=0);
+            SetBattleTargetHover(EventSystem.current!=null && EventSystem.current.IsPointerOverGameObject()?0:(hovered?.Id ?? 0));
             if (clicked != null && view.Active.Team == 1 && (EventSystem.current == null || !EventSystem.current.IsPointerOverGameObject()))
             {
                 Event.current.Use();
@@ -722,7 +764,7 @@ namespace ProjectY.Samples
                 {
                     if(chosen!=null && chosen.TargetCells.Length>0) {SendCommand("skill_cell",selectedSkill,clicked.CellIndex+1);return;}
                     var target = Array.Find(view.Units, actor => actor.HP > 0 && Array.IndexOf(actor.OccupiedCells,clicked.CellIndex)>=0);
-                    if (target != null && selectedSkill > 0) SendCommand("skill", selectedSkill, target.Id);
+                    if (target != null && selectedSkill > 0) ChooseBattleTarget(target.Id);
                 }
             }
         }
@@ -732,14 +774,17 @@ namespace ProjectY.Samples
             var radius = size * .61f;
             var rect = new Rect(position.x - radius, position.y - radius, radius * 2, radius * 2);
             var target = chosen != null && Array.IndexOf(chosen.Targets, actor.Id) >= 0;
-            if (actor.Id == view.ActiveId || target) Fill(new Rect(rect.x - 3, rect.y - 3, rect.width + 6, rect.height + 6), target ? Gold : Color.white, circleTexture);
+            var selected=selectedBattleTargets.IndexOf(actor.Id);
+            if (actor.Id == view.ActiveId || target || selected>=0) Fill(new Rect(rect.x - 3, rect.y - 3, rect.width + 6, rect.height + 6), selected>=0?Teal:target ? Gold : Color.white, circleTexture);
             Fill(rect, actor.HP == 0 ? new Color(.23f, .26f, .27f) : actor.Team == 1 ? Teal * .7f : Enemy * .8f, circleTexture);
             var separator = actor.Name.IndexOf(" · ", StringComparison.Ordinal);
             var label = actor.HP == 0 ? "×" : separator > 0 ? actor.Name.Substring(0, separator) : actor.Name.Substring(0, Mathf.Min(3, actor.Name.Length));
             GUI.Label(rect, label, tokenStyle);
+            if(selected>=0)GUI.Label(new Rect(rect.xMax-12,rect.y-10,24,22),(selected+1).ToString(),tokenStyle);
         }
         private void OnDestroy()
         {
+            worldPartyView?.Dispose();worldPartyView=null;
             dialogueCamera?.Dispose();dialogueCamera=null;
             environment?.Dispose(); environment = null;
             lootRenderer?.Dispose();lootRenderer=null;
@@ -753,22 +798,6 @@ namespace ProjectY.Samples
             mapRenderer?.Dispose(); mapRenderer = null;
             foreach(var owned in new UnityEngine.Object[]{font,hexTexture,circleTexture})
                 if(owned!=null){if(Application.isPlaying)Destroy(owned);else DestroyImmediate(owned);}
-        }
-        private bool IsNearLoot(MapAreaViewData.Loot loot)
-        {
-            return loot.Near;
-        }
-        private MapAreaViewData.Loot NearestLoot()
-        {
-            foreach(var loot in view.Area.Loots) if(!loot.Looted&&loot.CanSearch&&IsNearLoot(loot)) return loot;
-            foreach(var loot in view.Area.Loots) if(loot.CanSearch&&IsNearLoot(loot)) return loot;
-            return null;
-        }
-        private MapAreaViewData.Obstacle NearestObstacle()
-        {
-            foreach(var obstacle in view.Area.Obstacles)foreach(var index in obstacle.Cells)foreach(var member in view.Area.Members)
-                if(areaLayout.StreetDistance(member.CellIndex,index,1)<=1)return obstacle;
-            return null;
         }
     }
 }

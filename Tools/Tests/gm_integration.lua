@@ -15,17 +15,17 @@ local ok,err=xpcall(function()
         assert(not gm:Execute('missing',1));assert(not gm:Execute('grant_skill',1,999999))
         assert(first.Growth.Revision==revision and first.Growth.Level==1 and second.Growth.Level==1)
     end)
-    test('level-up targets the selected slot and preserves standard configured rewards and offers',function()
-        local growth=second.Growth;local attributes,talents=growth.AttributePoints,growth.TalentPoints
+    test('level-up targets the selected slot and preserves configured learning opportunities',function()
+        local growth=second.Growth;local attributes,talents,pending=growth.AttributePoints,growth.TalentPoints,growth.PendingCount
         local row=gm.growth.rules.levels:Get(2)
         assert(gm:Execute('level_up',2))
         assert(growth.Level==2 and first.Growth.Level==1 and growth.Experience==0)
         assert(growth.AttributePoints==attributes+row.attributePoints and growth.TalentPoints==talents+row.talentPoints)
-        assert(growth.PendingCount==1 and growth.OfferCount>0)
+        assert(growth.PendingCount==pending+1 and growth.OfferCount==0)
     end)
-    test('direct grants do not consume a level or research opportunity and remove duplicate offers',function()
+    test('direct grants preserve profession, level and active learning opportunities',function()
         local growth=second.Growth;local pending,level=growth.PendingCount,growth.Level
-        local offered=growth:GetOfferAt(0)
+        local offered=105
         assert(gm:Execute('grant_skill',2,offered));assert(growth:HasSkill(offered))
         for i=0,growth.OfferCount-1 do assert(growth:GetOfferAt(i)~=offered) end
         assert(growth.PendingCount==pending and growth.Level==level)

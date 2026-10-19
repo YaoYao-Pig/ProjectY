@@ -3,7 +3,9 @@ return function(actor,stats,appearances,area)
     local traits={}
     for i=0,actor.TraitCount-1 do traits[#traits+1]=stats.traits:Get(actor:GetTraitAt(i)).name end
     local cell=area and assert(area:Find(actor.Q,actor.R),'Combat actor outside area')
-    local appearance=appearances:Template(actor.TemplateId,stats.equipment:ActorVisual(actor),actor.CustomizationJson)
+    local equipment,customization
+    if not stats.animals:IsStaticBody(actor) then equipment=stats.equipment:ActorVisual(actor);customization=actor.CustomizationJson end
+    local appearance=appearances:Template(actor.TemplateId,equipment,customization)
     local mount=actor.MountedAnimal
     if mount then
         local species=stats.animals.species:Get(mount.AnimalSpeciesId)
@@ -14,6 +16,6 @@ return function(actor,stats,appearances,area)
     local occupiedCells={}
     if area then for _,part in ipairs(assert(stats.animals:Cells(actor,area))) do occupiedCells[#occupiedCells+1]=part.index end end
     return {id=actor.Id,name=stats:Template(actor).name,team=actor.Team,hp=actor.HP,maxHP=actor.MaxHP,presentationActor=actor,
-        ap=actor.AP,q=actor.Q,r=actor.R,guard=actor.Guard,moved=actor.Moved,mainUsed=actor.MainUsed,
+        fixedFootprint=stats.animals:IsStaticBody(actor),ap=actor.AP,q=actor.Q,r=actor.R,guard=actor.Guard,moved=actor.Moved,mainUsed=actor.MainUsed,
         traits=table.concat(traits,' · '),appearance=appearance,cellIndex=cell and cell.index or 0,occupiedCells=occupiedCells}
 end

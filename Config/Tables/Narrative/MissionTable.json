@@ -89,6 +89,51 @@
         3,
         4
       ]
+    },
+    {
+      "id": 300,
+      "name": "灰烬账本",
+      "description": "集市城镇的莫琳要查清一场仓库大火。先谈求援信，再并行调查账目、寻找阿苇、盘点物资与清理归途。证人是否信任你、账本交给谁，会改变钟楼与议约。最后回莫琳领取报酬：35 金币、全队 35 经验、学者指环。",
+      "category": "main",
+      "startConditionId": 1,
+      "completeConditionId": 3000,
+      "autoAccept": true,
+      "autoComplete": false,
+      "actionIds": [
+        3000,
+        3001,
+        3002
+      ]
+    },
+    {
+      "id": 400,
+      "name": "钟楼无声",
+      "description": "集市城镇的赫铎需要重建警钟的共鸣装置。调查、备料、清除哨塔弓手可以并行；选择公共预警、武装警戒或无声信号。账本的处置可提供备料凭据，阿苇的信任可改变夜间会面。报酬：45 金币、全队 45 经验、佣兵大剑。",
+      "category": "main",
+      "startConditionId": 1,
+      "completeConditionId": 3046,
+      "autoAccept": true,
+      "autoComplete": false,
+      "actionIds": [
+        3040,
+        3041,
+        3042
+      ]
+    },
+    {
+      "id": 500,
+      "name": "三方议约",
+      "description": "灰烬账本或钟楼无声完成后，塞维恩邀请你召集三方。两案都须了结，再争取驿路、工匠和幸存者席位；准备远行物资，完成新的清路战斗，拟定条款并选择结局。属性与前案事实决定可谈到哪一步，保守的临时守望方案始终可用。报酬：80 金币、全队 80 经验、王卫大剑。",
+      "category": "main",
+      "startConditionId": 3111,
+      "completeConditionId": 3112,
+      "autoAccept": true,
+      "autoComplete": false,
+      "actionIds": [
+        3082,
+        3083,
+        3084
+      ]
     }
   ]
 }

@@ -49,5 +49,7 @@
 ---@field Slot_offhand CS.UnityEngine.UI.Button
 ---@field Slot_offhandText CS.UnityEngine.UI.Text
 ---@field Character CS.ProjectY.UI.InventoryCharacterView
+---@field Repair CS.UnityEngine.UI.Button
+---@field RepairText CS.UnityEngine.UI.Text
 local View = {}
 return View

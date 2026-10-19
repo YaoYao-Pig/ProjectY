@@ -1,0 +1,8 @@
+fixture_directory=C:\Users\yyz\AppData\Local\Temp\project-y-ux-foundation-02913027786b45d29b1192c53550516e
+PASS Tools/Tests/area_battle_integration.lua
+Area battle integration: 5 checks passed
+PASS enemy groups are persistent real actors, hidden by fog and separate from the safe entrance
+PASS exploration movement triggers combat without relocating either side or rebuilding terrain
+PASS same combat commands win in the dungeon and settlement continues exploration exactly once
+PASS round limit retreats to map, preserves enemy wounds and redeploys at entrance on re-entry
+PASS party wipe retreats without rewards; a new expedition resets enemy groups

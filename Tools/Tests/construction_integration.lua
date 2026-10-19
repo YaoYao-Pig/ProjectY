@@ -1,4 +1,5 @@
 local registry=require('Core.SystemRegistry')(Services)
+local enterCombat=assert(loadfile('Tools/Tests/combat_phase_fixture.lua'))()
 require('Game.Systems')(registry)
 local messages={}
 local function test(name,run)run();messages[#messages+1]='PASS '..name end
@@ -20,6 +21,7 @@ local ok,err=xpcall(function()
     local enemy=CS.ProjectY.Data.CombatActorData(900,battle.encounters:Get(1).enemyIds[1]);enemy:SetMaxHP(100);enemy:Restore();enemy:Deploy(2,6,4)
     for _,id in ipairs({301,302,303,304,305,306}) do actor.Growth:GrantSkill(id) end
     battle:StartArea(1,board,{{actor=actor,q=3,r=4}},{enemy})
+    enterCombat(battle)
     local function turn()
         local index
         for i=0,battle.data.TurnCount-1 do if battle.data:GetTurnAt(i)==actor.Id then index=i end end
@@ -79,13 +81,15 @@ local ok,err=xpcall(function()
         assert(record.Removed and not cell.blocked and state.WorldRound==rounds+1)
     end)
     test('material stacks pass character-save validation without changing user saves',function()
-        local prepared={ActorCount=0,Equipment=equipment.data,LegacyNarrative=true}
+        Services.CharacterSaves:Save(data,Services.Player)
+        local prepared=Services.CharacterSaves:Prepare(equipment.data)
         require('Game.Adventure.CharacterSave').Validate(adventure,prepared)
     end)
     test('enemy AI breaks a reachable barrier when every route to the party is sealed',function()
         adventure.construction.data:Clear()
         for r=0,8 do adventure.construction.data:Place(987,layout:Find(5,r).index,302,5,equipment.data,{}, {}) end
         battle:StartArea(1,board,{{actor=actor,q=4,r=4}},{enemy})
+        enterCombat(battle)
         for i=0,battle.data.TurnCount-1 do if battle.data:GetTurnAt(i)==enemy.Id then battle:BeginTurn(i) end end
         assert(battle:StepAI())
         local removed=0

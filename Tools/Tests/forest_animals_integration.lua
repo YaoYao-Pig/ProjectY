@@ -54,7 +54,7 @@ local function battle(rider,enemy,board)
     local b=require('Game.Battle.BattleSystem')()
     b.stats=stats;b.skills=config:GetTable('CombatSkillTable');b.effects=config:GetTable('CombatEffectTable');b.encounters=config:GetTable('CombatEncounterTable')
     b.data=CS.ProjectY.Data.BattleData();b.data:Reset(201,30);b.data:AddUnit(rider,1,-2,0);b.data:AddUnit(enemy,2,0,0)
-    b.data:BeginRound();b.data:AddTurn(rider.Id);b.data:AddTurn(enemy.Id);b.data:SelectTurn(0);rider:BeginTurn(4)
+    b.data:BeginDeployment();b.data:BeginRound();b.data:AddTurn(rider.Id);b.data:AddTurn(enemy.Id);b.data:SelectTurn(0);rider:BeginTurn(4)
     b.board=board or require('Game.Battle.BattleBoard').Create(5,1,0)
     b.Changed=require('Core.Signal')(function(message)error(message)end)
     return b

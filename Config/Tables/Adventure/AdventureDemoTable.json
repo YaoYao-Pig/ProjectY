@@ -58,6 +58,20 @@
       "type": "int[]",
       "description": "建筑对应事件",
       "ref": "AdventureEventTable"
+    },
+    {
+      "name": "equipmentRecipeId",
+      "type": "int",
+      "ref": "EquipmentDemoTable",
+      "default": 1,
+      "description": "开局装备配方；正式远征使用独立的基础装备包"
+    },
+    {
+      "name": "startAreaId",
+      "type": "int",
+      "min": 0,
+      "default": 0,
+      "description": "优先靠近的开局区域配置；0沿用原点附近营地，非0要求真实生成该区域且有可达邻格"
     }
   ],
   "rows": [
@@ -147,6 +161,51 @@
         4,
         1
       ]
+    },
+    {
+      "id": 3,
+      "seed": 20260921,
+      "regionIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6,
+        1,
+        4,
+        5,
+        6,
+        1,
+        5,
+        2,
+        6
+      ],
+      "partyIds": [
+        1,
+        2,
+        3
+      ],
+      "maxPartySize": 4,
+      "campEventId": 2,
+      "wildEventIds": [
+        1,
+        3,
+        5,
+        6
+      ],
+      "buildingIds": [
+        1,
+        4,
+        5
+      ],
+      "buildingEventIds": [
+        1,
+        4,
+        1
+      ],
+      "equipmentRecipeId": 2,
+      "startAreaId": 2
     }
   ]
 }

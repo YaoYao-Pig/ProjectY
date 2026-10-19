@@ -14,21 +14,17 @@ local appearances=require('Game.Adventure.PawnAppearance').New(config)
 local function rows(values)
     return {Get = function(_, id) return assert(values[id], 'Missing snapshot fixture row') end}
 end
-local templates = rows({
-    [1] = {name = '剑士', skillIds = {1, 4}, moveCost = 1, moveRange = 3},
-    [4] = {name = '守卫', skillIds = {1}, moveCost = 1, moveRange = 3},
-})
-local skills = rows({
-    [1] = {name = '斩击', description = '近身攻击', cost = 2, action = 'main', range = 1, target = 'enemy'},
-    [4] = {name = '防御', description = '保护自身', cost = 1, action = 'secondary', range = 0, target = 'self'},
-})
 local function fixture()
     local hero = {Id = 1, Growth=EmptyGrowth(),TemplateId = 1, Team = 1, HP = 46, MaxHP = 46, AP = 4,
         Q = -4, R = 0, Guard = 0, Moved = false, MainUsed = false, TraitCount = 0}
     local enemy = {Id = 101, Growth=EmptyGrowth(),TemplateId = 4, Team = 2, HP = 34, MaxHP = 34, AP = 0,
         Q = 4, R = 0, Guard = 0, Moved = false, MainUsed = false, TraitCount = 0}
     local units = {hero, enemy}
-    local battleData = {UnitCount = 2, Round = 1, EncounterId = 1, ActiveId = 1, Winner = '', LogCount = 1,
+    for _,actor in ipairs(units) do
+        actor.AnimalOwnerId=0;actor.Effects={Count=0}
+        function actor:GetCooldown()return 0 end
+    end
+    local battleData = {Phase='combat',UnitCount = 2, Round = 1, EncounterId = 1, ActiveId = 1, Winner = '', LogCount = 1,
         GetUnitAt = function(_, index) return assert(units[index + 1]) end,
         GetLogAt = function(_, index) assert(index == 0); return '战斗开始' end}
     local data = {Phase = 'battle', Areas={ActiveSiteId=0}, PartyCount = 1, ResultText = '', EventId = 1, EventActorId=1, EventLocation='废墟', AreaEncounterId = 0, Battle = battleData,
@@ -37,10 +33,8 @@ local function fixture()
     local battle = Battle()
     battle.data = battleData
     battle.board = require('Game.Battle.BattleBoard').Create(4, 20260922, .2)
-    battle.stats = {Template = function(_, actor) return templates:Get(actor.TemplateId) end,
-        Get = function(_, actor, name) assert(name == 'scouting'); return 2 end}
-    battle.stats.equipment=require('Game.Equipment.EquipmentRules').New(config)
-    battle.skills = skills
+    battle.stats = require('Game.Battle.CombatStats')(config)
+    battle.skills = config:GetTable('CombatSkillTable')
     battle.encounters = rows({[1] = {name = '废墟守卫'}})
     local events = Events()
     events.growth={Actor=function() return hero end}
@@ -48,18 +42,24 @@ local function fixture()
     events.data, events.player, events.stats = data, {Coins = 0}, battle.stats
     events.events = rows({[1] = {name = '废墟', description = '守卫仍在巡逻。', repeatable = false, choiceIds = {1, 2}}})
     events.choices = rows({
-        [1] = {label = '迎战', costCoins = 0, minScouting = 0, encounterIds = {1}, traitIds = {}, healParty = false, requiredTraitIds={},forbiddenTraitIds={},itemIds={}},
-        [2] = {label = '侦察', costCoins = 0, minScouting = 4, encounterIds = {}, traitIds = {}, healParty = false, requiredTraitIds={},forbiddenTraitIds={},itemIds={}},
+        [1] = {label = '迎战', costCoins = 0, minScouting = 0, encounterIds = {1}, traitIds = {}, healParty = false, requiredTraitIds={},forbiddenTraitIds={},itemIds={},obstacleAction=''},
+        [2] = {label = '侦察', costCoins = 0, minScouting = 4, encounterIds = {}, traitIds = {}, healParty = false, requiredTraitIds={},forbiddenTraitIds={},itemIds={},obstacleAction=''},
     })
     local adventure = Adventure()
     adventure.data, adventure.player, adventure.battle, adventure.events = data, events.player, battle, events
+    adventure.config=config;data.Equipment={CountItem=function()return 0 end};data.Narrative={GetValue=function()return 0 end}
     adventure.appearances=appearances
+    adventure.travel={Snapshot=function()return {x=0,y=0,z=0,active=false,paused=true,speed=1,remaining=0,
+        destination='原地待命',terrain='平原',message='',route={}}end}
+    -- This fixture represents the legacy independent battlefield: no active MapArea or containers.
+    adventure.areas={AreaId=function()return nil end}
+    adventure.containerCombat=setmetatable({adventure=adventure},{__index=require('Game.Loot.ContainerCombat')})
     adventure.sites = {{id = 1, eventId = 1, name = '废墟', x = 1, y = 2, z = 3}}
     return adventure, hero
 end
 local actorFields = {id = 'number', team = 'number', hp = 'number', maxHP = 'number', ap = 'number',
     q = 'number', r = 'number', guard = 'number', name = 'string', traits = 'string', moved = 'boolean', mainUsed = 'boolean'}
-local cellFields = {q = 'number', r = 'number', blocked = 'boolean'}
+local cellFields = {q = 'number', r = 'number', blocked = 'boolean',cellIndex='number'}
 local rowContracts = {
     party = actorFields, units = actorFields, cells = cellFields, reachable = cellFields,
     sites = {id = 'number', name = 'string', x = 'number', y = 'number', z = 'number', available = 'boolean', visited = 'boolean'},
@@ -67,6 +67,9 @@ local rowContracts = {
     skills = {id = 'number', cost = 'number', name = 'string', description = 'string', action = 'string', targets = 'table'},
 }
 local function check(snapshot)
+    for key,kind in pairs({available='boolean',enabled='boolean',count='number',label='string'})do assert(type(snapshot.torch[key])==kind,'Invalid torch snapshot '..key)end
+    for key,kind in pairs({x='number',y='number',z='number',active='boolean',paused='boolean',speed='number',remaining='number',
+        destination='string',terrain='string',message='string',route='table'})do assert(type(snapshot.travel[key])==kind,'Invalid travel snapshot '..key)end
     for _,actor in ipairs(snapshot.party) do
         assert(type(actor.appearance.templateId)=='number' and #actor.appearance.parts>=2)
         for _,part in ipairs(actor.appearance.parts) do assert(type(part.id)=='number' and type(part.path)=='string' and type(part.slot)=='string') end
@@ -79,7 +82,7 @@ local function check(snapshot)
             end
         end
     end
-    for _, key in ipairs({'phase', 'result', 'eventTitle', 'eventText', 'encounter'}) do assert(type(snapshot[key]) == 'string', key) end
+    for _, key in ipairs({'phase', 'battlePhase', 'result', 'eventTitle', 'eventText', 'encounter'}) do assert(type(snapshot[key]) == 'string', key) end
     for _, key in ipairs({'coins', 'round', 'activeId', 'radius'}) do assert(type(snapshot[key]) == 'number', key) end
     for _, line in ipairs(snapshot.logs) do assert(type(line) == 'string') end
     for _, skill in ipairs(snapshot.skills) do for _, id in ipairs(skill.targets) do assert(type(id) == 'number') end end
@@ -115,13 +118,13 @@ test('spent movement and AP export an empty reachable array with intact actor bo
 end)
 test('battle result exports cells but no skills or reachable moves', function()
     local adventure = fixture()
-    adventure.data.Phase = 'result'; adventure.data.Battle.Winner = 'victory'
+    adventure.data.Phase = 'result'; adventure.data.Battle.Winner = 'victory';adventure.data.Battle.Phase='ended'
     local snapshot = adventure:Snapshot(); check(snapshot)
     assert(#snapshot.cells > 0 and #snapshot.skills == 0 and #snapshot.reachable == 0)
 end)
 test('map and event snapshots preserve boolean contracts when the battle is absent', function()
     local adventure = fixture()
-    adventure.data.Battle.UnitCount = 0; adventure.data.Phase = 'map'
+    adventure.data.Battle.UnitCount = 0; adventure.data.Phase = 'map';adventure.data.Battle.Phase='idle'
     local snapshot = adventure:Snapshot(); check(snapshot)
     assert(#snapshot.cells == 0 and #snapshot.reachable == 0 and snapshot.sites[1].available == true)
     adventure.data.Phase = 'event'

@@ -1,0 +1,814 @@
+{
+  "version": 1,
+  "status": "imported_and_mounted_in_unity",
+  "coordinateConversion": "Blender (x,y,z) -> Unity (-x,z,-y), verified project FBX preset; Unity bakeAxisConversion=true and globalScale=1",
+  "source": "Art/SocketExpansion202610/Source/WeaponAttachments.blend",
+  "pureColor": true,
+  "models": [
+    {
+      "id": 730,
+      "name": "缠革稳握柄",
+      "label": "LeatherGrip",
+      "slotKind": "grip",
+      "model": "Socket_730",
+      "boundsUnity": {
+        "min": [
+          -0.03799999877810478,
+          -0.07500000298023224,
+          -0.0
+        ],
+        "max": [
+          0.03772672638297081,
+          0.07500000298023224,
+          0.08649999648332596
+        ],
+        "size": [
+          0.07572672516107559,
+          0.15000000596046448,
+          0.08649999648332596
+        ]
+      },
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "axesUnity": {
+        "contactPlane": "Z=0",
+        "outward": "+Z",
+        "longAxis": "+Y"
+      },
+      "triangles": 504,
+      "vertices": 276,
+      "uvLayers": 1,
+      "nonManifoldEdges": 0,
+      "materials": [
+        "M_MapLP_EqIron",
+        "M_MapLP_EqAmber",
+        "M_MapLP_EqBronze"
+      ],
+      "geometrySha256": "d3ef7d979aa3ce2788846e288f1045adf2061460bc503da2b0868039216467c1",
+      "fbx": "Art/SocketExpansion202610/Staging/Socket_730.fbx",
+      "export": {
+        "path": "D:\\Program\\Unity\\Project Y\\Art\\SocketExpansion202610\\Staging\\Socket_730.fbx",
+        "bytes": 28956,
+        "object": "Socket_730",
+        "mesh": "Socket_730_Mesh",
+        "geometry_rotation_blender_z_degrees": 180,
+        "bake_space_transform": true,
+        "unity_bakeAxisConversion_required": true
+      },
+      "unityImportChecked": true,
+      "unityPrefab": "Assets/DynamicAsset/SocketExpansion202610/Prefabs/Socket_730.prefab"
+    },
+    {
+      "id": 731,
+      "name": "护手织带",
+      "label": "GuardStrap",
+      "slotKind": "grip",
+      "model": "Socket_731",
+      "boundsUnity": {
+        "min": [
+          -0.06391578912734985,
+          -0.06420475989580154,
+          -0.0
+        ],
+        "max": [
+          0.06391578912734985,
+          0.10904720425605774,
+          0.1080000028014183
+        ],
+        "size": [
+          0.1278315782546997,
+          0.17325196415185928,
+          0.1080000028014183
+        ]
+      },
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "axesUnity": {
+        "contactPlane": "Z=0",
+        "outward": "+Z",
+        "longAxis": "+Y"
+      },
+      "triangles": 128,
+      "vertices": 84,
+      "uvLayers": 1,
+      "nonManifoldEdges": 0,
+      "materials": [
+        "M_MapLP_EqIron",
+        "M_MapLP_EqAmber",
+        "M_MapLP_EqBronze"
+      ],
+      "geometrySha256": "284974d980fbd02d6cb060e973e6ecb6062ec745423d580523d43e828c292bfe",
+      "fbx": "Art/SocketExpansion202610/Staging/Socket_731.fbx",
+      "export": {
+        "path": "D:\\Program\\Unity\\Project Y\\Art\\SocketExpansion202610\\Staging\\Socket_731.fbx",
+        "bytes": 21532,
+        "object": "Socket_731",
+        "mesh": "Socket_731_Mesh",
+        "geometry_rotation_blender_z_degrees": 180,
+        "bake_space_transform": true,
+        "unity_bakeAxisConversion_required": true
+      },
+      "unityImportChecked": true,
+      "unityPrefab": "Assets/DynamicAsset/SocketExpansion202610/Prefabs/Socket_731.prefab"
+    },
+    {
+      "id": 732,
+      "name": "破势配重",
+      "label": "ImpactWeight",
+      "slotKind": "pommel",
+      "model": "Socket_732",
+      "boundsUnity": {
+        "min": [
+          -0.06499999761581421,
+          -0.1379999965429306,
+          -0.061818674206733704
+        ],
+        "max": [
+          0.06499999761581421,
+          0.0,
+          0.06672243028879166
+        ],
+        "size": [
+          0.12999999523162842,
+          0.1379999965429306,
+          0.12854110449552536
+        ]
+      },
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "axesUnity": {
+        "contactPlane": "Y=0",
+        "outward": "-Y",
+        "longAxis": "Y"
+      },
+      "triangles": 232,
+      "vertices": 124,
+      "uvLayers": 1,
+      "nonManifoldEdges": 0,
+      "materials": [
+        "M_MapLP_EqIron",
+        "M_MapLP_EqBronze",
+        "M_MapLP_EqAmber"
+      ],
+      "geometrySha256": "aca0befbee9ab0c514108fdae32112dbef5aef472a63c81c2defa7ebb4979d1f",
+      "fbx": "Art/SocketExpansion202610/Staging/Socket_732.fbx",
+      "export": {
+        "path": "D:\\Program\\Unity\\Project Y\\Art\\SocketExpansion202610\\Staging\\Socket_732.fbx",
+        "bytes": 23212,
+        "object": "Socket_732",
+        "mesh": "Socket_732_Mesh",
+        "geometry_rotation_blender_z_degrees": 180,
+        "bake_space_transform": true,
+        "unity_bakeAxisConversion_required": true
+      },
+      "unityImportChecked": true,
+      "unityPrefab": "Assets/DynamicAsset/SocketExpansion202610/Prefabs/Socket_732.prefab"
+    },
+    {
+      "id": 733,
+      "name": "汲血配重",
+      "label": "SiphonWeight",
+      "slotKind": "pommel",
+      "model": "Socket_733",
+      "boundsUnity": {
+        "min": [
+          -0.05592995882034302,
+          -0.15974999964237213,
+          -0.04100000113248825
+        ],
+        "max": [
+          0.05592995882034302,
+          0.0,
+          0.050999999046325684
+        ],
+        "size": [
+          0.11185991764068604,
+          0.15974999964237213,
+          0.09200000017881393
+        ]
+      },
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "axesUnity": {
+        "contactPlane": "Y=0",
+        "outward": "-Y",
+        "longAxis": "Y"
+      },
+      "triangles": 148,
+      "vertices": 88,
+      "uvLayers": 1,
+      "nonManifoldEdges": 0,
+      "materials": [
+        "M_MapLP_EqBronze",
+        "M_MapLP_EqAmber",
+        "M_MapLP_EqIron"
+      ],
+      "geometrySha256": "0bcdf7c7e0fdf5adc863435297d050c6d7a4e0e6d32025d50b638cb38a2f6a3f",
+      "fbx": "Art/SocketExpansion202610/Staging/Socket_733.fbx",
+      "export": {
+        "path": "D:\\Program\\Unity\\Project Y\\Art\\SocketExpansion202610\\Staging\\Socket_733.fbx",
+        "bytes": 21148,
+        "object": "Socket_733",
+        "mesh": "Socket_733_Mesh",
+        "geometry_rotation_blender_z_degrees": 180,
+        "bake_space_transform": true,
+        "unity_bakeAxisConversion_required": true
+      },
+      "unityImportChecked": true,
+      "unityPrefab": "Assets/DynamicAsset/SocketExpansion202610/Prefabs/Socket_733.prefab"
+    },
+    {
+      "id": 734,
+      "name": "远猎弓臂",
+      "label": "FarHuntBrace",
+      "slotKind": "bowlimb",
+      "model": "Socket_734",
+      "boundsUnity": {
+        "min": [
+          -0.042500000447034836,
+          -0.11114223301410675,
+          -0.0
+        ],
+        "max": [
+          0.042500000447034836,
+          0.11151135712862015,
+          0.054794225841760635
+        ],
+        "size": [
+          0.08500000089406967,
+          0.2226535901427269,
+          0.054794225841760635
+        ]
+      },
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "axesUnity": {
+        "contactPlane": "Z=0",
+        "outward": "+Z",
+        "longAxis": "+Y"
+      },
+      "triangles": 176,
+      "vertices": 108,
+      "uvLayers": 1,
+      "nonManifoldEdges": 0,
+      "materials": [
+        "M_MapLP_EqIron",
+        "M_MapLP_EqBronze",
+        "M_MapLP_EqCyan"
+      ],
+      "geometrySha256": "3fcb5e58b8b61dd1ce370747ea363c911972bc6a4b88bd31ef815c26d9a5221a",
+      "fbx": "Art/SocketExpansion202610/Staging/Socket_734.fbx",
+      "export": {
+        "path": "D:\\Program\\Unity\\Project Y\\Art\\SocketExpansion202610\\Staging\\Socket_734.fbx",
+        "bytes": 21820,
+        "object": "Socket_734",
+        "mesh": "Socket_734_Mesh",
+        "geometry_rotation_blender_z_degrees": 180,
+        "bake_space_transform": true,
+        "unity_bakeAxisConversion_required": true
+      },
+      "unityImportChecked": true,
+      "unityPrefab": "Assets/DynamicAsset/SocketExpansion202610/Prefabs/Socket_734.prefab"
+    },
+    {
+      "id": 735,
+      "name": "强力弓臂",
+      "label": "PowerBrace",
+      "slotKind": "bowlimb",
+      "model": "Socket_735",
+      "boundsUnity": {
+        "min": [
+          -0.05765233188867569,
+          -0.10099320858716965,
+          -0.0
+        ],
+        "max": [
+          0.05765233188867569,
+          0.10099320858716965,
+          0.07599999755620956
+        ],
+        "size": [
+          0.11530466377735138,
+          0.2019864171743393,
+          0.07599999755620956
+        ]
+      },
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "axesUnity": {
+        "contactPlane": "Z=0",
+        "outward": "+Z",
+        "longAxis": "+Y"
+      },
+      "triangles": 124,
+      "vertices": 80,
+      "uvLayers": 1,
+      "nonManifoldEdges": 0,
+      "materials": [
+        "M_MapLP_EqIron",
+        "M_MapLP_EqBronze",
+        "M_MapLP_EqAmber"
+      ],
+      "geometrySha256": "9c51e5170f0258e00ae6836a20d3fa6fd21efd099f0d8c29ab8877e86bcc6e4c",
+      "fbx": "Art/SocketExpansion202610/Staging/Socket_735.fbx",
+      "export": {
+        "path": "D:\\Program\\Unity\\Project Y\\Art\\SocketExpansion202610\\Staging\\Socket_735.fbx",
+        "bytes": 20108,
+        "object": "Socket_735",
+        "mesh": "Socket_735_Mesh",
+        "geometry_rotation_blender_z_degrees": 180,
+        "bake_space_transform": true,
+        "unity_bakeAxisConversion_required": true
+      },
+      "unityImportChecked": true,
+      "unityPrefab": "Assets/DynamicAsset/SocketExpansion202610/Prefabs/Socket_735.prefab"
+    },
+    {
+      "id": 736,
+      "name": "校准弓弦",
+      "label": "CalibratedTensioner",
+      "slotKind": "bowstring",
+      "model": "Socket_736",
+      "boundsUnity": {
+        "min": [
+          -0.032999999821186066,
+          -0.1213848739862442,
+          -0.0
+        ],
+        "max": [
+          0.032999999821186066,
+          0.1213848739862442,
+          0.06700000166893005
+        ],
+        "size": [
+          0.06599999964237213,
+          0.2427697479724884,
+          0.06700000166893005
+        ]
+      },
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "axesUnity": {
+        "contactPlane": "Z=0",
+        "outward": "+Z",
+        "longAxis": "+Y"
+      },
+      "triangles": 292,
+      "vertices": 160,
+      "uvLayers": 1,
+      "nonManifoldEdges": 0,
+      "materials": [
+        "M_MapLP_EqIron",
+        "M_MapLP_EqBronze",
+        "M_MapLP_EqAmber"
+      ],
+      "geometrySha256": "5faa28ed54eca4eda1a4954f098eef4210360a4b2d97a2360234e19b2e06509f",
+      "fbx": "Art/SocketExpansion202610/Staging/Socket_736.fbx",
+      "export": {
+        "path": "D:\\Program\\Unity\\Project Y\\Art\\SocketExpansion202610\\Staging\\Socket_736.fbx",
+        "bytes": 23676,
+        "object": "Socket_736",
+        "mesh": "Socket_736_Mesh",
+        "geometry_rotation_blender_z_degrees": 180,
+        "bake_space_transform": true,
+        "unity_bakeAxisConversion_required": true
+      },
+      "unityImportChecked": true,
+      "unityPrefab": "Assets/DynamicAsset/SocketExpansion202610/Prefabs/Socket_736.prefab"
+    },
+    {
+      "id": 737,
+      "name": "潮线弓弦",
+      "label": "TidalPulley",
+      "slotKind": "bowstring",
+      "model": "Socket_737",
+      "boundsUnity": {
+        "min": [
+          -0.04100000113248825,
+          -0.09599331766366959,
+          -0.0
+        ],
+        "max": [
+          0.04100000113248825,
+          0.09599331766366959,
+          0.060186535120010376
+        ],
+        "size": [
+          0.0820000022649765,
+          0.19198663532733917,
+          0.060186535120010376
+        ]
+      },
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "axesUnity": {
+        "contactPlane": "Z=0",
+        "outward": "+Z",
+        "longAxis": "+Y"
+      },
+      "triangles": 260,
+      "vertices": 144,
+      "uvLayers": 1,
+      "nonManifoldEdges": 0,
+      "materials": [
+        "M_MapLP_EqIron",
+        "M_MapLP_EqBronze",
+        "M_MapLP_EqCyan"
+      ],
+      "geometrySha256": "bbed80d6feab485a2f3fa13a186811f05a7ff79fd2ecfcbf3479d84c285b7ac8",
+      "fbx": "Art/SocketExpansion202610/Staging/Socket_737.fbx",
+      "export": {
+        "path": "D:\\Program\\Unity\\Project Y\\Art\\SocketExpansion202610\\Staging\\Socket_737.fbx",
+        "bytes": 23596,
+        "object": "Socket_737",
+        "mesh": "Socket_737_Mesh",
+        "geometry_rotation_blender_z_degrees": 180,
+        "bake_space_transform": true,
+        "unity_bakeAxisConversion_required": true
+      },
+      "unityImportChecked": true,
+      "unityPrefab": "Assets/DynamicAsset/SocketExpansion202610/Prefabs/Socket_737.prefab"
+    },
+    {
+      "id": 738,
+      "name": "破甲枪口",
+      "label": "BreakerMuzzle",
+      "slotKind": "muzzle",
+      "model": "Socket_738",
+      "boundsUnity": {
+        "min": [
+          -0.05400000140070915,
+          -0.04755282402038574,
+          -0.0
+        ],
+        "max": [
+          0.05400000140070915,
+          0.04755282402038574,
+          0.16500000655651093
+        ],
+        "size": [
+          0.1080000028014183,
+          0.09510564804077148,
+          0.16500000655651093
+        ]
+      },
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "axesUnity": {
+        "contactPlane": "Z=0",
+        "outward": "+Z",
+        "longAxis": "+Z"
+      },
+      "triangles": 392,
+      "vertices": 208,
+      "uvLayers": 1,
+      "nonManifoldEdges": 0,
+      "materials": [
+        "M_MapLP_EqIron",
+        "M_MapLP_EqBronze",
+        "M_MapLP_EqAmber"
+      ],
+      "geometrySha256": "3a34471a22d2b2e510d6bf080563cfc5a7b526108a56e89add7f55135f2009c8",
+      "fbx": "Art/SocketExpansion202610/Staging/Socket_738.fbx",
+      "export": {
+        "path": "D:\\Program\\Unity\\Project Y\\Art\\SocketExpansion202610\\Staging\\Socket_738.fbx",
+        "bytes": 25276,
+        "object": "Socket_738",
+        "mesh": "Socket_738_Mesh",
+        "geometry_rotation_blender_z_degrees": 180,
+        "bake_space_transform": true,
+        "unity_bakeAxisConversion_required": true
+      },
+      "unityImportChecked": true,
+      "unityPrefab": "Assets/DynamicAsset/SocketExpansion202610/Prefabs/Socket_738.prefab"
+    },
+    {
+      "id": 739,
+      "name": "分流枪口",
+      "label": "SplitterMuzzle",
+      "slotKind": "muzzle",
+      "model": "Socket_739",
+      "boundsUnity": {
+        "min": [
+          -0.07699999958276749,
+          -0.0430000014603138,
+          -0.0
+        ],
+        "max": [
+          0.07699999958276749,
+          0.0430000014603138,
+          0.17499999701976776
+        ],
+        "size": [
+          0.15399999916553497,
+          0.0860000029206276,
+          0.17499999701976776
+        ]
+      },
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "axesUnity": {
+        "contactPlane": "Z=0",
+        "outward": "+Z",
+        "longAxis": "+Z"
+      },
+      "triangles": 412,
+      "vertices": 216,
+      "uvLayers": 1,
+      "nonManifoldEdges": 0,
+      "materials": [
+        "M_MapLP_EqIron",
+        "M_MapLP_EqBronze"
+      ],
+      "geometrySha256": "95d2491008d223274c7dcb8c81d21f330fc3196b6b436a5b72768458a732b56a",
+      "fbx": "Art/SocketExpansion202610/Staging/Socket_739.fbx",
+      "export": {
+        "path": "D:\\Program\\Unity\\Project Y\\Art\\SocketExpansion202610\\Staging\\Socket_739.fbx",
+        "bytes": 25532,
+        "object": "Socket_739",
+        "mesh": "Socket_739_Mesh",
+        "geometry_rotation_blender_z_degrees": 180,
+        "bake_space_transform": true,
+        "unity_bakeAxisConversion_required": true
+      },
+      "unityImportChecked": true,
+      "unityPrefab": "Assets/DynamicAsset/SocketExpansion202610/Prefabs/Socket_739.prefab"
+    },
+    {
+      "id": 740,
+      "name": "测距枪托",
+      "label": "RangefinderStock",
+      "slotKind": "stock",
+      "model": "Socket_740",
+      "boundsUnity": {
+        "min": [
+          -0.0,
+          -0.04600000008940697,
+          -0.07249999791383743
+        ],
+        "max": [
+          0.07750000059604645,
+          0.04699999839067459,
+          0.08399999886751175
+        ],
+        "size": [
+          0.07750000059604645,
+          0.09299999848008156,
+          0.15649999678134918
+        ]
+      },
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "axesUnity": {
+        "contactPlane": "X=0",
+        "outward": "+X",
+        "longAxis": "Z"
+      },
+      "triangles": 252,
+      "vertices": 144,
+      "uvLayers": 1,
+      "nonManifoldEdges": 0,
+      "materials": [
+        "M_MapLP_EqIron",
+        "M_MapLP_EqBronze",
+        "M_MapLP_EqCyan",
+        "M_MapLP_EqAmber"
+      ],
+      "geometrySha256": "5954a0c7ed3ab0f852378dbcd5b5294407546dc0412f63e84b9eda14278d4dad",
+      "fbx": "Art/SocketExpansion202610/Staging/Socket_740.fbx",
+      "export": {
+        "path": "D:\\Program\\Unity\\Project Y\\Art\\SocketExpansion202610\\Staging\\Socket_740.fbx",
+        "bytes": 24412,
+        "object": "Socket_740",
+        "mesh": "Socket_740_Mesh",
+        "geometry_rotation_blender_z_degrees": 180,
+        "bake_space_transform": true,
+        "unity_bakeAxisConversion_required": true
+      },
+      "unityImportChecked": true,
+      "unityPrefab": "Assets/DynamicAsset/SocketExpansion202610/Prefabs/Socket_740.prefab"
+    },
+    {
+      "id": 741,
+      "name": "复进枪托",
+      "label": "RecoilSpring",
+      "slotKind": "stock",
+      "model": "Socket_741",
+      "boundsUnity": {
+        "min": [
+          -0.0,
+          -0.04600000008940697,
+          -0.09749999642372131
+        ],
+        "max": [
+          0.0888541042804718,
+          0.04600000008940697,
+          0.09200000017881393
+        ],
+        "size": [
+          0.0888541042804718,
+          0.09200000017881393,
+          0.18949999660253525
+        ]
+      },
+      "origin": [
+        0,
+        0,
+        0
+      ],
+      "rotation": [
+        0,
+        0,
+        0
+      ],
+      "scale": [
+        1,
+        1,
+        1
+      ],
+      "axesUnity": {
+        "contactPlane": "X=0",
+        "outward": "+X",
+        "longAxis": "Z"
+      },
+      "triangles": 620,
+      "vertices": 390,
+      "uvLayers": 1,
+      "nonManifoldEdges": 0,
+      "materials": [
+        "M_MapLP_EqIron",
+        "M_MapLP_EqBronze",
+        "M_MapLP_EqCyan"
+      ],
+      "geometrySha256": "57b6a3f66e9ce23e083465d78d2a64cde12c8846ec9392524f30c1628da05045",
+      "fbx": "Art/SocketExpansion202610/Staging/Socket_741.fbx",
+      "export": {
+        "path": "D:\\Program\\Unity\\Project Y\\Art\\SocketExpansion202610\\Staging\\Socket_741.fbx",
+        "bytes": 37372,
+        "object": "Socket_741",
+        "mesh": "Socket_741_Mesh",
+        "geometry_rotation_blender_z_degrees": 180,
+        "bake_space_transform": true,
+        "unity_bakeAxisConversion_required": true
+      },
+      "unityImportChecked": true,
+      "unityPrefab": "Assets/DynamicAsset/SocketExpansion202610/Prefabs/Socket_741.prefab"
+    }
+  ],
+  "preview": "Art/SocketExpansion202610/Previews/contact-sheet.png",
+  "verification": {
+    "models": 12,
+    "uniqueGeometry": 12,
+    "triangles": 3540,
+    "fbxBytes": 296640,
+    "uvFinite": true,
+    "identityTransforms": true,
+    "closedManifoldComponents": true,
+    "contactPlanesExact": true,
+    "unityImportChecked": false
+  },
+  "unityValidation": "Integration/unity-import.json"
+}

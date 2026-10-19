@@ -1,17 +1,26 @@
 local registry=require('Core.SystemRegistry')(Services)
 registry:Register('Config',require('Config.ConfigSystem'))
+registry:Register('Map',require('Game.Map.MapSystem'),{'Config'})
+registry:Register('MapArea',require('Game.MapArea.MapAreaSystem'),{'Config'})
 registry:Register('Battle',require('Game.Battle.BattleSystem'),{'Config'})
 registry:Register('Equipment',require('Game.Equipment.EquipmentSystem'),{'Config'})
 registry:Register('Growth',require('Game.Progression.GrowthSystem'),{'Battle'})
 registry:Register('PlayerModel',require('Game.PlayerModelSystem'),{'Config'})
 registry:Register('AdventureEvents',require('Game.Adventure.EventSystem'),{'Battle','Growth','Equipment','PlayerModel'})
+registry:Register('Adventure',require('Game.Adventure.AdventureSystem'),{'Map','MapArea','AdventureEvents','Equipment'})
 local messages={}
 local function test(name,run) run();messages[#messages+1]='PASS '..name end
 local ok,err=xpcall(function()
     registry:Start()
     local data=Services.Adventure;data:Reset(217)
     local growth,battle,events=registry:Get('Growth'),registry:Get('Battle'),registry:Get('AdventureEvents')
-    for i=1,3 do local a=data:AddPartyActor(i,i);growth:Initialize(a);a:SetMaxHP(battle.stats:MaximumHP(a));a:Restore() end
+    local adventure=registry:Get('Adventure')
+    for i=1,3 do
+        local a=data:AddPartyActor(i,i);adventure.characterAppearances:Party(a,217);growth:Initialize(a)
+        a:SetMaxHP(battle.stats:MaximumHP(a));a:Restore()
+    end
+    adventure.equipment:Start();adventure.equipment:StartPartyLoadouts()
+    for i=0,data.PartyCount-1 do local a=data:GetPartyAt(i);a:SetMaxHP(battle.stats:MaximumHP(a));a:Restore() end
     local actor=data:GetPartyAt(0)
     test('initial points and passive investments change real combat stats and preserve wounds',function()
         actor:Damage(5);local before=actor.MaxHP
@@ -20,14 +29,25 @@ local ok,err=xpcall(function()
         assert(growth:InvestAttribute(1,1));assert(actor.MaxHP==before+8 and actor.MaxHP-actor.HP==5)
         local points=actor.Growth.TalentPoints;assert(not growth:InvestTalent(1,999));assert(actor.Growth.TalentPoints==points)
     end)
-    test('multiple levels queue persistent offers and one choice consumes exactly one opportunity',function()
+    test('initial professions grant one preparation and configurable learning opportunities',function()
+        for i,id in ipairs({1,2,3}) do
+            local g=data:GetPartyAt(i-1).Growth
+            assert(g.CurrentProfessionId==id and g.ProfessionCount==1 and g:HasSkill(400+id))
+            assert(g.PendingCount==growth.rules.settings.initialLearningOpportunities and g.OfferCount==0)
+        end
+    end)
+    test('active learning is deterministic, profession scoped and keeps cross-profession skills',function()
         growth:AddExperience(actor,180,'练习场')
-        assert(actor.Growth.Level==4 and actor.Growth.PendingCount==2 and actor.Growth.OfferCount>=2)
-        local ids={};for i=0,actor.Growth.OfferCount-1 do ids[i+1]=actor.Growth:GetOfferAt(i) end
-        growth:PrepareOffers(actor);for i,id in ipairs(ids) do assert(actor.Growth:GetOfferAt(i-1)==id) end
-        assert(not growth:Learn(1,999));assert(growth:Learn(1,ids[1]));assert(actor.Growth.PendingCount==1)
-        assert(not growth:Learn(1,ids[1]));assert(actor.Growth:HasSkill(ids[1]))
-        local found=false;for _,id in ipairs(battle:SkillIds(actor)) do if id==ids[1] then found=true end end;assert(found)
+        assert(actor.Growth.Level==4 and actor.Growth.PendingCount==3 and actor.Growth.OfferCount==0)
+        local revision=actor.Growth.Revision;growth:PrepareOffers(actor);assert(actor.Growth.Revision==revision)
+        assert(not growth:Learn(1,999));assert(not growth:Learn(1,103));assert(growth:Learn(1,101));assert(actor.Growth.PendingCount==2)
+        assert(not growth:Learn(1,101));assert(growth:ChangeProfession(1,3))
+        assert(actor.Growth:HasTree(3) and actor.Growth:HasProfession(1) and not actor.Growth:HasSkill(403))
+        assert(growth:Learn(1,103));assert(actor.Growth:HasSkill(101) and actor.Growth.PendingCount==1)
+        assert(growth:Learn(1,403));assert(actor.Growth.PendingCount==0)
+        assert(growth:ChangeProfession(1,2));assert(not actor.Growth:HasSkill(402) and not growth:Learn(1,402))
+        assert(growth:ChangeProfession(1,1));assert(actor.Growth:HasSkill(103))
+        local found=false;for _,id in ipairs(battle:SkillIds(actor)) do if id==103 then found=true end end;assert(found)
     end)
     test('event context gates options; result applies traits, potential and tree once',function()
         assert(events:Begin({id=9,eventId=6,name='灰烬门廊'}));assert(data.EventActorId==1)
@@ -41,7 +61,6 @@ local ok,err=xpcall(function()
         assert(growth:InvestTalent(1,103));assert(growth:InvestTalent(1,104))
     end)
     test('simple discovery auto-resolves to map and never awards twice',function()
-        local adventure=require('Game.Adventure.AdventureSystem')();adventure.data=data;adventure.events=events;adventure.growth=growth;adventure.battle=battle
         adventure.sites={{id=1,eventId=5,name='古老路标'}}
         local coins=Services.Player.Coins;assert(adventure:Visit(1));assert(data.Phase=='map' and Services.Player.Coins==coins+6)
         assert(not adventure:Visit(1));assert(Services.Player.Coins==coins+6)
@@ -52,11 +71,13 @@ local ok,err=xpcall(function()
         local found=false;for _,row in ipairs(growth.chronicle:Rows(2)) do if row.title=='余烬中的援手' then found=true end end;assert(found)
         for _,row in ipairs(growth.chronicle:Rows()) do assert(not row.body:find('{actor}',1,true)) end
     end)
-    test('queued learning opportunities finish one by one after a multi-level reward',function()
+    test('exhausted profession preserves all opportunities until another course is selected',function()
         local a=data:GetPartyAt(2);growth:AddExperience(a,10000,'测试')
-        local safety=0
-        while a.Growth.OfferCount>0 do safety=safety+1;assert(safety<=5);assert(growth:Learn(a.Id,a.Growth:GetOfferAt(0))) end
-        assert(a.Growth.PendingCount==0 and a.Growth.Level==growth.rules.maxLevel)
+        local pending=a.Growth.PendingCount
+        for _,course in ipairs(growth.rules.professions.courses:All()) do if course.professionId==3 then a.Growth:GrantSkill(course.skillId) end end
+        growth:PrepareOffers(a);assert(a.Growth.PendingCount==pending and a.Growth.OfferCount==0)
+        assert(growth:ChangeProfession(a.Id,1));assert(growth:Learn(a.Id,101))
+        assert(a.Growth.PendingCount==pending-1 and a.Growth.Level==growth.rules.maxLevel)
     end)
 end,debug.traceback)
 registry:Shutdown();if not ok then error(err,0) end

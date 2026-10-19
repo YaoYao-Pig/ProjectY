@@ -9,11 +9,15 @@ namespace ProjectY.Data
     {
         public int ItemId { get; }
         public int Count { get; internal set; }
+        internal int PileId;
+        internal string Key => PileId == 0 ? "s" + ItemId : "p" + PileId;
         internal InventoryStackData(int itemId) { ItemId = itemId; }
     }
     [LuaCallCSharp]
     public sealed class EquipmentWearableData
     {
+        internal int AffixId = 1;
+        internal EquipmentConditionData Condition = new EquipmentConditionData();
         public int Id { get; }
         public int ItemId { get; }
         public int OwnerActorId { get; internal set; }
@@ -23,6 +27,8 @@ namespace ProjectY.Data
     [LuaCallCSharp]
     public sealed partial class EquipmentWeaponData
     {
+        internal int AffixId = 1;
+        internal EquipmentConditionData Condition = new EquipmentConditionData();
         private readonly Dictionary<int, int> runes = new Dictionary<int, int>();
         public int Id { get; }
         public int ItemId { get; }
@@ -54,6 +60,7 @@ namespace ProjectY.Data
         private readonly List<EquipmentWearableData> wearables = new List<EquipmentWearableData>();
         public InventoryGridData Grid { get; } = new InventoryGridData();
         private int nextId = 1;
+        private int nextPileId = 1;
         public int Revision { get; private set; }
         public int StackCount => stacks.Count;
         public int WeaponCount => weapons.Count;
@@ -69,9 +76,14 @@ namespace ProjectY.Data
         public EquipmentMagazineData GetMagazine(int id) => magazines.Find(x => x.Id == id) ?? throw new ArgumentException("Unknown magazine: " + id);
         public EquipmentWeaponData Equipped(int actorId) => weapons.Find(x => x.OwnerActorId == actorId && x.Hand=="weapon");
         public EquipmentWeaponData Offhand(int actorId) => weapons.Find(x => x.OwnerActorId == actorId && x.Hand=="offhand");
-        public int CountItem(int itemId) => stacks.Find(x => x.ItemId == itemId)?.Count ?? 0;
+        public int CountItem(int itemId)
+        {
+            int count=0;
+            foreach(var row in stacks) if(row.ItemId==itemId) count=checked(count+row.Count);
+            return count;
+        }
         public int MagazineWeapon(int id) => weapons.Find(x => x.MagazineId == id)?.Id ?? 0;
-        public void Clear() { stacks.Clear(); weapons.Clear(); magazines.Clear(); wearables.Clear(); Grid.Clear(); nextId = 1; Revision++; }
+        public void Clear() { stacks.Clear(); weapons.Clear(); magazines.Clear(); wearables.Clear(); combatOwners.Clear(); Grid.Clear(); nextId = 1; nextPileId = 1; Revision++; }
         private void Reserve(string key,int itemId)
         {
             if(!Grid.Exchange(Array.Empty<string>(),new[]{key},new[]{itemId},true)) throw new InvalidOperationException("Inventory is full.");
@@ -79,7 +91,24 @@ namespace ProjectY.Data
         private bool Exchange(string outgoing,string incoming,int itemId,bool commit=true)
         { return Grid.Exchange(outgoing==null?Array.Empty<string>():new[]{outgoing},incoming==null?Array.Empty<string>():new[]{incoming},incoming==null?Array.Empty<int>():new[]{itemId},commit); }
         public bool Move(string key,int x,int y,bool rotated)
-        { if(!Grid.Move(key,x,y,rotated)) return false; Revision++; return true; }
+        {
+            var place=Grid.Find(key);
+            if(place==null) return false;
+            var source=StackByKey(key);
+            if(source!=null)
+            {
+                ValidateStackPlacement(source);
+                var target=StackAt(source.ItemId,x,y,source.Key);
+                if(target!=null)
+                {
+                    int total=checked(target.Count+source.Count);
+                    Grid.Remove(source.Key);target.Count=total;source.Count=0;RemoveEmptyPile(source);Revision++;return true;
+                }
+            }
+            else if(key[0]=='s' || key[0]=='p') throw new InvalidOperationException("Inventory stack placement has no owner.");
+            if(!Grid.Move(key,x,y,rotated)) return false;
+            Revision++;return true;
+        }
         public bool ReturnToBag(string key,int actorId,int x,int y,bool rotated)
         {
             if(string.IsNullOrEmpty(key) || key.Length<2 || !int.TryParse(key.Substring(1),out int id)) return false;
@@ -101,12 +130,21 @@ namespace ProjectY.Data
         public bool CanGrant(int[] itemIds,int[] counts,string[] kinds)
         {
             if(itemIds.Length!=counts.Length || counts.Length!=kinds.Length) throw new ArgumentException("Grant arrays differ.");
-            var keys=new List<string>();var ids=new List<int>();var stacked=new HashSet<int>();
+            var keys=new List<string>();var ids=new List<int>();var stacked=new HashSet<int>();var totals=new Dictionary<int,int>();
             for(int i=0;i<itemIds.Length;i++)
             {
-                if(counts[i]<1) throw new ArgumentOutOfRangeException(nameof(counts));
+                if(itemIds[i]<1 || counts[i]<1) throw new ArgumentOutOfRangeException(nameof(counts));
                 bool instance=kinds[i]=="weapon" || kinds[i]=="magazine" || kinds[i]=="wearable";
-                if(!instance && (CountItem(itemIds[i])>0 || !stacked.Add(itemIds[i]))) continue;
+                if(!instance)
+                {
+                    if(!IsLooseItemKind(kinds[i])) throw new ArgumentException("Unknown inventory item kind: "+kinds[i]);
+                    int current=totals.TryGetValue(itemIds[i],out int total)?total:CountItem(itemIds[i]);
+                    totals[itemIds[i]]=checked(current+counts[i]);
+                    var live=LiveStack(itemIds[i]);
+                    if(live!=null) {ValidateStackPlacement(live);continue;}
+                    if(!stacked.Add(itemIds[i])) continue;
+                    ValidateEmptyStackKey("s"+itemIds[i]);
+                }
                 for(int j=0;j<(instance?counts[i]:1);j++) {keys.Add("grant:"+i+":"+j);ids.Add(itemIds[i]);}
             }
             return Grid.Exchange(Array.Empty<string>(),keys.ToArray(),ids.ToArray(),false);
@@ -114,9 +152,11 @@ namespace ProjectY.Data
         public void AddStack(int itemId, int count)
         {
             if (itemId < 1 || count < 1) throw new ArgumentOutOfRangeException(nameof(count));
-            var row = stacks.Find(x => x.ItemId == itemId);
+            CheckedItemTotal(itemId,count);
+            var row = LiveStack(itemId) ?? CanonicalStack(itemId);
             int total=checked((row?.Count ?? 0)+count);
-            if(row==null || row.Count==0) Reserve("s"+itemId,itemId);
+            if(row==null || row.Count==0) {ValidateEmptyStackKey("s"+itemId);Reserve("s"+itemId,itemId);}
+            else ValidateStackPlacement(row);
             if (row == null) { row = new InventoryStackData(itemId); stacks.Add(row); }
             row.Count = total; Revision++;
         }
@@ -124,7 +164,7 @@ namespace ProjectY.Data
         {
             if (itemId < 1) throw new ArgumentOutOfRangeException(nameof(itemId));
             Reserve("w"+nextId,itemId);
-            var row = new EquipmentWeaponData(nextId++, itemId); weapons.Add(row); Revision++; return row;
+            var row = CreateWeapon(itemId); weapons.Add(row); Revision++; return row;
         }
         public EquipmentMagazineData AddMagazine(int item, int ammo, int capacity, int rounds)
         {
@@ -136,7 +176,7 @@ namespace ProjectY.Data
         {
             if(itemId<1) throw new ArgumentOutOfRangeException(nameof(itemId));
             Reserve("g"+nextId,itemId);
-            var row=new EquipmentWearableData(nextId++,itemId);wearables.Add(row);Revision++;return row;
+            var row=CreateWearable(itemId);wearables.Add(row);Revision++;return row;
         }
         public bool Wear(int actorId,string slot,int wearableId)
         {
@@ -191,17 +231,25 @@ namespace ProjectY.Data
             if (socketId < 1 || itemId < 0) throw new ArgumentOutOfRangeException(nameof(socketId));
             var weapon = GetWeapon(weaponId); var old = weapon.GetRune(socketId);
             if (old == itemId) return true;
-            var next = itemId == 0 ? null : stacks.Find(x => x.ItemId == itemId);
+            var next = itemId == 0 ? null : LiveStack(itemId);
             if (itemId != 0 && (next == null || next.Count == 0)) throw new InvalidOperationException("Rune is not in inventory.");
-            var previous=old==0?null:stacks.Find(x=>x.ItemId==old);
+            if(next!=null) ValidateStackPlacement(next);
+            var previous=old==0?null:(LiveStack(old) ?? CanonicalStack(old));
+            int returned=0;
+            if(old!=0)
+            {
+                CheckedItemTotal(old,1);returned=checked((previous?.Count ?? 0)+1);
+                if(previous!=null && previous.Count>0) ValidateStackPlacement(previous);
+                else ValidateEmptyStackKey("s"+old);
+            }
             // Taking the last rune frees its rectangle before the old component is returned.
-            if(!Exchange(next!=null && next.Count==1?"s"+itemId:null,old!=0 && (previous==null || previous.Count==0)?"s"+old:null,old)) return false;
+            if(!Exchange(next!=null && next.Count==1?next.Key:null,old!=0 && (previous==null || previous.Count==0)?"s"+old:null,old)) return false;
             if(old!=0)
             {
                 if(previous==null) {previous=new InventoryStackData(old);stacks.Add(previous);}
-                previous.Count++;
+                previous.Count=returned;
             }
-            if (next != null) next.Count--;
+            if (next != null) {next.Count--;RemoveEmptyPile(next);}
             weapon.SetRune(socketId, itemId); Revision++; return true;
         }
         public bool CanAttachMagazine(int weaponId,int magazineId)
@@ -228,11 +276,10 @@ namespace ProjectY.Data
         public int FillMagazine(int magazineId)
         {
             var magazine = GetMagazine(magazineId);
-            var stock = stacks.Find(x => x.ItemId == magazine.AmmoItemId);
-            var count = Math.Min(magazine.Capacity - magazine.Rounds, stock?.Count ?? 0);
+            var count = Math.Min(magazine.Capacity - magazine.Rounds, CountItem(magazine.AmmoItemId));
             if (count < 1) throw new InvalidOperationException("Magazine is full or loose ammunition is unavailable.");
-            magazine.Rounds += count; stock.Count -= count;
-            if(stock.Count==0) Grid.Remove("s"+stock.ItemId);
+            int rounds=checked(magazine.Rounds+count);
+            ConsumeStackRows(magazine.AmmoItemId,count);magazine.Rounds=rounds;
             Revision++; return count;
         }
         public void SpendAmmo(int weaponId, int count)

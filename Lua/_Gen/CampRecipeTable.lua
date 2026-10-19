@@ -1,0 +1,13 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class CampRecipeTableRow
+---@field id number 配方ID
+---@field name string 配方名称
+---@field facilityId number 生产设施
+---@field requiredLevel number 所需设施等级
+---@field minutes number 生产所需游戏分钟
+---@field coins number 金币费用
+---@field itemIds number[] 投入材料物品
+---@field itemCounts number[] 对应投入数量
+---@field outputIds number[] 产物物品
+---@field outputCounts number[] 对应产物数量
+return {["name"]="CampRecipeTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\233\133\141\230\150\185ID",["min"]=1},{["name"]="name",["type"]="string",["description"]="\233\133\141\230\150\185\229\144\141\231\167\176"},{["name"]="facilityId",["type"]="int",["description"]="\231\148\159\228\186\167\232\174\190\230\150\189",["ref"]="CampFacilityTable"},{["name"]="requiredLevel",["type"]="int",["description"]="\230\137\128\233\156\128\232\174\190\230\150\189\231\173\137\231\186\167",["min"]=1},{["name"]="minutes",["type"]="int",["description"]="\231\148\159\228\186\167\230\137\128\233\156\128\230\184\184\230\136\143\229\136\134\233\146\159",["min"]=1},{["name"]="coins",["type"]="int",["description"]="\233\135\145\229\184\129\232\180\185\231\148\168",["min"]=0},{["name"]="itemIds",["type"]="int[]",["description"]="\230\138\149\229\133\165\230\157\144\230\150\153\231\137\169\229\147\129",["ref"]="EquipmentItemTable"},{["name"]="itemCounts",["type"]="int[]",["description"]="\229\175\185\229\186\148\230\138\149\229\133\165\230\149\176\233\135\143"},{["name"]="outputIds",["type"]="int[]",["description"]="\228\186\167\231\137\169\231\137\169\229\147\129",["ref"]="EquipmentItemTable"},{["name"]="outputCounts",["type"]="int[]",["description"]="\229\175\185\229\186\148\228\186\167\231\137\169\230\149\176\233\135\143"}},["fingerprint"]="bb3af272b05a0eecd91a2ca2bdc357d9b1aacf729d510f1088cd8fb0171b8e11"}

@@ -12,6 +12,7 @@ namespace ProjectY.Samples
         private readonly Light sun;
         private readonly Camera camera;
         private readonly Light[] lamps;
+        private readonly Light torch;
         private readonly Dictionary<int, Vector3> anchors = new Dictionary<int, Vector3>();
         private readonly HashSet<int> lit = new HashSet<int>();
         private MapAreaViewData layout;
@@ -66,6 +67,11 @@ namespace ProjectY.Samples
                 lamps[i] = go.AddComponent<Light>(); lamps[i].type = LightType.Point; lamps[i].color = data.LampColor; lamps[i].range = data.LampRange;
                 lamps[i].shadows = LightShadows.None; lamps[i].renderMode = LightRenderMode.ForcePixel; lamps[i].enabled = false;
             }
+            var torchObject = new GameObject("Map_PartyTorch") { hideFlags = HideFlags.DontSave };
+            torchObject.transform.SetParent(owner, false);
+            torch = torchObject.AddComponent<Light>(); torch.type = LightType.Point;
+            torch.color = data.TorchColor; torch.intensity = data.TorchIntensity; torch.range = data.TorchRange;
+            torch.shadows = LightShadows.None; torch.renderMode = LightRenderMode.ForcePixel; torch.enabled = false;
             RenderSettings.ambientMode = AmbientMode.Trilight; RenderSettings.sun = sun;
             sun.shadows = LightShadows.Soft; sun.shadowBias = .03f; sun.shadowNormalBias = .25f;
             presentation = new ProjectY.Rendering.FantasyPresentation(camera, owner);
@@ -86,6 +92,13 @@ namespace ProjectY.Samples
             }
             foreach (var entry in counts) anchors[entry.Key] = anchors[entry.Key] / entry.Value + Vector3.up * Data.LampHeight;
             foreach (var lamp in lamps) lamp.enabled = false;
+            torch.enabled = false;
+        }
+        // The inventory snapshot owns availability; this light follows the rendered leader, including movement interpolation.
+        public void SetTorch(bool enabled, Vector3 leaderPosition)
+        {
+            torch.enabled = enabled && layout != null;
+            if (torch.enabled) torch.transform.position = leaderPosition + Vector3.up * Data.TorchHeight;
         }
         public void Tick(float seconds, MapAreaViewData.State state)
         {
@@ -160,6 +173,7 @@ namespace ProjectY.Samples
         {
             presentation.Dispose();
             foreach (var lamp in lamps) { if (lamp == null) continue; if (Application.isPlaying) UnityEngine.Object.Destroy(lamp.gameObject); else UnityEngine.Object.DestroyImmediate(lamp.gameObject); }
+            if (torch != null) { if (Application.isPlaying) UnityEngine.Object.Destroy(torch.gameObject); else UnityEngine.Object.DestroyImmediate(torch.gameObject); }
             RenderSettings.ambientMode = original.Ambient; RenderSettings.ambientSkyColor = original.Sky; RenderSettings.ambientEquatorColor = original.Equator; RenderSettings.ambientGroundColor = original.Ground;
             RenderSettings.fog = original.Fog; RenderSettings.fogMode = original.FogMode; RenderSettings.fogColor = original.FogColor;
             RenderSettings.fogStartDistance = original.FogStart; RenderSettings.fogEndDistance = original.FogEnd; RenderSettings.fogDensity = original.FogDensity;

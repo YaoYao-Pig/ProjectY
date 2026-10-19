@@ -11,7 +11,7 @@ namespace ProjectY.Samples
         {
             public int Id, Team, HP, MaxHP, AP, Q, R, Guard, CellIndex;
             public string Name, Traits;
-            public bool Moved, MainUsed;
+            public bool Moved, MainUsed,FixedFootprint;
             public PawnAppearanceData Appearance;
             public int ActionSequence;
             public ProjectY.Data.CombatActorData.PresentationAction[] Actions;
@@ -22,8 +22,22 @@ namespace ProjectY.Samples
         public sealed class Site { public int Id, AreaConfigId; public string Name, Reason, Kind; public Vector3 Position; public bool Available, Visited; }
         public sealed class Choice { public int Id; public string Label, Reason; public bool Available; }
         public sealed class Cell { public int Q, R, CellIndex; public bool Blocked; }
-        public sealed class Skill { public int Id, Cost; public string Name, Description, Action; public int[] Targets, TargetCells, ContainerTargets; }
-        public string Phase, Result, Error, EventTitle, EventText, Encounter;
+        public sealed class TargetPreview
+        {
+            public int Id, BlockerCount;
+            public float HitChance, InterceptChance;
+            public bool FriendlyRisk;
+            public string Description;
+        }
+        public sealed class Skill
+        {
+            public int Id, Cost, MaxTargets;
+            public string Name, Description, Action;
+            public bool ManualTargets, Guided;
+            public int[] Targets, TargetCells, ContainerTargets;
+            public TargetPreview[] TargetPreviews;
+        }
+        public string Phase, BattlePhase, Result, Error, EventTitle, EventText, Encounter;
         public int Coins, Round, ActiveId, Radius;
         public Actor[] Party, Units;
         public Site[] Sites;
@@ -32,6 +46,53 @@ namespace ProjectY.Samples
         public Skill[] Skills;
         public string[] Logs;
         public MapAreaViewData.State Area;
+        public sealed class TravelState
+        {
+            public Vector3 Position;
+            public Vector3[] Route;
+            public bool Active,Paused;
+            public int Speed;
+        }
+        public TravelState Travel;
+        public sealed class WorldParty { public int Id;public string Name,Kind,Status,ModelPath;public Vector3 Position; }
+        public sealed class WorldPartyState { public string PlayerModelPath;public WorldParty[] Rows; }
+        public WorldPartyState WorldParties;
+        private static WorldPartyState ReadWorldParties(LuaTable root)
+        {
+            using(var row=root.Get<LuaTable>("worldParties"))
+            {
+                if(row==null)throw new InvalidOperationException("Adventure snapshot lacks world parties.");
+                return new WorldPartyState {PlayerModelPath=row.Get<string>("playerModelPath"),Rows=Rows(row,"rows",party=>new WorldParty {
+                    Id=party.Get<int>("id"),Name=party.Get<string>("name"),Kind=party.Get<string>("kind"),Status=party.Get<string>("status"),ModelPath=party.Get<string>("modelPath"),
+                    Position=new Vector3(party.Get<float>("x"),party.Get<float>("y"),party.Get<float>("z"))})};
+            }
+        }
+        public sealed class TorchState
+        {
+            public bool Available, Enabled;
+            public int Count;
+            public string Label;
+        }
+        public TorchState Torch;
+        private static TorchState ReadTorch(LuaTable root)
+        {
+            using (var row = root.Get<LuaTable>("torch"))
+            {
+                if (row == null) throw new InvalidOperationException("Adventure snapshot lacks torch state.");
+                return new TorchState { Available = row.Get<bool>("available"), Enabled = row.Get<bool>("enabled"),
+                    Count = row.Get<int>("count"), Label = row.Get<string>("label") };
+            }
+        }
+        private static TravelState ReadTravel(LuaTable root)
+        {
+            using(var row=root.Get<LuaTable>("travel"))
+            {
+                if(row==null)throw new InvalidOperationException("Adventure snapshot lacks world travel.");
+                return new TravelState {Position=new Vector3(row.Get<float>("x"),row.Get<float>("y"),row.Get<float>("z")),
+                    Active=row.Get<bool>("active"),Paused=row.Get<bool>("paused"),Speed=row.Get<int>("speed"),
+                    Route=Rows(row,"route",point=>new Vector3(point.Get<float>("x"),point.Get<float>("y"),point.Get<float>("z")))};
+            }
+        }
 
         private static T[] Rows<T>(LuaTable parent, string key, Func<LuaTable, T> read)
         {
@@ -58,7 +119,7 @@ namespace ProjectY.Samples
             Id = row.Get<int>("id"), Team = row.Get<int>("team"), Name = row.Get<string>("name"),
             Traits = row.Get<string>("traits"), HP = row.Get<int>("hp"), MaxHP = row.Get<int>("maxHP"),
             AP = row.Get<int>("ap"), Q = row.Get<int>("q"), R = row.Get<int>("r"), Guard = row.Get<int>("guard"),
-            Moved = row.Get<bool>("moved"), MainUsed = row.Get<bool>("mainUsed"), CellIndex = row.Get<int>("cellIndex") - 1 };
+            FixedFootprint=row.Get<bool>("fixedFootprint"), Moved = row.Get<bool>("moved"), MainUsed = row.Get<bool>("mainUsed"), CellIndex = row.Get<int>("cellIndex") - 1 };
             using (var appearance = row.Get<LuaTable>("appearance")) actor.Appearance = PawnAppearanceData.Read(appearance);
             var source = row.Get<ProjectY.Data.CombatActorData>("presentationActor");
             if (source == null) throw new InvalidOperationException("Actor snapshot lacks its presentation source.");
@@ -71,8 +132,9 @@ namespace ProjectY.Samples
         }
         private static Cell ReadCell(LuaTable row) => new Cell { Q = row.Get<int>("q"), R = row.Get<int>("r"), Blocked = row.Get<bool>("blocked"), CellIndex = row.Get<int>("cellIndex") - 1 };
         public static AdventureViewData Read(LuaTable root) => new AdventureViewData {
+            Travel=ReadTravel(root), WorldParties=ReadWorldParties(root), Torch=ReadTorch(root),
             Area = MapAreaViewData.ReadState(root),
-            Phase = root.Get<string>("phase"), Result = root.Get<string>("result"), Error = root.Get<string>("error"),
+            Phase = root.Get<string>("phase"), BattlePhase = root.Get<string>("battlePhase"), Result = root.Get<string>("result"), Error = root.Get<string>("error"),
             EventTitle = root.Get<string>("eventTitle"), EventText = root.Get<string>("eventText"), Encounter = root.Get<string>("encounter"),
             Coins = root.Get<int>("coins"), Round = root.Get<int>("round"), ActiveId = root.Get<int>("activeId"), Radius = root.Get<int>("radius"),
             Party = Rows(root, "party", ReadActor), Units = Rows(root, "units", ReadActor), Cells = Rows(root, "cells", ReadCell),
@@ -85,7 +147,11 @@ namespace ProjectY.Samples
                 Reason = row.Get<string>("reason"), Available = row.Get<bool>("available") }),
             Skills = Rows(root, "skills", row => new Skill { Id = row.Get<int>("id"), Cost = row.Get<int>("cost"), Name = row.Get<string>("name"),
                 Action = row.Get<string>("action"), Description = row.Get<string>("description"), Targets = Values<int>(row, "targets"),
-                TargetCells = Values<int>(row,"targetCells"),ContainerTargets=Values<int>(row,"containerTargets") })
+                TargetCells = Values<int>(row,"targetCells"),ContainerTargets=Values<int>(row,"containerTargets"),
+                ManualTargets=row.Get<bool>("manualTargets"),MaxTargets=row.Get<int>("maxTargets"),Guided=row.Get<bool>("guided"),
+                TargetPreviews=Rows(row,"targetPreviews",preview=>new TargetPreview {
+                    Id=preview.Get<int>("id"),HitChance=preview.Get<float>("hitChance"),InterceptChance=preview.Get<float>("interceptChance"),
+                    BlockerCount=preview.Get<int>("blockerCount"),FriendlyRisk=preview.Get<bool>("friendlyRisk"),Description=preview.Get<string>("description") }) })
         };
         public Actor Active => Array.Find(Units, actor => actor.Id == ActiveId);
         public void RetainPollingFeedback(AdventureViewData previous)

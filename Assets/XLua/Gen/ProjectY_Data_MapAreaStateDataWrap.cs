@@ -21,9 +21,12 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.MapAreaStateData);
-			Utils.BeginObjectRegister(type, L, translator, 0, 29, 16, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 32, 16, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetLootAt", _m_GetLootAt);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "ConfigureContainer", _m_ConfigureContainer);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "UnlockContainer", _m_UnlockContainer);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "DamageContainer", _m_DamageContainer);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "AddLoot", _m_AddLoot);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "CompleteLootInitialization", _m_CompleteLootInitialization);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Loot", _m_Loot);
@@ -136,6 +139,97 @@ namespace XLua.CSObjectWrap
                     
                         var gen_ret = gen_to_be_invoked.GetLootAt( _index );
                         translator.Push(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_ConfigureContainer(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.MapAreaStateData gen_to_be_invoked = (ProjectY.Data.MapAreaStateData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _id = LuaAPI.xlua_tointeger(L, 2);
+                    int _durability = LuaAPI.xlua_tointeger(L, 3);
+                    bool _requiresBreaking = LuaAPI.lua_toboolean(L, 4);
+                    int _encounter = LuaAPI.xlua_tointeger(L, 5);
+                    int _rotation = LuaAPI.xlua_tointeger(L, 6);
+                    int[] _cells = (int[])translator.GetObject(L, 7, typeof(int[]));
+                    
+                    gen_to_be_invoked.ConfigureContainer( _id, _durability, _requiresBreaking, _encounter, _rotation, _cells );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_UnlockContainer(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.MapAreaStateData gen_to_be_invoked = (ProjectY.Data.MapAreaStateData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _id = LuaAPI.xlua_tointeger(L, 2);
+                    
+                    gen_to_be_invoked.UnlockContainer( _id );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_DamageContainer(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.MapAreaStateData gen_to_be_invoked = (ProjectY.Data.MapAreaStateData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _id = LuaAPI.xlua_tointeger(L, 2);
+                    int _amount = LuaAPI.xlua_tointeger(L, 3);
+                    
+                        var gen_ret = gen_to_be_invoked.DamageContainer( _id, _amount );
+                        LuaAPI.xlua_pushinteger(L, gen_ret);
                     
                     
                     

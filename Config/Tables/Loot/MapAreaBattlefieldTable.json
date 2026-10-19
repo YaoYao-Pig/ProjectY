@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "MapAreaBattlefieldTable",
-  "description": "旧事件使用的小型战场；几何沿用战斗模板半径和障碍概率。",
+  "description": "事件与随机遇敌的小型战场；保留连通障碍与双方出生点，生成可逐级攀登的二至三级台地。",
   "key": "id",
   "fields": [
     {
@@ -15,12 +15,20 @@
       "type": "int",
       "description": "地面材质",
       "ref": "MapAreaSurfaceTable"
-    }
+    },
+    {"name":"heightStep","type":"float","min":0.1,"max":2,"default":1,"description":"相邻台阶最大高差（米）"},
+    {"name":"minElevation","type":"int","min":2,"max":3,"default":2,"description":"最低峰顶级数"},
+    {"name":"maxElevation","type":"int","min":2,"max":3,"default":3,"description":"最高峰顶级数"},
+    {"name":"plateauRadius","type":"int","min":0,"max":1,"default":1,"description":"峰顶平台半径；平台清除障碍以供站立"}
   ],
   "rows": [
     {
       "id": 1,
-      "surfaceId": 1
+      "surfaceId": 1,
+      "heightStep": 1,
+      "minElevation": 2,
+      "maxElevation": 3,
+      "plateauRadius": 1
     }
   ]
 }

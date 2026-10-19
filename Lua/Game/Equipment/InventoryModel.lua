@@ -1,12 +1,13 @@
 -- Inventory commands and read-only presentation. All item/placement state belongs to EquipmentData.
 local Model={};Model.__index=Model
+local Text=require('Game.Equipment.EquipmentPresentation')
 Model.slots={'head','body','leftRing','rightRing','legs','feet','weapon','offhand'}
 Model.slotNames={head='头部',body='身体甲',leftRing='左戒指',rightRing='右戒指',legs='裤子',feet='鞋子',weapon='主手',offhand='副手'}
 function Model.New(system,stats) return setmetatable({system=system,data=system.data,rules=system.rules,stats=stats},Model) end
 function Model:Rows(actorId)
-    local rows={}
+    local rows={};local actor=assert(self.system:Actor(actorId),'Unknown inventory actor')
     local function add(key,instance,itemId,owner,slot,count,extra)
-        local item=self.rules.items:Get(itemId);local place=self.data.Grid:Find(key)
+        local item=self.rules.items:Get(itemId);local place=self.data.Grid:Find(key);local name=item.name;local displayName=Text.Escape(item.name)
         if not place and owner~=actorId then return end
         local compatible=item.kind=='weapon' and 'weapon' or item.kind=='wearable' and self.rules.wearables:Get(itemId).slot or ''
         local mask=0
@@ -14,13 +15,20 @@ function Model:Rows(actorId)
             local kind=(target=='leftRing' or target=='rightRing') and 'ring' or target
             local allowed=false
             if item.kind=='weapon' and (target=='weapon' or target=='offhand') then
-                allowed=self.system:HandAllowed(actorId,self.data:GetWeapon(instance),target) and (target=='weapon' and self.data:CanEquip(actorId,instance) or target=='offhand' and self.data:CanEquipOffhand(actorId,instance))
+                allowed=self.rules:CanEquip(actor,itemId,self.stats) and self.system:HandAllowed(actorId,self.data:GetWeapon(instance),target) and (target=='weapon' and self.data:CanEquip(actorId,instance) or target=='offhand' and self.data:CanEquipOffhand(actorId,instance))
             elseif item.kind=='wearable' and compatible==kind then
-                allowed=(target~='offhand' or self.system:HandAllowed(actorId,nil,'offhand')) and self.data:CanWear(actorId,target,instance)
+                allowed=self.rules:CanEquip(actor,itemId,self.stats) and (target~='offhand' or self.system:HandAllowed(actorId,nil,'offhand')) and self.data:CanWear(actorId,target,instance)
             end
             if allowed then mask=mask+2^(i-1) end
         end
-        rows[#rows+1]={key=key,id=instance,itemId=itemId,kind=item.kind,name=item.name,count=count,
+        if item.kind=='weapon' or item.kind=='wearable' then
+            local instanceData=item.kind=='weapon' and self.data:GetWeapon(instance) or self.data:GetWearable(instance)
+            name=self.rules.affixes:Name(instanceData);displayName=Text.Name(self.rules,instanceData)
+            extra=Text.Details(self.rules,instanceData,actor,self.stats)
+        elseif item.kind=='rune' or item.kind=='module' then
+            extra=Text.Attachment(self.rules,itemId)
+        end
+        rows[#rows+1]={key=key,id=instance,itemId=itemId,kind=item.kind,name=name,displayName=displayName,count=count,
             detail=extra,iconPath=item.iconPath,slot=slot,compatible=compatible,equipMask=mask,width=item.width,height=item.height,
             x=place and place.X or -1,y=place and place.Y or -1,rotated=place~=nil and place.Rotated or false}
     end
@@ -30,16 +38,12 @@ function Model:Rows(actorId)
     for i=0,self.data.MagazineCount-1 do local row=self.data:GetMagazineAt(i)
         add('m'..row.Id,row.Id,row.ItemId,0,'',1,string.format('弹药 %d / %d',row.Rounds,row.Capacity))
     end
+    local torch=self.rules.torch
     for i=0,self.data.StackCount-1 do local row=self.data:GetStackAt(i)
-        if row.Count>0 then add('s'..row.ItemId,row.ItemId,row.ItemId,0,'',row.Count,'同类物品按数量堆叠') end
+        if row.Count>0 then add(CS.ProjectY.Data.InventoryStacks.Key(row),row.ItemId,row.ItemId,0,'',row.Count,row.ItemId==torch.itemId and torch.description or '拖到空格另放一堆，拖到同类物品上合并') end
     end
-    for i=0,self.data.WearableCount-1 do local row=self.data:GetWearableAt(i);local definition=self.rules.wearables:Get(row.ItemId);local bonuses={}
-        for j,name in ipairs(definition.attributeNames) do
-            local label
-            for _,attribute in ipairs(self.rules.attributes:All()) do if attribute.code==name then label=attribute.name end end
-            bonuses[#bonuses+1]=assert(label)..string.format(' %+d',definition.attributeValues[j])
-        end
-        add('g'..row.Id,row.Id,row.ItemId,row.OwnerActorId,row.Slot,1,table.concat(bonuses,'\n'))
+    for i=0,self.data.WearableCount-1 do local row=self.data:GetWearableAt(i)
+        add('g'..row.Id,row.Id,row.ItemId,row.OwnerActorId,row.Slot,1,'')
     end
     return rows
 end
@@ -49,6 +53,7 @@ function Model:Command(command,actorId,key,x,y,rotated)
     local selected
     for _,row in ipairs(self:Rows(actorId)) do if row.key==key then selected=row;break end end
     if not selected then return false,'物品不在当前背包或角色身上' end
+    if command=='repair' then return self.system:Repair(actorId,key) end
     if command=='move' then
         if selected.slot~='' then
             if not self.data:ReturnToBag(key,actorId,x,y,rotated) then return false,'位置被占用或超出背包范围' end
@@ -70,6 +75,7 @@ function Model:Command(command,actorId,key,x,y,rotated)
         end
         local compatible=(slot=='leftRing' or slot=='rightRing') and 'ring' or slot
         if selected.kind~='wearable' or selected.compatible~=compatible then return false,'物品与装备槽不兼容' end
+        local allowed,reason=self.rules:CanEquip(actor,selected.itemId,self.stats);if not allowed then return false,reason end
         if slot=='offhand' then local allowed,reason=self.system:HandAllowed(actorId,nil,'offhand');if not allowed then return false,reason end end
         if not self.data:Wear(actorId,slot,selected.id) then return false,'背包空间不足，无法放回原装备' end
     else error('Unknown inventory command: '..tostring(command)) end
