@@ -4,6 +4,7 @@ function Rules.New(config, data)
     local self = setmetatable({data=data,visualEffectConfig=config},Rules)
     self.motion=require('Game.Equipment.EquipmentMotion').New(config)
     self.affixes=require('Game.Equipment.EquipmentAffixes').New(config)
+    self.ammunition=require('Game.Equipment.Ammunition').New(config)
     self.torch=config:GetTable('TorchTable'):Get(1)
     for key,name in pairs({items='EquipmentItemTable',weapons='EquipmentWeaponTable',runes='EquipmentRuneTable',
         magazines='EquipmentMagazineTable',sockets='EquipmentSocketTable',assets='EquipmentAssetTable',
@@ -243,7 +244,7 @@ function Rules:Skill(actor, id, stats)
     result.appliedRuneIds={}
     result.baseHitChance=base.hitChance
     for _,key in ipairs({'id','name','description','iconId','action','cost','range','minRange','fixedRange','target','proficiency','effectIds',
-        'skillGroup','cooldownTurns','hitChance','shots','ammoPerShot','damageScale','actionTemplate','contexts','affectsContainers','opportunityAttack','trajectory','catalystKind','skillKind','weaponWear','allowTransfer'}) do result[key]=base[key] end
+        'skillGroup','cooldownTurns','hitChance','shots','ammoPerShot','damageScale','actionTemplate','contexts','affectsContainers','opportunityAttack','trajectory','catalystKind','skillKind','weaponWear','allowTransfer','preserveArmor'}) do result[key]=base[key] end
     result.maxTargets=base.maxTargets;result.splashRadius=base.splashRadius
     result.criticalChance=base.criticalChance;result.criticalMultiplier=base.criticalMultiplier
     local damageSkill=false
@@ -325,7 +326,26 @@ function Rules:Skill(actor, id, stats)
     result.range=math.max(result.target=='enemy' and 1 or 0,result.range)
     result.cooldownTurns=math.max(0,result.cooldownTurns)
     if transferRange>0 then result.target='any';result.range=transferRange end
+    self:ApplyArmorProfile(result,weapon)
     return result
+end
+function Rules:ApplyArmorProfile(skill,weapon)
+    skill.armorPenetration=nil;skill.armorDamageMultiplier=nil;skill.fleshDamageMultiplier=nil;skill.ammoItemId=nil
+    if not weapon or skill.target~='enemy' or skill.catalystKind~='none' or (skill.skillGroup~='weapon' and skill.skillGroup~='slash') then return end
+    local definition=self.weapons:Get(weapon.ItemId)
+    skill.armorPenetration=definition.armorPenetration
+    skill.armorDamageMultiplier=definition.armorDamageMultiplier
+    skill.fleshDamageMultiplier=1
+    if skill.ammoPerShot>0 then
+        local loaded=self:Loaded(weapon)
+        if loaded then
+            local ammo=self.ammunition:Get(loaded.AmmoItemId)
+            assert(self.ammunition:Compatible(loaded.ItemId,loaded.AmmoItemId),'Loaded ammunition is incompatible with the magazine')
+            skill.armorPenetration=math.max(0,math.min(100,skill.armorPenetration+ammo.armorPenetrationBonus))
+            skill.armorDamageMultiplier=skill.armorDamageMultiplier*ammo.armorDamageMultiplier
+            skill.fleshDamageMultiplier=ammo.fleshDamageMultiplier;skill.ammoItemId=ammo.id
+        end
+    end
 end
 function Rules:IsReload(skill)
     for _,id in ipairs(skill.effectIds) do if self.effects:Get(id).kind=='reload' then

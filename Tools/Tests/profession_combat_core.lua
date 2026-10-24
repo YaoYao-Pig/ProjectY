@@ -49,7 +49,7 @@ CS={ProjectY={Data={GameBuffState=snapshots,ProfessionCombatState=state,
     EquipmentCombatState={DamageArmor=function(_,id,n)armor[id]=(armor[id]or 0)+n;return n end,RefreshMaximum=function()end,DamageWeapon=function(_,id,n)wear[id]=(wear[id]or 0)+n end},
     EquipmentConditionData={Of=function(item)return item.condition end},EquipmentAffixData={Of=function(item)return item.affixId end},
     AnimalCompanionState={Independent=function(a)return a.independent==true end,Bound=function(a)return a.MountedAnimal end}}}}
-local inventory={WearableCount=0,material={[8013]=10,[8014]=10,[8015]=10,[8016]=10,[83]=10},hands={},shields={}}
+local inventory={WearableCount=0,material={[8013]=10,[8014]=10,[8015]=10,[8016]=10,[82]=10},hands={},shields={}}
 function inventory:Equipped(id)return self.hands[id]end
 function inventory:Offhand()end
 function inventory:Worn(id)return self.shields[id]end
@@ -79,12 +79,14 @@ local function actor(id,team,q,r,talents)
     function a:SetGuard(n)self.Guard=math.max(self.Guard,n)end
     function a:SetMaxHP(n)self.HP=self.HP==0 and 0 or math.max(1,self.HP+n-self.MaxHP);self.MaxHP=n end
     function a:SpendAction(kind,cost)assert(cost<=self.AP and (kind~='main'or not self.MainUsed));self.AP=self.AP-cost;if kind=='main'then self.MainUsed=true end;self.Moved=true end
-    function a:SetCooldown()end
+    a.cooldowns={}
+    function a:GetCooldown(id)return self.cooldowns[id]or 0 end
+    function a:SetCooldown(id,turns)self.cooldowns[id]=turns end
     function a:RecordAction()end
     actors[#actors+1]=a;return a
 end
 local function reset(talents)
-    actors={};events={};wear={};armor={};battle.data.Round=1;battle.data.ActiveId=1;battle.data.Phase='combat';battle.data.traps={};roll=0
+    actors={};events={};wear={};armor={};battle.data.Round=1;battle.data.ActiveId=1;battle.data.Phase='combat';battle.data.Winner='';battle.data.traps={};roll=0
     return actor(1,1,0,0,talents),actor(2,2,1,0)
 end
 local function skill(id)
@@ -179,8 +181,11 @@ local pushed=assert(rules:ForcedLanding(source,target,'push'));assert(pushed.q==
 state.PlaceTrap(battle.data,pushed.q,pushed.r,source.Id,20016);rules:Move(target,pushed)
 assert(target.Moved and target.Effects:Find(12016)and not state.Trap(battle.data,pushed.q,pushed.r))
 local ally=actor(3,1,-1,0);assert(rules:CanSwap(source,ally))
+battle.SkillIds=function()return{}end;battle.CheckWinner=function()return false end
 cast(skill(1909),source,ally);assert(source.Q==-1 and ally.Q==0 and source.Moved and ally.Moved)
-local missing=inventory.material[83];inventory.material[83]=0;assert(not rules:Budget(source,skill(1907)));inventory.material[83]=missing
+battle.SkillIds=nil
+assert(rules.rows:Get(1907).materialId==82,'Tripwire must consume rope, not iron fittings')
+local missing=inventory.material[82];inventory.material[82]=0;assert(not rules:Budget(source,skill(1907)));inventory.material[82]=missing
 print('PASS legal retreat/forced footprint cells, one-shot trap interruption, ally swap and material validation')
 
 source,target=reset();battle.data.Phase='deployment';cast(skill(1821),source,source)
@@ -200,4 +205,18 @@ source,target=reset({1825});effects:Apply(801,source,source);roll=0
 effects:Apply(1352,source,source);assert(source.Guard==0,'Removing a boon must not trigger Grace')
 effects:Apply(803,source,source);effects:Apply(20205,source,source);assert(source.Guard==4,'Actual skill-cleansed debuffs trigger Grace')
 print('PASS Grace distinguishes cleansed debuffs from removed beneficial statuses')
+local Battle=require('Game.Battle.BattleSystem');setmetatable(battle,{__index=Battle})
+battle.beasts=require('Game.Battle.ProfessionBeasts').New(config,battle)
+function battle:CheckWinner()return false end -- This fixture owns no expedition lifecycle.
+source,target=reset();source.Growth.SkillCount=1;source.Growth.GetSkillAt=function()return 1803 end
+source.AP=4;roll=99;local materials=inventory:CountItem(8015)
+assert(battle:TrySkill(1803,target.Id))
+assert(source.AP==2 and source.MainUsed and source:GetCooldown(1803)==2 and inventory:CountItem(8015)==materials-1 and not target.Effects:Find(10003),
+    'A real missed battle command must still spend exactly one main action, AP, material and cooldown')
+source.MainUsed=false;source.AP=4
+assert(not battle:TrySkill(1803,target.Id)and source.AP==4 and inventory:CountItem(8015)==materials-1,'Cooldown prevalidation must be free')
+source:SetCooldown(1803,0);inventory.material[8015]=0
+assert(not battle:TrySkill(1803,target.Id)and source.AP==4 and source:GetCooldown(1803)==0,'Material prevalidation must be free')
+inventory.material[8015]=10
+print('PASS real Battle.TrySkill transaction: misses pay once; cooldown/material rejection is mutation-free')
 for _,path in ipairs({'Lua/Game/Battle/ProfessionCombat.lua','Lua/Game/Battle/BattleSystem.lua','Lua/Game/Battle/GameEffects.lua','Lua/Game/Battle/ProjectileCombat.lua','Lua/Game/Battle/EffectInstructions.lua'})do assert(loadfile(path))end

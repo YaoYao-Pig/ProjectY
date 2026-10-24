@@ -50,7 +50,7 @@ local proc=copy(damage);proc.id=9901;proc.chance=35
 local heal=copy(damage);heal.id=9902;heal.kind='heal';heal.recipient='source'
 local rows={[1212]=damage,[9901]=proc,[9902]=heal}
 function definitions:Get(id)return assert(rows[id])end
-local stats={buffs={Find=function()end},Template=function(_,unit)return {name='Unit '..unit.Id,bodyInjuries=false}end,
+local stats={equipment={data=inventory},buffs={Find=function()end},Template=function(_,unit)return {name='Unit '..unit.Id,bodyInjuries=false}end,
     EffectVariables=function()return {strength=10,proficiency=4,defense=0,guard=0}end}
 local events,values,cursor={}, {},0
 local function roll()cursor=cursor+1;return assert(values[cursor],'Unexpected random draw '..cursor)end

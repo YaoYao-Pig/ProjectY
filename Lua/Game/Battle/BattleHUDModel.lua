@@ -24,7 +24,8 @@ function Model.Build(battle, adventure)
     local units = battle:Units()
     local weapon=battle.stats.equipment:Weapon(actor)
     local magazine=battle.stats.equipment:Loaded(weapon)
-    result.ammo=magazine and (string.format(LuaLanguage.UIBattleHUDAmmo2, (magazine.Rounds), (magazine.Capacity))) or (weapon and battle.stats.equipment.weapons:Get(weapon.ItemId).kind=='gun' and LuaLanguage.UIBattleHUDAmmo or '')
+    result.ammo=magazine and string.format(LuaLanguage.BattleAmmoSummary,battle.stats.equipment.ammunition:Get(magazine.AmmoItemId).name,magazine.Rounds,magazine.Capacity)
+        or (weapon and battle.stats.equipment.weapons:Get(weapon.ItemId).kind=='gun' and LuaLanguage.UIBattleHUDAmmo or '')
     for _, id in ipairs(battle:SkillIds(actor)) do
         local skill = battle:Skill(actor,id)
         if skill.skillKind~='item' and require('Game.Battle.SkillContext')(skill,data.Phase=='deployment' and 'preparation' or 'battle') then

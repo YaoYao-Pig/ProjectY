@@ -1,6 +1,7 @@
 -- 独立开发命令入口；不复制角色、经验、技能或当前队伍状态。
 local Class=require('Core.Class')
 local System=require('Core.LuaSystem')
+local LuaLanguage=require('Language')
 local GM=Class('GMSystem',System)
 local function integer(value) return type(value)=='number' and value%1==0 end
 function GM:OnInit(context)
@@ -8,8 +9,10 @@ function GM:OnInit(context)
     self.data=context.services.Adventure
     self.growth=context.systems:Get('Growth')
     self.skills=context.systems:Get('Config'):GetTable('CombatSkillTable')
-    self.npcs=require('Game.GM.NpcCommands').New(context.systems:Get('Adventure'),context.systems:Get('Narrative'))
+    self.adventure=context.systems:Get('Adventure')
+    self.npcs=require('Game.GM.NpcCommands').New(self.adventure,context.systems:Get('Narrative'))
     self.commands={level_up={run=self.LevelUp,actor=true},grant_skill={run=self.GrantSkill,actor=true},
+        reveal_world={run=self.RevealWorld},
         goto_npc={run=function(gm,id)return gm.npcs:GoTo(id)end}}
 end
 function GM:Slot(slot)
@@ -46,5 +49,10 @@ function GM:GrantSkill(actor,id)
     self.growth:PrepareOffers(actor)
     return true,self.growth.stats:Template(actor).name..' 已获得「'..skill.name..'」'
 end
-function GM:OnShutdown() self.data=nil;self.growth=nil;self.skills=nil;self.commands=nil;self.npcs=nil end
+function GM:RevealWorld()
+    if not self.adventure.fog.map then return false,LuaLanguage.GMWorldMapUnavailable end
+    self.adventure.fog:RevealAll()
+    return true,LuaLanguage.GMRevealWorldSuccess
+end
+function GM:OnShutdown() self.data=nil;self.growth=nil;self.skills=nil;self.commands=nil;self.npcs=nil;self.adventure=nil end
 return GM

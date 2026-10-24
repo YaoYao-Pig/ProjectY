@@ -1,6 +1,6 @@
 # GM 调试系统
 
-关键词：GM、GMSystem、调试命令、槽位、升级、获取技能、F8、NPC 搜索、查找 NPC、传送、定位。
+关键词：GM、GMSystem、调试命令、槽位、升级、获取技能、F8、NPC 搜索、查找 NPC、传送、定位、开全图、全图视野。
 
 ## 文档目录
 
@@ -11,6 +11,7 @@
 - `GMSystem` 是独立 LuaSystem，注册名 `GM`，依赖 Config/Growth/Narrative；负责命令分发、参数校验和队伍槽位解析。权威数据仍归现有 C# 状态，不在 GM 系统内复制角色或 NPC 位置。
 - `Execute('level_up', slot)` 将指定队员提升一级，补齐该级所需经验并调用正常 `GrowthSystem:AddExperience`；属性点、天赋点、研习机会与经历均遵循原配置，不加满血、不重置已有进度。配置等级上限时返回原因，不额外发奖。
 - `Execute('grant_skill', slot, skillId)` 按 CombatSkillTable ID 永久授予技能，绕过职业、前置与属性门槛，不消费主动学习机会；重复技能或无效 ID 返回原因，不改变当前职业。骑乘、触媒与技能阶段要求仍由使用规则检查。
+- `Execute('reveal_world')` / F8 面板“开全图”调用 `Adventure.fog:RevealAll()`，不依赖队员槽位或技能输入；地图未创建时拒绝。大地图持续全亮，远处敌方队伍沿正常快照可见，移动、进出小地图后继续生效；不改变局部地图视野。模式仅在当前世界会话有效，重新开局或读档恢复正常视野，全图已探索记录沿正常远征存档保留，命令不自动保存。重复点击不重复写探索状态。
 - 角色命令的槽位为当前队伍顺序的 1..PartyCount，内部才转换为零基索引；不能把槽位当作角色实例 ID。命令描述区分角色目标与 NPC 目标，`goto_npc` 的第一个参数是稳定 NPC 配置 ID，不经过槽位解析。未知命令、非整数、越界和空队伍均在修改前拒绝。
 - HUD 的 `GM F8` 按钮或 F8 打开独立 `GM` Panel；窗口为 Popup、模态、暂停世界、可缓存，Esc/关闭按钮/F8 关闭。左侧仍提供槽位升级与技能 ID 授予；技能 ID 默认 201（驯服），打开面板不自动执行命令。
 - 右侧“查找 NPC”按名称或 ID 子串过滤 [NpcTable](../Business/Narrative.md)，留空列出全部叙事 NPC；不把通用巡游居民的临时编号当作叙事身份。条目显示所属城镇、当前日程；当前区域中的目标另显示实际 q/r/层，其他城镇的实时占格在进入后读取。已招募显示队伍槽位，未生成出生城镇明确显示不可用，不创建替身。
@@ -25,4 +26,5 @@
 - [NpcCommands.lua](../../Lua/Game/GM/NpcCommands.lua)：搜索、目标解析与传送规划；[原生检查](../../Tools/Tests/gm_npc_core.lua)。
 - [GMCtr.lua](../../Lua/UI/Panel/GMCtr.lua) / [GMPanel.prefab](../../Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab) / [制作脚本](../../Tools/GM/create_gm_ui.cs)。
 - [NPC 控件与绑定制作](../../Tools/GM/extend_npc_ui.cs) / [GM 预览](../../Docs/Previews/GM.png)。
+- [开全图按钮与语言绑定制作](../../Tools/GM/extend_world_ui.cs)：经 Unity MCP 保存到现有 Prefab；[定向检查](../../Tools/Tests/gm_world_fog_integration.lua) 覆盖远处敌人快照、移动后全亮、重复执行、重绑/新世界复位及实际按钮，使用 `run_checks.cs` 执行时将 Lua 检查路径替换为该文件。
 - [养成状态](../../Assets/GameFramework/Runtime/Data/CharacterGrowthData.cs) / [定向检查](../../Tools/Tests/gm_integration.lua) / [检查执行器](../../Tools/GM/run_checks.cs)。

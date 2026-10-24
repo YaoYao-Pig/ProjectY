@@ -8,12 +8,13 @@ function Panel:Bind()
     self:Listen(self.view.Close,function()self:Close()end)
     self:Listen(self.view.LevelUp,function()self:Execute('level_up')end)
     self:Listen(self.view.GrantSkill,function()self:Execute('grant_skill')end)
+    self:Listen(self.view.RevealWorld,function()self:RevealWorld()end)
 end
 function Panel:OnShow(args)
     self.demo=assert(args.demo);self.demo:SetGMOpen(true)
     local font=assert(args.font)
     self.font=font
-    for _,key in ipairs({'Title','Description','SlotLabel','SkillLabel','Target','SkillName','Result','LevelUpText','GrantSkillText','CloseText','SlotText','SkillText','NpcTitle','NpcSearchText','NpcHint','NpcCount'}) do self.view[key].font=font end
+    for _,key in ipairs({'Title','Description','SlotLabel','SkillLabel','Target','SkillName','Result','LevelUpText','GrantSkillText','CloseText','SlotText','SkillText','NpcTitle','NpcSearchText','NpcHint','NpcCount','RevealWorldText','RevealWorldHint'}) do self.view[key].font=font end
     local slot=1
     for i=0,self.gm.data.PartyCount-1 do if self.gm.data:GetPartyAt(i).Id==self.demo.SelectedCharacterId then slot=i+1;break end end
     self.view.Slot.text=tostring(slot);self.view.Result.text='';self:Refresh();self:RefreshNpcs()
@@ -59,6 +60,13 @@ function Panel:GoToNpc(id)
     local errorText=self.demo.LastError
     self.view.Result.text=errorText and errorText~='' and errorText or (string.format(LuaLanguage.UIGMResultText5, (self.gm.npcs.story.rules.npcs:Get(id).name)))
     self:RefreshNpcs()
+end
+function Panel:RevealWorld()
+    local previous=self.demo.BattleHUDRevision
+    self.demo:SendCommand('gm_reveal_world',0,0)
+    if self.demo.BattleHUDRevision==previous then self.view.Result.text=LuaLanguage.UIGMResultText3;return end
+    local errorText=self.demo.LastError
+    self.view.Result.text=errorText and errorText~='' and errorText or LuaLanguage.GMRevealWorldSuccess
 end
 function Panel:OnHide() if self.demo then self.demo:SetGMOpen(false);self.demo=nil end end
 return Panel

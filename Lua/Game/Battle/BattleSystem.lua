@@ -491,6 +491,7 @@ function Battle:TrySkill(skillId, targetId, selectedIds,selectedLanding)
     if skillId==501 then
         local weapon=self.stats.equipment:Weapon(target) or self.stats.equipment:Offhand(target)
         local hitChance=self:DisarmChance(source,target,skill)
+        self.professions:Commit(source,skill)
         source:SpendAction(skill.action,skill.cost);source:SetCooldown(skillId,skill.cooldownTurns);source:RecordAction(skill.actionTemplate,1,target.Q,target.R)
         self.stats.equipment:Consume(source,skill)
         local roll=self.data:RollPercent();local hit=roll<hitChance
@@ -503,12 +504,13 @@ function Battle:TrySkill(skillId, targetId, selectedIds,selectedLanding)
         return true
     elseif skillId==503 then
         local success,name=self.context.systems:Get('Equipment').worldLoot:Recover(self.context.systems:Get('MapArea'),source,self.stats)
-        assert(success,name);source:SpendAction(skill.action,skill.cost)
+        assert(success,name);self.professions:Commit(source,skill);source:SpendAction(skill.action,skill.cost)
         VisualEffects.Skill(self,source,skill,source,1,'cast')
         self:Emit('weapon_recovered',self.stats:Template(source).name..' 拾起并装备 '..name,source.Id);return true
     end
     if skillId==self.stats.animals.rule.tameSkillId then
         local visualSource=VisualEffects.Source(source)
+        self.professions:Commit(source,skill)
         source:SpendAction(skill.action,skill.cost);source:SetCooldown(skillId,skill.cooldownTurns)
         local success,chance,roll,values=self.stats.animals:Tame(source,target,self.stats)
         if self.checks then self.checks(source,target,skill,'驯服',math.floor(chance*100)/100,roll,success,
@@ -563,8 +565,7 @@ function Battle:TrySkill(skillId, targetId, selectedIds,selectedLanding)
     self:ApplyEffectProgram(source,skill,program,shot)
     end
     if selectedLanding and source.HP>0 and self.professions:CanStep(source,selectedLanding,self:Occupied(source.Id)) then
-        OpportunityAttacks.Resolve(self,source)
-        if self.data.Winner=='' and source.HP>0 and self.professions:CanStep(source,selectedLanding,self:Occupied(source.Id))then self.professions:Move(source,selectedLanding)end
+        self.professions:Move(source,selectedLanding)
     end
     self:CheckWinner(); return true
 end
@@ -604,11 +605,13 @@ function Battle:TrySkillAt(skillId,q,r)
     local visualSource=VisualEffects.Source(source)
     if self.construction and self.construction.definitions:Find(skillId) then
         self.construction:Apply(self,skill,assert(self.board:Find(q,r)))
+        self.professions:Commit(source,skill)
         source:SpendAction(skill.action,skill.cost);source:SetCooldown(skillId,skill.cooldownTurns)
         source:RecordAction(skill.actionTemplate,skill.shots,q,r)
         VisualEffects.Skill(self,visualSource,skill,nil,1,'cast',{q=q,r=r})
         return true
     end
+    self.professions:Commit(source,skill)
     source:SpendAction(skill.action,skill.cost);source:SetCooldown(skillId,skill.cooldownTurns)
     source:RelocateWithSkill(q,r,self.stats.animals.bySkill[skillId].movement);source:RecordAction(skill.actionTemplate,skill.shots,q,r)
     self.professions:OnMoved(source)

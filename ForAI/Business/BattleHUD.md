@@ -8,6 +8,8 @@
 
 ## 正文
 
+- 弹药栏显示当前实体弹匣的实际弹种名称及余弹/容量，取自 `EquipmentAmmoTable`，不按弹匣默认弹种推测。弹种选择与装填在探索工坊完成，战斗继续按既有规则换备用弹匣，详见[装备与弹药](Equipment.md)。[ammunition_ui.lua](../../Tools/Tests/ammunition_ui.lua) 定向覆盖实际 HUD 投影、工坊选择和护甲日志，不替代 Play 视觉验收。
+
 - 复用 [UI 框架](../Framework/UI.md)：`BattleHUD` 是 Main 层、非模态、缓存、不可 Back 关闭的 Panel；`BattleAction/BattleParty` 通过 `CreateWidget` 创建并随 Panel 释放；`BattleTurn` 模板由行动顺序列表复用，Cell 的创建、显示、回收、释放回调托管其控制器生命周期。组件均通过 Prefab 的 LuaReference 绑定。
 - 远征流程由 [MainHud](MainHud.md) 持有嵌套的 BattleHUD Prefab 和 `BattleHUDContent` Widget；进入/离开 battle 显示/隐藏内容，复用原技能与回合命令。独立 `BattleHUD` Panel/Bridge 保留给定向检查，不与 MainHud 同时打开。原地战场及全视口相机保留，世界血条改为屏幕 UIFollower。
 - 移动按钮显示本回合剩余距离；选择技能不改变角色移动状态，再点同一技能或按Esc取消选中，可回到尚未耗尽的移动预算。成功施放后或距离耗尽后显示“移动已结束”；取消/失败不扣距离，分段与AP契约见 [战斗](Battle.md)。

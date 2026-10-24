@@ -127,6 +127,7 @@ function Effects:Execute(row,target,amount,sourceId,sourceName,label,source,atta
     if target.HP==0 then
         self:Notify('defeated',self.stats:Template(target).name..' 倒地',sourceId,target,0)
         self:Clear(target,'death')
+        if self.professions then self.professions:OnDefeated(target)end
     end
 end
 function Effects:ApplyPrepared(plan,impact,periodic)

@@ -25,12 +25,13 @@ foreach (var recipe in recipes)
 if (rows.Count == 0) throw new System.Exception("No icons available for review");
 var scene = UnityEditor.SceneManagement.EditorSceneManager.NewPreviewScene();
 var previous = RenderTexture.active;
-var target = new RenderTexture(1200, 960, 24, RenderTextureFormat.ARGB32); target.Create();
+var previewHeight = onlySkills.Length > 0 ? System.Math.Min(960, 104 + 216 * ((rows.Count + 4) / 5)) : 960;
+var target = new RenderTexture(1200, previewHeight, 24, RenderTextureFormat.ARGB32); target.Create();
 var owned = new System.Collections.Generic.List<UnityEngine.Object>();
 var cameraObject = new GameObject("Skill catalog preview camera"); UnityEngine.SceneManagement.SceneManager.MoveGameObjectToScene(cameraObject, scene);
 var camera = cameraObject.AddComponent<Camera>(); camera.enabled = false; camera.scene = scene; camera.orthographic = true;
-camera.orthographicSize = 480; camera.aspect = 1.25f; camera.nearClipPlane = .1f; camera.farClipPlane = 2000;
-camera.transform.position = new Vector3(0, 0, -1000); camera.clearFlags = CameraClearFlags.SolidColor;
+camera.orthographicSize = previewHeight / 2f; camera.aspect = 1200f / previewHeight; camera.nearClipPlane = .1f; camera.farClipPlane = 2000;
+camera.transform.position = new Vector3(0, 480 - previewHeight / 2f, -1000); camera.clearFlags = CameraClearFlags.SolidColor;
 camera.backgroundColor = new Color(.055f, .072f, .065f); camera.targetTexture = target;
 ProjectY.Rendering.UrpCameraRendering.ConfigurePreview(camera);
 var files = new System.Collections.Generic.List<string>();

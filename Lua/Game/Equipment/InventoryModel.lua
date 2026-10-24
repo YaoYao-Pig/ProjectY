@@ -28,6 +28,8 @@ function Model:Rows(actorId)
             extra=Text.Details(self.rules,instanceData,actor,self.stats)
         elseif item.kind=='rune' or item.kind=='module' then
             extra=Text.Attachment(self.rules,itemId)
+        elseif item.kind=='ammo' then
+            extra=Text.Ammunition(self.rules,itemId)
         end
         rows[#rows+1]={key=key,id=instance,itemId=itemId,kind=item.kind,name=name,displayName=displayName,count=count,
             detail=extra,iconPath=item.iconPath,slot=slot,compatible=compatible,equipMask=mask,width=item.width,height=item.height,
@@ -37,7 +39,7 @@ function Model:Rows(actorId)
         add('w'..row.Id,row.Id,row.ItemId,row.OwnerActorId,row.Hand,1,self.rules.weapons:Get(row.ItemId).hands==1 and LuaLanguage.UIInventoryText4 or LuaLanguage.UIInventoryText3)
     end
     for i=0,self.data.MagazineCount-1 do local row=self.data:GetMagazineAt(i)
-        add('m'..row.Id,row.Id,row.ItemId,0,'',1,string.format(LuaLanguage.UIInventoryText2,row.Rounds,row.Capacity))
+        add('m'..row.Id,row.Id,row.ItemId,0,'',1,Text.Magazine(self.rules,row))
     end
     local torch=self.rules.torch
     for i=0,self.data.StackCount-1 do local row=self.data:GetStackAt(i)

@@ -24,6 +24,7 @@ _, entries = table('Loot/LootEntryTable.json')
 _, pools = table('Loot/LootPoolTable.json')
 _, containers = table('Equipment/EquipmentLootTable.json')
 _, shops = table('Shop/ShopEntryTable.json')
+_, trade_prices = table('Travel/WorldTradePriceTable.json')
 skill_doc, skills = table('Adventure/CombatSkillTable.json')
 
 assert next(field for field in item_doc['fields'] if field['name'] == 'name')['type'] == 'text'
@@ -51,6 +52,8 @@ for caliber, ids in expected_calibers.items():
 for row in magazines.values():
     assert row['ammoItemId'] in ammo and items[row['id']]['kind'] == 'magazine'
 assert {key: row['ammoItemId'] for key, row in magazines.items()} == {21: 31, 810: 31, 811: 820, 812: 821}, 'Legacy default ammunition IDs changed'
+priced_items = {row['itemId']: row['price'] for row in trade_prices.values()}
+assert all(priced_items.get(item, 0) > 0 for item in ammo), 'Every ammunition item needs a world-trade price before adventure initialization'
 print('PASS three calibers, three complementary ammo types, reused assets and stable magazine defaults')
 
 stack_kinds = {'material', 'ammo', 'consumable', 'rune', 'module'}

@@ -11,7 +11,7 @@ local function indexMap(map)
     local indices={};for i,cell in ipairs(map:GetCells()) do indices[Hex.Key(cell.q,cell.r)]=i end;return indices
 end
 function Fog:Bind(map)
-    self.map=map;self.indices=indexMap(map);self.lastQ=nil;self.lastR=nil
+    self.map=map;self.indices=indexMap(map);self.lastQ=nil;self.lastR=nil;self.fullVision=false
 end
 function Fog:Cells(indices,q,r)
     local cells={}
@@ -24,9 +24,16 @@ function Fog:Cells(indices,q,r)
     return cells
 end
 function Fog:Update()
+    if self.fullVision then return end
     local travel=self.adventure.travel.data
     if self.lastQ==travel.Q and self.lastR==travel.R then return end
     self.data:Reveal(self:Cells(self.indices,travel.Q,travel.R));self.lastQ=travel.Q;self.lastR=travel.R
+end
+function Fog:RevealAll()
+    assert(self.map,'Bind a world map before revealing it')
+    if self.fullVision then return end
+    local cells={};for i=1,self.data.CellCount do cells[i]=i end
+    self.data:Reveal(cells);self.fullVision=true
 end
 function Fog:Reset(map)
     self:Bind(map);self.data:Reset(#map:GetCells());self:Update()

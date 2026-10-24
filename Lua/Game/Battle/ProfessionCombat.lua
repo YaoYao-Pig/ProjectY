@@ -77,8 +77,9 @@ end
 function Rules:Skill(actor,skill)
     if skill.skillKind=='item' then return skill end
     local row=self.rows:Find(skill.id);local discount=0;skill.professionDiscounts={}
-    if row and (row.requiredEquipment=='melee' or row.requiredEquipment=='bow') and (skill.skillGroup=='weapon' or skill.skillGroup=='slash')then
-        local weapon=self:RequiredWeapon(actor,row.requiredEquipment,skill)
+    if row and (skill.skillGroup=='weapon' or skill.skillGroup=='slash')then
+        local kind=row.requiredEquipment=='shield' and 'weapon' or row.requiredEquipment
+        local weapon=self:RequiredWeapon(actor,kind,skill)
         if weapon then
             local equipment=self.battle.stats.equipment;local definition=equipment.weapons:Get(weapon.ItemId)
             local main=equipment:Weapon(actor)
@@ -94,6 +95,7 @@ function Rules:Skill(actor,skill)
                 skill.damageScale=skill.damageScale*definition.damageMultiplier*requirements.damageScale*equipment:Condition(weapon).Efficiency
                 skill.hitChance=math.max(0,skill.hitChance-requirements.hitLoss)
             end
+            equipment:ApplyArmorProfile(skill,weapon)
         end
     end
     for _,kind in ipairs({'encore_discount','draw_discount','recycle_discount'})do
@@ -125,7 +127,7 @@ function Rules:RequiredWeapon(actor,kind,skill)
         local weapon=equipment[hand](equipment,actor)
         if equipment:Usable(weapon)then
             local definition=equipment.weapons:Get(weapon.ItemId)
-            local eligible=definition.kind==kind or kind=='melee' and (definition.kind=='spear' or definition.kind=='staff')
+            local eligible=kind=='weapon' or definition.kind==kind or kind=='melee' and (definition.kind=='spear' or definition.kind=='staff')
             if eligible and definition.kind=='spear' and equipment.skills:Get(skill.id).range<=1 then
                 local minimum=0
                 for _,id in ipairs(definition.skillIds)do local granted=equipment.skills:Get(id)
@@ -155,6 +157,8 @@ function Rules:BlockedTransfer(target,instance)
     if row.kind=='buff' then
         if self.battle.stats.buffs:Blocked(target,row)then return true end
         for _,tag in ipairs(row.tags)do if self.battle.stats.growth:Immunity(target,tag)then return true end end
+    elseif row.kind=='modifier' and row.attribute=='strength' and instance.Amount<0 then
+        return self.battle.stats.growth:Immunity(target,'weakness')~=nil
     end
     return false
 end
@@ -167,6 +171,7 @@ function Rules:CanUse(source,skill,target)
         local item=self:Tagged(source,row.statusTag)[1]
         if not item then return false,L.ProfessionMissingStatus end
         if self:BlockedTransfer(target,item)then return false,L.ProfessionTransferImmune end
+        assert(target.Effects.Count<256 or target.Effects:Find(item.EffectId),'Target has reached the effect capacity')
     elseif row.mechanic=='swap' then
         if source==target or self.battle.stats.buffs:Skipping(target) or not self:CanSwap(source,target)then return false,L.ProfessionCannotSwap end
     elseif row.mechanic=='interpose' and source==target then return false,L.ProfessionChooseOtherAlly end
@@ -180,15 +185,19 @@ function Rules:PrepareProgram(source,skill,target,program)
 end
 function Rules:BeginTurn(actor)
     if self.battle.data.Phase~='combat' then return end
-    for _,target in ipairs(self.battle:Units())do
-        local oath=self:Status(target,'interpose')
-        if oath and oath.SourceId==actor.Id then self.battle.gameEffects:Remove(target,oath.Id)end
-    end
+    self:ClearInterpose(actor)
     local guard,row=self:Status(actor,'guard_floor');if guard then actor:SetGuard(row.amount)end
     if self:HasPassive(actor,'suffering') and (#self:Tagged(actor,'poison')>0 or #self:Tagged(actor,'bleeding')>0 or #self:Tagged(actor,'weakness')>0)then
         local instance=self:ApplyStatus(actor,actor,'suffering');if instance then state().SetLifetime(instance,1)end
     end
 end
+function Rules:ClearInterpose(actor)
+    for _,target in ipairs(self.battle:Units())do
+        local oath=self:Status(target,'interpose')
+        if oath and oath.SourceId==actor.Id then self.battle.gameEffects:Remove(target,oath.Id)end
+    end
+end
+function Rules:OnDefeated(actor)self:ClearInterpose(actor)end
 function Rules:OnCleansed(source,target,count)
     if source==target and count>0 and self.battle.data.Phase=='combat' and self:HasPassive(source,'grace') and state().Once(source,'grace_round',self.battle.data.Round)then source:SetGuard(4)end
 end
@@ -413,11 +422,13 @@ function Rules:CanUseAt(source,skill,cell)
     local row=self.rows:Find(skill.id)
     if not row or row.mechanic~='trap' and row.mechanic~='salvage' then return nil end
     if Hex.Distance(source.Q,source.R,cell.q,cell.r)>skill.range then return false,L.ProfessionOutsideRange end
+    local visible=(not self.battle.board.allowed or source.Team~=1 or self.battle.board.allowed(cell))
+        and require('Game.Battle.SkillTrajectory').CanReach(self.battle.board,self.battle.board:Find(source.Q,source.R),cell,'sight')
+    if not visible then return false,row.mechanic=='salvage' and L.ProfessionInvalidSalvage or L.ProfessionInvalidTrapCell end
     if row.mechanic=='salvage' then return self:CanSalvage(source,cell)end
     if cell.blocked or (cell.layer or 0)~=0 or self.battle:Occupied()[Hex.Key(cell.q,cell.r)] or state().Trap(self.battle.data,cell.q,cell.r)then return false,L.ProfessionInvalidTrapCell end
-    if self.battle.board.allowed and source.Team==1 and not self.battle.board.allowed(cell)then return false,L.ProfessionInvalidTrapCell end
-    local reachable=require('Game.Battle.SkillTrajectory').CanReach(self.battle.board,self.battle.board:Find(source.Q,source.R),cell,'sight')
-    return reachable,reachable and nil or L.ProfessionInvalidTrapCell
+    if cell.kind and cell.kind~='floor' and cell.kind~='grass' and cell.kind~='dirt'then return false,L.ProfessionInvalidTrapCell end
+    return true
 end
 function Rules:UseAt(source,skill,cell)
     local row=self.rows:Get(skill.id)

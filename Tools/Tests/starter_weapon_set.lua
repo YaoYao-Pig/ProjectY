@@ -27,9 +27,13 @@ for _,spec in ipairs(specs)do
     local sourceItem,sourceWeapon=rules.items:Get(spec.source),rules.weapons:Get(spec.source)
     assert(weapon.level==1 and #weapon.socketIds==0 and #weapon.onHitEffectIds==0)
     assert(#weapon.skillIds==1 and weapon.skillIds[1]==spec.skill,'Starter weapon grants an advanced ability')
-    assert(item.assetId==sourceItem.assetId and item.iconPath==sourceItem.iconPath and item.iconMode=='file')
-    assert(weapon.gripId==sourceWeapon.gripId and item.iconPath~='','Starter model/icon/grip must match')
+    assert(item.assetId~=sourceItem.assetId,'Zero-slot starter must own its prefab asset identity')
+    assert(item.iconPath==sourceItem.iconPath and item.iconMode=='file')
+    assert(weapon.gripId==sourceWeapon.gripId and item.iconPath~='','Starter icon/grip must match the authored source')
     local asset=rules.assets:Get(item.assetId)
+    local sourceAsset=rules.assets:Get(sourceItem.assetId)
+    assert(asset.modelPath==sourceAsset.modelPath,'Starter must reuse its source model geometry')
+    assert(asset.prefabPath~=sourceAsset.prefabPath,'Zero-slot starter cannot share a slotted weapon wrapper')
     fileExists(asset.modelPath);fileExists(asset.prefabPath);fileExists(item.iconPath)
     assert(rules:CanEquip(actor,spec.id,untrained),'An untrained character cannot use a starter weapon')
     for _,module in ipairs(rules.motion.modules:All())do
@@ -55,7 +59,7 @@ for _,spec in ipairs(specs)do
         end
     end
 end
-print('PASS starter weapon eligibility, basic attacks, upgrade progression, existing icons/models and authored grip corrections')
+print('PASS starter eligibility, basic attacks, upgrade progression, reused source geometry/icons/grips and independent zero-slot prefabs')
 
 actor.TemplateId=3;data.main=Gear(3,103,actor.Id)
 local spell=rules.skills:Get(3)

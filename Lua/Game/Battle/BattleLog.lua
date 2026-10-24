@@ -1,5 +1,7 @@
 -- Display-only formatting of settled facts. Never parses prose or rolls gameplay randomness.
+local LuaLanguage=require('Language')
 local Log={}
+local armorSlots=require('Config.LanguageProxy').Map(LuaLanguage,{head='UIEquipmentPresentationHead',body='UIEquipmentPresentationBody'})
 local color={muted='#95A3B6',action='#E9C580',value='#EDF2F7',good='#76D6AE',bad='#F19A96',check='#BDA8E8',ally='#80CFE0',enemy='#F09283',neutral='#E5CD80'}
 local function escape(value)return tostring(value):gsub('<','＜'):gsub('>','＞')end
 local function paint(value,tint,size)return '<color='..tint..'><size='..(size or 14)..'>'..escape(value)..'</size></color>'end
@@ -32,6 +34,13 @@ function Log.Format(kind,message,source,target,amount,details)
         end
         if kind=='damage' and d.defense~=nil then text=text..note(' · 防御 ')..value(d.defense)..note(' / 护卫 ')..value(d.guard or 0)end
         if d.shot and d.shot>1 then text=text..note(' · 第'..d.shot..'发')end
+        if kind=='damage' and d.armor and d.armor.before>0 then
+            local armor=d.armor
+            text=text..note(string.format(LuaLanguage.BattleArmorResult,assert(armorSlots[armor.slot],'Unknown damaged armor slot'),
+                armor.before,armor.after,armor.damage,armor.absorbed,armor.penetrating,armor.overflow))
+            if armor.after==0 then text=text..paint(LuaLanguage.BattleArmorBroken,color.bad,12)
+            elseif armor.preserved then text=text..note(LuaLanguage.BattleArmorPreserved)end
+        end
         return text
     end
     if kind=='effect_added' then

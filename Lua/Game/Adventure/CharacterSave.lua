@@ -56,7 +56,7 @@ function Save.Validate(adventure,prepared)
         if item.OwnerActorId~=0 then assert(definition.slot==((item.Slot=='leftRing' or item.Slot=='rightRing') and 'ring' or item.Slot),'存档防具槽不兼容') end
     end
     for i=0,data.MagazineCount-1 do local item=data:GetMagazineAt(i);local definition=equipment.magazines:Get(item.ItemId)
-        assert(item.Capacity==definition.capacity and item.AmmoItemId==definition.ammoItemId,'存档弹匣规格与配置不符') end
+        assert(item.Capacity==definition.capacity and equipment.ammunition:Compatible(item.ItemId,item.AmmoItemId),'存档弹匣规格与配置不符') end
     for i=0,data.StackCount-1 do local row=data:GetStackAt(i);local item=equipment.items:Get(row.ItemId)
         assert(item.kind=='rune' or item.kind=='module' or item.kind=='ammo' or item.kind=='material' or item.kind=='consumable','存档堆叠类型无效') end
 end

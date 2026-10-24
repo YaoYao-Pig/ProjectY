@@ -634,7 +634,7 @@
     },
     {
       "id": "UIEquipmentWorkbenchMessage",
-      "txt": "点击外侧标签选择组件；拖动旋转，滚轮缩放。维修可在背包选中装备后进行。",
+      "txt": "点击挂点选择组件，点击库存弹匣选择弹种并装填；拖动旋转，滚轮缩放。维修可在背包选中装备后进行。",
       "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:37"
     },
     {
@@ -754,7 +754,7 @@
     },
     {
       "id": "UIEquipmentWorkbenchR8",
-      "txt": "备用 · 点击装填",
+      "txt": "备用",
       "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:122"
     },
     {
@@ -2984,7 +2984,7 @@
     },
     {
       "id": "UIEquipmentWorkbenchPanelSafeAreaDetailsScrollViewportContentFillLabel",
-      "txt": "补满当前弹匣",
+      "txt": "装填所选弹匣",
       "desc": "Assets/DynamicAsset/UI/Prefabs/Equipment/EquipmentWorkbenchPanel.prefab / SafeArea/Details/Scroll/Viewport/Content/Fill/Label"
     },
     {
@@ -4321,6 +4321,131 @@
       "id": "ProfessionDuelLost",
       "txt": "公会单挑结束，保证金支付给对手；伤势保留，双方均未被处决。",
       "desc": "职业扩展文本；保持现有占位参数格式"
+    },
+    {
+      "id": "AmmoIncompatible",
+      "txt": "弹药口径与弹匣不兼容",
+      "desc": "工坊装填：目标弹药不属于弹匣口径"
+    },
+    {
+      "id": "AmmoMagazineFull",
+      "txt": "弹匣已满",
+      "desc": "工坊补充当前弹种时没有空余容量"
+    },
+    {
+      "id": "AmmoUnavailable",
+      "txt": "背包中没有所选弹药",
+      "desc": "工坊装填时没有可消费的弹药"
+    },
+    {
+      "id": "AmmoCountLimit",
+      "txt": "退回余弹将超过物品数量上限",
+      "desc": "换弹种时退回旧弹药超过库存数量上限"
+    },
+    {
+      "id": "AmmoReturnBackpackFull",
+      "txt": "背包放不下退回的余弹，装填已取消",
+      "desc": "换弹种容量检查失败，两种弹药与弹匣均保持不变"
+    },
+    {
+      "id": "AmmoSelectMagazine",
+      "txt": "请选择随身携带的弹匣",
+      "desc": "工坊要求队员或背包中的弹匣"
+    },
+    {
+      "id": "EquipmentAmmoStats",
+      "txt": "肉伤 ×%.2f · 甲伤 ×%.2f · 穿甲 %+g 个百分点",
+      "desc": "弹药说明：肉伤倍率、甲伤倍率、穿甲百分点修正"
+    },
+    {
+      "id": "EquipmentMagazineSummary",
+      "txt": "%s · %d/%d 发",
+      "desc": "弹匣说明：实际弹药名、余弹、容量"
+    },
+    {
+      "id": "EquipmentWeaponArmor",
+      "txt": "基础穿甲 %g%% · 甲伤 ×%.2f",
+      "desc": "武器属性：基础穿甲百分比、甲伤倍率"
+    },
+    {
+      "id": "EquipmentArmorRule",
+      "txt": "穿甲部分绕过护甲，其余先伤甲；破甲后的剩余伤害伤生命。护甲耐久归零后不会掉落。",
+      "desc": "装备详情中的承伤与战利品规则"
+    },
+    {
+      "id": "WorkbenchMagazineName",
+      "txt": "%s #%d",
+      "desc": "工坊弹匣标题：弹匣物品名、实例编号"
+    },
+    {
+      "id": "WorkbenchMagazineSelect",
+      "txt": "%s · %s · 点击选择装填",
+      "desc": "工坊弹匣条目：弹种余弹说明、备用或已装入状态"
+    },
+    {
+      "id": "WorkbenchAmmoTitle",
+      "txt": "装填弹匣 #%d · 选择弹种",
+      "desc": "工坊弹种选项标题：弹匣实例编号"
+    },
+    {
+      "id": "WorkbenchAmmoInstructions",
+      "txt": "选择弹种后点击装填按钮；换种时余弹退回背包。点击挂点返回装配。",
+      "desc": "工坊装填操作说明"
+    },
+    {
+      "id": "WorkbenchAmmoStock",
+      "txt": "%s · 库存 %d 发",
+      "desc": "工坊弹种条目：弹药属性说明、库存数量"
+    },
+    {
+      "id": "WorkbenchAmmoTarget",
+      "txt": "装填目标：%s #%d · 当前 %s",
+      "desc": "工坊装填目标：弹匣名称、实例编号、当前弹种余弹说明"
+    },
+    {
+      "id": "WorkbenchAmmoSelected",
+      "txt": "待装弹药：%s · 库存 %d 发",
+      "desc": "工坊当前选择：弹药名称、库存数量"
+    },
+    {
+      "id": "BattleAmmoSummary",
+      "txt": "%s · %d/%d",
+      "desc": "战斗HUD弹药：实际弹种名称、余弹、容量"
+    },
+    {
+      "id": "BattleArmorResult",
+      "txt": " · %s耐久 %g→%g（甲伤 %g；吸收 %g；穿透 %g；溢出 %g）",
+      "desc": "战斗实际护甲结算：部位名、原耐久、剩余耐久、甲伤、吸收、穿透、溢出"
+    },
+    {
+      "id": "BattleArmorBroken",
+      "txt": " · 护甲已打烂，无法掉落",
+      "desc": "战斗中护甲耐久归零的战利品提示"
+    },
+    {
+      "id": "BattleArmorPreserved",
+      "txt": " · 本次未损伤护甲",
+      "desc": "保甲攻击的实际结算提示"
+    },
+    {
+      "id": "GMWorldMapUnavailable",
+      "txt": "请先创建或载入远征，再开启全图视野。",
+      "desc": "GM 开全图：尚未绑定世界地图时的失败原因"
+    },
+    {
+      "id": "GMRevealWorldSuccess",
+      "txt": "已开启全图视野：大地图持续全亮，远处敌人可见。",
+      "desc": "GM 开全图：命令与面板的成功反馈"
+    },
+    {
+      "id": "UIGMRevealWorldText",
+      "txt": "开全图",
+      "desc": "GM 面板开全图按钮"
+    },
+    {
+      "id": "UIGMRevealWorldHint",
+      "txt": "大地图持续全亮，远处敌人可见。重新开局或读档后需再次开启。",
+      "desc": "GM 面板开全图作用范围与生命周期说明"
     }
   ]
 }

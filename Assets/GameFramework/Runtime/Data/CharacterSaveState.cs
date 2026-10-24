@@ -112,6 +112,7 @@ namespace ProjectY.Data
             SaveCheck.Require(row != null && row.width == Grid.Width && row.height == Grid.Height && row.nextId > 0 && row.nextPileId>0, "背包尺寸或实例编号");
             var next = new EquipmentData(); Grid.CopyDefinitionsTo(next.Grid); next.Grid.Configure(row.width, row.height);
             foreach (var pair in affixPools) next.affixPools.Add(pair.Key, pair.Value);
+            foreach (var pair in ammoCalibers) next.ammoCalibers.Add(pair.Key, pair.Value);
             var ids = new HashSet<int>(); var slots = new HashSet<string>(); var bag = new Dictionary<string, int>();
             Action<int, int> instance = (id, item) => SaveCheck.Require(id > 0 && id < row.nextId && item > 0 && ids.Add(id), "物品实例重复");
             Action<int, string> owner = (id, slot) => SaveCheck.Require(id == 0 ? slot == "" : actors.Contains(id) && slots.Add(id + ":" + slot), "角色所有权或重复装备槽");

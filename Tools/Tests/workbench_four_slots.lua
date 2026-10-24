@@ -34,6 +34,13 @@ local rules={items={Get=function(_,id)return assert(items[id])end},weapons={Get=
     ItemRequirements=function()return {entries={},met=true}end,Requirements=function()return {met=true}end,
     PreviewWeapon=function()return {SkillIds=function()return {}end}end,
     Asset=EquipmentRules.Asset,WeaponVisual=EquipmentRules.WeaponVisual}
+rules.visualEffectConfig={GetTable=function(_,name)
+    if name=='EquipmentItemTable' then return rules.items end
+    if name=='VisualEffectTable' then return {Get=function(_,id)assert(id==0);return {id=0}end}end
+    if name=='VisualEffectItemCategoryTable' then return {Get=function()return {visualEffectId=0}end}end
+    error('Unexpected visual-effect table: '..name)
+end}
+for _,item in pairs(items)do item.visualEffectId=0 end
 local calls={}
 local system={data=data,rules=rules,adventure={PartyCount=1,GetPartyAt=function()return actor end},
     Actor=function()return actor end,HandAllowed=function()return true end,IsCarriedWeapon=function()return true end}

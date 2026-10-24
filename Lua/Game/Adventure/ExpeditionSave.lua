@@ -4,7 +4,7 @@ local function validateGround(rules,bridge,container)
     local function magazine(item)
         if not item then return end
         local definition=rules.magazines:Get(item.ItemId)
-        assert(rules.items:Get(item.ItemId).kind=='magazine' and item.Capacity==definition.capacity and item.AmmoItemId==definition.ammoItemId,'存档容器弹匣规格与配置不符')
+        assert(rules.items:Get(item.ItemId).kind=='magazine' and item.Capacity==definition.capacity and rules.ammunition:Compatible(item.ItemId,item.AmmoItemId),'存档容器弹匣规格与配置不符')
     end
     for i=0,bridge.GroundCount(container)-1 do
         local weapon=bridge.GroundWeapon(container,i)
@@ -105,7 +105,8 @@ function Save.Prepare(adventure,prepared)
             for j=0,group.EnemyCount-1 do local actor=group:GetEnemyAt(j)
                 adventure.config:GetTable('CombatUnitTable'):Get(actor.TemplateId)
                 assert(actor.AnimalSpeciesId~=0 or adventure.battle.stats.animals:IsStaticBody(actor) or actor.CustomizationJson~='', '存档角色缺少外观')
-                assert(layout:Find(actor.Q,actor.R),'存档敌人坐标不在区域内')
+                -- Owned animals travel with the party; this encounter only preserves their original identity.
+                if actor.AnimalOwnerId==0 then assert(layout:Find(actor.Q,actor.R),'存档敌人坐标不在区域内') end
                 for k=0,actor.TraitCount-1 do adventure.config:GetTable('CombatTraitTable'):Get(actor:GetTraitAt(k)) end
                 adventure.battle.gameEffects:ValidateSaved(actor)
             end

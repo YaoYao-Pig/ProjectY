@@ -22,9 +22,9 @@
 - `GrowthSystem` 依赖 Battle；`CombatActorData.Growth` 的 `CharacterGrowthData` 持有等级、经验、属性投入、被动阶数、开放树、潜力、已学技能、学习机会、当前职业与已加入职业。Lua 只解释配置与产生显示投影。成长与特质通过[角色存档](CharacterSave.md)跨运行恢复，经历日志不在保存范围内。
 - `CombatStats` 统一叠加基础、特质、属性投入、被动与装备数值；生命上限变化保留已受伤害，倒地不会因加点复活。主动技能合并到原有装备/战斗技能查询，既有模板和装备技能保留。
 - `GrowthSystem.PrepareActor` 只初始化独立角色的养成/特质，不写经历；[招募](Narrative.md)预检使用它，正式加入队伍后调用 `RecordJoined`。原 `Initialize` 仍组合这两步，供已在队伍中的初始角色使用。
-- 属性点与被动点是独立资源；加点/学习仅允许 map/area 阶段。天赋图只引用 `PassiveSkillTable`，支持多属性加算和 `immunityTags` 声明式免疫；没有主动技能节点、重置返还或通用被动触发器。`GrowthRules:Immunity(actor,tag)` 仅查询已学习且阶数大于0的节点，返回授予免疫的被动定义或nil，不按被动名称判断。
+- 属性点与被动点是独立资源；加点/学习仅允许 map/area 阶段。天赋图只引用 `PassiveSkillTable`，支持属性加算、`immunityTags` 和 `triggerKind` 职业触发被动；纯触发被动显式配置属性图标，不附加占位属性。触发、次数与消费语义见[职业战斗](ProfessionCombat.md)，没有主动技能天赋节点或重置返还。`GrowthRules:Immunity(actor,tag)` 仅查询已学习且阶数大于0的节点。
 - `adjacent_any`：从根节点开始，可沿任一已学习邻居扩展，边视为无向；`prerequisite_all`：边 from→to 是前置，全部前置已学习才可投点。节点支持阶数、费用和角色等级门槛；初始化拒绝跨树边、重复边、不可达节点和有向死锁。
-- `ProfessionTable` 定义战士、游侠、法师、巧匠及开放树；`ProfessionSkillTable` 定义课程、角色等级与全部属性门槛，额外使用图谱前置。探索阶段免费 `ChangeProfession`，已经学习的能力永久保留，装备不受职业限制；当前没有分职业等级。初始职业赠送自身准备技一次，转职不赠技能，其他职业准备技须选学。
+- `ProfessionTable` 定义战士、游侠、法师、巧匠、骑士及新增炼金师、吟游诗人、神官、咒术师、决斗家、驯兽师，共11职业；`ProfessionSkillTable` 定义课程、角色等级与全部属性门槛，额外使用图谱前置。探索阶段免费 `ChangeProfession`，已学能力永久保留，装备不受职业限制；没有分职业等级。初始职业赠送准备技一次，转职不赠技能；新六职各有独立被动树，树的开放不等于获得被动收益。
 - `GrowthSystem.Learn` 从当前职业全部合格课程主动选择，每次消费 `PendingCount` 的一次机会；已掌握/固有技能不能重复学习，道具动作不属于课程。空目录、条件不足、浏览和转职均不消耗机会。旧 `PrepareOffers` 保留为无副作用兼容入口，正常玩法不再生成随机候选；旧随机规则仅留作兼容工具。
 - `GrowthRuleTable` 管初始点数、初始学习次数、属性门槛是否包含装备与日志条数；`GrowthLevelTable` 每行定义经验、点数与是否学习，连续 2..N 行确定上限。当前初始 2 属性点/2 被动点/1 学习机会，每级 2 属性点/1 被动点，偶数级追加学习机会。连续升级全部保留，学习不消耗养成 RNG。
 - `GrowthAttributeTable` 注册属性；`GrowthProfileTable` 配置初始职业/树/特质/潜力；`TalentTree/Node/EdgeTable` 定义被动图；`PassiveSkillTable` 定义每阶收益。法师职业开放树 3，「奥术兵装」节点 301 要求角色等级 2、1 天赋点并加 1 智力，触媒适配器以节点阶数判定专精。新增配置后导表，不手改 `_Gen`。

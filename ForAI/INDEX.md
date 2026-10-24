@@ -9,11 +9,11 @@
 | Lua 风格、需求澄清、过度防御、Unity MCP、最小测试、编译、SubAgent | [开发约束 Skill](../.agents/skills/lua-code-style/SKILL.md) |
 | 设计盘点、玩法差距、未实现、待办、职业划分、自由转职、跨职业学习、主动选学、触媒、专精、战前部署、准备技能、部署道具、直射、抛射、开发顺序 | [玩法设计与实现差距清单](../Docs/GameplayGapAudit.md)（2026-10-11 盘点，2026-10-13 补充职业、触媒与战前部署设计；含未来方案，不替代模块当前契约） |
 | 职业触媒部署验收、联合存档、基础玩法迭代、Play 验收、准备道具 | [基础玩法迭代验收](../Docs/GameplayFoundationIteration.md)（已执行范围与复验入口） |
-| 新职业设计、技能扩展、兼职联动、炼金师、吟游诗人、神官、咒术师、决斗家、驯兽师 | [职业与兼职扩展草案](../Docs/ProfessionExpansionDesign.md)（2026-10-25 提案，六个新职业与 46 项能力设计；尚未实现，非当前玩法契约） |
+| 新职业、技能扩展、兼职联动、炼金师、吟游诗人、神官、咒术师、决斗家、驯兽师 | [职业战斗契约](Business/ProfessionCombat.md)、[职业探索与单挑](Business/ProfessionExploration.md)、[设计依据](../Docs/ProfessionExpansionDesign.md)；动物指令见动物模块 |
 | 营地关系战利品验收、技能图标异常、入口整理、v6验收、待同步资源 | [营地／关系／战利品迭代](../Docs/GameplayExpansionIteration.md)（源码与数据层结果，原生资源及本轮实机验收尚未完成） |
 | LuaConsole、Python、运行时注入、执行片段、调试控制台 | [LuaConsole](Tools/LuaConsole.md) |
 | 3C、相机、镜头、拖拽、平移、旋转、缩放、角色跟随、StrategyCameraRig | [俯视镜头与操控](Business/CameraControls.md) |
-| GM、GMSystem、GM 面板、F8、指定槽位升级、按技能 ID 获取技能、查找 NPC、NPC 搜索、传送定位 | [GM 调试系统](Tools/GM.md) |
+| GM、GMSystem、GM 面板、F8、指定槽位升级、按技能 ID 获取技能、查找 NPC、NPC 搜索、传送定位、开全图、全图视野 | [GM 调试系统](Tools/GM.md) |
 | Blender、MCP、建模、FBX、贴图、材质、模型导入、Prefab | [Blender 资源管线](Tools/Blender.md) |
 | 大地图美术、low-poly、低多边形、模型风格、地块模型、民居模型、中世纪城堡、森林树、雪松、地牢模型、七格平台、MapLowPoly | [地图模型资源](Business/MapArt.md) |
 | 事件插图、剧情配图、冒险者插画、平涂、细线、漫画、去脏纹理、插画风格 | [事件插画风格 Skill](../.agents/skills/event-illustration-style/SKILL.md) |
@@ -38,7 +38,7 @@
 | 巧匠、营造、栅栏、木墙、高台、铲子挖掘、坑洞、壕沟、施工材料、Construction | [巧匠营造与战斗地形](Business/Construction.md) |
 | BuffTable、Buff、Debuff、追踪、manualEnemyTargets、ignoreProjectileBlockers、再生、流血、中毒、燃烧、潮湿、眩晕、互斥、分钟 Buff、GameEffect、GAS、持续效果、周期伤害、治疗、叠层、状态图标、战后保留 | [GameEffect](Business/GameEffects.md) |
 | 战斗特写、慢动作、运镜、SceneFocusMask、物体交互 HUD、E 提示、交互按键、状态飘字、MainHud、常驻 HUD、Overlay、UIFollower、屏幕血条、脚下圆环、世界空间血条、圆环遮挡、HP AP 同心圆、弧形文字、双层血条、伤害数字、飘字、暴击、震屏、BattleFeedbackSystem、相机跟随、地点、地点标签、Tag、远近景、悬停抬升、SceneFocusMask、逆遮罩、队伍、交互提示 | [主 HUD 与跟随 UI](Business/MainHud.md) |
-| 装备、长枪、捕潮长枪、最小射程、品质、词缀、附魔、熟练、传奇、破损、武器分类、等级、属性要求、单手剑、大剑、双手巨剑、扩充槽位、四槽工坊、握柄、柄尾配重、弓臂、弓弦、枪口、枪托、grip、pommel、bowlimb、bowstring、muzzle、stock、槽位引线、法杖、符文、转施、allowTransfer、transferSelf、步枪、突击步枪、狙击枪、霰弹枪、暴击、弹匣、换弹、搜刮、3D 改装、EquipmentWorkbench | [装备与改装 Demo](Business/Equipment.md) |
+| 破甲弹、肉弹、综合弹、穿甲率、弹种、装备、长枪、捕潮长枪、最小射程、品质、词缀、附魔、熟练、传奇、破损、武器分类、等级、属性要求、单手剑、大剑、双手巨剑、扩充槽位、四槽工坊、握柄、柄尾配重、弓臂、弓弦、枪口、枪托、grip、pommel、bowlimb、bowstring、muzzle、stock、槽位引线、法杖、符文、转施、allowTransfer、transferSelf、步枪、突击步枪、狙击枪、霰弹枪、暴击、弹匣、换弹、搜刮、3D 改装、EquipmentWorkbench | [装备与改装 Demo](Business/Equipment.md) |
 | 创伤、伤势、部位血量、总生命、身体健康、四肢、躯干、永久致残、医疗、疾病、感染、抗感染药、创伤打击、急救包、BodyHealth、InjuryRules | [身体健康与创伤](Business/BodyInjuries.md) |
 | 网格背包、Inventory、独立堆、分堆、同类合并、占格、拖拽、旋转、收纳、满包、头部、身体甲、左右戒指、裤子、鞋子、副手、双持、盾牌、角色预览、模型图标、图标导出 | [网格背包与角色装备](Business/Inventory.md) |
 | 商店、商人、商品模板、随机商品、库存、售价、购买、补货、刷新天数 | [NPC 商店](Business/Shop.md) |

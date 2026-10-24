@@ -2,7 +2,7 @@
 local Armor={}
 local function finite(value) return type(value)=='number' and value==value and math.abs(value)<math.huge end
 function Armor.Applies(skill,source,target,attackHit,periodic,damageType)
-    if not skill or skill.armorPenetration==nil then return false end
+    if not skill or (skill.armorPenetration==nil and skill.armorDamageMultiplier==nil and skill.fleshDamageMultiplier==nil) then return false end
     if periodic or not attackHit or source==target or (skill.skillGroup~='weapon' and skill.skillGroup~='slash') then return false end
     return damageType=='physical'
 end

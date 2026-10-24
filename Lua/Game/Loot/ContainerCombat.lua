@@ -189,7 +189,8 @@ function Combat:Battle(battle,skillId,id)
         end end
     end
     self:PrepareShots(plans,actor,skill,battle);Projectiles.PrepareProgram(battle,actor,skill,program)
-    actor:SpendAction(skill.action,skill.cost);battle.stats.equipment:Consume(actor,skill);actor:SetCooldown(skillId,skill.cooldownTurns)
+    battle.professions:Commit(actor,skill)
+    actor:SpendAction(skill.action,skill.cost);battle.professions:ConsumeEquipment(actor,skill);actor:SetCooldown(skillId,skill.cooldownTurns)
     actor:RecordAction(skill.actionTemplate,skill.shots,cell.q,cell.r)
     for shot=1,skill.shots do
         self:Apply(plans,actor,skill,function()return battle.data:RollPercent()end,battle,shot)

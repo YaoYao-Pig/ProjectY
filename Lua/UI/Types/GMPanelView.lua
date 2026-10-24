@@ -28,5 +28,8 @@
 ---@field NpcScroll CS.UnityEngine.UI.ScrollRect
 ---@field NpcCount CS.UnityEngine.UI.Text
 ---@field NpcHint CS.UnityEngine.UI.Text
+---@field RevealWorld CS.UnityEngine.UI.Button
+---@field RevealWorldText CS.UnityEngine.UI.Text
+---@field RevealWorldHint CS.UnityEngine.UI.Text
 local View = {}
 return View

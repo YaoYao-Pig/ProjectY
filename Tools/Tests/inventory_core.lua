@@ -1,5 +1,8 @@
 local EmptyGrowth=assert(loadfile('Tools/Tests/growth_empty.lua'))()
 local Gear=assert(loadfile('Tools/Tests/equipment_read_fixture.lua'))()
+-- Inventory projections use healthy actors; body-health storage is exercised by its own data tests.
+CS.ProjectY.Data.BodyHealth={Revision=function()return 0 end,MaximumHP=function()return 100 end,
+    HP=function()return 100 end,Damage=function()return 0 end,Permanent=function()return false end}
 -- No Editor: real exported configuration and production inventory projections/command guards.
 package.path='Lua/?.lua;'..package.path
 local config=require('Config.ConfigSystem')()
@@ -42,6 +45,10 @@ local emptyInventory={Grid=grid}
 CS.ProjectY.Data.EquipmentAffixData.Define=function(target,id,ids,weights)
     assert(target==emptyInventory);pools[id]={ids=ids,weights=weights}
 end
+local ammoCalibers={}
+CS.ProjectY.Data.EquipmentAmmunition={Define=function(target,id,caliber)
+    assert(target==emptyInventory);ammoCalibers[id]=caliber
+end}
 CS.ProjectY.Data.LootSessionData=function()return {} end
 local equipment=require('Game.Equipment.EquipmentSystem')()
 equipment:OnInit({services={Adventure={Equipment=emptyInventory,PartyCount=0}},systems={Get=function(_,name)
@@ -53,6 +60,7 @@ assert(grid.Count==0,'Cold startup must keep the backpack empty')
 for _,item in ipairs(config:GetTable('EquipmentItemTable'):All()) do
     assert(shapes[item.id][1]==item.width and shapes[item.id][2]==item.height)
     if item.kind=='weapon' or item.kind=='wearable' then assert(pools[item.id]) end
+    if item.kind=='ammo' then assert(ammoCalibers[item.id]==config:GetTable('EquipmentAmmoTable'):Get(item.id).caliberId) end
 end
 print('PASS cold menu startup configures an empty backpack and all item definitions without starting a campaign')
 for _,path in ipairs({'Lua/Game/Equipment/EquipmentSystem.lua','Lua/Game/Equipment/EquipmentRules.lua','Lua/Game/Equipment/InventoryModel.lua',

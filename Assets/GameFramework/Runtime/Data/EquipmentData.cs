@@ -44,7 +44,7 @@ namespace ProjectY.Data
     {
         public int Id { get; }
         public int ItemId { get; }
-        public int AmmoItemId { get; }
+        public int AmmoItemId { get; internal set; }
         public int Capacity { get; }
         public int Rounds { get; internal set; }
         internal EquipmentMagazineData(int id, int item, int ammo, int capacity, int rounds)

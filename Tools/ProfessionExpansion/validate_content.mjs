@@ -27,6 +27,17 @@ for (const [name, t] of validated) {
   }
 }
 const skillIds = new Set(manifest.activeSkillIds);
+// Display startup requires unique skill profiles, including life skills and options.
+const visualOwners = new Map(), visualStructures = new Map();
+const visualFields = ['pattern','count','lifetime','size','radius','height','speed','gravity'];
+for (const skill of sources.get('CombatSkillTable').rows) {
+  const visual = get('VisualEffectTable', skill.visualEffectId);
+  assert(!visualOwners.has(visual.id), `Skills ${visualOwners.get(visual.id)} and ${skill.id} share visualEffectId ${visual.id}`);
+  visualOwners.set(visual.id, skill.id);
+  const signature = JSON.stringify(visualFields.map(field => visual[field]));
+  assert(!visualStructures.has(signature), `Skills ${visualStructures.get(signature)} and ${skill.id} have identical visual geometry and timing`);
+  visualStructures.set(signature, skill.id);
+}
 assert.equal(skillIds.size, 46, '40 authored active/preparation/life skills + 5 options + 1 companion tool');
 assert.equal(manifest.professions.length, 6);
 const attributes = new Set(sources.get('GrowthAttributeTable').rows.map(r => r.code));
@@ -75,4 +86,4 @@ for (const id of manifest.weaponIds) {
 for (const id of Object.values(manifest.materials)) {
   get('EquipmentItemTable',id); get('WorldTradePriceTable',id);
 }
-console.log(JSON.stringify({ok:true,tables:validated.size,checkedReferences,professions:6,authoredAbilities:46,activeRows:skillIds.size,weapons:12,materials:5}));
+console.log(JSON.stringify({ok:true,tables:validated.size,checkedReferences,professions:6,authoredAbilities:46,activeRows:skillIds.size,uniqueSkillVisuals:visualOwners.size,weapons:12,materials:5}));

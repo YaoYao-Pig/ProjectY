@@ -1,0 +1,57 @@
+{
+  "date": "2026-10-25",
+  "generator": "built-in image_gen",
+  "style": "pixel-simple-v1",
+  "scope": "Art/SkillIcons/scope-20261025.json",
+  "publishedSkills": 124,
+  "pendingSkills": 0,
+  "archivedVersions": 124,
+  "visualReview": "Art/SkillIcons/reviewed-all.json",
+  "pipelineTests": {
+    "command": "node --test Tools/SkillIcons/tests/pipeline.test.mjs",
+    "passed": 8,
+    "failed": 0
+  },
+  "exportedRuntimeConfig": {
+    "command": "python -B Tools/Tests/run_lua.py Tools/Tests/skill_icons.lua",
+    "passed": true,
+    "icons": 124
+  },
+  "unity": {
+    "check": "Tools/Tests/skill_icons_catalog_editmode.cs",
+    "passed": true,
+    "icons": 124,
+    "standaloneHudBindings": true,
+    "mainHudNestedBindings": true,
+    "singleSprite": true,
+    "filterMode": "Point",
+    "mipmaps": false,
+    "compression": "Uncompressed",
+    "maxTextureSize": 256,
+    "playModeEntered": false,
+    "projectCompilationRequests": 0,
+    "activeScenePreserved": true,
+    "previewSizes": [
+      96,
+      64,
+      32
+    ],
+    "backgrounds": [
+      "dark",
+      "light"
+    ],
+    "previews": [
+      "Docs/Previews/SkillIcons/catalog-1.png",
+      "Docs/Previews/SkillIcons/catalog-2.png",
+      "Docs/Previews/SkillIcons/catalog-3.png",
+      "Docs/Previews/SkillIcons/catalog-4.png",
+      "Docs/Previews/SkillIcons/catalog-5.png",
+      "Docs/Previews/SkillIcons/catalog-6.png",
+      "Docs/Previews/SkillIcons/catalog-7.png"
+    ]
+  },
+  "notRun": [
+    "Play Mode",
+    "Full project test suite"
+  ]
+}

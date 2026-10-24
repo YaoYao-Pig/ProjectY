@@ -247,7 +247,7 @@ namespace ProjectY.Data
     public sealed partial class CombatActorData
     {
         internal void ReconnectMount(CombatActorData animal)
-        {SaveCheck.Require(BoundAnimal!=null && BoundAnimal.TemplateId==animal.TemplateId && BoundAnimal.HP==animal.HP && BoundAnimal.MaxHP==animal.MaxHP,"坐骑与探索动物不一致");boundAnimal=animal;animal.IndependentAnimal=animalCompanion;}
+        {SaveCheck.Require(BoundAnimal!=null && BoundAnimal.TemplateId==animal.TemplateId && BoundAnimal.HP==animal.HP && BoundAnimal.MaxHP==animal.MaxHP,"坐骑与探索动物不一致");animal.CompanionLayer=BoundAnimal.CompanionLayer;boundAnimal=animal;animal.IndependentAnimal=animalCompanion;}
         internal EnemySave CaptureEnemy()=>new EnemySave{id=Id,template=TemplateId,hp=HP,maxHP=MaxHP,team=Team,q=Q,r=R,
             species=AnimalSpeciesId,owner=AnimalOwnerId,bond=AnimalBond,retry=TameRetryTurns,random=animalRandom,drop=DropResolved,
             appearance=CustomizationJson,traits=traits.ToArray(),effects=Effects.Capture(),injuries=CaptureBody()};

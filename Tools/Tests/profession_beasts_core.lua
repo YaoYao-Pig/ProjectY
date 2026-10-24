@@ -13,11 +13,12 @@ local bridge={}
 function bridge.Bound(owner)return owner.bound end
 function bridge.Partner(owner)return owner.independentMode and owner.bound or nil end
 function bridge.Independent(actor)return actor.independent==true end
-function bridge.SetMode(owner,independent,q,r)
+function bridge.Layer(actor)return actor.layer or 0 end
+function bridge.SetMode(owner,independent,q,r,layer)
     local pet=assert(owner.bound);assert(owner.HP>0 and pet.HP>0 and pet.AnimalOwnerId==owner.Id)
-    owner.independentMode=independent;owner.MountedAnimal=not independent and pet or nil;pet.independent=independent;pet.Q=q;pet.R=r;pet.Team=owner.Team
+    owner.independentMode=independent;owner.MountedAnimal=not independent and pet or nil;pet.independent=independent;pet.Q=q;pet.R=r;pet.Team=owner.Team;pet.layer=layer or 0
 end
-function bridge.Follow(pet,q,r)assert(pet.independent and pet.HP>0);pet.Q=q;pet.R=r end
+function bridge.Follow(pet,q,r,layer)assert(pet.independent and pet.HP>0);pet.Q=q;pet.R=r;pet.layer=layer or 0 end
 function bridge.ReleaseDefeated(owner)if bridge.Partner(owner)and owner.bound.HP<=0 then owner.bound=nil;owner.independentMode=false end end
 function bridge.Touch(area)area.touches=(area.touches or 0)+1 end
 function bridge.ResetBattle(owner)owner.moveRound=-1;owner.attackRound=-1;owner.rescueRound=-1;owner.scent=0 end
@@ -51,20 +52,20 @@ local function fixture()
     local owner,pet,enemy,ally=actor(1,1,0,0),actor(31,1,1,0),actor(90,2,2,0),actor(2,1,1,1)
     pet.AnimalOwnerId=owner.Id;pet.AnimalSpeciesId=1;pet.independent=true
     owner.bound=pet;owner.independentMode=true;bridge.ResetBattle(owner)
-    local board={cells={},byKey={},externalOccupied={}}
+    local board={cells={},byKey={},byLayer={},externalOccupied={}}
     for r=-3,3 do for q=-3,4 do local cell={index=#board.cells+1,q=q,r=r,layer=0,blocked=false};board.cells[#board.cells+1]=cell;board.byKey[Hex.Key(q,r)]=cell end end
-    function board:Find(q,r)return self.byKey[Hex.Key(q,r)]end
-    function board:Neighbors(cell)local result={};for d=1,6 do local q,r=Hex.Neighbor(cell.q,cell.r,d);local nextCell=self:Find(q,r);if nextCell and not nextCell.blocked then result[#result+1]=nextCell end end;return result end
+    function board:Find(q,r,layer)if layer and layer~=0 then return self.byLayer[Hex.Key(q,r)..':'..layer]end;return self.byKey[Hex.Key(q,r)]end
+    function board:Neighbors(cell)local result={};for d=1,6 do local q,r=Hex.Neighbor(cell.q,cell.r,d);local nextCell=self:Find(q,r,cell.layer);if nextCell and not nextCell.blocked then result[#result+1]=nextCell end end;return result end
     local data={Phase='combat',Round=1,Winner='',ActiveId=owner.Id,units={owner,pet,enemy,ally},UnitCount=4}
     function data:GetUnitAt(i)return self.units[i+1]end
     local animals={bySkill={[205]={speciesId=1}},byUnit={[31]=true},species={Get=function()return {rideable=true}end}}
-    function animals:Cells(unit,grid,q,r)
-        q=q or unit.Q;r=r or unit.R;local first=grid:Find(q,r);if not first then return end
-        local result={first};if unit.large then local extra=grid:Find(q+1,r);if not extra then return end;result[#result+1]=extra end;return result
+    function animals:Cells(unit,grid,q,r,layer)
+        q=q or unit.Q;r=r or unit.R;local first=grid:Find(q,r,layer);if not first then return end
+        local result={first};if unit.large then local extra=grid:Find(q+1,r,layer);if not extra then return end;result[#result+1]=extra end;return result
     end
     function animals:Occupy(unit,grid,occupied)for _,cell in ipairs(assert(self:Cells(unit,grid)))do occupied[Hex.Key(cell.q,cell.r)]=unit end end
-    function animals:CanPlace(unit,grid,q,r,occupied,allowed)
-        local cells=self:Cells(unit,grid,q,r);if not cells then return false end
+    function animals:CanPlace(unit,grid,q,r,occupied,allowed,layer)
+        local cells=self:Cells(unit,grid,q,r,layer);if not cells then return false end
         for _,cell in ipairs(cells)do if cell.blocked or occupied and occupied[Hex.Key(cell.q,cell.r)]or allowed and not allowed(cell)then return false end end
         return true
     end
@@ -101,7 +102,7 @@ local function fixture()
     end
     battle.beasts=Beasts.New(config,battle)
     local active={MemberCount=2,EncounterCount=0,NpcCount=0,GetMemberIdAt=function(_,i)return i==0 and owner.Id or ally.Id end,
-        GetMemberCellAt=function(_,i)local unit=i==0 and owner or ally;return board:Find(unit.Q,unit.R).index end,Stop=function(self)self.stopped=true end}
+        GetMemberCellAt=function(_,i)local unit=i==0 and owner or ally;return board:Find(unit.Q,unit.R,unit.layer).index end,Stop=function(self)self.stopped=true end}
     local adventure={config=config,data={Phase='area',PartyCount=2,GetPartyAt=function(_,i)return i==0 and owner or ally end,Areas={Active=active}},areas={ActiveLayout=function()return board end}}
     return {battle=battle,owner=owner,pet=pet,enemy=enemy,ally=ally,board=board,adventure=adventure}
 end
@@ -179,4 +180,21 @@ test('deployment excludes duel, dead companions and occupied footprints',functio
     assert(Hex.Distance(e.owner.Q,e.owner.R,e.pet.Q,e.pet.R)>0)
     assert(not(e.pet.Q==e.enemy.Q and e.pet.R==e.enemy.R)and not(e.pet.Q==e.ally.Q and e.pet.R==e.ally.R))
 end)
-print('PASS eight profession companion scenarios using production Lua dispatch and isolated actor-state adapters; native C# persistence remains a separate check')
+test('upper-floor companions occupy only their actual layer and follow or switch on the owner floor',function()
+    local e=fixture();local originals={table.unpack(e.board.cells)}
+    for _,ground in ipairs(originals)do local upper=copy(ground);upper.index=#e.board.cells+1;upper.layer=1
+        e.board.cells[#e.board.cells+1]=upper;e.board.byLayer[Hex.Key(upper.q,upper.r)..':1']=upper
+    end
+    e.owner.layer=1;e.pet.layer=1;e.ally.Q=0;e.ally.R=0
+    local excluded={[e.owner.Id]=true,[e.ally.Id]=true}
+    local ground=e.battle.beasts:AreaOccupied(e.adventure,excluded,0)
+    local upper=e.battle.beasts:AreaOccupied(e.adventure,excluded,1)
+    assert(not ground[Hex.Key(e.pet.Q,e.pet.R)]and upper[Hex.Key(e.pet.Q,e.pet.R)],'Upper pet must not occupy the lower cell')
+    local handlers={};e.battle.beasts:RegisterLife({Register=function(_,key,value)handlers[key]=value end},e.adventure)
+    local handler=assert(handlers[config:GetTable('CombatSkillTable'):Get(1867).skillGroup])
+    assert(handler.Use(e.owner));assert(e.owner.MountedAnimal==e.pet and bridge.Layer(e.pet)==1,'Mounting stays upstairs despite a lower-floor actor below')
+    assert(handler.Use(e.owner));assert(bridge.Partner(e.owner)==e.pet and bridge.Layer(e.pet)==1)
+    e.pet.layer=0;e.pet.Q=3;e.pet.R=2;e.battle.beasts:FollowArea(e.adventure)
+    assert(bridge.Layer(e.pet)==1 and Hex.Distance(e.owner.Q,e.owner.R,e.pet.Q,e.pet.R)==1,'Following returns to a legal cell on the owner floor')
+end)
+print('PASS nine profession companion scenarios using production Lua dispatch and isolated actor-state adapters; native C# persistence remains a separate check')

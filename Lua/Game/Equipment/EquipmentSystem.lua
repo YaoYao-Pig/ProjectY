@@ -7,6 +7,7 @@ function Equipment:OnInit(context)
     self.config=context.systems:Get('Config');self.rules=require('Game.Equipment.EquipmentRules').New(self.config,self.data)
     self.synergies=require('Game.Equipment.SkillSynergies').New(self.config)
     self.rules.affixes:Define(self.data)
+    self.rules.ammunition:Define(self.data)
     self.initialLoadouts=require('Game.Equipment.InitialLoadout').New(self.config,self.rules,function() return self.context.systems:Get('Battle').stats end)
     self.recipe=self.config:GetTable('EquipmentDemoTable'):Get(1)
     -- The start menu can load a save before Start grants a new campaign's items.
@@ -122,7 +123,7 @@ function Equipment:HandAllowed(actorId,weapon,slot)
     end
     return true
 end
-function Equipment:Command(command,actorId,weaponId,socketId,value)
+function Equipment:Command(command,actorId,weaponId,socketId,value,ammoItemId)
     if self.adventure.Phase~='map' and self.adventure.Phase~='area' then return false,'只能在探索期间整理装备' end
     local actor=self:Actor(actorId)
     if not actor then return false,'无效队员' end
@@ -170,12 +171,15 @@ function Equipment:Command(command,actorId,weaponId,socketId,value)
         end
         return true
     elseif command=='fill' then
+        local Language=require('Language')
         local mag
         for i=0,self.data.MagazineCount-1 do local row=self.data:GetMagazineAt(i);if row.Id==value then mag=row end end
-        if not mag then return false,'请选择弹匣' end
-        if mag.Rounds==mag.Capacity then return false,'弹匣已满' end
-        if self.data:CountItem(mag.AmmoItemId)==0 then return false,'没有可装填的散装弹药' end
-        self.data:FillMagazine(value);return true
+        if not mag or not self:IsCarriedMagazine(mag) then return false,Language.AmmoSelectMagazine end
+        ammoItemId=ammoItemId or mag.AmmoItemId
+        if not self.rules.ammunition:Compatible(mag.ItemId,ammoItemId) then return false,Language.AmmoIncompatible end
+        local reason=CS.ProjectY.Data.EquipmentAmmunition.Refill(self.data,value,ammoItemId)
+        if reason~='' then return false,assert(Language[reason],'Unknown ammunition failure key: '..reason) end
+        return true
     end
     error('Unknown equipment command: '..tostring(command))
 end

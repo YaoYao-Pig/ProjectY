@@ -17,7 +17,8 @@ function Workbench:Bind()
     end
     for i=1,SocketCapacity do local index=i
         self:Listen(self.view['Socket'..i],function()
-            self.socketId=self.rules.weapons:Get(self.system.data:GetWeapon(self.weaponId).ItemId).socketIds[index];self:Refresh()
+            self.socketId=self.rules.weapons:Get(self.system.data:GetWeapon(self.weaponId).ItemId).socketIds[index]
+            self.fillMagazineId=nil;self.fillAmmoItemId=nil;self.message=LuaLanguage.UIEquipmentWorkbenchMessage;self:Refresh()
         end)
     end
     self:Listen(self.view.Close,function() self.context.systems:Get('UI'):Close(self.panelName) end)
@@ -25,8 +26,7 @@ function Workbench:Bind()
     self:Listen(self.view.Unequip,function() self:Command('unequip',0) end)
     self:Listen(self.view.Remove,function() self:Command('attach',0) end)
     self:Listen(self.view.Fill,function()
-        local loaded=self.rules:Loaded(self.system.data:GetWeapon(self.weaponId))
-        if loaded then self:Command('fill',loaded.Id) end
+        if self.fillMagazineId then self:Command('fill',self.fillMagazineId,self.fillAmmoItemId) end
     end)
 end
 function Workbench:OnShow(args)
@@ -35,10 +35,11 @@ function Workbench:OnShow(args)
     self.weaponId=0
     for i=0,self.system.data.WeaponCount-1 do local weapon=self.system.data:GetWeaponAt(i);if self.system:IsCarriedWeapon(weapon) then self.weaponId=weapon.Id;break end end
     assert(self.weaponId~=0,'Open the workbench only while carrying a weapon')
-    self.socketId=0;self.categoryIndex=0;self.message=LuaLanguage.UIEquipmentWorkbenchMessage
+    self.socketId=0;self.categoryIndex=0;self.fillMagazineId=nil;self.fillAmmoItemId=nil;self.message=LuaLanguage.UIEquipmentWorkbenchMessage
     self.view.Workbench:Prepare();self:Refresh()
 end
 function Workbench:ChangeCategory(step)
+    self.fillMagazineId=nil;self.fillAmmoItemId=nil
     local categories=self.rules.categories:All()
     self.categoryIndex=(self.categoryIndex+step)%(#categories+1)
     local categoryId=self.categoryIndex>0 and categories[self.categoryIndex].id or 0
@@ -49,10 +50,19 @@ function Workbench:ChangeCategory(step)
     end
     self:Refresh()
 end
-function Workbench:Command(command,value)
-    local ok,reason=self.system:Command(command,self.actorId,self.weaponId,self.socketId,value)
+function Workbench:SelectMagazine(magazine)
+    self.fillMagazineId=magazine.Id;self.fillAmmoItemId=magazine.AmmoItemId
+    self.message=LuaLanguage.WorkbenchAmmoInstructions;self:Refresh()
+end
+function Workbench:Command(command,value,ammoItemId)
+    local ok,reason=self.system:Command(command,self.actorId,self.weaponId,self.socketId,value,ammoItemId)
     self.message=ok and LuaLanguage.UIEquipmentWorkbenchMessage2 or reason
-    if ok then self.demo:SendCommand('snapshot') end
+    if ok then
+        self.demo:SendCommand('snapshot')
+        if command=='attach' and value~=0 and self.rules.sockets:Get(self.socketId).kind=='magazine' then
+            self:SelectMagazine(self.system.data:GetMagazine(value));return
+        end
+    end
     self:Refresh()
 end
 function Workbench:Rows(pool,parent,rows,callback)
@@ -120,8 +130,9 @@ function Workbench:Refresh()
     end)
     for i=0,data.MagazineCount-1 do local mag=data:GetMagazineAt(i)
         if self.system:IsCarriedMagazine(mag) then
-            local r=row(mag.ItemId,string.format(LuaLanguage.UIEquipmentWorkbenchR5, (mag.Id)),string.format(LuaLanguage.UIEquipmentWorkbenchR9, (mag.Rounds), (mag.Capacity), (data:MagazineWeapon(mag.Id)==0 and LuaLanguage.UIEquipmentWorkbenchR8 or LuaLanguage.UIEquipmentWorkbenchR7)))
-            r.magazineId=mag.Id;inventory[#inventory+1]=r
+            local r=row(mag.ItemId,string.format(LuaLanguage.WorkbenchMagazineName,self.rules.items:Get(mag.ItemId).name,mag.Id),
+                string.format(LuaLanguage.WorkbenchMagazineSelect,Text.MagazineSummary(self.rules,mag),data:MagazineWeapon(mag.Id)==0 and LuaLanguage.UIEquipmentWorkbenchR8 or LuaLanguage.UIEquipmentWorkbenchR7))
+            r.magazineId=mag.Id;r.selected=mag.Id==self.fillMagazineId;inventory[#inventory+1]=r
         end
     end
     local stacked={}
@@ -130,14 +141,16 @@ function Workbench:Refresh()
             stacked[stack.ItemId]=true
             local count=data:CountItem(stack.ItemId)
             if count>0 then
-                local r=row(stack.ItemId,self.rules.items:Get(stack.ItemId).name..' ×'..count,LuaLanguage.UIEquipmentWorkbenchR6)
+                local stackItem=self.rules.items:Get(stack.ItemId)
+                local detail=stackItem.kind=='ammo' and Text.AmmoStats(self.rules,stack.ItemId) or LuaLanguage.UIEquipmentWorkbenchR6
+                local r=row(stack.ItemId,stackItem.name..' ×'..count,detail)
                 r.enabled=false;inventory[#inventory+1]=r
             end
         end
     end
     self:Rows(self.inventory,self.view.InventorySlots,inventory,function(r)
-        if r.weaponId then self.weaponId=r.weaponId;self.socketId=0;self:Refresh()
-        elseif r.magazineId then self:Command('fill',r.magazineId) end
+        if r.weaponId then self.weaponId=r.weaponId;self.socketId=0;self.fillMagazineId=nil;self.fillAmmoItemId=nil;self.message=LuaLanguage.UIEquipmentWorkbenchMessage;self:Refresh()
+        elseif r.magazineId then self:SelectMagazine(self.system.data:GetMagazine(r.magazineId)) end
     end)
     local requirement=self.rules:ItemRequirements(actor,weapon.ItemId,self.stats,true);local requirements={}
     for _,entry in ipairs(requirement.entries) do requirements[#requirements+1]=Text.Paint(entry.name..' '..entry.current..' / '..entry.required,entry.current>=entry.required and Text.colors.positive or Text.colors.negative,12) end
@@ -148,12 +161,21 @@ function Workbench:Refresh()
         self.view.Requirements.text=self.view.Requirements.text..'\n'..Text.Paint(string.format(LuaLanguage.UIEquipmentWorkbenchRequirementsText,math.floor((1-effective.damageScale)*100+.5),effective.hitLoss),Text.colors.negative,11)
     end
     local slot=self.socketId~=0 and self.rules.sockets:Get(self.socketId) or nil;local options={};local current=0
+    local filling=self.fillMagazineId and data:GetMagazine(self.fillMagazineId) or nil
     self.view.SocketTitle.text=slot and string.format(LuaLanguage.UIEquipmentWorkbenchSocketTitleText2, (slot.name)) or LuaLanguage.UIEquipmentWorkbenchSocketTitleText
-    if slot and slot.kind=='magazine' then
+    if filling then
+        self.view.SocketTitle.text=string.format(LuaLanguage.WorkbenchAmmoTitle,filling.Id)
+        for _,ammo in ipairs(self.rules.ammunition:ForMagazine(filling.ItemId)) do
+            local r=row(ammo.id,ammo.name,string.format(LuaLanguage.WorkbenchAmmoStock,Text.AmmoStats(self.rules,ammo.id),data:CountItem(ammo.id)))
+            r.ammoItemId=ammo.id;r.selected=ammo.id==self.fillAmmoItemId;options[#options+1]=r
+        end
+    elseif slot and slot.kind=='magazine' then
         current=weapon.MagazineId
         for i=0,data.MagazineCount-1 do local mag=data:GetMagazineAt(i)
             if self.system:IsCarriedMagazine(mag) and mag.ItemId==definition.magazineItemId and (data:MagazineWeapon(mag.Id)==0 or mag.Id==current) then
-                local r=row(mag.ItemId,string.format(LuaLanguage.UIEquipmentWorkbenchR5, (mag.Id)),string.format(LuaLanguage.UIEquipmentWorkbenchR4, (mag.Rounds), (mag.Capacity)));r.value=mag.Id;r.selected=current==mag.Id;options[#options+1]=r
+                local r=row(mag.ItemId,string.format(LuaLanguage.WorkbenchMagazineName,self.rules.items:Get(mag.ItemId).name,mag.Id),
+                    Text.MagazineSummary(self.rules,mag)..'\n'..(mag.Id==current and LuaLanguage.UIEquipmentWorkbenchR2 or LuaLanguage.UIEquipmentWorkbenchR3))
+                r.value=mag.Id;r.selected=current==mag.Id;options[#options+1]=r
             end
         end
     elseif slot then
@@ -163,16 +185,25 @@ function Workbench:Refresh()
             r.enabled=data:CountItem(rune.id)>0 or current==rune.id;r.value=rune.id;r.selected=current==rune.id;options[#options+1]=r
         end end
     end
-    self:Rows(self.options,self.view.OptionSlots,options,function(r) self:Command('attach',r.value) end)
-    self.view.Remove.interactable=current~=0
+    self:Rows(self.options,self.view.OptionSlots,options,function(r)
+        if r.ammoItemId then self.fillAmmoItemId=r.ammoItemId;self.message=LuaLanguage.WorkbenchAmmoInstructions;self:Refresh()
+        else self:Command('attach',r.value) end
+    end)
+    self.view.Remove.interactable=not filling and current~=0
     local loaded=self.rules:Loaded(weapon)
-    self.view.Fill.gameObject:SetActive(definition.kind=='gun')
-    self.view.Fill.interactable=loaded~=nil and loaded.Rounds<loaded.Capacity and data:CountItem(loaded.AmmoItemId)>0
+    self.view.Fill.gameObject:SetActive(filling~=nil or definition.kind=='gun')
+    self.view.Fill.interactable=filling~=nil and (filling.Rounds<filling.Capacity or filling.AmmoItemId~=self.fillAmmoItemId)
+        and data:CountItem(self.fillAmmoItemId)>0
     local lines={Text.Attributes(self.rules,weapon),Text.Affix(self.rules,weapon),Text.Condition(self.rules,weapon)}
     if slot and slot.kind~='magazine' and current~=0 then
         lines[#lines+1]=Text.Heading(LuaLanguage.UIEquipmentWorkbenchLinesLines14)..'\n'..Text.Paint(self.rules.runes:Get(current).description,Text.colors.label,13)
     end
-    if loaded then lines[#lines+1]=Text.Value(LuaLanguage.UIEquipmentWorkbenchLinesLines13,loaded.Rounds..' / '..loaded.Capacity)..'\n'..Text.Note(string.format(LuaLanguage.UIEquipmentWorkbenchLinesLines12, (data:CountItem(loaded.AmmoItemId)))) end
+    if loaded then lines[#lines+1]=Text.Heading(LuaLanguage.UIEquipmentWorkbenchLinesLines13)..'\n'..Text.Magazine(self.rules,loaded) end
+    if filling then
+        lines[#lines+1]=Text.Note(string.format(LuaLanguage.WorkbenchAmmoTarget,self.rules.items:Get(filling.ItemId).name,filling.Id,Text.MagazineSummary(self.rules,filling)))..'\n'..
+            Text.Paint(string.format(LuaLanguage.WorkbenchAmmoSelected,self.rules.ammunition:Get(self.fillAmmoItemId).name,data:CountItem(self.fillAmmoItemId)),Text.colors.accent,12)..'\n'..
+            Text.Ammunition(self.rules,self.fillAmmoItemId)
+    end
     lines[#lines+1]=Text.Heading(LuaLanguage.UIEquipmentWorkbenchLinesLines1)
     -- Preview a selected inventory weapon without mutating actor ownership.
     local previewRules=self.rules:PreviewWeapon(weapon)

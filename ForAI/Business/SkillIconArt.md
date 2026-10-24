@@ -49,6 +49,7 @@
 ## 关键入口
 
 - [首批认可预览](../../Docs/Previews/SkillIcons/first-five.png)：继续生成和返修的视觉基准。
+- [完整图标总览](../../Docs/Previews/SkillIcons/README.md)：已发布 Sprite 的分页小尺寸预览。
 - [风格表](../../Config/Tables/Adventure/SkillIconStyleTable.json)：提示词与导入尺寸的唯一配置源；当前使用 `pixel-simple-v1`。
 - [配方表](../../Config/Tables/Adventure/SkillIconRecipeTable.json)：逐技能主体设计；主体限制与本规范一致。
 - [技能图标生成管线](../Tools/SkillIcons.md)：任务准备、发布、版本、导表和 Unity 同步。

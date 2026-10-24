@@ -6,9 +6,10 @@
 
 ## 正文
 
-- `VisualEffectTable` 是统一表现库，当前 104 条：72 个 CombatSkill 技能独立配置、32 个物品表现。16 种构图覆盖斩弧、刺线、爆裂、方环、盾片、螺旋、光束、抛物弧、落雨、十字、柱、散射、符文、碎片、牵引、足迹；颜色以外也配置数量、大小、半径、高度、寿命、速度和重力。尺寸使用米、寿命使用秒，emission 为颜色亮度乘数。
+- `VisualEffectTable` 是统一表现库，当前156条：124个 CombatSkill 技能独立配置、32个物品表现。16种构图覆盖斩弧、刺线、爆裂、方环、盾片、螺旋、光束、抛物弧、落雨、十字、柱、散射、符文、碎片、牵引、足迹；颜色以外也配置数量、大小、半径、高度、寿命、速度和重力。尺寸使用米、寿命使用秒，emission 为颜色亮度乘数。
 - 新技能必须填写 `CombatSkillTable.visualEffectId`，引用有效且未被另一技能复用的 profile。现有普通、养成、准备、物品、生活和地格技能使用相同入口。`VisualEffectCatalog.Snapshot` 在远征显示宿主启动时校验完整映射，不根据名称推断特效。
-- 新物品的 `EquipmentItemTable.visualEffectId` 默认为 0，按 `kind` 从 `VisualEffectItemCategoryTable` 自动继承；非 0 是明确覆盖。当前 weapon/rune/magazine/ammo/module/wearable/material/consumable 八类完整覆盖，116 件物品中 88 件细分覆盖、28 件继承。新增 kind 要同时增加其类别配置；错误覆盖或缺类别明确失败。
+- 新物品的 `EquipmentItemTable.visualEffectId` 默认为0，按 `kind` 从 `VisualEffectItemCategoryTable` 自动继承；非0是明确覆盖。当前 weapon/rune/magazine/ammo/module/wearable/material/consumable 八类完整覆盖，163件物品全部可解析。新增 kind 要同时增加其类别配置；错误覆盖或缺类别明确失败。
+- 职业内容生成器 `skill_visual` 要求先在效果库编写与技能同ID的独立 profile，基础、准备、生活及选项技能均使用自己的ID；重生成保留已有特效参数，禁止继承模板的引用。内容检查同时校验全部技能的 profile ID唯一，以及构图、数量、大小、尺寸和运动时序的组合差异，不能只换颜色通过检查。
 - 配置源可通过已有配置编辑器维护；改动后运行 `node Tools/ConfigEditor/exporter.mjs`，不要手改 `_Gen`。改表后需重新启动读取配置的会话；预览窗“重读配置”只读取原 JSON，不给运行中的 ConfigSystem 热更新。
 - `VisualEffects` 把已结算事实存入 Battle 所有的短期队列：最多 128 条，复制技能/物品身份、施放与实际落点、楼层、逐发序号和 hit/miss/cast/pickup/use。它不保存玩法状态、不掷玩法随机数、不进存档。`DemoBridge` 在命令/轮询快照中一次性 Drain；新战斗、重开、读档及关闭清理历史，战斗结束保留致死末发。
 - `ProjectileCombat` 按真实目标/发次记录，每个技能的多个 Effect 不重复爆炸；实际拦截落在遮挡格，未命中落点偏离目标。准备、状态、治疗、消耗品、缴械、拾回、驯服、施工和位移有明确入口；位移前保存起点。拾取只在 `MapLoot.Take` 成功转移后记录，满包失败不播；探索角色坐标取 AreaState 成员地格。
@@ -22,6 +23,7 @@
 ## 关键入口
 
 - [效果库](../../Config/Tables/Adventure/VisualEffectTable.json) / [物品默认类别](../../Config/Tables/Equipment/VisualEffectItemCategoryTable.json)。
+- [职业内容生成器](../../Tools/ProfessionExpansion/build_content.py) / [内容检查](../../Tools/ProfessionExpansion/validate_content.mjs)：新增技能独立特效的生成约束与源表检查；特效参数仍以效果库源表为准。
 - [VisualEffectCatalog.lua](../../Lua/Game/Presentation/VisualEffectCatalog.lua)：配置校验和 C# 数据投影；数组桥接使用真实数组，避免只读代理的 raw length 为 0。
 - [VisualEffects.lua](../../Lua/Game/Presentation/VisualEffects.lua)：有界事件队列；[AdventureVisualEffects.cs](../../Assets/GameFramework/Samples/Adventure/AdventureVisualEffects.cs)：场景坐标、命中时机和清理。
 - [BlockParticleEffects.cs](../../Assets/GameFramework/Samples/Adventure/BlockParticleEffects.cs) / [BlockParticle.shader](../../Assets/GameFramework/Resources/Rendering/BlockParticle.shader)：图案、预算、随动与 HDR。

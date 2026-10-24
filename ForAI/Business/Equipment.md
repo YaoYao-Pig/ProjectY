@@ -1,6 +1,6 @@
 # 装备与改装 Demo
 
-关键词：装备、品质、单词缀、附魔、缴械、耐久、维修、武器种类、扩充槽位、四槽工坊、握柄、柄尾配重、弓臂、弓弦、枪口、枪托、触媒、符文、转施、3D 改装、EquipmentWorkbench。
+关键词：装备、品质、单词缀、附魔、缴械、耐久、维修、穿甲率、破甲弹、肉弹、综合弹、弹种、武器种类、扩充槽位、四槽工坊、握柄、柄尾配重、弓臂、弓弦、枪口、枪托、触媒、符文、转施、3D 改装、EquipmentWorkbench。
 
 ## 文档目录
 
@@ -15,7 +15,8 @@
 
 - 正式远征使用 `AdventureDemoTable.equipmentRecipeId → EquipmentDemoTable`；配方 1 保留完整装备演示，配方 2 仅提供三人基础主武器、少量治疗/营造物资、撬棍和火炬。`equipUnitIds/equipWeaponIds` 指定自动穿戴，`StarterWeapons.Plan` 先检查成员唯一性、属性、背包原实例和角色默认装备冲突，随后只移动实例，不重复发放；读档不执行此初始化。最小检查为 `Tools/Tests/campaign_equipment.lua`。
 - 开始菜单新增[12种身世](CharacterSave.md)，新配方101–112使用基础武器101练习铁剑、102简易猎弓、103学徒木杖、104短柄手斧。均一级、无属性门槛/改装槽/附加命中效果，前3把倍率0.8、手斧0.7；只提供基本攻击，木杖保留奥术触媒与已学法术资格，剑斧可作副手。原有武器及配方1–5保持，品质沿用统一随机规则。
-- 基础武器复用既有模型、握点、姿态微调及图标；共享assetId时只调用 `EquipmentAssets.SyncItemIcons()` 保存目录，不能对这些新物品执行会重建共享Prefab的 `SyncSelected`。新增物品同时进入 `WorldTradePriceTable`（101/102/103/104售价18/20/18/16），满足所有背包物品可交易的契约。验证入口：[starter_weapon_set.lua](../../Tools/Tests/starter_weapon_set.lua)；真实12套库存与读档防重发见[开场检查](../../Tools/Tests/campaign_origin_integration.lua)。
+- 基础武器101–104复用原 FBX、握点、姿态微调及图标，但使用各自 assetId 101–104 与 `EquipmentDemo/Weapons/Starter_101.prefab` 至 `Starter_104.prefab` 的独立零挂点包装。源武器40/616/1/70继续使用原有带挂点 Prefab；不同挂点契约不能共用同一个包装资源。基础武器现在可以独立定向同步，不能把 assetId 改回原武器以共享包装。交易售价仍为18/20/18/16。规则检查：[starter_weapon_set.lua](../../Tools/Tests/starter_weapon_set.lua)；12套开场库存见[开场检查](../../Tools/Tests/campaign_origin_integration.lua)。
+- [武器挂点原生检查](../../Tools/Tests/weapon_socket_contract_editmode.cs)使用[真实 Lua 装备快照](../../Tools/Tests/weapon_socket_contract_integration.lua)，逐项对比 `socketIds` 与 Prefab 挂点ID／Anchor，并实际调用 `WeaponModelView.Apply` 验证空槽、装满、清空与重复应用。当前57武器／136个兼容配件组合、374次Apply及16次基础／原武器往返切换通过；独立 PreviewScene，不进入Play或操作玩家存档。
 
 - 宝箱生成、概率池、敌人死亡掉落、满包保留及事件战后拾取见[宝箱与敌人掉落](Loot.md)；EquipmentSystem 的搜刮门面委托 `Game.Loot.MapLoot`，装备与背包仍负责实际授予事务。
 
@@ -61,7 +62,10 @@
 - 枪械扩展800–805包含两把突击步枪、两把狙击枪、两把霰弹枪；各具magazine/rail/muzzle/stock四槽。新弹匣810/811/812分别24/5/6发，兼容性仍按weapon.magazineItemId精确匹配；狙击/霰弹使用独立散装弹药820/821，巡猎及铁雨共用31。配件813–819新增瞄具、枪口、枪托，`criticalBonus`与命中加成一样按百分点叠加并限制0–100。六枪、十件弹匣/模块和两种弹药均进商店；新弹药和弹匣每次补货必有，14件进入既有加权池5。旧库存等正常补货，不迁移背包。资源、数值、获得方式和验证记录见[枪械扩展](../../Art/FirearmsExpansion202610/README.md)。
 - 精准射击7为95%基础命中、35%暴击、1发/2AP；连续射击8为三发各70%命中、10%暴击、80%伤害，3发/3AP。原步枪604–606也补齐连续射击。暴击的逐发结算与非伤害排除见[战斗](Battle.md)；技能Tips显示配件修正后的概率与倍率。狙击1701/1702射程2–9；霰弹1703/1704复用主目标1格内最多3人的合法散射，不按目标数重复耗弹。`gunClass=rifle`仍是姿态家族，新分类9/10只用于狙击/霰弹筛选。
 
-- 枪械装备增加点射、连射、换弹技能，并替换模板基础攻击；防御和职业治疗保留。卸下或损坏主武器后获得弱近身徒手攻击，不恢复模板射击/斩击；外观只显示实际穿戴物，详见[背包](Inventory.md)。基础步枪精准单发、连续三发，巡猎弹匣12发；其他枪型的容量及技能由配置决定。战斗换弹 2 AP，自动取兼容且余弹更多的备用弹匣，旧弹匣回背包并保留子弹。共享背包只供己方换弹；敌人捡到枪械后可使用枪上原有余弹，不能读取或消耗玩家备用弹匣。探索中点击工坊库存列表的弹匣可用散装弹药补弹；选择弹匣挂点装入/卸下不耗 AP。
+- 枪械装备增加点射、连射、换弹技能，并替换模板基础攻击；防御和职业治疗保留。卸下或损坏主武器后获得弱近身徒手攻击，不恢复模板射击/斩击；外观只显示实际穿戴物，详见[背包](Inventory.md)。基础步枪精准单发、连续三发，巡猎弹匣12发；其他枪型的容量及技能由配置决定。战斗换弹 2 AP，自动取兼容且余弹更多的备用弹匣，旧弹匣回背包并保留实际弹种和余弹。共享背包只供己方换弹；敌人捡到枪械后可使用枪上原有余弹，不能读取或消耗玩家备用弹匣。探索中在工坊点击库存弹匣，选择弹种后用装填按钮提交；选择弹匣挂点仍可装入/卸下，不耗 AP。
+- [EquipmentAmmoTable](../../Config/Tables/Equipment/EquipmentAmmoTable.json) 按物品 ID 配置口径、弹种、甲伤/肉伤倍率和穿甲百分点修正。三口径各有综合、破甲、肉弹，不设额外等级；旧 31/820/821 为综合弹，新 822–827 为破甲/肉弹，均可搜刮及[合成](Camp.md)。弹匣 `ammoItemId` 是默认弹种，实体 `AmmoItemId` 是当前弹种；同口径可互换，单匣不混弹。换种原子退回全部余弹并装入新弹，可利用本次耗尽弹堆释放的空间，失败不改数量/弹匣。存档沿用原 `ammo` 字段，背包与地面弹匣均按口径验证，旧档无需迁移。
+- 所有武器配置 `armorPenetration`（0–100%）及 `armorDamageMultiplier`；最终攻击使用实际主/副手和所装弹种解析，职业重选武器会覆盖重算而非再次叠乘。对物理武器命中，现有防御、护卫、暴击及职业修正先得到基础伤害；穿甲份额绕甲，其余按甲伤倍率扣耐久，甲耗尽后的未吸收部分溢出生命，最后生命份额乘肉伤倍率。护甲与创伤复用同一次身体部位抽取，头命中只扣头甲，其余只扣身甲，不同时磨损全套；该路径不再额外扣旧固定磨损。法术、持续伤害、自伤和容器沿原规则；坐骑及无身体健康的目标不使用骑手的头身甲。
+- `CombatSkillTable.preserveArmor`（精确刺击502）和职业保甲上下文使该次攻击绕过护甲并保留耐久。护甲降至零后不可作为尸体战利品，非零护甲仍保留原实例与损伤，详见[掉落](Loot.md)。既有耐久效能、永久上限损失、属性加成衰减与维修规则仍适用；耐久导致生命上限加成变化时仍保留原伤势。战斗日志只显示已结算的甲伤、穿透、吸收和溢出，不额外判定。
 - CombatSkillTable 配置技能组、命中、CD、自身回合、连击数、每发耗弹、伤害倍率和动作模板。命中用 BattleData 独立种子随机流；旧技能默认 100% 不掷骰。CD 在使用时写入，在自身回合开始减一，基础 CD 1 表示下个自身回合可用，精准后的 CD 2 需多等一次。每次战斗部署清 CD，弹药跨战斗保留。reload 是独立 self 效果，不能混入伤害效果链。
 - 外观沿用低多边形纯色材质。武器 Prefab 按配置显式绑定零个或多个挂点，EquipmentAssetCatalog 序列化资源和物品 Sprite。物品图标由[模型图标管线](Inventory.md)生成或手工指定；技能 BattleIconTable.spritePath 空字符串表示留白。[持武模组与握点](EquipmentMotion.md)按双手装备匹配模组，EquipmentPoseTable 提供基准姿势，EquipmentGripTable 配每件武器的本地握点；公共棋子已使用 [Humanoid 动画与握点求解](PawnAnimation.md)，无动画绑定的外观保留原刚体显示。动画时长和轨迹由 PawnAnimations.asset 调整，装备规则仍使用同一份物品/技能表。
 - 配置在 `Config/Tables/Equipment/` 的装备表及 Adventure 的 CombatSkill/CombatEffect 表。修改后通过 ConfigEditor 导表；新增资源/挂点/图标执行 Edit Mode 菜单 `Project Y/装备/同步模型与改装界面`，需要当前 AdventureDemo。同步会定向补齐旧工坊的引线、分类按钮、属性文本和行 Layout 绑定，并保留其余人工布局。不得编辑 Prefab/importer YAML 或生成的 xLua 包装器。
@@ -72,6 +76,10 @@
 - `EquipmentWeaponTable.onHitEffectIds` 引用共享效果动作，附加到实际主/副手的物理攻击（包含已研习的 weapon/slash 技能），法术和支持动作不继承；不修改共享技能行。命中后由 [GameEffect](GameEffects.md) 处理概率、状态互斥和计时，技能自身也可直接引用同一动作。
 
 ## 关键入口
+
+- [Ammunition.lua](../../Lua/Game/Equipment/Ammunition.lua) / [EquipmentAmmunition.cs](../../Assets/GameFramework/Runtime/Data/EquipmentAmmunition.cs)：弹种配置、口径校验及换弹种事务；[ammunition_core.lua](../../Tools/Tests/ammunition_core.lua) 检查实际技能解析，[ammunition_data.ps1](../../Tools/Tests/ammunition_data.ps1) 通过已编译 DLL 检查库存守恒、满包和存档恢复，不操作玩家存档。
+- [ArmorDamage.lua](../../Lua/Game/Battle/ArmorDamage.lua) / [armor_damage_core.lua](../../Tools/Tests/armor_damage_core.lua)：护甲分流、舍入及共享结算；[armor_damage_data.ps1](../../Tools/Tests/armor_damage_data.ps1) 定向检查部位耐久、实例掉落和损毁移除，不主动编译或启动 Editor。
+- 本轮弹种解析、护甲公式、装填 UI、工坊挂点回归及本地化检查通过；上述两个已编译 DLL 定向检查通过，包括退弹守恒、存档恢复后换弹和损毁护甲排除。未进入 Play 或执行全量测试。
 
 - [装备展示格式](../../Lua/Game/Equipment/EquipmentPresentation.lua) / [原生样式同步](../../Assets/GameFramework/Editor/EquipmentPresentationAssets.cs)：Edit Mode 菜单 `Project Y/装备/同步品质与装备详情样式` 定向保存 Inventory、Loot、EquipmentWorkbench、EquipmentRow；常规生成入口也复用同一升级方法。背包与搜刮详情使用实际 ScrollRect/ContentSizeFitter，复用原 `ItemDetail` 绑定，不新增运行时节点搜索。相关四个 Prefab 已于 2026-10-15 同步保存；本轮未进入 Play 验收。
 

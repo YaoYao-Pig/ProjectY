@@ -158,7 +158,7 @@ for sid, name, description, tag, category, turns, mechanic, amount in states:
         buff.update(periodTurns=1, periodicEffectIds=[904], blockedByTags=['wet'])
     if sid == 12020:
         buff.update(scope='persistent', clock='infinite', removeOnDeath=False, tags=['curse','persistent_curse'], stacking='independent')
-    if sid == 12012: buff.update(clock='infinite', durationTurns=0)
+    if sid in [12012,12018]: buff.update(clock='infinite', durationTurns=0)
     if sid in [12004,12005]: buff['tags'].append('coating')
     if sid in [12007,12008]: buff['tags'].append('enchantment')
     put('BuffTable', buff)
@@ -194,9 +194,16 @@ for pid,name,code,attribute,passive,trigger,passive_desc,base,category,disciplin
     put('TalentNodeTable',dict(id=base+5,treeId=pid,passiveId=base+5,pointCost=1,maxRank=1,minLevel=3,x=280,y=145))
     put('SkillCategoryTable',dict(id=category,disciplineId=discipline,name=name,order=category))
 
-def skill(sid,name,description,*,action='main',cost=2,range=3,target='enemy',proficiency='',effects=None,group='support',cd=2,hit=90,scale=1,trajectory='sight',contexts=None,catalyst='none',wear=0,visual=4,icon=10004,mechanic='',family='',material=0,status='',apply=0,bonus=0,base=0):
+def skill_visual(sid):
+    # Particle art is authored in the source table; never inherit another skill's profile.
+    profile = next((entry for entry in table('VisualEffectTable')['rows'] if entry['id'] == sid), None)
+    assert profile is not None, f'Author an independent VisualEffectTable profile for skill {sid} before generating content'
+    return sid
+
+
+def skill(sid,name,description,*,action='main',cost=2,range=3,target='enemy',proficiency='',effects=None,group='support',cd=2,hit=90,scale=1,trajectory='sight',contexts=None,catalyst='none',wear=0,icon=10004,mechanic='',family='',material=0,status='',apply=0,bonus=0,base=0):
     contexts = contexts or ['battle']
-    put('CombatSkillTable',dict(id=sid,name=name,description=description,iconId=icon,visualEffectId=visual,
+    put('CombatSkillTable',dict(id=sid,name=name,description=description,iconId=icon,visualEffectId=skill_visual(sid),
         action=action,cost=cost,range=range,target=target,proficiency=proficiency,effectIds=effects or [],skillGroup=group,
         cooldownTurns=cd,hitChance=hit,shots=1,ammoPerShot=0,damageScale=scale,actionTemplate=1 if catalyst=='arcane' else 4 if group=='weapon' else 0,
         trajectory=trajectory,contexts=contexts,affectsContainers=False,skillKind='preparation' if contexts==['preparation'] else 'active',catalystKind=catalyst,weaponWear=wear))
@@ -204,12 +211,12 @@ def skill(sid,name,description,*,action='main',cost=2,range=3,target='enemy',pro
         put('ProfessionCombatTable',dict(id=sid,mechanic=mechanic,family=family,materialId=material,materialCount=1 if material else 0,statusTag=status,applyEffectId=apply,bonusDamage=bonus,baseSkillId=base))
 
 prep=dict(contexts=['preparation'],target='self',range=0,hit=100,cd=0)
-spell=dict(group='spell',proficiency='staff',catalyst='arcane',visual=6,icon=10003)
-weapon=dict(group='weapon',proficiency='sword',range=1,hit=95,wear=1,visual=10,icon=10001)
+spell=dict(group='spell',proficiency='staff',catalyst='arcane',icon=10003)
+weapon=dict(group='weapon',proficiency='sword',range=1,hit=95,wear=1,icon=10001)
 skill(1801,'分装试剂·水剂','消耗 1 份水剂，为下一次直接武器命中涂上水剂，施加潮湿 2 回合。首个正式回合结束失效；学习后同时可选毒剂。',mechanic='coat',family='potion',material=8013,status='wet',apply=20004,**prep)
 skill(1802,'泼水瓶','消耗 1 份水剂，使单个角色潮湿 2 回合并灭火；友方必定成功，敌方正常判命中。',action='secondary',cost=1,range=2,target='any',mechanic='splash',family='potion',material=8013,apply=20019)
 skill(1803,'腐蚀剂','消耗 1 份腐蚀剂。命中施加一层中毒，并使防御降低 2、持续 2 回合；不直接扣血或磨损护甲。',effects=[803,20014],trajectory='lobbed',mechanic='splash',family='potion',material=8015)
-skill(1804,'蒸馏爆破·燃烧','消耗 1 份爆破剂，造成 70% 基础伤害；命中燃烧目标时消费全部燃烧并追加 6 点伤害。学习后同时可选提炼中毒。',cost=3,effects=[20202],scale=.7,trajectory='direct',proficiency='staff',mechanic='distill',family='potion',material=8016,status='burning',bonus=6,visual=6,icon=10003,cd=3)
+skill(1804,'蒸馏爆破·燃烧','消耗 1 份爆破剂，造成 70% 基础伤害；命中燃烧目标时消费全部燃烧并追加 6 点伤害。学习后同时可选提炼中毒。',cost=3,effects=[20202],scale=.7,trajectory='direct',proficiency='staff',mechanic='distill',family='potion',material=8016,status='burning',bonus=6,icon=10003,cd=3)
 skill(1811,'起拍','给自己或一名友军一层余音，持续至其首个正式回合结束。',contexts=['preparation'],target='ally',range=3,hit=100,cd=0,mechanic='beat',apply=20003)
 skill(1812,'并肩曲','自己或一名友军速度提高 2，持续 2 回合；按下一轮排序生效，不插队。',action='secondary',cost=1,target='ally',hit=100,effects=[20015])
 skill(1813,'破音','使敌人力量降低 2，持续 2 回合；若自身有余音，命中后消费余音并额外制造破绽。',effects=[20013],mechanic='beat',status='resonance',apply=20001)
@@ -224,24 +231,24 @@ skill(1833,'蚀命','造成 80% 奥术伤害；命中流血目标追加 6 点，
 skill(1834,'转祸·中毒','把自己一项中毒尝试移交给敌人，保留剩余时长与层数；成功施加后才移除自身状态，免疫目标不能接收。学习后也可选择流血或虚弱。',cost=3,cd=3,mechanic='transfer',family='curse',status='poison',**spell)
 skill(1841,'审势','下一次直接武器命中先施加破绽，再结算本击；首个正式回合结束失效。',mechanic='opening',apply=20006,**prep)
 skill(1842,'佯攻','使用可用近战武器对相邻敌人制造破绽，无直接伤害；下一次直接武器命中按少 2 点防御结算并消费破绽。',action='secondary',cost=1,mechanic='feint',apply=20001,**weapon)
-skill(1843,'牵步刺','造成 80% 武器伤害，随后退至事先选定且更远离目标的相邻空格；不会重新开放普通移动。',effects=[20201],scale=.8,mechanic='retreat',**weapon)
+skill(1843,'牵步刺','造成 80% 武器伤害，随后退至事先选定且更远离目标的相邻空格；不会重新开放普通移动。该技能位移不触发借机攻击。',effects=[20201],scale=.8,mechanic='retreat',**weapon)
 skill(1844,'见隙封喉','造成 110% 武器伤害；目标命中前已有破绽时追加 6 点伤害，破绽只消费一次；自身武器本次额外磨损 1。',cost=3,effects=[20201],scale=1.1,cd=3,mechanic='finisher',status='exposed',bonus=6,**{**weapon,'wear':2})
-skill(1851,'熟悉气味','指定一名可见敌人为猎物，本人绑定动物首次成功攻击该目标时施加流血，本场一次。',contexts=['preparation'],target='enemy',range=3,hit=100,cd=0,group='animal',proficiency='animalAffinity',visual=201)
-skill(1852,'驱赶口令','令 3 格内本人绑定的可行动动物移动至选定相邻格，不攻击；每只动物每轮只能接受一次额外位移口令，并正常承担借机风险。',action='secondary',cost=1,target='cell',group='animal',proficiency='animalAffinity',hit=100,visual=201)
-skill(1853,'夹击口令','用本人的主要行动指挥 3 格内绑定动物扑咬其相邻敌人；主人也相邻时命中施加流血。骑乘不能算双人夹击。',group='animal',proficiency='animalAffinity',visual=201,hit=95)
-skill(1854,'救援衔拖','令 3 格内绑定动物将其相邻存活友军拖至选定合法相邻空格，最多 1 格；大型或重载目标拒绝，动物本轮不再接受攻击口令。',cost=3,target='ally',group='animal',proficiency='animalAffinity',hit=100,cd=3,visual=201)
+skill(1851,'熟悉气味','指定一名可见敌人为猎物，本人绑定动物首次成功攻击该目标时施加流血，本场一次。',contexts=['preparation'],target='enemy',range=3,hit=100,cd=0,group='animal',proficiency='animalAffinity')
+skill(1852,'驱赶口令','令 3 格内本人绑定的可行动动物移动至选定相邻格，不攻击；每只动物每轮只能接受一次额外位移口令，并正常承担借机风险。',action='secondary',cost=1,target='cell',group='animal',proficiency='animalAffinity',hit=100)
+skill(1853,'夹击口令','用本人的主要行动指挥 3 格内绑定动物扑咬其相邻敌人；主人也相邻时命中施加流血。骑乘不能算双人夹击。',group='animal',proficiency='animalAffinity',hit=95)
+skill(1854,'救援衔拖','令 3 格内绑定动物将其相邻存活友军拖至选定合法相邻空格，最多 1 格；大型或重载目标拒绝，动物本轮不再接受攻击口令。',cost=3,target='ally',group='animal',proficiency='animalAffinity',hit=100,cd=3)
 
 skill(1901,'盾推','需要盾，造成 60% 武器伤害；命中沿远离自己的方向推动目标 1 格，无合法落点时只有伤害。',effects=[20201],scale=.6,mechanic='push',**weapon)
-skill(1902,'压制打击','造成 90% 武器伤害，命中使目标力量降低 2，持续 2 回合。',effects=[20201,20013],scale=.9,**weapon)
-bow=dict(group='weapon',proficiency='bow',range=3,trajectory='lobbed',hit=90,wear=1,visual=2,icon=10002)
+skill(1902,'压制打击','造成 90% 武器伤害，命中使目标力量降低 2，持续 2 回合。',effects=[20201,20013],scale=.9,mechanic='strike',**weapon)
+bow=dict(group='weapon',proficiency='bow',range=3,trajectory='lobbed',hit=90,wear=1,icon=10002)
 skill(1903,'牵索箭','需要弓及 1 份绳索，造成 60% 伤害，命中向自己拉动目标 1 格；无法拉动的体型仍受伤但不位移。',effects=[20203],scale=.6,mechanic='pull',material=82,**bow)
-skill(1904,'退身射击','需要弓，造成 80% 伤害，随后退至事先选定且更远离目标的相邻合法空格；不追加普通移动额度。',cost=3,effects=[20203],scale=.8,mechanic='retreat',**bow)
+skill(1904,'退身射击','需要弓，造成 80% 伤害，随后退至事先选定且更远离目标的相邻合法空格；不追加普通移动额度。该技能位移不触发借机攻击。',cost=3,effects=[20203],scale=.8,mechanic='retreat',**bow)
 skill(1905,'术式附刃·火焰','需触媒及可用近战武器；下一次直接近战命中改为火焰伤害并施加燃烧 2 回合，至下个回合结束有效。学习后也可选择水系。',action='secondary',target='self',range=0,hit=100,mechanic='enchant',status='burning',apply=20007,**spell)
 skill(1906,'导流术','造成 80% 奥术基础的闪电伤害；命中潮湿目标追加 6 点伤害并消费潮湿，不附带眩晕。',effects=[20207],scale=.8,trajectory='direct',mechanic='consume_damage',status='wet',bonus=6,**spell)
 skill(1907,'绊索','消耗 1 份绳索在相邻空格放置公开的一次性绊索；首个地面单位进入时中止移动并速度降低 2、持续 2 回合，双方均可触发。',range=1,target='cell',contexts=['preparation','battle'],hit=100,group='construction',mechanic='trap',material=82,apply=20016)
 skill(1908,'应急拆料','拆除相邻己方且无人承载的工事，返还其实际木料投入的一半、向下取整；不返还绳索，不拆任务设施。',range=1,target='cell',hit=100,group='construction',mechanic='salvage')
 row('ProfessionCombatTable',1908)['refundItemId']=81
-skill(1909,'护卫换位','与相邻同意且可移动的存活友军换位；双方完整占位均合法才成功，不重开普通移动。',action='secondary',range=1,target='ally',hit=100,mechanic='swap')
+skill(1909,'护卫换位','与相邻同意且可移动的存活友军换位；双方完整占位均合法才成功，不重开普通移动。该技能位移不触发借机攻击。',action='secondary',range=1,target='ally',hit=100,mechanic='swap')
 skill(1910,'承誓','需要盾，守护相邻友军至自己下回合开始；若仍相邻，其下一次单目标直接攻击改由自己承受；不挡周期或范围伤害，不连锁转交。',range=1,target='ally',hit=100,mechanic='interpose',apply=20018)
 
 variants=[(1861,1801,'分装试剂·毒剂','消耗 1 份毒剂，下一次直接武器命中施加一层中毒；首个正式回合结束失效。',8014,'poison',20005),
@@ -250,11 +257,11 @@ variants=[(1861,1801,'分装试剂·毒剂','消耗 1 份毒剂，下一次直�
           (1864,1834,'转祸·虚弱','把自己一项虚弱移交给敌人，保留剩余时长与层数；成功施加后才移除自己对应状态。',0,'weakness',0),
           (1865,1905,'术式附刃·流水','需触媒及可用近战武器；下一次直接近战命中改为水系伤害并施加潮湿 2 回合，至下个回合结束有效。',0,'wet',20008)]
 for sid,parent,name,description,material,status,apply in variants:
-    s=copy.deepcopy(row('CombatSkillTable',parent)); s.update(id=sid,name=name,description=description);put('CombatSkillTable',s)
+    s=copy.deepcopy(row('CombatSkillTable',parent)); s.update(id=sid,name=name,description=description,visualEffectId=skill_visual(sid));put('CombatSkillTable',s)
     r=copy.deepcopy(row('ProfessionCombatTable',parent));r.update(id=sid,baseSkillId=parent,materialId=material,materialCount=1 if material else 0,statusTag=status,applyEffectId=apply)
     if sid==1862:r['bonusDamage']=3
     put('ProfessionCombatTable',r)
-for sid,equipment in [(1901,'shield'),(1910,'shield'),(1903,'bow'),(1904,'bow'),(1842,'melee'),(1843,'melee'),(1844,'melee'),(1905,'melee'),(1865,'melee')]:
+for sid,equipment in [(1901,'shield'),(1902,'melee'),(1910,'shield'),(1903,'bow'),(1904,'bow'),(1842,'melee'),(1843,'melee'),(1844,'melee'),(1905,'melee'),(1865,'melee')]:
     row('ProfessionCombatTable',sid)['requiredEquipment']=equipment
 
 life=[(1806,'野外萃取','extract',5,2,0,0,8014,1,False,0,'采集一处相邻范围内尚未采过的有效蕨类植物，得到 1 份毒剂；同一真实实体只能采一次。'),

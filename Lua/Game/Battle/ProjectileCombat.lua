@@ -126,13 +126,15 @@ function Shots.ApplyActor(battle,source,program,impact)
     end
     if professionContext then battle.professions:AfterHit(professionContext)end
     if battle.beasts and professionSkill then battle.beasts:OnHit(source,program[1].hitTarget or program[1].target,professionSkill)end
+    return program[1] and (program[1].hitTarget or program[1].target)
 end
 function Shots.ApplyBlocker(battle,source,skill,blocker,prepared,impact,context,visualSource)
     local name=blocker.actor and battle.stats:Template(blocker.actor).name or blocker.name or '障碍物'
     battle:Emit('intercepted',skill.name..' 被 '..name..' 拦截',source.Id,blocker.actor and blocker.actor.Id,0,blocker.actor,false,
         {actionName=skill.name,targetName=name,shot=impact and impact.shot})
+    local actual=blocker.actor
     if blocker.kind=='actor' then
-        Shots.ApplyActor(battle,source,assert(prepared[blocker.key],'Unprepared interception target'),impact)
+        actual=Shots.ApplyActor(battle,source,assert(prepared[blocker.key],'Unprepared interception target'),impact)
     elseif blocker.kind=='container' then
         battle.containerCombat:ApplyDamage(assert(prepared[blocker.key]),source,skill,battle)
     elseif blocker.kind=='construction' then
@@ -145,7 +147,8 @@ function Shots.ApplyBlocker(battle,source,skill,blocker,prepared,impact,context,
             end
         end
     end
-    VisualEffects.Skill(battle,visualSource or source,skill,blocker.actor,impact and impact.shot,'hit',blocker.cell)
+    local impactCell=blocker.cell;if actual then impactCell=nil end
+    VisualEffects.Skill(battle,visualSource or source,skill,actual,impact and impact.shot,'hit',impactCell)
 end
 function Shots.PrepareProgram(battle,source,skill,program)
     program.vfxSource=VisualEffects.Source(source)
@@ -171,8 +174,8 @@ function Shots.ApplyProgram(battle,source,skill,program,shot)
         local victim=group.victim
         if victim.HP>0 then
             if not needsHit(battle,source,skill,victim) then
-                Shots.ApplyActor(battle,source,group.effects,{shot=shot})
-                VisualEffects.Skill(battle,program.vfxSource,skill,victim,shot,'cast')
+                local actual=Shots.ApplyActor(battle,source,group.effects,{shot=shot})
+                VisualEffects.Skill(battle,program.vfxSource,skill,actual or victim,shot,'cast')
             else
                 local profile
                 if (skill.trajectory=='direct' or skill.trajectory=='lobbed') and not skill.guided then
@@ -191,8 +194,8 @@ function Shots.ApplyProgram(battle,source,skill,program,shot)
                 elseif profile.reachable and Shots.Hit(profile,roll,battle.checks and function(value,passed)
                     battle.checks(source,victim,skill,'命中',profile.baseHitChance,value,passed,{shot=shot,successLabel='命中',failureLabel='落空'})
                 end)then
-                    Shots.ApplyActor(battle,source,group.effects,{shot=shot})
-                    VisualEffects.Skill(battle,program.vfxSource,skill,victim,shot,'hit')
+                    local actual=Shots.ApplyActor(battle,source,group.effects,{shot=shot})
+                    VisualEffects.Skill(battle,program.vfxSource,skill,actual or victim,shot,'hit')
                 else
                     battle:Emit('miss',battle.stats:Template(source).name..' · '..skill.name..' 未命中 '..battle.stats:Template(victim).name,source.Id,victim.Id,0,victim,false,{actionName=skill.name,shot=shot})
                     VisualEffects.Skill(battle,program.vfxSource,skill,victim,shot,'miss')

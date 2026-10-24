@@ -57,6 +57,8 @@ function Text.Attributes(rules,item)
         local weapon=rules.weapons:Get(item.ItemId)
         if weapon.description~='' then lines[#lines+1]=Text.Paint(weapon.description,Text.colors.label,12) end
         lines[#lines+1]=Text.Value(LuaLanguage.UISkillTipText12,string.format('× %.2f',weapon.damageMultiplier*rules.affixes:Of(item).damageMultiplier*rules:Condition(item).Efficiency))
+        lines[#lines+1]=Text.Note(string.format(LuaLanguage.EquipmentWeaponArmor,weapon.armorPenetration,weapon.armorDamageMultiplier))
+        lines[#lines+1]=Text.Note(LuaLanguage.EquipmentArmorRule)
     end
     for _,attribute in ipairs(rules.attributes:All()) do
         local value=rules:ItemAttributeBonus(item,attribute.code)
@@ -65,6 +67,20 @@ function Text.Attributes(rules,item)
     if #lines==1 then lines[#lines+1]=Text.Note(LuaLanguage.UIEquipmentPresentationLinesLines110) end
     lines[#lines+1]=Text.Note(LuaLanguage.UIEquipmentPresentationLinesLines19)
     return table.concat(lines,'\n')
+end
+function Text.AmmoStats(rules,itemId)
+    local ammo=rules.ammunition:Get(itemId)
+    return string.format(LuaLanguage.EquipmentAmmoStats,ammo.fleshDamageMultiplier,ammo.armorDamageMultiplier,ammo.armorPenetrationBonus)
+end
+function Text.Ammunition(rules,itemId)
+    local ammo=rules.ammunition:Get(itemId)
+    return Text.Paint(ammo.description,Text.colors.label,12)..'\n'..Text.Note(Text.AmmoStats(rules,itemId))
+end
+function Text.MagazineSummary(rules,magazine)
+    return string.format(LuaLanguage.EquipmentMagazineSummary,rules.ammunition:Get(magazine.AmmoItemId).name,magazine.Rounds,magazine.Capacity)
+end
+function Text.Magazine(rules,magazine)
+    return Text.Paint(Text.MagazineSummary(rules,magazine),Text.colors.value,13)..'\n'..Text.Ammunition(rules,magazine.AmmoItemId)
 end
 function Text.Details(rules,item,actor,stats)
     local kind=rules.items:Get(item.ItemId).kind;local category

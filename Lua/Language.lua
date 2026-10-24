@@ -177,7 +177,7 @@ local defaults = {
     UIDialogueTitle = "查看商品", -- Lua/UI/Panel/DialogueCtr.lua:62
     UIDialogueTitle2 = "<b>让 %s 接话</b>  <size=70%%>%s</size>", -- Lua/UI/Panel/DialogueCtr.lua:45；%s1=Rich.Escape(entry.name)，%s2=Rich.Escape(entry.cue)
     UIDialogueCaptionText = "%s  /  小队交谈", -- Lua/UI/Panel/DialogueCtr.lua:20；%s1=story.rules.factions:Get(npc.factionId).name
-    UIEquipmentWorkbenchMessage = "点击外侧标签选择组件；拖动旋转，滚轮缩放。维修可在背包选中装备后进行。", -- Lua/UI/Panel/EquipmentWorkbenchCtr.lua:37
+    UIEquipmentWorkbenchMessage = "点击挂点选择组件，点击库存弹匣选择弹种并装填；拖动旋转，滚轮缩放。维修可在背包选中装备后进行。", -- Lua/UI/Panel/EquipmentWorkbenchCtr.lua:37
     UIEquipmentWorkbenchMessage2 = "已应用，装备与战斗参数已同步。", -- Lua/UI/Panel/EquipmentWorkbenchCtr.lua:53
     UIEquipmentWorkbenchEffectsEffects1 = "每次耗弹 %s", -- Lua/UI/Panel/EquipmentWorkbenchCtr.lua:190；%s1=skill.shots*skill.ammoPerShot
     UIEquipmentWorkbenchEffectsEffects12 = "奥术触媒已就绪", -- Lua/UI/Panel/EquipmentWorkbenchCtr.lua:188
@@ -201,7 +201,7 @@ local defaults = {
     UIEquipmentWorkbenchRequirementsText5 = "装备要求", -- Lua/UI/Panel/EquipmentWorkbenchCtr.lua:143
     UIEquipmentWorkbenchR6 = "共享库存", -- Lua/UI/Panel/EquipmentWorkbenchCtr.lua:132
     UIEquipmentWorkbenchR7 = "已装入武器", -- Lua/UI/Panel/EquipmentWorkbenchCtr.lua:122
-    UIEquipmentWorkbenchR8 = "备用 · 点击装填", -- Lua/UI/Panel/EquipmentWorkbenchCtr.lua:122
+    UIEquipmentWorkbenchR8 = "备用", -- Lua/UI/Panel/EquipmentWorkbenchCtr.lua:122
     UIEquipmentWorkbenchR9 = "%s/%s 发 · %s", -- Lua/UI/Panel/EquipmentWorkbenchCtr.lua:122；%s1=mag.Rounds，%s2=mag.Capacity，%s3=data:MagazineWeapon(mag.Id)==0 and LuaLanguage.UIEquipmentWorkbenchR8 or LuaLanguage.UIEquipmentWorkbenchR7
     UIEquipmentWorkbenchR10 = " · 已装备", -- Lua/UI/Panel/EquipmentWorkbenchCtr.lua:111
     UIEquipmentWorkbenchR11 = " · 背包", -- Lua/UI/Panel/EquipmentWorkbenchCtr.lua:111
@@ -218,6 +218,10 @@ local defaults = {
     UIGMNpcCountText = "找到 %s 位 NPC", -- Lua/UI/Panel/GMCtr.lua:46；%s1=#rows
     UIGMNpcCountText2 = "没有匹配的 NPC", -- Lua/UI/Panel/GMCtr.lua:46
     UIGMResultText5 = "已到达「%s」附近。关闭 GM 后按 E 交谈。", -- Lua/UI/Panel/GMCtr.lua:59；%s1=self.gm.npcs.story.rules.npcs:Get(id).name
+    GMWorldMapUnavailable = "请先创建或载入远征，再开启全图视野。", -- GM 开全图：尚未绑定世界地图时的失败原因
+    GMRevealWorldSuccess = "已开启全图视野：大地图持续全亮，远处敌人可见。", -- GM 开全图：命令与面板的成功反馈
+    UIGMRevealWorldText = "开全图", -- GM 面板开全图按钮
+    UIGMRevealWorldHint = "大地图持续全亮，远处敌人可见。重新开局或读档后需再次开启。", -- GM 面板开全图作用范围与生命周期说明
     UIInventoryMessage = "已取消移动，物品保留原位", -- Lua/UI/Panel/InventoryCtr.lua:14
     UIInventoryMessage2 = "拖动收纳  ·  拖动时 R 旋转 / 右键取消  ·  拖到装备槽穿戴", -- Lua/UI/Panel/InventoryCtr.lua:50
     UIInventoryMessage3 = "已保存收纳与装备变更", -- Lua/UI/Panel/InventoryCtr.lua:58
@@ -651,7 +655,7 @@ local defaults = {
     UIEquipmentWorkbenchPanelSafeAreaInventoryInventoryTitle = "共 享 背 包", -- Assets/DynamicAsset/UI/Prefabs/Equipment/EquipmentWorkbenchPanel.prefab / SafeArea/Inventory/InventoryTitle
     UIEquipmentWorkbenchPanelSafeAreaPreviewOrbitHint = "拖动旋转  ·  滚轮缩放  ·  点击挂点", -- Assets/DynamicAsset/UI/Prefabs/Equipment/EquipmentWorkbenchPanel.prefab / SafeArea/Preview/OrbitHint
     UIEquipmentWorkbenchPanelSafeAreaDetailsScrollViewportContentRemoveLabel = "卸下选中挂点组件", -- Assets/DynamicAsset/UI/Prefabs/Equipment/EquipmentWorkbenchPanel.prefab / SafeArea/Details/Scroll/Viewport/Content/Remove/Label
-    UIEquipmentWorkbenchPanelSafeAreaDetailsScrollViewportContentFillLabel = "补满当前弹匣", -- Assets/DynamicAsset/UI/Prefabs/Equipment/EquipmentWorkbenchPanel.prefab / SafeArea/Details/Scroll/Viewport/Content/Fill/Label
+    UIEquipmentWorkbenchPanelSafeAreaDetailsScrollViewportContentFillLabel = "装填所选弹匣", -- Assets/DynamicAsset/UI/Prefabs/Equipment/EquipmentWorkbenchPanel.prefab / SafeArea/Details/Scroll/Viewport/Content/Fill/Label
     UIEquipmentWorkbenchPanelSafeAreaDetailsScrollViewportContentStatsTitle = "装备详情与技能", -- Assets/DynamicAsset/UI/Prefabs/Equipment/EquipmentWorkbenchPanel.prefab / SafeArea/Details/Scroll/Viewport/Content/StatsTitle
     UIEquipmentWorkbenchPanelSafeAreaFooterUnequipLabel = "卸下角色武器", -- Assets/DynamicAsset/UI/Prefabs/Equipment/EquipmentWorkbenchPanel.prefab / SafeArea/Footer/Unequip/Label
     UIInventoryPanelFrameHeading = "远 征 行 囊", -- Assets/DynamicAsset/UI/Prefabs/Equipment/InventoryPanel.prefab / Frame/Heading
@@ -862,6 +866,27 @@ local defaults = {
     ProfessionDuelStarted = "礼式决斗开始。任一方生命降到四分之一时认输；同伴不参战，胜者取回保证金并获得奖励。", -- 职业扩展文本；保持现有占位参数格式
     ProfessionDuelWon = "赢得公会单挑，保证金退还并获得约定奖励；伤势保留。", -- 职业扩展文本；保持现有占位参数格式
     ProfessionDuelLost = "公会单挑结束，保证金支付给对手；伤势保留，双方均未被处决。", -- 职业扩展文本；保持现有占位参数格式
+    AmmoIncompatible = "弹药口径与弹匣不兼容", -- 工坊装填：目标弹药不属于弹匣口径
+    AmmoMagazineFull = "弹匣已满", -- 工坊补充当前弹种时没有空余容量
+    AmmoUnavailable = "背包中没有所选弹药", -- 工坊装填时没有可消费的弹药
+    AmmoCountLimit = "退回余弹将超过物品数量上限", -- 换弹种时退回旧弹药超过库存数量上限
+    AmmoReturnBackpackFull = "背包放不下退回的余弹，装填已取消", -- 换弹种容量检查失败，两种弹药与弹匣均保持不变
+    AmmoSelectMagazine = "请选择随身携带的弹匣", -- 工坊要求队员或背包中的弹匣
+    EquipmentAmmoStats = "肉伤 ×%.2f · 甲伤 ×%.2f · 穿甲 %+g 个百分点", -- 弹药说明：肉伤倍率、甲伤倍率、穿甲百分点修正
+    EquipmentMagazineSummary = "%s · %d/%d 发", -- 弹匣说明：实际弹药名、余弹、容量
+    EquipmentWeaponArmor = "基础穿甲 %g%% · 甲伤 ×%.2f", -- 武器属性：基础穿甲百分比、甲伤倍率
+    EquipmentArmorRule = "穿甲部分绕过护甲，其余先伤甲；破甲后的剩余伤害伤生命。护甲耐久归零后不会掉落。", -- 装备详情中的承伤与战利品规则
+    WorkbenchMagazineName = "%s #%d", -- 工坊弹匣标题：弹匣物品名、实例编号
+    WorkbenchMagazineSelect = "%s · %s · 点击选择装填", -- 工坊弹匣条目：弹种余弹说明、备用或已装入状态
+    WorkbenchAmmoTitle = "装填弹匣 #%d · 选择弹种", -- 工坊弹种选项标题：弹匣实例编号
+    WorkbenchAmmoInstructions = "选择弹种后点击装填按钮；换种时余弹退回背包。点击挂点返回装配。", -- 工坊装填操作说明
+    WorkbenchAmmoStock = "%s · 库存 %d 发", -- 工坊弹种条目：弹药属性说明、库存数量
+    WorkbenchAmmoTarget = "装填目标：%s #%d · 当前 %s", -- 工坊装填目标：弹匣名称、实例编号、当前弹种余弹说明
+    WorkbenchAmmoSelected = "待装弹药：%s · 库存 %d 发", -- 工坊当前选择：弹药名称、库存数量
+    BattleAmmoSummary = "%s · %d/%d", -- 战斗HUD弹药：实际弹种名称、余弹、容量
+    BattleArmorResult = " · %s耐久 %g→%g（甲伤 %g；吸收 %g；穿透 %g；溢出 %g）", -- 战斗实际护甲结算：部位名、原耐久、剩余耐久、甲伤、吸收、穿透、溢出
+    BattleArmorBroken = " · 护甲已打烂，无法掉落", -- 战斗中护甲耐久归零的战利品提示
+    BattleArmorPreserved = " · 本次未损伤护甲", -- 保甲攻击的实际结算提示
 -- @localization-end
 }
 return require('Config.LanguageProxy').Create(defaults)

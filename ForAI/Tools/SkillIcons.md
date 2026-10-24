@@ -11,8 +11,10 @@
 - `node Tools/SkillIcons/cli.mjs prepare --skill 1,2,3,4,5` 生成任务；`--all` 准备全部配方。任务保存完整提示词及配方摘要。每个任务调用一次内置 `image_gen`，要求透明背景；工具不会自己联网或读取 API 密钥。
 - 查看生成图片并按下列标准验收后，执行 `node Tools/SkillIcons/cli.mjs publish --skill 1 --image <生成PNG的绝对路径> --job Art/SkillIcons/Jobs/10001.json --reviewed`。发布校验任务未过期、文件格式与资源归属，归档原图、保存版本、回填对应图标和技能配置；不手改 `.meta` 或 Prefab YAML。
 - 原图在 `Art/SkillIcons/Sources/`，生成记录在 `Art/SkillIcons/manifest.json`，游戏资源在 `Assets/DynamicAsset/UI/Icons/Skills/`。重新生成使用新版本；相同配方与原图重复发布复用现有版本。配置、清单和资源应一起提交。
+- `Art/SkillIcons/Candidates/` 与 `RecipeDrafts/` 是生成/审查暂存，新增文件已设置 Git 忽略，已经跟踪的历史候选不自动移除；它们不是运行时资源。正式原图、Jobs、发布清单与 Sprite 必须完整保留，不能仅交付暂存候选图。
 - 发布后先执行 `node Tools/ConfigEditor/exporter.mjs`，再在已有、空闲的 Unity Edit Mode 执行 `Project Y/UI/导入技能图标并同步引用`。菜单按风格导入 Single Sprite / Point / 无 mipmap / 无压缩，并调用现有 HUD 引用同步；不启动 Editor 或进入 Play。游戏配置无热重载。
 - `node Tools/SkillIcons/cli.mjs status` 区分待生成与已发布；`validate` 校验已发布的配方、文件摘要和配置引用。配方变化需重做生成与视觉检查，不能仅更新摘要。文件校验不能自动证明图意正确或细节足够少。
+- 并行内容开发可能新增技能或修改技能说明，发布前必须重新读当前表。技能文案变化也会使 job 过期；若核实图意仍相同、完整生成提示词逐字未变，可重新 `prepare` 并复核后复用原图，不能手改摘要。批次覆盖按记录的技能 ID 清单检查，不能把新增配置静默算进已完成数量。
 
 视觉验收遵循[技能图标美术风格](../Business/SkillIconArt.md)，以已认可的首批五张为基准；检查实际 32/64 像素与深浅背景，保持单主体、大色块、最多一层阴影和低细节。图意与同类技能的轮廓差异属于人工验收，不能用文件格式或 hash 校验代替。
 
@@ -23,4 +25,5 @@
 - [配方表](../../Config/Tables/Adventure/SkillIconRecipeTable.json) / [风格表](../../Config/Tables/Adventure/SkillIconStyleTable.json)：主体、统一风格与导入尺寸。
 - [CLI](../../Tools/SkillIcons/cli.mjs)：准备、发布、状态及校验。
 - [SkillIconAssets.cs](../../Assets/GameFramework/Editor/SkillIconAssets.cs)：`ImportPublished` 原生导入与引用同步。
+- [图标总览](../../Docs/Previews/SkillIcons/README.md) / [验证记录](../../Art/SkillIcons/validation-all.json)：已发布资源的原生预览与实际执行范围。
 - [战斗 HUD](../Business/BattleHUD.md)：运行时图标契约；[配置管线](../Framework/Config.md)：导表与加载。
