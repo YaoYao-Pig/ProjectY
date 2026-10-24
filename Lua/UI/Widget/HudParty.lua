@@ -1,3 +1,4 @@
+local LuaLanguage = require('Language')
 local Class=require('Core.Class')
 local Base=require('UI.UIWidgetCtrl')
 local Party=Class('HudParty',Base)
@@ -14,7 +15,7 @@ function Party:SetData(row,style,selected,activate,feedback)
     self.feedback=assert(feedback)
     self.view.Name.font,self.view.HealthText.font,self.view.APText.font=style.Font,style.Font,style.Font
     self.view.Name.text=row.name
-    self.view.HealthText.text=row.riderHP and ('骑'..row.hp..'/'..row.maxHP..' 人'..row.riderHP..'/'..row.riderMaxHP)
+    self.view.HealthText.text=row.riderHP and (string.format(LuaLanguage.UIHudHealthHealthTextText, (row.hp), (row.maxHP), (row.riderHP), (row.riderMaxHP)))
         or (row.hp..' / '..row.maxHP)
     feedback:BindHealth(self.view.HealthAnimation,row.id,row.healthId,row.hp/row.maxHP)
     self.view.APText.text=row.ap..' / '..row.maxAP..' AP';style:SetHealth(self.view.AP,row.ap/row.maxAP)

@@ -19,7 +19,8 @@ function Unit:SetData(row)
     self.view.Detail.text = self.compact and (row.active and L.BattleActing or string.format(L.BattleSpeed, row.speed))
         or (row.hp <= 0 and L.BattleDown or string.format(L.BattleHP, row.hp, row.maxHP))
     self.view.Active.gameObject:SetActive(row.active)
-    local color = row.team == 1 and CS.UnityEngine.Color(.36, .61, .49, 1) or CS.UnityEngine.Color(.72, .36, .30, 1)
+    local color = (row.team==1 or row.team==4) and CS.UnityEngine.Color(.36,.61,.49,1)
+        or row.team==2 and CS.UnityEngine.Color(.72,.36,.30,1) or CS.UnityEngine.Color(.96,.78,.22,1)
     self.view.Side.color = color; self.view.Health.color = color
     self.hud:SetHealth(self.view.Health, row.hp / row.maxHP)
 end

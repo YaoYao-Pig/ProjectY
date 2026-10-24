@@ -1,0 +1,68 @@
+{
+  "version": 1,
+  "name": "InjuryStageTable",
+  "description": "部位损伤0为健康，100为永久致残；中间阈值可调整",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定编号",
+      "min": 1
+    },
+    {
+      "name": "minimumDamage",
+      "type": "int",
+      "description": "此阶段最低损伤",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "伤势名"
+    },
+    {
+      "name": "color",
+      "type": "string",
+      "description": "示意图色号"
+    },
+    {
+      "name": "penaltyScale",
+      "type": "float",
+      "description": "部位惩罚倍率",
+      "min": 0,
+      "max": 1
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "minimumDamage": 0,
+      "name": "健康",
+      "color": "#F3F3F0",
+      "penaltyScale": 0
+    },
+    {
+      "id": 2,
+      "minimumDamage": 1,
+      "name": "轻伤",
+      "color": "#E8C653",
+      "penaltyScale": 0.25
+    },
+    {
+      "id": 3,
+      "minimumDamage": 50,
+      "name": "重伤",
+      "color": "#D95750",
+      "penaltyScale": 0.6
+    },
+    {
+      "id": 4,
+      "minimumDamage": 100,
+      "name": "永久致残",
+      "color": "#171A21",
+      "penaltyScale": 1
+    }
+  ]
+}

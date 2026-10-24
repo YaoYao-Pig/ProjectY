@@ -1,0 +1,30 @@
+{
+  "date": "2026-10-24",
+  "generator": "built-in image_gen",
+  "publishedSkillIds": [1, 2, 3, 4, 5],
+  "pendingRecipes": 68,
+  "pipelineTests": { "passed": 8, "command": "node --test Tools/SkillIcons/tests/pipeline.test.mjs" },
+  "runtimeIconConfig": { "passed": true, "command": "python -B Tools/Tests/run_lua.py Tools/Tests/skill_icons.lua" },
+  "unity": {
+    "projectCompilationRequests": 1,
+    "enteredPlay": false,
+    "importedSprites": 5,
+    "singleSprite": true,
+    "pointFiltering": true,
+    "mipmaps": false,
+    "textureCompression": "Uncompressed",
+    "maxTextureSize": 256,
+    "standaloneHudBindings": true,
+    "mainHudNestedBindings": true,
+    "preview": "Docs/Previews/SkillIcons/first-five.png",
+    "reviewedDisplaySizes": [128, 64, 32],
+    "reviewedBackgrounds": ["dark", "light"],
+    "activeScenePreserved": true
+  },
+  "broaderHudRegression": {
+    "passed": false,
+    "command": "python -B Tools/Tests/run_lua.py Tools/Tests/battle_hud_core.lua",
+    "failure": "Lua/Game/Battle/InjuryRules.lua:35: attempt to index a nil value (local 'state')",
+    "scope": "The fixture fails before the icon assertions; broader battle HUD behavior is not verified by this run."
+  }
+}

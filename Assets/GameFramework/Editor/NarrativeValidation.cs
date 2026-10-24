@@ -62,7 +62,8 @@ namespace ProjectY.Editor
                         using(var cinematic=new DialogueCamera(camera,root.transform,5,1.25f,22,45,0,.7f,new System.Collections.Generic.List<Bounds>(),(ray,distance)=>distance))
                         {
                             lua.DoString("PreviewNarrativePage('dialogue')");
-                            cinematic.Tick(pawns[0].transform.position,pawns[1].transform.position,"pair",440f/1280);
+                            var panelFraction=Convert.ToSingle(lua.DoString("return NarrativePreviewPanelFraction()")[0]);
+                            cinematic.Tick(pawns[0].transform.position,pawns[1].transform.position,"pair",panelFraction);
                             Capture(root,camera,"dialogue");
                             foreach(var pawn in pawns){var point=camera.WorldToViewportPoint(pawn.transform.position+Vector3.up);if(point.z<=0||point.x<=0||point.x>=1||point.y<=0||point.y>=1)throw new InvalidOperationException("Dialogue target outside camera composition.");}
                             cinematic.Return();cinematic.Tick(Vector3.zero,Vector3.zero,"pair",0);

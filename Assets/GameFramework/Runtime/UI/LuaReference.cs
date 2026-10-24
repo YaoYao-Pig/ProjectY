@@ -20,7 +20,27 @@ namespace ProjectY.UI
         }
 
         [SerializeField] private Entry[] entries = Array.Empty<Entry>();
+        [Serializable] public struct LocalizedText
+        {
+            public Component Target;
+            public string Id;
+            public LocalizedText(Component target,string id) { Target=target;Id=id; }
+        }
+        [SerializeField] private LocalizedText[] localizedTexts = Array.Empty<LocalizedText>();
         private Dictionary<string, Component> lookup;
+
+        // Called before Lua Bind/OnShow/SetData. Dynamic projections may safely replace initial captions.
+        internal void ApplyLocalizations()
+        {
+            foreach(var binding in localizedTexts)
+            {
+                string text=LuaLanguage.Get(binding.Id);
+                if(binding.Target is UITxt localized)localized.DefaultText=text;
+                else if(binding.Target is TMPro.TMP_Text tmp)tmp.text=text;
+                else if(binding.Target is Text legacy)legacy.text=text;
+                else throw new InvalidOperationException(name+": invalid localized text target "+binding.Id);
+            }
+        }
 
         public Component Get(string key)
         {
@@ -69,6 +89,8 @@ namespace ProjectY.UI
         [BlackList]
         public void SetEditorBindings(params Entry[] bindings) { entries = bindings; lookup = null; }
         [BlackList] public Entry[] GetEditorBindings() => (Entry[])entries.Clone();
+        [BlackList] public void SetEditorLocalizations(params LocalizedText[] bindings) => localizedTexts=bindings;
+        [BlackList] public LocalizedText[] GetEditorLocalizations() => (LocalizedText[])localizedTexts.Clone();
         private void OnValidate() => lookup = null;
 #endif
     }

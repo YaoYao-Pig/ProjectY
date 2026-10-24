@@ -1,4 +1,5 @@
 local Class = require('Core.Class')
+local LuaLanguage = require('Language')
 local Widget = require('UI.UIWidgetCtrl')
 ---@class Stats : UIWidgetCtrl
 ---@field view StatsWidgetView
@@ -9,7 +10,7 @@ function Stats:Bind()
 end
 function Stats:OnShow()
     local function refresh()
-        self.label.text = string.format('LEVEL  %d     /     COINS  %d', self.model.data.Level, self.model.data.Coins)
+        self.label.text = string.format(LuaLanguage.DemoStatsTemplate, self.model.data.Level, self.model.data.Coins)
     end
     self.visibleScope:Add(self.model.Changed:Subscribe(refresh)); refresh()
 end

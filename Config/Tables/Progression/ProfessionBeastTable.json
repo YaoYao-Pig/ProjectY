@@ -1,0 +1,126 @@
+{
+  "version": 1,
+  "name": "ProfessionBeastTable",
+  "description": "绑定动物的付费指令与共享结算参数",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "技能 ID",
+      "ref": "CombatSkillTable"
+    },
+    {
+      "name": "kind",
+      "type": "enum",
+      "description": "指令机制",
+      "values": [
+        "scent",
+        "move",
+        "attack",
+        "rescue",
+        "mode"
+      ]
+    },
+    {
+      "name": "commandRange",
+      "type": "int",
+      "description": "主人至动物的指令距离",
+      "default": 3,
+      "min": 0
+    },
+    {
+      "name": "biteSkillId",
+      "type": "int",
+      "description": "真实动物扑咬技能",
+      "ref": "CombatSkillTable"
+    },
+    {
+      "name": "bleedEffectId",
+      "type": "int",
+      "description": "实际流血效果",
+      "ref": "CombatEffectTable"
+    },
+    {
+      "name": "passiveNodeId",
+      "type": "int",
+      "description": "嗅血被动节点",
+      "ref": "TalentNodeTable"
+    },
+    {
+      "name": "bonusDamage",
+      "type": "int",
+      "description": "嗅血基础附伤",
+      "default": 3,
+      "min": 0
+    },
+    {
+      "name": "bonusEffectId",
+      "type": "int",
+      "description": "嗅血附伤效果，正常防御结算",
+      "ref": "CombatEffectTable"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "指令说明"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1851,
+      "kind": "scent",
+      "commandRange": 3,
+      "biteSkillId": 205,
+      "bleedEffectId": 802,
+      "passiveNodeId": 1855,
+      "bonusDamage": 3,
+      "bonusEffectId": 20209,
+      "description": "指定一名可见敌人为猎物，本人绑定动物首次成功攻击该目标时施加流血，本场一次。"
+    },
+    {
+      "id": 1852,
+      "kind": "move",
+      "commandRange": 3,
+      "biteSkillId": 205,
+      "bleedEffectId": 802,
+      "passiveNodeId": 1855,
+      "bonusDamage": 3,
+      "bonusEffectId": 20209,
+      "description": "令 3 格内本人绑定的可行动动物移动至选定相邻格，不攻击；每只动物每轮只能接受一次额外位移口令，并正常承担借机风险。"
+    },
+    {
+      "id": 1853,
+      "kind": "attack",
+      "commandRange": 3,
+      "biteSkillId": 205,
+      "bleedEffectId": 802,
+      "passiveNodeId": 1855,
+      "bonusDamage": 3,
+      "bonusEffectId": 20209,
+      "description": "用本人的主要行动指挥 3 格内绑定动物扑咬其相邻敌人；主人也相邻时命中施加流血。骑乘不能算双人夹击。"
+    },
+    {
+      "id": 1854,
+      "kind": "rescue",
+      "commandRange": 3,
+      "biteSkillId": 205,
+      "bleedEffectId": 802,
+      "passiveNodeId": 1855,
+      "bonusDamage": 3,
+      "bonusEffectId": 20209,
+      "description": "令 3 格内绑定动物将其相邻存活友军拖至选定合法相邻空格，最多 1 格；大型或重载目标拒绝，动物本轮不再接受攻击口令。"
+    },
+    {
+      "id": 1867,
+      "kind": "mode",
+      "commandRange": 3,
+      "biteSkillId": 205,
+      "bleedEffectId": 802,
+      "passiveNodeId": 1855,
+      "bonusDamage": 3,
+      "bonusEffectId": 20209,
+      "description": "将本人绑定的同一只真实动物切换为独立随行或骑乘；两个模式互斥，保留生命、伤势与死亡状态。"
+    }
+  ]
+}

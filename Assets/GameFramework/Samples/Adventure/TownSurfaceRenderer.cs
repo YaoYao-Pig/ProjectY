@@ -271,8 +271,7 @@ namespace ProjectY.Samples
         private static Color FogColor(Color color, float amount)
         {
             var linear = QualitySettings.activeColorSpace == ColorSpace.Linear;
-            if (linear) color = color.gamma;
-            color *= amount; if (linear) color = color.linear; color.a = 1; return color;
+            return amount < 1 ? MapFogColors.Remembered(color, linear) : color;
         }
         private void Triangle(Vector3 a, Vector3 b, Vector3 c, Color color)
         {

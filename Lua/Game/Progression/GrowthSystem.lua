@@ -17,6 +17,7 @@ function Growth:PrepareActor(actor)
     actor.Growth:Initialize((self.data.Seed+actor.Id*104729)%4294967296,rule.initialAttributePoints,rule.initialTalentPoints,profile.potential)
     for _, id in ipairs(profile.treeIds) do actor.Growth:UnlockTree(id) end
     for _, id in ipairs(profile.traitIds) do actor:AddTrait(id) end
+    for _, id in ipairs(self.stats.units:Get(actor.TemplateId).traitIds) do actor:AddTrait(id) end
     self:InitializeProfession(actor)
     for _=1,rule.initialLearningOpportunities do actor.Growth:AddLearningOpportunity(1) end
 end

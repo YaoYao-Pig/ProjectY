@@ -89,6 +89,12 @@ namespace ProjectY.Editor
             container.anchorMin=Vector2.zero;container.anchorMax=Vector2.one;container.pivot=new Vector2(.2f,.7f);container.offsetMin=container.offsetMax=Vector2.zero;
             var fixture=UnityEngine.Object.Instantiate(prefab,container,false);
             var second=UnityEngine.Object.Instantiate(prefab,container,false);
+            foreach(var screenFixture in new[]{fixture,second})
+            {
+                var projection=new SerializedObject(screenFixture.GetComponent<UIFollower>());
+                projection.FindProperty("groundPlane").boolValue=false;projection.FindProperty("worldCanvas").objectReferenceValue=null;projection.ApplyModifiedPropertiesWithoutUndo();
+                screenFixture.GetComponent<Canvas>().enabled=false;
+            }
             var hud=root.GetComponentInChildren<MainHudView>();
             try
             {
@@ -105,7 +111,10 @@ namespace ProjectY.Editor
         }
         private static void CheckFollower(GameObject fixture,Camera camera,Transform target,Canvas overlay)
         {
-            var follower=fixture.GetComponent<UIFollower>();follower.Bind(camera,target,overlay);
+            var follower=fixture.GetComponent<UIFollower>();
+            // This fixture checks generic screen UI scaling; ground projection has its own focused validation.
+            var mode=new SerializedObject(follower);mode.FindProperty("groundPlane").boolValue=false;mode.ApplyModifiedPropertiesWithoutUndo();
+            follower.Bind(camera,target,overlay);
             var settings=new SerializedObject(follower);var offset=settings.FindProperty("worldOffset").vector3Value;var screenOffset=settings.FindProperty("screenOffset").vector2Value;
             var group=fixture.GetComponent<CanvasGroup>();
             var originalPosition=camera.transform.position;var originalRotation=camera.transform.rotation;var originalFov=camera.fieldOfView;

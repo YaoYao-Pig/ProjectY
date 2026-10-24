@@ -1,0 +1,73 @@
+{
+  "version": 1,
+  "name": "LegendaryEncounterTable",
+  "description": "固定具名传奇与大地图队伍、叙事身份的绑定；每种一位，战前先对话。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "min": 1,
+      "ref": "WorldPartyTable",
+      "description": "大地图队伍定义 ID"
+    },
+    {
+      "name": "npcId",
+      "type": "int",
+      "ref": "NpcTable",
+      "description": "不在城镇重复生成的稳定叙事身份"
+    },
+    {
+      "name": "defeatedFlag",
+      "type": "string",
+      "default": "",
+      "description": "玩家实际击败时写入值 1 的事实键；空字符串表示不记录"
+    },
+    {
+      "name": "contactGraceMinutes",
+      "type": "int",
+      "min": 1,
+      "max": 1440,
+      "default": 60,
+      "description": "结束交流后的游戏分钟保护期，避免再次自动接触"
+    }
+  ],
+  "rows": [
+    {
+      "id": 11,
+      "npcId": 101,
+      "defeatedFlag": "legend_bloodmoon_resolved",
+      "contactGraceMinutes": 60
+    },
+    {
+      "id": 12,
+      "npcId": 102,
+      "defeatedFlag": "",
+      "contactGraceMinutes": 60
+    },
+    {
+      "id": 13,
+      "npcId": 103,
+      "defeatedFlag": "",
+      "contactGraceMinutes": 60
+    },
+    {
+      "id": 14,
+      "npcId": 104,
+      "defeatedFlag": "legend_ember_resolved",
+      "contactGraceMinutes": 60
+    },
+    {
+      "id": 15,
+      "npcId": 105,
+      "defeatedFlag": "legend_oathbreaker_resolved",
+      "contactGraceMinutes": 60
+    },
+    {
+      "id": 16,
+      "npcId": 106,
+      "defeatedFlag": "",
+      "contactGraceMinutes": 60
+    }
+  ]
+}

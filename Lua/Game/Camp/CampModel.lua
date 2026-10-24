@@ -1,4 +1,8 @@
+local LuaLanguage = require('Language')
 local Model={};Model.__index=Model
+local function failure(key)
+    return assert(LuaLanguage[key],'Unknown camp failure key: '..key)
+end
 -- 配置数组是只读代理；xLua 数组转换需要带有原始整数键的普通表。
 local function arrays(ids,counts)
     local items,amounts={},{};for i,id in ipairs(ids) do items[i]=id;amounts[i]=counts[i] end
@@ -10,25 +14,25 @@ function Model.New(adventure)
 end
 function Model:Available()
     local adventure=self.adventure
-    if adventure.data.Phase~='map' then return false,'请先返回地图营地' end
-    if adventure.parties.data.IsOpen then return false,'请先结束队伍交互' end
-    if adventure.shop.data.IsOpen or adventure.narrative.data.DialogueOpen then return false,'请先结束当前交互' end
+    if adventure.data.Phase~='map' then return false,LuaLanguage.UICampText3 end
+    if adventure.parties.data.IsOpen then return false,LuaLanguage.UICampText2 end
+    if adventure.shop.data.IsOpen or adventure.narrative.data.DialogueOpen then return false,LuaLanguage.UICampText end
     return true,''
 end
 function Model:Open()
     local ok,reason=self:Available();if not ok then return false,reason end
-    if self.data.IsOpen then return false,'营地已经打开' end
+    if self.data.IsOpen then return false,LuaLanguage.UICampText4 end
     self.data:Open();return true
 end
 function Model:Close() self.data:Close();return true end
 function Model:Session(revision)
     local ok,reason=self:Available();if not ok then return false,reason end
-    if not self.data.IsOpen then return false,'请先打开营地' end
-    if self.data.Revision~=revision then return false,'营地状态已变化，请重新选择' end
+    if not self.data.IsOpen then return false,LuaLanguage.UICampText6 end
+    if self.data.Revision~=revision then return false,LuaLanguage.UICampText5 end
     return true,''
 end
 function Model:Record(title,body)
-    self.adventure.growth.chronicle:Record('loot',nil,title,body,'远征营地',true)
+    self.adventure.growth.chronicle:Record('loot',nil,title,body,LuaLanguage.UICampTitleText,true)
 end
 function Model:Upgrade(facilityId,revision)
     local ok,reason=self:Session(revision);if not ok then return false,reason end
@@ -37,8 +41,8 @@ function Model:Upgrade(facilityId,revision)
     if not ok then return false,reason end
     local items,counts=arrays(upgrade.itemIds,upgrade.itemCounts)
     reason=self.data:Upgrade(facilityId,upgrade.level-1,revision,upgrade.coins,items,counts,adventure.equipment.data,adventure.player)
-    if reason~='' then return false,reason end
-    self:Record('营地建设',self.rules.facilities:Get(facilityId).name..' 升至 '..upgrade.level..' 级');return true
+    if reason~='' then return false,failure(reason) end
+    self:Record(LuaLanguage.UICampText8,string.format(LuaLanguage.UICampText7, (self.rules.facilities:Get(facilityId).name), (upgrade.level)));return true
 end
 function Model:Produce(recipeId,revision)
     local ok,reason=self:Session(revision);if not ok then return false,reason end
@@ -48,35 +52,35 @@ function Model:Produce(recipeId,revision)
     local row=self.rules.recipes:Get(recipeId)
     local items,counts=arrays(row.itemIds,row.itemCounts)
     reason=self.data:Enqueue(row.facilityId,row.id,row.requiredLevel,minutes,row.minutes,revision,row.coins,items,counts,adventure.equipment.data,adventure.player)
-    if reason~='' then return false,reason end
-    self:Record('开始生产',row.name..' · '..row.minutes..' 分钟后可领取');return true
+    if reason~='' then return false,failure(reason) end
+    self:Record(LuaLanguage.UICampText10,string.format(LuaLanguage.UICampText9, (row.name), (row.minutes)));return true
 end
 function Model:Claim(facilityId,revision)
     local ok,reason=self:Session(revision);if not ok then return false,reason end
-    local job=self.data:JobFor(facilityId);if not job then return false,'该设施没有待领取订单' end
+    local job=self.data:JobFor(facilityId);if not job then return false,LuaLanguage.UICampText12 end
     local row=self.rules.recipes:Get(job.RecipeId);local kinds={}
     for i,id in ipairs(row.outputIds) do kinds[i]=self.rules.items:Get(id).kind end
     local items,counts=arrays(row.outputIds,row.outputCounts)
     reason=self.data:Claim(facilityId,revision,self.adventure.narrative.data.Minutes,items,counts,kinds,self.adventure.equipment.data)
-    if reason~='' then return false,reason end
-    self:Record('领取营地产物',self.rules:ItemsText(row.outputIds,row.outputCounts));return true
+    if reason~='' then return false,failure(reason) end
+    self:Record(LuaLanguage.UICampText11,self.rules:ItemsText(row.outputIds,row.outputCounts));return true
 end
 function Model:Deposit(itemId,revision,count)
     local ok,reason=self:Session(revision);if not ok then return false,reason end
-    if not self.rules:IsStack(itemId) then return false,'营地仓库只接收材料、弹药、药品与组件' end
+    if not self.rules:IsStack(itemId) then return false,LuaLanguage.UICampText13 end
     reason=self.data:Deposit(itemId,count,self.rules:Capacity(self.data),revision,self.adventure.equipment.data)
-    return reason=='',reason
+    return reason=='',reason=='' and '' or failure(reason)
 end
 function Model:Withdraw(itemId,revision,count)
     local ok,reason=self:Session(revision);if not ok then return false,reason end
-    if not self.rules:IsStack(itemId) then return false,'营地仓库只保存堆叠物品' end
+    if not self.rules:IsStack(itemId) then return false,LuaLanguage.UICampText14 end
     reason=self.data:Withdraw(itemId,count,revision,self.rules.items:Get(itemId).kind,self.adventure.equipment.data)
-    return reason=='',reason
+    return reason=='',reason=='' and '' or failure(reason)
 end
 function Model:Wait(minutes,revision)
     local ok,reason=self:Session(revision);if not ok then return false,reason end
     reason=self.data:Wait(minutes,revision,self.adventure.narrative.data)
-    if reason~='' then return false,reason end
+    if reason~='' then return false,failure(reason) end
     self.adventure.narrative:TickBuffs()
     self.adventure.narrative:Refresh();return true
 end
@@ -89,42 +93,41 @@ function Model:Snapshot()
     end
     for _,facility in ipairs(rules.facilities:All()) do
         local level=data:GetLevel(facility.id);local ok,reason,upgrade=rules:CanUpgrade(data,equipment,coins,facility.id)
-        local detail=facility.description..'\n'..(upgrade and ('建设至 '..upgrade.level..' 级：'..rules:CostText(upgrade)) or reason)
-        if upgrade then detail=detail..'\n'..(ok and '点击建设，费用一次性扣除' or reason) end
-        add('build',facility.name..' · '..level..' 级',detail,upgrade and 'camp_upgrade' or nil,facility.id,ok)
+        local detail=facility.description..'\n'..(upgrade and (string.format(LuaLanguage.UICampDetail2, (upgrade.level), (rules:CostText(upgrade)))) or reason)
+        if upgrade then detail=detail..'\n'..(ok and LuaLanguage.UICampDetail or reason) end
+        add('build',string.format(LuaLanguage.UICampText35, (facility.name), (level)),detail,upgrade and 'camp_upgrade' or nil,facility.id,ok)
         local job=data:JobFor(facility.id)
         if job then
             local row=rules.recipes:Get(job.RecipeId);local ready=minutes>=job.ReadyAt
             local fits=ready and adventure.equipment:CanGrant(row.outputIds,row.outputCounts)
-            add('production',(ready and '领取 · ' or '生产中 · ')..row.name,rules:ItemsText(row.outputIds,row.outputCounts)..'\n'..
-                (ready and (fits and '生产已完成，点击收入背包' or '背包空间不足，产物保留在设施中') or ('剩余 '..math.ceil(job.ReadyAt-minutes)..' 分钟')),
+            add('production',(ready and LuaLanguage.UICampText34 or LuaLanguage.UICampText33)..row.name,rules:ItemsText(row.outputIds,row.outputCounts)..'\n'..
+                (ready and (fits and LuaLanguage.UICampText32 or LuaLanguage.UICampText31) or (string.format(LuaLanguage.UICampText30, (math.ceil(job.ReadyAt-minutes))))),
                 'camp_claim',facility.id,ready and fits)
         end
         for _,recipe in ipairs(rules.byFacility[facility.id]) do
             ok,reason=rules:CanProduce(data,equipment,coins,recipe.id,minutes)
-            add('production',recipe.name..' · '..facility.name..' '..recipe.requiredLevel..' 级',
-                '产出 '..rules:ItemsText(recipe.outputIds,recipe.outputCounts)..'  |  '..recipe.minutes..' 分钟\n投入 '..rules:CostText(recipe)..'\n'..
-                (ok and '点击安排生产 · 每个设施保留一个订单' or reason),'camp_produce',recipe.id,ok)
+            add('production',string.format(LuaLanguage.UICampText29, (recipe.name), (facility.name), (recipe.requiredLevel)),
+                string.format(LuaLanguage.UICampText28, (rules:ItemsText(recipe.outputIds,recipe.outputCounts)), (recipe.minutes), (rules:CostText(recipe)), (ok and LuaLanguage.UICampText27 or reason)),'camp_produce',recipe.id,ok)
         end
     end
     local capacity=rules:Capacity(data);local free=capacity-data.StoredTotal
-    add('storage','营地仓库 · '..data.StoredTotal..' / '..capacity,'材料先从仓库扣除，再从背包补足。每次转移最多 10 件，药品和组件每次 1 件。')
+    add('storage',string.format(LuaLanguage.UICampText26, (data.StoredTotal), (capacity)),LuaLanguage.UICampText25)
     local deposited,withdrawn=0,0
     for _,item in ipairs(rules.items:All()) do if rules:IsStack(item.id) then
         local batch=(item.kind=='material' or item.kind=='ammo') and 10 or 1
         local bag=equipment:CountItem(item.id);local stored=data:Stored(item.id)
         if bag>0 then
             local amount=math.min(bag,batch,math.max(1,free))
-            add('storage','存入 '..item.name..' ×'..amount,'背包 '..bag..'  |  仓库 '..stored..(free==0 and '\n仓库已满，请先升级或取出' or ''),'camp_deposit',item.id,free>0,amount);deposited=deposited+1
+            add('storage',string.format(LuaLanguage.UICampText24, (item.name), (amount)),string.format(LuaLanguage.UICampText23, (bag), (stored), (free==0 and LuaLanguage.UICampText22 or '')),'camp_deposit',item.id,free>0,amount);deposited=deposited+1
         end
         if stored>0 then
             local amount=math.min(stored,batch);local fits=adventure.equipment:CanGrant({item.id},{amount})
-            add('storage','取出 '..item.name..' ×'..amount,'仓库 '..stored..'  |  背包 '..bag..(not fits and '\n背包空间不足，物品留在仓库' or ''),'camp_withdraw',item.id,fits,amount);withdrawn=withdrawn+1
+            add('storage',string.format(LuaLanguage.UICampText21, (item.name), (amount)),string.format(LuaLanguage.UICampText20, (stored), (bag), (not fits and LuaLanguage.UICampText19 or '')),'camp_withdraw',item.id,fits,amount);withdrawn=withdrawn+1
         end
     end end
-    if deposited+withdrawn==0 then add('storage','尚无可转移物资','探索、搜刮或向商人购买材料后，可在这里安全存放。') end
+    if deposited+withdrawn==0 then add('storage',LuaLanguage.UICampText18,LuaLanguage.UICampText17) end
     for _,duration in ipairs({60,360,1440}) do
-        add('wait','等待 '..(duration//60)..' 小时','推进营地生产、世界时钟与商人补货周期。等待不直接恢复伤势或发放物品。','camp_wait',duration,minutes+duration<=1000000000)
+        add('wait',string.format(LuaLanguage.UICampText16, (duration//60)),LuaLanguage.UICampText15,'camp_wait',duration,minutes+duration<=1000000000)
     end
     return {version=data.Revision,coins=coins,minutes=minutes,capacity=capacity,stored=data.StoredTotal,jobs=data.JobCount,rows=rows}
 end

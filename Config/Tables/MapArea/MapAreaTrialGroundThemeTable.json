@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "name": "MapAreaTrialGroundThemeTable",
+  "description": "各地貌共用的平整人工审判场；不随野外地形改变战斗高差。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "regionType",
+      "type": "enum",
+      "description": "适用来源地貌",
+      "enumRef": "Map.E_MapRegion"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "主题名称"
+    },
+    {
+      "name": "floorColor",
+      "type": "string",
+      "description": "基础地面色"
+    },
+    {
+      "name": "wallColor",
+      "type": "string",
+      "description": "基础边界色"
+    },
+    {
+      "name": "wallHeight",
+      "type": "float",
+      "description": "仅布景墙高",
+      "min": 0
+    },
+    {
+      "name": "heightNoise",
+      "type": "float",
+      "description": "审判场保持平整",
+      "min": 0,
+      "max": 0
+    },
+    {
+      "name": "assetId",
+      "type": "int",
+      "description": "地表六边形模型",
+      "ref": "MapAssetTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "regionType": 1,
+      "name": "城郊比武审判场",
+      "floorColor": "#998568",
+      "wallColor": "#817c71",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 5
+    },
+    {
+      "id": 2,
+      "regionType": 2,
+      "name": "城郊比武审判场",
+      "floorColor": "#998568",
+      "wallColor": "#817c71",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 5
+    },
+    {
+      "id": 3,
+      "regionType": 3,
+      "name": "城郊比武审判场",
+      "floorColor": "#998568",
+      "wallColor": "#817c71",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 5
+    },
+    {
+      "id": 4,
+      "regionType": 4,
+      "name": "城郊比武审判场",
+      "floorColor": "#998568",
+      "wallColor": "#817c71",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 5
+    },
+    {
+      "id": 5,
+      "regionType": 5,
+      "name": "城郊比武审判场",
+      "floorColor": "#998568",
+      "wallColor": "#817c71",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 5
+    },
+    {
+      "id": 6,
+      "regionType": 6,
+      "name": "城郊比武审判场",
+      "floorColor": "#998568",
+      "wallColor": "#817c71",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 5
+    },
+    {
+      "id": 7,
+      "regionType": 7,
+      "name": "城郊比武审判场",
+      "floorColor": "#998568",
+      "wallColor": "#817c71",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 5
+    },
+    {
+      "id": 8,
+      "regionType": 8,
+      "name": "城郊比武审判场",
+      "floorColor": "#998568",
+      "wallColor": "#817c71",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 5
+    },
+    {
+      "id": 9,
+      "regionType": 9,
+      "name": "城郊比武审判场",
+      "floorColor": "#998568",
+      "wallColor": "#817c71",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 5
+    },
+    {
+      "id": 10,
+      "regionType": 10,
+      "name": "城郊比武审判场",
+      "floorColor": "#998568",
+      "wallColor": "#817c71",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 5
+    },
+    {
+      "id": 11,
+      "regionType": 11,
+      "name": "城郊比武审判场",
+      "floorColor": "#998568",
+      "wallColor": "#817c71",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 5
+    }
+  ]
+}

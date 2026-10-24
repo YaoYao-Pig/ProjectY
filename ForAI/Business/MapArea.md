@@ -19,6 +19,10 @@
 
 - `Forest` 独立策略及区域入口、动物与哥布林刷新、驯服与骑乘见[森林动物与骑乘](Animals.md)，复用当前单层原地战斗与探索状态。
 
+- `TrialGround`（类型 7，区域 60）使用独立审判场策略与主题：中央夯土战区和南北入口保持单层、零高差，三级木看台及北侧审判席是不可行走布景。`MapAreaTrialGroundTable.encounterId` 对应固定四名参战者的同一敌群计划，前三格在北侧、第四格为南入口前方的受审骑士；阵营、角色身份及事件胜负归事件接入方设置，不由地图生成器决定。围栏、长凳、长桌、入口门架及灯柱复用已绑定模型。
+- `MapAreaTrialGroundNpcTable` 配置看台观众、入口旁观者与领主/侍卫/书记。生成到冻结布局 `decorativeNpcs`，使用负显示 ID；`LayoutSnapshot` 将其并入显示 NPC，由 `TownNpcRenderer` 固定位置、朝向和身份标签。它们不进入 `layout.npcs`、C# NPC 状态、交互、占格、弹道或战斗，因此旧审判场存档的居民数量不变；增加布景无需存档迁移。
+- `RoadsideRescue`（类型8、区域61）为单层道路拦截场景，使用树、石堆、货车布置掩体。前三个演员在北侧，第4位在后方安全处；参与者窗口半径不超过12格，安全处距首名追兵18格。参战排除与初始伤势由 [特殊事件](SpecialEvents.md) 设置。`encounterPlans.initialHealthPercents/injuries` 仅在首次初始化 C# 遭遇时生效，读档/重进不重复扣血或加伤。
+
 - 大地图聚落实例经 `MapAreaEntranceTable.townId → areaId` 生成单一交互入口；同一城镇的分散建筑共享入口。`AdventureSystem:Visit` 按 `areaConfigId` 进入 MapArea，旧营地/野外事件保留。入口带真实 Region ID/类型、坐标、高度与地貌混合权重，地图本身仍使用[大地图](Map.md)的只读快照。
 - `MapAreaGenerator` 按 `E_MapAreaType` 注册策略、独立参数表和主题表。当前 Dungeon、[Town 城镇街区](TownArea.md)、[Forest 森林](Animals.md)、[Battlefield 事件战场](Loot.md)、[Shipwreck 沉船](Shipwreck.md) 与 [Mine 矿井](Mine.md) 均可生成；注册时可指定 themeTableName，省略时使用地牢主题表。以后新增类型应注册自己的生成策略，不在入口里套用其他类型。
 - `MapAreaTable` 定义类型、策略参数 ID、宽高、六边形半径、视野、移动间隔和种子盐。默认地牢 96×96，共 9216 格（包含实体墙），地格半径 1.5；格子使用轴向 q/r，与 BattleBoard 共用 HexGrid。调整 hexRadius 放大地面间距、通道和陈设，不改变格数、寻路与视野半径的格单位。尺寸目前配置范围 32–192，房间数量/半径也需与面积匹配，放置次数耗尽明确报错。
@@ -37,9 +41,10 @@
 - `AdventureSystem:Tick` 在探索移动更新后检测敌我距离及原地形视线，满足条件即停止队伍路线，通过 `BattleWindow/StartArea` 原地开战；规则见[战斗](Battle.md)。胜利只结算一次，存活队员留在各自战斗结束格继续探索，下一次探索移动先逐格收拢散队；失败/超时返回大地图，下次进入从入口部署。敌人伤势与清除状态保留。
 - `BattleBoard.FromArea(area,q,r,radius,layer)` 按平面半径裁出包含各层的窗口，共享原格身份和导航边。当前原地战斗接单层地牢与森林；城镇多层导航与旧事件独立棋盘继续使用各自原有入口。
 - Unity 菜单 `Project Y/地图/打开 MapArea 地牢测试` 复用 `AdventureDemo.unity`，Play 后点击“古代地下迷宫”地点。左键移动、空格停止、滚轮缩放、中键/WASD 平移、右键旋转；侧栏可跟随小队、查看全图与完整结构。调试显示不解锁探索状态，测试返回按钮允许在任意位置返回大地图。
-- `MapAreaRenderer` 使用已绑定、配表指定的低模陈设做 GPU 实例渲染；地牢平地和墙使用低模柱，坡阶复用 `TownSurfaceRenderer` 的实际三角形与贴地采样。未知坡阶隐藏并显示压平迷雾，已知不可见部分连同材质细节减暗。城镇按 `corners/deckThickness/stairRise` 绘制台地、台阶和薄楼板，桥下不填成实体；二楼剖切同时作用于渲染、拾取、相机避障和探索高亮。静态快照包含层、邻接、通行掩码和物件 `scaleX/Y/Z`，进入时读取一次；显示数据不持有 LuaTable，也不作为玩法状态。
-- 俯视探索默认俯角 50°、方位角 −35°、正交尺寸 `10×hexRadius`；城镇高位跟随镜头参数见[城镇](TownArea.md)。人物保持现有米制尺寸。`PawnMotion` 对城镇和地牢坡阶逐边采样，冲锋也展开成直线逐格路径；站立与移动末端同样贴合踏步。视线仍保留墙体规则，并以 1.6 米眼高检查中途地表遮挡。
+- `MapAreaRenderer` 使用已绑定、配表指定的低模陈设做 GPU 实例渲染；地牢平地和墙使用低模柱，坡阶复用 `TownSurfaceRenderer` 的实际三角形与贴地采样。未知坡阶隐藏并显示压平迷雾，已知不可见部分连同材质细节显示为有亮度下限的灰色记忆，未知区域仍隐藏/黑色、当前视野正常着色；共用颜色入口见[战争迷雾](WorldFog.md)。城镇按 `corners/deckThickness/stairRise` 绘制台地、台阶和薄楼板，桥下不填成实体；二楼剖切同时作用于渲染、拾取、相机避障和探索高亮。静态快照包含层、邻接、通行掩码和物件 `scaleX/Y/Z`，进入时读取一次；显示数据不持有 LuaTable，也不作为玩法状态。
+- 俯视探索默认俯角 50°、方位角 −35°、正交尺寸 `10×hexRadius`；城镇与地牢共用[俯视镜头与操控](CameraControls.md)。人物保持现有米制尺寸。`PawnMotion` 对城镇和地牢坡阶逐边采样，冲锋也展开成直线逐格路径；站立与移动末端同样贴合踏步。视线仍保留墙体规则，并以 1.6 米眼高检查中途地表遮挡。
 - `LayoutSnapshot` 的嵌套数值数组必须复制为普通 Lua 数组：冻结布局是带 `__index/__len` 的空代理，xLua `LuaTable.Length` 调用 `xlua_objlen`，不会使用代理的 `__len`。直接传 `corners/neighbors` 会让 C# 收到零长度数组；颜色也复制，确保显示快照不共享只读代理。最小边界回归为 `python -B Tools/Tests/run_lua.py Tools/Tests/maparea_snapshot.lua`。
+- 柱模型的 `tintMaterial` 允许为空（新增五地貌战场使用此配置）；非空时必须匹配实际材质名，材质槽仍须完整且与子网格数量一致。MapArea 地表颜色/图案继续由地格配方提供。最小回归为 [材质契约检查](../../Tools/Tests/maparea_materials.cs)，编译后通过 MCP `execute_code` 在 Edit Mode 执行，覆盖六种主题表引用的模型和无效材质配置，不进入 Play。
 - 动态快照的 `fullVisibilityCount>0` 表示真实 Known/Visible 都覆盖全图，此时 `known/visible` 空数组由 C# 展开为共享只读的 `0..N-1` 索引范围，避免每次移动往返传递数万个索引。部分/空视野继续发送原数组；旧快照省略该字段仍可读。显示方不得修改索引数组内容，只能替换快照引用。
 - `TownSurfaceRenderer` 按有几何的地格包围盒构建静态 BVH；相机避障和鼠标拾取先筛选少量候选，再按原地格顺序使用相同的精确三角形算法。查询复用候选数组，迷雾/楼板剖切仍即时过滤；只有地形重建时重建索引，不逐帧遍历全图或分配查询集合。
 - 平薄楼板由 `deckThickness>0` 明确选择面网格，包含船体下舱layer0；显示剖切支持 `cutawayGroup/cutawayLayer` 与 `coverInteriorId`，用于同一大结构的下舱和露天高台。旧城镇未设置group时保持原室内剖切语义；[沉船](Shipwreck.md)记录其分层规则。导航边由 `LayeredFloorEdges` 共用，不以显示剖切改变权威占格。分层柱墙的底面位于所属楼板，避免贯穿下层；柱体绘制、拾取与镜头射线共用底面及剖切状态。
@@ -53,6 +58,8 @@
 - 最小算法检查：`python -B Tools/Tests/run_lua.py Tools/Tests/maparea_core.lua`，覆盖六种 Region、代表性种子、连通、确定性、视线、共享坐标、通道净宽、战斗区与模板完整性。真实 C# 状态/显示快照检查：Edit Mode 菜单 `Project Y/地图/验证 MapArea 地牢`；不切场景、不进入 Play。修改建筑资源后在远征场景执行“同步地图资源引用”。
 
 ## 关键入口
+
+- [RoadsideRescueGenerator.lua](../../Lua/Game/MapArea/RoadsideRescueGenerator.lua) / [路边配方](../../Config/Tables/MapArea/MapAreaRoadsideRescueTable.json) / [主题](../../Config/Tables/MapArea/MapAreaRoadsideRescueThemeTable.json) / [roadside_rescue.lua](../../Tools/Tests/roadside_rescue.lua)：`python -B Tools/Tests/run_lua.py Tools/Tests/roadside_rescue.lua` 检查11地貌、连通、3/4人部署及安全角色在战斗窗口外。
 
 - [直墙封边几何与导航不变检查](../../Tools/Tests/floor_boundaries.lua) / [Editor 定向预览](../../Tools/Tests/floor_boundaries_preview.cs) / [快照夹具](../../Tools/Tests/floor_boundaries_preview.lua)：只检查裁切、洞口、原导航身份、封边拾取和楼层隐显，输出至 `Docs/Previews/MapArea/FloorBoundaries/`。
 
@@ -68,3 +75,4 @@
 - [探索高亮](../../Assets/GameFramework/Samples/Adventure/ExplorationGridRenderer.cs) / [渐隐 Shader](../../Assets/GameFramework/Resources/Rendering/ExplorationGrid.shader) / [最小显示检查](../../Tools/Tests/exploration_grid.cs)：C# 编译后通过 Unity MCP `execute_code` 执行检查文件的方法体，验证可见格、障碍、队员并集、层隔离、战斗切换、坡道台阶贴合、格内填充和 GPU 距离渐隐，并输出独立预览图；不进入 Play、不保存场景。
 - [真实 C# 移动基准](../../Tools/Tests/town_movement_perf.lua) / [射线与显示基准](../../Tools/Tests/maparea_raycast_perf.cs) / [BVH 对照](../../Tools/Tests/maparea_raycast_bvh.cs) / [可见性快照检查](../../Tools/Tests/maparea_visibility_snapshot.lua)：有限 Edit Mode 检查，不渲染或启动 Play；前后耗时与命中一致性结果保存到 `Docs/Previews/MapArea/`。
 - [敌群部署](../../Lua/Game/MapArea/DungeonEncounters.lua) / [敌群配置](../../Config/Tables/MapArea/MapAreaEncounterTable.json) / [战斗显示](../../Assets/GameFramework/Samples/Adventure/AreaCombatRenderer.cs)；原地战斗验证入口见[战斗](Battle.md)。
+- [骑士审判场策略](../../Lua/Game/MapArea/TrialGroundGenerator.lua) / [审判场配方](../../Config/Tables/MapArea/MapAreaTrialGroundTable.json) / [审判场主题](../../Config/Tables/MapArea/MapAreaTrialGroundThemeTable.json)；最小检查 `python -B Tools/Tests/run_lua.py Tools/Tests/trial_ground.lua` 覆盖地貌主题、南北连通、四人支援部署、骑士站位、看台禁行与固定布局确定性，不启动 Unity。

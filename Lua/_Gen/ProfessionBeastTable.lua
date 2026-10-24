@@ -1,0 +1,12 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class ProfessionBeastTableRow
+---@field id number 技能 ID
+---@field kind "scent"|"move"|"attack"|"rescue"|"mode" 指令机制
+---@field commandRange number 主人至动物的指令距离
+---@field biteSkillId number 真实动物扑咬技能
+---@field bleedEffectId number 实际流血效果
+---@field passiveNodeId number 嗅血被动节点
+---@field bonusDamage number 嗅血基础附伤
+---@field bonusEffectId number 嗅血附伤效果，正常防御结算
+---@field description string 指令说明
+return {["name"]="ProfessionBeastTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\230\138\128\232\131\189 ID",["ref"]="CombatSkillTable"},{["name"]="kind",["type"]="enum",["description"]="\230\140\135\228\187\164\230\156\186\229\136\182",["values"]={"scent","move","attack","rescue","mode"}},{["name"]="commandRange",["type"]="int",["description"]="\228\184\187\228\186\186\232\135\179\229\138\168\231\137\169\231\154\132\230\140\135\228\187\164\232\183\157\231\166\187",["default"]=3,["min"]=0},{["name"]="biteSkillId",["type"]="int",["description"]="\231\156\159\229\174\158\229\138\168\231\137\169\230\137\145\229\146\172\230\138\128\232\131\189",["ref"]="CombatSkillTable"},{["name"]="bleedEffectId",["type"]="int",["description"]="\229\174\158\233\153\133\230\181\129\232\161\128\230\149\136\230\158\156",["ref"]="CombatEffectTable"},{["name"]="passiveNodeId",["type"]="int",["description"]="\229\151\133\232\161\128\232\162\171\229\138\168\232\138\130\231\130\185",["ref"]="TalentNodeTable"},{["name"]="bonusDamage",["type"]="int",["description"]="\229\151\133\232\161\128\229\159\186\231\161\128\233\153\132\228\188\164",["default"]=3,["min"]=0},{["name"]="bonusEffectId",["type"]="int",["description"]="\229\151\133\232\161\128\233\153\132\228\188\164\230\149\136\230\158\156\239\188\140\230\173\163\229\184\184\233\152\178\229\190\161\231\187\147\231\174\151",["ref"]="CombatEffectTable"},{["name"]="description",["type"]="text",["description"]="\230\140\135\228\187\164\232\175\180\230\152\142"}},["fingerprint"]="581fc4d6d6a97488a734aa59c0bae7664bef667770d0e00ce6e34ba775c8f7e2"}

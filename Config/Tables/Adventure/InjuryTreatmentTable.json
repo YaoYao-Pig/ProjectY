@@ -1,0 +1,43 @@
+{
+  "version": 1,
+  "name": "InjuryTreatmentTable",
+  "description": "探索阶段从身体健康界面消耗医疗物资；不回血、不治疗永久创伤",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定编号",
+      "min": 1
+    },
+    {
+      "name": "itemId",
+      "type": "int",
+      "description": "背包医疗物资",
+      "ref": "EquipmentItemTable",
+      "min": 1
+    },
+    {
+      "name": "count",
+      "type": "int",
+      "description": "每次消耗",
+      "min": 1,
+      "max": 99
+    },
+    {
+      "name": "recovery",
+      "type": "int",
+      "description": "单次减少的部位损伤",
+      "min": 1,
+      "max": 100
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "itemId": 91,
+      "count": 1,
+      "recovery": 40
+    }
+  ]
+}

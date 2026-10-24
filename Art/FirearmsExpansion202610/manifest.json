@@ -1,0 +1,172 @@
+[
+  {
+    "id": 800,
+    "name": "风隼突击步枪",
+    "kind": "weapon",
+    "model": "Firearm_800",
+    "price": 160,
+    "category": "assault_rifle",
+    "magazine": 21,
+    "description": "轻型突击步枪，精准单发与三连射兼备。使用巡猎12发弹匣及巡猎弹药。",
+    "muzzle": 0.78
+  },
+  {
+    "id": 801,
+    "name": "铁雨突击步枪",
+    "kind": "weapon",
+    "model": "Firearm_801",
+    "price": 230,
+    "category": "assault_rifle",
+    "magazine": 810,
+    "description": "重型持续火力步枪，使用专属24发弹匣与巡猎弹药，可连续完成8轮三连射；不兼容巡猎12发弹匣。",
+    "muzzle": 0.86
+  },
+  {
+    "id": 802,
+    "name": "远望狙击枪",
+    "kind": "weapon",
+    "model": "Firearm_802",
+    "price": 200,
+    "category": "sniper_rifle",
+    "magazine": 811,
+    "description": "远程高命中、高暴击的栓动狙击枪，相邻1格无法射击。使用5发狙击弹匣和狙击弹药。",
+    "muzzle": 1.02
+  },
+  {
+    "id": 803,
+    "name": "钟塔重型狙击枪",
+    "kind": "weapon",
+    "model": "Firearm_803",
+    "price": 270,
+    "category": "sniper_rifle",
+    "magazine": 811,
+    "description": "长枪管重型狙击枪，可使用贯甲射击对付重甲。使用5发狙击弹匣，贯甲一次消耗2发。",
+    "muzzle": 1.14
+  },
+  {
+    "id": 804,
+    "name": "破门霰弹枪",
+    "kind": "weapon",
+    "model": "Firearm_804",
+    "price": 200,
+    "category": "shotgun",
+    "magazine": 812,
+    "description": "短管近战散射枪，1发霰弹最多命中3名相邻敌人。使用6发霰弹匣和霰弹弹药。",
+    "muzzle": 0.6
+  },
+  {
+    "id": 805,
+    "name": "碎礁战斗霰弹枪",
+    "kind": "weapon",
+    "model": "Firearm_805",
+    "price": 270,
+    "category": "shotgun",
+    "magazine": 812,
+    "description": "强化型战斗霰弹枪，可双发连续散射。使用6发霰弹匣；每轮重霰双发消耗2发。",
+    "muzzle": 0.7
+  },
+  {
+    "id": 810,
+    "name": "铁雨弹匣 · 24发",
+    "kind": "magazine",
+    "model": "Firearm_810",
+    "price": 28,
+    "capacity": 24,
+    "ammo": 31
+  },
+  {
+    "id": 811,
+    "name": "狙击弹匣 · 5发",
+    "kind": "magazine",
+    "model": "Firearm_811",
+    "price": 24,
+    "capacity": 5,
+    "ammo": 820
+  },
+  {
+    "id": 812,
+    "name": "霰弹匣 · 6发",
+    "kind": "magazine",
+    "model": "Firearm_812",
+    "price": 20,
+    "capacity": 6,
+    "ammo": 821
+  },
+  {
+    "id": 813,
+    "name": "鹰眼准镜",
+    "kind": "module",
+    "model": "Firearm_813",
+    "price": 90,
+    "slot": "rail",
+    "description": "命中提高8个百分点，暴击率提高10个百分点；伤害降低5%。"
+  },
+  {
+    "id": 814,
+    "name": "长视狙击镜",
+    "kind": "module",
+    "model": "Firearm_814",
+    "price": 90,
+    "slot": "rail",
+    "description": "射程增加2格，命中提高5个百分点，暴击率提高15个百分点；技能冷却增加1回合。"
+  },
+  {
+    "id": 815,
+    "name": "制退补偿器",
+    "kind": "module",
+    "model": "Firearm_815",
+    "price": 75,
+    "slot": "muzzle",
+    "description": "命中提高10个百分点；伤害降低10%，适合稳定连续射击。"
+  },
+  {
+    "id": 816,
+    "name": "长膛枪口",
+    "kind": "module",
+    "model": "Firearm_816",
+    "price": 75,
+    "slot": "muzzle",
+    "description": "伤害提高10%，射程增加1格；命中降低5个百分点。"
+  },
+  {
+    "id": 817,
+    "name": "裂甲枪口",
+    "kind": "module",
+    "model": "Firearm_817",
+    "price": 75,
+    "slot": "muzzle",
+    "description": "每次命中独立有35%概率施加2回合破甲（防御-2）；伤害降低10%。连续射击可多次尝试触发。"
+  },
+  {
+    "id": 818,
+    "name": "贴腮稳定托",
+    "kind": "module",
+    "model": "Firearm_818",
+    "price": 75,
+    "slot": "stock",
+    "description": "命中提高6个百分点，暴击率提高5个百分点；伤害降低5%。"
+  },
+  {
+    "id": 819,
+    "name": "复进缓冲托",
+    "kind": "module",
+    "model": "Firearm_819",
+    "price": 75,
+    "slot": "stock",
+    "description": "技能冷却减少1回合，最低为0；伤害降低10%。适合贯甲狙击或重霰双发。"
+  },
+  {
+    "id": 820,
+    "name": "狙击弹药",
+    "kind": "ammo",
+    "model": "Firearm_820",
+    "price": 3
+  },
+  {
+    "id": 821,
+    "name": "霰弹弹药",
+    "kind": "ammo",
+    "model": "Firearm_821",
+    "price": 2
+  }
+]

@@ -134,6 +134,287 @@
         3083,
         3084
       ]
+    },
+    {
+      "id": 701,
+      "name": "让林间不再流血",
+      "description": "在大地图找到血月巨狼 · 裂喉，通过战斗击败或对话和解让其停止袭击，然后返回委托人处回报。此前已解决的结果同样有效。",
+      "category": "side",
+      "startConditionId": 4012,
+      "completeConditionId": 4019,
+      "actionIds": [
+        4009,
+        4010,
+        4011
+      ],
+      "autoAccept": false,
+      "autoComplete": false
+    },
+    {
+      "id": 702,
+      "name": "唤醒熔脉的名字",
+      "description": "在大地图找到熔脉巨兽 · 余烬，通过战斗击败或对话和解让其停止袭击，然后返回委托人处回报。此前已解决的结果同样有效。",
+      "category": "side",
+      "startConditionId": 4020,
+      "completeConditionId": 4027,
+      "actionIds": [
+        4017,
+        4018,
+        4019
+      ],
+      "autoAccept": false,
+      "autoComplete": false
+    },
+    {
+      "id": 703,
+      "name": "给断誓者一条归途",
+      "description": "在大地图找到叛誓剑士 · 维兰，通过战斗击败或对话和解让其停止袭击，然后返回委托人处回报。此前已解决的结果同样有效。",
+      "category": "side",
+      "startConditionId": 4028,
+      "completeConditionId": 4035,
+      "actionIds": [
+        4025,
+        4026,
+        4027
+      ],
+      "autoAccept": false,
+      "autoComplete": false
+    },
+    {
+      "id": 801,
+      "name": "名册上多出来的人",
+      "description": "莫琳每月替一个死人领救济。那个女人今天托人带话：她想用自己的名字领工钱。",
+      "category": "side",
+      "startConditionId": 8009,
+      "completeConditionId": 8010,
+      "autoAccept": true,
+      "autoComplete": true,
+      "actionIds": [
+        8000,
+        8001
+      ]
+    },
+    {
+      "id": 802,
+      "name": "半枚铜扣",
+      "description": "一枚破损的军服扣被送回卫队。塞维恩认出那是洛岑的，死者的母亲正等着领回遗物。",
+      "category": "side",
+      "startConditionId": 8039,
+      "completeConditionId": 8040,
+      "autoAccept": true,
+      "autoComplete": true,
+      "actionIds": [
+        8000,
+        8001
+      ]
+    },
+    {
+      "id": 803,
+      "name": "少一个人的工钱",
+      "description": "炉边有七个人吃饭，结算单上却只有六个名字。赫铎留出了一份工钱，还没找到能让艾达签字领取的办法。",
+      "category": "side",
+      "startConditionId": 8072,
+      "completeConditionId": 8073,
+      "autoAccept": true,
+      "autoComplete": true,
+      "actionIds": [
+        8000,
+        8001
+      ]
+    },
+    {
+      "id": 804,
+      "name": "一封写得太好的情书",
+      "description": "书记收到两封要求退回的情书。两封都夸对方的眼睛像秋天的湖，连错别字也一样。",
+      "category": "side",
+      "startConditionId": 8098,
+      "completeConditionId": 8099,
+      "autoAccept": true,
+      "autoComplete": true,
+      "actionIds": [
+        8000,
+        8001
+      ]
+    },
+    {
+      "id": 805,
+      "name": "谁家的好狗",
+      "description": "巴豆在酒馆住了一个冬天。卫队的人认出它的项圈，想把它带回去。阿苇把牵绳藏了起来。",
+      "category": "side",
+      "startConditionId": 8125,
+      "completeConditionId": 8126,
+      "autoAccept": true,
+      "autoComplete": true,
+      "actionIds": [
+        8000,
+        8001
+      ]
+    },
+    {
+      "id": 806,
+      "name": "关卡下的路费",
+      "description": "商队付给灰路匪帮的钱，写在驿站账上却叫修桥费。塞维恩要你查清这笔钱已经交了多久。",
+      "category": "side",
+      "startConditionId": 8157,
+      "completeConditionId": 8158,
+      "autoAccept": true,
+      "autoComplete": true,
+      "actionIds": [
+        8000,
+        8001
+      ]
+    },
+    {
+      "id": 807,
+      "name": "门后的床",
+      "description": "工坊唯一通往后街的门被一张床挡住。住在那里的人答应搬床，前提是工坊别再随时进她的房间。",
+      "category": "side",
+      "startConditionId": 8191,
+      "completeConditionId": 8192,
+      "autoAccept": true,
+      "autoComplete": true,
+      "actionIds": [
+        8000,
+        8001
+      ]
+    },
+    {
+      "id": 808,
+      "name": "多摆一只碗",
+      "description": "岑姨每年在儿子的座位前摆一只碗。今年她留下钱，说这顿饭想请个人来吃。阿苇不敢收走那只碗。",
+      "category": "side",
+      "startConditionId": 8220,
+      "completeConditionId": 8221,
+      "autoAccept": true,
+      "autoComplete": true,
+      "actionIds": [
+        8000,
+        8001
+      ]
+    },
+    {
+      "id": 809,
+      "name": "一首不准唱完的歌",
+      "description": "孩子们在唱一首旧歌。前半首纪念守城的士兵，后半首骂军官偷靴子。书记想印下来，又怕印错了人名。",
+      "category": "side",
+      "startConditionId": 8248,
+      "completeConditionId": 8249,
+      "autoAccept": true,
+      "autoComplete": true,
+      "actionIds": [
+        8000,
+        8001
+      ]
+    },
+    {
+      "id": 810,
+      "name": "明天开门的人",
+      "description": "赫铎要离城照顾摔伤的姐姐。工坊的三把钥匙放在桌上，发工钱、夜间检修和带学徒的事，都还没找到接手的人。",
+      "category": "side",
+      "startConditionId": 8280,
+      "completeConditionId": 8281,
+      "autoAccept": true,
+      "autoComplete": true,
+      "actionIds": [
+        8000,
+        8001
+      ]
+    },
+    {
+      "id": 901,
+      "name": "借来的军靴",
+      "description": "陶恩愿意上路，却还有一件旧事没交代：当年是洛岑背他逃出了火场，他一直没有承认。现在补交证词，会不会影响他领取退伍证明？",
+      "category": "recruit",
+      "startConditionId": 10012,
+      "completeConditionId": 10016,
+      "autoAccept": true,
+      "autoComplete": false,
+      "actionIds": [
+        10002,
+        10003
+      ]
+    },
+    {
+      "id": 902,
+      "name": "地图背面的名字",
+      "description": "商队按莎芙的地图行路，遇上了伏击。有人怀疑她卖了路线。她请你查清，交到驿站的那份地图究竟借给过谁。",
+      "category": "recruit",
+      "startConditionId": 10045,
+      "completeConditionId": 10049,
+      "autoAccept": true,
+      "autoComplete": false,
+      "actionIds": [
+        10012,
+        10003
+      ]
+    },
+    {
+      "id": 903,
+      "name": "最后一件学徒活",
+      "description": "维珂想跟队伍远行，却还没结清出师的账。她省过一道回火，工坊也买过坏铁料，两批损失被赫铎记在了一起。",
+      "category": "recruit",
+      "startConditionId": 10077,
+      "completeConditionId": 10081,
+      "autoAccept": true,
+      "autoComplete": false,
+      "actionIds": [
+        10021,
+        10003
+      ]
+    },
+    {
+      "id": 904,
+      "name": "药瓶上的署名",
+      "description": "米蕾想出门行医。她会治伤，却用老师的名字卖过药。走以前，她想找回剩下的药瓶，向领药的人说清楚。",
+      "category": "recruit",
+      "startConditionId": 10107,
+      "completeConditionId": 10111,
+      "autoAccept": true,
+      "autoComplete": false,
+      "actionIds": [
+        10030,
+        10003
+      ]
+    },
+    {
+      "id": 905,
+      "name": "第一次远行",
+      "description": "奥林想加入队伍。他在酒馆讲了许多远行故事，自己却只去过邻镇。这次真要出门，他开始担心谎话被揭穿。",
+      "category": "recruit",
+      "startConditionId": 10140,
+      "completeConditionId": 10144,
+      "autoAccept": true,
+      "autoComplete": false,
+      "actionIds": [
+        10039,
+        10003
+      ]
+    },
+    {
+      "id": 1001,
+      "name": "骑士审判",
+      "description": "你们赢得比武审判，救下了被诬陷的骑士。确认后邀请他加入小队；如果队伍已满，招募资格将保留。他会带着战后的伤势和原有装备加入。",
+      "category": "recruit",
+      "startConditionId": 11000,
+      "completeConditionId": 11000,
+      "actionIds": [
+        11000
+      ],
+      "autoAccept": true,
+      "autoComplete": false
+    },
+    {
+      "id": 1002,
+      "name": "神秘逃兵",
+      "description": "你们击败追兵，救下了躲在后方的伤者。确认后邀请他入队；满队时资格保留。他会保留伤势与装备，腿部、手臂和躯干分别在入队后第 1、2、3 个游戏日恢复。普通治疗只能补充生命，无法提前消除这些伤势。",
+      "category": "recruit",
+      "startConditionId": 11001,
+      "completeConditionId": 11001,
+      "actionIds": [
+        11001
+      ],
+      "autoAccept": true,
+      "autoComplete": false
     }
   ]
 }

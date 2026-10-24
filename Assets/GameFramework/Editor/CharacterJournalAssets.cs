@@ -19,7 +19,7 @@ namespace ProjectY.Editor
         [Serializable] private sealed class Attributes { public AttributeRow[] rows; }
         [Serializable] private sealed class AttributeRow { public string code; }
         [Serializable] private sealed class Passives { public Passive[] rows; }
-        [Serializable] private sealed class Passive { public string[] attributeNames; }
+        [Serializable] private sealed class Passive { public string[] attributeNames; public string iconAttribute; }
         [Serializable] private sealed class Parts { public Part[] rows; }
         [Serializable] private sealed class Part { public int id;public string prefabPath; }
         [MenuItem("Project Y/UI/重建角色手记布局")]
@@ -82,8 +82,9 @@ namespace ProjectY.Editor
             }
             foreach(var row in passives.rows)
             {
-                if(row==null || row.attributeNames==null || row.attributeNames.Length==0)throw new InvalidOperationException("Passive glyph requires its primary attribute.");
-                add(row.attributeNames[0]);
+                if(row==null || row.attributeNames==null || row.attributeNames.Length==0 && string.IsNullOrEmpty(row.iconAttribute))
+                    throw new InvalidOperationException("Passive glyph requires an explicit icon or primary attribute.");
+                add(string.IsNullOrEmpty(row.iconAttribute)?row.attributeNames[0]:row.iconAttribute);
             }
             return result.ToArray();
         }

@@ -221,6 +221,9 @@ MonoBehaviour:
     Target: {fileID: 3486933757143804249}
   - Key: Follower
     Target: {fileID: 1713429635834109979}
+  localizedTexts:
+  - Target: {fileID: 3486933757143804249}
+    Id: UIInteractionPromptText6
 --- !u!225 &8434603291463466158
 CanvasGroup:
   m_ObjectHideFlags: 0
@@ -292,5 +295,9 @@ MonoBehaviour:
   referenceOrthoSize: 12
   minScale: 0.75
   maxScale: 1
+  groundPlane: 0
+  groundRadius: 0.8
+  worldCanvas: {fileID: 0}
+  facingContent: {fileID: 0}
   orthographicFade: {x: 18, y: 36}
   perspectiveFade: {x: 18, y: 30}

@@ -1,0 +1,20 @@
+[
+  {"id":"ProfessionExploreFacility","txt":"请靠近提供此服务的设施入口。","desc":"职业探索技能找不到距离内设施时的提示"},
+  {"id":"ProfessionExploreDaily","txt":"今天已经进行过这项活动，请明天再来。","desc":"职业探索每日次数提示"},
+  {"id":"ProfessionExploreNoRumor","txt":"酒馆暂时没有附近尚未记录的地点消息。","desc":"真实传闻地点已耗尽或附近没有地点"},
+  {"id":"ProfessionExploreNotDeployed","txt":"这位队员没有参与当前区域的探索。","desc":"职业探索技能施术者不在探索队形"},
+  {"id":"ProfessionExploreNoPlant","txt":"附近没有可见且尚未采过的炼金植物。","desc":"炼金萃取需要真实可见未采植物"},
+  {"id":"ProfessionExploreBagFull","txt":"背包空间不足，请先腾出材料的位置。","desc":"炼金萃取物品容量检查失败"},
+  {"id":"ProfessionExploreCareTarget","txt":"请选择附近存活且参与探索的队员。","desc":"诊护目标不合法或超出范围"},
+  {"id":"ProfessionExploreNoRecovery","txt":"这位队员没有可通过诊护加速的定时伤势。","desc":"永久伤或无定时恢复的伤势不接受加速"},
+  {"id":"ProfessionExploreCareMaterial","txt":"诊护需要一份急救包。","desc":"诊护缺少急救包"},
+  {"id":"ProfessionExploreNoCurse","txt":"当前持有的武器没有尚未净化的诅咒。","desc":"识咒目标必须为当前装备的真实诅咒武器实例"},
+  {"id":"ProfessionExploreCleanseMaterial","txt":"已经辨识诅咒；净化需要一份净化药剂。","desc":"识咒第二阶段缺少净化药剂"},
+  {"id":"ProfessionExploreNoTrack","txt":"附近没有最近观察到的有效动物足迹。","desc":"循迹附近没有未过期的真实观测记录"},
+  {"id":"ProfessionExploreExtracted","txt":"从附近的植物中萃取了 %s × %d。","desc":"Lua格式：材料名称、数量"},
+  {"id":"ProfessionExploreRumor","txt":"在%s听闻了真实地点「%s」的消息，地图坐标为（%d，%d）。","desc":"Lua格式：消息来源酒馆、真实地点名、地图q、地图r"},
+  {"id":"ProfessionExploreCared","txt":"完成对%s的诊护，现有定时伤势的恢复期限最多提前了 %d 分钟。","desc":"Lua格式：目标角色名、最大提前分钟数；永久伤不会恢复"},
+  {"id":"ProfessionExploreCleansed","txt":"消耗了一份净化药剂，「%s」的这件武器已解除诅咒；再次装备不会重新触发。","desc":"Lua格式：武器配置名称；净化按实例保存"},
+  {"id":"ProfessionExploreTrackMoved","txt":"辨认出%s的足迹：从区域坐标（%d，%d）走向（%d，%d），这是 %d 分钟前的真实观测。","desc":"Lua格式：动物名称、前次q/r、最近q/r、经过分钟；不是实时隐藏位置"},
+  {"id":"ProfessionExploreTrackStill","txt":"辨认出%s的停留痕迹：观测始于（%d，%d），最近位置为（%d，%d），距今 %d 分钟。","desc":"Lua格式：动物名称、初次q/r、最近q/r、经过分钟"}
+]

@@ -78,13 +78,36 @@ namespace ProjectY.Data
         private readonly List<CombatActorData> enemies = new List<CombatActorData>();
         public int Id { get; }
         public int EncounterId { get; }
+        public int PartyId { get; private set; }
+        public bool Detached { get; private set; }
         public int EnemyCount => enemies.Count;
-        public bool Defeated => enemies.Count > 0 && enemies.TrueForAll(actor => actor.HP == 0 || actor.AnimalOwnerId != 0);
+        public bool Defeated => Detached || enemies.Count > 0 && enemies.TrueForAll(actor => actor.HP == 0 || actor.AnimalOwnerId != 0);
         public CombatActorData GetEnemyAt(int index) => enemies[index];
         internal MapAreaEncounterData(int id, int encounterId) { Id = id; EncounterId = encounterId; }
+        public void AttachParty(WorldPartyData party)
+        {
+            if (party == null || party.MemberCount == 0 || enemies.Count != 0 || PartyId != 0 && PartyId != party.Id)
+                throw new InvalidOperationException("Invalid external encounter roster.");
+            PartyId = party.Id; Detached = false;
+            for (int i = 0; i < party.MemberCount; i++) enemies.Add(party.GetMemberAt(i));
+        }
+        public void DetachParty()
+        {
+            if (PartyId == 0) throw new InvalidOperationException("Encounter has no external party.");
+            enemies.Clear(); Detached = true;
+        }
+        internal void AdoptLegacyParty(WorldPartyData party)
+        {
+            if (party == null || !party.Owner.LegacyFactions || party.MemberCount != 0 || party.BattleSiteId == 0 || PartyId != 0 || enemies.Count == 0)
+                throw new InvalidOperationException("Invalid legacy encounter migration.");
+            foreach (var actor in enemies) party.AddPreparedMember(actor);
+            PartyId = party.Id; Detached = false;
+            party.SetDefeated(party.LivingCount == 0);
+        }
+        internal void PrepareDetachedParty(int partyId) { PartyId = partyId; Detached = true; }
         public CombatActorData AddEnemy(int id, int templateId, int q, int r)
         {
-            if (enemies.Count >= 4 || enemies.Exists(actor => actor.Id == id || (actor.Q == q && actor.R == r)))
+            if (PartyId != 0 || enemies.Count >= 4 || enemies.Exists(actor => actor.Id == id || (actor.Q == q && actor.R == r)))
                 throw new InvalidOperationException("Invalid dungeon enemy deployment.");
             var actor = new CombatActorData(id, templateId); actor.Deploy(2, q, r); enemies.Add(actor); return actor;
         }
@@ -350,14 +373,20 @@ namespace ProjectY.Data
         private readonly Dictionary<int, MapAreaStateData> areas = new Dictionary<int, MapAreaStateData>();
         public int ActiveSiteId { get; private set; }
         public MapAreaStateData Active => ActiveSiteId == 0 ? null : areas[ActiveSiteId];
-        public MapAreaStateData Enter(int siteId, int cellCount, int entryIndex)
+        public MapAreaStateData Find(int siteId) => areas.TryGetValue(siteId, out var state) ? state : null;
+        public MapAreaStateData Ensure(int siteId, int cellCount, int entryIndex)
         {
-            if (ActiveSiteId != 0) throw new InvalidOperationException("A MapArea is already active.");
             if (!areas.TryGetValue(siteId, out var state))
             {
                 state = new MapAreaStateData(siteId, cellCount, entryIndex); areas.Add(siteId, state);
             }
             if (state.CellCount != cellCount) throw new InvalidOperationException("MapArea layout changed during the expedition.");
+            return state;
+        }
+        public MapAreaStateData Enter(int siteId, int cellCount, int entryIndex)
+        {
+            if (ActiveSiteId != 0) throw new InvalidOperationException("A MapArea is already active.");
+            var state = Ensure(siteId, cellCount, entryIndex);
             ActiveSiteId = siteId; return state;
         }
         public void Leave()

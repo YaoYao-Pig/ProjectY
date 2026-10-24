@@ -1,0 +1,11 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaRoadsideRescueThemeTableRow
+---@field id number 稳定配置 ID
+---@field regionType 1|2|3|4|5|6|7|8|9|10|11 适用来源地貌
+---@field name string 主题名称
+---@field floorColor string 基础地面色
+---@field wallColor string 基础边界色
+---@field wallHeight number 仅布景墙高
+---@field heightNoise number 路边战斗与后方藏身处保持平整
+---@field assetId number 地表六边形模型
+return {["name"]="MapAreaRoadsideRescueThemeTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="regionType",["type"]="enum",["description"]="\233\128\130\231\148\168\230\157\165\230\186\144\229\156\176\232\178\140",["enumRef"]="Map.E_MapRegion",["enumType"]="int",["values"]={1,2,3,4,5,6,7,8,9,10,11}},{["name"]="name",["type"]="string",["description"]="\228\184\187\233\162\152\229\144\141\231\167\176"},{["name"]="floorColor",["type"]="string",["description"]="\229\159\186\231\161\128\229\156\176\233\157\162\232\137\178"},{["name"]="wallColor",["type"]="string",["description"]="\229\159\186\231\161\128\232\190\185\231\149\140\232\137\178"},{["name"]="wallHeight",["type"]="float",["description"]="\228\187\133\229\184\131\230\153\175\229\162\153\233\171\152",["min"]=0},{["name"]="heightNoise",["type"]="float",["description"]="\232\183\175\232\190\185\230\136\152\230\150\151\228\184\142\229\144\142\230\150\185\232\151\143\232\186\171\229\164\132\228\191\157\230\140\129\229\185\179\230\149\180",["min"]=0,["max"]=0},{["name"]="assetId",["type"]="int",["description"]="\229\156\176\232\161\168\229\133\173\232\190\185\229\189\162\230\168\161\229\158\139",["ref"]="MapAssetTable"}},["fingerprint"]="9fcfb26dedd5a9f6557ca61f6f10a1a96622598fd514dc9d295cff46c582d853"}

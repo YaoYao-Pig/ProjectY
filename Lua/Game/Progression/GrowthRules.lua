@@ -26,8 +26,15 @@ function Rules.New(config)
         self.professions.professions:Get(row.initialProfessionId)
     end
     for _, row in ipairs(self.passives:All()) do
-        assert(#row.attributeNames > 0 and #row.attributeNames == #row.attributeValues, 'Passive attributes differ')
+        assert((#row.attributeNames>0 or #row.immunityTags>0 or type(row.triggerKind)=='string' and row.triggerKind~='') and #row.attributeNames==#row.attributeValues,'Passive has no effect or its attribute arrays differ')
         for _, name in ipairs(row.attributeNames) do assert(self.attributeByCode[name], 'Unknown passive attribute: '..name) end
+        local tags={}
+        for _,tag in ipairs(row.immunityTags)do
+            assert(type(tag)=='string' and tag:match('^[a-z][a-z0-9_]*$') and not tags[tag],'Invalid/duplicate passive immunity: '..tostring(tag))
+            tags[tag]=true
+        end
+        local icon=row.iconAttribute~='' and row.iconAttribute or row.attributeNames[1]
+        assert(icon and self.attributeByCode[icon],'Passive needs a configured attribute icon: '..row.id)
     end
     for _, row in ipairs(self.nodes:All()) do
         self.incoming[row.id], self.neighbors[row.id] = {}, {}
@@ -74,6 +81,17 @@ function Rules:Bonus(actor, name)
         for j, code in ipairs(passive.attributeNames) do if code == name then value = value + passive.attributeValues[j] * growth:GetRank(node.id) end end
     end
     return value
+end
+function Rules:Immunity(actor,tag)
+    assert(type(tag)=='string' and tag~='','Immunity query needs an ability tag')
+    local growth=actor.Growth
+    for i=0,growth.TalentCount-1 do
+        local node=self.nodes:Get(growth:GetTalentAt(i))
+        if growth:GetRank(node.id)>0 then
+            local passive=self.passives:Get(node.passiveId)
+            if contains(passive.immunityTags,tag) then return passive end
+        end
+    end
 end
 function Rules:CanInvest(actor, id)
     local node = self.nodes:Find(id)

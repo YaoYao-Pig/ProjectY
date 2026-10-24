@@ -80,13 +80,17 @@ namespace ProjectY.Samples
         }
         public sealed class Obstacle { public int Id;public int[] Cells;public string Name;public bool BlocksMovement;public EquipmentVisualData.Asset Asset; }
         public sealed class Construction { public int Id,CellIndex,SkillId,HP,MaxHP,MoveExtra;public string Kind,Name;public float Height;public bool BlocksMovement,BlocksSight; }
-        public sealed class NpcState { public int Id, CellIndex; public bool Present; }
+        public sealed class NpcState { public int Id, CellIndex, MissionMarker; public bool Present; }
         public sealed class Npc
         {
             public int Id, NarrativeId;
             public string Name, Description;
             public float StepSeconds;
             public PawnAppearanceData Appearance;
+            public bool Decorative, ShowName;
+            public int SpawnIndex;
+            public Vector3 Position;
+            public float Yaw, Scale;
         }
         public sealed class Facility
         {
@@ -221,7 +225,8 @@ namespace ProjectY.Samples
                 {
                     npcs = new NpcState[rows.Length];
                     for (var i = 0; i < npcs.Length; i++) using (var row = rows.Get<int, LuaTable>(i + 1))
-                        npcs[i] = new NpcState { Id = row.Get<int>("id"), CellIndex = row.Get<int>("cellIndex") - 1, Present = row.Get<bool>("present") };
+                        npcs[i] = new NpcState { Id = row.Get<int>("id"), CellIndex = row.Get<int>("cellIndex") - 1,
+                            Present = row.Get<bool>("present"), MissionMarker = row.Get<int>("missionMarker") };
                 }
                 AdventureViewData.Actor[] enemies;
                 using (var rows = area.Get<LuaTable>("enemies"))
@@ -312,7 +317,9 @@ namespace ProjectY.Samples
                     for (var i = 0; i < rows.Length; i++) using (var row = rows.Get<int, LuaTable>(i + 1))
                     using (var appearance = row.Get<LuaTable>("appearance"))
                         result.Npcs[i] = new Npc { Id = row.Get<int>("id"), NarrativeId = row.Get<int>("narrativeId"), Name = row.Get<string>("name"), Description = row.Get<string>("description"),
-                            StepSeconds = row.Get<float>("stepSeconds"), Appearance = PawnAppearanceData.Read(appearance) };
+                            StepSeconds = row.Get<float>("stepSeconds"), Appearance = PawnAppearanceData.Read(appearance),
+                            Decorative = row.Get<bool>("decorative"), ShowName = row.Get<bool>("showName"), SpawnIndex = row.Get<int>("spawnIndex") - 1,
+                            Position = new Vector3(row.Get<float>("x"), row.Get<float>("y"), row.Get<float>("z")), Yaw = row.Get<float>("yaw"), Scale = row.Get<float>("scale") };
                 }
                 for (var i = 0; i < result.Cells.Length; i++)
                     using (var row = cells.Get<int, LuaTable>(i + 1))

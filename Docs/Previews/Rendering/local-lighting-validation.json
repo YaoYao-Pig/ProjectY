@@ -1,0 +1,62 @@
+{
+  "date": "2026-10-24",
+  "scope": "Existing Unity Editor, isolated PreviewScene, production MapAreaRenderer.Draw and exported lighting configuration",
+  "projectCompilationRequests": 1,
+  "playMode": false,
+  "localMap": {
+    "visibleHdrSources": 2,
+    "rememberedEmissionSuppressed": true,
+    "unknownPropsHidden": true,
+    "pixelAndNightPreserved": true,
+    "sceneAndEnvironmentRestored": true,
+    "images": {
+      "village": {
+        "before": "local-lighting-village-before.png",
+        "after": "local-lighting-village-after.png",
+        "beforeMeanSrgb": 169.97638867195283,
+        "afterMeanSrgb": 181.31414388012396
+      },
+      "interior": {
+        "before": "local-lighting-interior-before.png",
+        "after": "local-lighting-interior-after.png",
+        "noBloom": "local-lighting-interior-no-bloom.png",
+        "beforeMeanSrgb": 24.921176432233587,
+        "afterMeanSrgb": 28.08075423176991,
+        "noBloomMeanSrgb": 28.03205501301982
+      }
+    }
+  },
+  "torch": {
+    "passed": true,
+    "itemId": 94,
+    "assetId": 403,
+    "iconBound": true,
+    "prefabBound": true,
+    "physicalTorchEnabled": true,
+    "range": 9,
+    "intensity": 3.6,
+    "height": 1.8,
+    "offBrightness": 0.03225081787109409,
+    "onBrightness": 0.13440830245018,
+    "brightnessRatio": 4.167593609173183,
+    "followAndSwitch": true,
+    "areaExit": true,
+    "destroyed": true,
+    "controllerRestored": true,
+    "scenePreserved": true,
+    "playMode": false
+  },
+  "ambientDiagnostic": {
+    "meshRenderer": 0.205444336,
+    "instancedLightProbeOff": 0.205444336,
+    "conclusion": "Instancing receives ambient lighting correctly; no ambient shader workaround added."
+  },
+  "console": {
+    "errors": 0,
+    "warnings": 0
+  },
+  "limits": [
+    "No Play Mode traversal or full game regression",
+    "No Player build or GPU performance benchmark"
+  ]
+}

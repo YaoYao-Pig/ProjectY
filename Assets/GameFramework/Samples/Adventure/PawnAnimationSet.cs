@@ -11,6 +11,7 @@ namespace ProjectY.Samples
         {
             [Range(0,1)] public float Time;
             public Vector3 WeaponRotation;
+            public Vector3 WeaponPosition;
         }
         [Serializable] public sealed class Action
         {
@@ -28,6 +29,13 @@ namespace ProjectY.Samples
                 for(int i=1;i<GripKeys.Length;i++) if(time<=GripKeys[i].Time)
                     return Vector3.Lerp(GripKeys[i-1].WeaponRotation,GripKeys[i].WeaponRotation,Mathf.InverseLerp(GripKeys[i-1].Time,GripKeys[i].Time,time));
                 return GripKeys[GripKeys.Length-1].WeaponRotation;
+            }
+            public Vector3 GripPosition(float time)
+            {
+                if(GripKeys==null || GripKeys.Length<2) throw new InvalidOperationException("Authored grip needs at least two keys.");
+                for(int i=1;i<GripKeys.Length;i++) if(time<=GripKeys[i].Time)
+                    return Vector3.Lerp(GripKeys[i-1].WeaponPosition,GripKeys[i].WeaponPosition,Mathf.InverseLerp(GripKeys[i-1].Time,GripKeys[i].Time,time));
+                return GripKeys[GripKeys.Length-1].WeaponPosition;
             }
         }
         [Serializable] public sealed class Hold

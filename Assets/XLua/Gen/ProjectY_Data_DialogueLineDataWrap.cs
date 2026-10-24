@@ -21,13 +21,16 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.DialogueLineData);
-			Utils.BeginObjectRegister(type, L, translator, 0, 0, 3, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 0, 6, 0);
 			
 			
 			
 			Utils.RegisterFunc(L, Utils.GETTER_IDX, "Speaker", _g_get_Speaker);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Text", _g_get_Text);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "IsChoice", _g_get_IsChoice);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "ActorId", _g_get_ActorId);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "InterjectionId", _g_get_InterjectionId);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "Cue", _g_get_Cue);
             
 			
 			
@@ -96,6 +99,48 @@ namespace XLua.CSObjectWrap
 			
                 ProjectY.Data.DialogueLineData gen_to_be_invoked = (ProjectY.Data.DialogueLineData)translator.FastGetCSObj(L, 1);
                 LuaAPI.lua_pushboolean(L, gen_to_be_invoked.IsChoice);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_ActorId(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.DialogueLineData gen_to_be_invoked = (ProjectY.Data.DialogueLineData)translator.FastGetCSObj(L, 1);
+                LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.ActorId);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_InterjectionId(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.DialogueLineData gen_to_be_invoked = (ProjectY.Data.DialogueLineData)translator.FastGetCSObj(L, 1);
+                LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.InterjectionId);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_Cue(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.DialogueLineData gen_to_be_invoked = (ProjectY.Data.DialogueLineData)translator.FastGetCSObj(L, 1);
+                LuaAPI.lua_pushstring(L, gen_to_be_invoked.Cue);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }

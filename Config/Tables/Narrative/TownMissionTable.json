@@ -1,0 +1,178 @@
+{
+  "version": 1,
+  "name": "TownMissionTable",
+  "description": "每日城镇随机委托模板；每次接取生成独立持久实例。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定模板 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "委托名称"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "委托背景"
+    },
+    {
+      "name": "kind",
+      "type": "enum",
+      "description": "目标类型",
+      "values": [
+        "delivery",
+        "clear",
+        "escort"
+      ]
+    },
+    {
+      "name": "itemId",
+      "type": "int",
+      "description": "交付材料 ID；其他类型填 0",
+      "min": 0
+    },
+    {
+      "name": "minCount",
+      "type": "int",
+      "description": "目标数量下限",
+      "min": 1
+    },
+    {
+      "name": "maxCount",
+      "type": "int",
+      "description": "目标数量上限",
+      "min": 1
+    },
+    {
+      "name": "radius",
+      "type": "int",
+      "description": "清剿范围：以城镇为中心的大地图六边形距离",
+      "min": 0
+    },
+    {
+      "name": "actionIds",
+      "type": "int[]",
+      "description": "交付成功时的金币与经验奖励",
+      "ref": "NarrativeActionTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "修缮木料",
+      "description": "镇上的木工正在修缮门窗，急需一批营造木料。",
+      "kind": "delivery",
+      "itemId": 81,
+      "minCount": 4,
+      "maxCount": 8,
+      "radius": 0,
+      "actionIds": [
+        3136,
+        3137
+      ]
+    },
+    {
+      "id": 2,
+      "name": "补充绳索",
+      "description": "赶车人与搬运工需要新的麻绳，交付给委托居民即可。",
+      "kind": "delivery",
+      "itemId": 82,
+      "minCount": 3,
+      "maxCount": 6,
+      "radius": 0,
+      "actionIds": [
+        3138,
+        3139
+      ]
+    },
+    {
+      "id": 3,
+      "name": "工坊备料",
+      "description": "工坊准备赶制工具，正在收购可用的铁件。",
+      "kind": "delivery",
+      "itemId": 83,
+      "minCount": 3,
+      "maxCount": 6,
+      "radius": 0,
+      "actionIds": [
+        3140,
+        3141
+      ]
+    },
+    {
+      "id": 4,
+      "name": "夜巡火炬",
+      "description": "守夜人需要旅行火炬，为城镇外的道路照明。",
+      "kind": "delivery",
+      "itemId": 94,
+      "minCount": 2,
+      "maxCount": 4,
+      "radius": 0,
+      "actionIds": [
+        3142,
+        3143
+      ]
+    },
+    {
+      "id": 5,
+      "name": "肃清近郊",
+      "description": "附近道路传来袭击行人的消息，击败城镇周边的敌对目标。",
+      "kind": "clear",
+      "itemId": 0,
+      "minCount": 3,
+      "maxCount": 5,
+      "radius": 8,
+      "actionIds": [
+        3144,
+        3145
+      ]
+    },
+    {
+      "id": 6,
+      "name": "恢复商路",
+      "description": "清理城镇周围更大范围的敌人，让商旅能够安心通行。",
+      "kind": "clear",
+      "itemId": 0,
+      "minCount": 6,
+      "maxCount": 9,
+      "radius": 12,
+      "actionIds": [
+        3146,
+        3147
+      ]
+    },
+    {
+      "id": 7,
+      "name": "商队护送",
+      "description": "一支满载货物的商队需要护卫，护送其抵达附近城镇。",
+      "kind": "escort",
+      "itemId": 0,
+      "minCount": 1,
+      "maxCount": 1,
+      "radius": 0,
+      "actionIds": [
+        3148,
+        3149
+      ]
+    },
+    {
+      "id": 8,
+      "name": "货运护航",
+      "description": "商人准备沿陆路前往邻镇，保护商队并在遇袭时援助。",
+      "kind": "escort",
+      "itemId": 0,
+      "minCount": 1,
+      "maxCount": 1,
+      "radius": 0,
+      "actionIds": [
+        3150,
+        3151
+      ]
+    }
+  ]
+}

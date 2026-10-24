@@ -150,7 +150,7 @@ namespace ProjectY.Editor
                 Directory.CreateDirectory("Docs/Previews"); File.WriteAllBytes("Docs/Previews/DamageNumbers.png", image.EncodeToPNG());
                 var fixture = Object.Instantiate(prefab, canvasRoot.transform);
                 var anchor = new GameObject("RetiringAnchor"); anchor.transform.SetParent(owner.transform, false); anchor.transform.position = new Vector3(0, 0, 5);
-                var follower = fixture.GetComponent<UIFollower>(); follower.Bind(camera, anchor.transform, canvas);
+                var follower = (UIFollower)fixture.GetComponent<LuaReference>().Get("DamageFollower"); follower.Bind(camera, anchor.transform, canvas);
                 Check(follower.Project(), "Death anchor starts visible.");
                 fixture.GetComponent<DamageNumberAnimation>().Retire(); Object.DestroyImmediate(anchor);
                 Check(follower.Project(), "Retiring numbers keep their last world position after target destruction.");

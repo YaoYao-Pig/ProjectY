@@ -8,6 +8,10 @@
 
 ## 正文
 
+- 城镇周边的专属场景、盟军支援战斗及存活招募由 [特殊事件](SpecialEvents.md) 接入；场内确认通过现有区域状态进入原地战斗，结局先于掉落结算并持久记录。
+
+- 非战斗随机检定接入[实体骰子演出](Dice.md)，包括概率清障、探索驯服和事件概率效果；展示已结算结果，不改变原概率、扣费或属性门槛规则。
+
 - `AdventureChoiceTable.obstacleAction` 将 tool/manual/leave 选项委托给当前[工具障碍交互](ToolWeapons.md)，无匹配障碍上下文时不能执行；仍复用 StoryEvent、选择消费和结果返回流程。清障结果使用实际执行者、消耗与成功状态生成文案并写经历。
 
 - 世界事件中的战斗进入持久 `Battlefield` 小地图，胜利后自动打开背包/战利品结算窗口，关闭后可留场探索剩余掉落；重进该地点不会重复触发已结算事件。搜索、逐件拖拽和满包保留见[宝箱与敌人掉落](Loot.md)。
@@ -30,6 +34,7 @@
 - `AdventureChoiceTable.effectIds/timeMinutes` 复用 GameEffects 和 Narrative 游戏时钟：先编译效果并验证选择，再消费一次选择，推进耗时后发放结果与效果；长效Buff从耗时结束时计时，对已倒地目标停止追加效果。recipient同时决定成长与效果受益范围，伤害/治疗仍不替代 healParty 的复活契约。`hideRewards` 用于隐藏解谜选项的奖励摘要，条件不足提示仍显示，避免提前泄露答案。
 - `AdventureChoiceTable.itemIds/itemCounts` 发放真实共享背包物品；先检查金币与整组物品容量，再消费事件。搜刮、购买写【获得】明细。绑定商人的设施与 NPC 接入 [NPC 商店](Shop.md)，独立库存按模板随机补货；未绑定商人的铁匠、酒馆等设施保留原服务事件。
 - `DemoBridge` 通过 GameBootstrap.CallModule 使用同一常驻 LuaEnv；`MapPreviewData.Read` 和 `AdventureViewData.Read` 在调用内复制纯显示数据并释放 LuaTable，不持有长期 Lua 句柄。新场景独立于现有地图预览，尚未加入 Build Settings。
+- `SendCommandInternal` 的普通命令返回完整快照且必须包含 `unchanged=false`；暂停大地图的重复轮询可仅返回 `{unchanged=true}`，C# 须先判断再读取其他字段。不能省略 false：xLua 的 `LuaTable.Get<bool>` 不接受 nil。`paused_snapshot.lua` 严格检查完整/无变化响应、状态失效及一次性视觉事件，避免 Lua 真值判断漏掉跨语言类型错误。
 - 显示快照的 `cells` 与 `reachable` 共用 C# Cell 结构，均须提供 `q/r/blocked/cellIndex`；角色统一提供初始 `appearance` 和 `cellIndex`（旧棋盘为 0）。Lua 地格索引从 1 起，C# 显示读取时减 1；值类型字段不能用 nil 表示默认值。
 - 队伍与敌人外观均由[棋子资源配置](PawnArt.md)解析。`area` 快照在探索及原地战斗阶段都存在，显示宿主据此保持地形/相机/模型生命周期；地牢战斗使用真实场景、地格拾取和现有技能按钮，旧事件战斗继续显示二维棋盘。MapArea 与战后恢复规则见[局部地图](MapArea.md)，城镇走格子与交互见[城镇](TownArea.md)。
 - 改表后执行 `node Tools/ConfigEditor/exporter.mjs`；资源路径变化后在退出 Play 的新场景执行 `Project Y/远征/同步地图资源引用`。改 Lua 在下一次 Play 生效，不做运行时热重载。
@@ -47,4 +52,5 @@
 
 - [20事件内容与配图场景](../../Art/AdventureExpansion202610/events.json) / [幂等内容写入](../../Art/AdventureExpansion202610/Scripts/author_events.py) / [内容/引用/冲突检查](../../Tools/Tests/adventure_expansion_content.py) / [实际效果与时间结算](../../Tools/Tests/event_choice_effects.lua)：脚本默认只读review，`--apply`写源表后另行导表；同ID不同内容明确拒绝，不覆盖已有事件。
 
-- [20张配图与完整提示词](../../Art/AdventureExpansion202610/Illustrations/manifest.json) / [图片哈希与尺寸](../../Art/AdventureExpansion202610/Illustrations/validation.json) / [实际结算检查记录](../../Art/AdventureExpansion202610/Integration/runtime-validation.json) / [Unity图片绑定](../../Art/AdventureExpansion202610/Integration/unity-art.json) / [真实事件窗口预览](../../Art/AdventureExpansion202610/Previews/story-event-unity.png)。图片使用内置image_gen逐场景生成，均落入项目资源目录；完整Play流程仍未运行。
+- [原版20张配图提示词](../../Art/AdventureExpansion202610/Illustrations/manifest.json) / [原版图片哈希与尺寸](../../Art/AdventureExpansion202610/Illustrations/validation.json) / [实际结算检查记录](../../Art/AdventureExpansion202610/Integration/runtime-validation.json) / [Unity图片绑定](../../Art/AdventureExpansion202610/Integration/unity-art.json) / [原版事件窗口预览](../../Art/AdventureExpansion202610/Previews/story-event-unity.png)均为历史记录；原版图片哈希不代表下述当前资源。
+- 当前全部事件插图采用[事件插画风格 Skill](../../.agents/skills/event-illustration-style/SKILL.md)的细线、干净平涂风格。20张独立事件图与1张通用`Wayfarers.png`已在原路径替换，覆盖31个已配图事件；原`.meta`、Sprite GUID、事件表与面板绑定保留。[全套新旧对照](../../Art/EventIllustrationRestyle20261024/preview.html) / [完整提示词与来源](../../Art/EventIllustrationRestyle20261024/full-manifest.json) / [尺寸、备份与引用检查](../../Art/EventIllustrationRestyle20261024/full-validation.json)；原图及`.meta`备份在同目录`Before/`。本轮仅验证图片与静态引用，未主动触发Unity刷新、编译或Play验收。

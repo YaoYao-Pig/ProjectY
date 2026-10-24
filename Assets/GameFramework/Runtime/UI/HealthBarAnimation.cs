@@ -21,10 +21,11 @@ namespace ProjectY.UI
         private bool drainingTrail;
         private int identity;
         private bool initialized;
+        internal float PlaybackRate { get; set; } = 1;
         public bool IsAnimating { get; private set; }
         public float TargetFraction { get; private set; }
-        public float ForegroundFraction => foreground.rectTransform.anchorMax.x;
-        public float TrailFraction => trail.rectTransform.anchorMax.x;
+        public float ForegroundFraction => GetFraction(foreground);
+        public float TrailFraction => GetFraction(trail);
 
         public void SetValue(int healthId, float fraction, float delay)
         {
@@ -53,7 +54,7 @@ namespace ProjectY.UI
 
         private IEnumerator Drain()
         {
-            while (IsAnimating) { yield return null; Advance(Time.deltaTime); }
+            while (IsAnimating) { yield return null; Advance(Time.deltaTime * PlaybackRate); }
             routine = null;
         }
 
@@ -76,8 +77,11 @@ namespace ProjectY.UI
             SetFraction(trail, TargetFraction); IsAnimating = false;
         }
 
-        private static void SetFraction(Image image, float value)
+        private static float GetFraction(Image image) => image.type == Image.Type.Filled ? image.fillAmount : image.rectTransform.anchorMax.x;
+        internal static void SetFraction(Image image, float value)
         {
+            value = Mathf.Clamp01(value);
+            if (image.type == Image.Type.Filled) { image.fillAmount = value; return; }
             var rect = image.rectTransform;
             rect.anchorMax = new Vector2(value, 1);
         }

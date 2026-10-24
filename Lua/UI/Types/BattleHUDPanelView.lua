@@ -8,7 +8,6 @@
 ---@field Encounter CS.UnityEngine.UI.Text
 ---@field Round CS.UnityEngine.UI.Text
 ---@field PartySlots CS.UnityEngine.RectTransform
----@field TurnSlots CS.UnityEngine.RectTransform
 ---@field SkillSlots CS.UnityEngine.RectTransform
 ---@field ItemSlots CS.UnityEngine.RectTransform
 ---@field SkillTitle CS.UnityEngine.UI.Text
@@ -32,5 +31,12 @@
 ---@field TipTitle CS.UnityEngine.UI.Text
 ---@field TipBody CS.UnityEngine.UI.Text
 ---@field Root CS.UnityEngine.RectTransform
+---@field LogOpen CS.UnityEngine.UI.Button
+---@field LogClose CS.UnityEngine.UI.Button
+---@field LogScroll CS.UnityEngine.UI.ScrollRect
+---@field LogTitle CS.UnityEngine.UI.Text
+---@field SkillTip CS.ProjectY.UI.SkillTooltipView
+---@field TurnList CS.ProjectY.UI.LuaReference
+---@field TurnTemplate CS.ProjectY.UI.LuaReference
 local View = {}
 return View

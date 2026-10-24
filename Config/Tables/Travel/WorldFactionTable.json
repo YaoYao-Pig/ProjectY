@@ -1,0 +1,348 @@
+{
+  "version": 1,
+  "name": "WorldFactionTable",
+  "description": "组织战略、生态分布与据点外观；与叙事 FactionTable 共用稳定身份。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "组织 ID",
+      "min": 1,
+      "ref": "FactionTable"
+    },
+    {
+      "name": "role",
+      "type": "string",
+      "description": "战略角色"
+    },
+    {
+      "name": "regionTypes",
+      "type": "enum[]",
+      "description": "适宜地形",
+      "enumRef": "Map.E_MapRegion"
+    },
+    {
+      "name": "playerRelation",
+      "type": "int",
+      "description": "玩家初始外交偏好，与已有声望相加",
+      "min": -100,
+      "max": 100
+    },
+    {
+      "name": "partyDefinitionId",
+      "type": "int",
+      "description": "外派队伍模板，0 为无外派"
+    },
+    {
+      "name": "encounterId",
+      "type": "int",
+      "description": "守军战斗模板，0 为无守军"
+    },
+    {
+      "name": "siteCount",
+      "type": "int",
+      "description": "新增据点数量",
+      "min": 0,
+      "max": 8
+    },
+    {
+      "name": "modelPath",
+      "type": "string",
+      "description": "大地图据点模型路径"
+    },
+    {
+      "name": "reserve",
+      "type": "int",
+      "description": "初始补给储备",
+      "min": 0
+    },
+    {
+      "name": "recruitCost",
+      "type": "int",
+      "description": "恢复一名守军的补给成本",
+      "min": 1
+    },
+    {
+      "name": "income",
+      "type": "int",
+      "description": "每战略周期储备收入",
+      "min": 0
+    },
+    {
+      "name": "raidPreference",
+      "type": "float",
+      "description": "进攻偏好",
+      "min": 0
+    },
+    {
+      "name": "defenseMultiplier",
+      "type": "float",
+      "description": "据点防御系数",
+      "min": 1
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "role": "civilized",
+      "regionTypes": [
+        1,
+        4
+      ],
+      "playerRelation": 55,
+      "partyDefinitionId": 8,
+      "encounterId": 408,
+      "siteCount": 0,
+      "modelPath": "",
+      "reserve": 160,
+      "recruitCost": 40,
+      "income": 4,
+      "raidPreference": 0.65,
+      "defenseMultiplier": 1.5
+    },
+    {
+      "id": 2,
+      "role": "organization",
+      "regionTypes": [],
+      "playerRelation": 55,
+      "partyDefinitionId": 0,
+      "encounterId": 0,
+      "siteCount": 0,
+      "modelPath": "",
+      "reserve": 0,
+      "recruitCost": 40,
+      "income": 0,
+      "raidPreference": 0,
+      "defenseMultiplier": 1
+    },
+    {
+      "id": 3,
+      "role": "organization",
+      "regionTypes": [],
+      "playerRelation": 45,
+      "partyDefinitionId": 0,
+      "encounterId": 0,
+      "siteCount": 0,
+      "modelPath": "",
+      "reserve": 0,
+      "recruitCost": 40,
+      "income": 0,
+      "raidPreference": 0,
+      "defenseMultiplier": 1
+    },
+    {
+      "id": 4,
+      "role": "raider",
+      "regionTypes": [
+        2,
+        1
+      ],
+      "playerRelation": -55,
+      "partyDefinitionId": 4,
+      "encounterId": 404,
+      "siteCount": 2,
+      "modelPath": "Assets/DynamicAsset/FactionLowPoly/Models/Faction_OrcStockade.fbx",
+      "reserve": 100,
+      "recruitCost": 35,
+      "income": 2,
+      "raidPreference": 1.2,
+      "defenseMultiplier": 1.25
+    },
+    {
+      "id": 5,
+      "role": "raider",
+      "regionTypes": [
+        1
+      ],
+      "playerRelation": -55,
+      "partyDefinitionId": 3,
+      "encounterId": 403,
+      "siteCount": 2,
+      "modelPath": "Assets/DynamicAsset/FactionLowPoly/Models/Faction_GoblinCamp.fbx",
+      "reserve": 70,
+      "recruitCost": 25,
+      "income": 2,
+      "raidPreference": 1,
+      "defenseMultiplier": 1.1
+    },
+    {
+      "id": 6,
+      "role": "guardian",
+      "regionTypes": [
+        5
+      ],
+      "playerRelation": 45,
+      "partyDefinitionId": 7,
+      "encounterId": 407,
+      "siteCount": 2,
+      "modelPath": "Assets/DynamicAsset/FactionLowPoly/Models/Faction_ElfGrove.fbx",
+      "reserve": 120,
+      "recruitCost": 40,
+      "income": 3,
+      "raidPreference": 0.55,
+      "defenseMultiplier": 1.4
+    },
+    {
+      "id": 7,
+      "role": "raider",
+      "regionTypes": [
+        5,
+        2
+      ],
+      "playerRelation": -55,
+      "partyDefinitionId": 2,
+      "encounterId": 402,
+      "siteCount": 1,
+      "modelPath": "Assets/DynamicAsset/FactionLowPoly/Models/Faction_GoblinCamp.fbx",
+      "reserve": 60,
+      "recruitCost": 30,
+      "income": 1,
+      "raidPreference": 0.9,
+      "defenseMultiplier": 1.1
+    },
+    {
+      "id": 8,
+      "role": "wildlife",
+      "regionTypes": [
+        5,
+        6
+      ],
+      "playerRelation": -80,
+      "partyDefinitionId": 5,
+      "encounterId": 405,
+      "siteCount": 0,
+      "modelPath": "",
+      "reserve": 0,
+      "recruitCost": 40,
+      "income": 0,
+      "raidPreference": 0,
+      "defenseMultiplier": 1
+    },
+    {
+      "id": 9,
+      "role": "wildlife",
+      "regionTypes": [
+        2
+      ],
+      "playerRelation": -80,
+      "partyDefinitionId": 6,
+      "encounterId": 406,
+      "siteCount": 0,
+      "modelPath": "",
+      "reserve": 0,
+      "recruitCost": 40,
+      "income": 0,
+      "raidPreference": 0,
+      "defenseMultiplier": 1
+    },
+    {
+      "id": 11,
+      "role": "wildlife",
+      "regionTypes": [
+        5,
+        6
+      ],
+      "playerRelation": -55,
+      "partyDefinitionId": 11,
+      "encounterId": 701,
+      "siteCount": 0,
+      "modelPath": "",
+      "reserve": 0,
+      "recruitCost": 40,
+      "income": 0,
+      "raidPreference": 0,
+      "defenseMultiplier": 1
+    },
+    {
+      "id": 12,
+      "role": "wildlife",
+      "regionTypes": [
+        5,
+        6
+      ],
+      "playerRelation": 55,
+      "partyDefinitionId": 12,
+      "encounterId": 702,
+      "siteCount": 0,
+      "modelPath": "",
+      "reserve": 0,
+      "recruitCost": 40,
+      "income": 0,
+      "raidPreference": 0,
+      "defenseMultiplier": 1
+    },
+    {
+      "id": 13,
+      "role": "wildlife",
+      "regionTypes": [
+        2
+      ],
+      "playerRelation": 55,
+      "partyDefinitionId": 13,
+      "encounterId": 703,
+      "siteCount": 0,
+      "modelPath": "",
+      "reserve": 0,
+      "recruitCost": 40,
+      "income": 0,
+      "raidPreference": 0,
+      "defenseMultiplier": 1
+    },
+    {
+      "id": 14,
+      "role": "wildlife",
+      "regionTypes": [
+        2
+      ],
+      "playerRelation": -55,
+      "partyDefinitionId": 14,
+      "encounterId": 704,
+      "siteCount": 0,
+      "modelPath": "",
+      "reserve": 0,
+      "recruitCost": 40,
+      "income": 0,
+      "raidPreference": 0,
+      "defenseMultiplier": 1
+    },
+    {
+      "id": 15,
+      "role": "wildlife",
+      "regionTypes": [
+        1,
+        4,
+        5
+      ],
+      "playerRelation": -55,
+      "partyDefinitionId": 15,
+      "encounterId": 705,
+      "siteCount": 0,
+      "modelPath": "",
+      "reserve": 0,
+      "recruitCost": 40,
+      "income": 0,
+      "raidPreference": 0,
+      "defenseMultiplier": 1
+    },
+    {
+      "id": 16,
+      "role": "wildlife",
+      "regionTypes": [
+        1,
+        4,
+        5
+      ],
+      "playerRelation": 55,
+      "partyDefinitionId": 16,
+      "encounterId": 706,
+      "siteCount": 0,
+      "modelPath": "",
+      "reserve": 0,
+      "recruitCost": 40,
+      "income": 0,
+      "raidPreference": 0,
+      "defenseMultiplier": 1
+    }
+  ]
+}

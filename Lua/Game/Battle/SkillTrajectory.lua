@@ -12,10 +12,10 @@ local function occupant(value,cell)
     if value==true then return terrain(cell) end
     if type(value)=='table' and value.kind then
         assert(value.key,'Projectile occupant needs a stable key')
-        if value.kind=='actor' and (value.actor.HP<=0 or value.actor.AnimalOwnerId and value.actor.AnimalOwnerId~=0) then return nil end
+        if value.kind=='actor' and (value.actor.HP<=0 or value.actor.AnimalOwnerId and value.actor.AnimalOwnerId~=0 and not CS.ProjectY.Data.AnimalCompanionState.Independent(value.actor)) then return nil end
         local result={};for key,item in pairs(value)do result[key]=item end;result.cell=cell;return result
     end
-    if value.HP<=0 or value.AnimalOwnerId and value.AnimalOwnerId~=0 then return nil end
+    if value.HP<=0 or value.AnimalOwnerId and value.AnimalOwnerId~=0 and not CS.ProjectY.Data.AnimalCompanionState.Independent(value) then return nil end
     return {kind='actor',key='actor:'..value.Id,actor=value,cell=cell}
 end
 local function touches(physical,origin,target)

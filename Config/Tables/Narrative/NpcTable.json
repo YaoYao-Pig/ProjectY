@@ -72,6 +72,17 @@
       "description": "关联任务，用于工具导航和 HUD",
       "ref": "MissionTable",
       "default": []
+    },
+    {
+      "name": "locationKind",
+      "type": "enum",
+      "values": [
+        "town",
+        "world_party",
+        "event"
+      ],
+      "default": "town",
+      "description": "town 使用城镇安置与日程；world_party 绑定传奇队伍；event 由特殊事件提供存活的可招募角色"
     }
   ],
   "rows": [
@@ -109,13 +120,20 @@
         2
       ],
       "missionIds": [
-        100
-      ]
+        100,
+        801,
+        804,
+        806,
+        808,
+        809,
+        902
+      ],
+      "locationKind": "town"
     },
     {
       "id": 3,
       "name": "莫琳",
-      "description": "莫琳摊开一封边角烧焦的求援信。她替渡灯互助会记账，也知道每个被抹掉的名字背后是谁。",
+      "description": "渡灯互助会的记账人。她保管着火灾后的求援信和领粮记录，镇上有谁缺了口粮，常来找她。",
       "townTemplateId": 1,
       "actorTemplateId": 3,
       "factionId": 2,
@@ -128,13 +146,18 @@
       ],
       "missionIds": [
         300,
-        500
-      ]
+        500,
+        801,
+        803,
+        807,
+        904
+      ],
+      "locationKind": "town"
     },
     {
       "id": 4,
       "name": "赫铎",
-      "description": "赫铎的手指沾着铜屑。他负责警钟的共鸣装置；账本上的铁件短缺，让钟和城外的驿路一起沉默。",
+      "description": "负责维护警钟的工匠，也管着工坊的账。缺铁料、欠工钱和徒弟出师的事，都得找他谈。",
       "townTemplateId": 2,
       "actorTemplateId": 6,
       "factionId": 3,
@@ -147,8 +170,14 @@
       ],
       "missionIds": [
         400,
-        500
-      ]
+        500,
+        802,
+        803,
+        807,
+        810,
+        903
+      ],
+      "locationKind": "town"
     },
     {
       "id": 5,
@@ -167,13 +196,19 @@
       "missionIds": [
         300,
         400,
-        500
-      ]
+        500,
+        804,
+        805,
+        808,
+        809,
+        905
+      ],
+      "locationKind": "town"
     },
     {
       "id": 6,
       "name": "塞维恩",
-      "description": "塞维恩是值守驿路的老卫队长。他不愿再替空白公文担责，正在寻找能让三方坐到一张桌前的人。",
+      "description": "负责驿路巡防的老卫队长。仓库火灾、商队求援和洛岑的逃兵登记，记录上都能找到他的签名。",
       "townTemplateId": 2,
       "actorTemplateId": 6,
       "factionId": 1,
@@ -187,8 +222,251 @@
       "missionIds": [
         300,
         400,
-        500
-      ]
+        500,
+        802,
+        805,
+        806,
+        810,
+        901
+      ],
+      "locationKind": "town"
+    },
+    {
+      "id": 101,
+      "name": "血月巨狼 · 裂喉",
+      "description": "它曾守护森林边缘，失去幼崽后开始袭击所有旅人。",
+      "townTemplateId": 1,
+      "actorTemplateId": 701,
+      "factionId": 11,
+      "recruitable": false,
+      "relationMin": -100,
+      "relationMax": 100,
+      "initialRelation": 0,
+      "dialogueIds": [
+        101
+      ],
+      "missionIds": [],
+      "locationKind": "world_party"
+    },
+    {
+      "id": 102,
+      "name": "寒潮巨狼 · 听雪",
+      "description": "能够以意念交谈的古老巨狼，守护林地中的迷路者。",
+      "townTemplateId": 1,
+      "actorTemplateId": 702,
+      "factionId": 12,
+      "recruitable": false,
+      "relationMin": -100,
+      "relationMax": 100,
+      "initialRelation": 0,
+      "dialogueIds": [
+        102
+      ],
+      "missionIds": [
+        701
+      ],
+      "locationKind": "world_party"
+    },
+    {
+      "id": 103,
+      "name": "磐脊巨兽 · 守誓",
+      "description": "曾与第一批修路人立约的岩灵，至今守护那条早已改道的山路。",
+      "townTemplateId": 1,
+      "actorTemplateId": 703,
+      "factionId": 13,
+      "recruitable": false,
+      "relationMin": -100,
+      "relationMax": 100,
+      "initialRelation": 0,
+      "dialogueIds": [
+        103
+      ],
+      "missionIds": [
+        702
+      ],
+      "locationKind": "world_party"
+    },
+    {
+      "id": 104,
+      "name": "熔脉巨兽 · 余烬",
+      "description": "被采矿声惊醒的古老岩灵，炽热裂隙来自久久未散的怒意。",
+      "townTemplateId": 1,
+      "actorTemplateId": 704,
+      "factionId": 14,
+      "recruitable": false,
+      "relationMin": -100,
+      "relationMax": 100,
+      "initialRelation": 0,
+      "dialogueIds": [
+        104
+      ],
+      "missionIds": [],
+      "locationKind": "world_party"
+    },
+    {
+      "id": 105,
+      "name": "叛誓剑士 · 维兰",
+      "description": "曾经的城门守卫，擅长瓦解被祝福者的防线。",
+      "townTemplateId": 1,
+      "actorTemplateId": 705,
+      "factionId": 15,
+      "recruitable": false,
+      "relationMin": -100,
+      "relationMax": 100,
+      "initialRelation": 0,
+      "dialogueIds": [
+        105
+      ],
+      "missionIds": [],
+      "locationKind": "world_party"
+    },
+    {
+      "id": 106,
+      "name": "引路游侠 · 洛恩",
+      "description": "记得每一条归途的游侠，仍在寻找让旧友回头的方法。",
+      "townTemplateId": 1,
+      "actorTemplateId": 706,
+      "factionId": 16,
+      "recruitable": false,
+      "relationMin": -100,
+      "relationMax": 100,
+      "initialRelation": 0,
+      "dialogueIds": [
+        106
+      ],
+      "missionIds": [
+        703
+      ],
+      "locationKind": "world_party"
+    },
+    {
+      "id": 201,
+      "name": "陶恩",
+      "description": "洛岑背出火场的徒弟，后来当过兵。腿伤早已愈合，他仍留着那双不合脚的军靴。",
+      "townTemplateId": 201,
+      "actorTemplateId": 901,
+      "factionId": 2,
+      "recruitable": true,
+      "relationMin": -100,
+      "relationMax": 100,
+      "initialRelation": 0,
+      "dialogueIds": [
+        10000
+      ],
+      "missionIds": [
+        901
+      ],
+      "locationKind": "town"
+    },
+    {
+      "id": 202,
+      "name": "莎芙",
+      "description": "替商队勘察路线的游侠。上次商队遭到伏击，死了两个人；她把他们的名字记在自己的地图背面。",
+      "townTemplateId": 202,
+      "actorTemplateId": 902,
+      "factionId": 2,
+      "recruitable": true,
+      "relationMin": -100,
+      "relationMax": 100,
+      "initialRelation": 0,
+      "dialogueIds": [
+        10001
+      ],
+      "missionIds": [
+        902
+      ],
+      "locationKind": "town"
+    },
+    {
+      "id": 203,
+      "name": "维珂",
+      "description": "快要出师的巧匠，工具箱已经收好，却迟迟没走。她和赫铎还在争执，两批坏铸件的损失究竟该由谁承担。",
+      "townTemplateId": 203,
+      "actorTemplateId": 903,
+      "factionId": 3,
+      "recruitable": true,
+      "relationMin": -100,
+      "relationMax": 100,
+      "initialRelation": 0,
+      "dialogueIds": [
+        10002
+      ],
+      "missionIds": [
+        903
+      ],
+      "locationKind": "town"
+    },
+    {
+      "id": 204,
+      "name": "米蕾",
+      "description": "替互助会照料伤员的法师，会止血和治疗法术。她一直在药瓶上写老师的名字，最近才开始更换标签。",
+      "townTemplateId": 204,
+      "actorTemplateId": 904,
+      "factionId": 2,
+      "recruitable": true,
+      "relationMin": -100,
+      "relationMax": 100,
+      "initialRelation": 0,
+      "dialogueIds": [
+        10003
+      ],
+      "missionIds": [
+        904
+      ],
+      "locationKind": "town"
+    },
+    {
+      "id": 205,
+      "name": "奥林",
+      "description": "守过城门的弓手，讲过许多远行故事，自己走得最远的一次只到了邻镇。他终于买好了上路的干粮。",
+      "townTemplateId": 205,
+      "actorTemplateId": 905,
+      "factionId": 2,
+      "recruitable": true,
+      "relationMin": -100,
+      "relationMax": 100,
+      "initialRelation": 0,
+      "dialogueIds": [
+        10004
+      ],
+      "missionIds": [
+        905
+      ],
+      "locationKind": "town"
+    },
+    {
+      "id": 301,
+      "name": "受审骑士",
+      "description": "遭到诬陷、以比武审判争取清白的骑士。只有在审判中获胜并保住他的性命，才能邀请他同行。",
+      "townTemplateId": 2,
+      "actorTemplateId": 910,
+      "factionId": 1,
+      "recruitable": true,
+      "relationMin": -100,
+      "relationMax": 100,
+      "initialRelation": 0,
+      "dialogueIds": [],
+      "missionIds": [
+        1001
+      ],
+      "locationKind": "event"
+    },
+    {
+      "id": 302,
+      "name": "神秘逃兵",
+      "description": "带着多处伤势逃离追捕的陌生人。他暂时没有说明自己的来历。",
+      "townTemplateId": 2,
+      "actorTemplateId": 920,
+      "factionId": 1,
+      "recruitable": true,
+      "relationMin": -100,
+      "relationMax": 100,
+      "initialRelation": 0,
+      "dialogueIds": [],
+      "missionIds": [
+        1002
+      ],
+      "locationKind": "event"
     }
   ]
 }

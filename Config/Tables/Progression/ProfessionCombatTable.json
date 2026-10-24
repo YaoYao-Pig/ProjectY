@@ -1,0 +1,454 @@
+{
+  "version": 1,
+  "name": "ProfessionCombatTable",
+  "description": "职业战斗技能机制、选项与实际材料契约",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "技能 ID",
+      "ref": "CombatSkillTable"
+    },
+    {
+      "name": "mechanic",
+      "type": "string",
+      "description": "战斗机制代码"
+    },
+    {
+      "name": "family",
+      "type": "string",
+      "description": "药剂或咒术分组",
+      "default": ""
+    },
+    {
+      "name": "materialId",
+      "type": "int",
+      "description": "消耗物品；0 表示无",
+      "default": 0,
+      "min": 0
+    },
+    {
+      "name": "materialCount",
+      "type": "int",
+      "description": "每次合法施放消耗份数",
+      "default": 0,
+      "min": 0
+    },
+    {
+      "name": "statusTag",
+      "type": "string",
+      "description": "选择或消费的状态标签",
+      "default": ""
+    },
+    {
+      "name": "applyEffectId",
+      "type": "int",
+      "description": "机制施加的 CombatEffect；0 表示无",
+      "default": 0,
+      "min": 0
+    },
+    {
+      "name": "bonusDamage",
+      "type": "int",
+      "description": "条件附伤；受共享附伤上限约束",
+      "default": 0,
+      "min": 0
+    },
+    {
+      "name": "baseSkillId",
+      "type": "int",
+      "description": "共享课程的基础技能；0 表示本人",
+      "default": 0,
+      "min": 0
+    },
+    {
+      "name": "requiredEquipment",
+      "type": "string",
+      "description": "额外要求的实际装备类型；shield/bow/melee，空为无",
+      "default": ""
+    },
+    {
+      "name": "refundItemId",
+      "type": "int",
+      "description": "拆料返还的实际原投入物品；0 表示无",
+      "default": 0,
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 1801,
+      "mechanic": "coat",
+      "family": "potion",
+      "materialId": 8013,
+      "materialCount": 1,
+      "statusTag": "wet",
+      "applyEffectId": 20004,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1802,
+      "mechanic": "splash",
+      "family": "potion",
+      "materialId": 8013,
+      "materialCount": 1,
+      "statusTag": "",
+      "applyEffectId": 20019,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1803,
+      "mechanic": "splash",
+      "family": "potion",
+      "materialId": 8015,
+      "materialCount": 1,
+      "statusTag": "",
+      "applyEffectId": 0,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1804,
+      "mechanic": "distill",
+      "family": "potion",
+      "materialId": 8016,
+      "materialCount": 1,
+      "statusTag": "burning",
+      "applyEffectId": 0,
+      "bonusDamage": 6,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1811,
+      "mechanic": "beat",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 20003,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1813,
+      "mechanic": "beat",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "resonance",
+      "applyEffectId": 20001,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1814,
+      "mechanic": "encore",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "resonance",
+      "applyEffectId": 20010,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1821,
+      "mechanic": "cleanse_guard",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 20022,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1822,
+      "mechanic": "ward",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 20009,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1823,
+      "mechanic": "atonement",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 0,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1824,
+      "mechanic": "judgement",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "weakness",
+      "applyEffectId": 0,
+      "bonusDamage": 6,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1831,
+      "mechanic": "draw_mark",
+      "family": "curse",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 20011,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1832,
+      "mechanic": "curse_mark",
+      "family": "curse",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 20002,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1833,
+      "mechanic": "consume_damage",
+      "family": "curse",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "bleeding",
+      "applyEffectId": 0,
+      "bonusDamage": 6,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1834,
+      "mechanic": "transfer",
+      "family": "curse",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "poison",
+      "applyEffectId": 0,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1841,
+      "mechanic": "opening",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 20006,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1842,
+      "mechanic": "feint",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 20001,
+      "bonusDamage": 0,
+      "baseSkillId": 0,
+      "requiredEquipment": "melee"
+    },
+    {
+      "id": 1843,
+      "mechanic": "retreat",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 0,
+      "bonusDamage": 0,
+      "baseSkillId": 0,
+      "requiredEquipment": "melee"
+    },
+    {
+      "id": 1844,
+      "mechanic": "finisher",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "exposed",
+      "applyEffectId": 0,
+      "bonusDamage": 6,
+      "baseSkillId": 0,
+      "requiredEquipment": "melee"
+    },
+    {
+      "id": 1901,
+      "mechanic": "push",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 0,
+      "bonusDamage": 0,
+      "baseSkillId": 0,
+      "requiredEquipment": "shield"
+    },
+    {
+      "id": 1903,
+      "mechanic": "pull",
+      "family": "",
+      "materialId": 82,
+      "materialCount": 1,
+      "statusTag": "",
+      "applyEffectId": 0,
+      "bonusDamage": 0,
+      "baseSkillId": 0,
+      "requiredEquipment": "bow"
+    },
+    {
+      "id": 1904,
+      "mechanic": "retreat",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 0,
+      "bonusDamage": 0,
+      "baseSkillId": 0,
+      "requiredEquipment": "bow"
+    },
+    {
+      "id": 1905,
+      "mechanic": "enchant",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "burning",
+      "applyEffectId": 20007,
+      "bonusDamage": 0,
+      "baseSkillId": 0,
+      "requiredEquipment": "melee"
+    },
+    {
+      "id": 1906,
+      "mechanic": "consume_damage",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "wet",
+      "applyEffectId": 0,
+      "bonusDamage": 6,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1907,
+      "mechanic": "trap",
+      "family": "",
+      "materialId": 82,
+      "materialCount": 1,
+      "statusTag": "",
+      "applyEffectId": 20016,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1908,
+      "mechanic": "salvage",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 0,
+      "bonusDamage": 0,
+      "baseSkillId": 0,
+      "refundItemId": 81
+    },
+    {
+      "id": 1909,
+      "mechanic": "swap",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 0,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1910,
+      "mechanic": "interpose",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 20018,
+      "bonusDamage": 0,
+      "baseSkillId": 0,
+      "requiredEquipment": "shield"
+    },
+    {
+      "id": 1861,
+      "mechanic": "coat",
+      "family": "potion",
+      "materialId": 8014,
+      "materialCount": 1,
+      "statusTag": "poison",
+      "applyEffectId": 20005,
+      "bonusDamage": 0,
+      "baseSkillId": 1801
+    },
+    {
+      "id": 1862,
+      "mechanic": "distill",
+      "family": "potion",
+      "materialId": 8016,
+      "materialCount": 1,
+      "statusTag": "poison",
+      "applyEffectId": 0,
+      "bonusDamage": 3,
+      "baseSkillId": 1804
+    },
+    {
+      "id": 1863,
+      "mechanic": "transfer",
+      "family": "curse",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "bleeding",
+      "applyEffectId": 0,
+      "bonusDamage": 0,
+      "baseSkillId": 1834
+    },
+    {
+      "id": 1864,
+      "mechanic": "transfer",
+      "family": "curse",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "weakness",
+      "applyEffectId": 0,
+      "bonusDamage": 0,
+      "baseSkillId": 1834
+    },
+    {
+      "id": 1865,
+      "mechanic": "enchant",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "wet",
+      "applyEffectId": 20008,
+      "bonusDamage": 0,
+      "baseSkillId": 1905,
+      "requiredEquipment": "melee"
+    }
+  ]
+}

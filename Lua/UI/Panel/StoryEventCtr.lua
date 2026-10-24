@@ -1,3 +1,4 @@
+local LuaLanguage = require('Language')
 local Class=require('Core.Class')
 local Base=require('UI.UIPanelCtrl')
 local Widgets=require('UI.GrowthWidgets')
@@ -16,19 +17,19 @@ function Event:Refresh()
     self.view.Caption.text=data.EventLocation..'  ·  '..self.adventure.battle.stats:Template(events:Subject()).name
     self.view.Description.text=data.Phase=='result' and data.ResultText or events:Text(event.description)
     self.view.Continue.gameObject:SetActive(data.Phase=='result')
-    self.view.ContinueText.text=data.EventReturnPhase=='area' and '继续探索' or '返回旅途'
+    self.view.ContinueText.text=data.EventReturnPhase=='area' and LuaLanguage.UIStoryEventContinueTextText2 or LuaLanguage.UIStoryEventContinueTextText
     local choices={}
     if data.Phase=='event' then for _,id in ipairs(event.choiceIds) do
         local row=events.choices:Get(id);local ok,reason=events:CanChoose(id)
         local rewards={}
         if row.obstacleAction~='' then rewards[#rewards+1]=self.adventure.obstacles:ChoiceDetails(row.obstacleAction) end
-        if row.costCoins>0 then rewards[#rewards+1]='消耗 '..row.costCoins..' 金币' end
-        if row.timeMinutes>0 then rewards[#rewards+1]='用时 '..row.timeMinutes..' 分钟' end
+        if row.costCoins>0 then rewards[#rewards+1]=string.format(LuaLanguage.UIStoryEventRewardsRewards15, (row.costCoins)) end
+        if row.timeMinutes>0 then rewards[#rewards+1]=string.format(LuaLanguage.UIStoryEventRewardsRewards14, (row.timeMinutes)) end
         for _,effectId in ipairs(row.effectIds)do rewards[#rewards+1]=events.effectDefinitions:Get(effectId).name end
         for i,itemId in ipairs(row.itemIds) do rewards[#rewards+1]=events.equipment.rules.items:Get(itemId).name..' ×'..row.itemCounts[i] end
-        if row.experience>0 then rewards[#rewards+1]='经验 +'..row.experience end
-        if #row.unlockTreeIds>0 then rewards[#rewards+1]='开启新的天赋道路' end
-        if row.potentialPoints>0 then rewards[#rewards+1]='可能唤醒潜力' end
+        if row.experience>0 then rewards[#rewards+1]=string.format(LuaLanguage.UIStoryEventRewardsRewards13, (row.experience)) end
+        if #row.unlockTreeIds>0 then rewards[#rewards+1]=LuaLanguage.UIStoryEventRewardsRewards12 end
+        if row.potentialPoints>0 then rewards[#rewards+1]=LuaLanguage.UIStoryEventRewardsRewards1 end
         choices[#choices+1]={id=id,title=events:Text(row.label),body=ok and (row.hideRewards and '' or table.concat(rewards,' · ')) or reason,available=ok}
     end end
     Widgets.Rows(self,'Choices','StoryChoice',choices,function(row) self.demo:SendCommand('choose',row.id,0) end)

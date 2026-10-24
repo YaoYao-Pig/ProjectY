@@ -18,8 +18,11 @@ MonoBehaviour:
   fantasyPipeline: {fileID: 11400000, guid: d4dbedd270d0f8f46b63fe6d18dce628, type: 2}
   fantasyProfile: {fileID: 11400000, guid: 417c6c55783a21e4989971d5e8abaabb, type: 2}
   fantasyLighting:
-    daySunMultiplier: 3.2
-    dayAmbientMultiplier: 0.78
+    daySunMultiplier: 3.6
+    dayAmbientMultiplier: 0.8
+    indoorSunMultiplier: 0.9
+    indoorAmbientMultiplier: 1.2
+    interiorLampMultiplier: 3
     reflectionIntensity: 0.75
     skyLightTint: {r: 0.78, g: 0.9, b: 1, a: 1}
     skybox: 1

@@ -23,6 +23,7 @@ for q=0,5 do for r=0,3 do
 end end
 map:GetCell(2,0).waterLevel=1;map:GetCell(2,1).height=100
 local adventure={parties={data={IsOpen=false,Target=function()end}},config=config,data={Phase='map',Seed=431},context={services={UI={IsWorldPaused=false}}},camp={data={IsOpen=false}},sites={{id=1,q=0,r=0}},
+    specialEvents={CanEnter=function()return true end,CanTrigger=function()return true end,Discovered=function()end},
     events={CanVisit=function()return true end,LivingParty=function()return {1}end,events=config:GetTable('AdventureEventTable')},
     battle={encounters=config:GetTable('CombatEncounterTable')}}
 local travel=Travel.New(adventure);travel:Reset(map,adventure.sites)

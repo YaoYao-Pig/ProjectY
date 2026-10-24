@@ -1,0 +1,122 @@
+{
+  "version": 1,
+  "name": "ProfessionStatusTable",
+  "description": "一次性职业状态的消费机制",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "状态 ID",
+      "ref": "BuffTable"
+    },
+    {
+      "name": "mechanic",
+      "type": "string",
+      "description": "状态消费机制"
+    },
+    {
+      "name": "amount",
+      "type": "int",
+      "description": "机制数值；涂层与附刃为施加效果 ID"
+    },
+    {
+      "name": "applyEffectId",
+      "type": "int",
+      "description": "施加此状态的效果 ID",
+      "ref": "CombatEffectTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 12001,
+      "mechanic": "exposed",
+      "amount": 2,
+      "applyEffectId": 20001
+    },
+    {
+      "id": 12002,
+      "mechanic": "curse_mark",
+      "amount": 30,
+      "applyEffectId": 20002
+    },
+    {
+      "id": 12003,
+      "mechanic": "resonance",
+      "amount": 1,
+      "applyEffectId": 20003
+    },
+    {
+      "id": 12004,
+      "mechanic": "coating_water",
+      "amount": 20019,
+      "applyEffectId": 20004
+    },
+    {
+      "id": 12005,
+      "mechanic": "coating_poison",
+      "amount": 803,
+      "applyEffectId": 20005
+    },
+    {
+      "id": 12006,
+      "mechanic": "opening",
+      "amount": 0,
+      "applyEffectId": 20006
+    },
+    {
+      "id": 12007,
+      "mechanic": "enchant_fire",
+      "amount": 20021,
+      "applyEffectId": 20007
+    },
+    {
+      "id": 12008,
+      "mechanic": "enchant_water",
+      "amount": 20019,
+      "applyEffectId": 20008
+    },
+    {
+      "id": 12009,
+      "mechanic": "ward",
+      "amount": 4,
+      "applyEffectId": 20009
+    },
+    {
+      "id": 12010,
+      "mechanic": "encore_discount",
+      "amount": 2,
+      "applyEffectId": 20010
+    },
+    {
+      "id": 12011,
+      "mechanic": "draw_discount",
+      "amount": 1,
+      "applyEffectId": 20011
+    },
+    {
+      "id": 12012,
+      "mechanic": "recycle_discount",
+      "amount": 1,
+      "applyEffectId": 20012
+    },
+    {
+      "id": 12018,
+      "mechanic": "interpose",
+      "amount": 0,
+      "applyEffectId": 20018
+    },
+    {
+      "id": 12022,
+      "mechanic": "guard_floor",
+      "amount": 3,
+      "applyEffectId": 20022
+    },
+    {
+      "id": 12017,
+      "mechanic": "suffering",
+      "amount": 2,
+      "applyEffectId": 20017
+    }
+  ]
+}

@@ -53,6 +53,21 @@ namespace ProjectY.Samples
         private float radius;
         private bool visible = true;
         private bool disposed;
+        private struct FocusInstance { public Batch Batch; public int Index; public Matrix4x4 Matrix; }
+        private struct FocusReference { public Batch Batch; public int Index; }
+        private readonly Dictionary<int, List<FocusReference>> instancesByCell = new Dictionary<int, List<FocusReference>>();
+        private readonly List<FocusInstance> focused = new List<FocusInstance>();
+
+        internal void SetFocusCells(HashSet<int> cells)
+        {
+            SetFocusLift(0); focused.Clear();
+            foreach (var cell in cells) if (instancesByCell.TryGetValue(cell, out var entries))
+                foreach (var entry in entries) focused.Add(new FocusInstance { Batch = entry.Batch, Index = entry.Index, Matrix = entry.Batch.Matrices[entry.Index] });
+        }
+        internal void SetFocusLift(float lift)
+        {
+            foreach (var entry in focused) { var matrix = entry.Matrix; matrix.m13 += lift; entry.Batch.Matrices[entry.Index] = matrix; }
+        }
 
         // A negative value follows Unity time; previews may set _NaturePreviewTime on this material.
         public Material SharedMaterial => material;
@@ -80,6 +95,7 @@ namespace ProjectY.Samples
             if (map == null) throw new ArgumentNullException(nameof(map));
             if (map.Radius <= 0) throw new InvalidOperationException("地图半径必须为正。");
             root = null;
+            instancesByCell.Clear(); focused.Clear();
             radius = map.Radius;
             var surfaces = new Dictionary<int, MapPreviewData.Surface>();
             foreach (var surface in map.Surfaces) surfaces.Add(surface.Id, surface);
@@ -117,10 +133,13 @@ namespace ProjectY.Samples
                 var tint = Tint(cover.Kind, cover.Phase, ground, cell.Color);
                 batch.Tints[batch.Count] = QualitySettings.activeColorSpace == ColorSpace.Linear ? tint.linear : tint;
                 batch.Data[batch.Count] = new Vector4(cover.Phase, Mathf.Clamp(wind, 0, 2), cover.Kind, radius);
-                batch.Matrices[batch.Count++] = Matrix4x4.TRS(position, Quaternion.Euler(0, cover.Yaw, 0), Vector3.one * scale);
+                batch.Matrices[batch.Count] = Matrix4x4.TRS(position, Quaternion.Euler(0, cover.Yaw, 0), Vector3.one * scale);
+                if (!instancesByCell.TryGetValue(cover.Cell, out var entries)) { entries = new List<FocusReference>(); instancesByCell.Add(cover.Cell, entries); }
+                entries.Add(new FocusReference { Batch = batch, Index = batch.Count });
+                batch.Count++;
                 // Rotation-independent envelope includes the world-space flight and wind displacement.
                 var envelope = authoredBounds[meshIndex].center.magnitude + authoredBounds[meshIndex].extents.magnitude;
-                bucket.Bounds.Encapsulate(new Bounds(position, Vector3.one * (envelope * scale + radius * .25f) * 2));
+                bucket.Bounds.Encapsulate(new Bounds(position, Vector3.one * (envelope * scale + radius * .5f) * 2));
             }
             foreach (var bucket in buckets.Values)
                 foreach (var batch in bucket.Batches)

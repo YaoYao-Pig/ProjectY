@@ -257,7 +257,7 @@ function List:OnDestroy()
             local ok, err = xpcall(self.options.onDestroy, debug.traceback, cell)
             if not ok and not firstError then firstError = err end
         end
-        CS.UnityEngine.Object.Destroy(cell.reference.gameObject)
+        CS.ProjectY.UI.UIHost.DestroyObject(cell.reference.gameObject)
         cell.view, cell.reference, cell.root = nil, nil, nil
     end
     self.cells, self.activeCells, self.templates = {}, {}, nil

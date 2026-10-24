@@ -21,8 +21,10 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.MapAreaData);
-			Utils.BeginObjectRegister(type, L, translator, 0, 3, 2, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 5, 2, 0);
 			
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Find", _m_Find);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Ensure", _m_Ensure);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Enter", _m_Enter);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Leave", _m_Leave);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Clear", _m_Clear);
@@ -75,6 +77,66 @@ namespace XLua.CSObjectWrap
         
         
         
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_Find(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.MapAreaData gen_to_be_invoked = (ProjectY.Data.MapAreaData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _siteId = LuaAPI.xlua_tointeger(L, 2);
+                    
+                        var gen_ret = gen_to_be_invoked.Find( _siteId );
+                        translator.Push(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_Ensure(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.MapAreaData gen_to_be_invoked = (ProjectY.Data.MapAreaData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _siteId = LuaAPI.xlua_tointeger(L, 2);
+                    int _cellCount = LuaAPI.xlua_tointeger(L, 3);
+                    int _entryIndex = LuaAPI.xlua_tointeger(L, 4);
+                    
+                        var gen_ret = gen_to_be_invoked.Ensure( _siteId, _cellCount, _entryIndex );
+                        translator.Push(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _m_Enter(RealStatePtr L)

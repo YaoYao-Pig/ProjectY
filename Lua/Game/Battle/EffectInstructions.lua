@@ -20,12 +20,16 @@ local function tagged(rules,target,tags)
     end
     return false
 end
-function Instructions.Allowed(rules,target,row)
+function Instructions.Allowed(rules,target,row,source)
+    local sourceRequired=row.sourceRequiredTags;local sourceForbidden=row.sourceForbiddenTags
     return (#row.requiredTags==0 or tagged(rules,target,row.requiredTags)) and not tagged(rules,target,row.forbiddenTags)
+        and (not sourceRequired or #sourceRequired==0 or source and tagged(rules,source,sourceRequired))
+        and (not sourceForbidden or #sourceForbidden==0 or source and not tagged(rules,source,sourceForbidden))
 end
 function Instructions.ContainerDamage(row)
     return row.kind=='damage' and row.duration=='instant' and row.recipient=='target' and row.affectsContainers
         and #row.requiredTags==0 and #row.forbiddenTags==0
+        and (not row.sourceRequiredTags or #row.sourceRequiredTags==0) and (not row.sourceForbiddenTags or #row.sourceForbiddenTags==0)
 end
 local function category(row,instance)
     if row.kind=='buff' then return row.category end
@@ -34,14 +38,17 @@ local function category(row,instance)
     if row.kind=='damage' then return 'debuff' end
 end
 function Instructions.Remove(owner,target,row)
-    local removed={}
+    local removed={};local debuffs=0
     for i=0,target.Effects.Count-1 do
         local instance=target.Effects:GetAt(i);local definition=owner:Definition(instance.EffectId)
         local match=owner.stats.buffs:Tagged(owner.stats.buffs:Find(instance.EffectId),row.removeTags)
         for _,kind in ipairs(row.removeCategories)do if category(definition,instance)==kind then match=true end end
-        if match then removed[#removed+1]=instance.Id end
+        if match then
+            removed[#removed+1]=instance.Id
+            local kind=category(definition,instance);if kind=='debuff' or kind=='control' then debuffs=debuffs+1 end
+        end
     end
     for _,id in ipairs(removed)do owner:Remove(target,id)end
-    return #removed
+    return #removed,debuffs
 end
 return Instructions

@@ -5,17 +5,28 @@ local System = require('Core.LuaSystem')
 local Registry = require('Core.SystemRegistry')
 local Battle = require('Game.Battle.BattleSystem')
 local Adventure = require('Game.Adventure.AdventureSystem')
+local appearances={HasRace=function()return true end}
+local realConfig=require('Config.ConfigSystem')()
+realConfig:OnInit({services={ReadConfig=function(_,name)
+    local file=assert(io.open('Assets/GameFramework/Resources/_Gen/Config/'..name..'.bytes','rb'))
+    local bytes=file:read('*a');file:close();return bytes
+end}})
+local appearanceTables={CharacterAppearancePoolTable=true,CharacterLoadoutTable=true,PawnTemplateTable=true}
 local checks = 0
 local function test(name, run)
     run(); checks = checks + 1; print('PASS ' .. name)
 end
 local function configType(getTable)
     local Config = Class('LifecycleConfigFixture', System)
-    function Config:GetTable(name) return getTable(name) end
+    function Config:GetTable(name)
+        if appearanceTables[name] then return realConfig:GetTable(name) end
+        return getTable(name) or realConfig:GetTable(name)
+    end
     return Config
 end
 local function startBattle(services, config)
     local errors, instance = {}, Battle()
+    services.Appearances=appearances
     services.LogError = function(_, message) errors[#errors + 1] = message end
     local registry = Registry(services)
     registry:Register('Config', config)
@@ -64,7 +75,7 @@ test('normal Battle shutdown releases listeners and state once', function()
 end)
 test('Adventure rollback before acquiring state preserves the original config failure', function()
     local errors, instance = {}, Adventure()
-    local registry = Registry({LogError = function(_, err) errors[#errors + 1] = err end})
+    local registry = Registry({Appearances=appearances,CharacterSaves={},LogError = function(_, err) errors[#errors + 1] = err end})
     registry:Register('Config', configType(function() error('fixture adventure recipe failure') end))
     registry:Register('Adventure', function() return instance end, {'Config'})
     local ok, err = pcall(function() registry:Start() end)
@@ -73,17 +84,19 @@ test('Adventure rollback before acquiring state preserves the original config fa
 end)
 test('Adventure rollback after acquiring state resets it only once', function()
     local resets, errors, instance = 0, {}, Adventure()
-    local services = {Adventure = {Reset = function() resets = resets + 1 end}, Player = {}}
+    local services = {Appearances=appearances,CharacterSaves={},Adventure = {Reset = function() resets = resets + 1 end}, Player = {}}
     services.LogError = function(_, err) errors[#errors + 1] = err end
     local registry = Registry(services)
-    registry:Register('Config', configType(function()
-        return {Get = function() return {partyIds = {}, maxPartySize = 4} end,All=function() return {} end}
+    registry:Register('Config', configType(function(name)
+        -- First config read after Adventure takes its Data; no native subsystem stubs are needed.
+        if name=='MapAreaObstacleTable' then error('fixture acquired adventure config failure') end
     end))
     for _, name in ipairs({'Map', 'MapArea', 'Battle', 'AdventureEvents','Equipment','Growth'}) do registry:Register(name, System) end
     registry:Register('Adventure', function() return instance end, {'Config', 'Map', 'MapArea', 'Battle', 'AdventureEvents','Equipment','Growth'})
     local ok, err = pcall(function() registry:Start() end)
-    assertOriginalFailure(ok, err, registry, errors, 'Invalid demo party size')
+    assertOriginalFailure(ok, err, registry, errors, 'fixture acquired adventure config failure')
     assert(resets == 1)
     instance:OnShutdown(); registry:Shutdown(); assert(resets == 1)
 end)
+realConfig:OnShutdown()
 print('Adventure lifecycle: ' .. checks .. ' checks passed')

@@ -1,3 +1,4 @@
+local LuaLanguage = require('Language')
 local Class=require('Core.Class')
 local Base=require('UI.UIPanelCtrl')
 local Dialogue=Class('DialogueCtr',Base)
@@ -8,6 +9,7 @@ function Dialogue:Bind()
 end
 function Dialogue:OnShow(args)
     self.demo=assert(args.demo);self.demo:SetStoryOpen(true)
+    self.lineCount=0;self.nodeId=nil
     self.camera=self.story.rules.cameras:Get(self.story.rules.dialogues:Get(self.story.data.DialogueId).cameraId)
     self.view.Style:Prepare(self.demo.MainHudFont,self.camera.panelWidth);self:Refresh()
 end
@@ -16,43 +18,63 @@ function Dialogue:Refresh()
     if not data.DialogueOpen then return end
     local npc=story.rules.npcs:Get(data.DialogueNpcId)
     self.view.Title.text=npc.name
-    self.view.Caption.text=story.rules.factions:Get(npc.factionId).name..' · 好感 '..data:GetValue('relation:'..npc.id)
-    local rows={}
-    for i=0,data.LineCount-1 do
-        local line=data:GetLineAt(i);local body=Rich.Escape(line.Text)
-        if line.Speaker=='旁白' then body='<i><color=#A8B5A3>'..body..'</color></i>'
-        else body='<b><color='..(line.IsChoice and '#A9BDCC' or '#DDC28A')..'>'..Rich.Escape(line.Speaker)..'：</color></b> '..body end
-        rows[#rows+1]={title='',body=body,plain=true}
+    self.view.Caption.text=string.format(LuaLanguage.UIDialogueCaptionText, (story.rules.factions:Get(npc.factionId).name))
+    if self.lineCount~=data.LineCount then
+        local rows={}
+        for i=0,data.LineCount-1 do
+            local line=data:GetLineAt(i);local body=Rich.Escape(line.Text)
+            local kind=line.ActorId>0 and 'companion' or line.IsChoice and 'player' or line.Speaker=='旁白' and 'narrator' or 'npc'
+            local title='<b>'..Rich.Escape(line.Speaker)..'</b>'
+            if kind=='companion' then title=title..'  <size=70%>〔'..Rich.Escape(line.Cue)..'〕</size>' end
+            if kind=='narrator' then body='<i>'..body..'</i>' end
+            rows[#rows+1]={title=title,body=body,kind=kind,actorId=line.ActorId}
+        end
+        for i,row in ipairs(rows) do
+            if not self.pool[i] then self.pool[i]=self:CreateWidget('DialogueEntry',self.view.Content) end
+            self.pool[i]:SetData(row,self.demo.MainHudFont,row.action)
+        end
+        for i=#rows+1,#self.pool do self.pool[i]:SetData(nil) end
     end
     local version=data.DialogueVersion
-    for i,row in ipairs(rows) do
-        if not self.pool[i] then self.pool[i]=self:CreateWidget('NarrativeEntry',self.view.Content) end
-        self.pool[i]:SetData(row,self.demo.MainHudFont,row.action)
-    end
-    for i=#rows+1,#self.pool do self.pool[i]:SetData(nil) end
     local choices=story.dialogue:Choices()
+    local interjections=story.dialogue:Interjections()
+    local choiceCount=0
+    for _,entry in ipairs(interjections) do
+        choiceCount=choiceCount+1
+        if not self.choices[choiceCount] then self.choices[choiceCount]=self:CreateWidget('DialogueEntry',self.view.Choices) end
+        local id,actorId=entry.id,entry.actorId
+        self.choices[choiceCount]:SetData({title=string.format(LuaLanguage.UIDialogueTitle2, (Rich.Escape(entry.name)), (Rich.Escape(entry.cue))),
+            body='',kind='invite',actorId=actorId,available=true},
+            self.demo.MainHudFont,function() self.demo:SendCommand('dialogue_interject',id,actorId,version) end)
+    end
     for i,choice in ipairs(choices) do
-        if not self.choices[i] then self.choices[i]=self:CreateWidget('NarrativeEntry',self.view.Choices) end
+        choiceCount=choiceCount+1
+        if not self.choices[choiceCount] then self.choices[choiceCount]=self:CreateWidget('DialogueEntry',self.view.Choices) end
         local id=choice.id
-        self.choices[i]:SetData({title=i..'. '..Rich.Escape(choice.text),body=Rich.Escape(choice.reason),available=choice.available},
+        self.choices[choiceCount]:SetData({title=i..'. '..Rich.Escape(choice.text),body=Rich.Escape(choice.reason),kind='choice',available=choice.available},
             self.demo.MainHudFont,function() self.demo:SendCommand('dialogue_choose',id,version) end)
     end
-    local choiceCount=#choices
-    local adventure=story.adventure;local area=adventure.areas:ActiveLayout();local localId=data.DialogueLocalNpcId
-    if adventure.shop.rules:Resolve(area,area.npcs[localId]) then
-        choiceCount=choiceCount+1
-        if not self.choices[choiceCount] then self.choices[choiceCount]=self:CreateWidget('NarrativeEntry',self.view.Choices) end
-        self.choices[choiceCount]:SetData({title='查看商品',body='',available=true},self.demo.MainHudFont,
-            function() self.demo:SendCommand('shop_open',localId,version) end)
+    local adventure=story.adventure;local localId=data.DialogueLocalNpcId
+    if npc.locationKind=='town' then
+        local area=adventure.areas:ActiveLayout()
+        if adventure.shop.rules:Resolve(area,area.npcs[localId]) then
+            choiceCount=choiceCount+1
+            if not self.choices[choiceCount] then self.choices[choiceCount]=self:CreateWidget('DialogueEntry',self.view.Choices) end
+            self.choices[choiceCount]:SetData({title=LuaLanguage.UIDialogueTitle,body='',kind='choice',available=true},self.demo.MainHudFont,
+                function() self.demo:SendCommand('shop_open',localId,version) end)
+        end
     end
     for i=choiceCount+1,#self.choices do self.choices[i]:SetData(nil) end
-    self.view.ChoiceScroll.verticalNormalizedPosition=1
-    self.view.Hint.text=self.demo.LastError or ''
-    self.view.Style:ScrollToEnd();self.revision=data.Revision;self.demoRevision=self.demo.BattleHUDRevision
+    if self.nodeId~=data.DialogueNodeId then self.view.ChoiceScroll.verticalNormalizedPosition=1 end
+    self.view.Hint.text=self.demo.LastError~='' and self.demo.LastError or LuaLanguage.UIDialogueHintText
+    if self.lineCount~=data.LineCount then self.view.Style:ScrollToEnd() end
+    self.lineCount=data.LineCount;self.nodeId=data.DialogueNodeId
+    self.revision=data.Revision;self.demoRevision=self.demo.BattleHUDRevision
     self:Camera()
 end
 function Dialogue:Camera()
     local data=self.story.data;local camera=self.camera
+    if self.story.rules.npcs:Get(data.DialogueNpcId).locationKind=='world_party' then return end
     self.demo:SetDialogueCamera(data.DialogueActorId,data.DialogueLocalNpcId,self.story.rules.nodes:Get(data.DialogueNodeId).shot,
         camera.distance,camera.height,camera.pitch,camera.fieldOfView,camera.blendSeconds,camera.closeupScale,self.view.Style.PanelFraction)
 end

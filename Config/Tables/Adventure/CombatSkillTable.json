@@ -28,6 +28,13 @@
       "min": 1
     },
     {
+      "name": "visualEffectId",
+      "type": "int",
+      "description": "独立方块粒子表现；每个技能必填，新增技能须设计对应VisualEffectTable条目",
+      "ref": "VisualEffectTable",
+      "min": 1
+    },
+    {
       "name": "action",
       "type": "enum",
       "description": "行动类型",
@@ -49,6 +56,19 @@
       "description": "六边形射程；遮挡按 trajectory 弹道规则判定",
       "min": 0,
       "max": 12
+    },
+    {
+      "name": "minRange",
+      "type": "int",
+      "description": "最小攻击距离，按双方完整占地的最近距离判断",
+      "default": 0,
+      "min": 0
+    },
+    {
+      "name": "fixedRange",
+      "type": "bool",
+      "description": "固定距离，不接受装备与高地的射程加成",
+      "default": false
     },
     {
       "name": "trajectory",
@@ -94,7 +114,14 @@
         "support",
         "slash",
         "animal",
-        "construction"
+        "construction",
+        "profession_life_extract",
+        "profession_life_rumor",
+        "profession_life_care",
+        "profession_life_curse",
+        "profession_life_duel",
+        "profession_life_track",
+        "profession_life_companion"
       ]
     },
     {
@@ -207,12 +234,41 @@
       "type": "bool",
       "default": false,
       "description": "允许转施符文将本自身法术改为指定距离的任意角色；仅支持可重定向的目标效果"
+    },
+    {
+      "name": "opportunityAttack",
+      "type": "bool",
+      "default": false,
+      "description": "该普通近战动作可用于移动前借机攻击"
+    },
+    {
+      "name": "criticalChance",
+      "type": "float",
+      "description": "每发命中后的独立暴击概率；只放大对他人的即时伤害",
+      "default": 0,
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "criticalMultiplier",
+      "type": "float",
+      "description": "暴击伤害倍率；不放大治疗、护卫、状态或持续伤害",
+      "default": 2,
+      "min": 1,
+      "max": 10
+    },
+    {
+      "name": "preserveArmor",
+      "type": "bool",
+      "description": "保甲攻击：绕过护甲保护且不消耗目标护甲耐久，供精确刺击等取装手段使用",
+      "default": false
     }
   ],
   "rows": [
     {
       "id": 1,
       "name": "斩击",
+      "opportunityAttack": true,
       "description": "近身攻击一名敌人。",
       "action": "main",
       "cost": 2,
@@ -222,7 +278,7 @@
       "effectIds": [
         1
       ],
-      "iconId": 1,
+      "iconId": 10001,
       "skillGroup": "weapon",
       "cooldownTurns": 0,
       "hitChance": 100,
@@ -235,7 +291,8 @@
         "life"
       ],
       "affectsContainers": true,
-      "weaponWear": 1
+      "weaponWear": 1,
+      "visualEffectId": 1
     },
     {
       "id": 2,
@@ -249,7 +306,7 @@
       "effectIds": [
         2
       ],
-      "iconId": 2,
+      "iconId": 10002,
       "skillGroup": "weapon",
       "cooldownTurns": 0,
       "hitChance": 100,
@@ -263,7 +320,8 @@
       ],
       "affectsContainers": true,
       "trajectory": "lobbed",
-      "weaponWear": 1
+      "weaponWear": 1,
+      "visualEffectId": 2
     },
     {
       "id": 3,
@@ -278,7 +336,7 @@
         3,
         804
       ],
-      "iconId": 3,
+      "iconId": 10003,
       "skillGroup": "spell",
       "cooldownTurns": 0,
       "hitChance": 100,
@@ -291,7 +349,8 @@
         "life"
       ],
       "affectsContainers": true,
-      "catalystKind": "arcane"
+      "catalystKind": "arcane",
+      "visualEffectId": 3
     },
     {
       "id": 4,
@@ -305,7 +364,7 @@
       "effectIds": [
         4
       ],
-      "iconId": 4,
+      "iconId": 10004,
       "skillGroup": "support",
       "cooldownTurns": 0,
       "hitChance": 100,
@@ -315,7 +374,8 @@
       "actionTemplate": 0,
       "contexts": [
         "battle"
-      ]
+      ],
+      "visualEffectId": 4
     },
     {
       "id": 5,
@@ -330,7 +390,7 @@
         5,
         801
       ],
-      "iconId": 5,
+      "iconId": 10005,
       "skillGroup": "spell",
       "cooldownTurns": 0,
       "hitChance": 100,
@@ -340,7 +400,8 @@
       "actionTemplate": 1,
       "contexts": [
         "battle"
-      ]
+      ],
+      "visualEffectId": 5
     },
     {
       "id": 6,
@@ -368,12 +429,13 @@
       ],
       "affectsContainers": true,
       "catalystKind": "arcane",
-      "trajectory": "direct"
+      "trajectory": "direct",
+      "visualEffectId": 6
     },
     {
       "id": 7,
-      "name": "点射",
-      "description": "精准射击一次，消耗 1 发弹药。",
+      "name": "精准射击",
+      "description": "消耗1发弹药进行精准单发射击：基础命中95%，命中后35%概率造成2倍伤害。节省弹药，适合稳定点杀。",
       "iconId": 11,
       "action": "main",
       "cost": 2,
@@ -385,7 +447,7 @@
       ],
       "skillGroup": "weapon",
       "cooldownTurns": 0,
-      "hitChance": 85,
+      "hitChance": 95,
       "shots": 1,
       "ammoPerShot": 1,
       "damageScale": 1,
@@ -396,12 +458,15 @@
       ],
       "affectsContainers": true,
       "trajectory": "direct",
-      "weaponWear": 1
+      "weaponWear": 1,
+      "visualEffectId": 7,
+      "criticalChance": 35,
+      "criticalMultiplier": 2
     },
     {
       "id": 8,
-      "name": "连射",
-      "description": "对同一目标连续射击 3 次，每发独立判定命中并造成 65% 伤害。",
+      "name": "连续射击",
+      "description": "消耗3发弹药连续射击3次：每发基础命中70%、暴击率10%、伤害80%。逐发独立判定命中、暴击与命中附加效果，以更多耗弹换取更高总伤害期望。",
       "iconId": 12,
       "action": "main",
       "cost": 3,
@@ -413,10 +478,10 @@
       ],
       "skillGroup": "weapon",
       "cooldownTurns": 0,
-      "hitChance": 65,
+      "hitChance": 70,
       "shots": 3,
       "ammoPerShot": 1,
-      "damageScale": 0.65,
+      "damageScale": 0.8,
       "actionTemplate": 2,
       "contexts": [
         "battle",
@@ -424,7 +489,10 @@
       ],
       "affectsContainers": true,
       "trajectory": "direct",
-      "weaponWear": 1
+      "weaponWear": 1,
+      "visualEffectId": 8,
+      "criticalChance": 10,
+      "criticalMultiplier": 2
     },
     {
       "id": 9,
@@ -448,11 +516,13 @@
       "actionTemplate": 3,
       "contexts": [
         "battle"
-      ]
+      ],
+      "visualEffectId": 9
     },
     {
       "id": 10,
       "name": "单手斩击",
+      "opportunityAttack": true,
       "description": "使用当前装备的近战武器劈砍相邻敌人；装备等级、属性需求和组件共同决定实际效果。",
       "iconId": 14,
       "action": "main",
@@ -475,11 +545,13 @@
         "life"
       ],
       "affectsContainers": true,
-      "weaponWear": 1
+      "weaponWear": 1,
+      "visualEffectId": 10
     },
     {
       "id": 11,
       "name": "大剑重劈",
+      "opportunityAttack": true,
       "description": "使用当前装备的近战武器劈砍相邻敌人；装备等级、属性需求和组件共同决定实际效果。",
       "iconId": 15,
       "action": "main",
@@ -502,11 +574,13 @@
         "life"
       ],
       "affectsContainers": true,
-      "weaponWear": 1
+      "weaponWear": 1,
+      "visualEffectId": 11
     },
     {
       "id": 12,
       "name": "巨刃劈砍",
+      "opportunityAttack": true,
       "description": "使用当前装备的近战武器劈砍相邻敌人；装备等级、属性需求和组件共同决定实际效果。",
       "iconId": 16,
       "action": "main",
@@ -529,11 +603,13 @@
         "life"
       ],
       "affectsContainers": true,
-      "weaponWear": 1
+      "weaponWear": 1,
+      "visualEffectId": 12
     },
     {
       "id": 13,
       "name": "副手斩击",
+      "opportunityAttack": true,
       "description": "使用副手单手武器进行次要攻击；消耗 2 AP，基础伤害为主手斩击的 70%，应用副手武器倍率与属性要求。",
       "iconId": 14,
       "action": "secondary",
@@ -556,7 +632,8 @@
         "life"
       ],
       "affectsContainers": true,
-      "weaponWear": 1
+      "weaponWear": 1,
+      "visualEffectId": 13
     },
     {
       "id": 101,
@@ -583,7 +660,8 @@
         "life"
       ],
       "affectsContainers": true,
-      "weaponWear": 1
+      "weaponWear": 1,
+      "visualEffectId": 101
     },
     {
       "id": 102,
@@ -610,7 +688,8 @@
         "life"
       ],
       "affectsContainers": true,
-      "weaponWear": 1
+      "weaponWear": 1,
+      "visualEffectId": 102
     },
     {
       "id": 103,
@@ -637,7 +716,8 @@
         "life"
       ],
       "affectsContainers": true,
-      "catalystKind": "arcane"
+      "catalystKind": "arcane",
+      "visualEffectId": 103
     },
     {
       "id": 104,
@@ -665,7 +745,8 @@
         "life"
       ],
       "affectsContainers": true,
-      "catalystKind": "arcane"
+      "catalystKind": "arcane",
+      "visualEffectId": 104
     },
     {
       "id": 105,
@@ -694,7 +775,8 @@
       ],
       "affectsContainers": true,
       "trajectory": "lobbed",
-      "weaponWear": 1
+      "weaponWear": 1,
+      "visualEffectId": 105
     },
     {
       "id": 106,
@@ -722,7 +804,8 @@
       ],
       "affectsContainers": true,
       "trajectory": "lobbed",
-      "weaponWear": 1
+      "weaponWear": 1,
+      "visualEffectId": 106
     },
     {
       "id": 107,
@@ -742,11 +825,12 @@
       "hitChance": 100,
       "shots": 1,
       "ammoPerShot": 0,
-      "damageScale": 1.0,
+      "damageScale": 1,
       "actionTemplate": 1,
       "contexts": [
         "battle"
-      ]
+      ],
+      "visualEffectId": 107
     },
     {
       "id": 108,
@@ -766,11 +850,12 @@
       "hitChance": 100,
       "shots": 1,
       "ammoPerShot": 0,
-      "damageScale": 1.0,
+      "damageScale": 1,
       "actionTemplate": 0,
       "contexts": [
         "battle"
-      ]
+      ],
+      "visualEffectId": 108
     },
     {
       "id": 201,
@@ -795,7 +880,8 @@
       "contexts": [
         "life",
         "battle"
-      ]
+      ],
+      "visualEffectId": 201
     },
     {
       "id": 202,
@@ -819,7 +905,8 @@
       "actionTemplate": 0,
       "contexts": [
         "battle"
-      ]
+      ],
+      "visualEffectId": 202
     },
     {
       "id": 203,
@@ -843,7 +930,8 @@
       "actionTemplate": 0,
       "contexts": [
         "battle"
-      ]
+      ],
+      "visualEffectId": 203
     },
     {
       "id": 204,
@@ -867,11 +955,13 @@
       "actionTemplate": 0,
       "contexts": [
         "battle"
-      ]
+      ],
+      "visualEffectId": 204
     },
     {
       "id": 205,
       "name": "扑咬",
+      "opportunityAttack": true,
       "description": "动物的近身攻击。",
       "action": "main",
       "cost": 2,
@@ -891,7 +981,8 @@
       "actionTemplate": 0,
       "contexts": [
         "battle"
-      ]
+      ],
+      "visualEffectId": 205
     },
     {
       "id": 301,
@@ -913,7 +1004,8 @@
       "actionTemplate": 4,
       "contexts": [
         "battle"
-      ]
+      ],
+      "visualEffectId": 301
     },
     {
       "id": 302,
@@ -935,7 +1027,8 @@
       "actionTemplate": 4,
       "contexts": [
         "battle"
-      ]
+      ],
+      "visualEffectId": 302
     },
     {
       "id": 303,
@@ -957,7 +1050,8 @@
       "actionTemplate": 4,
       "contexts": [
         "battle"
-      ]
+      ],
+      "visualEffectId": 303
     },
     {
       "id": 304,
@@ -979,7 +1073,8 @@
       "actionTemplate": 4,
       "contexts": [
         "battle"
-      ]
+      ],
+      "visualEffectId": 304
     },
     {
       "id": 305,
@@ -1001,7 +1096,8 @@
       "actionTemplate": 4,
       "contexts": [
         "battle"
-      ]
+      ],
+      "visualEffectId": 305
     },
     {
       "id": 306,
@@ -1023,7 +1119,8 @@
       "actionTemplate": 4,
       "contexts": [
         "battle"
-      ]
+      ],
+      "visualEffectId": 306
     },
     {
       "id": 307,
@@ -1046,7 +1143,8 @@
       "contexts": [
         "life",
         "battle"
-      ]
+      ],
+      "visualEffectId": 307
     },
     {
       "id": 401,
@@ -1074,7 +1172,8 @@
       ],
       "affectsContainers": false,
       "skillKind": "preparation",
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "visualEffectId": 401
     },
     {
       "id": 402,
@@ -1102,7 +1201,8 @@
       ],
       "affectsContainers": false,
       "skillKind": "preparation",
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "visualEffectId": 402
     },
     {
       "id": 403,
@@ -1131,7 +1231,8 @@
       "affectsContainers": false,
       "skillKind": "preparation",
       "catalystKind": "arcane",
-      "allowTransfer": true
+      "allowTransfer": true,
+      "visualEffectId": 403
     },
     {
       "id": 404,
@@ -1159,7 +1260,8 @@
       ],
       "affectsContainers": false,
       "skillKind": "preparation",
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "visualEffectId": 404
     },
     {
       "id": 701,
@@ -1188,7 +1290,8 @@
       ],
       "affectsContainers": false,
       "skillKind": "item",
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "visualEffectId": 701
     },
     {
       "id": 702,
@@ -1217,12 +1320,13 @@
       ],
       "affectsContainers": false,
       "skillKind": "item",
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "visualEffectId": 702
     },
     {
       "id": 501,
       "name": "缴械",
-      "description": "近身夺落对手主手（无主手则副手）武器。命中后武器和配件以原实例落地，双方均可拾回；不伤害护甲。",
+      "description": "近身夺落对手主手（无主手则副手）武器。基础成功率30%，自身速度每比目标高1点增加2个百分点，低1点减少2个百分点；叠加装备与高地修正，最终限制在0%～100%。成功后武器和配件以原实例落地，双方均可拾回；不伤害护甲。",
       "iconId": 14,
       "action": "main",
       "cost": 2,
@@ -1232,7 +1336,7 @@
       "effectIds": [],
       "skillGroup": "weapon",
       "cooldownTurns": 2,
-      "hitChance": 90,
+      "hitChance": 30,
       "shots": 1,
       "ammoPerShot": 0,
       "damageScale": 1,
@@ -1243,12 +1347,13 @@
       "affectsContainers": false,
       "weaponWear": 1,
       "catalystKind": "none",
-      "skillKind": "active"
+      "skillKind": "active",
+      "visualEffectId": 501
     },
     {
       "id": 502,
       "name": "精确刺击",
-      "description": "寻找甲片缝隙，命中85%，伤害较低但不磨损目标装备；用于保甲取装。 命中后造成流血。",
+      "description": "寻找甲片缝隙，命中85%；伤害较低，但绕过护甲保护且不消耗目标护甲耐久，用于保甲取装。命中后造成流血。",
       "iconId": 14,
       "action": "main",
       "cost": 2,
@@ -1272,7 +1377,9 @@
       "affectsContainers": false,
       "weaponWear": 1,
       "catalystKind": "none",
-      "skillKind": "active"
+      "skillKind": "active",
+      "visualEffectId": 502,
+      "preserveArmor": true
     },
     {
       "id": 503,
@@ -1298,11 +1405,13 @@
       "affectsContainers": false,
       "weaponWear": 0,
       "catalystKind": "none",
-      "skillKind": "active"
+      "skillKind": "active",
+      "visualEffectId": 503
     },
     {
       "id": 504,
       "name": "徒手攻击",
+      "opportunityAttack": true,
       "description": "武器失去或破损时可用的近身攻击，伤害有限。",
       "iconId": 14,
       "action": "main",
@@ -1326,7 +1435,8 @@
       "affectsContainers": false,
       "weaponWear": 0,
       "catalystKind": "none",
-      "skillKind": "active"
+      "skillKind": "active",
+      "visualEffectId": 504
     },
     {
       "id": 505,
@@ -1352,7 +1462,8 @@
         "battle"
       ],
       "affectsContainers": false,
-      "catalystKind": "arcane"
+      "catalystKind": "arcane",
+      "visualEffectId": 505
     },
     {
       "id": 506,
@@ -1378,7 +1489,8 @@
         "battle"
       ],
       "affectsContainers": false,
-      "catalystKind": "arcane"
+      "catalystKind": "arcane",
+      "visualEffectId": 506
     },
     {
       "id": 507,
@@ -1404,7 +1516,8 @@
         "battle"
       ],
       "affectsContainers": false,
-      "catalystKind": "arcane"
+      "catalystKind": "arcane",
+      "visualEffectId": 507
     },
     {
       "id": 508,
@@ -1431,7 +1544,8 @@
       ],
       "affectsContainers": false,
       "catalystKind": "arcane",
-      "allowTransfer": true
+      "allowTransfer": true,
+      "visualEffectId": 508
     },
     {
       "id": 509,
@@ -1459,7 +1573,8 @@
       ],
       "affectsContainers": true,
       "catalystKind": "arcane",
-      "trajectory": "direct"
+      "trajectory": "direct",
+      "visualEffectId": 509
     },
     {
       "id": 1601,
@@ -1491,7 +1606,8 @@
       "splashRadius": 0,
       "trajectory": "direct",
       "skillKind": "active",
-      "weaponWear": 0
+      "weaponWear": 0,
+      "visualEffectId": 1601
     },
     {
       "id": 1621,
@@ -1525,7 +1641,8 @@
       "splashRadius": 0,
       "trajectory": "direct",
       "skillKind": "active",
-      "weaponWear": 0
+      "weaponWear": 0,
+      "visualEffectId": 1621
     },
     {
       "id": 1602,
@@ -1557,7 +1674,8 @@
       "splashRadius": 0,
       "trajectory": "direct",
       "skillKind": "active",
-      "weaponWear": 0
+      "weaponWear": 0,
+      "visualEffectId": 1602
     },
     {
       "id": 1622,
@@ -1590,7 +1708,8 @@
       "splashRadius": 0,
       "trajectory": "direct",
       "skillKind": "active",
-      "weaponWear": 0
+      "weaponWear": 0,
+      "visualEffectId": 1622
     },
     {
       "id": 1603,
@@ -1622,7 +1741,8 @@
       "splashRadius": 0,
       "trajectory": "sight",
       "skillKind": "active",
-      "weaponWear": 0
+      "weaponWear": 0,
+      "visualEffectId": 1603
     },
     {
       "id": 1604,
@@ -1654,7 +1774,8 @@
       "maxTargets": 1,
       "splashRadius": 0,
       "skillKind": "active",
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "visualEffectId": 1604
     },
     {
       "id": 1605,
@@ -1686,7 +1807,8 @@
       "maxTargets": 1,
       "splashRadius": 0,
       "skillKind": "active",
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "visualEffectId": 1605
     },
     {
       "id": 1606,
@@ -1717,7 +1839,8 @@
       "maxTargets": 1,
       "splashRadius": 0,
       "skillKind": "active",
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "visualEffectId": 1606
     },
     {
       "id": 1607,
@@ -1749,7 +1872,8 @@
       "splashRadius": 0,
       "trajectory": "sight",
       "skillKind": "active",
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "visualEffectId": 1607
     },
     {
       "id": 1608,
@@ -1782,7 +1906,8 @@
       "splashRadius": 0,
       "trajectory": "sight",
       "skillKind": "active",
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "visualEffectId": 1608
     },
     {
       "id": 1609,
@@ -1814,7 +1939,8 @@
       "splashRadius": 0,
       "trajectory": "sight",
       "skillKind": "active",
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "visualEffectId": 1609
     },
     {
       "id": 1610,
@@ -1846,7 +1972,8 @@
       "splashRadius": 0,
       "trajectory": "sight",
       "skillKind": "active",
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "visualEffectId": 1610
     },
     {
       "id": 1611,
@@ -1877,7 +2004,8 @@
       "splashRadius": 1,
       "trajectory": "sight",
       "skillKind": "active",
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "visualEffectId": 1611
     },
     {
       "id": 1612,
@@ -1908,7 +2036,8 @@
       "splashRadius": 0,
       "trajectory": "sight",
       "skillKind": "active",
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "visualEffectId": 1612
     },
     {
       "id": 1613,
@@ -1939,7 +2068,8 @@
       "splashRadius": 0,
       "trajectory": "sight",
       "skillKind": "active",
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "visualEffectId": 1613
     },
     {
       "id": 1614,
@@ -1973,7 +2103,8 @@
       "splashRadius": 0,
       "trajectory": "sight",
       "skillKind": "active",
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "visualEffectId": 1614
     },
     {
       "id": 1615,
@@ -2007,7 +2138,8 @@
       "splashRadius": 0,
       "trajectory": "sight",
       "skillKind": "active",
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "visualEffectId": 1615
     },
     {
       "id": 1616,
@@ -2039,7 +2171,8 @@
       "maxTargets": 1,
       "splashRadius": 0,
       "skillKind": "active",
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "visualEffectId": 1616
     },
     {
       "id": 1617,
@@ -2070,7 +2203,8 @@
       "maxTargets": 2,
       "splashRadius": 1,
       "skillKind": "active",
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "visualEffectId": 1617
     },
     {
       "id": 1618,
@@ -2102,7 +2236,8 @@
       "maxTargets": 1,
       "splashRadius": 0,
       "skillKind": "active",
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "visualEffectId": 1618
     },
     {
       "id": 1623,
@@ -2135,7 +2270,8 @@
       "maxTargets": 1,
       "splashRadius": 0,
       "skillKind": "active",
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "visualEffectId": 1623
     },
     {
       "id": 1619,
@@ -2169,7 +2305,8 @@
       "splashRadius": 0,
       "trajectory": "sight",
       "skillKind": "active",
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "visualEffectId": 1619
     },
     {
       "id": 1620,
@@ -2200,7 +2337,8 @@
       "splashRadius": 0,
       "trajectory": "sight",
       "skillKind": "active",
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "visualEffectId": 1620
     },
     {
       "id": 1624,
@@ -2232,7 +2370,1521 @@
       "weaponWear": 0,
       "skillKind": "active",
       "maxTargets": 1,
+      "splashRadius": 0,
+      "visualEffectId": 1624
+    },
+    {
+      "id": 1625,
+      "name": "长枪突刺",
+      "description": "双手前刺，只能攻击距离 2 格的目标；距离 1 格的贴身目标不可攻击。射程固定，不受高地或装备射程加成影响。",
+      "action": "main",
+      "cost": 2,
+      "range": 2,
+      "target": "enemy",
+      "proficiency": "sword",
+      "effectIds": [
+        1
+      ],
+      "iconId": 1,
+      "skillGroup": "weapon",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 9,
+      "contexts": [
+        "battle",
+        "life"
+      ],
+      "affectsContainers": true,
+      "weaponWear": 1,
+      "visualEffectId": 1625,
+      "minRange": 2,
+      "fixedRange": true
+    },
+    {
+      "id": 1630,
+      "name": "创伤打击",
+      "description": "近身打击一名敌人，额外提高35个百分点的创伤概率；目标部位血量越低，越容易形成创伤。",
+      "action": "main",
+      "cost": 2,
+      "range": 1,
+      "target": "enemy",
+      "proficiency": "sword",
+      "effectIds": [
+        1901
+      ],
+      "iconId": 10001,
+      "skillGroup": "weapon",
+      "cooldownTurns": 2,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 4,
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "weaponWear": 1,
+      "visualEffectId": 101
+    },
+    {
+      "id": 1701,
+      "name": "狙击射击",
+      "description": "消耗1发狙击弹，在2—9格内进行单发狙击：基础命中95%、暴击率50%、伤害160%，暴击造成2倍伤害。",
+      "iconId": 11,
+      "action": "main",
+      "cost": 3,
+      "range": 9,
+      "target": "enemy",
+      "proficiency": "firearms",
+      "effectIds": [
+        7
+      ],
+      "skillGroup": "weapon",
+      "cooldownTurns": 0,
+      "hitChance": 95,
+      "shots": 1,
+      "ammoPerShot": 1,
+      "damageScale": 1.6,
+      "actionTemplate": 2,
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "trajectory": "direct",
+      "weaponWear": 1,
+      "visualEffectId": 7,
+      "criticalChance": 50,
+      "criticalMultiplier": 2,
+      "minRange": 2,
+      "maxTargets": 1,
       "splashRadius": 0
+    },
+    {
+      "id": 1702,
+      "name": "贯甲狙击",
+      "description": "消耗2发狙击弹进行一次贯甲射击，伤害只计入目标60%防御；基础命中90%、暴击率55%，命中施加2回合破甲。",
+      "iconId": 11,
+      "action": "main",
+      "cost": 4,
+      "range": 9,
+      "target": "enemy",
+      "proficiency": "firearms",
+      "effectIds": [
+        1312,
+        1313
+      ],
+      "skillGroup": "weapon",
+      "cooldownTurns": 2,
+      "hitChance": 90,
+      "shots": 1,
+      "ammoPerShot": 2,
+      "damageScale": 1.6,
+      "actionTemplate": 2,
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "trajectory": "direct",
+      "weaponWear": 1,
+      "visualEffectId": 7,
+      "criticalChance": 55,
+      "criticalMultiplier": 2,
+      "minRange": 2,
+      "maxTargets": 1,
+      "splashRadius": 0
+    },
+    {
+      "id": 1703,
+      "name": "近距霰射",
+      "description": "消耗1发霰弹，攻击主目标及其1格内最多2名其他敌人。每个目标独立判定80%基础命中与10%暴击；每目标100%伤害，射程3格。",
+      "iconId": 12,
+      "action": "main",
+      "cost": 2,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "firearms",
+      "effectIds": [
+        7
+      ],
+      "skillGroup": "weapon",
+      "cooldownTurns": 0,
+      "hitChance": 80,
+      "shots": 1,
+      "ammoPerShot": 1,
+      "damageScale": 1.0,
+      "actionTemplate": 2,
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "trajectory": "direct",
+      "weaponWear": 1,
+      "visualEffectId": 7,
+      "criticalChance": 10,
+      "criticalMultiplier": 2,
+      "minRange": 0,
+      "maxTargets": 3,
+      "splashRadius": 1
+    },
+    {
+      "id": 1704,
+      "name": "重霰双发",
+      "description": "消耗2发霰弹，连续进行两次近距散射。每次最多3名相邻敌人，每目标逐发独立判定75%命中与10%暴击，每发85%伤害。",
+      "iconId": 12,
+      "action": "main",
+      "cost": 3,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "firearms",
+      "effectIds": [
+        7
+      ],
+      "skillGroup": "weapon",
+      "cooldownTurns": 1,
+      "hitChance": 75,
+      "shots": 2,
+      "ammoPerShot": 1,
+      "damageScale": 0.85,
+      "actionTemplate": 2,
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "trajectory": "direct",
+      "weaponWear": 1,
+      "visualEffectId": 8,
+      "criticalChance": 10,
+      "criticalMultiplier": 2,
+      "minRange": 0,
+      "maxTargets": 3,
+      "splashRadius": 1
+    },
+    {
+      "id": 1801,
+      "name": "分装试剂·水剂",
+      "description": "消耗 1 份水剂，为下一次直接武器命中涂上水剂，施加潮湿 2 回合。首个正式回合结束失效；学习后同时可选毒剂。",
+      "iconId": 10004,
+      "visualEffectId": 4,
+      "action": "main",
+      "cost": 2,
+      "range": 0,
+      "target": "self",
+      "proficiency": "",
+      "effectIds": [],
+      "skillGroup": "support",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "sight",
+      "contexts": [
+        "preparation"
+      ],
+      "affectsContainers": false,
+      "skillKind": "preparation",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1802,
+      "name": "泼水瓶",
+      "description": "消耗 1 份水剂，使单个角色潮湿 2 回合并灭火；友方必定成功，敌方正常判命中。",
+      "iconId": 10004,
+      "visualEffectId": 4,
+      "action": "secondary",
+      "cost": 1,
+      "range": 2,
+      "target": "any",
+      "proficiency": "",
+      "effectIds": [],
+      "skillGroup": "support",
+      "cooldownTurns": 2,
+      "hitChance": 90,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "sight",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1803,
+      "name": "腐蚀剂",
+      "description": "消耗 1 份腐蚀剂。命中施加一层中毒，并使防御降低 2、持续 2 回合；不直接扣血或磨损护甲。",
+      "iconId": 10004,
+      "visualEffectId": 4,
+      "action": "main",
+      "cost": 2,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "",
+      "effectIds": [
+        803,
+        20014
+      ],
+      "skillGroup": "support",
+      "cooldownTurns": 2,
+      "hitChance": 90,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "lobbed",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1804,
+      "name": "蒸馏爆破·燃烧",
+      "description": "消耗 1 份爆破剂，造成 70% 基础伤害；命中燃烧目标时消费全部燃烧并追加 6 点伤害。学习后同时可选提炼中毒。",
+      "iconId": 10003,
+      "visualEffectId": 6,
+      "action": "main",
+      "cost": 3,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "staff",
+      "effectIds": [
+        20202
+      ],
+      "skillGroup": "support",
+      "cooldownTurns": 3,
+      "hitChance": 90,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 0.7,
+      "actionTemplate": 0,
+      "trajectory": "direct",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1811,
+      "name": "起拍",
+      "description": "给自己或一名友军一层余音，持续至其首个正式回合结束。",
+      "iconId": 10004,
+      "visualEffectId": 4,
+      "action": "main",
+      "cost": 2,
+      "range": 3,
+      "target": "ally",
+      "proficiency": "",
+      "effectIds": [],
+      "skillGroup": "support",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "sight",
+      "contexts": [
+        "preparation"
+      ],
+      "affectsContainers": false,
+      "skillKind": "preparation",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1812,
+      "name": "并肩曲",
+      "description": "自己或一名友军速度提高 2，持续 2 回合；按下一轮排序生效，不插队。",
+      "iconId": 10004,
+      "visualEffectId": 4,
+      "action": "secondary",
+      "cost": 1,
+      "range": 3,
+      "target": "ally",
+      "proficiency": "",
+      "effectIds": [
+        20015
+      ],
+      "skillGroup": "support",
+      "cooldownTurns": 2,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "sight",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1813,
+      "name": "破音",
+      "description": "使敌人力量降低 2，持续 2 回合；若自身有余音，命中后消费余音并额外制造破绽。",
+      "iconId": 10004,
+      "visualEffectId": 4,
+      "action": "main",
+      "cost": 2,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "",
+      "effectIds": [
+        20013
+      ],
+      "skillGroup": "support",
+      "cooldownTurns": 2,
+      "hitChance": 90,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "sight",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1814,
+      "name": "安可",
+      "description": "消费自己或一名友军的余音，使其下一技能 AP 减少 2，最低 1，至下个回合结束有效；每人每轮至多受益一次，不刷新行动。",
+      "iconId": 10004,
+      "visualEffectId": 4,
+      "action": "secondary",
+      "cost": 2,
+      "range": 3,
+      "target": "ally",
+      "proficiency": "",
+      "effectIds": [],
+      "skillGroup": "support",
+      "cooldownTurns": 3,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "sight",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1821,
+      "name": "净身祷文",
+      "description": "清除自身中毒与流血，使护卫至少为 3，持续至首个正式回合结束；需要触媒，不治疗身体创伤。",
+      "iconId": 10003,
+      "visualEffectId": 6,
+      "action": "main",
+      "cost": 2,
+      "range": 0,
+      "target": "self",
+      "proficiency": "staff",
+      "effectIds": [],
+      "skillGroup": "spell",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 1,
+      "trajectory": "sight",
+      "contexts": [
+        "preparation"
+      ],
+      "affectsContainers": false,
+      "skillKind": "preparation",
+      "catalystKind": "arcane",
+      "weaponWear": 0
+    },
+    {
+      "id": 1822,
+      "name": "守命祷言",
+      "description": "给自己或友军护符，下次直接伤害减免 4 点后消失，最迟在接收者下个回合结束失效；同类不叠加。",
+      "iconId": 10003,
+      "visualEffectId": 6,
+      "action": "secondary",
+      "cost": 1,
+      "range": 2,
+      "target": "ally",
+      "proficiency": "staff",
+      "effectIds": [],
+      "skillGroup": "spell",
+      "cooldownTurns": 2,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 1,
+      "trajectory": "sight",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "arcane",
+      "weaponWear": 0
+    },
+    {
+      "id": 1823,
+      "name": "代罪疗伤",
+      "description": "清除一名存活友军的中毒与流血并治疗 6＋智力；施法者力量降低 2，持续 2 回合。",
+      "iconId": 10003,
+      "visualEffectId": 6,
+      "action": "main",
+      "cost": 2,
+      "range": 2,
+      "target": "ally",
+      "proficiency": "staff",
+      "effectIds": [
+        20205,
+        20204,
+        20206
+      ],
+      "skillGroup": "spell",
+      "cooldownTurns": 2,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 1,
+      "trajectory": "sight",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "arcane",
+      "weaponWear": 0
+    },
+    {
+      "id": 1824,
+      "name": "赎罪裁决",
+      "description": "造成 90% 奥术伤害；自身施放前有虚弱时，命中后消费全部虚弱并追加 6 点伤害。",
+      "iconId": 10003,
+      "visualEffectId": 6,
+      "action": "main",
+      "cost": 3,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "staff",
+      "effectIds": [
+        20202
+      ],
+      "skillGroup": "spell",
+      "cooldownTurns": 3,
+      "hitChance": 90,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 0.9,
+      "actionTemplate": 1,
+      "trajectory": "direct",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "arcane",
+      "weaponWear": 0
+    },
+    {
+      "id": 1831,
+      "name": "描印",
+      "description": "下一次咒术技能 AP 减少 1，最低 1；首个正式回合结束前有效。",
+      "iconId": 10003,
+      "visualEffectId": 6,
+      "action": "main",
+      "cost": 2,
+      "range": 0,
+      "target": "self",
+      "proficiency": "staff",
+      "effectIds": [],
+      "skillGroup": "spell",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 1,
+      "trajectory": "sight",
+      "contexts": [
+        "preparation"
+      ],
+      "affectsContainers": false,
+      "skillKind": "preparation",
+      "catalystKind": "arcane",
+      "weaponWear": 0
+    },
+    {
+      "id": 1832,
+      "name": "烙咒",
+      "description": "对敌人施加咒印：下一次直接伤害增加 30%，上限为目标最大生命的 10%，随后清除。",
+      "iconId": 10003,
+      "visualEffectId": 6,
+      "action": "secondary",
+      "cost": 1,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "staff",
+      "effectIds": [],
+      "skillGroup": "spell",
+      "cooldownTurns": 2,
+      "hitChance": 90,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 1,
+      "trajectory": "sight",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "arcane",
+      "weaponWear": 0
+    },
+    {
+      "id": 1833,
+      "name": "蚀命",
+      "description": "造成 80% 奥术伤害；命中流血目标追加 6 点，并消费其全部流血。",
+      "iconId": 10003,
+      "visualEffectId": 6,
+      "action": "main",
+      "cost": 2,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "staff",
+      "effectIds": [
+        20202
+      ],
+      "skillGroup": "spell",
+      "cooldownTurns": 2,
+      "hitChance": 90,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 0.8,
+      "actionTemplate": 1,
+      "trajectory": "direct",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "arcane",
+      "weaponWear": 0
+    },
+    {
+      "id": 1834,
+      "name": "转祸·中毒",
+      "description": "把自己一项中毒尝试移交给敌人，保留剩余时长与层数；成功施加后才移除自身状态，免疫目标不能接收。学习后也可选择流血或虚弱。",
+      "iconId": 10003,
+      "visualEffectId": 6,
+      "action": "main",
+      "cost": 3,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "staff",
+      "effectIds": [],
+      "skillGroup": "spell",
+      "cooldownTurns": 3,
+      "hitChance": 90,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 1,
+      "trajectory": "sight",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "arcane",
+      "weaponWear": 0
+    },
+    {
+      "id": 1841,
+      "name": "审势",
+      "description": "下一次直接武器命中先施加破绽，再结算本击；首个正式回合结束失效。",
+      "iconId": 10004,
+      "visualEffectId": 4,
+      "action": "main",
+      "cost": 2,
+      "range": 0,
+      "target": "self",
+      "proficiency": "",
+      "effectIds": [],
+      "skillGroup": "support",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "sight",
+      "contexts": [
+        "preparation"
+      ],
+      "affectsContainers": false,
+      "skillKind": "preparation",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1842,
+      "name": "佯攻",
+      "description": "使用可用近战武器对相邻敌人制造破绽，无直接伤害；下一次直接武器命中按少 2 点防御结算并消费破绽。",
+      "iconId": 10001,
+      "visualEffectId": 10,
+      "action": "secondary",
+      "cost": 1,
+      "range": 1,
+      "target": "enemy",
+      "proficiency": "sword",
+      "effectIds": [],
+      "skillGroup": "weapon",
+      "cooldownTurns": 2,
+      "hitChance": 95,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 4,
+      "trajectory": "sight",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 1
+    },
+    {
+      "id": 1843,
+      "name": "牵步刺",
+      "description": "造成 80% 武器伤害，随后退至事先选定且更远离目标的相邻空格；不会重新开放普通移动。",
+      "iconId": 10001,
+      "visualEffectId": 10,
+      "action": "main",
+      "cost": 2,
+      "range": 1,
+      "target": "enemy",
+      "proficiency": "sword",
+      "effectIds": [
+        20201
+      ],
+      "skillGroup": "weapon",
+      "cooldownTurns": 2,
+      "hitChance": 95,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 0.8,
+      "actionTemplate": 4,
+      "trajectory": "sight",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 1
+    },
+    {
+      "id": 1844,
+      "name": "见隙封喉",
+      "description": "造成 110% 武器伤害；目标命中前已有破绽时追加 6 点伤害，破绽只消费一次；自身武器本次额外磨损 1。",
+      "iconId": 10001,
+      "visualEffectId": 10,
+      "action": "main",
+      "cost": 3,
+      "range": 1,
+      "target": "enemy",
+      "proficiency": "sword",
+      "effectIds": [
+        20201
+      ],
+      "skillGroup": "weapon",
+      "cooldownTurns": 3,
+      "hitChance": 95,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1.1,
+      "actionTemplate": 4,
+      "trajectory": "sight",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 2
+    },
+    {
+      "id": 1851,
+      "name": "熟悉气味",
+      "description": "指定一名可见敌人为猎物，本人绑定动物首次成功攻击该目标时施加流血，本场一次。",
+      "iconId": 10004,
+      "visualEffectId": 201,
+      "action": "main",
+      "cost": 2,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "animalAffinity",
+      "effectIds": [],
+      "skillGroup": "animal",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "sight",
+      "contexts": [
+        "preparation"
+      ],
+      "affectsContainers": false,
+      "skillKind": "preparation",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1852,
+      "name": "驱赶口令",
+      "description": "令 3 格内本人绑定的可行动动物移动至选定相邻格，不攻击；每只动物每轮只能接受一次额外位移口令，并正常承担借机风险。",
+      "iconId": 10004,
+      "visualEffectId": 201,
+      "action": "secondary",
+      "cost": 1,
+      "range": 3,
+      "target": "cell",
+      "proficiency": "animalAffinity",
+      "effectIds": [],
+      "skillGroup": "animal",
+      "cooldownTurns": 2,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "sight",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1853,
+      "name": "夹击口令",
+      "description": "用本人的主要行动指挥 3 格内绑定动物扑咬其相邻敌人；主人也相邻时命中施加流血。骑乘不能算双人夹击。",
+      "iconId": 10004,
+      "visualEffectId": 201,
+      "action": "main",
+      "cost": 2,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "animalAffinity",
+      "effectIds": [],
+      "skillGroup": "animal",
+      "cooldownTurns": 2,
+      "hitChance": 95,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "sight",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1854,
+      "name": "救援衔拖",
+      "description": "令 3 格内绑定动物将其相邻存活友军拖至选定合法相邻空格，最多 1 格；大型或重载目标拒绝，动物本轮不再接受攻击口令。",
+      "iconId": 10004,
+      "visualEffectId": 201,
+      "action": "main",
+      "cost": 3,
+      "range": 3,
+      "target": "ally",
+      "proficiency": "animalAffinity",
+      "effectIds": [],
+      "skillGroup": "animal",
+      "cooldownTurns": 3,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "sight",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1901,
+      "name": "盾推",
+      "description": "需要盾，造成 60% 武器伤害；命中沿远离自己的方向推动目标 1 格，无合法落点时只有伤害。",
+      "iconId": 10001,
+      "visualEffectId": 10,
+      "action": "main",
+      "cost": 2,
+      "range": 1,
+      "target": "enemy",
+      "proficiency": "sword",
+      "effectIds": [
+        20201
+      ],
+      "skillGroup": "weapon",
+      "cooldownTurns": 2,
+      "hitChance": 95,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 0.6,
+      "actionTemplate": 4,
+      "trajectory": "sight",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 1
+    },
+    {
+      "id": 1902,
+      "name": "压制打击",
+      "description": "造成 90% 武器伤害，命中使目标力量降低 2，持续 2 回合。",
+      "iconId": 10001,
+      "visualEffectId": 10,
+      "action": "main",
+      "cost": 2,
+      "range": 1,
+      "target": "enemy",
+      "proficiency": "sword",
+      "effectIds": [
+        20201,
+        20013
+      ],
+      "skillGroup": "weapon",
+      "cooldownTurns": 2,
+      "hitChance": 95,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 0.9,
+      "actionTemplate": 4,
+      "trajectory": "sight",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 1
+    },
+    {
+      "id": 1903,
+      "name": "牵索箭",
+      "description": "需要弓及 1 份绳索，造成 60% 伤害，命中向自己拉动目标 1 格；无法拉动的体型仍受伤但不位移。",
+      "iconId": 10002,
+      "visualEffectId": 2,
+      "action": "main",
+      "cost": 2,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "bow",
+      "effectIds": [
+        20203
+      ],
+      "skillGroup": "weapon",
+      "cooldownTurns": 2,
+      "hitChance": 90,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 0.6,
+      "actionTemplate": 4,
+      "trajectory": "lobbed",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 1
+    },
+    {
+      "id": 1904,
+      "name": "退身射击",
+      "description": "需要弓，造成 80% 伤害，随后退至事先选定且更远离目标的相邻合法空格；不追加普通移动额度。",
+      "iconId": 10002,
+      "visualEffectId": 2,
+      "action": "main",
+      "cost": 3,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "bow",
+      "effectIds": [
+        20203
+      ],
+      "skillGroup": "weapon",
+      "cooldownTurns": 2,
+      "hitChance": 90,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 0.8,
+      "actionTemplate": 4,
+      "trajectory": "lobbed",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 1
+    },
+    {
+      "id": 1905,
+      "name": "术式附刃·火焰",
+      "description": "需触媒及可用近战武器；下一次直接近战命中改为火焰伤害并施加燃烧 2 回合，至下个回合结束有效。学习后也可选择水系。",
+      "iconId": 10003,
+      "visualEffectId": 6,
+      "action": "secondary",
+      "cost": 2,
+      "range": 0,
+      "target": "self",
+      "proficiency": "staff",
+      "effectIds": [],
+      "skillGroup": "spell",
+      "cooldownTurns": 2,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 1,
+      "trajectory": "sight",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "arcane",
+      "weaponWear": 0
+    },
+    {
+      "id": 1906,
+      "name": "导流术",
+      "description": "造成 80% 奥术基础的闪电伤害；命中潮湿目标追加 6 点伤害并消费潮湿，不附带眩晕。",
+      "iconId": 10003,
+      "visualEffectId": 6,
+      "action": "main",
+      "cost": 2,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "staff",
+      "effectIds": [
+        20207
+      ],
+      "skillGroup": "spell",
+      "cooldownTurns": 2,
+      "hitChance": 90,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 0.8,
+      "actionTemplate": 1,
+      "trajectory": "direct",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "arcane",
+      "weaponWear": 0
+    },
+    {
+      "id": 1907,
+      "name": "绊索",
+      "description": "消耗 1 份绳索在相邻空格放置公开的一次性绊索；首个地面单位进入时中止移动并速度降低 2、持续 2 回合，双方均可触发。",
+      "iconId": 10004,
+      "visualEffectId": 4,
+      "action": "main",
+      "cost": 2,
+      "range": 1,
+      "target": "cell",
+      "proficiency": "",
+      "effectIds": [],
+      "skillGroup": "construction",
+      "cooldownTurns": 2,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "sight",
+      "contexts": [
+        "preparation",
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1908,
+      "name": "应急拆料",
+      "description": "拆除相邻己方且无人承载的工事，返还其实际木料投入的一半、向下取整；不返还绳索，不拆任务设施。",
+      "iconId": 10004,
+      "visualEffectId": 4,
+      "action": "main",
+      "cost": 2,
+      "range": 1,
+      "target": "cell",
+      "proficiency": "",
+      "effectIds": [],
+      "skillGroup": "construction",
+      "cooldownTurns": 2,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "sight",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1909,
+      "name": "护卫换位",
+      "description": "与相邻同意且可移动的存活友军换位；双方完整占位均合法才成功，不重开普通移动。",
+      "iconId": 10004,
+      "visualEffectId": 4,
+      "action": "secondary",
+      "cost": 2,
+      "range": 1,
+      "target": "ally",
+      "proficiency": "",
+      "effectIds": [],
+      "skillGroup": "support",
+      "cooldownTurns": 2,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "sight",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1910,
+      "name": "承誓",
+      "description": "需要盾，守护相邻友军至自己下回合开始；若仍相邻，其下一次单目标直接攻击改由自己承受；不挡周期或范围伤害，不连锁转交。",
+      "iconId": 10004,
+      "visualEffectId": 4,
+      "action": "main",
+      "cost": 2,
+      "range": 1,
+      "target": "ally",
+      "proficiency": "",
+      "effectIds": [],
+      "skillGroup": "support",
+      "cooldownTurns": 2,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "sight",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1861,
+      "name": "分装试剂·毒剂",
+      "description": "消耗 1 份毒剂，下一次直接武器命中施加一层中毒；首个正式回合结束失效。",
+      "iconId": 10004,
+      "visualEffectId": 4,
+      "action": "main",
+      "cost": 2,
+      "range": 0,
+      "target": "self",
+      "proficiency": "",
+      "effectIds": [],
+      "skillGroup": "support",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "sight",
+      "contexts": [
+        "preparation"
+      ],
+      "affectsContainers": false,
+      "skillKind": "preparation",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1862,
+      "name": "蒸馏爆破·中毒",
+      "description": "消耗 1 份爆破剂，造成 70% 基础伤害；命中后消费全部中毒，每层追加 3 点、最多 9 点伤害。",
+      "iconId": 10003,
+      "visualEffectId": 6,
+      "action": "main",
+      "cost": 3,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "staff",
+      "effectIds": [
+        20202
+      ],
+      "skillGroup": "support",
+      "cooldownTurns": 3,
+      "hitChance": 90,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 0.7,
+      "actionTemplate": 0,
+      "trajectory": "direct",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1863,
+      "name": "转祸·流血",
+      "description": "把自己一项流血移交给敌人，保留剩余时长与层数；成功施加后才移除自己对应状态。",
+      "iconId": 10003,
+      "visualEffectId": 6,
+      "action": "main",
+      "cost": 3,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "staff",
+      "effectIds": [],
+      "skillGroup": "spell",
+      "cooldownTurns": 3,
+      "hitChance": 90,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 1,
+      "trajectory": "sight",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "arcane",
+      "weaponWear": 0
+    },
+    {
+      "id": 1864,
+      "name": "转祸·虚弱",
+      "description": "把自己一项虚弱移交给敌人，保留剩余时长与层数；成功施加后才移除自己对应状态。",
+      "iconId": 10003,
+      "visualEffectId": 6,
+      "action": "main",
+      "cost": 3,
+      "range": 3,
+      "target": "enemy",
+      "proficiency": "staff",
+      "effectIds": [],
+      "skillGroup": "spell",
+      "cooldownTurns": 3,
+      "hitChance": 90,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 1,
+      "trajectory": "sight",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "arcane",
+      "weaponWear": 0
+    },
+    {
+      "id": 1865,
+      "name": "术式附刃·流水",
+      "description": "需触媒及可用近战武器；下一次直接近战命中改为水系伤害并施加潮湿 2 回合，至下个回合结束有效。",
+      "iconId": 10003,
+      "visualEffectId": 6,
+      "action": "secondary",
+      "cost": 2,
+      "range": 0,
+      "target": "self",
+      "proficiency": "staff",
+      "effectIds": [],
+      "skillGroup": "spell",
+      "cooldownTurns": 2,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 1,
+      "trajectory": "sight",
+      "contexts": [
+        "battle"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "arcane",
+      "weaponWear": 0
+    },
+    {
+      "id": 1806,
+      "name": "野外萃取",
+      "description": "采集一处相邻范围内尚未采过的有效蕨类植物，得到 1 份毒剂；同一真实实体只能采一次。",
+      "iconId": 10004,
+      "visualEffectId": 4,
+      "action": "main",
+      "cost": 0,
+      "range": 0,
+      "target": "self",
+      "proficiency": "",
+      "effectIds": [],
+      "skillGroup": "profession_life_extract",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "sight",
+      "contexts": [
+        "life"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1816,
+      "name": "酒馆采风",
+      "description": "在当地酒馆听取有来源、12 格以内的真实附近地点消息；每城镇每日一次，已知线索不重复授予。",
+      "iconId": 10004,
+      "visualEffectId": 4,
+      "action": "main",
+      "cost": 0,
+      "range": 0,
+      "target": "self",
+      "proficiency": "",
+      "effectIds": [],
+      "skillGroup": "profession_life_rumor",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "sight",
+      "contexts": [
+        "life"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1826,
+      "name": "随军诊护",
+      "description": "消耗 1 份急救包，为有可恢复伤势的队员缩短 6 小时恢复时间；每队员每日一次，不能再生永久缺失部位。",
+      "iconId": 10004,
+      "visualEffectId": 4,
+      "action": "main",
+      "cost": 0,
+      "range": 3,
+      "target": "ally",
+      "proficiency": "",
+      "effectIds": [],
+      "skillGroup": "profession_life_care",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "sight",
+      "contexts": [
+        "life"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1836,
+      "name": "识咒",
+      "description": "识别持有诅咒物的真实触发条件与解除线索；已识别后再次使用，若携带净咒药剂则消耗 1 份净化该武器实例。",
+      "iconId": 10004,
+      "visualEffectId": 4,
+      "action": "main",
+      "cost": 0,
+      "range": 0,
+      "target": "self",
+      "proficiency": "",
+      "effectIds": [],
+      "skillGroup": "profession_life_curse",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "sight",
+      "contexts": [
+        "life"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1846,
+      "name": "礼式决斗",
+      "description": "在公会按约定请求一次单挑，每城镇每日一次；任一方生命低至 25% 时认输，保留真实伤势，胜利得 30 金币、失败付 15 金币。",
+      "iconId": 10004,
+      "visualEffectId": 4,
+      "action": "main",
+      "cost": 0,
+      "range": 0,
+      "target": "self",
+      "proficiency": "",
+      "effectIds": [],
+      "skillGroup": "profession_life_duel",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "sight",
+      "contexts": [
+        "life"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1856,
+      "name": "循迹",
+      "description": "从附近真实动物足迹提取行动方向，记录带时间、有效 120 分钟的线索；不能定位世界上全部动物。",
+      "iconId": 10004,
+      "visualEffectId": 4,
+      "action": "main",
+      "cost": 0,
+      "range": 0,
+      "target": "self",
+      "proficiency": "",
+      "effectIds": [],
+      "skillGroup": "profession_life_track",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "sight",
+      "contexts": [
+        "life"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 0
+    },
+    {
+      "id": 1867,
+      "name": "伙伴随行／骑乘切换",
+      "description": "将本人绑定的同一只真实动物切换为独立随行或骑乘；两个模式互斥，保留生命、伤势与死亡状态。",
+      "iconId": 10004,
+      "visualEffectId": 4,
+      "action": "main",
+      "cost": 0,
+      "range": 0,
+      "target": "self",
+      "proficiency": "",
+      "effectIds": [],
+      "skillGroup": "profession_life_companion",
+      "cooldownTurns": 0,
+      "hitChance": 100,
+      "shots": 1,
+      "ammoPerShot": 0,
+      "damageScale": 1,
+      "actionTemplate": 0,
+      "trajectory": "sight",
+      "contexts": [
+        "life"
+      ],
+      "affectsContainers": false,
+      "skillKind": "active",
+      "catalystKind": "none",
+      "weaponWear": 0
     }
   ]
 }

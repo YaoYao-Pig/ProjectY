@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "CampRecipeTable",
-  "description": "单设施单订单的营地生产配方；按游戏分钟完成，产物领取到真实共享背包",
+  "description": "配置驱动的营地合成：堆叠材料生产武器、防具及堆叠道具；单设施单订单，按游戏分钟完成后整组领取到共享背包",
   "key": "id",
   "fields": [
     {
@@ -12,7 +12,7 @@
     },
     {
       "name": "name",
-      "type": "string",
+      "type": "text",
       "description": "配方名称"
     },
     {
@@ -42,7 +42,7 @@
     {
       "name": "itemIds",
       "type": "int[]",
-      "description": "投入材料物品",
+      "description": "投入材料物品（仅可堆叠物，不消费装备实例）",
       "ref": "EquipmentItemTable"
     },
     {
@@ -53,7 +53,7 @@
     {
       "name": "outputIds",
       "type": "int[]",
-      "description": "产物物品",
+      "description": "产物物品（武器、防具、材料、弹药、消耗品、符文或模组；不支持弹匣）",
       "ref": "EquipmentItemTable"
     },
     {
@@ -65,7 +65,7 @@
   "rows": [
     {
       "id": 1,
-      "name": "压制巡猎弹药",
+      "name": "压制巡猎综合弹",
       "facilityId": 1,
       "requiredLevel": 1,
       "minutes": 60,
@@ -147,6 +147,362 @@
       ],
       "outputCounts": [
         1
+      ]
+    },
+    {
+      "id": 5,
+      "name": "锻造民兵铁剑",
+      "facilityId": 1,
+      "requiredLevel": 1,
+      "minutes": 180,
+      "coins": 8,
+      "itemIds": [
+        83,
+        81
+      ],
+      "itemCounts": [
+        5,
+        2
+      ],
+      "outputIds": [
+        40
+      ],
+      "outputCounts": [
+        1
+      ]
+    },
+    {
+      "id": 6,
+      "name": "缝制缀铁皮甲",
+      "facilityId": 1,
+      "requiredLevel": 1,
+      "minutes": 240,
+      "coins": 10,
+      "itemIds": [
+        82,
+        83
+      ],
+      "itemCounts": [
+        4,
+        4
+      ],
+      "outputIds": [
+        52
+      ],
+      "outputCounts": [
+        1
+      ]
+    },
+    {
+      "id": 7,
+      "name": "打造伐木斧",
+      "facilityId": 1,
+      "requiredLevel": 1,
+      "minutes": 150,
+      "coins": 6,
+      "itemIds": [
+        81,
+        83
+      ],
+      "itemCounts": [
+        3,
+        3
+      ],
+      "outputIds": [
+        70
+      ],
+      "outputCounts": [
+        1
+      ]
+    },
+    {
+      "id": 8,
+      "name": "打造矿工镐",
+      "facilityId": 1,
+      "requiredLevel": 1,
+      "minutes": 180,
+      "coins": 7,
+      "itemIds": [
+        81,
+        83
+      ],
+      "itemCounts": [
+        3,
+        4
+      ],
+      "outputIds": [
+        72
+      ],
+      "outputCounts": [
+        1
+      ]
+    },
+    {
+      "id": 9,
+      "name": "打造铁铲",
+      "facilityId": 1,
+      "requiredLevel": 1,
+      "minutes": 120,
+      "coins": 5,
+      "itemIds": [
+        81,
+        83
+      ],
+      "itemCounts": [
+        2,
+        3
+      ],
+      "outputIds": [
+        73
+      ],
+      "outputCounts": [
+        1
+      ]
+    },
+    {
+      "id": 10,
+      "name": "锻造撬棍",
+      "facilityId": 1,
+      "requiredLevel": 1,
+      "minutes": 90,
+      "coins": 4,
+      "itemIds": [
+        83
+      ],
+      "itemCounts": [
+        3
+      ],
+      "outputIds": [
+        74
+      ],
+      "outputCounts": [
+        1
+      ]
+    },
+    {
+      "id": 11,
+      "name": "捆扎旅行火炬",
+      "facilityId": 1,
+      "requiredLevel": 1,
+      "minutes": 30,
+      "coins": 1,
+      "itemIds": [
+        81,
+        82
+      ],
+      "itemCounts": [
+        1,
+        1
+      ],
+      "outputIds": [
+        94
+      ],
+      "outputCounts": [
+        2
+      ]
+    },
+    {
+      "id": 12,
+      "name": "调配抗感染药",
+      "facilityId": 2,
+      "requiredLevel": 2,
+      "minutes": 180,
+      "coins": 6,
+      "itemIds": [
+        91,
+        92
+      ],
+      "itemCounts": [
+        1,
+        1
+      ],
+      "outputIds": [
+        190
+      ],
+      "outputCounts": [
+        1
+      ]
+    },
+    {
+      "id": 13,
+      "name": "压制巡猎破甲弹",
+      "facilityId": 1,
+      "requiredLevel": 2,
+      "minutes": 90,
+      "coins": 4,
+      "itemIds": [
+        83,
+        81
+      ],
+      "itemCounts": [
+        3,
+        1
+      ],
+      "outputIds": [
+        822
+      ],
+      "outputCounts": [
+        12
+      ]
+    },
+    {
+      "id": 14,
+      "name": "压制巡猎肉弹",
+      "facilityId": 1,
+      "requiredLevel": 2,
+      "minutes": 90,
+      "coins": 4,
+      "itemIds": [
+        83,
+        81,
+        82
+      ],
+      "itemCounts": [
+        2,
+        1,
+        1
+      ],
+      "outputIds": [
+        823
+      ],
+      "outputCounts": [
+        12
+      ]
+    },
+    {
+      "id": 15,
+      "name": "压制狙击综合弹",
+      "facilityId": 1,
+      "requiredLevel": 2,
+      "minutes": 90,
+      "coins": 3,
+      "itemIds": [
+        83,
+        81
+      ],
+      "itemCounts": [
+        3,
+        1
+      ],
+      "outputIds": [
+        820
+      ],
+      "outputCounts": [
+        6
+      ]
+    },
+    {
+      "id": 16,
+      "name": "压制狙击破甲弹",
+      "facilityId": 1,
+      "requiredLevel": 2,
+      "minutes": 120,
+      "coins": 5,
+      "itemIds": [
+        83,
+        81
+      ],
+      "itemCounts": [
+        4,
+        1
+      ],
+      "outputIds": [
+        824
+      ],
+      "outputCounts": [
+        6
+      ]
+    },
+    {
+      "id": 17,
+      "name": "压制狙击肉弹",
+      "facilityId": 1,
+      "requiredLevel": 2,
+      "minutes": 120,
+      "coins": 5,
+      "itemIds": [
+        83,
+        81,
+        82
+      ],
+      "itemCounts": [
+        3,
+        1,
+        1
+      ],
+      "outputIds": [
+        825
+      ],
+      "outputCounts": [
+        6
+      ]
+    },
+    {
+      "id": 18,
+      "name": "压制霰弹综合弹",
+      "facilityId": 1,
+      "requiredLevel": 1,
+      "minutes": 60,
+      "coins": 2,
+      "itemIds": [
+        83,
+        81
+      ],
+      "itemCounts": [
+        2,
+        1
+      ],
+      "outputIds": [
+        821
+      ],
+      "outputCounts": [
+        6
+      ]
+    },
+    {
+      "id": 19,
+      "name": "压制霰弹破甲弹",
+      "facilityId": 1,
+      "requiredLevel": 2,
+      "minutes": 90,
+      "coins": 4,
+      "itemIds": [
+        83,
+        81
+      ],
+      "itemCounts": [
+        3,
+        1
+      ],
+      "outputIds": [
+        826
+      ],
+      "outputCounts": [
+        6
+      ]
+    },
+    {
+      "id": 20,
+      "name": "压制霰弹肉弹",
+      "facilityId": 1,
+      "requiredLevel": 2,
+      "minutes": 90,
+      "coins": 4,
+      "itemIds": [
+        83,
+        81,
+        82
+      ],
+      "itemCounts": [
+        2,
+        1,
+        1
+      ],
+      "outputIds": [
+        827
+      ],
+      "outputCounts": [
+        6
       ]
     }
   ]

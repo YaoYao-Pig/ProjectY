@@ -71,6 +71,14 @@ namespace ProjectY.Data
             route.Clear();route.AddRange(next);index=0;TargetSiteId=targetSiteId;Message="";Revision++;
         }
         public void SetPaused(bool value) { Paused=value;Revision++; }
+        /// <summary>Follow a co-located carrier while retaining this traveler's clock, stops and random stream.</summary>
+        public void Follow(WorldTravelData leader)
+        {
+            if(leader==null || ReferenceEquals(this,leader))throw new ArgumentException("Invalid travel leader.");
+            Q=leader.Q;R=leader.R;route.Clear();
+            for(int i=leader.index;i<leader.route.Count;i++)route.Add(leader.route[i]);
+            index=0;elapsed=leader.elapsed;TargetSiteId=0;Revision++;
+        }
         public void SetSpeed(int value)
         { if(value!=1 && value!=2 && value!=4)throw new ArgumentOutOfRangeException(nameof(value));Speed=value;Revision++; }
         public double Step(double budget)
@@ -81,6 +89,39 @@ namespace ProjectY.Data
             elapsed+=spent;sinceCheck+=spent;
             if(elapsed>=step.Minutes) { Q=step.Q;R=step.R;index++;elapsed=0; }
             Revision++;return spent;
+        }
+        public double AdvanceRoute(double budget)
+        {
+            if(double.IsNaN(budget) || double.IsInfinity(budget) || budget<0)throw new ArgumentOutOfRangeException(nameof(budget));
+            if(!Active || Paused || budget==0)return 0;
+            double remaining=budget;
+            while(Active && remaining>0)
+            {
+                var step=route[index];double required=step.Minutes-elapsed;
+                if(remaining<required){elapsed+=remaining;remaining=0;}
+                else{remaining-=required;Q=step.Q;R=step.R;index++;elapsed=0;}
+            }
+            double spent=budget-remaining;sinceCheck+=spent;Revision++;return spent;
+        }
+        internal long PendingDistance(int playerQ,int playerR,double budget)
+        {
+            long dq=(long)Q-playerQ,dr=(long)R-playerR;
+            long closest=Math.Max(Math.Abs(dq),Math.Max(Math.Abs(dr),Math.Abs(dq+dr)));
+            if(!Active || Paused || budget<=0)return closest;
+            double remaining=budget+elapsed;
+            for(int i=index;i<route.Count && remaining>0;i++)
+            {
+                var step=route[i];dq=(long)step.Q-playerQ;dr=(long)step.R-playerR;
+                closest=Math.Min(closest,Math.Max(Math.Abs(dq),Math.Max(Math.Abs(dr),Math.Abs(dq+dr))));
+                if(closest==0)break;
+                remaining-=step.Minutes;
+            }
+            return closest;
+        }
+        internal void CompleteAbstractRoute(int q,int r,double duration)
+        {
+            if(Active)throw new InvalidOperationException("Cannot complete an abstract journey over an active route.");
+            route.Clear();index=0;elapsed=0;Q=q;R=r;TargetSiteId=0;sinceCheck+=duration;Revision++;
         }
         public bool CheckDue(double interval)
         {
@@ -99,6 +140,13 @@ namespace ProjectY.Data
                 throw new ArgumentException("Travel stop needs exactly one event or encounter at a completed step.");
             var stop=new WorldTravelStop(firstStopId+stops.Count,Q,R,eventId,encounterId);stops.Add(stop);
             sinceCheck=0;Paused=true;Revision++;return stop;
+        }
+        public WorldTravelStop AddWorldStop(int q,int r,int eventId,int encounterId)
+        {
+            if(firstStopId<1 || eventId<0 || encounterId<0 || (eventId==0)==(encounterId==0) || stops.Count>=10000)
+                throw new ArgumentException("World stop needs exactly one event or encounter.");
+            var stop=new WorldTravelStop(checked(firstStopId+stops.Count),q,r,eventId,encounterId);
+            stops.Add(stop);Revision++;return stop;
         }
         public void Arrived()
         { if(Active)throw new InvalidOperationException("Travel route has not arrived.");TargetSiteId=0;route.Clear();index=0;elapsed=0;Revision++; }

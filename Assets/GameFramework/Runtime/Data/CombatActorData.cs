@@ -23,8 +23,8 @@ namespace ProjectY.Data
         public int Id { get; }
         public int TemplateId { get; }
         public int Team { get; private set; } = 1;
-        public int HP { get; private set; } = 1;
-        public int MaxHP { get; private set; } = 1;
+        public int HP { get => TotalBodyHealth(false); private set => SetBodyHealth(value); }
+        public int MaxHP { get => TotalBodyHealth(true); private set => ResizeBody(value); }
         public int AP { get; private set; }
         public int Q { get; private set; }
         public int R { get; private set; }
@@ -38,7 +38,7 @@ namespace ProjectY.Data
         public bool DropResolved { get; private set; }
         public void ResolveDrop()
         {
-            if(HP!=0 || Team!=2 || AnimalOwnerId!=0 || DropResolved)throw new InvalidOperationException("Enemy drop cannot be resolved.");
+            if(HP!=0 || Team<2 || AnimalOwnerId!=0 || DropResolved)throw new InvalidOperationException("Enemy drop cannot be resolved.");
             DropResolved=true;
         }
         public CharacterGrowthData Growth { get; } = new CharacterGrowthData();
@@ -73,14 +73,14 @@ namespace ProjectY.Data
         {
             if (value < 1 || value > 1000000) throw new ArgumentOutOfRangeException(nameof(value));
             // 改变上限时保留已受伤害；倒地角色须通过明确的休整恢复。
-            HP = HP == 0 ? 0 : Math.Max(1, Math.Min(value, HP + value - MaxHP));
             MaxHP = value;
         }
         public void Deploy(int team, int q, int r)
         {
-            if (team != 0 && team != 1 && team != 2) throw new ArgumentOutOfRangeException(nameof(team));
+            if (team < 0 || team > 64) throw new ArgumentOutOfRangeException(nameof(team));
             Team = team; Q = q; R = r; AP = 0; Guard = 0; Moved = false; MainUsed = false;movementSpent=0;
             cooldowns.Clear(); ActionTemplateId = 0; presentationActions.Clear();
+            ProfessionMarks.Clear();
         }
         public void BeginTurn(int points)
         {
@@ -121,7 +121,7 @@ namespace ProjectY.Data
         internal int ApplyExertion(int amount)
         {
             if(amount<0||HP==0)throw new ArgumentOutOfRangeException(nameof(amount));
-            var applied=Math.Min(amount,HP-1);HP-=applied;return applied;
+            return DamageBody(Math.Min(amount,HP-1),-1,0,false);
         }
         public int Damage(int amount)
         {
@@ -132,18 +132,24 @@ namespace ProjectY.Data
                 if (MountedAnimal.HP == 0) MountedAnimal = null;
                 return absorbed; // 坐骑承担整次伤害；死亡时丢弃本次溢出伤害。
             }
-            var applied = Math.Min(HP, amount); HP -= applied; return applied;
+            return DamageBody(amount,-1,0,false);
         }
         public int Heal(int amount)
         {
             if (amount < 0) throw new ArgumentOutOfRangeException(nameof(amount));
             if (HP == 0) return 0; // 普通治疗不复活；营地 Restore 明确允许恢复倒地角色。
-            var applied = Math.Min(MaxHP - HP, amount); HP += applied; return applied;
+            return HealBody(amount);
         }
         public void SetGuard(int amount)
         {
             if (amount < 0) throw new ArgumentOutOfRangeException(nameof(amount));
             Guard = Math.Max(Guard, amount);
+        }
+        public void Replenish()
+        {
+            if (HP != 0 || Team < 2 || AnimalOwnerId != 0)
+                throw new InvalidOperationException("Only defeated independent defenders can be replenished.");
+            DropResolved = false; cooldowns.Clear(); Restore();
         }
         public void Restore() { HP = MaxHP; Guard = 0; }
     }

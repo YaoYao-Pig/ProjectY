@@ -25,6 +25,7 @@ namespace ProjectY.Data
         public int LocalNpcId { get; internal set; }
         public int TemplateId { get; internal set; }
         public int Period { get; internal set; }
+        public double OccupationRecoveryAt { get; internal set; } = -1;
         public int Count => entries.Count;
         public ShopStockEntry GetAt(int index) => entries[index];
         public ShopStockEntry Find(int entry) => entries.Find(row => row.EntryId == entry);
@@ -68,6 +69,15 @@ namespace ProjectY.Data
         }
         public void Close() { if (IsOpen) { Active = null; Revision++; } }
         public void Clear() { Active = null; stocks.Clear(); Revision++; }
+        internal void ApplyOccupationRecovery(ShopStock stock, double liberatedAt, double factor)
+        {
+            if (stock == null || !stocks.Contains(stock) || !WorldFactionsData.ValidTime(liberatedAt) ||
+                double.IsNaN(factor) || double.IsInfinity(factor) || factor < 0 || factor > 1)
+                throw new ArgumentException("Invalid shop occupation recovery.");
+            if (liberatedAt <= stock.OccupationRecoveryAt) return;
+            foreach (var entry in stock.entries) entry.Count = (int)Math.Floor(entry.Count * factor);
+            stock.OccupationRecoveryAt = liberatedAt; Revision++;
+        }
 
         // 所有可预期失败在提交之前检查，最后才通知金币监听者，避免观察到半笔交易。
         public string Buy(int entryId, int count, int revision, EquipmentData equipment, PlayerData player, string kind, int ammo, int capacity, int rounds)
@@ -97,6 +107,7 @@ namespace ProjectY.Data
 
         internal ShopStockSave[] Capture() => stocks.Select(stock => new ShopStockSave { merchant = stock.MerchantId, site = stock.SiteId,
             npc = stock.LocalNpcId, template = stock.TemplateId, period = stock.Period,
+            hasOccupationRecovery = stock.OccupationRecoveryAt >= 0, occupationRecoveryAt = stock.OccupationRecoveryAt >= 0 ? stock.OccupationRecoveryAt : 0,
             entries = stock.entries.Select(entry => new ShopEntrySave { entry = entry.EntryId, item = entry.ItemId, count = entry.Count, price = entry.Price }).ToArray() }).ToArray();
         internal static ShopData Prepare(ShopStockSave[] saved)
         {
@@ -104,7 +115,9 @@ namespace ProjectY.Data
             foreach (var row in SaveCheck.Rows(saved, 10000, "商人库存"))
             {
                 SaveCheck.Require(row != null && row.merchant > 0 && row.site > 0 && row.npc > 0 && row.template > 0 && row.period >= 0 && data.Find(row.merchant, row.site, row.npc) == null, "商人身份或重复库存");
-                var stock = new ShopStock { MerchantId = row.merchant, SiteId = row.site, LocalNpcId = row.npc, TemplateId = row.template, Period = row.period };
+                SaveCheck.Require(row.hasOccupationRecovery ? WorldFactionsData.ValidTime(row.occupationRecoveryAt) : row.occupationRecoveryAt == 0, "商人占领恢复记录");
+                var stock = new ShopStock { MerchantId = row.merchant, SiteId = row.site, LocalNpcId = row.npc, TemplateId = row.template, Period = row.period,
+                    OccupationRecoveryAt = row.hasOccupationRecovery ? row.occupationRecoveryAt : -1 };
                 foreach (var entry in SaveCheck.Rows(row.entries, 10000, "商品条目"))
                 {
                     SaveCheck.Require(entry != null && entry.entry > 0 && entry.item > 0 && entry.count >= 0 && entry.price >= 0 && stock.Find(entry.entry) == null, "商品数值或重复条目");
@@ -117,6 +130,6 @@ namespace ProjectY.Data
         internal void TakePrepared(ShopData source) { Clear(); stocks.AddRange(source.stocks); }
     }
     [Serializable] internal sealed class ShopEntrySave { public int entry, item, count, price; }
-    [Serializable] internal sealed class ShopStockSave { public int merchant, site, npc, template, period; public ShopEntrySave[] entries; }
+    [Serializable] internal sealed class ShopStockSave { public int merchant, site, npc, template, period; public ShopEntrySave[] entries; public bool hasOccupationRecovery; public double occupationRecoveryAt; }
     public sealed partial class AdventureData { internal ShopData Shops { get; } = new ShopData(); }
 }

@@ -1,0 +1,231 @@
+{
+  "version": 1,
+  "name": "SpecialEventTable",
+  "description": "旅途特殊事件：独立场景、援助或拦截战斗、持久结局和招募。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "特殊事件配置 ID",
+      "min": 1
+    },
+    {
+      "name": "key",
+      "type": "string",
+      "description": "持久事实键前缀"
+    },
+    {
+      "name": "eventId",
+      "type": "int",
+      "description": "旅途邀请事件",
+      "ref": "AdventureEventTable"
+    },
+    {
+      "name": "sceneEventId",
+      "type": "int",
+      "description": "场内决定事件",
+      "ref": "AdventureEventTable"
+    },
+    {
+      "name": "enterChoiceId",
+      "type": "int",
+      "description": "前往场景的选项",
+      "ref": "AdventureChoiceTable"
+    },
+    {
+      "name": "battleChoiceId",
+      "type": "int",
+      "description": "帮助盟友并开始原地战斗",
+      "ref": "AdventureChoiceTable"
+    },
+    {
+      "name": "leaveChoiceId",
+      "type": "int",
+      "description": "离开场景的选项",
+      "ref": "AdventureChoiceTable"
+    },
+    {
+      "name": "areaId",
+      "type": "int",
+      "description": "专属小地图",
+      "ref": "MapAreaTable"
+    },
+    {
+      "name": "encounterId",
+      "type": "int",
+      "description": "场内遭遇",
+      "ref": "CombatEncounterTable"
+    },
+    {
+      "name": "npcId",
+      "type": "int",
+      "description": "可招募的稳定 NPC",
+      "ref": "NpcTable"
+    },
+    {
+      "name": "allyUnitId",
+      "type": "int",
+      "description": "盟军角色模板",
+      "ref": "CombatUnitTable"
+    },
+    {
+      "name": "allyIndex",
+      "type": "int",
+      "description": "遭遇角色列表中的盟军位置，从 1 开始",
+      "min": 1,
+      "max": 4
+    },
+    {
+      "name": "missionId",
+      "type": "int",
+      "description": "胜利且存活后开放的招募任务",
+      "ref": "MissionTable"
+    },
+    {
+      "name": "townRadius",
+      "type": "int",
+      "description": "距城镇入口的最大六边形格数；0 不限制城镇距离",
+      "min": 0
+    },
+    {
+      "name": "objective",
+      "type": "text",
+      "description": "战斗目标"
+    },
+    {
+      "name": "successText",
+      "type": "text",
+      "description": "获胜且盟友存活的结局"
+    },
+    {
+      "name": "deathText",
+      "type": "text",
+      "description": "获胜但盟友死亡的结局"
+    },
+    {
+      "name": "failureText",
+      "type": "text",
+      "description": "战斗失败或撤出的结局"
+    },
+    {
+      "name": "allyParticipates",
+      "type": "bool",
+      "default": true,
+      "description": "盟友是否进入战斗；false 留在战斗窗口以外的安全处"
+    },
+    {
+      "name": "killAllyOnFailure",
+      "type": "bool",
+      "default": true,
+      "description": "失败时是否处决盟友；false 仅失去本次招募机会"
+    },
+    {
+      "name": "initialHealthPercent",
+      "type": "int",
+      "default": 100,
+      "min": 1,
+      "max": 100,
+      "description": "场景角色初始生命百分比，仅首次创建生效"
+    },
+    {
+      "name": "initialInjuryPartIds",
+      "type": "int[]",
+      "ref": "BodyPartTable",
+      "default": [],
+      "description": "场景角色初始受伤部位"
+    },
+    {
+      "name": "initialInjuryTypeIds",
+      "type": "int[]",
+      "ref": "InjuryTypeTable",
+      "default": [],
+      "description": "各初始受伤部位的创伤类型"
+    },
+    {
+      "name": "initialInjuryDamage",
+      "type": "int[]",
+      "default": [],
+      "description": "各部位初始损伤值，1至99，不能配置永久伤"
+    },
+    {
+      "name": "injuryRecoveryMinutes",
+      "type": "int[]",
+      "default": [],
+      "description": "正式入队后各初始创伤自然恢复的游戏分钟数"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "key": "knight_trial",
+      "eventId": 301,
+      "sceneEventId": 302,
+      "enterChoiceId": 3011,
+      "battleChoiceId": 3021,
+      "leaveChoiceId": 3022,
+      "areaId": 60,
+      "encounterId": 301,
+      "npcId": 301,
+      "allyUnitId": 910,
+      "allyIndex": 4,
+      "missionId": 1001,
+      "townRadius": 3,
+      "objective": "审判目标：击败控方斗士，同时保证骑士存活。骑士自主行动，请支援他。",
+      "successText": "审判获胜，骑士活了下来。他愿意与你同行。打开任务手记，在招募任务「骑士审判」中邀请他入队；队伍已满时资格会保留。",
+      "deathText": "控方斗士已败，但骑士没能活到审判结束。他的死亡已成定局，无法再招募。",
+      "failureText": "你们未能赢得比武审判。骑士被判有罪并处决，无法再招募。"
+    },
+    {
+      "id": 2,
+      "key": "mysterious_deserter",
+      "eventId": 303,
+      "sceneEventId": 304,
+      "enterChoiceId": 3031,
+      "battleChoiceId": 3041,
+      "leaveChoiceId": 3042,
+      "areaId": 61,
+      "encounterId": 302,
+      "npcId": 302,
+      "allyUnitId": 920,
+      "allyIndex": 4,
+      "missionId": 1002,
+      "townRadius": 0,
+      "allyParticipates": false,
+      "killAllyOnFailure": false,
+      "initialHealthPercent": 35,
+      "objective": "拦截目标：击败追兵。负伤的逃兵藏在后方，不参加战斗。",
+      "successText": "追兵已被击败，躲在后方的逃兵终于松了一口气。他愿意与你同行。可在任务手记的招募任务「神秘逃兵」中邀请入队；他的多处伤势会从入队后开始逐步恢复。",
+      "deathText": "追兵已被击败，但伤者已失去生命，无法招募。",
+      "failureText": "你们未能挡住追兵，被迫撤离。逃兵趁乱消失在荒野中，本次未能招募。",
+      "initialInjuryPartIds": [
+        5,
+        6,
+        3,
+        4,
+        2
+      ],
+      "initialInjuryTypeIds": [
+        1,
+        1,
+        2,
+        2,
+        1
+      ],
+      "initialInjuryDamage": [
+        30,
+        30,
+        30,
+        30,
+        30
+      ],
+      "injuryRecoveryMinutes": [
+        1440,
+        1440,
+        2880,
+        2880,
+        4320
+      ]
+    }
+  ]
+}

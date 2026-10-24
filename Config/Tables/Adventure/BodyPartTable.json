@@ -1,0 +1,168 @@
+{
+  "version": 1,
+  "name": "BodyPartTable",
+  "description": "人形角色的六个身体部位及伤势惩罚；索引固定对应存档",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定编号",
+      "min": 1
+    },
+    {
+      "name": "index",
+      "type": "int",
+      "description": "存档部位下标，不能重排",
+      "min": 0,
+      "max": 5
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "部位名称"
+    },
+    {
+      "name": "weight",
+      "type": "int",
+      "description": "命中权重，总和必须100",
+      "min": 1,
+      "max": 100
+    },
+    {
+      "name": "attributes",
+      "type": "string[]",
+      "description": "受伤影响的属性"
+    },
+    {
+      "name": "penalties",
+      "type": "float[]",
+      "description": "黑色伤势时属性下降比例，按等级倍率缩放"
+    },
+    {
+      "name": "movementPenalty",
+      "type": "float",
+      "description": "黑色伤势移动距离下降比例",
+      "min": 0,
+      "max": 1
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "index": 0,
+      "name": "头部",
+      "weight": 10,
+      "attributes": [
+        "intellect",
+        "scouting"
+      ],
+      "penalties": [
+        0.5,
+        0.6
+      ],
+      "movementPenalty": 0
+    },
+    {
+      "id": 2,
+      "index": 1,
+      "name": "躯干",
+      "weight": 30,
+      "attributes": [
+        "defense"
+      ],
+      "penalties": [
+        0.6
+      ],
+      "movementPenalty": 0
+    },
+    {
+      "id": 3,
+      "index": 2,
+      "name": "左臂",
+      "weight": 15,
+      "attributes": [
+        "strength",
+        "sword",
+        "polearm",
+        "unarmed",
+        "staff",
+        "dagger",
+        "bow",
+        "greatsword",
+        "firearms",
+        "crafting"
+      ],
+      "penalties": [
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25
+      ],
+      "movementPenalty": 0
+    },
+    {
+      "id": 4,
+      "index": 3,
+      "name": "右臂",
+      "weight": 15,
+      "attributes": [
+        "strength",
+        "sword",
+        "polearm",
+        "unarmed",
+        "staff",
+        "dagger",
+        "bow",
+        "greatsword",
+        "firearms",
+        "crafting"
+      ],
+      "penalties": [
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25,
+        0.25
+      ],
+      "movementPenalty": 0
+    },
+    {
+      "id": 5,
+      "index": 4,
+      "name": "左腿",
+      "weight": 15,
+      "attributes": [
+        "speed"
+      ],
+      "penalties": [
+        0.35
+      ],
+      "movementPenalty": 0.4
+    },
+    {
+      "id": 6,
+      "index": 5,
+      "name": "右腿",
+      "weight": 15,
+      "attributes": [
+        "speed"
+      ],
+      "penalties": [
+        0.35
+      ],
+      "movementPenalty": 0.4
+    }
+  ]
+}

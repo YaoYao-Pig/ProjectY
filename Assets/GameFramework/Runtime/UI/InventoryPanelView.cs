@@ -124,7 +124,7 @@ namespace ProjectY.UI
             }
             dragIcon.sprite=catalog.ItemIcon(dragging.ItemId,dragging.IconPath);
             dragIcon.gameObject.SetActive(dragIcon.sprite!=null);
-            layout.DragLabel.text=dragging.Name+"  /  R 旋转";layout.DragLabel.gameObject.SetActive(true);Preview();
+            layout.DragLabel.text=LuaLanguage.Format("InventoryDragLabel",dragging.Name);layout.DragLabel.gameObject.SetActive(true);Preview();
         }
         internal void Drag(PointerEventData e) {if(dragging==null) return;pointer=e.position;Preview();}
         private Slot HoverSlot()

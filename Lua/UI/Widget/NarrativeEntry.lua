@@ -12,8 +12,10 @@ function Entry:SetData(row,font,action)
     self.view.Title.gameObject:SetActive(row.title~='')
     self.view.Body.gameObject:SetActive(row.body~='')
     self.view.Button.interactable=action~=nil and row.available~=false
-    self.view.Background.color=row.selected and CS.UnityEngine.Color(.28,.31,.22,1)
-        or action and CS.UnityEngine.Color(.16,.23,.19,.95) or CS.UnityEngine.Color(.12,.16,.14,row.plain and 0 or .25)
+    self.view.Background.color=row.selected and CS.UnityEngine.Color(.26,.32,.28,1)
+        or action and row.available==false and CS.UnityEngine.Color(.18,.19,.19,.95)
+        or action and row.tone=='ready' and CS.UnityEngine.Color(.14,.31,.23,1)
+        or action and CS.UnityEngine.Color(.16,.23,.21,.95) or CS.UnityEngine.Color(.13,.18,.16,row.plain and 0 or .75)
     self.view.Locked.gameObject:SetActive(action~=nil and row.available==false)
 end
 function Entry:Show(args) Base.Show(self,args);self.view.Root.gameObject:SetActive(self.row~=nil) end

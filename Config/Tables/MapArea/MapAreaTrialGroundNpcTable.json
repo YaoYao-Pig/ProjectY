@@ -1,0 +1,285 @@
+{
+  "version": 1,
+  "name": "MapAreaTrialGroundNpcTable",
+  "description": "骑士审判场的静态观众与审判席人物；不占格、不交互、不参加战斗且不写入存档。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定布景角色 ID；显示时使用负 ID，不进入存档",
+      "min": 1
+    },
+    {
+      "name": "profileId",
+      "type": "int",
+      "description": "审判场配方",
+      "ref": "MapAreaTrialGroundTable"
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "角色身份名"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "布景角色身份说明"
+    },
+    {
+      "name": "partIds",
+      "type": "int[]",
+      "description": "复用现有棋子部件",
+      "ref": "PawnPartTable"
+    },
+    {
+      "name": "localX",
+      "type": "float",
+      "description": "相对战区中心的东西向米制位置"
+    },
+    {
+      "name": "localZ",
+      "type": "float",
+      "description": "相对战区中心的南北向米制位置"
+    },
+    {
+      "name": "yaw",
+      "type": "float",
+      "description": "面向角度：0朝北、90朝东、180朝南"
+    },
+    {
+      "name": "scale",
+      "type": "float",
+      "description": "人物显示尺寸倍率",
+      "min": 0.8,
+      "max": 1.2
+    },
+    {
+      "name": "showName",
+      "type": "bool",
+      "description": "是否显示身份标签；普通观众不常驻显示"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "profileId": 1,
+      "name": "看台观众 1",
+      "description": "在看台上观看比武审判的城镇居民。",
+      "partIds": [
+        17,
+        2
+      ],
+      "localX": -10.392305,
+      "localZ": -6,
+      "yaw": 90,
+      "scale": 0.96,
+      "showName": false
+    },
+    {
+      "id": 2,
+      "profileId": 1,
+      "name": "看台观众 2",
+      "description": "在看台上观看比武审判的城镇居民。",
+      "partIds": [
+        18,
+        2
+      ],
+      "localX": -13.856406,
+      "localZ": -3,
+      "yaw": 90,
+      "scale": 1,
+      "showName": false
+    },
+    {
+      "id": 3,
+      "profileId": 1,
+      "name": "看台观众 3",
+      "description": "在看台上观看比武审判的城镇居民。",
+      "partIds": [
+        1,
+        2,
+        4
+      ],
+      "localX": -12.124356,
+      "localZ": 3,
+      "yaw": 90,
+      "scale": 1,
+      "showName": false
+    },
+    {
+      "id": 4,
+      "profileId": 1,
+      "name": "看台观众 4",
+      "description": "在看台上观看比武审判的城镇居民。",
+      "partIds": [
+        17,
+        2
+      ],
+      "localX": -10.392305,
+      "localZ": 6,
+      "yaw": 90,
+      "scale": 0.96,
+      "showName": false
+    },
+    {
+      "id": 5,
+      "profileId": 1,
+      "name": "看台观众 5",
+      "description": "在看台上观看比武审判的城镇居民。",
+      "partIds": [
+        18,
+        2
+      ],
+      "localX": 12.124356,
+      "localZ": -6,
+      "yaw": 270,
+      "scale": 1,
+      "showName": false
+    },
+    {
+      "id": 6,
+      "profileId": 1,
+      "name": "看台观众 6",
+      "description": "在看台上观看比武审判的城镇居民。",
+      "partIds": [
+        17,
+        2
+      ],
+      "localX": 10.392305,
+      "localZ": -3,
+      "yaw": 270,
+      "scale": 1,
+      "showName": false
+    },
+    {
+      "id": 7,
+      "profileId": 1,
+      "name": "看台观众 7",
+      "description": "在看台上观看比武审判的城镇居民。",
+      "partIds": [
+        1,
+        2,
+        5
+      ],
+      "localX": 13.856406,
+      "localZ": 0,
+      "yaw": 270,
+      "scale": 0.96,
+      "showName": false
+    },
+    {
+      "id": 8,
+      "profileId": 1,
+      "name": "看台观众 8",
+      "description": "在看台上观看比武审判的城镇居民。",
+      "partIds": [
+        18,
+        2
+      ],
+      "localX": 12.124356,
+      "localZ": 3,
+      "yaw": 270,
+      "scale": 1,
+      "showName": false
+    },
+    {
+      "id": 9,
+      "profileId": 1,
+      "name": "看台观众 9",
+      "description": "在看台上观看比武审判的城镇居民。",
+      "partIds": [
+        17,
+        2
+      ],
+      "localX": 10.392305,
+      "localZ": 6,
+      "yaw": 270,
+      "scale": 1,
+      "showName": false
+    },
+    {
+      "id": 10,
+      "profileId": 1,
+      "name": "入口旁观者",
+      "description": "站在南入口外侧观看审判的居民。",
+      "partIds": [
+        17,
+        2
+      ],
+      "localX": -5.196152,
+      "localZ": -12,
+      "yaw": 25,
+      "scale": 1,
+      "showName": false
+    },
+    {
+      "id": 11,
+      "profileId": 1,
+      "name": "赶集商人",
+      "description": "暂时停下脚步，关注场内审判的商人。",
+      "partIds": [
+        18,
+        2
+      ],
+      "localX": 5.196152,
+      "localZ": -12,
+      "yaw": 335,
+      "scale": 1,
+      "showName": false
+    },
+    {
+      "id": 12,
+      "profileId": 1,
+      "name": "主持审判的领主",
+      "description": "披着礼仪披风，在北侧审判席主持本次骑士审判。",
+      "partIds": [
+        1,
+        2,
+        3,
+        13
+      ],
+      "localX": 0,
+      "localZ": 16.2,
+      "yaw": 180,
+      "scale": 1.08,
+      "showName": true
+    },
+    {
+      "id": 13,
+      "profileId": 1,
+      "name": "领主侍卫",
+      "description": "披甲持盾，站在审判席一侧维持秩序。",
+      "partIds": [
+        1,
+        2,
+        3,
+        6,
+        9,
+        12
+      ],
+      "localX": -3.2,
+      "localZ": 14.5,
+      "yaw": 160,
+      "scale": 1,
+      "showName": true
+    },
+    {
+      "id": 14,
+      "profileId": 1,
+      "name": "审判书记",
+      "description": "穿着长袍，在审判席另一侧记录裁决。",
+      "partIds": [
+        1,
+        2,
+        5,
+        7
+      ],
+      "localX": 3.2,
+      "localZ": 14.5,
+      "yaw": 200,
+      "scale": 1,
+      "showName": true
+    }
+  ]
+}

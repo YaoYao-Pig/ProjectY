@@ -1,0 +1,14 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class ProfessionExplorationTableRow
+---@field id number 探索技能 ID
+---@field kind "extract"|"rumor"|"care"|"curse"|"duel"|"track"|"companion" 探索交互类型
+---@field minutes number 成功推进游戏分钟
+---@field range number 有效实体距离
+---@field itemId number 消耗物品；0 表示无
+---@field itemCount number 消耗份数
+---@field rewardItemId number 采集获得物品；0 表示无
+---@field rewardCount number 采集获得份数
+---@field daily boolean 按实体或城镇每日限一次
+---@field amount number 该能力配置数值
+---@field description string 探索用途与限制
+return {["name"]="ProfessionExplorationTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\230\142\162\231\180\162\230\138\128\232\131\189 ID",["ref"]="CombatSkillTable"},{["name"]="kind",["type"]="enum",["description"]="\230\142\162\231\180\162\228\186\164\228\186\146\231\177\187\229\158\139",["values"]={"extract","rumor","care","curse","duel","track","companion"}},{["name"]="minutes",["type"]="float",["description"]="\230\136\144\229\138\159\230\142\168\232\191\155\230\184\184\230\136\143\229\136\134\233\146\159",["min"]=0},{["name"]="range",["type"]="int",["description"]="\230\156\137\230\149\136\229\174\158\228\189\147\232\183\157\231\166\187",["min"]=0},{["name"]="itemId",["type"]="int",["description"]="\230\182\136\232\128\151\231\137\169\229\147\129\239\188\1550 \232\161\168\231\164\186\230\151\160",["default"]=0,["min"]=0},{["name"]="itemCount",["type"]="int",["description"]="\230\182\136\232\128\151\228\187\189\230\149\176",["default"]=0,["min"]=0},{["name"]="rewardItemId",["type"]="int",["description"]="\233\135\135\233\155\134\232\142\183\229\190\151\231\137\169\229\147\129\239\188\1550 \232\161\168\231\164\186\230\151\160",["default"]=0,["min"]=0},{["name"]="rewardCount",["type"]="int",["description"]="\233\135\135\233\155\134\232\142\183\229\190\151\228\187\189\230\149\176",["default"]=0,["min"]=0},{["name"]="daily",["type"]="bool",["description"]="\230\140\137\229\174\158\228\189\147\230\136\150\229\159\142\233\149\135\230\175\143\230\151\165\233\153\144\228\184\128\230\172\161",["default"]=false},{["name"]="amount",["type"]="int",["description"]="\232\175\165\232\131\189\229\138\155\233\133\141\231\189\174\230\149\176\229\128\188",["default"]=0,["min"]=0},{["name"]="description",["type"]="text",["description"]="\230\142\162\231\180\162\231\148\168\233\128\148\228\184\142\233\153\144\229\136\182"}},["fingerprint"]="1e7c88e168277db0ac8f5f33d5e5a42d8c2348b830ff75623c5038ff93530175"}

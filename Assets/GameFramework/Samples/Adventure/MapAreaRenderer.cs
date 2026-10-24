@@ -23,9 +23,11 @@ namespace ProjectY.Samples
             public int Slot, Count;
             public Color Color;
             public Color Emission;
+            public float Metallic, Smoothness;
             public readonly List<MapAreaViewData.Prop> Instances = new List<MapAreaViewData.Prop>();
             public readonly Matrix4x4[] Matrices = new Matrix4x4[1023];
             public readonly Vector4[] Colors = new Vector4[1023];
+            public readonly Vector4[] Emissions = new Vector4[1023];
             public readonly MaterialPropertyBlock Properties = new MaterialPropertyBlock();
         }
         private readonly List<Batch> batches = new List<Batch>();
@@ -70,7 +72,13 @@ namespace ProjectY.Samples
             this.map = map; this.shader = shader;
             var filter = prefab.GetComponent<MeshFilter>(); var source = prefab.GetComponent<MeshRenderer>();
             if (filter == null || source == null || filter.sharedMesh == null) throw new InvalidOperationException("MapArea 柱模型缺少 Mesh。");
-            if (!Array.Exists(source.sharedMaterials, value => value.name == map.TintMaterial)) throw new InvalidOperationException("MapArea 模型材质与配置不一致。");
+            var sourceMaterials = source.sharedMaterials;
+            if (sourceMaterials.Length != filter.sharedMesh.subMeshCount || Array.Exists(sourceMaterials, value => value == null))
+                throw new InvalidOperationException("MapArea 柱模型材质槽缺失或与网格不一致：" + map.AssetId + " / " + map.AssetPath);
+            // tintMaterial 可留空；MapArea 的地表颜色和图案由地格配方提供。
+            if (!string.IsNullOrEmpty(map.TintMaterial) && !Array.Exists(sourceMaterials, value => value.name == map.TintMaterial))
+                throw new InvalidOperationException("MapArea 模型材质与配置不一致：" + map.AssetId + " / " + map.AssetPath
+                    + "，配置材质：" + map.TintMaterial + "，实际材质：" + string.Join(", ", Array.ConvertAll(sourceMaterials, value => value.name)));
             mesh = filter.sharedMesh; material = new Material(shader) { name = "MapArea_探索实例", enableInstancing = true };
             groundMaterial = new Material(shader) { name = "MapArea_地牢材质", enableInstancing = true };
             groundMaterial.SetFloat("_UseSurfacePattern", 2);
@@ -129,7 +137,11 @@ namespace ProjectY.Samples
                         if (batch == null || batch.Instances.Count == 1023)
                         {
                             batch = new PropBatch { Mesh = propFilter.sharedMesh, Slot = slot, Color = materials[slot].color,
-                                Emission = materials[slot].HasProperty("_EmissionColor") ? materials[slot].GetColor("_EmissionColor") : Color.black };
+                                Emission = materials[slot].HasProperty("_EmissionColor") ? materials[slot].GetColor("_EmissionColor") : Color.black,
+                                Metallic = materials[slot].HasProperty("_Metallic") ? materials[slot].GetFloat("_Metallic") : 0,
+                                Smoothness = materials[slot].HasProperty("_Smoothness") ? materials[slot].GetFloat("_Smoothness") : .08f };
+                            batch.Properties.SetFloat("_Metallic", batch.Metallic);
+                            batch.Properties.SetFloat("_Smoothness", batch.Smoothness);
                             propBatches.Add(batch);
                         }
                         batch.Instances.Add(prop);
@@ -200,12 +212,12 @@ namespace ProjectY.Samples
                     var color = !discovered ? new Color(.025f, .035f, .045f) : cell.Color;
                     if (discovered && cell.Kind == "entry") color = new Color(.30f, .69f, .61f);
                     if (discovered && cell.Kind == "landmark") color = new Color(.78f, .56f, .25f);
-                    if (discovered && !reveal && !visible[index]) color *= .3f;
+                    if (discovered && !reveal && !visible[index]) color = MapFogColors.Remembered(color);
                     color.a = 1;
                     batch.Colors[i] = QualitySettings.activeColorSpace == ColorSpace.Linear ? color.linear : color;
                     // 未探索格不输出纹理；已探索但不可见的苔藓覆盖层也遵循迷雾明暗。
                     var surface = map.Surfaces[cell.SurfaceId];
-                    var detail = surface.DetailColor * (discovered && (reveal || visible[index]) ? 1 : .3f);
+                    var detail = discovered && !reveal && !visible[index] ? MapFogColors.Remembered(surface.DetailColor) : surface.DetailColor;
                     if (QualitySettings.activeColorSpace == ColorSpace.Linear) detail = detail.linear;
                     batch.Patterns[i] = discovered ? surface.Pattern : Vector4.zero;
                     batch.Finishes[i] = new Vector4(detail.r, detail.g, detail.b, surface.Smoothness);
@@ -223,12 +235,15 @@ namespace ProjectY.Samples
                     var discovered = reveal; var lit = reveal;
                     foreach (var index in prop.Cells) { discovered |= known[index]; lit |= visible[index]; }
                     if (!discovered) continue;
-                    var color = batch.Color * (lit ? 1 : .3f); color.a = 1;
+                    var color = lit ? batch.Color : MapFogColors.Remembered(batch.Color); color.a = 1;
                     batch.Colors[batch.Count] = QualitySettings.activeColorSpace == ColorSpace.Linear ? color.linear : color;
+                    // Remembered props retain their silhouette, but cannot reveal a live light source.
+                    var emission = lit ? batch.Emission : Color.black;
+                    batch.Emissions[batch.Count] = QualitySettings.activeColorSpace == ColorSpace.Linear ? emission.linear : emission;
                     batch.Matrices[batch.Count++] = Matrix4x4.TRS(prop.Position, Quaternion.Euler(0, prop.Rotation, 0), prop.Scale3);
                 }
                 batch.Properties.SetVectorArray("_Color", batch.Colors);
-                batch.Properties.SetColor("_EmissionColor", batch.Emission);
+                batch.Properties.SetVectorArray("_EmissionColor", batch.Emissions);
             }
         }
         private bool SurfaceCell(MapAreaViewData.Cell cell) => cell.RenderGround && (map.IsTown || cell.UsesSurfaceMesh);

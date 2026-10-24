@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-24",
+  "models": ["D4", "D6", "D8", "D10", "D100", "D12", "D20"],
+  "source": "Art/Dice/DiceSet.blend",
+  "unityCatalog": "Assets/DynamicAsset/Dice/DiceCatalog.asset",
+  "panel": "Assets/DynamicAsset/UI/Prefabs/Presentation/DiceRollPanel.prefab",
+  "checks": {
+    "luaPercentileBoundariesAndPrecision": "passed",
+    "luaPresentationQueueAndReveal": "passed",
+    "existingEventChoiceSettlement": "passed",
+    "allPolyhedronSymmetries": "passed in Blender and Unity",
+    "physicsAndFinalReadings": "passed for all seven models",
+    "xLuaBridge": "passed",
+    "actualOverlayUiAndButtons": "passed",
+    "pauseAndUnscaledTime": "passed",
+    "cachedReopenAndSceneCleanup": "passed",
+    "foraiLocalLinks": "passed",
+    "playMode": "not run"
+  },
+  "explicitProjectCompilationRequests": 5,
+  "scope": "Exploration probabilistic obstacles, taming, and non-battle event effect checks. Existing gameplay probabilities are unchanged.",
+  "preview": "Art/Dice/DiceRoll.gif"
+}

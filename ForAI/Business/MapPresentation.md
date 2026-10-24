@@ -9,6 +9,7 @@
 ## 正文
 
 - 大地图由 `MapBiomeTable` 配置草地、岩地、河湖岸、林地和积雪的 Resources 贴图、纹理尺度/强度、风力及生态密度。`MapRenderSnapshot` 复制 `surfaces`、地格权重最高两项的 `surfaceA/surfaceB/surfaceBlend` 和 `groundcover`；C# 只转换格索引，地貌 ID 保持配置身份。`MapGroundPresentation` 统一加载 512×512、RGBA32、sRGB、Repeat、mipmap 纹理并创建自有 Texture2DArray，原 FBX 材质不变。
+- 五类扩充生态（沼泽、黑暗森林、岩浆地、火山、蘑菇森林）使用已有纯色 Prefab 及低强度的岸地/林地/岩地纹理；资源 tintMaterial 为空时，MapPreviewRenderer 保留模型各材质色槽，有绑定时仍按地貌混合色染色。裂隙、菌群、火山等是配置装饰，本次未新增熔岩液体或伤害规则。真实十一地貌与近景见[离屏预览](../../Docs/Previews/MapEcology/contact-sheet.jpg)，由实际地图和渲染器输出。
 - 专用 `MapGround.shader` 以世界坐标进行三角格点随机旋转/偏移采样，再混合地貌与低频斑块；相邻格不重复独立 UV 图案。垂直侧面改采岩土纹理，顶部边缘只做色彩过渡，不改变地块几何。地表纹理保持静止，植物地貌只有克制的风吹明暗；远景衰减细纹。水面继续使用独立[流水系统](../Tools/MapRuntimePreview.md)，局部城镇/地牢仍走下述共享地表配方。
 - `MapGroundcover.Build` 在原树石/陈设后以独立位置噪声生成草束、低矮灌木、小花、蝴蝶与虫群锚点；低频斑块与簇内偏移保留空地，排除水、路、建筑、城镇占格和过陡边缘，大件物体格不叠加，树下只允许少量草并留树干净空。每格最多三株和一个生物锚点，不改通行、水位或其他随机序列；XZ 偏移已是世界单位。
 - `MapNatureRenderer` 用五类各三种程序网格表现自然细节，根部固定风摆、独立拍翼和短程飞行；不逐株建立 GameObject。实例按空间桶/BVH 剔除，远景淡出，小生物最多提交 96 个实例。颜色、深度和法线通道使用相同动画，小地被不投影；隐藏、重建、销毁遵守大地图观察器生命周期。
@@ -17,6 +18,7 @@
 - 地牢新增 13 种墙地配方：旧石板、苔石、木板、泥土、湿石、霜冻岩、祭庭石板，以及粗岩墙、苔墙、木板墙、砌砖墙、渗水墙、霜冻墙。`MapAreaThemeTable.surfaceProfileId → MapAreaDungeonSurfaceTable` 提供 Region 材质池、走廊材质、覆盖功能房概率和墙面延伸宽度；样式/预设的 `floorSurfaceIds/wallSurfaceIds` 提供功能房材质池。`DungeonSurfaces.Apply` 每房选择一次，再按有限距离把墙材传播到周边实体墙，不逐格随机铺花。
 - `TownTerrain/RoyalTownTerrain` 在放模型前记录 `townInside`。`TownSurfaces.Apply` 在建筑和街网完成后按用途分类，并用有限距离传播给建筑周边铺院落、城界混色；只写外观字段。王城 `pavingRole=plaza` 保留广场铺装意图，不改变道路图。`MapAreaTownInteriorTable.surfaceId` 控制室内导航地格的底面；建筑模型自身的地板网格仍可覆盖底面并使用模型材质。
 - `MapAreaSystem.LayoutSnapshot` 对地牢和城镇都复制 `surfaces` 实体数组，地格持有 `surfaceId/sideSurfaceId`。`TownSurfaceRenderer` 写入 UV1 图案参数、UV2 覆盖 RGB 与平滑度；`MapAreaRenderer` 地牢地形使用独立实例材质与 `_SurfaceData/_SurfaceFinish` 数组，陈设仍为原纯色材质。共享 Shader 的模式 0 为纯色模型，1 为城镇顶点参数，2 为地牢实例参数；世界坐标生成连续图案，远景淡化细缝。未知格关闭图案，苔藓覆盖色同样遵守探索迷雾。台阶/坡面、射线与人物贴地契约不变。
+- 陈设的金属度、平滑度和按可见性衰减的发光遵循[渲染契约](../Framework/Rendering.md)。`M_MapLP_InteriorGlow`（壁炉）、`M_MapLP_ForgeGlow`（锻炉）、`Mine_Lamp`（矿灯）源材质启用 HDR 自发光；不新增逐陈设点光或改变探索视野。材质重导入后需保留这些源参数，只有亮色底色无法产生稳定辉光。
 - 光照源表为 `MapEnvironmentTable`（生命周期和视觉时钟）、`MapLightKeyTable`（24 小时循环关键帧）、`MapWeatherTable`（晴/阴倍率和雾距）。黄昏通过时间关键帧表达；默认视觉日 600 秒、初始 10:00。`MapPresentation.Snapshot` 校验顺序、天气引用与雾距后复制给 C#，不导出只读代理数组。
 - `MapEnvironmentController` 仍可独立使用视觉时间；远征 Demo 由[叙事游戏时钟](Narrative.md)驱动 Hour，使昼夜与 NPC 日程一致并随叙事状态存档。方向光兼作夜间月光，插值天空/水平/地面环境光、雾色和阴影；按领队真实占格混合室内外环境，按进入室内的队员开启限量点光，默认最多 4 盏。
 - 局部灯在 `SetArea` 缓存建筑中心，Tick 不扫描全图、不新建灯。控制器要求显式绑定方向光、相机与宿主，`AdventureRuntimeDemo.environmentSun` 通过原生 Editor API 保存。销毁时释放灯并恢复原场景 RenderSettings、方向光、相机背景和受影响的 QualitySettings。雾距相对观察焦点计算，避免远处正交相机把整张大地图淹没。

@@ -1,0 +1,90 @@
+{
+  "version": 1,
+  "name": "MapAreaTrialGroundTable",
+  "description": "骑士比武审判场：固定南北站位、封闭三级木看台及北侧审判席。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "encounterId",
+      "type": "int",
+      "description": "固定三名对手及一名受审骑士的遭遇",
+      "ref": "CombatEncounterTable"
+    },
+    {
+      "name": "groundSurfaceId",
+      "type": "int",
+      "description": "比武场夯土地面",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "standSurfaceId",
+      "type": "int",
+      "description": "三级观众台木板材质",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "judgeSurfaceId",
+      "type": "int",
+      "description": "北侧审判席台基材质",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "standRise",
+      "type": "float",
+      "description": "每排看台高度；不生成可行走楼层",
+      "min": 0.1,
+      "max": 0.75
+    },
+    {
+      "name": "fenceAssetId",
+      "type": "int",
+      "description": "比武场护栏",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "benchAssetId",
+      "type": "int",
+      "description": "观众木长凳",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "judgeAssetId",
+      "type": "int",
+      "description": "审判长桌与座席",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "gateAssetId",
+      "type": "int",
+      "description": "南北入口木门架",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "lampAssetId",
+      "type": "int",
+      "description": "入口灯柱",
+      "ref": "MapAssetTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "encounterId": 301,
+      "groundSurfaceId": 3,
+      "standSurfaceId": 9,
+      "judgeSurfaceId": 5,
+      "standRise": 0.45,
+      "fenceAssetId": 62,
+      "benchAssetId": 27,
+      "judgeAssetId": 34,
+      "gateAssetId": 110,
+      "lampAssetId": 104
+    }
+  ]
+}

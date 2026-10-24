@@ -1,8 +1,10 @@
+local LuaLanguage = require('Language')
 local Class=require('Core.Class')
 local Panel=require('UI.UIPanelCtrl')
 local Model=require('Game.Adventure.MainHudModel')
 local Widgets=require('UI.GrowthWidgets')
 local Feedback=require('Game.Battle.BattleFeedback')
+local DiceChecks=require('Game.Presentation.DiceChecks')
 local HUD=Class('MainHudCtr',Panel)
 function HUD:Bind()
     self.adventure=self.context.systems:Get('Adventure');self.view.HUD:Prepare()
@@ -18,15 +20,22 @@ function HUD:Bind()
     self.view.GMText.font=self.view.HUD.Font
     self.battleContent=self:AddWidget(require('UI.Widget.BattleHUDContent'),self.view.BattleContent)
     self:Listen(self.view.Inventory,function() self.demo:OpenEquipment() end)
-    self.view.GrowthText.text='角色养成'
+    self.view.GrowthText.text=LuaLanguage.UIMainHudGrowthTextText
     self:Listen(self.view.Growth,function() self.demo:OpenGrowth() end)
     self:Listen(self.view.NavigationToggle,function() self.navigation=not self.navigation;self:Refresh() end)
     self:Listen(self.view.Focus,function() self.demo:FitMap() end)
+    self:Listen(self.view.Follow,function() self.demo:SendCommand('hud_follow') end)
+    self:Listen(self.view.TimeStart,function() self.demo:SendCommand('travel_resume') end)
+    self:Listen(self.view.TimePause,function() self.demo:SendCommand('travel_suspend') end)
+    self:Listen(self.view.TimeSpeed,function()
+        local speed=self.adventure.travel.data.Speed
+        self.demo:SendCommand('travel_speed',speed==1 and 2 or speed==2 and 4 or 1)
+    end)
     self:Listen(self.view.Leave,function() self.demo:SendCommand('area_leave') end)
     self:Listen(self.view.Stop,function() self.demo:SendCommand('area_stop') end)
     self:Listen(self.view.CameraMode,function() self.demo:ToggleTownCamera() end)
     -- 复用已保存的独立导航按钮；新远征移入菜单，营地不再藏在菜单中。
-    self.view.RestartText.text='营地'
+    self.view.RestartText.text=LuaLanguage.UIMainHudRestartTextText
     self:Listen(self.view.Restart,function() self.demo:SendCommand('camp_open') end)
     self:Listen(self.view.Environment,function() self.demo:ToggleEnvironment() end)
     self:Listen(self.view.Interact,function() local row=self.model.interaction;self.demo:SendCommand(row.command,row.a or 0,row.b or 0) end)
@@ -35,11 +44,25 @@ function HUD:OnShow(args)
     self.demo=assert(args.demo);self.demo:SetMainHud(self.view.HUD);self.navigation=false;self.menuOpen=false
     self.visibleScope:Add(self.adventure.battle.Changed:Subscribe(function(event)
         Feedback.Changed(self.view.BattleFeedback,event);self.healthDirty=true
+        if self.adventure.data.Phase~='battle' then
+            local check=DiceChecks.FromBattleEvent(event)
+            if check then self:ShowCheck(check) end
+        end
+    end))
+    self.visibleScope:Add(self.adventure.events.CheckResolved:Subscribe(function(check) self:ShowCheck(check) end))
+    self.visibleScope:Add(self.adventure.narrative.RewardSettled:Subscribe(function(receipt)
+        if self.missionSettlement and self.missionSettlement.visible then self.missionSettlement:Enqueue(receipt)
+        else self.missionSettlement=self.context.systems:Get('UI'):Open('MissionSettlement',{receipt=receipt,font=self.demo.MainHudFont}) end
     end))
     self.view.HealthTooltip.gameObject:SetActive(false)
     self.skillPage=1;self.skillActor=nil;self.lastPhase=nil;self.clockMinute=nil;self:Refresh();self:Clock()
 end
+function HUD:ShowCheck(check)
+    if self.diceRoll and self.diceRoll.visible then self.diceRoll:Enqueue(check)
+    else self.diceRoll=self.context.systems:Get('UI'):Open('DiceRoll',{check=check}) end
+end
 function HUD:Refresh()
+    self.view.Group.alpha=self.adventure.narrative.data.DialogueOpen and 0 or 1
     local model=Model.Build(self.adventure);self.model=model
     -- 探索视野先于 Demo 的显示快照推进；头顶 UI 只绑定本次已创建棋子的身份。
     local rendered={};local ids=self.demo:RenderedHealthActorIds()
@@ -55,10 +78,17 @@ function HUD:Refresh()
     self.view.HUD:SetMode(not battle,self.navigation)
     self.view.Menu.gameObject:SetActive(self.menuOpen)
     local exploring=model.phase=='map' or model.phase=='area'
+    self.view.TimeControls.gameObject:SetActive(model.phase=='map')
+    self.view.Follow.gameObject:SetActive(exploring)
+    if model.phase=='map' then
+        self.view.TimeStart.interactable=model.timeControl.paused
+        self.view.TimePause.interactable=not model.timeControl.paused
+        self.view.TimeSpeedText.text=string.format(LuaLanguage.UIMainHudTimeSpeedTextText, (model.timeControl.speed))
+    end
     self.view.Inventory.interactable=exploring;self.view.Missions.interactable=exploring;self.view.Growth.interactable=exploring
     self.view.NavigationToggle.gameObject:SetActive(not battle)
-    self.view.Location.text=model.title;self.view.Subtitle.text=model.subtitle;self.view.Coins.text=model.coins..'  金币'
-    self.view.NavigationTitle.text=model.phase=='map' and '这 一 程，去 哪 里' or '附 近 与 目 的 地'
+    self.view.Location.text=model.title;self.view.Subtitle.text=model.subtitle;self.view.Coins.text=string.format(LuaLanguage.UIMainHudCoinsText, (model.coins))
+    self.view.NavigationTitle.text=model.phase=='map' and LuaLanguage.UIMainHudNavigationTitleText2 or LuaLanguage.UIMainHudNavigationTitleText
     self.view.Leave.gameObject:SetActive(model.phase=='area');self.view.Stop.gameObject:SetActive(model.phase=='area')
     self.view.CameraMode.gameObject:SetActive(false);self.view.Restart.gameObject:SetActive(model.phase=='map')
     self.view.Logs.text=table.concat(model.logs,'\n\n')
@@ -108,11 +138,11 @@ function HUD:Refresh()
     self.view.SkillPrevious.interactable=self.skillPage>1;self.view.SkillNext.interactable=self.skillPage<pages
     self.view.CharacterSkills.gameObject:SetActive(not battle)
     self.view.SkillActor.font=self.view.HUD.Font;self.view.SkillHint.font=self.view.HUD.Font;self.view.SkillEmpty.font=self.view.HUD.Font
-    self.view.SkillActor.text=actor and (self.adventure.battle.stats:Template(actor).name..' · 技能') or '选择一位队员，查看拥有的技能'
-    self.view.SkillEmpty.text=actor and '尚未掌握生活技能，可在升级研习时学习。' or '点击左侧队员卡片进行选择'
+    self.view.SkillActor.text=actor and (string.format(LuaLanguage.UIMainHudSkillActorText2, (self.adventure.battle.stats:Template(actor).name))) or LuaLanguage.UIMainHudSkillActorText
+    self.view.SkillEmpty.text=actor and LuaLanguage.UIMainHudSkillEmptyText2 or LuaLanguage.UIMainHudSkillEmptyText
     self.view.SkillEmpty.gameObject:SetActive(#rows==0)
     self.view.CancelSkill.gameObject:SetActive(self.demo.SelectedCharacterSkill~=0)
-    self.view.SkillHint.text=self.demo.SelectedCharacterSkill~=0 and '点击场景中的目标释放技能 · Esc 取消' or '生活技能 · 悬停查看说明'
+    self.view.SkillHint.text=self.demo.SelectedCharacterSkill~=0 and LuaLanguage.UIMainHudSkillHintText2 or LuaLanguage.UIMainHudSkillHintText
     for i=1,math.min(4,#rows) do
         local row=rows[(self.skillPage-1)*4+i]
         if not self.skills[i] then self.skills[i]=self:CreateWidget('CharacterSkill',self.view.CharacterSkillSlots) end
@@ -128,14 +158,15 @@ function HUD:Clock()
     if self.clockMinute==minutes then return end
     self.clockMinute=minutes;local day=minutes%1440
     self.view.ClockTime.text=string.format('%02d:%02d',day//60,day%60)
-    self.view.ClockDay.text='第 '..(minutes//1440+1)..' 天'
+    self.view.ClockDay.text=string.format(LuaLanguage.UIMainHudClockDayText, (minutes//1440+1))
     self.view.ClockNeedle.localEulerAngles=CS.UnityEngine.Vector3(0,0,-day/1440*360)
 end
 function HUD:Tick()
+    self.view.Group.alpha=self.adventure.narrative.data.DialogueOpen and 0 or 1
     self:Clock()
     self.battleContent.view.Group.interactable=self.view.Group.interactable
     if self.healthDirty or self.revision~=self.demo.BattleHUDRevision or self.journalCount~=self.adventure.data.JournalCount then self:Refresh() end
-    local hint=self.demo.SelectedCharacterSkill~=0 and '点击场景中的目标释放技能 · Esc 取消' or '生活技能 · 悬停查看说明'
+    local hint=self.demo.SelectedCharacterSkill~=0 and LuaLanguage.UIMainHudSkillHintText2 or LuaLanguage.UIMainHudSkillHintText
     for _,widget in ipairs(self.skills) do if widget.row and widget:IsHovered() then
         hint=(widget.row.available and '' or (widget.row.reason..' · '))..widget.row.description;break
     end end

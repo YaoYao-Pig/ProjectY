@@ -1,12 +1,20 @@
 -- 技能栏的查询和命令适配器；UI 只保存当前角色与技能选择，玩法状态归原系统。
 local Supports=require('Game.Battle.SkillContext')
+local VisualEffects=require('Game.Presentation.VisualEffects')
 local Skills={};Skills.__index=Skills
 function Skills.New(adventure)
     local self=setmetatable({adventure=adventure,handlers={},skills=adventure.config:GetTable('CombatSkillTable'),
         effects=adventure.config:GetTable('CombatEffectTable')},Skills)
     self:Register('tame',{
         CanUse=function(actor,id) return adventure.areas:CanTame(actor.Id,id) end,
-        Use=function(actor,id) return adventure.areas:Tame(actor.Id,id) end,
+        Use=function(actor,id,skill)
+            local areas=adventure.areas
+            local target=assert(areas:FindAnimal(id))
+            local source=self:VisualSource(actor)
+            local success,reason=areas:Tame(actor.Id,id)
+            VisualEffects.Skill(adventure.battle,source,skill,target,1,success and 'hit' or 'miss')
+            return success,reason
+        end,
         Targets=function()
             local state=adventure.data.Areas.Active;local area=adventure.areas:ActiveLayout()
             local visible,targets={},{}
@@ -20,13 +28,28 @@ function Skills.New(adventure)
         end})
     if adventure.construction then self:Register('construction',{
         CanUse=function(actor,id)return adventure.construction:CanDismantle(actor,id) end,
-        Use=function(actor,id)return adventure.construction:Dismantle(actor,id) end,
+        Use=function(actor,id,skill)
+            local cell=assert(adventure.areas:ActiveLayout().cells[id])
+            local source=self:VisualSource(actor)
+            local success,reason=adventure.construction:Dismantle(actor,id)
+            if success then VisualEffects.Skill(adventure.battle,source,skill,nil,1,'hit',cell) end
+            return success,reason
+        end,
         Targets=function()return adventure.construction:AreaTargets() end}) end
     return self
 end
 function Skills:Register(effectKind,handler)
     assert(not self.handlers[effectKind] and handler.CanUse and handler.Use and handler.Targets,'Invalid or duplicate life skill handler')
     self.handlers[effectKind]=handler
+end
+function Skills:VisualSource(actor)
+    local areas=self.adventure.areas;local state=areas.data.Active
+    for i=0,state.MemberCount-1 do
+        if state:GetMemberIdAt(i)==actor.Id then
+            return VisualEffects.Source(actor,assert(areas:ActiveLayout().cells[state:GetMemberCellAt(i)]))
+        end
+    end
+    error('Life skill source is not deployed in the active area')
 end
 function Skills:Actor(id)
     for i=0,self.adventure.data.PartyCount-1 do local actor=self.adventure.data:GetPartyAt(i);if actor.Id==id then return actor end end
@@ -70,7 +93,8 @@ function Skills:Use(actorId,skillId,targetId)
         return self.adventure:BattleCommand(self.skills:Get(skillId).target=='cell' and 'skill_cell' or 'skill',skillId,targetId)
     end
     if self.skills:Get(skillId).affectsContainers then return self.adventure.containerCombat:Area(self:Actor(actorId),skillId,targetId) end
-    return self:Handler(self.skills:Get(skillId)).Use(self:Actor(actorId),targetId)
+    local skill=self.skills:Get(skillId)
+    return self:Handler(skill).Use(self:Actor(actorId),targetId,skill)
 end
 function Skills:Rows(actorId,context)
     local actor=self:Actor(actorId);if not actor then return {} end

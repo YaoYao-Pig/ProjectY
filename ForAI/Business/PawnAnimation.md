@@ -6,6 +6,8 @@
 
 ## 正文
 
+- `GripKey.WeaponPosition` 可为双手共持动作提供角色局部坐标中的握点位移，旧轨迹默认零位移；与旋转共同送入原有手臂可达约束。长枪动作 9 复用 HeavySlash 身体状态，使用独立的前刺朝向/位移关键帧；资源同步见[装备](Equipment.md)。
+
 - 公共身体来自原 PawnCommon 的独立副本，23 骨、Unity 映射 22 个人体节点；原始静态资源仍保留。Unity 模型朝 +Z、米制，Animator 禁用根位移。身体与裤腿/靴子用蒙皮，其余硬质附件挂骨骼。
 - `PawnRig` 已绑定 `PawnAnimationView`，按 `PawnAnimationSet.BodyParts` 支持身体部件 1/15/19 与城镇 NPC 17/18；无显式外观时使用[角色定制](PawnCustomization.md)的默认模块。`PawnAssetMenu` 重建 Rig 与装配样例时保留动画接入；`TownNpcRenderer` 按实际显示移动速度驱动居民待机/行走。
 - UAL1 Standard 的免费包实际有 43 个片段，采用不带 Root Motion 的 Unity FBX；CC0 许可证、哈希、原包、动作清单保留于 `Art/PawnAnimation/ThirdParty`、`Integration`。不包含专门拉弓动作，也没有宣称这些片段覆盖全部武器动作。

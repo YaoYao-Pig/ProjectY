@@ -18,7 +18,8 @@
         "staff",
         "gun",
         "melee",
-        "bow"
+        "bow",
+        "spear"
       ]
     },
     {
@@ -137,6 +138,21 @@
       "type": "text",
       "default": "",
       "description": "武器独特用途与取舍，背包详情显示"
+    },
+    {
+      "name": "armorPenetration",
+      "type": "float",
+      "description": "物理攻击基础穿甲率（百分比）；枪25、狙击35、霰弹15、弓15、剑20、巨剑与斧25、长枪35、杖10、其他15",
+      "default": 15,
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "armorDamageMultiplier",
+      "type": "float",
+      "description": "物理攻击护甲伤害倍率；斧与巨剑1.2，其他武器1",
+      "default": 1,
+      "min": 0
     }
   ],
   "rows": [
@@ -179,7 +195,9 @@
       "tagIds": [
         "staff"
       ],
-      "catalystKind": "arcane"
+      "catalystKind": "arcane",
+      "armorPenetration": 10,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 2,
@@ -218,7 +236,9 @@
       "tagIds": [
         "rifle"
       ],
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "armorPenetration": 25,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 40,
@@ -257,7 +277,9 @@
       "tagIds": [
         "sword"
       ],
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "armorPenetration": 20,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 41,
@@ -296,7 +318,9 @@
       "tagIds": [
         "sword"
       ],
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "armorPenetration": 20,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 42,
@@ -332,7 +356,9 @@
       "tagIds": [
         "two_handed_sword"
       ],
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "armorPenetration": 20,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 43,
@@ -368,7 +394,9 @@
       "tagIds": [
         "two_handed_sword"
       ],
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "armorPenetration": 20,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 44,
@@ -406,7 +434,9 @@
         "two_handed_sword",
         "greatsword"
       ],
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "armorPenetration": 25,
+      "armorDamageMultiplier": 1.2
     },
     {
       "id": 45,
@@ -447,7 +477,9 @@
       "catalystKind": "none",
       "onHitEffectIds": [
         806
-      ]
+      ],
+      "armorPenetration": 25,
+      "armorDamageMultiplier": 1.2
     },
     {
       "id": 46,
@@ -483,7 +515,9 @@
       "tagIds": [
         "bow"
       ],
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "armorPenetration": 15,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 70,
@@ -519,7 +553,9 @@
       "tagIds": [
         "axe"
       ],
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "armorPenetration": 25,
+      "armorDamageMultiplier": 1.2
     },
     {
       "id": 71,
@@ -555,7 +591,9 @@
       "tagIds": [
         "axe"
       ],
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "armorPenetration": 25,
+      "armorDamageMultiplier": 1.2
     },
     {
       "id": 72,
@@ -591,7 +629,9 @@
       "tagIds": [
         "pickaxe"
       ],
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "armorPenetration": 15,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 73,
@@ -627,7 +667,9 @@
       "tagIds": [
         "shovel"
       ],
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "armorPenetration": 15,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 74,
@@ -663,7 +705,9 @@
       "tagIds": [
         "crowbar"
       ],
-      "catalystKind": "none"
+      "catalystKind": "none",
+      "armorPenetration": 15,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 601,
@@ -703,7 +747,9 @@
       ],
       "catalystKind": "arcane",
       "onHitEffectIds": [],
-      "description": "专属技：潮湿铺垫与导电终结两段法术；消耗潮湿换取伤害与一回合眩晕。"
+      "description": "专属技：潮湿铺垫与导电终结两段法术；消耗潮湿换取伤害与一回合眩晕。",
+      "armorPenetration": 10,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 602,
@@ -743,7 +789,9 @@
       ],
       "catalystKind": "arcane",
       "onHitEffectIds": [],
-      "description": "专属技：先点燃再引爆燃烧；引爆会消耗持续伤害，不是白送额外伤害。"
+      "description": "专属技：先点燃再引爆燃烧；引爆会消耗持续伤害，不是白送额外伤害。",
+      "armorPenetration": 10,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 603,
@@ -782,7 +830,9 @@
       ],
       "catalystKind": "arcane",
       "onHitEffectIds": [],
-      "description": "专属技：专属友军净化治疗；基础奥术攻击保留。"
+      "description": "专属技：专属友军净化治疗；基础奥术攻击保留。",
+      "armorPenetration": 10,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 604,
@@ -795,6 +845,7 @@
       ],
       "skillIds": [
         7,
+        8,
         9,
         1604
       ],
@@ -823,7 +874,9 @@
       ],
       "catalystKind": "none",
       "onHitEffectIds": [],
-      "description": "专属技：定点破甲射击降低目标防御，随后队友可利用弱点。"
+      "description": "专属技：定点破甲射击降低目标防御，随后队友可利用弱点。",
+      "armorPenetration": 25,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 605,
@@ -836,6 +889,7 @@
       ],
       "skillIds": [
         7,
+        8,
         9,
         1605
       ],
@@ -864,7 +918,9 @@
       ],
       "catalystKind": "none",
       "onHitEffectIds": [],
-      "description": "专属技：双发压制并获得护卫；用两发弹药换防守稳定性。"
+      "description": "专属技：双发压制并获得护卫；用两发弹药换防守稳定性。",
+      "armorPenetration": 25,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 606,
@@ -877,6 +933,7 @@
       ],
       "skillIds": [
         7,
+        8,
         9,
         1606
       ],
@@ -905,7 +962,9 @@
       ],
       "catalystKind": "none",
       "onHitEffectIds": [],
-      "description": "专属技：高弹耗终结弹按目标已失生命增伤，有额外冷却。"
+      "description": "专属技：高弹耗终结弹按目标已失生命增伤，有额外冷却。",
+      "armorPenetration": 25,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 607,
@@ -945,7 +1004,9 @@
       ],
       "catalystKind": "none",
       "onHitEffectIds": [],
-      "description": "专属技：命中后驱散敌方增益；伤害略低，面向强化敌人。"
+      "description": "专属技：命中后驱散敌方增益；伤害略低，面向强化敌人。",
+      "armorPenetration": 20,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 608,
@@ -985,7 +1046,9 @@
       ],
       "catalystKind": "none",
       "onHitEffectIds": [],
-      "description": "专属技：专属采血命中恢复自身4生命，并有75%概率流血；用较弱直伤换持续续航。"
+      "description": "专属技：专属采血命中恢复自身4生命，并有75%概率流血；用较弱直伤换持续续航。",
+      "armorPenetration": 20,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 609,
@@ -1025,7 +1088,9 @@
       ],
       "catalystKind": "none",
       "onHitEffectIds": [],
-      "description": "专属技：攻击成功后清除自身减益，必须命中才能自救。"
+      "description": "专属技：攻击成功后清除自身减益，必须命中才能自救。",
+      "armorPenetration": 20,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 610,
@@ -1064,7 +1129,9 @@
       ],
       "catalystKind": "none",
       "onHitEffectIds": [],
-      "description": "专属技：重斩附加虚弱，降低敌方力量而非只增加伤害。"
+      "description": "专属技：重斩附加虚弱，降低敌方力量而非只增加伤害。",
+      "armorPenetration": 20,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 611,
@@ -1103,7 +1170,9 @@
       ],
       "catalystKind": "none",
       "onHitEffectIds": [],
-      "description": "专属技：扇扫最多三个近邻目标，单体威力较低。"
+      "description": "专属技：扇扫最多三个近邻目标，单体威力较低。",
+      "armorPenetration": 20,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 612,
@@ -1142,7 +1211,9 @@
       ],
       "catalystKind": "none",
       "onHitEffectIds": [],
-      "description": "专属技：失血越多斩击越强；强化有上限，不提供无条件优势。"
+      "description": "专属技：失血越多斩击越强；强化有上限，不提供无条件优势。",
+      "armorPenetration": 20,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 613,
@@ -1183,7 +1254,9 @@
       ],
       "catalystKind": "none",
       "onHitEffectIds": [],
-      "description": "专属技：高耐久破坏重击，用低命中和武器磨损换装备破坏。"
+      "description": "专属技：高耐久破坏重击，用低命中和武器磨损换装备破坏。",
+      "armorPenetration": 25,
+      "armorDamageMultiplier": 1.2
     },
     {
       "id": 614,
@@ -1224,7 +1297,9 @@
       ],
       "catalystKind": "none",
       "onHitEffectIds": [],
-      "description": "专属技：命中施加寒滞；潮湿目标额外被眩晕且潮湿被消耗。"
+      "description": "专属技：命中施加寒滞；潮湿目标额外被眩晕且潮湿被消耗。",
+      "armorPenetration": 25,
+      "armorDamageMultiplier": 1.2
     },
     {
       "id": 615,
@@ -1265,7 +1340,9 @@
       ],
       "catalystKind": "none",
       "onHitEffectIds": [],
-      "description": "专属技：收割流血目标的状态，追加伤害并治疗自己。"
+      "description": "专属技：收割流血目标的状态，追加伤害并治疗自己。",
+      "armorPenetration": 25,
+      "armorDamageMultiplier": 1.2
     },
     {
       "id": 616,
@@ -1304,7 +1381,9 @@
       ],
       "catalystKind": "none",
       "onHitEffectIds": [],
-      "description": "专属技：带线箭附加迟缓，降低目标速度并改变后续回合排序。"
+      "description": "专属技：带线箭附加迟缓，降低目标速度并改变后续回合排序。",
+      "armorPenetration": 15,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 617,
@@ -1343,7 +1422,9 @@
       ],
       "catalystKind": "none",
       "onHitEffectIds": [],
-      "description": "专属技：分羽箭对两个邻近目标精准射击，保持敌装不受额外磨损。"
+      "description": "专属技：分羽箭对两个邻近目标精准射击，保持敌装不受额外磨损。",
+      "armorPenetration": 15,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 618,
@@ -1383,7 +1464,9 @@
       ],
       "catalystKind": "none",
       "onHitEffectIds": [],
-      "description": "专属技：毒箭铺垫与萃毒终结，终结消耗中毒并追加伤害。"
+      "description": "专属技：毒箭铺垫与萃毒终结，终结消耗中毒并追加伤害。",
+      "armorPenetration": 15,
+      "armorDamageMultiplier": 1.0
     },
     {
       "id": 619,
@@ -1422,7 +1505,9 @@
       ],
       "catalystKind": "none",
       "onHitEffectIds": [],
-      "description": "专属技：仍可伐木清障；回火劈砍从燃烧目标提取热量并扑灭火焰。"
+      "description": "专属技：仍可伐木清障；回火劈砍从燃烧目标提取热量并扑灭火焰。",
+      "armorPenetration": 25,
+      "armorDamageMultiplier": 1.2
     },
     {
       "id": 620,
@@ -1461,7 +1546,884 @@
       ],
       "catalystKind": "none",
       "onHitEffectIds": [],
-      "description": "专属技：仍可清理石障；寻脉打击无视目标防御（护卫仍减免），并破坏护甲耐久。"
+      "description": "专属技：仍可清理石障；寻脉打击无视目标防御（护卫仍减免），并破坏护甲耐久。",
+      "armorPenetration": 15,
+      "armorDamageMultiplier": 1.0
+    },
+    {
+      "id": 742,
+      "kind": "spear",
+      "socketIds": [],
+      "skillIds": [
+        1625
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 0,
+      "previewRotation": [
+        4,
+        -12,
+        -20
+      ],
+      "previewZoom": 1.35,
+      "categoryId": 8,
+      "level": 1,
+      "damageMultiplier": 1,
+      "requirementId": 40,
+      "hands": 2,
+      "offhandSkillId": 0,
+      "gripId": 742,
+      "gunClass": "",
+      "tagIds": [
+        "spear"
+      ],
+      "catalystKind": "none",
+      "description": "双手长枪。只能刺击距离恰好 2 格的目标，无法攻击贴身目标；高地不会延长枪杆的触及距离。",
+      "armorPenetration": 35,
+      "armorDamageMultiplier": 1.0
+    },
+    {
+      "id": 101,
+      "kind": "melee",
+      "socketIds": [],
+      "skillIds": [
+        10
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 0,
+      "previewRotation": [
+        4,
+        -12,
+        -20
+      ],
+      "previewZoom": 1.15,
+      "categoryId": 3,
+      "level": 1,
+      "damageMultiplier": 0.8,
+      "requirementId": 46,
+      "hands": 1,
+      "offhandSkillId": 13,
+      "gripId": 40,
+      "gunClass": "",
+      "tagIds": [
+        "sword"
+      ],
+      "catalystKind": "none",
+      "onHitEffectIds": [],
+      "description": "入门用的朴素铁剑，重量轻、容易上手；只提供基础斩击，无改装槽。",
+      "armorPenetration": 20,
+      "armorDamageMultiplier": 1.0
+    },
+    {
+      "id": 102,
+      "kind": "bow",
+      "socketIds": [],
+      "skillIds": [
+        2
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 0,
+      "previewRotation": [
+        4,
+        15,
+        -18
+      ],
+      "previewZoom": 1.2,
+      "categoryId": 6,
+      "level": 1,
+      "damageMultiplier": 0.8,
+      "requirementId": 46,
+      "hands": 2,
+      "offhandSkillId": 0,
+      "gripId": 616,
+      "gunClass": "",
+      "tagIds": [
+        "bow"
+      ],
+      "catalystKind": "none",
+      "onHitEffectIds": [],
+      "description": "初学猎人随身携带的轻弓，只提供基础射击；无改装槽，后续可更换更好的弓。",
+      "armorPenetration": 15,
+      "armorDamageMultiplier": 1.0
+    },
+    {
+      "id": 103,
+      "kind": "staff",
+      "socketIds": [],
+      "skillIds": [
+        6
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 0,
+      "previewRotation": [
+        8,
+        25,
+        0
+      ],
+      "previewZoom": 1.45,
+      "categoryId": 1,
+      "level": 1,
+      "damageMultiplier": 0.8,
+      "requirementId": 46,
+      "hands": 2,
+      "offhandSkillId": 0,
+      "gripId": 1,
+      "gunClass": "",
+      "tagIds": [
+        "staff"
+      ],
+      "catalystKind": "arcane",
+      "onHitEffectIds": [],
+      "description": "学徒使用的基础奥术触媒，可发射奥术飞矢并施放已掌握的法术；不附赠高阶法术，无改装槽。",
+      "armorPenetration": 10,
+      "armorDamageMultiplier": 1.0
+    },
+    {
+      "id": 104,
+      "kind": "melee",
+      "socketIds": [],
+      "skillIds": [
+        10
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 0,
+      "previewRotation": [
+        4,
+        -12,
+        -20
+      ],
+      "previewZoom": 1.15,
+      "categoryId": 7,
+      "level": 1,
+      "damageMultiplier": 0.7,
+      "requirementId": 46,
+      "hands": 1,
+      "offhandSkillId": 13,
+      "gripId": 70,
+      "gunClass": "",
+      "tagIds": [
+        "axe"
+      ],
+      "catalystKind": "none",
+      "onHitEffectIds": [],
+      "description": "便于携带的入门手斧，可近身斩击或砍伐木质障碍；无改装槽。",
+      "armorPenetration": 25,
+      "armorDamageMultiplier": 1.2
+    },
+    {
+      "id": 800,
+      "kind": "gun",
+      "socketIds": [
+        400,
+        401,
+        402,
+        403
+      ],
+      "skillIds": [
+        7,
+        8,
+        9
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 21,
+      "previewRotation": [
+        8,
+        -68,
+        0
+      ],
+      "previewZoom": 1.1,
+      "categoryId": 2,
+      "level": 2,
+      "damageMultiplier": 0.95,
+      "requirementId": 2,
+      "hands": 2,
+      "offhandSkillId": 0,
+      "gripId": 800,
+      "gunClass": "rifle",
+      "tagIds": [
+        "assault_rifle"
+      ],
+      "catalystKind": "none",
+      "description": "轻型突击步枪，精准单发与三连射兼备。使用巡猎12发弹匣及巡猎弹药。",
+      "onHitEffectIds": [],
+      "armorPenetration": 25,
+      "armorDamageMultiplier": 1.0
+    },
+    {
+      "id": 801,
+      "kind": "gun",
+      "socketIds": [
+        404,
+        405,
+        406,
+        407
+      ],
+      "skillIds": [
+        7,
+        8,
+        9
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 810,
+      "previewRotation": [
+        8,
+        -68,
+        0
+      ],
+      "previewZoom": 1.1,
+      "categoryId": 2,
+      "level": 3,
+      "damageMultiplier": 1.12,
+      "requirementId": 2,
+      "hands": 2,
+      "offhandSkillId": 0,
+      "gripId": 801,
+      "gunClass": "rifle",
+      "tagIds": [
+        "assault_rifle"
+      ],
+      "catalystKind": "none",
+      "description": "重型持续火力步枪，使用专属24发弹匣与巡猎弹药，可连续完成8轮三连射；不兼容巡猎12发弹匣。",
+      "onHitEffectIds": [],
+      "armorPenetration": 25,
+      "armorDamageMultiplier": 1.0
+    },
+    {
+      "id": 802,
+      "kind": "gun",
+      "socketIds": [
+        408,
+        409,
+        410,
+        411
+      ],
+      "skillIds": [
+        1701,
+        9
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 811,
+      "previewRotation": [
+        8,
+        -68,
+        0
+      ],
+      "previewZoom": 1.1,
+      "categoryId": 9,
+      "level": 2,
+      "damageMultiplier": 1,
+      "requirementId": 2,
+      "hands": 2,
+      "offhandSkillId": 0,
+      "gripId": 802,
+      "gunClass": "rifle",
+      "tagIds": [
+        "sniper_rifle"
+      ],
+      "catalystKind": "none",
+      "description": "远程高命中、高暴击的栓动狙击枪，相邻1格无法射击。使用5发狙击弹匣和狙击弹药。",
+      "onHitEffectIds": [],
+      "armorPenetration": 35,
+      "armorDamageMultiplier": 1.0
+    },
+    {
+      "id": 803,
+      "kind": "gun",
+      "socketIds": [
+        412,
+        413,
+        414,
+        415
+      ],
+      "skillIds": [
+        1701,
+        1702,
+        9
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 811,
+      "previewRotation": [
+        8,
+        -68,
+        0
+      ],
+      "previewZoom": 1.1,
+      "categoryId": 9,
+      "level": 3,
+      "damageMultiplier": 1.15,
+      "requirementId": 2,
+      "hands": 2,
+      "offhandSkillId": 0,
+      "gripId": 803,
+      "gunClass": "rifle",
+      "tagIds": [
+        "sniper_rifle"
+      ],
+      "catalystKind": "none",
+      "description": "长枪管重型狙击枪，可使用贯甲射击对付重甲。使用5发狙击弹匣，贯甲一次消耗2发。",
+      "onHitEffectIds": [],
+      "armorPenetration": 35,
+      "armorDamageMultiplier": 1.0
+    },
+    {
+      "id": 804,
+      "kind": "gun",
+      "socketIds": [
+        416,
+        417,
+        418,
+        419
+      ],
+      "skillIds": [
+        1703,
+        9
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 812,
+      "previewRotation": [
+        8,
+        -68,
+        0
+      ],
+      "previewZoom": 1.1,
+      "categoryId": 10,
+      "level": 2,
+      "damageMultiplier": 1,
+      "requirementId": 2,
+      "hands": 2,
+      "offhandSkillId": 0,
+      "gripId": 804,
+      "gunClass": "rifle",
+      "tagIds": [
+        "shotgun"
+      ],
+      "catalystKind": "none",
+      "description": "短管近战散射枪，1发霰弹最多命中3名相邻敌人。使用6发霰弹匣和霰弹弹药。",
+      "onHitEffectIds": [],
+      "armorPenetration": 15,
+      "armorDamageMultiplier": 1.0
+    },
+    {
+      "id": 805,
+      "kind": "gun",
+      "socketIds": [
+        420,
+        421,
+        422,
+        423
+      ],
+      "skillIds": [
+        1703,
+        1704,
+        9
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 812,
+      "previewRotation": [
+        8,
+        -68,
+        0
+      ],
+      "previewZoom": 1.1,
+      "categoryId": 10,
+      "level": 3,
+      "damageMultiplier": 1.1,
+      "requirementId": 2,
+      "hands": 2,
+      "offhandSkillId": 0,
+      "gripId": 805,
+      "gunClass": "rifle",
+      "tagIds": [
+        "shotgun"
+      ],
+      "catalystKind": "none",
+      "description": "强化型战斗霰弹枪，可双发连续散射。使用6发霰弹匣；每轮重霰双发消耗2发。",
+      "onHitEffectIds": [],
+      "armorPenetration": 15,
+      "armorDamageMultiplier": 1.0
+    },
+    {
+      "id": 8001,
+      "kind": "staff",
+      "socketIds": [],
+      "skillIds": [
+        6
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 0,
+      "previewRotation": [
+        8,
+        25,
+        0
+      ],
+      "previewZoom": 1.45,
+      "categoryId": 1,
+      "level": 2,
+      "damageMultiplier": 1.05,
+      "requirementId": 8001,
+      "hands": 2,
+      "offhandSkillId": 0,
+      "gripId": 8001,
+      "gunClass": "",
+      "tagIds": [
+        "staff"
+      ],
+      "catalystKind": "arcane",
+      "onHitEffectIds": [
+        20019
+      ],
+      "description": "奥术触媒；直接命中使目标潮湿 2 回合，可为导流术铺垫。",
+      "armorPenetration": 10,
+      "armorDamageMultiplier": 1.0
+    },
+    {
+      "id": 8002,
+      "kind": "melee",
+      "socketIds": [],
+      "skillIds": [
+        10
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 0,
+      "previewRotation": [
+        4,
+        -12,
+        -20
+      ],
+      "previewZoom": 1.15,
+      "categoryId": 3,
+      "level": 2,
+      "damageMultiplier": 0.9,
+      "requirementId": 8002,
+      "hands": 1,
+      "offhandSkillId": 13,
+      "gripId": 8002,
+      "gunClass": "",
+      "tagIds": [
+        "sword"
+      ],
+      "catalystKind": "arcane",
+      "onHitEffectIds": [
+        803
+      ],
+      "description": "单手奥术触媒，直接命中施加一层中毒；可与盾牌共持。",
+      "armorPenetration": 20,
+      "armorDamageMultiplier": 1.0
+    },
+    {
+      "id": 8003,
+      "kind": "staff",
+      "socketIds": [],
+      "skillIds": [
+        6
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 0,
+      "previewRotation": [
+        8,
+        25,
+        0
+      ],
+      "previewZoom": 1.45,
+      "categoryId": 1,
+      "level": 2,
+      "damageMultiplier": 1,
+      "requirementId": 8003,
+      "hands": 2,
+      "offhandSkillId": 0,
+      "gripId": 8003,
+      "gunClass": "",
+      "tagIds": [
+        "staff"
+      ],
+      "catalystKind": "arcane",
+      "onHitEffectIds": [],
+      "description": "以琴颈引导奥术飞矢的双手乐器触媒；职业演奏本身不强制装备乐器。",
+      "armorPenetration": 10,
+      "armorDamageMultiplier": 1.0
+    },
+    {
+      "id": 8004,
+      "kind": "staff",
+      "socketIds": [],
+      "skillIds": [
+        6
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 0,
+      "previewRotation": [
+        8,
+        25,
+        0
+      ],
+      "previewZoom": 1.45,
+      "categoryId": 1,
+      "level": 2,
+      "damageMultiplier": 0.95,
+      "requirementId": 8004,
+      "hands": 2,
+      "offhandSkillId": 0,
+      "gripId": 8004,
+      "gunClass": "",
+      "tagIds": [
+        "staff"
+      ],
+      "catalystKind": "arcane",
+      "onHitEffectIds": [],
+      "description": "轻巧的双手乐器触媒，较低智力门槛；职业演奏本身不强制装备乐器。",
+      "armorPenetration": 10,
+      "armorDamageMultiplier": 1.0
+    },
+    {
+      "id": 8005,
+      "kind": "staff",
+      "socketIds": [],
+      "skillIds": [
+        6
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 0,
+      "previewRotation": [
+        8,
+        25,
+        0
+      ],
+      "previewZoom": 1.45,
+      "categoryId": 1,
+      "level": 2,
+      "damageMultiplier": 1.1,
+      "requirementId": 8005,
+      "hands": 2,
+      "offhandSkillId": 0,
+      "gripId": 8005,
+      "gunClass": "",
+      "tagIds": [
+        "staff"
+      ],
+      "catalystKind": "arcane",
+      "onHitEffectIds": [],
+      "description": "双手奥术触媒，可施放已掌握的神官、咒术与其他奥术技能。",
+      "armorPenetration": 10,
+      "armorDamageMultiplier": 1.0
+    },
+    {
+      "id": 8006,
+      "kind": "melee",
+      "socketIds": [],
+      "skillIds": [
+        10
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 0,
+      "previewRotation": [
+        4,
+        -12,
+        -20
+      ],
+      "previewZoom": 1.15,
+      "categoryId": 3,
+      "level": 2,
+      "damageMultiplier": 1,
+      "requirementId": 8006,
+      "hands": 1,
+      "offhandSkillId": 13,
+      "gripId": 8006,
+      "gunClass": "",
+      "tagIds": [
+        "sword"
+      ],
+      "catalystKind": "arcane",
+      "onHitEffectIds": [],
+      "description": "可与盾牌共持的单手奥术触媒，为护卫与祷言保留同一套装备。",
+      "armorPenetration": 20,
+      "armorDamageMultiplier": 1.0
+    },
+    {
+      "id": 8007,
+      "kind": "staff",
+      "socketIds": [],
+      "skillIds": [
+        6
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 0,
+      "previewRotation": [
+        8,
+        25,
+        0
+      ],
+      "previewZoom": 1.45,
+      "categoryId": 1,
+      "level": 2,
+      "damageMultiplier": 1.2,
+      "requirementId": 8007,
+      "hands": 2,
+      "offhandSkillId": 0,
+      "gripId": 8007,
+      "gunClass": "",
+      "tagIds": [
+        "staff"
+      ],
+      "catalystKind": "arcane",
+      "onHitEffectIds": [],
+      "description": "较高智力要求的双手触媒，强化通过本杖结算的直接伤害。",
+      "armorPenetration": 10,
+      "armorDamageMultiplier": 1.0
+    },
+    {
+      "id": 8008,
+      "kind": "melee",
+      "socketIds": [],
+      "skillIds": [
+        10
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 0,
+      "previewRotation": [
+        4,
+        -12,
+        -20
+      ],
+      "previewZoom": 1.15,
+      "categoryId": 3,
+      "level": 2,
+      "damageMultiplier": 1.15,
+      "requirementId": 8008,
+      "hands": 1,
+      "offhandSkillId": 13,
+      "gripId": 8008,
+      "gunClass": "",
+      "tagIds": [
+        "sword"
+      ],
+      "catalystKind": "arcane",
+      "onHitEffectIds": [
+        802
+      ],
+      "description": "直接命中施加流血的单手触媒；首次装备未净化实例会触发血契诅咒，可由识咒揭示并解除。",
+      "armorPenetration": 20,
+      "armorDamageMultiplier": 1.0
+    },
+    {
+      "id": 8009,
+      "kind": "melee",
+      "socketIds": [],
+      "skillIds": [
+        10
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 0,
+      "previewRotation": [
+        4,
+        -12,
+        -20
+      ],
+      "previewZoom": 1.15,
+      "categoryId": 3,
+      "level": 2,
+      "damageMultiplier": 1.15,
+      "requirementId": 8009,
+      "hands": 1,
+      "offhandSkillId": 13,
+      "gripId": 8009,
+      "gunClass": "",
+      "tagIds": [
+        "sword"
+      ],
+      "catalystKind": "none",
+      "onHitEffectIds": [],
+      "description": "轻量单手刺剑，速度要求较高；可配合佯攻、牵步刺与留手。",
+      "armorPenetration": 20,
+      "armorDamageMultiplier": 1.0
+    },
+    {
+      "id": 8010,
+      "kind": "melee",
+      "socketIds": [],
+      "skillIds": [
+        10
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 0,
+      "previewRotation": [
+        4,
+        -12,
+        -20
+      ],
+      "previewZoom": 1.15,
+      "categoryId": 3,
+      "level": 2,
+      "damageMultiplier": 0.85,
+      "requirementId": 8010,
+      "hands": 1,
+      "offhandSkillId": 13,
+      "gripId": 8010,
+      "gunClass": "",
+      "tagIds": [
+        "sword"
+      ],
+      "catalystKind": "none",
+      "onHitEffectIds": [],
+      "description": "可作主手或副手的短匕；副手斩击沿用独立费用和 70% 基础伤害。",
+      "armorPenetration": 20,
+      "armorDamageMultiplier": 1.0
+    },
+    {
+      "id": 8011,
+      "kind": "staff",
+      "socketIds": [],
+      "skillIds": [
+        6
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 0,
+      "previewRotation": [
+        8,
+        25,
+        0
+      ],
+      "previewZoom": 1.45,
+      "categoryId": 1,
+      "level": 2,
+      "damageMultiplier": 1,
+      "requirementId": 8011,
+      "hands": 2,
+      "offhandSkillId": 0,
+      "gripId": 8011,
+      "gunClass": "",
+      "tagIds": [
+        "staff"
+      ],
+      "catalystKind": "arcane",
+      "onHitEffectIds": [],
+      "description": "带钩的双手奥术触媒，可同时研习兽群指令与咒术，指令仍消耗主人行动。",
+      "armorPenetration": 10,
+      "armorDamageMultiplier": 1.0
+    },
+    {
+      "id": 8012,
+      "kind": "bow",
+      "socketIds": [],
+      "skillIds": [
+        2
+      ],
+      "replacesSkillIds": [
+        1,
+        2,
+        3
+      ],
+      "magazineItemId": 0,
+      "previewRotation": [
+        4,
+        15,
+        -18
+      ],
+      "previewZoom": 1.2,
+      "categoryId": 6,
+      "level": 2,
+      "damageMultiplier": 1.1,
+      "requirementId": 8012,
+      "hands": 2,
+      "offhandSkillId": 0,
+      "gripId": 8012,
+      "gunClass": "",
+      "tagIds": [
+        "bow"
+      ],
+      "catalystKind": "none",
+      "onHitEffectIds": [
+        802
+      ],
+      "description": "直接命中施加流血的双手猎弓，为动物嗅血与蚀命提供伤口。",
+      "armorPenetration": 15,
+      "armorDamageMultiplier": 1.0
     }
   ]
 }

@@ -104,6 +104,8 @@ for id=730,741 do
     assert(asset.prefabPath=='Assets/DynamicAsset/SocketExpansion202610/Prefabs/Socket_'..id..'.prefab')
     assert(item.iconPath=='Assets/DynamicAsset/SocketExpansion202610/Icons/Item_'..id..'.png')
     local shop=config:GetTable('ShopEntryTable'):Get(id);assert(shop.itemId==id and shop.templateId==1 and shop.chance>0)
+    local price=config:GetTable('WorldTradePriceTable'):Get(id)
+    assert(price.itemId==id and price.price==shop.price,'Attachment needs its caravan buy/sell price: '..id)
 end
 for kind in pairs(hosts)do assert(counts[kind]==2)end
 assert(config:GetTable('LootPoolTable'):Get(5).mode=='weighted')

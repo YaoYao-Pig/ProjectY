@@ -32,6 +32,29 @@ assert(not model:Command('move',2,'g3',0,0,false))
 system.adventure.Phase='battle';assert(not model:Command('unequip',1,'g3',0,0,false))
 assert(gear.OwnerActorId==1 and gear.Slot=='leftRing')
 print('PASS typed snapshots, independent ring slots and invalid-command guards')
+-- Cold menu startup must provide the same inventory definitions as new-game startup,
+-- without granting starter items or requiring a party/world to exist first.
+local shapes,pools={},{}
+local grid={Width=0,Height=0,Count=0}
+function grid:Configure(width,height) self.Width=width;self.Height=height end
+function grid:Define(id,width,height) shapes[id]={width,height} end
+local emptyInventory={Grid=grid}
+CS.ProjectY.Data.EquipmentAffixData.Define=function(target,id,ids,weights)
+    assert(target==emptyInventory);pools[id]={ids=ids,weights=weights}
+end
+CS.ProjectY.Data.LootSessionData=function()return {} end
+local equipment=require('Game.Equipment.EquipmentSystem')()
+equipment:OnInit({services={Adventure={Equipment=emptyInventory,PartyCount=0}},systems={Get=function(_,name)
+    assert(name=='Config','Cold inventory initialization must not require a running world');return config
+end}})
+local recipe=config:GetTable('EquipmentDemoTable'):Get(1)
+assert(grid.Width==recipe.bagWidth and grid.Height==recipe.bagHeight,'Cold startup leaves the backpack unconfigured for save preparation')
+assert(grid.Count==0,'Cold startup must keep the backpack empty')
+for _,item in ipairs(config:GetTable('EquipmentItemTable'):All()) do
+    assert(shapes[item.id][1]==item.width and shapes[item.id][2]==item.height)
+    if item.kind=='weapon' or item.kind=='wearable' then assert(pools[item.id]) end
+end
+print('PASS cold menu startup configures an empty backpack and all item definitions without starting a campaign')
 for _,path in ipairs({'Lua/Game/Equipment/EquipmentSystem.lua','Lua/Game/Equipment/EquipmentRules.lua','Lua/Game/Equipment/InventoryModel.lua',
     'Lua/UI/Panel/InventoryCtr.lua','Lua/UI/EquipmentUIBridge.lua','Tools/Tests/inventory_integration.lua'}) do assert(loadfile(path)) end
 print('PASS changed Lua modules parse')

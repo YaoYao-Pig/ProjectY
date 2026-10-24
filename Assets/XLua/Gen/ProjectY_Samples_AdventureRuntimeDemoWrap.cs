@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Samples.AdventureRuntimeDemo);
-			Utils.BeginObjectRegister(type, L, translator, 0, 25, 10, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 28, 10, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SetGMOpen", _m_SetGMOpen);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "OpenGM", _m_OpenGM);
@@ -29,6 +29,9 @@ namespace XLua.CSObjectWrap
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "ToggleEnvironment", _m_ToggleEnvironment);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "RenderedHealthActorIds", _m_RenderedHealthActorIds);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "HealthTarget", _m_HealthTarget);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "HealthFootTarget", _m_HealthFootTarget);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "HealthRingRadius", _m_HealthRingRadius);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "HealthFootScreenPosition", _m_HealthFootScreenPosition);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "HealthScreenPosition", _m_HealthScreenPosition);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SetGrowthOpen", _m_SetGrowthOpen);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SetStoryOpen", _m_SetStoryOpen);
@@ -261,6 +264,93 @@ namespace XLua.CSObjectWrap
                     
                         var gen_ret = gen_to_be_invoked.HealthTarget( _actorId );
                         translator.Push(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_HealthFootTarget(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Samples.AdventureRuntimeDemo gen_to_be_invoked = (ProjectY.Samples.AdventureRuntimeDemo)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _actorId = LuaAPI.xlua_tointeger(L, 2);
+                    
+                        var gen_ret = gen_to_be_invoked.HealthFootTarget( _actorId );
+                        translator.Push(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_HealthRingRadius(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Samples.AdventureRuntimeDemo gen_to_be_invoked = (ProjectY.Samples.AdventureRuntimeDemo)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _actorId = LuaAPI.xlua_tointeger(L, 2);
+                    
+                        var gen_ret = gen_to_be_invoked.HealthRingRadius( _actorId );
+                        LuaAPI.lua_pushnumber(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_HealthFootScreenPosition(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Samples.AdventureRuntimeDemo gen_to_be_invoked = (ProjectY.Samples.AdventureRuntimeDemo)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _actorId = LuaAPI.xlua_tointeger(L, 2);
+                    
+                        var gen_ret = gen_to_be_invoked.HealthFootScreenPosition( _actorId );
+                        translator.PushUnityEngineVector2(L, gen_ret);
                     
                     
                     

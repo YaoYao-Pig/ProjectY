@@ -55,10 +55,11 @@ end
 function Draft:CheckCapacity(amount)
     assert(amount <= self.cellLimit - #self.map.cells, 'Map generation exceeds MaxCells')
 end
--- 目标格数模式只裁剪最后一块。以接壤格为起点扩张，保留区域与全图的连通性。
+-- 按剩余总格数及本块预算裁剪。以接壤格为起点扩张，保留区域与全图的连通性。
 function Draft:FitBudget(q, r, footprint)
     if not self.map.targetCells then return footprint end
     local remaining = self.map.targetCells - #self.map.cells
+    if self.regionCellBudget then remaining = math.min(remaining, self.regionCellBudget) end
     if #footprint.cells <= remaining then return footprint end
     local available, start, best = {}, nil, math.huge
     for _, point in ipairs(footprint.cells) do
@@ -71,7 +72,7 @@ function Draft:FitBudget(q, r, footprint)
         local distance = HexGrid.Distance(point.q, point.r, footprint.centerQ, footprint.centerR)
         if touches and distance < best then start, best = point, distance end
     end
-    assert(start and remaining > 0, 'Final region requires an adjoining cell and positive budget')
+    assert(start and remaining > 0, 'Cropped region requires an adjoining cell and positive budget')
     local cells, seen, head = { start }, { [HexGrid.Key(start.q, start.r)] = true }, 1
     while #cells < remaining do
         local point = assert(cells[head], 'Final region footprint is disconnected'); head = head + 1
@@ -181,15 +182,22 @@ function Draft:AddRegion(config, q, r, sizeX, sizeY, instanceType, footprint, co
     end
 end
 -- 每条跨区域共享边只从较小实例 ID 记录一次；同地貌的不同实例仍有边界。
-function Draft:Build()
+function Draft:Build(progress)
     local map = self.map
     -- 先混合地貌再整理水位；Border 保存最终高差，避免查询看到过渡前的旧值。
-    TerrainBlend.Apply(map, self.terrain, self.random, self.noiseScale, self.blendWidth)
+    if progress then progress(.4, '融合地貌') end
+    TerrainBlend.Apply(map, self.terrain, self.random, self.noiseScale, self.blendWidth,
+        progress and function(value) progress(.4 + value * .15, '融合地貌') end)
+    if progress then progress(.55, '开辟河流与湖泊') end
     self.hydrology:Build(map)
+    if progress then progress(.65, '铺设城镇与道路') end
     self.infrastructure:Build(map)
+    if progress then progress(.8, '布置地表与植被') end
     self.visuals:Build(map)
+    if progress then progress(.87, '布置水上遗址') end
     self.waterSites:Build(map)
-    for _, cell in ipairs(map.cells) do
+    if progress then progress(.9, '整理区域边界') end
+    for index, cell in ipairs(map.cells) do
         for direction = 1, 6 do
             local q, r = HexGrid.Neighbor(cell.q, cell.r, direction)
             local other = map.cellsByKey[HexGrid.Key(q, r)]
@@ -207,9 +215,13 @@ function Draft:Build()
                 border.edges[#border.edges + 1] = { a = cell, b = other, heightDelta = other.height - cell.height }
             end
         end
+        if progress and index % 512 == 0 then progress(.9 + .05 * index / #map.cells, '整理区域边界') end
     end
     for _, region in ipairs(map.regions) do table.sort(region.neighborIds) end
-    return freeze(map, {})
+    if progress then progress(.95, '完成世界布局') end
+    local result = freeze(map, {})
+    if progress then progress(1, '世界布局已就绪') end
+    return result
 end
 
 -- 预先按地貌类型分组实体候选配置；这里只筛选配置，不生成敌人或建筑。
@@ -270,8 +282,7 @@ function Generator:RegisterRegion(regionType, convertType, instanceType)
     assert(type(convertType.Generate) == 'function' and type(instanceType.GetCells) == 'function', 'Invalid region implementation')
     self.registrations[regionType] = { convert = convertType(), instance = instanceType }
 end
--- regionIds 为有序、连续的配置 ID 数组；重复 ID 表示生成多个独立实例。
-function Generator:Generate(seed, regionIds, targetCells)
+local function generate(self, seed, regionIds, targetCells, progress, seededRegions)
     local random = Random(seed)
     if targetCells ~= nil then
         positiveInteger(targetCells, 'Target cells')
@@ -292,17 +303,45 @@ function Generator:Generate(seed, regionIds, targetCells)
         self.registrations[row.MapRegion].convert:ValidateConfig(row)
         rows[i] = row
     end
+    if seededRegions then table.sort(rows, function(a, b) return a.id < b.id end) end
     local draft = Draft(self, random)
     draft.map.targetCells = targetCells
+    -- 区块抽取使用独立随机流，不依赖轮廓、贴合尝试次数或进度回调。
+    local selectionRandom = seededRegions and Random(random.seed ~ 0x5245474e)
+    if seededRegions then draft.map.generationVersion = 6 end
     local index = 1
-    -- 未指定目标时仍只生成一遍配方；指定后循环配方，数量由实际占地决定。
+    -- 固定配方保持原顺序；随机模式每轮洗牌，未遍历完配置前不重复抽取。
     while targetCells and #draft.map.cells < targetCells or not targetCells and index <= #rows do
+        if selectionRandom and (index - 1) % #rows == 0 then
+            for i = #rows, 2, -1 do
+                local other = selectionRandom:Integer(1, i)
+                rows[i], rows[other] = rows[other], rows[i]
+            end
+        end
+        -- 首轮给尚未出现的配置均分剩余预算，小地图也保留可辨认的地貌区块。
+        draft.regionCellBudget = nil
+        if seededRegions and targetCells and index <= #rows then
+            draft.regionCellBudget = math.max(1, math.floor((targetCells - #draft.map.cells) / (#rows - index + 1)))
+        end
         local row = rows[(index - 1) % #rows + 1]
         local registration = self.registrations[row.MapRegion]
         local map2 = registration.convert:Generate(draft, row, random, registration.instance)
         assert(map2 == draft, 'Region converters must return the accumulated map draft')
+        if progress then progress(.4 * (targetCells and #draft.map.cells / targetCells or index / #rows), '生成地形区域') end
         index = index + 1
     end
-    return draft:Build()
+    return draft:Build(progress)
+end
+-- regionIds 为有序、连续的配置 ID 数组；重复 ID 表示生成多个独立实例。
+function Generator:Generate(seed, regionIds, targetCells, progress)
+    return generate(self, seed, regionIds, targetCells, progress, false)
+end
+-- 全部区域配置自动进入候选池；先按 ID 排序，保证配表行序不影响同种子结果。
+function Generator:GenerateSeeded(seed, targetCells, progress, regionIds)
+    if regionIds == nil then
+        regionIds = {}
+        for _, row in ipairs(self.regionTable:All()) do regionIds[#regionIds + 1] = row.id end
+    end
+    return generate(self, seed, regionIds, targetCells, progress, true)
 end
 return Generator

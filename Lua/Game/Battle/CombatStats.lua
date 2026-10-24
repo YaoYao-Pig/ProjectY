@@ -8,6 +8,8 @@ function Stats:ctor(config, equipmentData)
     self.effects = config:GetTable('CombatEffectTable')
     self.buffs = require('Game.Battle.BuffRules').New(config)
     self.growth = require('Game.Progression.GrowthRules').New(config)
+    self.injuries = require('Game.Battle.InjuryRules').New(config)
+    self.diseases = require('Game.Battle.DiseaseRules').New(config)
     self.animals = require('Game.Animals.AnimalRules').New(config)
     self.heightAdvantage=require('Game.Battle.HeightAdvantage').New(config)
     self.projectileCover=config:GetTable('ProjectileCoverTable'):Get(1)
@@ -44,7 +46,11 @@ function Stats:Get(unit, name, excludeEquipment, pendingEffect)
     end
     if pendingEffect and pendingEffect.attribute==name then value=value+pendingEffect.amount*pendingEffect.stacks end
     if pendingEffect and pendingEffect.buff then value=value+self.buffs:PendingBonus(pendingEffect,name) end
-    return math.max(0, value + self.growth:Bonus(unit,name) + (excludeEquipment and 0 or self.equipment:AttributeBonus(unit,name)))
+    return self.injuries:ApplyAttribute(unit,name,math.max(0, value + self.growth:Bonus(unit,name) + (excludeEquipment and 0 or self.equipment:AttributeBonus(unit,name))))
+end
+function Stats:MoveRange(unit,template)
+    local range=self.animals:MoveRange(unit,template)
+    return unit.MountedAnimal and range or self.injuries:MoveRange(unit,range)
 end
 function Stats:MaximumHP(unit,pendingEffect)
     local hp = self:Template(unit).maxHealth:Evaluate({vitality = self:Get(unit, 'vitality',false,pendingEffect), endurance = self:Get(unit, 'endurance',false,pendingEffect)})

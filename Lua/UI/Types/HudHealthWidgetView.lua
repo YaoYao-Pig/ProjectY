@@ -13,5 +13,7 @@
 ---@field HealthTrail CS.UnityEngine.UI.Image
 ---@field HealthAnimation CS.ProjectY.UI.HealthBarAnimation
 ---@field DamageNumbers CS.ProjectY.UI.DamageNumberAnimation
+---@field WorldCanvas CS.UnityEngine.Canvas
+---@field DamageFollower CS.ProjectY.UI.UIFollower
 local View = {}
 return View

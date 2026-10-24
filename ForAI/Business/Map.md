@@ -10,11 +10,13 @@
 
 - 需求来源：[大地图](https://my.feishu.cn/wiki/VYw9wbMINiJ9B8k0SgqcAS34n1b)、[视角](https://my.feishu.cn/wiki/N3QGwWdw2iTym9kQBSScIsghn4g)。当前实现只读布局数据；未创建 Mesh、材质、相机、建筑/敌人实体或寻路规则。可变玩法状态仍归 C# Data，不把快照中的候选配置当成实体状态。
 - `MapSystem` 依赖 Config，启动只创建生成器；调用 `Generate(seed, regionIds, targetCells?)` 才生成。seed 为 uint32，regionIds 为非空、连续的配置 ID 数组；重复 ID 生成独立实例。同种子、配表、配方顺序、目标格数与 generationVersion 才保证相同结果，调用不改变全局 `math.random` 状态；系统不持有“当前地图”。
-- 可选 targetCells 为 1～Catalog `Map.MaxCells` 的整数（当前上限 100000）。传入时循环配方直到达到精确格数，最后一块从接壤格扩张为连通子区域，并以该起点作为地貌采样中心；不传仍只执行一遍配方。结果记录 `map.targetCells`。`DefaultTargetCells=10000` 仅决定预览入口初值；城镇、河湖上限仍由原表控制，尚不按面积增加，严格地形筛选可能使河流数为零。
-- generationVersion 当前为 5：先生成噪声扰动的不规则轮廓，保留中心连通块；从全图真实外沿最多尝试 64 次贴合，裁掉已占用格，保留不少于原轮廓 60% 的中心连通部分，优先更长的共享边。失败时从最东格向东继续，保证终止与连通；区域从不重复占格。`MapRegionConvertBase:Generate` 累积 draft，全部完成后统一过渡、全图河湖、普通聚落/道路、偏远地点、配置装饰、建立 Border，再冻结。
-- `E_MapRegion` → converter/instance 类由 `MapSystem` 注册：Grassland=1（缓坡）、Mountain=2（多尺度山脊）、Lake=3（扰动盆地）、River=4（噪声曲流河谷）、Forest=5（林地丘陵）、Snow=6（冰雪高地）。新增类型需同时补 Catalog、MapRegionTable、MapBiomeTable 与注册。转换器 `GetHeight(config,q,r,random,noiseScale,region)` 返回地面高度、可选水位、lake/river 类型；会在邻区边界采样，所以必须能处理轮廓外坐标，不能修改随机流或布局。`ValidateConfig` 负责策略特有校验。
+- `GenerateSeeded(seed, targetCells?, progress?, regionIds?)` 为随机开局入口，generationVersion=6：省略 regionIds 时候选池包含全部 MapRegionTable 配置；指定时只从该候选池抽取，供旧开局配方保持地形集合。先按 ID 排序，再由种子的独立随机流分轮洗牌，每轮无放回抽取。指定目标格数时，首轮按尚未出现的配置数分配剩余预算，避免前几块用尽小地图；格数不少于候选数时全部配置至少出现一次，极小地图尽可能覆盖且仍精确满足格数。区块尺寸/高度仍来自原配置，预算裁剪保持连通；后续轮重新洗牌。不传目标只生成一轮。旧 `Generate` 保留固定顺序与 v5 布局。
+- `Generate` 第四个可选参数 `progress(value,stage)` 报告 0–1 的阶段检查点，可在 Lua 协程内 yield；不传时保持同步。创建世界的分阶段调用和仍同步的子步骤见 [Loading](../Framework/Loading.md)，回调不改变生成随机序列。
+- 可选 targetCells 为 1～Catalog `Map.MaxCells` 的整数（当前上限 100000）。固定配方传入时循环直到达到精确格数，最后一块从接壤格扩张为连通子区域，并以该起点作为地貌采样中心；不传仍只执行一遍配方。结果记录 `map.targetCells`。`DefaultTargetCells=10000` 仅决定预览入口初值；城镇、河湖上限仍由原表控制，尚不按面积增加，严格地形筛选可能使河流数为零。
+- v5/v6 共用轮廓与摆放：先生成噪声扰动的不规则轮廓，保留中心连通块；从全图真实外沿最多尝试 64 次贴合，裁掉已占用格，保留不少于原轮廓 60% 的中心连通部分，优先更长的共享边。失败时从最东格向东继续，保证终止与连通；区域从不重复占格。`MapRegionConvertBase:Generate` 累积 draft，全部完成后统一过渡、全图河湖、普通聚落/道路、偏远地点、配置装饰、建立 Border，再冻结。
+- `E_MapRegion` → converter/instance 类由 `MapSystem` 注册：Grassland=1（缓坡）、Mountain=2（多尺度山脊）、Lake=3（扰动盆地）、River=4（噪声曲流河谷）、Forest=5（林地丘陵）、Snow=6（冰雪高地），Swamp=7、DarkForest=8、Lava=9、Volcano=10、Mushroom=11。新增五生态复用湖盆/森林/山地采样策略，通过独立尺寸、高度、水文与表现参数区分；新增类型须同时补 Catalog、MapRegionTable、MapBiomeTable、旅行地形、各类 MapArea 主题与策略注册。转换器 `GetHeight(config,q,r,random,noiseScale,region)` 返回地面高度、可选水位、lake/river 类型；会在邻区边界采样，所以必须能处理轮廓外坐标，不能修改随机流或布局。`ValidateConfig` 负责策略特有校验。
 - minX/maxX、minY/maxY 保留 float，从 ceil(min) 到 floor(max) 抽整数作为 q/r **采样包围盒尺寸**，不再代表完整矩形或实际格子数。`Contains` 查询实际归属索引；普通区域保留中心，目标格数截断的末区可重设中心。MaxCells 按最终格子数检查，采样包围盒面积另限制为 MaxCells 的两倍，避免在容量检查前分配极端轮廓。
-- `SeededRandom` 的独立 uint32 随机流负责布局；Fractal/迭代振幅、Warp/坐标扰动、Ridged/折叠山脊均为带通道的纯位置采样，不推进布局随机流。区域表控制 shapeIrregularity、noiseScale（相对 Catalog 基础跨度）、roughness、warpStrength；水体策略另读 waterLevel、lakeSize/riverWidth。当前六行配置是可调整的技术样例。
+- `SeededRandom` 的独立 uint32 随机流负责布局；Fractal/迭代振幅、Warp/坐标扰动、Ridged/折叠山脊均为带通道的纯位置采样，不推进布局随机流。区域表控制 shapeIrregularity、noiseScale（相对 Catalog 基础跨度）、roughness、warpStrength；水体策略另读 waterLevel、lakeSize/riverWidth。当前十一行配置覆盖原六地貌与五生态扩充。
 - `TerrainBlend` 按六邻接距离混合附近策略在同一点的采样，Catalog `BorderBlendWidth` 控制宽度（0–12，0 关闭）；区域主体不做整图模糊。`baseHeight` 是所属策略原始高度，受其 minHeight/maxHeight 约束；混合后的高度在过渡带允许超出所属区范围，但处于参与采样包络内；随后水系可按开挖预算进一步降低最终 `height`，避免截断后重新形成台阶。`blendAmount` 表示邻区权重，`biomeWeights` 提供归一化地貌类型权重，`regionWeights` 保留实例权重供水文配置混合。格子所有权和候选配置不变。
 - 水体仍是静态地形预览：height 为河床/湖床，waterLevel 为水面，waterDepth 为深度，waterKind 为 lake/river。启用全图水系时由盆地和排水分析统一定界，旧策略水面仅在 MapWaterNetworkTable 为空时由 MapWater.Build 整理；最终 Reindex 按连通且等高的水格分组，不把有落差的河段压平。地图外缘允许出口，不接入物理流量、队伍通行或桥梁。
 - `MapHydrology` 读取 MapWaterNetworkTable（空表关闭全图水系、最多一行）和 MapRegionTable.hydrologyProfileId → MapHydrologyProfileTable。局部径流、开挖阻力、曲流、宽度、陡坡收窄及湖泊系数按 regionWeights 混合。全外缘 Priority-Flood 分析真实盆地并部分蓄水，保留岛屿；少量低洼出口建立无环排水关系，以地形翻越高度为首要代价，低频噪声影响平缓地带路径。累计径流筛源并决定宽度，中心线与横断面先检查干岸/开挖预算再写入；支流汇入既有河段，河口可以是湖泊或地图外缘。GetRivers 保留有序 cells、source/mouth、rootId/parentRiverId、regionIds；格子含 riverId/flowTo、flowAccumulation、channelRadius（计划扩宽半径）、channelBank。
@@ -29,7 +31,7 @@
 - `MapPathfinder` 提供生成期 Dijkstra；道路按近邻优先连接可达城镇并复用已铺路段。Catalog `RoadMaxStep` 限制邻格高差、`RoadSlopeCost` 控制坡度代价；禁止经过水格和建筑占地，不生成桥梁。路径不可达时保留多个 `roadNetworks`，不假造连接。这些道路代价只服务布局生成；[大地图旅行](WorldTravel.md)复用寻路算法，但另有独立的玩法通行代价。
 - Map 的 GetTowns/GetBuildings/GetRoads/GetRoadNetworks 返回只读布局。town.role=settlement/remote；偏远地点 roadNetworkId 缺省且 roadIds 为空。建筑保存完整 cells、entrance、baseHeight；道路保存有序 cells、street/road 及端点。格子 townId/buildingId/roadIds 反查，Region 返回所属布局；所有查询共享原格子身份。town.siteProfileId/siteScore/siteMetrics 记录选址，map.siteDiagnostics 记录各样式数量及淘汰统计，cell.siteScores 保存方案开始时的评分热力图。
 - `GetWaterSites()` 返回开阔水域中的只读可访问地点，使用独立概率、面积、深度与净距规则；入口及装饰均位于真实水面。当前接入 [Shipwreck 沉船遗址](Shipwreck.md)，其选址不占用干地聚落流程。
-- `MapAssetTable` 是资源 ID、Unity 路径、基准高度、适配占地及 Web 轮廓的唯一配置；`MapBuildingTable.assetId/platformAssetId` 绑定完整建筑与平台，半径须匹配。`MapBiomeTable` 按地貌枚举配置底块、水面、混合底色与装饰资源、密度/坡度/缩放。`MapVisuals` 用独立位置噪声撒装饰，避开水域、建筑与道路；边界按 biomeWeights 混色并降低外来地貌装饰密度。格子输出 terrainAssetId/waterAssetId/groundColor，`GetDecorations()` 输出 cell/assetId/scale/yaw；渲染器不重新抽样。
+- `MapAssetTable` 是资源 ID、Unity 路径、基准高度、适配占地及 Web 轮廓的唯一配置；`MapBuildingTable.assetId/platformAssetId` 绑定完整建筑与平台，半径须匹配。`MapBiomeTable` 按地貌枚举配置底块、水面、混合底色与装饰资源、密度/坡度/缩放。`MapVisuals` 用独立位置噪声撒装饰，避开水域、建筑与道路；边界按 biomeWeights 混色并降低外来地貌装饰密度。`terrainVariantAssetIds` 为空时使用原 terrainAssetId，否则由独立位置噪声成片选择模型；新五生态各三款底块、共 21 款装饰已接入。格子输出 terrainAssetId/waterAssetId/groundColor，`GetDecorations()` 输出 cell/assetId/scale/yaw；渲染器不重新抽样。
 - Map 及嵌套布局、索引、Region/Border 为只读代理，查询返回的格子保持对象身份；`GetNeighbors` 生成调用方自己的列表。快照可由调用方持有，MapSystem 退出不改写已返回的快照。生成完成释放选址草稿和分析缓存；紧凑地图的直线净距用完整包围盒距离变换，稀疏坐标用空间树，两者均穿过缺格计算直线六边形距离。
 
 已启动的 Lua 运行时可调用（无需新增 UI）：
@@ -59,6 +61,8 @@ local buildings = region:GetBuildingConfigs()
 - [Map.lua](../../Lua/Game/Map/Map.lua) / [HexGrid.lua](../../Lua/Game/Map/HexGrid.lua) / [SeededRandom.lua](../../Lua/Game/Map/SeededRandom.lua)：查询、坐标与随机算法。
 - [MapRegionTable.json](../../Config/Tables/Map/MapRegionTable.json) / [MapEnemyTable.json](../../Config/Tables/Map/MapEnemyTable.json) / [MapBuildingTable.json](../../Config/Tables/Map/MapBuildingTable.json)：表源；[Catalog.json](../../Config/Catalog.json)：枚举与参数。
 - [map.lua](../../Tools/Tests/map.lua) / [map_terrain.lua](../../Tools/Tests/map_terrain.lua)：基础与自然地貌检查。
+- [map_seeded.lua](../../Tools/Tests/map_seeded.lua)：真实开场配置的地形覆盖、种子顺序、区块/全图连通、剧情集市可达、协程准备与旧配方回归；沿用上述 xLua 测试入口，不启动 Editor/Play。
+- [map_ecology.lua](../../Tools/Tests/map_ecology.lua)：十一地貌、新模型实际快照引用、五种旅行战场与全部 MapArea 边界主题；[map_ecology_editmode.cs](../../Tools/Tests/map_ecology_editmode.cs) 在现有 Editor 读取已保存场景绑定、检查真实渲染配色并离屏预览，不进入 Play 或写玩家档案。
 - [map_infrastructure.lua](../../Tools/Tests/map_infrastructure.lua) / [map_pathfinder.lua](../../Tools/Tests/map_pathfinder.lua)：城镇、占地、道路及搜索检查。
 
 算法设计参考：[Factorio 噪声组合](https://www.factorio.com/blog/post/fff-390)与 [Red Blob Games 多层噪声地形](https://www.redblobgames.com/maps/terrain-from-noise/)。这里只借鉴多尺度、山脊和可视化调参思路，实际实现与参数以上述工程 Lua 为准。

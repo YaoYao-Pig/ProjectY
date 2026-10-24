@@ -1,0 +1,160 @@
+{
+  "version": 1,
+  "name": "SkillTipTextTable",
+  "description": "可复用术语与正文段落；body 使用原生 TMP <link=\"term:id\">文字</link>，允许术语继续链接其他术语。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string",
+      "description": "稳定术语或段落代号"
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "术语释义弹层标题"
+    },
+    {
+      "name": "body",
+      "type": "text",
+      "description": "富文本正文；term链接必须指向本表已有行"
+    }
+  ],
+  "rows": [
+    {
+      "id": "hit",
+      "name": "命中",
+      "body": "每一发攻击分别判定命中。沿途先处理<link=\"term:interception\">拦截</link>，抵达目标后再按技能命中率判定；<link=\"term:height\">高打低</link>会影响最终命中。命中后附加状态仍需单独通过该状态的施加概率。"
+    },
+    {
+      "id": "height",
+      "name": "高打低",
+      "body": "按攻击者与目标的站立面高度差增加对敌技能的<link=\"term:hit\">命中</link>；射程大于1格的对敌技能还可获得额外射程。加成有上限，不增加伤害。具体加成由高差规则配置。"
+    },
+    {
+      "id": "direct",
+      "name": "直射",
+      "body": "忽略攻击者相邻一格内的阻挡；后续路径上的角色或物体可能<link=\"term:interception\">拦截</link>这一发。<link=\"term:tracking\">追踪</link>可绕过弹道阻挡。"
+    },
+    {
+      "id": "lobbed",
+      "name": "抛射",
+      "body": "只检查攻击者相邻一格内的角色或物体是否<link=\"term:interception\">拦截</link>这一发。<link=\"term:tracking\">追踪</link>可绕过弹道阻挡。"
+    },
+    {
+      "id": "interception",
+      "name": "弹道拦截",
+      "body": "沿途每个阻挡物分别按配置概率判定是否截住这一发。若被角色截住，完整命中效果会作用于该角色，因此可能误伤友军；未被拦截时再判定目标<link=\"term:hit\">命中</link>。"
+    },
+    {
+      "id": "tracking",
+      "name": "追踪",
+      "body": "持续接收者自身3回合，在其回合结束时计时；自己回合施加时，该回合结束也计一次。对匹配的远程攻击，<link=\"term:direct\">直射</link>与<link=\"term:lobbed\">抛射</link>可绕过弹道阻挡；多目标对敌技能可在射程内手选不同敌人，不受主目标周边半径限制。不会增加目标上限。"
+    },
+    {
+      "id": "transfer",
+      "name": "转施",
+      "body": "装配转施符文后，明确允许转施的自身法术可改为选取4格内任意角色，保留原行动消耗。当前包括追踪术、战场祈愿与奥术凝聚；状态由实际接收者计时。不会把攻击附带的自身收益转给别人。"
+    },
+    {
+      "id": "guard",
+      "name": "护卫",
+      "body": "按护卫值减免受到的伤害，持续到自身下回合开始。再次获得护卫只提高到两者较大值，不叠加。"
+    },
+    {
+      "id": "burning",
+      "name": "燃烧",
+      "body": "在接收者回合结束时造成火焰周期伤害，持续3回合；重复施加刷新时长。<link=\"term:wet\">潮湿</link>会扑灭燃烧，并阻止再次点燃。伤害在施加时按来源倍率保存。"
+    },
+    {
+      "id": "bleeding",
+      "name": "流血",
+      "body": "在接收者回合结束时造成流血周期伤害，持续3回合，最多3层。重复施加增加层数并刷新时长；部分技能会消耗全部流血来换取额外效果。"
+    },
+    {
+      "id": "poison",
+      "name": "中毒",
+      "body": "在接收者回合结束时造成毒素周期伤害，持续4回合，最多3层。重复施加增加层数并刷新时长；可被<link=\"term:cleanse\">净化</link>，也可被指定终结效果消耗。"
+    },
+    {
+      "id": "wet",
+      "name": "潮湿",
+      "body": "持续3回合，扑灭<link=\"term:burning\">燃烧</link>并在持续期间阻止点燃。部分技能会利用潮湿触发额外效果；是否消耗潮湿由该技能说明决定。"
+    },
+    {
+      "id": "stunned",
+      "name": "眩晕",
+      "body": "跳过接下来的2个行动回合；仍按接收者回合结束时推进状态时长。属于可被<link=\"term:cleanse\">净化</link>的控制状态。"
+    },
+    {
+      "id": "staggered",
+      "name": "震晕",
+      "body": "跳过接下来的1个行动回合。属于可被<link=\"term:cleanse\">净化</link>的控制状态，与2回合的<link=\"term:stunned\">眩晕</link>是不同状态配置。"
+    },
+    {
+      "id": "regeneration",
+      "name": "再生",
+      "body": "在接收者回合开始时恢复生命，持续3回合。重复施加刷新时长；恢复生命不能使倒地角色复活。"
+    },
+    {
+      "id": "long_regeneration",
+      "name": "长效复苏",
+      "body": "持续60游戏分钟，每10分钟恢复生命；可跨战斗保留。战斗期间游戏分钟冻结，不因战斗回合推进。"
+    },
+    {
+      "id": "blessing",
+      "name": "战场祝福",
+      "body": "在本场战斗内持续提高力量，战斗结束后移除。重复施加刷新，不叠加。"
+    },
+    {
+      "id": "armor_break",
+      "name": "破甲",
+      "body": "防御降低2，持续接收者2回合，重复施加刷新时长。不会直接扣除装备耐久。"
+    },
+    {
+      "id": "weakness",
+      "name": "虚弱",
+      "body": "力量降低3，持续接收者2回合，重复施加刷新时长。"
+    },
+    {
+      "id": "slow",
+      "name": "迟缓",
+      "body": "速度降低3，持续接收者2回合，影响后续行动排序；不减少可移动距离。"
+    },
+    {
+      "id": "cleanse",
+      "name": "净化",
+      "body": "移除说明中指定的减益、控制或状态标签。不会恢复生命或使倒地角色复活，除非技能另外列出对应效果。"
+    },
+    {
+      "id": "dispel",
+      "name": "驱散",
+      "body": "移除说明中指定的增益状态。命中后触发的驱散仍受该效果自身的触发概率约束。"
+    },
+    {
+      "id": "guard_three",
+      "name": "防御架势",
+      "body": "获得3点<link=\"term:guard\">护卫</link>，持续到自身下回合开始。"
+    },
+    {
+      "id": "burning_40",
+      "name": "火焰附加效果",
+      "body": "命中后有40%概率施加<link=\"term:burning\">燃烧</link>。"
+    },
+    {
+      "id": "bleeding_35",
+      "name": "穿刺附加效果",
+      "body": "命中后有35%概率施加<link=\"term:bleeding\">流血</link>。"
+    },
+    {
+      "id": "regeneration_three",
+      "name": "治疗附加效果",
+      "body": "同时给予3回合<link=\"term:regeneration\">再生</link>。"
+    },
+    {
+      "id": "no_revive",
+      "name": "治疗限制",
+      "body": "无法使倒地角色复活。"
+    }
+  ]
+}

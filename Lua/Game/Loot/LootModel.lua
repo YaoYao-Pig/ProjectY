@@ -1,3 +1,4 @@
+local LuaLanguage = require('Language')
 -- Read-only grid projection; revealed state and remaining items live in map container data.
 local Model={};Model.__index=Model
 local Text=require('Game.Equipment.EquipmentPresentation')
@@ -23,13 +24,13 @@ function Model:Rows()
             rowX,rowY=x,y;x=x+displayWidth;lineHeight=math.max(lineHeight,displayHeight)
         end
         local known=entry.Revealed;local source=self.session.Area:GetLootAt(entry.ContainerId-1)
-        local detail=known and ('来自：'..source.Name) or '正在搜索，揭示后可以拖入背包'
+        local detail=known and (string.format(LuaLanguage.UILootDetail, (source.Name))) or LuaLanguage.UILootDetail2
         local name=item.name;local displayName=Text.Escape(item.name)
         if known and entry.Count>0 and (entry.Kind=='weapon' or entry.Kind=='wearable') then
             name=self.rules.affixes:Name(entry);displayName=Text.Name(self.rules,entry)
-            detail=Text.Details(self.rules,entry)..'\n\n'..Text.Note('来自：'..source.Name)
+            detail=Text.Details(self.rules,entry)..'\n\n'..Text.Note(string.format(LuaLanguage.UILootDetail, (source.Name)))
         end
-        rows[#rows+1]={key=entry.Key,itemId=entry.ItemId,kind=item.kind,name=known and name or '未搜索的物品',displayName=known and displayName or '未搜索的物品',
+        rows[#rows+1]={key=entry.Key,itemId=entry.ItemId,kind=item.kind,name=known and name or LuaLanguage.UILootDisplayName,displayName=known and displayName or LuaLanguage.UILootDisplayName,
             detail=detail,iconPath=item.iconPath,count=entry.Count,
             slot='',compatible='',equipMask=0,width=item.width,height=item.height,displayWidth=displayWidth,displayHeight=displayHeight,
             x=rowX,y=rowY,rotated=rotated,revealed=known}

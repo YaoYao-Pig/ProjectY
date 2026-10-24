@@ -320,7 +320,7 @@ MonoBehaviour:
     ModalDimAlpha: 0.65
     Cache: 1
     CloseOnBack: 0
-    IsWorldUI: 0
+    IsWorldUI: 1
     SupportsHotSwitch: 0
     PauseWorldOnOpen: 0
     CloseOnSceneChange: 1
@@ -572,3 +572,81 @@ MonoBehaviour:
     PauseWorldOnOpen: 1
     CloseOnSceneChange: 1
     Prefab: {fileID: 350638124208630628, guid: 1e702c0e38149ac41bf6f51ce791562f, type: 3}
+  - Name: StartMenu
+    Module: Adventure
+    Kind: 0
+    Layer: Popup
+    Modal: 1
+    ModalDimAlpha: 0.82
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 1
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 2471376012378326277, guid: 233375d94e662f248aa2aa928e1578d7, type: 3}
+  - Name: Loading
+    Module: Common
+    Kind: 0
+    Layer: Overlay
+    Modal: 1
+    ModalDimAlpha: 0
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 1
+    CloseOnSceneChange: 0
+    Prefab: {fileID: 5321720965634431069, guid: 0eab456a042f8dc46bee77b534892d3f, type: 3}
+  - Name: DialogueEntry
+    Module: Narrative
+    Kind: 1
+    Layer: Popup
+    Modal: 0
+    ModalDimAlpha: 0.65
+    Cache: 1
+    CloseOnBack: 1
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 317349811137356854, guid: a50665030087d9a4392a60c9a051ceb2, type: 3}
+  - Name: DiceRoll
+    Module: Presentation
+    Kind: 0
+    Layer: Overlay
+    Modal: 1
+    ModalDimAlpha: 0.78
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 1
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 494365588075021868, guid: 0367b4c285ee15045903db934b879278, type: 3}
+  - Name: MissionReward
+    Module: Narrative
+    Kind: 1
+    Layer: Main
+    Modal: 0
+    ModalDimAlpha: 0.65
+    Cache: 1
+    CloseOnBack: 1
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 7057029655779073073, guid: 48cb3be6854cdc945a4da6754f0feb57, type: 3}
+  - Name: MissionSettlement
+    Module: Narrative
+    Kind: 0
+    Layer: Overlay
+    Modal: 1
+    ModalDimAlpha: 0.72
+    Cache: 1
+    CloseOnBack: 0
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 1
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 4702142645407304807, guid: 23bac0a6938692c41964747cf738f9d7, type: 3}

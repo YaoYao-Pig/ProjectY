@@ -17,14 +17,14 @@ namespace ProjectY.Samples
         private PawnCustomizationView customizationView;
         private int customizationRevision;
         private float started=-100;
-        private sealed class Attachment { public int Id; public Transform Transform; }
+        private sealed class Attachment { public int Id; public Transform Transform; public EquipmentEffectDisplay Effect; }
         private readonly Dictionary<string,Attachment> wearables=new Dictionary<string,Attachment>();
         private readonly List<string> removed=new List<string>();
         public void SetCustomization(PawnCustomizationView value)
         {
             int revision = value == null ? 0 : value.Revision;
             if (value == customizationView && revision == customizationRevision) return;
-            foreach (var item in wearables.Values) WeaponModelView.Remove(item.Transform.gameObject);
+            foreach (var item in wearables.Values) {item.Effect.Dispose();WeaponModelView.Remove(item.Transform.gameObject);}
             wearables.Clear(); customizationView = value; customizationRevision = revision;
         }
         public void SetAnimation(PawnAnimationView value)
@@ -38,7 +38,7 @@ namespace ProjectY.Samples
             {
                 ClearWeapon(ref weapon,ref weaponAsset);ClearWeapon(ref offhand,ref offhandAsset);
                 if(arms!=null) foreach(var arm in arms) WeaponModelView.Remove(arm.gameObject);
-                foreach(var worn in wearables.Values) WeaponModelView.Remove(worn.Transform.gameObject);
+                foreach(var worn in wearables.Values) {worn.Effect.Dispose();WeaponModelView.Remove(worn.Transform.gameObject);}
                 wearables.Clear();arms=null;view=null;poseId=0;initialized=false;return;
             }
             if(catalog==null) throw new InvalidOperationException("人物未绑定装备资源目录。");
@@ -61,16 +61,17 @@ namespace ProjectY.Samples
             }
             removed.Clear();
             foreach(var key in wearables.Keys) if(!Array.Exists(value.Wearables,x=>x.Slot==key)) removed.Add(key);
-            foreach(var key in removed) {WeaponModelView.Remove(wearables[key].Transform.gameObject);wearables.Remove(key);}
+            foreach(var key in removed) {wearables[key].Effect.Dispose();WeaponModelView.Remove(wearables[key].Transform.gameObject);wearables.Remove(key);}
             foreach(var worn in value.Wearables)
             {
-                if(wearables.TryGetValue(worn.Slot,out var existing)&&existing.Id==worn.Model.Id) continue;
-                if(existing!=null) WeaponModelView.Remove(existing.Transform.gameObject);
+                if(wearables.TryGetValue(worn.Slot,out var existing)&&existing.Id==worn.Model.Id) {existing.Effect.Set(worn.Effect);continue;}
+                if(existing!=null) {existing.Effect.Dispose();WeaponModelView.Remove(existing.Transform.gameObject);}
                 var fitted = customizationView != null && PawnCustomizationCatalog.NeedsFit(worn.Mount);
                 if (fitted && (worn.Position != Vector3.zero || worn.Rotation != Vector3.zero)) throw new InvalidOperationException("Fitted wearable offsets must be authored in the shared rest pose.");
                 var skin = fitted || (animationView != null && (worn.Mount == "legs" || worn.Mount == "feet"));
                 var obj = fitted ? customizationView.CreateFit(worn.Model.Path) : skin ? animationView.CreateSkin(worn.Model.Id, transform) : Instantiate(catalog.Resolve(worn.Model),transform,false);
-                wearables[worn.Slot]=new Attachment {Id=worn.Model.Id,Transform=obj.transform};
+                var effect=new EquipmentEffectDisplay(EffectAnchor(worn.Slot));effect.Set(worn.Effect);
+                wearables[worn.Slot]=new Attachment {Id=worn.Model.Id,Transform=obj.transform,Effect=effect};
                 if(animationView!=null && !skin)
                 {
                     var anchor=animationView.Anchor(worn.Mount=="ring" ? (worn.Slot=="rightRing" ? "mainHand" : "offHand") : worn.Mount=="offhand" ? "offHand" : worn.Mount);
@@ -96,6 +97,14 @@ namespace ProjectY.Samples
             model.Apply(value,catalog);
         }
         private void Update() {if(view!=null) RenderPose();}
+        public void TickEffects(float deltaTime)
+        {
+            if(view==null) return;
+            weapon?.TickEffects(deltaTime);offhand?.TickEffects(deltaTime);
+            foreach(var item in wearables) item.Value.Effect.Tick(deltaTime,SlotWorldPosition(item.Key));
+        }
+        private void OnDisable() {foreach(var item in wearables.Values)item.Effect.Clear();}
+        private void OnDestroy() {foreach(var item in wearables.Values)item.Effect.Dispose();}
         private static void Segment(Transform part,Vector3 a,Vector3 b,float radius)
         {part.localPosition=a;part.localRotation=Quaternion.FromToRotation(Vector3.up,b-a);part.localScale=new Vector3(radius,(b-a).magnitude,radius);}
         private Vector3 SlotPosition(string slot)
@@ -116,6 +125,11 @@ namespace ProjectY.Samples
             if(view==null) throw new InvalidOperationException("Equipment portrait has no appearance.");
             if(animationView!=null) return animationView.Anchor(slot=="weapon"||slot=="rightRing" ? "mainHand" : slot=="offhand"||slot=="leftRing" ? "offHand" : slot=="body" ? "chest" : slot).position;
             return transform.TransformPoint(SlotPosition(slot));
+        }
+        private Transform EffectAnchor(string slot)
+        {
+            if(animationView==null) return transform;
+            return animationView.Anchor(slot=="weapon"||slot=="rightRing" ? "mainHand" : slot=="offhand"||slot=="leftRing" ? "offHand" : slot=="body" ? "chest" : slot);
         }
         private Vector3 WearablePosition(EquipmentVisualData.Wearable worn)
         {

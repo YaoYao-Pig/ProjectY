@@ -35,6 +35,7 @@ namespace ProjectY.Samples
 
         public Material SurfaceMaterial { get; }
         public Material FoamMaterial { get; }
+        internal Func<Vector3,bool> VisibilityFilter { get; set; }
         public Vector4[] Flows { get; private set; } = Array.Empty<Vector4>();
 
         public MapWaterEffects(Transform owner)
@@ -266,6 +267,7 @@ namespace ProjectY.Samples
 
         private void Emit(Source source)
         {
+            if(VisibilityFilter!=null && !VisibilityFilter(source.Position))return;
             var along = source.Direction;
             var side = Vector3.Cross(Vector3.up, along);
             var lateral = (float)random.NextDouble() * 2 - 1;

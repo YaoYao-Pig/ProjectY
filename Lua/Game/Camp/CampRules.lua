@@ -1,3 +1,4 @@
+local Language=require('Language')
 local Rules={};Rules.__index=Rules
 local stackKinds={material=true,ammo=true,consumable=true,rune=true,module=true}
 local function positive(value) return type(value)=='number' and value>0 and value%1==0 end
@@ -34,11 +35,13 @@ function Rules.New(config)
     return self
 end
 function Rules:IsStack(itemId) return stackKinds[self.items:Get(itemId).kind]==true end
-function Rules:ValidateItems(ids,counts,required)
-    assert(#ids==#counts and (not required or #ids>0),'Camp item quantities differ')
+function Rules:ValidateItems(ids,counts,output)
+    assert(#ids==#counts and (not output or #ids>0),'Camp item quantities differ')
     local seen={}
     for i,id in ipairs(ids) do
-        assert(not seen[id] and positive(counts[i]) and self:IsStack(id),'Camp recipes require unique stack items with positive counts');seen[id]=true
+        local kind=self.items:Get(id).kind
+        local allowed=stackKinds[kind] or output and (kind=='weapon' or kind=='wearable')
+        assert(not seen[id] and positive(counts[i]) and allowed,'Camp items require unique supported kinds with positive counts');seen[id]=true
     end
 end
 function Rules:Capacity(data)
@@ -46,30 +49,33 @@ function Rules:Capacity(data)
     return level==0 and self.warehouse.baseCapacity or assert(self.byLevel[self.warehouse.id][level],'Unknown warehouse level').storageCapacity
 end
 function Rules:Cost(data,equipment,coins,row)
-    if coins<row.coins then return false,'金币不足' end
+    if coins<row.coins then return false,Language.CampInsufficientCoins end
     for i,id in ipairs(row.itemIds) do
-        if data:Stored(id)+equipment:CountItem(id)<row.itemCounts[i] then return false,'缺少 '..self.items:Get(id).name end
+        if data:Stored(id)+equipment:CountItem(id)<row.itemCounts[i] then return false,string.format(Language.CampMissingMaterial,self.items:Get(id).name) end
     end
     return true,''
 end
 function Rules:CanUpgrade(data,equipment,coins,facilityId)
     self.facilities:Get(facilityId)
     local row=self.byLevel[facilityId][data:GetLevel(facilityId)+1]
-    if not row then return false,'已达到最高等级' end
+    if not row then return false,Language.CampMaxLevel end
     local ok,reason=self:Cost(data,equipment,coins,row);return ok,reason,row
 end
 function Rules:CanProduce(data,equipment,coins,recipeId,minutes)
     local row=self.recipes:Get(recipeId)
-    if data:GetLevel(row.facilityId)<row.requiredLevel then return false,'需要 '..self.facilities:Get(row.facilityId).name..' '..row.requiredLevel..' 级' end
-    if data:JobFor(row.facilityId) then return false,'该设施已有订单，请先领取产物' end
-    if minutes+row.minutes>1000000000 then return false,'游戏时间已达上限' end
+    if data:GetLevel(row.facilityId)<row.requiredLevel then return false,string.format(Language.CampRequiredFacilityLevel,self.facilities:Get(row.facilityId).name,row.requiredLevel) end
+    if data:JobFor(row.facilityId) then return false,Language.CampFacilityBusy end
+    if minutes+row.minutes>1000000000 then return false,Language.CampTimeLimit end
     return self:Cost(data,equipment,coins,row)
 end
 function Rules:ItemsText(ids,counts)
-    local parts={};for i,id in ipairs(ids) do parts[#parts+1]=self.items:Get(id).name..' ×'..counts[i] end
-    return table.concat(parts,'、')
+    local parts={};for i,id in ipairs(ids) do parts[#parts+1]=string.format(Language.CampItemQuantity,self.items:Get(id).name,counts[i]) end
+    return table.concat(parts,Language.CampItemSeparator)
 end
-function Rules:CostText(row) return self:ItemsText(row.itemIds,row.itemCounts)..(#row.itemIds>0 and '  +  ' or '')..row.coins..' 金币' end
+function Rules:CostText(row)
+    if #row.itemIds==0 then return string.format(Language.CampCostCoins,row.coins) end
+    return string.format(Language.CampCostMaterialsCoins,self:ItemsText(row.itemIds,row.itemCounts),row.coins)
+end
 function Rules:ValidateSaved(data,minutes)
     for i=0,data.LevelCount-1 do local row=data:GetLevelAt(i)
         self.facilities:Get(row.FacilityId);assert(self.byLevel[row.FacilityId][row.Level],'存档营地等级不在配置中')

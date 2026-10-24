@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.ShopStock);
-			Utils.BeginObjectRegister(type, L, translator, 0, 2, 6, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 2, 7, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetAt", _m_GetAt);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Find", _m_Find);
@@ -32,6 +32,7 @@ namespace XLua.CSObjectWrap
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "LocalNpcId", _g_get_LocalNpcId);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "TemplateId", _g_get_TemplateId);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Period", _g_get_Period);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "OccupationRecoveryAt", _g_get_OccupationRecoveryAt);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Count", _g_get_Count);
             
 			
@@ -204,6 +205,20 @@ namespace XLua.CSObjectWrap
 			
                 ProjectY.Data.ShopStock gen_to_be_invoked = (ProjectY.Data.ShopStock)translator.FastGetCSObj(L, 1);
                 LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.Period);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_OccupationRecoveryAt(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.ShopStock gen_to_be_invoked = (ProjectY.Data.ShopStock)translator.FastGetCSObj(L, 1);
+                LuaAPI.lua_pushnumber(L, gen_to_be_invoked.OccupationRecoveryAt);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }

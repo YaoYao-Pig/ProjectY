@@ -38,6 +38,9 @@ local ok,err=xpcall(function()
         return enemyTargets[id]
     end
     function demo:HealthScreenPosition(id) return CS.UnityEngine.Vector2(420+(id%4)*100,360) end
+    function demo:HealthFootScreenPosition(id) return CS.UnityEngine.Vector2(420+(id%4)*100,290) end
+    function demo:HealthFootTarget(id) return self:HealthTarget(id) end
+    function demo:HealthRingRadius(id) return .8 end
     function demo:OpenEquipment() self.opened='equipment' end
     function demo:OpenGrowth() self.opened='growth' end
     function demo:FitMap() self.focused=true end
@@ -109,11 +112,11 @@ local ok,err=xpcall(function()
         assert(hud.battleContent.view.Root.localScale.x==1 and hud.battleContent.view.Root.localScale.y==1,'Embedded battle HUD must not retain a zero prefab scale')
         assert(hud.battleContent.view.Group.alpha==1)
         assert(hud.view.HealthLayer.gameObject.activeSelf and #hud.model.health>0)
-        assert(hud.health[1].view.Root.rect.width==160 and hud.health[1].view.Root.rect.height==50)
+        assert(hud.health[1].view.Root.rect.width==128 and not hud.health[1].view.Name.gameObject.activeSelf)
         assert(not pcall(function() hud.battleContent.view.ActorName.text='' end),'Detached active-actor status panel must be removed')
         for _,head in ipairs(hud.health) do if head.row then
             local actor=assert(adventure.battle:FindUnit(head.row.id))
-            assert(head.view.APText.text==actor.AP..' / '..adventure.battle.stats:Template(actor).actionPoints..' AP')
+            assert(head.view.APText.text==actor.AP..'/'..adventure.battle.stats:Template(actor).actionPoints..' AP')
             assert(head.view.Health.color.r>head.view.Health.color.g and head.view.AP.color.b>head.view.AP.color.r)
         end end
         hud.view.Group.interactable=false;ui:Tick(0,0);assert(not hud.battleContent.view.Group.interactable)
@@ -135,8 +138,8 @@ local ok,err=xpcall(function()
         battle.gameEffects:Apply(9001,battle:Active(),target);ui:Tick(0,0)
         local head
         for _,widget in ipairs(hud.health) do if widget.row and widget.row.id==target.Id then head=widget;break end end
-        assert(head and head.view.Root.rect.height==74 and head.effects[1].view.Count.text=='2')
-        assert(head.view.APText.text==target.AP..' / '..battle.stats:Template(target).actionPoints..' AP')
+        assert(head and head.view.EffectSlots.rect.height==24 and head.effects[1].view.Count.text=='2')
+        assert(head.view.APText.text==target.AP..'/'..battle.stats:Template(target).actionPoints..' AP')
         hud.view.HUD:UpdateFollowers();assert(head.view.Follower.ProjectedVisible)
         head.effects[1].view.Pointer:OnPointerEnter(nil);ui:Tick(0,0)
         assert(hud.view.HealthTooltip.gameObject.activeSelf and hud.view.HealthTipBody.text:find('头顶状态验证',1,true))
@@ -144,9 +147,9 @@ local ok,err=xpcall(function()
         local hp=target.HP;target:SpendAction('secondary',1)
         battle.gameEffects:TickActor(target,'turn_end');ui:Tick(0,0)
         assert(target.HP==hp-1 and head.effects[1].view.Count.text=='1')
-        assert(head.view.HealthText.text==target.HP..' / '..target.MaxHP and head.view.APText.text==target.AP..' / '..battle.stats:Template(target).actionPoints..' AP')
+        assert(head.view.HealthText.text==target.HP..' / '..target.MaxHP and head.view.APText.text==target.AP..'/'..battle.stats:Template(target).actionPoints..' AP')
         battle.gameEffects:TickActor(target,'turn_end');ui:Tick(0,0)
-        assert(head.view.Root.rect.height==50 and not head.effects[1].view.Root.gameObject.activeSelf and not hud.view.HealthTooltip.gameObject.activeSelf)
+        assert(head.view.EffectSlots.rect.height==0 and not head.effects[1].view.Root.gameObject.activeSelf and not hud.view.HealthTooltip.gameObject.activeSelf)
         battle.gameEffects.definitions=original;battle.stats.effects=original
     end)
     test('new expedition and cached reopen release combat subscriptions and followers',function()

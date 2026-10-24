@@ -87,6 +87,7 @@ Shader "ProjectY/Map Water"
             // 保留环境漫反射和主光高光，不采样反射探针、屏幕反射或深度纹理。
             #define _ENVIRONMENTREFLECTIONS_OFF 1
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+        #include "WorldFogSampling.hlsl"
 
             struct WaterVaryings
             {
@@ -338,6 +339,7 @@ Shader "ProjectY/Map Water"
                 lighting.shadowMask = half4(1, 1, 1, 1);
                 half4 result = UniversalFragmentPBR(lighting, surface);
                 result.rgb = MixFog(result.rgb, input.fogAndVertexLight.x);
+                result.rgb = ApplyWorldFog(result.rgb, input.positionWS);
                 result.a = alpha;
                 return result;
             }

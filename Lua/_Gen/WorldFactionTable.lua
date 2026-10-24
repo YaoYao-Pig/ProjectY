@@ -1,0 +1,16 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class WorldFactionTableRow
+---@field id number 组织 ID
+---@field role string 战略角色
+---@field regionTypes (1|2|3|4|5|6|7|8|9|10|11)[] 适宜地形
+---@field playerRelation number 玩家初始外交偏好，与已有声望相加
+---@field partyDefinitionId number 外派队伍模板，0 为无外派
+---@field encounterId number 守军战斗模板，0 为无守军
+---@field siteCount number 新增据点数量
+---@field modelPath string 大地图据点模型路径
+---@field reserve number 初始补给储备
+---@field recruitCost number 恢复一名守军的补给成本
+---@field income number 每战略周期储备收入
+---@field raidPreference number 进攻偏好
+---@field defenseMultiplier number 据点防御系数
+return {["name"]="WorldFactionTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\187\132\231\187\135 ID",["min"]=1,["ref"]="FactionTable"},{["name"]="role",["type"]="string",["description"]="\230\136\152\231\149\165\232\167\146\232\137\178"},{["name"]="regionTypes",["type"]="enum[]",["description"]="\233\128\130\229\174\156\229\156\176\229\189\162",["enumRef"]="Map.E_MapRegion",["enumType"]="int",["values"]={1,2,3,4,5,6,7,8,9,10,11}},{["name"]="playerRelation",["type"]="int",["description"]="\231\142\169\229\174\182\229\136\157\229\167\139\229\164\150\228\186\164\229\129\143\229\165\189\239\188\140\228\184\142\229\183\178\230\156\137\229\163\176\230\156\155\231\155\184\229\138\160",["min"]=-100,["max"]=100},{["name"]="partyDefinitionId",["type"]="int",["description"]="\229\164\150\230\180\190\233\152\159\228\188\141\230\168\161\230\157\191\239\188\1400 \228\184\186\230\151\160\229\164\150\230\180\190"},{["name"]="encounterId",["type"]="int",["description"]="\229\174\136\229\134\155\230\136\152\230\150\151\230\168\161\230\157\191\239\188\1400 \228\184\186\230\151\160\229\174\136\229\134\155"},{["name"]="siteCount",["type"]="int",["description"]="\230\150\176\229\162\158\230\141\174\231\130\185\230\149\176\233\135\143",["min"]=0,["max"]=8},{["name"]="modelPath",["type"]="string",["description"]="\229\164\167\229\156\176\229\155\190\230\141\174\231\130\185\230\168\161\229\158\139\232\183\175\229\190\132"},{["name"]="reserve",["type"]="int",["description"]="\229\136\157\229\167\139\232\161\165\231\187\153\229\130\168\229\164\135",["min"]=0},{["name"]="recruitCost",["type"]="int",["description"]="\230\129\162\229\164\141\228\184\128\229\144\141\229\174\136\229\134\155\231\154\132\232\161\165\231\187\153\230\136\144\230\156\172",["min"]=1},{["name"]="income",["type"]="int",["description"]="\230\175\143\230\136\152\231\149\165\229\145\168\230\156\159\229\130\168\229\164\135\230\148\182\229\133\165",["min"]=0},{["name"]="raidPreference",["type"]="float",["description"]="\232\191\155\230\148\187\229\129\143\229\165\189",["min"]=0},{["name"]="defenseMultiplier",["type"]="float",["description"]="\230\141\174\231\130\185\233\152\178\229\190\161\231\179\187\230\149\176",["min"]=1}},["fingerprint"]="9b3828b23379177f2b763426e544efaa34e1b48e8259e7e8f54d1eb38a75a7b5"}

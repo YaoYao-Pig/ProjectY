@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "name": "VisualEffectItemCategoryTable",
+  "description": "物品拾取、使用及装备展示的类别默认方块粒子；EquipmentItemTable.visualEffectId为0时按kind自动复用，新物品无需重复配表。",
+  "key": "kind",
+  "fields": [
+    {
+      "name": "kind",
+      "type": "string",
+      "description": "EquipmentItemTable.kind对应类别；所有支持类别必须有一行"
+    },
+    {
+      "name": "visualEffectId",
+      "type": "int",
+      "description": "本类别默认方块粒子表现",
+      "ref": "VisualEffectTable",
+      "min": 1
+    }
+  ],
+  "rows": [
+    {
+      "kind": "weapon",
+      "visualEffectId": 10001
+    },
+    {
+      "kind": "rune",
+      "visualEffectId": 10002
+    },
+    {
+      "kind": "magazine",
+      "visualEffectId": 10003
+    },
+    {
+      "kind": "ammo",
+      "visualEffectId": 10004
+    },
+    {
+      "kind": "module",
+      "visualEffectId": 10005
+    },
+    {
+      "kind": "wearable",
+      "visualEffectId": 10006
+    },
+    {
+      "kind": "material",
+      "visualEffectId": 10007
+    },
+    {
+      "kind": "consumable",
+      "visualEffectId": 10008
+    }
+  ]
+}

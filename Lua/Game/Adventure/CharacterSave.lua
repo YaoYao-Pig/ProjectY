@@ -7,6 +7,9 @@ function Save.Validate(adventure,prepared)
     if adventure.shop then adventure.shop.rules:ValidateSaved(CS.ProjectY.Data.ShopData.Prepared(prepared),prepared.LegacyNarrative and 0 or prepared.Narrative.Minutes) end
     if adventure.narrative and not prepared.LegacyNarrative then require('Game.Narrative.NarrativeSave').Validate(adventure.narrative,prepared) end
     local config=adventure.config;local equipment=require('Game.Equipment.EquipmentRules').New(config,prepared.Equipment)
+    local discovered=CS.ProjectY.Data.SkillSynergyDiscovery.PreparedIds(prepared)
+    local synergyDefinitions=config:GetTable('SkillSynergyTable')
+    for i=0,discovered.Length-1 do synergyDefinitions:Get(discovered[i]) end
     local stats=require('Game.Battle.CombatStats')(config,prepared.Equipment)
     local effects=require('Game.Battle.GameEffects').New(stats,config:GetTable('CombatEffectTable'))
     local attributes={};for _,row in ipairs(config:GetTable('GrowthAttributeTable'):All()) do attributes[row.code]=true end
@@ -26,7 +29,7 @@ function Save.Validate(adventure,prepared)
         for j=0,growth.SkillCount-1 do config:GetTable('CombatSkillTable'):Get(growth:GetSkillAt(j)) end
         for j=0,growth.OfferCount-1 do config:GetTable('CombatSkillTable'):Get(growth:GetOfferAt(j)) end
         assert(stats:MaximumHP(actor)==actor.MaxHP,'角色生命上限与当前配置不一致，请迁移存档')
-        local mount=actor.MountedAnimal
+        local mount=CS.ProjectY.Data.AnimalCompanionState.Bound(actor)
         if mount then
             effects:ValidateSaved(mount)
             local species=stats.animals.species:Get(mount.AnimalSpeciesId)
@@ -67,7 +70,7 @@ function Save.Write(adventure)
     local ok,err=pcall(function() adventure.characterSaves:Save(adventure.data,adventure.player) end)
     return ok,ok and '' or tostring(err)
 end
-function Save.Read(adventure)
+function Save.Read(adventure,saveId)
     if adventure.parties.data.IsOpen then return false,'请先结束队伍交互再读取' end
     if adventure.equipment.worldLoot.session.Active then return false,'请先关闭战利品窗口再读取' end
     if adventure.camp.data.IsOpen then return false,'请先关闭营地再读取' end
@@ -75,7 +78,9 @@ function Save.Read(adventure)
     if adventure.narrative and adventure.narrative.data.DialogueOpen then return false,'请先结束对话再读取' end
     if adventure.data.Phase~='map' and adventure.data.Phase~='area' then return false,'只能在探索期间读取队伍' end
     local ok,result=pcall(function()
-        local candidate=adventure.characterSaves:Prepare(adventure.data.Equipment);Save.Validate(adventure,candidate)
+        local candidate=saveId and CS.ProjectY.Data.CampaignSaves.PrepareSelected(adventure.characterSaves,saveId,adventure.data.Equipment)
+            or adventure.characterSaves:Prepare(adventure.data.Equipment)
+        Save.Validate(adventure,candidate)
         return {prepared=candidate,world=require('Game.Adventure.ExpeditionSave').Prepare(adventure,candidate)}
     end)
     if not ok then return false,tostring(result) end

@@ -3,7 +3,7 @@
 local HexGrid = require('Game.Map.HexGrid')
 local Terrain = require('Game.Map.TerrainNoise')
 local Blend = {}
-function Blend.Apply(map, sources, random, noiseScale, width)
+function Blend.Apply(map, sources, random, noiseScale, width, progress)
     local distances, queue, head = {}, {}, 1
     for _, cell in ipairs(map.cells) do
         distances[cell] = { [cell.regionId] = 0 }
@@ -22,8 +22,9 @@ function Blend.Apply(map, sources, random, noiseScale, width)
                 end
             end
         end
+        if progress and head % 1024 == 0 then progress(0) end
     end
-    for _, cell in ipairs(map.cells) do
+    for index, cell in ipairs(map.cells) do
         local ids = {}; for id in pairs(distances[cell]) do ids[#ids + 1] = id end
         table.sort(ids)
         local sum, height, waterSum, waterWeight, kindWeight, waterKind = 0, 0, 0, 0, 0, nil
@@ -61,6 +62,7 @@ function Blend.Apply(map, sources, random, noiseScale, width)
         for _, id in ipairs(sortedTypes) do
             cell.biomeWeights[#cell.biomeWeights + 1] = { regionType = id, weight = types[id] / sum }
         end
+        if progress and index % 256 == 0 then progress(index / #map.cells) end
     end
 end
 return Blend

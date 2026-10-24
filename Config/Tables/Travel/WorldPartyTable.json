@@ -51,6 +51,12 @@
       "name": "shopTemplateId",
       "type": "int",
       "min": 0
+    },
+    {
+      "name": "factionId",
+      "type": "int",
+      "description": "队伍所属组织",
+      "ref": "FactionTable"
     }
   ],
   "rows": [
@@ -64,7 +70,8 @@
       "speed": 0.72,
       "detectRadius": 0,
       "roamRadius": 12,
-      "shopTemplateId": 1
+      "shopTemplateId": 1,
+      "factionId": 1
     },
     {
       "id": 2,
@@ -76,7 +83,8 @@
       "speed": 0.85,
       "detectRadius": 6,
       "roamRadius": 12,
-      "shopTemplateId": 0
+      "shopTemplateId": 0,
+      "factionId": 7
     },
     {
       "id": 3,
@@ -88,7 +96,8 @@
       "speed": 0.9,
       "detectRadius": 5,
       "roamRadius": 12,
-      "shopTemplateId": 0
+      "shopTemplateId": 0,
+      "factionId": 5
     },
     {
       "id": 4,
@@ -100,7 +109,8 @@
       "speed": 0.78,
       "detectRadius": 6,
       "roamRadius": 12,
-      "shopTemplateId": 0
+      "shopTemplateId": 0,
+      "factionId": 4
     },
     {
       "id": 5,
@@ -112,7 +122,8 @@
       "speed": 1.05,
       "detectRadius": 7,
       "roamRadius": 12,
-      "shopTemplateId": 0
+      "shopTemplateId": 0,
+      "factionId": 8
     },
     {
       "id": 6,
@@ -124,7 +135,112 @@
       "speed": 0.55,
       "detectRadius": 5,
       "roamRadius": 12,
-      "shopTemplateId": 0
+      "shopTemplateId": 0,
+      "factionId": 9
+    },
+    {
+      "id": 7,
+      "name": "林庭巡守队",
+      "kind": "hostile",
+      "modelPath": "Assets/DynamicAsset/WorldPartyLowPoly/Models/WorldParty_Caravan.fbx",
+      "encounterId": 407,
+      "count": 2,
+      "speed": 0.82,
+      "detectRadius": 6,
+      "roamRadius": 10,
+      "shopTemplateId": 0,
+      "factionId": 6
+    },
+    {
+      "id": 8,
+      "name": "驿路巡逻队",
+      "kind": "hostile",
+      "modelPath": "Assets/DynamicAsset/WorldPartyLowPoly/Models/WorldParty_Bandits.fbx",
+      "encounterId": 408,
+      "count": 2,
+      "speed": 0.82,
+      "detectRadius": 6,
+      "roamRadius": 10,
+      "shopTemplateId": 0,
+      "factionId": 1
+    },
+    {
+      "id": 11,
+      "name": "传奇 · 血月巨狼 · 裂喉",
+      "kind": "hostile",
+      "modelPath": "Assets/DynamicAsset/WorldPartyLowPoly/Models/WorldParty_Direwolves.fbx",
+      "encounterId": 701,
+      "count": 1,
+      "speed": 1.05,
+      "detectRadius": 5,
+      "roamRadius": 7,
+      "shopTemplateId": 0,
+      "factionId": 11
+    },
+    {
+      "id": 12,
+      "name": "传奇 · 寒潮巨狼 · 听雪",
+      "kind": "hostile",
+      "modelPath": "Assets/DynamicAsset/WorldPartyLowPoly/Models/WorldParty_Direwolves.fbx",
+      "encounterId": 702,
+      "count": 1,
+      "speed": 1.05,
+      "detectRadius": 0,
+      "roamRadius": 7,
+      "shopTemplateId": 0,
+      "factionId": 12
+    },
+    {
+      "id": 13,
+      "name": "传奇 · 磐脊巨兽 · 守誓",
+      "kind": "hostile",
+      "modelPath": "Assets/DynamicAsset/WorldPartyLowPoly/Models/WorldParty_Stonebeast.fbx",
+      "encounterId": 703,
+      "count": 1,
+      "speed": 0.55,
+      "detectRadius": 0,
+      "roamRadius": 7,
+      "shopTemplateId": 0,
+      "factionId": 13
+    },
+    {
+      "id": 14,
+      "name": "传奇 · 熔脉巨兽 · 余烬",
+      "kind": "hostile",
+      "modelPath": "Assets/DynamicAsset/WorldPartyLowPoly/Models/WorldParty_Stonebeast.fbx",
+      "encounterId": 704,
+      "count": 1,
+      "speed": 0.55,
+      "detectRadius": 5,
+      "roamRadius": 7,
+      "shopTemplateId": 0,
+      "factionId": 14
+    },
+    {
+      "id": 15,
+      "name": "传奇 · 叛誓剑士 · 维兰",
+      "kind": "hostile",
+      "modelPath": "Assets/DynamicAsset/WorldPartyLowPoly/Models/WorldParty_Bandits.fbx",
+      "encounterId": 705,
+      "count": 1,
+      "speed": 0.85,
+      "detectRadius": 5,
+      "roamRadius": 7,
+      "shopTemplateId": 0,
+      "factionId": 15
+    },
+    {
+      "id": 16,
+      "name": "传奇 · 引路游侠 · 洛恩",
+      "kind": "hostile",
+      "modelPath": "Assets/DynamicAsset/WorldPartyLowPoly/Models/WorldParty_Bandits.fbx",
+      "encounterId": 706,
+      "count": 1,
+      "speed": 0.85,
+      "detectRadius": 0,
+      "roamRadius": 7,
+      "shopTemplateId": 0,
+      "factionId": 16
     }
   ]
 }

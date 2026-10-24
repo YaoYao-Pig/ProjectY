@@ -1,0 +1,23 @@
+{
+  "date": "2026-10-24",
+  "scope": "Player UI text, fixed prefab captions and UI display models",
+  "languageEntries": 679,
+  "prefabTextBindings": 194,
+  "instantiatedUiDefinitions": 47,
+  "sourceAuditFiles": 118,
+  "checks": [
+    "exported table and source key coverage",
+    "Lua translation overrides and empty strings",
+    "module-level label maps resolve after localization binding",
+    "skill tooltip regression",
+    "growth navigation regression",
+    "inventory stack UI regression",
+    "Unity fixed caption override checks",
+    "Unity C# formatting and real DiceRoll button checks",
+    "ForAI local links"
+  ],
+  "explicitProjectCompilationRequests": 1,
+  "playMode": "not run",
+  "proof": "Art/Localization/dice-english-proof.png",
+  "notes": "Technical identifiers (game title, input key names and existing narrator identity discriminator) remain identifiers. Existing locale selection and hot-reload capabilities are unchanged."
+}

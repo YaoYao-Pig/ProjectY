@@ -23,15 +23,20 @@ try
                 var flags=System.Reflection.BindingFlags.NonPublic|System.Reflection.BindingFlags.Instance;
                 var bindings=typeof(ProjectY.Samples.AdventureRuntimeDemo).GetField("worldPartyBindings",flags).GetValue(demo);
                 var type=typeof(ProjectY.Samples.AdventureRuntimeDemo).Assembly.GetType("ProjectY.Samples.WorldPartyView");
-                var renderer=System.Activator.CreateInstance(type,new object[]{root.transform,bindings,1f});
+                var shader=(Shader)typeof(ProjectY.Samples.AdventureRuntimeDemo).GetField("previewShader",flags).GetValue(demo);
+                var lodSettings=new ProjectY.Samples.MapRenderLod.Settings();
+                var renderer=System.Activator.CreateInstance(type,new object[]{root.transform,bindings,1f,shader,lodSettings});
                 try{
                     type.GetMethod("Sync").Invoke(renderer,new object[]{view});
                     type.GetMethod("Tick").Invoke(renderer,new object[]{view.Travel.Position,1f});
                     var pieces=(GameObject)type.GetField("root",flags).GetValue(renderer);
-                    if(pieces.transform.childCount!=view.WorldParties.Rows.Length+1 || !pieces.activeSelf)throw new System.Exception("World pieces differ from snapshot");
+                    if(pieces.transform.childCount!=0 || !pieces.activeSelf)throw new System.Exception("Snapshot synchronization must not instantiate offscreen detail");
                     var cameraObject=new GameObject("PickingCamera",typeof(Camera));cameraObject.transform.SetParent(root.transform,false);
                     var camera=cameraObject.GetComponent<Camera>();camera.enabled=false;camera.orthographic=true;camera.orthographicSize=8;
                     var party=view.WorldParties.Rows[0];camera.transform.position=party.Position+new Vector3(0,12,-12);camera.transform.LookAt(party.Position);
+                    type.GetMethod("UpdateVisibility",flags).Invoke(renderer,new object[]{camera});
+                    if((int)type.GetProperty("CreatedThisFrame").GetValue(renderer)>lodSettings.creationsPerFrame ||
+                        (int)type.GetProperty("OutsideDetailCount").GetValue(renderer)!=0)throw new System.Exception("World LOD exceeded its visible creation budget");
                     var screen=camera.WorldToScreenPoint(party.Position+Vector3.up*.675f);
                     int hit=(int)type.GetMethod("Pick").Invoke(renderer,new object[]{camera,new Vector2(screen.x,screen.y)});
                     if(hit!=party.Id)throw new System.Exception("Visible party could not be picked");

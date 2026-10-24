@@ -1,0 +1,59 @@
+{
+  "version": 1,
+  "name": "ProfessionCurseTable",
+  "description": "可识别、触发和净化的真实物品诅咒",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "诅咒物品 ID",
+      "ref": "EquipmentItemTable"
+    },
+    {
+      "name": "itemId",
+      "type": "int",
+      "description": "诅咒物品 ID",
+      "ref": "EquipmentItemTable"
+    },
+    {
+      "name": "triggerBuffId",
+      "type": "int",
+      "description": "首次装备触发状态",
+      "ref": "BuffTable"
+    },
+    {
+      "name": "applyEffectId",
+      "type": "int",
+      "description": "首次装备触发效果",
+      "ref": "CombatEffectTable"
+    },
+    {
+      "name": "cleanseItemId",
+      "type": "int",
+      "description": "再次识咒时净化消耗的物品",
+      "ref": "EquipmentItemTable"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "真实触发条件"
+    },
+    {
+      "name": "clue",
+      "type": "text",
+      "description": "真实解除方法"
+    }
+  ],
+  "rows": [
+    {
+      "id": 8008,
+      "itemId": 8008,
+      "triggerBuffId": 12020,
+      "applyEffectId": 20020,
+      "cleanseItemId": 8017,
+      "description": "未净化的血契仪刀首次装备时，持有者获得持久血契诅咒，力量降低 2。",
+      "clue": "先用识咒识别该武器，再携带一份净咒药剂使用识咒净化；净化记录属于该武器实例。"
+    }
+  ]
+}

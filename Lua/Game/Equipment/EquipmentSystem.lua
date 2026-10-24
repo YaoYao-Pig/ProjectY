@@ -5,9 +5,12 @@ function Equipment:OnInit(context)
     System.OnInit(self,context)
     self.adventure=context.services.Adventure;self.data=self.adventure.Equipment
     self.config=context.systems:Get('Config');self.rules=require('Game.Equipment.EquipmentRules').New(self.config,self.data)
+    self.synergies=require('Game.Equipment.SkillSynergies').New(self.config)
     self.rules.affixes:Define(self.data)
     self.initialLoadouts=require('Game.Equipment.InitialLoadout').New(self.config,self.rules,function() return self.context.systems:Get('Battle').stats end)
     self.recipe=self.config:GetTable('EquipmentDemoTable'):Get(1)
+    -- The start menu can load a save before Start grants a new campaign's items.
+    self.data.Grid:Configure(self.recipe.bagWidth,self.recipe.bagHeight)
     self.loot=self.config:GetTable('EquipmentLootTable')
     self.worldLoot=require('Game.Loot.MapLoot').New(self.config,self)
     for _,item in ipairs(self.rules.items:All()) do self.data.Grid:Define(item.id,item.width,item.height) end
@@ -47,6 +50,12 @@ function Equipment:StartPartyLoadouts()
     assert(self:CanGrant(ids,counts),'Initial character equipment exceeds backpack capacity')
     for i=0,self.adventure.PartyCount-1 do self.initialLoadouts:Apply(self.data,self.adventure:GetPartyAt(i)) end
     starters.Apply(self.data,plan)
+    for i=0,self.adventure.PartyCount-1 do
+        local actor=self.adventure:GetPartyAt(i)
+        local main,off=self.rules:Weapon(actor),self.rules:Offhand(actor)
+        if main then self.synergies:Discover(self.adventure,main) end
+        if off then self.synergies:Discover(self.adventure,off) end
+    end
 end
 function Equipment:Actor(id)
     for i=0,self.adventure.PartyCount-1 do local actor=self.adventure:GetPartyAt(i);if actor.Id==id then return actor end end
@@ -58,7 +67,27 @@ function Equipment:IsCarriedMagazine(magazine)
     local owner=self.data:MagazineWeapon(magazine.Id)
     return owner==0 and self.data.Grid:Find('m'..magazine.Id)~=nil or owner~=0 and self:IsCarriedWeapon(self.data:GetWeapon(owner))
 end
-function Equipment:InitializeEnemy(actor) self.initialLoadouts:ApplyEnemy(self.data,actor) end
+function Equipment:InitializeEnemy(actor)
+    for _,id in ipairs(self.rules.units:Get(actor.TemplateId).traitIds) do actor:AddTrait(id) end
+    self.initialLoadouts:ApplyEnemy(self.data,actor)
+end
+function Equipment:TreatDisease(actorId,diseaseId)
+    local Language=require('Language')
+    if self.adventure.Phase~='map' and self.adventure.Phase~='area' then return false,Language.BodyExplorationOnly end
+    local actor=self:Actor(actorId);if not actor then return false,Language.BodyInvalidTreatment end
+    local battle=self.context.systems:Get('Battle')
+    return battle.stats.diseases:Treat(actor,diseaseId,self.data,battle.gameEffects)
+end
+function Equipment:TreatInjury(actorId,partIndex,treatmentId)
+    local Language=require('Language')
+    if self.adventure.Phase~='map' and self.adventure.Phase~='area' then return false,Language.BodyExplorationOnly end
+    local actor=self:Actor(actorId);if not actor then return false,Language.BodyInvalidTreatment end
+    local injuries=self.context.systems:Get('Battle').stats.injuries
+    local allowed,treatment=injuries:Treatment(actor,partIndex,treatmentId,self.data)
+    if not allowed then return false,treatment end
+    assert(CS.ProjectY.Data.BodyHealth.Treat(actor,self.data,partIndex,treatment.itemId,treatment.count,treatment.recovery),'Treatment changed after validation')
+    return true,Language.BodyTreated
+end
 function Equipment:RepairQuote(key)
     if type(key)~='string' or not key:match('^[wg]%d+$') then return nil end
     local id=tonumber(key:sub(2));local item=key:sub(1,1)=='w' and self.data:GetWeapon(id) or self.data:GetWearable(id)
@@ -117,6 +146,8 @@ function Equipment:Command(command,actorId,weaponId,socketId,value)
         if ok then
             local stats=self.context.systems:Get('Battle').stats;actor:SetMaxHP(stats:MaximumHP(actor))
             if previous and previous~=actor then previous:SetMaxHP(stats:MaximumHP(previous)) end
+            self.synergies:Discover(self.adventure,weapon)
+            self.context.systems:Get('Adventure').professionExploration:OnEquip(actor,weapon)
         end
         return ok,'背包空间不足，无法放回原装备'
     end
@@ -135,6 +166,7 @@ function Equipment:Command(command,actorId,weaponId,socketId,value)
             if value~=0 and (not rune or rune.slotKind~=socket.kind) then return false,'组件与挂点不兼容' end
             if value~=0 and self.data:CountItem(value)<1 and weapon:GetRune(socketId)~=value then return false,'背包中没有这个组件' end
             if not self.data:SetRune(weaponId,socketId,value) then return false,'背包空间不足，无法放回原组件' end
+            if value~=0 then self.synergies:Discover(self.adventure,weapon) end
         end
         return true
     elseif command=='fill' then

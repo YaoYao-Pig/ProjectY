@@ -43,7 +43,7 @@ namespace ProjectY.UI
         {
             searchRing.gameObject.SetActive(!revealed && searching);
             if(revealed) return;
-            title.text=searching?"搜索中…":"未搜索";
+            title.text=LuaLanguage.Get(searching?"InventorySearching":"InventoryUnsearched");
             amount.text=searching?Mathf.FloorToInt(progress*100)+"%":"";
             icon.color=new Color(.015f,.023f,.027f,1);
             background.color=new Color(.16f,.19f,.20f);

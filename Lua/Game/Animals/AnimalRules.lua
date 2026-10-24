@@ -59,8 +59,8 @@ function Rules:CellsForSpecies(species,board,q,r,layer)
     end
     return cells
 end
-function Rules:CanPlace(actor,board,q,r,occupied,allowed)
-    local cells=self:Cells(actor,board,q,r);if not cells or #cells==0 then return false end
+function Rules:CanPlace(actor,board,q,r,occupied,allowed,layer)
+    local cells=self:Cells(actor,board,q,r,layer);if not cells or #cells==0 then return false end
     local modified=false
     for _,cell in ipairs(cells) do
         if cell.blocked or (occupied and occupied[Hex.Key(cell.q,cell.r)]) or (allowed and not allowed(cell)) then return false end
@@ -94,28 +94,30 @@ function Rules:AddSkills(actor,ids)
 end
 function Rules:TameChance(source,target,stats)
     local species=assert(self.byUnit[target.TemplateId],'Taming needs an animal')
-    local chance=self.rule.chance:Evaluate({affinity=stats:Get(source,'animalAffinity'),charisma=stats:Get(source,'charisma'),
-        missingHealth=1-target.HP/target.MaxHP,hostile=target.Team==2 and 1 or 0,difficulty=species.tameDifficulty})
+    local values={affinity=stats:Get(source,'animalAffinity'),charisma=stats:Get(source,'charisma'),
+        missingHealth=1-target.HP/target.MaxHP,hostile=target.Team==2 and 1 or 0,difficulty=species.tameDifficulty}
+    local chance=self.rule.chance:Evaluate(values)
     assert(chance==chance and math.abs(chance)<math.huge,'Invalid taming chance')
-    return math.max(self.rule.minimumChance,math.min(self.rule.maximumChance,chance))
+    return math.max(self.rule.minimumChance,math.min(self.rule.maximumChance,chance)),values
 end
 function Rules:CanTame(source,target)
-    if source.MountedAnimal then return false,'已经骑乘动物' end
+    if CS.ProjectY.Data.AnimalCompanionState.Bound(source) then return false,require('Language').ProfessionAlreadyBoundAnimal end
     if source.HP<=0 or source.Team~=1 then return false,'请选择存活的队员' end
     if not target or target.HP<=0 or not self.byUnit[target.TemplateId] or target.AnimalOwnerId~=0 then return false,'请选择未驯服的动物' end
     if target.TameRetryTurns>0 then return false,'动物暂不接受驯服，还需 '..target.TameRetryTurns..' 回合' end
     return true
 end
 function Rules:Tame(source,target,stats)
-    local chance=self:TameChance(source,target,stats)
+    local chance,values=self:TameChance(source,target,stats)
     local species=self.byUnit[target.TemplateId]
-    if target:RollAnimalPercent()>=math.floor(chance*100) then target:DelayTaming(species.tameRetryTurns);return false,chance end
+    local roll=target:RollAnimalPercent()
+    if roll>=math.floor(chance*100) then target:DelayTaming(species.tameRetryTurns);return false,chance,roll/100,values end
     assert(species.rideable,'Non-rideable animal ownership is not configured in this release')
     source:TameAndRide(target,species.initialBond)
-    return true,chance
+    return true,chance,roll/100,values
 end
 function Rules:BattleBond(actor)
-    local mount=actor.MountedAnimal
+    local mount=CS.ProjectY.Data.AnimalCompanionState.Bound(actor)
     if mount and mount.HP>0 then
         local species=self.species:Get(mount.AnimalSpeciesId)
         mount:AddAnimalBond(species.bondPerBattle,species.maximumBond)

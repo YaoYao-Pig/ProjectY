@@ -21,6 +21,7 @@ namespace ProjectY.Samples
         private readonly HashSet<int> known = new HashSet<int>();
         private readonly HashSet<int> enemyCells = new HashSet<int>();
         private readonly HashSet<int> neutralCells = new HashSet<int>();
+        private readonly HashSet<int> alliedCells = new HashSet<int>();
         private readonly HashSet<int> moves = new HashSet<int>();
         private readonly HashSet<int> targets = new HashSet<int>();
         private readonly HashSet<int> selectedTargets = new HashSet<int>();
@@ -45,9 +46,13 @@ namespace ProjectY.Samples
         public void SetState(MapAreaViewData.State state, MapAreaViewData layout)
         {
             known.Clear(); foreach (var cell in state.Known) known.Add(cell);
-            enemyCells.Clear();neutralCells.Clear();
+            enemyCells.Clear();neutralCells.Clear();alliedCells.Clear();
             foreach (var actor in state.Enemies) foreach(var index in actor.OccupiedCells)
-            {enemyCells.Add(index);if(actor.Team==0)neutralCells.Add(index);}
+            {
+                enemyCells.Add(index);
+                if(actor.Team==1 || actor.Team==4)alliedCells.Add(index);
+                else if(actor.Team!=2)neutralCells.Add(index);
+            }
             removed.Clear();
             foreach (var pair in enemies)
                 if (!Array.Exists(state.Enemies, actor => actor.Id == pair.Key))
@@ -106,11 +111,11 @@ namespace ProjectY.Samples
             foreach(var id in removed) {Destroy(enemies[id].View.gameObject);enemies.Remove(id);}
         }
         public void Skip() {foreach(var pawn in enemies.Values) {pawn.Motion.Skip();pawn.View.SkipPresentation();}}
-        private void Mark(Camera camera, MapAreaViewData layout, int cell, Color color)
+        private void Mark(Camera camera, MapAreaViewData layout, int cell, Color color,float radius=.96f)
         {
             properties.SetColor("_Color", QualitySettings.activeColorSpace == ColorSpace.Linear ? color.linear : color);
             var position = layout.Cells[cell].Position + Vector3.up * .06f;
-            Graphics.DrawMesh(ring, Matrix4x4.TRS(position, Quaternion.identity, Vector3.one * layout.Radius * .96f), material, 0, camera, 0, properties,
+            Graphics.DrawMesh(ring, Matrix4x4.TRS(position, Quaternion.identity, Vector3.one * layout.Radius * radius), material, 0, camera, 0, properties,
                 UnityEngine.Rendering.ShadowCastingMode.Off, false);
         }
         public int PickActor(Ray ray,out float distance)
@@ -121,11 +126,12 @@ namespace ProjectY.Samples
                 {actorId=pair.Key;distance=hit;}
             return actorId;
         }
-        public void Draw(Camera camera, AdventureViewData view, MapAreaViewData layout, bool moving, int skillId,IReadOnlyList<int> chosenTargets)
+        public void Draw(Camera camera, AdventureViewData view, MapAreaViewData layout, bool moving, int skillId,IReadOnlyList<int> chosenTargets,IReadOnlyList<AdventureViewData.Cell> landingCells=null)
         {
             if (view.Phase != "battle")
             {
-                foreach (var cell in enemyCells) Mark(camera, layout, cell, neutralCells.Contains(cell)?new Color(.96f,.78f,.22f):new Color(.85f, .27f, .2f));
+                foreach (var cell in enemyCells) Mark(camera, layout, cell, alliedCells.Contains(cell)?new Color(.24f,.76f,.51f)
+                    :neutralCells.Contains(cell)?new Color(.96f,.78f,.22f):new Color(.85f, .27f, .2f));
                 return;
             }
             moves.Clear(); targets.Clear();selectedTargets.Clear();
@@ -133,11 +139,12 @@ namespace ProjectY.Samples
             {
                 if (moving) foreach (var cell in view.Reachable) moves.Add(cell.CellIndex);
                 var skill = Array.Find(view.Skills, row => row.Id == skillId);
-                if (skill != null) foreach (var id in skill.Targets)
+                if (skill != null && landingCells==null) foreach (var id in skill.Targets)
                     foreach(var cell in Array.Find(view.Units, actor => actor.Id == id).OccupiedCells) targets.Add(cell);
                 foreach(var id in chosenTargets)
                     foreach(var cell in Array.Find(view.Units,actor=>actor.Id==id).OccupiedCells)selectedTargets.Add(cell);
-                if(skill!=null) foreach(var index in skill.TargetCells) targets.Add(index-1);
+                if(skill!=null && landingCells==null) foreach(var index in skill.TargetCells) targets.Add(index-1);
+                if(landingCells!=null) foreach(var cell in landingCells)targets.Add(cell.CellIndex);
             }
             foreach (var cell in view.Cells)
             {
@@ -146,11 +153,18 @@ namespace ProjectY.Samples
                 var color = new Color(.22f, .31f, .34f);
                 if (enemyCells.Contains(index)) color = new Color(.85f, .27f, .2f);
                 if (neutralCells.Contains(index)) color = new Color(.96f,.78f,.22f);
+                if (alliedCells.Contains(index)) color = new Color(.24f,.76f,.51f);
                 if (moves.Contains(index)) color = new Color(.24f, .76f, .51f);
                 if (targets.Contains(index)) color = new Color(.97f, .76f, .43f);
                 if (selectedTargets.Contains(index)) color = new Color(.31f, .91f, .83f);
                 if (view.Active.CellIndex == index) color = Color.white;
                 Mark(camera, layout, index, color);
+            }
+            foreach(var trap in view.Traps)
+            {
+                var cell=Array.Find(view.Cells,row=>row.Q==trap.Q && row.R==trap.R);
+                if(cell==null)throw new InvalidOperationException("Visible trap is outside the battle board.");
+                Mark(camera,layout,cell.CellIndex,new Color(1f,.48f,.15f),.55f);
             }
         }
         public Transform Target(int actorId)
@@ -158,6 +172,7 @@ namespace ProjectY.Samples
             if(!enemies.TryGetValue(actorId,out var pawn)) throw new InvalidOperationException("Missing visible HUD enemy: "+actorId);
             return pawn.View.transform;
         }
+        public PawnView PresentationPawn(int actorId) => enemies.TryGetValue(actorId, out var pawn) ? pawn.View : null;
         public Transform HealthTarget(int actorId)
         {
             if(!enemies.TryGetValue(actorId,out var pawn))throw new InvalidOperationException("Missing enemy health target: "+actorId);

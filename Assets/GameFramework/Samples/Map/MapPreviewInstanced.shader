@@ -1,7 +1,15 @@
 // 地图共享的哑光材质；地表图案使用世界米制尺寸，远景自动淡出细缝以减轻闪烁。
 Shader "ProjectY/Map Preview Instanced"
 {
-    Properties { _Color ("Color", Color) = (1,1,1,1) _EmissionColor ("Emission", Color) = (0,0,0,0) _UseVertexColor ("Vertex color", Float) = 0 _UseSurfacePattern ("Surface pattern", Float) = 0 }
+    Properties
+    {
+        _Color ("Color", Color) = (1,1,1,1)
+        [HDR] _EmissionColor ("Emission", Color) = (0,0,0,0)
+        _Metallic ("Metallic", Range(0,1)) = 0
+        _Smoothness ("Smoothness", Range(0,1)) = .08
+        _UseVertexColor ("Vertex color", Float) = 0
+        _UseSurfacePattern ("Surface pattern", Float) = 0
+    }
     SubShader
     {
         Tags { "RenderType"="Opaque" "RenderPipeline"="UniversalPipeline" }
@@ -10,12 +18,13 @@ Shader "ProjectY/Map Preview Instanced"
         #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
         #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/CommonMaterial.hlsl"
         CBUFFER_START(UnityPerMaterial)
-            half4 _EmissionColor;
+            half _Metallic, _Smoothness;
             float _UseVertexColor, _UseSurfacePattern;
         CBUFFER_END
         // Keep the existing CPU property-block contract for instanced map batches.
         UNITY_INSTANCING_BUFFER_START(Props)
             UNITY_DEFINE_INSTANCED_PROP(half4, _Color)
+            UNITY_DEFINE_INSTANCED_PROP(half4, _EmissionColor)
             UNITY_DEFINE_INSTANCED_PROP(float4, _SurfaceData)
             UNITY_DEFINE_INSTANCED_PROP(float4, _SurfaceFinish)
         UNITY_INSTANCING_BUFFER_END(Props)
@@ -37,6 +46,7 @@ Shader "ProjectY/Map Preview Instanced"
         #pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
         #pragma multi_compile _ _FORWARD_PLUS
         #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+        #include "../../Resources/WorldFogSampling.hlsl"
         struct Attributes
         {
             float4 positionOS : POSITION;
@@ -130,9 +140,9 @@ Shader "ProjectY/Map Preview Instanced"
                     o.albedo = lerp(o.albedo, finish.rgb*(.8+.3*noise(p*.5)), moss*.85);
                 }
             }
-            o.metallic = 0;
-            o.smoothness = _UseSurfacePattern > .5 ? finish.w : .08;
-            o.emission = _EmissionColor.rgb;
+            o.metallic = _UseSurfacePattern > .5 ? 0 : _Metallic;
+            o.smoothness = _UseSurfacePattern > .5 ? finish.w : _Smoothness;
+            o.emission = UNITY_ACCESS_INSTANCED_PROP(Props, _EmissionColor).rgb;
             o.alpha = 1;
             o.occlusion = 1;
             o.normalTS = half3(0, 0, 1);
@@ -151,6 +161,7 @@ Shader "ProjectY/Map Preview Instanced"
             lighting.shadowMask = half4(1, 1, 1, 1);
             half4 result = UniversalFragmentPBR(lighting, o);
             result.rgb = MixFog(result.rgb, IN.fogAndVertexLight.x);
+                result.rgb = ApplyWorldFog(result.rgb, IN.worldPos);
             return result;
         }
         ENDHLSL

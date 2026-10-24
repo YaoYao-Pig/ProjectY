@@ -1,10 +1,18 @@
 local Class = require('Core.Class')
 local System = require('Core.LuaSystem')
+local Signal = require('Core.Signal')
 local Actions = require('Game.Narrative.NarrativeActions')
+local Rewards = require('Game.Narrative.MissionRewards')
 local Story = Class('NarrativeSystem', System)
+
+function Story:ctor()
+    System.ctor(self)
+    self.RewardSettled = Signal()
+end
 
 function Story:OnInit(context)
     System.OnInit(self,context)
+    self.RewardSettled.log=context.log
     self.adventure = context.systems:Get('Adventure')
     self.data = assert(context.services.Adventure.Narrative, 'NarrativeData requires C# compilation and xLua bindings')
     self.conditions = context.systems:Get('Condition')
@@ -12,13 +20,19 @@ function Story:OnInit(context)
     self.npcs = require('Game.Narrative.NpcSystem').New(self)
     self.dialogue = require('Game.Narrative.Dialogue').New(self)
     self.adventure.narrative = self; self.adventure.areas.narrative = self
+    self.townMissions = require('Game.Narrative.TownMissions').New(self)
     require('Game.Narrative.NarrativeConditions')(self)
 end
 function Story:OnStart()
     self.unsubscribe = self.adventure.battle.Changed:Subscribe(function(event)
         if event.kind ~= 'defeated' then return end
         local target = event.target or assert(self.adventure.battle:FindUnit(event.targetId))
-        if target.Team == 2 and target.AnimalOwnerId == 0 then self.data:RecordKill(target.TemplateId) end
+        local source=event.sourceId and self.adventure.battle:FindUnit(event.sourceId)
+        if source and source.Team==1 and target.AnimalOwnerId==0 and self.adventure.battle:IsHostile(source,target) then
+            self.data:RecordKill(target.TemplateId)
+            self.townMissions:RecordKill()
+            self.adventure.parties.legends:RecordDefeat(target)
+        end
     end)
 end
 function Story:Start()
@@ -53,12 +67,18 @@ function Story:Claim(kind,id)
     local row = table:Get(id)
     if self.data:Status(kind,id) ~= 'ready' then return false,'任务尚未就绪或已经领取' end
     local plan,reason = Actions.Prepare(self,row.actionIds); if not plan then return false,reason end
-    Actions.Apply(self,plan); self.data:Complete(kind,id); return true
+    local rewards = Actions.Apply(self,plan)
+    self.data:Complete(kind,id)
+    if #rewards > 0 or kind == 'mission' or not row.autoComplete then
+        self.RewardSettled:Emit({title=row.name,kind=kind,id=id,rows=rewards})
+    end
+    return true
 end
 function Story:Refresh()
     if self.adventure.data.PartyCount == 0 then return end
     -- 战斗中只记录击杀；结算回到探索后才流转、发奖或加入新角色。
     if self.adventure.data.Phase ~= 'map' and self.adventure.data.Phase ~= 'area' then return end
+    self.townMissions:Refresh()
     local transitions = 0
     while true do
         local before = self.data.Revision
@@ -103,7 +123,10 @@ function Story:TickBuffs()
     if self.lastBuffMinute==now then return end
     self.lastBuffMinute=now
     local adventure=self.adventure;local changed={}
-    local function visit(actor)if adventure.battle.gameEffects:TickWorldActor(actor,now)then changed[#changed+1]=actor end end
+    local function visit(actor)
+        local recovered=CS.ProjectY.Data.BodyHealth.AdvanceRecovery(actor,now)>0
+        if adventure.battle.gameEffects:TickWorldActor(actor,now) or recovered then changed[#changed+1]=actor end
+    end
     for i=0,adventure.data.PartyCount-1 do visit(adventure.data:GetPartyAt(i)) end
     if adventure.data.Phase=='area' then local state=adventure.data.Areas.Active
         for i=0,state.EncounterCount-1 do local group=state:GetEncounterAt(i)
@@ -121,13 +144,13 @@ function Story:Rows()
         local status = self.data:Status('mission',row.id)
         local available,reason = self:CanAccept(row.id)
         if status ~= 'inactive' or available then
-            local item = {id=row.id,name=row.name,description=row.description,category=row.category,status=status,reason='',quests={}}
+            local item = {id=row.id,name=row.name,description=row.description,category=row.category,status=status,reason='',quests={},rewards=Rewards.Preview(self,row.actionIds)}
             if status == 'ready' then local plan; plan,item.reason = Actions.Prepare(self,row.actionIds); item.claimable = plan ~= nil end
             for _, quest in ipairs(self.rules.questsByMission[row.id] or {}) do
                 local questStatus = self.data:Status('quest',quest.id)
                 if questStatus ~= 'inactive' then
                     local _,why = self.conditions:Check(quest.completeConditionId,{kind='quest',id=quest.id})
-                    item.quests[#item.quests+1] = {id=quest.id,name=quest.name,description=quest.description,status=questStatus,reason=why}
+                    item.quests[#item.quests+1] = {id=quest.id,name=quest.name,description=quest.description,status=questStatus,reason=why,rewards=Rewards.Preview(self,quest.actionIds)}
                 end
             end
             result[#result+1] = item
@@ -137,6 +160,7 @@ function Story:Rows()
 end
 function Story:OnShutdown()
     if self.unsubscribe then self.unsubscribe(); self.unsubscribe=nil end
+    self.RewardSettled:Clear()
     self.data:CloseDialogue()
     self.adventure.narrative=nil; self.adventure.areas.narrative=nil
 end

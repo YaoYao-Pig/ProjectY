@@ -105,6 +105,31 @@
               "name": "Snow",
               "value": 6,
               "description": "冰雪高地"
+            },
+            {
+              "name": "Swamp",
+              "value": 7,
+              "description": "沼泽"
+            },
+            {
+              "name": "DarkForest",
+              "value": 8,
+              "description": "黑暗森林"
+            },
+            {
+              "name": "Lava",
+              "value": 9,
+              "description": "岩浆地"
+            },
+            {
+              "name": "Volcano",
+              "value": 10,
+              "description": "火山"
+            },
+            {
+              "name": "Mushroom",
+              "value": 11,
+              "description": "蘑菇森林"
             }
           ]
         },
@@ -225,6 +250,12 @@
           "type": "int",
           "value": 10000,
           "description": "Web 与 Unity 地图测试的默认目标格数；重复地貌配方直到达到该值"
+        },
+        {
+          "name": "WorldVisionRadius",
+          "type": "int",
+          "value": 8,
+          "description": "大地图小队视野半径，六边格；已探索记录随远征保存"
         }
       ]
     },
@@ -267,6 +298,16 @@
               "name": "Mine",
               "value": 6,
               "description": "三层矿井地牢与坍塌洞口"
+            },
+            {
+              "name": "TrialGround",
+              "value": 7,
+              "description": "骑士比武审判场与封闭观众看台"
+            },
+            {
+              "name": "RoadsideRescue",
+              "value": 8,
+              "description": "路边拦截与后方安全藏身处"
             }
           ]
         }

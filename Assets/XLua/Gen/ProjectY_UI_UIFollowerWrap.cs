@@ -21,12 +21,14 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.UI.UIFollower);
-			Utils.BeginObjectRegister(type, L, translator, 0, 6, 3, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 8, 3, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Bind", _m_Bind);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "BindScreen", _m_BindScreen);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SetScreenPoint", _m_SetScreenPoint);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SetGroundRadius", _m_SetGroundRadius);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Clear", _m_Clear);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "RetainLastWorldPosition", _m_RetainLastWorldPosition);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Project", _m_Project);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Lift", _m_Lift);
 			
@@ -168,6 +170,34 @@ namespace XLua.CSObjectWrap
         }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_SetGroundRadius(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.UI.UIFollower gen_to_be_invoked = (ProjectY.UI.UIFollower)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    float _radius = (float)LuaAPI.lua_tonumber(L, 2);
+                    
+                    gen_to_be_invoked.SetGroundRadius( _radius );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _m_Clear(RealStatePtr L)
         {
 		    try {
@@ -182,6 +212,33 @@ namespace XLua.CSObjectWrap
                 {
                     
                     gen_to_be_invoked.Clear(  );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_RetainLastWorldPosition(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.UI.UIFollower gen_to_be_invoked = (ProjectY.UI.UIFollower)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    
+                    gen_to_be_invoked.RetainLastWorldPosition(  );
                     
                     
                     

@@ -55,6 +55,7 @@ namespace ProjectY.Editor
             try
             {
                 if (root.transform.childCount == 0) build(root);
+                if(name=="BattleHUD"){UpgradeLog(root);UpgradeTurnScroll(root);}
                 root.GetComponent<LuaReference>().ValidateBindings();
                 PrefabUtility.SaveAsPrefabAsset(root, entry.PrefabPath);
                 LuaViewHints.Export(root.GetComponent<LuaReference>(), entry.ViewType);
@@ -136,6 +137,120 @@ namespace ProjectY.Editor
             mark.anchorMin = mark.anchorMax = new Vector2(.5f, 1);
             mark.pivot = new Vector2(.5f, 1); mark.anchoredPosition = new Vector2(0, -4); mark.sizeDelta = new Vector2(42, 14);
             selected.SetAsLastSibling(); selected.gameObject.SetActive(false);
+        }
+        [MenuItem("Project Y/UI/同步战斗日志展开界面")]
+        public static void SyncLogExpansion()
+        {
+            RequireEditMode();
+            var config=AssetDatabase.LoadAssetAtPath<PanelConfig>(PanelConfig.AssetPath);
+            var entry=config==null?null:config.Entries.Find(row=>row.Name=="BattleHUD");
+            if(entry==null || entry.Prefab==null)throw new InvalidOperationException("请先创建战斗 HUD。");
+            var root=PrefabUtility.LoadPrefabContents(entry.PrefabPath);
+            try
+            {
+                UpgradeLog(root);var reference=root.GetComponent<LuaReference>();reference.ValidateBindings();
+                PrefabUtility.SaveAsPrefabAsset(root,entry.PrefabPath);LuaViewHints.Export(reference,entry.ViewType);
+            }
+            finally {PrefabUtility.UnloadPrefabContents(root);}
+            Debug.Log("Battle log expandable scroll view and rich text bindings synchronized.");
+        }
+        [MenuItem("Project Y/UI/同步战斗行动顺序滚动栏")]
+        public static void SyncTurnScroll()
+        {
+            RequireEditMode();
+            var entry=PanelAssets.LoadOrCreate().Get("BattleHUD");
+            var root=PrefabUtility.LoadPrefabContents(entry.PrefabPath);
+            try
+            {
+                UpgradeTurnScroll(root);
+                var reference=root.GetComponent<LuaReference>();reference.ValidateBindings();
+                PrefabUtility.SaveAsPrefabAsset(root,entry.PrefabPath);LuaViewHints.Export(reference,entry.ViewType);
+            }
+            finally {PrefabUtility.UnloadPrefabContents(root);}
+        }
+        private static void UpgradeTurnScroll(GameObject root)
+        {
+            var reference=root.GetComponent<LuaReference>();var hud=root.GetComponent<BattleHUDView>();var layout=hud.EditorLayout;
+            var bindings=new List<LuaReference.Entry>(reference.GetEditorBindings());
+            if(bindings.Exists(row=>row.Key=="TurnList"))return;
+            var turns=layout.Turns;
+            var grid=turns.GetComponent<GridLayoutGroup>();
+            if(grid!=null)Object.DestroyImmediate(grid);
+            var scroll=turns.gameObject.AddComponent<ScrollRect>();scroll.horizontal=true;scroll.vertical=false;
+            scroll.movementType=ScrollRect.MovementType.Clamped;scroll.scrollSensitivity=35;
+            var viewport=Node("Viewport",turns);Stretch(viewport,0,14,0,0);
+            Paint(viewport,Color.clear,true);viewport.gameObject.AddComponent<RectMask2D>();
+            var content=Node("Content",viewport);content.anchorMin=content.anchorMax=content.pivot=new Vector2(0,1);
+            content.anchoredPosition=Vector2.zero;content.sizeDelta=new Vector2(0,62);
+            scroll.viewport=viewport;scroll.content=content;
+            var barRect=Node("HorizontalScrollbar",turns);barRect.anchorMin=Vector2.zero;barRect.anchorMax=new Vector2(1,0);
+            barRect.pivot=Vector2.zero;barRect.anchoredPosition=Vector2.zero;barRect.sizeDelta=new Vector2(0,6);
+            Paint(barRect,Tile,true);
+            var sliding=Node("SlidingArea",barRect);Stretch(sliding);
+            var handle=Plate("Handle",sliding,Gold,true);
+            var bar=barRect.gameObject.AddComponent<Scrollbar>();bar.direction=Scrollbar.Direction.LeftToRight;
+            bar.handleRect=handle.rectTransform;bar.targetGraphic=handle;bar.navigation=new Navigation{mode=Navigation.Mode.None};
+            scroll.horizontalScrollbar=bar;scroll.horizontalScrollbarVisibility=ScrollRect.ScrollbarVisibility.AutoHide;
+            var list=turns.gameObject.AddComponent<LuaReference>();list.SetEditorBindings(Ref("ScrollRect",scroll));
+            var templateAsset=AssetDatabase.LoadAssetAtPath<GameObject>("Assets/DynamicAsset/UI/Prefabs/Battle/BattleTurnWidget.prefab");
+            if(templateAsset==null)throw new InvalidOperationException("BattleTurn template is missing.");
+            var template=(GameObject)PrefabUtility.InstantiatePrefab(templateAsset,turns);
+            template.name="TurnTemplate";template.SetActive(false);
+            bindings.RemoveAll(row=>row.Key=="TurnSlots");
+            bindings.Add(Ref("TurnList",list));bindings.Add(Ref("TurnTemplate",template.GetComponent<LuaReference>()));
+            reference.SetEditorBindings(bindings.ToArray());
+            var position=turns.anchoredPosition;position.y-=(76-turns.sizeDelta.y)*turns.localScale.y;turns.anchoredPosition=position;
+            turns.sizeDelta=new Vector2(turns.sizeDelta.x,76);
+            list.ValidateBindings();template.GetComponent<LuaReference>().ValidateBindings();
+            EditorUtility.SetDirty(hud);
+        }
+        private static void UpgradeLog(GameObject root)
+        {
+            var reference=root.GetComponent<LuaReference>();var hud=root.GetComponent<BattleHUDView>();var layout=hud.EditorLayout;
+            var log=(RectTransform)reference.Get("Log");var logs=reference.GetText("Logs");
+            var bindings=reference.GetEditorBindings();
+            bool installed=Array.Exists(bindings,row=>row.Key=="LogScroll");
+            if(installed)
+            {
+                layout.LogScroll=(ScrollRect)reference.Get("LogScroll");layout.LogOpen=reference.GetButton("LogOpen");
+                layout.LogClose=reference.GetButton("LogClose");layout.LogTitle=reference.GetText("LogTitle");
+            }
+            else
+            {
+                var scrollRoot=Node("LogScroll",log);Stretch(scrollRoot,14,12,14,38);
+                var scroll=scrollRoot.gameObject.AddComponent<ScrollRect>();scroll.horizontal=false;scroll.vertical=true;
+                scroll.movementType=ScrollRect.MovementType.Clamped;scroll.scrollSensitivity=28;
+                var viewport=Node("Viewport",scrollRoot);Stretch(viewport,0,0,14,0);
+                Paint(viewport,Color.clear,true);viewport.gameObject.AddComponent<RectMask2D>();
+                logs.rectTransform.SetParent(viewport,false);
+                logs.rectTransform.anchorMin=new Vector2(0,1);logs.rectTransform.anchorMax=Vector2.one;logs.rectTransform.pivot=new Vector2(0,1);
+                logs.rectTransform.anchoredPosition=Vector2.zero;logs.rectTransform.sizeDelta=Vector2.zero;
+                var fitter=logs.gameObject.GetComponent<ContentSizeFitter>()??logs.gameObject.AddComponent<ContentSizeFitter>();
+                fitter.horizontalFit=ContentSizeFitter.FitMode.Unconstrained;fitter.verticalFit=ContentSizeFitter.FitMode.PreferredSize;
+                scroll.viewport=viewport;scroll.content=logs.rectTransform;
+                var barRect=Node("VerticalScrollbar",scrollRoot);barRect.anchorMin=new Vector2(1,0);barRect.anchorMax=Vector2.one;
+                barRect.pivot=new Vector2(1,.5f);barRect.offsetMin=new Vector2(-8,0);barRect.offsetMax=Vector2.zero;
+                Paint(barRect,new Color(.13f,.16f,.15f),true);
+                var sliding=Node("SlidingArea",barRect);Stretch(sliding);
+                var handle=Plate("Handle",sliding,Gold,true);
+                var bar=barRect.gameObject.AddComponent<Scrollbar>();bar.direction=Scrollbar.Direction.BottomToTop;bar.handleRect=handle.rectTransform;
+                bar.targetGraphic=handle;bar.navigation=new Navigation{mode=Navigation.Mode.None};scroll.verticalScrollbar=bar;
+                var open=log.GetComponent<Button>()??log.gameObject.AddComponent<Button>();open.targetGraphic=log.GetComponent<Image>();
+                open.transition=Selectable.Transition.None;open.navigation=new Navigation{mode=Navigation.Mode.None};
+                var title=Label("LogTitle",log,14,Bright);Stretch(title.rectTransform,14,0,98,8);
+                title.rectTransform.anchorMin=new Vector2(0,1);title.rectTransform.offsetMin=new Vector2(14,-30);
+                Text closeText;var close=Button("LogClose",log,out closeText);closeText.text="收起";
+                var closeRect=(RectTransform)close.transform;closeRect.anchorMin=closeRect.anchorMax=Vector2.one;
+                closeRect.pivot=Vector2.one;closeRect.anchoredPosition=new Vector2(-12,-7);closeRect.sizeDelta=new Vector2(70,25);
+                Bind(root,Ref("LogOpen",open),Ref("LogClose",close),Ref("LogScroll",scroll),Ref("LogTitle",title));
+                layout.LogScroll=scroll;layout.LogOpen=open;layout.LogClose=close;layout.LogTitle=title;
+            }
+            logs.supportRichText=true;logs.fontSize=14;logs.color=Paper;logs.lineSpacing=1.15f;
+            logs.alignment=TextAnchor.UpperLeft;logs.horizontalOverflow=HorizontalWrapMode.Wrap;logs.verticalOverflow=VerticalWrapMode.Overflow;
+            layout.LogText=logs;layout.Labels=root.GetComponentsInChildren<Text>(true);
+            layout.LogTitle.text="战斗记录 · 点击展开";layout.LogClose.gameObject.SetActive(false);layout.LogScroll.enabled=false;
+            if(layout.LogScroll.verticalScrollbar!=null)layout.LogScroll.verticalScrollbar.gameObject.SetActive(false);
+            hud.SetEditorLayout(layout);EditorUtility.SetDirty(hud);
         }
         private static RectTransform Node(string name, Transform parent)
         {
@@ -237,7 +352,7 @@ namespace ProjectY.Editor
             var header = Node("Encounter", safe); Paint(header, Ink, true); Frame(header, Gold);
             var encounter = Label("EncounterName", header, 15, Paper); Stretch(encounter.rectTransform, 12, 31, 8, 5);
             var round = Label("Round", header, 12, Bright); Stretch(round.rectTransform, 12, 7, 8, 35);
-            var turns = Node("Initiative", safe); var turnGrid = Grid(turns, 8, new Vector2(78, 60));
+            var turns = Node("Initiative", safe);
             var party = Node("Party", safe); var partyGrid = party.gameObject.AddComponent<VerticalLayoutGroup>();
             partyGrid.spacing = 8; partyGrid.childControlHeight = false; partyGrid.childControlWidth = true;
             partyGrid.childForceExpandHeight = false; partyGrid.childForceExpandWidth = true;
@@ -252,7 +367,7 @@ namespace ProjectY.Editor
             var items = Node("Items", deck); var itemTitle = Label("SectionLabel", items, 12, Muted); Box(itemTitle.rectTransform, 0, 0, 110, 22, true);
             var itemSlots = Node("Slots", items); Stretch(itemSlots, 0, 0, 0, 28); var itemGrid = Grid(itemSlots, 4, new Vector2(40, 82));
             var hint = Node("Hint", deck); var hintText = Label("Text", hint, 11, Muted);
-            var commands = Node("Commands", deck);
+            var commands = Node("Commands", safe);
             Text endText, moveText, focusText; var endTurn = Button("EndTurn", commands, out endText); Box((RectTransform)endTurn.transform, 0, 0, 142, 46, true);
             endTurn.targetGraphic.color = new Color(.22f, .27f, .20f); endText.color = Bright;
             var move = Button("Move", commands, out moveText); Box((RectTransform)move.transform, 0, 54, 142, 32, true);
@@ -269,7 +384,7 @@ namespace ProjectY.Editor
             var hud = root.AddComponent<BattleHUDView>();
             hud.SetEditorLayout(new BattleHUDView.Layout { Root = rect, SafeArea = safe, Header = header, Turns = turns, Party = party,
                 Deck = deck, Skills = skills, Items = items, Commands = commands, Hint = hint, Log = log, Tooltip = tooltip,
-                SkillGrid = skillGrid, ItemGrid = itemGrid, TurnGrid = turnGrid, Labels = root.GetComponentsInChildren<Text>(true) });
+                SkillGrid = skillGrid, ItemGrid = itemGrid, Labels = root.GetComponentsInChildren<Text>(true) });
             Bind(root, Ref("HUD", hud), Ref("Group", root.GetComponent<CanvasGroup>()), Ref("Encounter", encounter), Ref("Round", round),
                 Ref("PartySlots", party), Ref("TurnSlots", turns), Ref("SkillSlots", skillSlots), Ref("ItemSlots", itemSlots),
                 Ref("SkillTitle", skillTitle), Ref("ItemTitle", itemTitle), Ref("Hint", hintText), Ref("EndTurn", endTurn), Ref("EndTurnText", endText),

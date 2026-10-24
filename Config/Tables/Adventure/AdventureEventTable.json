@@ -550,6 +550,62 @@
       "illustration": "Assets/DynamicAsset/UI/Art/Story/Expansion202610/snowbound_market.png",
       "actorAttribute": "cooking",
       "logKind": "event"
+    },
+    {
+      "id": 301,
+      "name": "骑士审判",
+      "description": "城镇外传来号角声。人群正赶往一处搭有看台的审判场：一名遭到诬陷的骑士要求以比武审判证明清白。你可以前往现场，决定是否援助他。",
+      "repeatable": true,
+      "choiceIds": [
+        3011,
+        3012
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Wayfarers.png",
+      "actorAttribute": "",
+      "logKind": "event"
+    },
+    {
+      "id": 302,
+      "name": "为骑士而战",
+      "description": "木看台上的观众渐渐安静。骑士独自站在场内，控方的斗士已在对面列阵。\n\n你可以作为支持者加入比武审判。骑士会自主行动，你负责支援。只有获胜且骑士存活，才能邀请他入队；一旦失败，他将被处决。",
+      "repeatable": true,
+      "choiceIds": [
+        3021,
+        3022
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Wayfarers.png",
+      "actorAttribute": "",
+      "logKind": "event"
+    },
+    {
+      "id": 303,
+      "name": "神秘逃兵",
+      "description": "一个浑身负伤的人从路旁跌撞而出，手臂、腿部和躯干都有伤。他回头望向远处，追兵正沿着道路逼近。你可以靠近他，决定是否出手相助。",
+      "repeatable": true,
+      "choiceIds": [
+        3031,
+        3032
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Wayfarers.png",
+      "actorAttribute": "",
+      "logKind": "event"
+    },
+    {
+      "id": 304,
+      "name": "挡住追兵",
+      "description": "伤者躲进道路后方的掩蔽处，已经无力战斗。追兵正在逼近。\n\n如果愿意帮助他，你的小队需要拦住并击败追兵。获胜后可以邀请他同行；他会带伤入队，腿部、手臂和躯干的伤势分别需要 1、2、3 个游戏日恢复。",
+      "repeatable": true,
+      "choiceIds": [
+        3041,
+        3042
+      ],
+      "presentation": "complex",
+      "illustration": "Assets/DynamicAsset/UI/Art/Story/Wayfarers.png",
+      "actorAttribute": "",
+      "logKind": "event"
     }
   ]
 }

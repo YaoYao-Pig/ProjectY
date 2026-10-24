@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "name": "SkillTagTable",
+  "description": "技能说明的彩色类别标记；颜色支持 Config.Color 的十六进制格式。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "string",
+      "description": "稳定标签代号"
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "标签文字"
+    },
+    {
+      "name": "textColor",
+      "type": "string",
+      "description": "文字色"
+    },
+    {
+      "name": "backgroundColor",
+      "type": "string",
+      "description": "标签底色"
+    }
+  ],
+  "rows": [
+    {
+      "id": "attack",
+      "name": "攻击",
+      "textColor": "#FFD0B6",
+      "backgroundColor": "#603B2DE6"
+    },
+    {
+      "id": "spell",
+      "name": "法术",
+      "textColor": "#DCC9FF",
+      "backgroundColor": "#493A64E6"
+    },
+    {
+      "id": "physical",
+      "name": "物理",
+      "textColor": "#ECD5A8",
+      "backgroundColor": "#574932E6"
+    },
+    {
+      "id": "support",
+      "name": "辅助",
+      "textColor": "#ADE9D6",
+      "backgroundColor": "#294F4AE6"
+    },
+    {
+      "id": "craft",
+      "name": "技艺",
+      "textColor": "#E3CF9D",
+      "backgroundColor": "#554B30E6"
+    },
+    {
+      "id": "animal",
+      "name": "驭兽",
+      "textColor": "#D4E6B5",
+      "backgroundColor": "#405032E6"
+    },
+    {
+      "id": "healing",
+      "name": "治疗",
+      "textColor": "#B8ECC4",
+      "backgroundColor": "#34583CE6"
+    },
+    {
+      "id": "control",
+      "name": "控制",
+      "textColor": "#C4D7F3",
+      "backgroundColor": "#374B68E6"
+    },
+    {
+      "id": "preparation",
+      "name": "准备",
+      "textColor": "#E3DCB9",
+      "backgroundColor": "#514E3CE6"
+    },
+    {
+      "id": "item",
+      "name": "道具",
+      "textColor": "#D3D8DC",
+      "backgroundColor": "#424C54E6"
+    },
+    {
+      "id": "exploration",
+      "name": "探索",
+      "textColor": "#CFDFB4",
+      "backgroundColor": "#3E5038E6"
+    }
+  ]
+}

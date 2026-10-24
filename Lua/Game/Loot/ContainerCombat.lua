@@ -4,6 +4,7 @@ local Random=require('Game.Map.SeededRandom')
 local Trajectory=require('Game.Battle.SkillTrajectory')
 local Instructions=require('Game.Battle.EffectInstructions')
 local Projectiles=require('Game.Battle.ProjectileCombat')
+local VisualEffects=require('Game.Presentation.VisualEffects')
 local Combat={};Combat.__index=Combat
 function Combat.New(adventure)
     local self=setmetatable({adventure=adventure,loot=adventure.equipment.worldLoot},Combat)
@@ -62,15 +63,18 @@ function Combat:Target(actor,skill,id,battle)
         occupied=battle and battle:ShotOccupancy(actor) or areas:ShotOccupancy(actor.Id,nil,nil,origin.layer)
     end
     local best,distance,shotOrigin
+    local nearest=math.huge
     for i=0,physical.CellCount-1 do local target=area.cells[physical:GetCellAt(i)]
         if target.layer==origin.layer and (not battle or battle.board.byIndex[target.index]) then
             local bonus=battle and battle.construction and battle.construction:RangeBonusAt(battle.board,actor,target,skill) or 0
             bonus=math.max(bonus,self.adventure.battle.stats.heightAdvantage:RangeBonus(origin,target,skill))
             for _,part in ipairs(parts) do local range=Hex.Distance(part.q,part.r,target.q,target.r)
-                if range<=skill.range+bonus and Trajectory.CanReach(board,part,target,skill.trajectory,occupied,skill.guided) and (not distance or range<distance) then best,distance,shotOrigin=target,range,part end
+                nearest=math.min(nearest,range)
+                if range>=skill.minRange and range<=skill.range+bonus and Trajectory.CanReach(board,part,target,skill.trajectory,occupied,skill.guided) and (not distance or range<distance) then best,distance,shotOrigin=target,range,part end
             end
         end
     end
+    if nearest<skill.minRange then return false,'容器距离过近（至少 '..skill.minRange..' 格）' end
     if not best then return false,'容器超出射程、位于其他楼层或被遮挡' end
     return true,nil,container,best,shotOrigin
 end
@@ -113,6 +117,7 @@ function Combat:PrepareShots(plans,actor,skill,battle)
     local area=self.adventure.areas:ActiveLayout()
     for _,plan in ipairs(plans)do
         local context=self:ShotContext(actor,battle,plan.origin)
+        plan.vfxSource=VisualEffects.Source(actor,context.origin)
         plan.cell=plan.cell or assert(area.cells[plan.physical:GetCellAt(0)])
         local profile=Projectiles.Profile(owner,actor,skill,plan.cell,context)
         assert(profile.reachable,'Prepared container shot became unreachable')
@@ -130,7 +135,8 @@ function Combat:ApplyDamage(plan,actor,skill,battle)
                     for i=0,plan.container.ItemCount-1 do if plan.container:GetCountAt(i)>0 then remaining=true;break end end
                     if not remaining then state:Loot(plan.container.Id) end
                 end
-                if battle then battle:Emit('container_damage',skill.name..' → '..plan.container.Name..'（耐久 -'..actual..'）'..(plan.physical.Destroyed and ' 已破坏' or ''),actor.Id) end
+                if battle then battle:Emit('container_damage',skill.name..' → '..plan.container.Name..'（耐久 -'..actual..'）'..(plan.physical.Destroyed and ' 已破坏' or ''),actor.Id,nil,actual,nil,false,
+                    {actionName=skill.name,targetName=plan.container.Name,remaining=plan.physical.Durability,maximum=plan.physical.MaxDurability}) end
     end end
 end
 function Combat:Apply(plans,actor,skill,roll,battle,shot)
@@ -142,10 +148,19 @@ function Combat:Apply(plans,actor,skill,roll,battle,shot)
             local context=self:ShotContext(actor,battle,plan.origin)
             if not plan.interceptions then self:PrepareShots({plan},actor,skill,battle) end
             local profile=Projectiles.Profile(owner,actor,skill,plan.cell,context)
-            local blocker=profile.reachable and Projectiles.Intercept(profile,roll)
-            if blocker then Projectiles.ApplyBlocker(owner,actor,skill,blocker,plan.interceptions,{shot=shot or 1},context)
-            elseif profile.reachable and Projectiles.Hit(profile,roll)then self:ApplyDamage(plan,actor,skill,battle)
-            elseif battle then battle:Emit('miss',skill.name..' 未命中 '..plan.container.Name,actor.Id) end
+            local blocker=profile.reachable and Projectiles.Intercept(profile,roll,battle and battle.checks and function(row,value,passed)
+                battle.checks(actor,row.actor,skill,'拦截',row.chance,value,passed,{targetName=row.actor and battle.stats:Template(row.actor).name or row.name,shot=shot,successLabel='拦截',failureLabel='穿过'})
+            end)
+            if blocker then Projectiles.ApplyBlocker(owner,actor,skill,blocker,plan.interceptions,{shot=shot or 1},context,plan.vfxSource)
+            elseif profile.reachable and Projectiles.Hit(profile,roll,battle and battle.checks and function(value,passed)
+                battle.checks(actor,nil,skill,'命中',profile.baseHitChance,value,passed,{targetName=plan.container.Name,shot=shot,successLabel='命中',failureLabel='落空'})
+            end)then
+                self:ApplyDamage(plan,actor,skill,battle)
+                VisualEffects.Skill(owner,plan.vfxSource,skill,nil,shot,'hit',plan.cell)
+            else
+                if battle then battle:Emit('miss',skill.name..' 未命中 '..plan.container.Name,actor.Id,nil,0,nil,false,{actionName=skill.name,targetName=plan.container.Name}) end
+                VisualEffects.Skill(owner,plan.vfxSource,skill,nil,shot,'miss',plan.cell)
+            end
         end
     end
 end

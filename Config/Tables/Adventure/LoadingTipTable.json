@@ -1,0 +1,21 @@
+{
+  "version": 1,
+  "name": "LoadingTipTable",
+  "description": "Loading 界面的建议与骚话，启用项随机轮换，相邻两条不重复；时长使用未缩放秒数。",
+  "key": "id",
+  "fields": [
+    {"name": "id", "type": "int", "description": "稳定文案编号", "min": 1},
+    {"name": "enabled", "type": "bool", "description": "是否加入随机文案池"},
+    {"name": "category", "type": "string", "description": "显示标签，例如旅途建议、酒馆闲话"},
+    {"name": "content", "type": "text", "description": "显示正文，使用纯文本"},
+    {"name": "duration", "type": "float", "description": "本条停留秒数，加载完成立即结束，无需等完", "min": 1, "max": 60}
+  ],
+  "rows": [
+    {"id": 1, "enabled": true, "category": "旅途建议", "content": "出发前看看队伍和装备。勇气很重要，带上武器也很重要。", "duration": 6},
+    {"id": 2, "enabled": true, "category": "旅途建议", "content": "F5 可以保存当前远征。别把整段冒险都押在“应该不会出事”上。", "duration": 6},
+    {"id": 3, "enabled": true, "category": "旅途建议", "content": "相同种子和地图规模可以重现世界布局。记下种子，下次还能故地重游。", "duration": 6},
+    {"id": 4, "enabled": true, "category": "酒馆闲话", "content": "地图正在展开。迷路的责任，我们暂时还不承担。", "duration": 5},
+    {"id": 5, "enabled": true, "category": "酒馆闲话", "content": "正在给山放石头，给河加水，给冒险家安排一点小麻烦。", "duration": 5},
+    {"id": 6, "enabled": true, "category": "酒馆闲话", "content": "酒馆老板说前方很安全。他还说这杯没有兑水。", "duration": 5}
+  ]
+}

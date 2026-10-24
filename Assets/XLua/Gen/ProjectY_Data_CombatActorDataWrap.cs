@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.CombatActorData);
-			Utils.BeginObjectRegister(type, L, translator, 0, 27, 28, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 28, 28, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "InitializeAnimal", _m_InitializeAnimal);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "RollAnimalPercent", _m_RollAnimalPercent);
@@ -49,6 +49,7 @@ namespace XLua.CSObjectWrap
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Damage", _m_Damage);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Heal", _m_Heal);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "SetGuard", _m_SetGuard);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Replenish", _m_Replenish);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Restore", _m_Restore);
 			
 			
@@ -862,6 +863,33 @@ namespace XLua.CSObjectWrap
                     int _amount = LuaAPI.xlua_tointeger(L, 2);
                     
                     gen_to_be_invoked.SetGuard( _amount );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_Replenish(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.CombatActorData gen_to_be_invoked = (ProjectY.Data.CombatActorData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    
+                    gen_to_be_invoked.Replenish(  );
                     
                     
                     

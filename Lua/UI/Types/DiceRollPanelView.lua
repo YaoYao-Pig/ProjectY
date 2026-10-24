@@ -1,0 +1,21 @@
+---@meta
+-- Generated from LuaReference. Do not edit; never require this file.
+---@class DiceRollPanelView
+---@field Root CS.UnityEngine.RectTransform
+---@field Canvas CS.UnityEngine.Canvas
+---@field Panel CS.ProjectY.UI.LuaPanel
+---@field Dice CS.ProjectY.UI.DiceRollView
+---@field Image CS.UnityEngine.UI.RawImage
+---@field Title CS.TMPro.TextMeshProUGUI
+---@field Detail CS.TMPro.TextMeshProUGUI
+---@field Result CS.TMPro.TextMeshProUGUI
+---@field Continue CS.UnityEngine.UI.Button
+---@field Reveal CS.UnityEngine.UI.Button
+---@field Digit0 CS.TMPro.TextMeshProUGUI
+---@field Digit1 CS.TMPro.TextMeshProUGUI
+---@field Digit2 CS.TMPro.TextMeshProUGUI
+---@field Digit3 CS.TMPro.TextMeshProUGUI
+---@field Digit4 CS.TMPro.TextMeshProUGUI
+---@field Digit5 CS.TMPro.TextMeshProUGUI
+local View = {}
+return View

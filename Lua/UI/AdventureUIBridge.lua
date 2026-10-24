@@ -30,6 +30,16 @@ return function(command,demo)
         local dialogue=main:Get('Narrative').data.DialogueOpen
         if dialogue and not ui:IsOpen('Dialogue') then ui:Open('Dialogue',{demo=demo})
         elseif not dialogue and ui:IsOpen('Dialogue') then ui:Close('Dialogue') end
+        if data.Phase~='map' and data.Phase~='area' and ui:IsOpen('MissionJournal') then ui:Close('MissionJournal') end
+        if data.Phase=='area' and not dialogue then
+            local state=data.Areas.Active;local missions=main:Get('Narrative').townMissions
+            if state.InteractionKind==2 then
+                local npc=main:Get('MapArea'):ActiveLayout().npcs[state.InteractionId]
+                if not npc.narrativeId and not npc.facilityId and missions:HasPublisher(data.Areas.ActiveSiteId,missions:NpcId(npc)) and not ui:IsOpen('MissionJournal') then
+                    ui:Open('MissionJournal',{demo=demo,townSiteId=data.Areas.ActiveSiteId,townNpcId=missions:NpcId(npc)})
+                end
+            end
+        end
         local shop=main:Get('Adventure').shop
         if shop.data.IsOpen and (data.Phase~='area' or shop.data.Active.SiteId~=data.Areas.ActiveSiteId) then shop:Close() end
         if shop.data.IsOpen and not ui:IsOpen('Shop') then ui:Open('Shop',{demo=demo})

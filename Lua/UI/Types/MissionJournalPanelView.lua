@@ -15,6 +15,12 @@
 ---@field MissionsScroll CS.UnityEngine.UI.ScrollRect
 ---@field DetailTitle CS.ProjectY.UI.UITxt
 ---@field Description CS.ProjectY.UI.UITxt
+---@field Objective CS.ProjectY.UI.UITxt
+---@field RewardTitle CS.ProjectY.UI.UITxt
+---@field Rewards CS.UnityEngine.RectTransform
+---@field PrimaryAction CS.UnityEngine.UI.Button
+---@field PrimaryText CS.ProjectY.UI.UITxt
+---@field PrimaryHint CS.ProjectY.UI.UITxt
 ---@field Style CS.ProjectY.UI.NarrativeView
 local View = {}
 return View

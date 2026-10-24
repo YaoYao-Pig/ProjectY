@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "name": "DiseaseTable",
+  "description": "创伤疾病与治疗配置，状态沿用Buff存档",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "疾病规则编号",
+      "min": 1
+    },
+    {
+      "name": "buffId",
+      "type": "int",
+      "description": "持久疾病状态",
+      "ref": "BuffTable"
+    },
+    {
+      "name": "effectId",
+      "type": "int",
+      "description": "成功感染时施加的效果",
+      "ref": "CombatEffectTable"
+    },
+    {
+      "name": "chance",
+      "type": "int",
+      "description": "新创伤后感染概率，百分比",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "itemId",
+      "type": "int",
+      "description": "治疗药品",
+      "ref": "EquipmentItemTable"
+    },
+    {
+      "name": "count",
+      "type": "int",
+      "description": "治疗消耗",
+      "min": 1
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "buffId": 11001,
+      "effectId": 1902,
+      "chance": 20,
+      "itemId": 190,
+      "count": 1
+    }
+  ]
+}

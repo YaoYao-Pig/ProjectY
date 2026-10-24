@@ -1,0 +1,57 @@
+{
+  "version": 1,
+  "name": "InjuryTypeTable",
+  "description": "直接攻击造成的创伤类型",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定编号",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "创伤名称"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "说明"
+    },
+    {
+      "name": "damageScale",
+      "type": "float",
+      "description": "部位损伤倍率",
+      "min": 0.1,
+      "max": 3
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "挫伤",
+      "description": "钝击造成肌肉与软组织损伤。",
+      "damageScale": 1
+    },
+    {
+      "id": 2,
+      "name": "割裂伤",
+      "description": "利刃撕裂组织；重复受创可留下永久损伤。",
+      "damageScale": 1.1
+    },
+    {
+      "id": 3,
+      "name": "穿刺伤",
+      "description": "箭矢、枪弹或尖刺造成深层损伤。",
+      "damageScale": 1.2
+    },
+    {
+      "id": 4,
+      "name": "烧伤",
+      "description": "火焰与高温灼伤组织。",
+      "damageScale": 1.15
+    }
+  ]
+}

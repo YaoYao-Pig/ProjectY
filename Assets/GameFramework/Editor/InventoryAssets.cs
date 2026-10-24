@@ -36,7 +36,7 @@ namespace ProjectY.Editor
                 LuaViewHints.Export(root.GetComponent<LuaReference>(),entry.ViewType);
             }
             finally {PrefabUtility.UnloadPrefabContents(root);}
-            EquipmentAssets.SyncItemIcons();EquipmentRepairAssets.Sync();AssetDatabase.SaveAssets();
+            EquipmentAssets.SyncItemIcons();EquipmentRepairAssets.Sync();BodyHealthAssets.Sync();AssetDatabase.SaveAssets();
             Debug.Log("Inventory panel and LuaReference bindings saved.");
         }
         private static RectTransform Node(string name,Transform parent)

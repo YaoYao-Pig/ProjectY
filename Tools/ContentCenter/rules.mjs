@@ -5,6 +5,14 @@ export function validateContent(tables) {
   const get=(name,id)=>{const row=rows(name).find(r=>r.id===id);check(row,`${name}[${id}] missing`);return row;};
   const pairs=(name,a,b)=>{for(const r of rows(name))check(r[a].length===r[b].length,`${name}[${r.id}] ${a}/${b} length mismatch`);};
   for(const [name,a,b] of [['CombatUnitTable','attributeNames','attributeValues'],['EquipmentWearableTable','attributeNames','attributeValues'],['EquipmentRequirementTable','attributeIds','values'],['AdventureChoiceTable','itemIds','itemCounts'],['EquipmentLootTable','itemIds','counts'],['EquipmentDemoTable','starterItemIds','starterCounts']])pairs(name,a,b);
+  for(const trait of rows('CombatTraitTable')){
+    check(trait.attribute!==''||trait.amount===0,`Trait ${trait.id}: bonus requires an attribute`);
+    check(trait.attribute!==''||trait.onHitEffectIds.length>0,`Trait ${trait.id}: no effect`);
+    if(trait.attribute!=='')check(rows('GrowthAttributeTable').some(r=>r.code===trait.attribute),`Trait ${trait.id}: unknown attribute`);
+    check(new Set(trait.onHitEffectIds).size===trait.onHitEffectIds.length,`Trait ${trait.id}: duplicate on-hit effect`);
+    for(const id of trait.onHitEffectIds)check(['apply_buff','damage','heal','guard','remove_buffs'].includes(get('CombatEffectTable',id).kind),`Trait ${trait.id}: unsupported on-hit effect`);
+  }
+  for(const unit of rows('CombatUnitTable'))check(new Set(unit.traitIds).size===unit.traitIds.length,`Unit ${unit.id}: duplicate innate trait`);
   for(const r of rows('EquipmentItemTable')) {
     const sub={weapon:'EquipmentWeaponTable',wearable:'EquipmentWearableTable',rune:'EquipmentRuneTable',module:'EquipmentRuneTable',magazine:'EquipmentMagazineTable'}[r.kind];
     if(sub)get(sub,r.id);

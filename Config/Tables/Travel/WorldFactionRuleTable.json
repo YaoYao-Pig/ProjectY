@@ -1,0 +1,195 @@
+{
+  "version": 1,
+  "name": "WorldFactionRuleTable",
+  "description": "势力关系、战略门槛、战场生命周期与据点恢复的可调规则。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "规则 ID"
+    },
+    {
+      "name": "hostileThreshold",
+      "type": "int",
+      "description": "hostileThreshold"
+    },
+    {
+      "name": "alliedThreshold",
+      "type": "int",
+      "description": "alliedThreshold"
+    },
+    {
+      "name": "thinkMinutes",
+      "type": "int",
+      "description": "thinkMinutes"
+    },
+    {
+      "name": "raidAdvantage",
+      "type": "float",
+      "description": "raidAdvantage"
+    },
+    {
+      "name": "siegeAdvantage",
+      "type": "float",
+      "description": "siegeAdvantage"
+    },
+    {
+      "name": "maximumExpeditionMinutes",
+      "type": "int",
+      "description": "maximumExpeditionMinutes"
+    },
+    {
+      "name": "distanceScale",
+      "type": "int",
+      "description": "distanceScale"
+    },
+    {
+      "name": "rewardScale",
+      "type": "int",
+      "description": "rewardScale"
+    },
+    {
+      "name": "reserveFraction",
+      "type": "float",
+      "description": "reserveFraction"
+    },
+    {
+      "name": "switchMultiplier",
+      "type": "float",
+      "description": "switchMultiplier"
+    },
+    {
+      "name": "roamRadius",
+      "type": "int",
+      "description": "roamRadius"
+    },
+    {
+      "name": "siteSafeRadius",
+      "type": "int",
+      "description": "siteSafeRadius"
+    },
+    {
+      "name": "siteSpacing",
+      "type": "int",
+      "description": "siteSpacing"
+    },
+    {
+      "name": "siteSearchRadius",
+      "type": "int",
+      "description": "siteSearchRadius"
+    },
+    {
+      "name": "retreatMinutes",
+      "type": "int",
+      "description": "retreatMinutes"
+    },
+    {
+      "name": "occupationProtectionMinutes",
+      "type": "int",
+      "description": "解放后的袭击保护分钟"
+    },
+    {
+      "name": "recoveryInitial",
+      "type": "float",
+      "description": "recoveryInitial"
+    },
+    {
+      "name": "recoveryMinutes",
+      "type": "int",
+      "description": "解放后完全恢复所需游戏分钟"
+    },
+    {
+      "name": "conflictMinimumMinutes",
+      "type": "int",
+      "description": "交战最短游戏分钟"
+    },
+    {
+      "name": "conflictMaximumMinutes",
+      "type": "int",
+      "description": "conflictMaximumMinutes"
+    },
+    {
+      "name": "conflictTickMinutes",
+      "type": "int",
+      "description": "conflictTickMinutes"
+    },
+    {
+      "name": "ruinMinutes",
+      "type": "int",
+      "description": "ruinMinutes"
+    },
+    {
+      "name": "attrition",
+      "type": "float",
+      "description": "attrition"
+    },
+    {
+      "name": "retreatHealth",
+      "type": "float",
+      "description": "retreatHealth"
+    },
+    {
+      "name": "aidReputation",
+      "type": "int",
+      "description": "aidReputation"
+    },
+    {
+      "name": "attackReputation",
+      "type": "int",
+      "description": "attackReputation"
+    },
+    {
+      "name": "maximumRouteThreat",
+      "type": "float",
+      "description": "路线威胁与自身战力的硬上限",
+      "min": 0
+    },
+    {
+      "name": "minimumActionScore",
+      "type": "float",
+      "description": "低于该效用时保持巡逻休整",
+      "min": 0
+    },
+    {
+      "name": "reserveCapacity",
+      "type": "int",
+      "description": "单个据点的补给储备上限",
+      "min": 1
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "hostileThreshold": -30,
+      "alliedThreshold": 40,
+      "thinkMinutes": 30,
+      "raidAdvantage": 1.15,
+      "siegeAdvantage": 1.6,
+      "maximumExpeditionMinutes": 480,
+      "distanceScale": 120,
+      "rewardScale": 100,
+      "reserveFraction": 0.4,
+      "switchMultiplier": 1.25,
+      "roamRadius": 10,
+      "siteSafeRadius": 8,
+      "siteSpacing": 12,
+      "siteSearchRadius": 30,
+      "retreatMinutes": 360,
+      "occupationProtectionMinutes": 1440,
+      "recoveryInitial": 0.35,
+      "recoveryMinutes": 4320,
+      "conflictMinimumMinutes": 45,
+      "conflictMaximumMinutes": 150,
+      "conflictTickMinutes": 10,
+      "ruinMinutes": 1440,
+      "attrition": 0.09,
+      "retreatHealth": 0.25,
+      "aidReputation": 8,
+      "attackReputation": -30,
+      "maximumRouteThreat": 1.25,
+      "minimumActionScore": 0.04,
+      "reserveCapacity": 1000
+    }
+  ]
+}

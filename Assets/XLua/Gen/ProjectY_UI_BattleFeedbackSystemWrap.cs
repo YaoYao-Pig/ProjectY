@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.UI.BattleFeedbackSystem);
-			Utils.BeginObjectRegister(type, L, translator, 0, 9, 1, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 9, 2, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "QueueHealth", _m_QueueHealth);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "QueueImpact", _m_QueueImpact);
@@ -35,6 +35,7 @@ namespace XLua.CSObjectWrap
 			
 			
 			Utils.RegisterFunc(L, Utils.GETTER_IDX, "ScreenOffset", _g_get_ScreenOffset);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "BurstHitInterval", _g_get_BurstHitInterval);
             
 			
 			
@@ -355,6 +356,20 @@ namespace XLua.CSObjectWrap
 			
                 ProjectY.UI.BattleFeedbackSystem gen_to_be_invoked = (ProjectY.UI.BattleFeedbackSystem)translator.FastGetCSObj(L, 1);
                 translator.PushUnityEngineVector2(L, gen_to_be_invoked.ScreenOffset);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_BurstHitInterval(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.UI.BattleFeedbackSystem gen_to_be_invoked = (ProjectY.UI.BattleFeedbackSystem)translator.FastGetCSObj(L, 1);
+                LuaAPI.lua_pushnumber(L, gen_to_be_invoked.BurstHitInterval);
             } catch(System.Exception gen_e) {
                 return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
             }

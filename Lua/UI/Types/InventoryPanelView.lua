@@ -51,5 +51,37 @@
 ---@field Character CS.ProjectY.UI.InventoryCharacterView
 ---@field Repair CS.UnityEngine.UI.Button
 ---@field RepairText CS.UnityEngine.UI.Text
+---@field Health CS.UnityEngine.UI.Button
+---@field HealthText CS.UnityEngine.UI.Text
+---@field HealthOverlay CS.UnityEngine.RectTransform
+---@field HealthBack CS.UnityEngine.UI.Button
+---@field HealthBackText CS.UnityEngine.UI.Text
+---@field HealthPart0 CS.UnityEngine.UI.Button
+---@field HealthPartImage0 CS.ProjectY.UI.BodyPartGraphic
+---@field HealthPartOutline0 CS.UnityEngine.Component
+---@field HealthPart1 CS.UnityEngine.UI.Button
+---@field HealthPartImage1 CS.ProjectY.UI.BodyPartGraphic
+---@field HealthPartOutline1 CS.UnityEngine.Component
+---@field HealthPart2 CS.UnityEngine.UI.Button
+---@field HealthPartImage2 CS.ProjectY.UI.BodyPartGraphic
+---@field HealthPartOutline2 CS.UnityEngine.Component
+---@field HealthPart3 CS.UnityEngine.UI.Button
+---@field HealthPartImage3 CS.ProjectY.UI.BodyPartGraphic
+---@field HealthPartOutline3 CS.UnityEngine.Component
+---@field HealthPart4 CS.UnityEngine.UI.Button
+---@field HealthPartImage4 CS.ProjectY.UI.BodyPartGraphic
+---@field HealthPartOutline4 CS.UnityEngine.Component
+---@field HealthPart5 CS.UnityEngine.UI.Button
+---@field HealthPartImage5 CS.ProjectY.UI.BodyPartGraphic
+---@field HealthPartOutline5 CS.UnityEngine.Component
+---@field HealthPartName CS.UnityEngine.UI.Text
+---@field HealthDetail CS.UnityEngine.UI.Text
+---@field HealthTreat CS.UnityEngine.UI.Button
+---@field HealthTreatText CS.UnityEngine.UI.Text
+---@field HealthDetailsScroll CS.UnityEngine.UI.ScrollRect
+---@field HealthDiseases CS.UnityEngine.UI.Text
+---@field HealthDiseaseScroll CS.UnityEngine.UI.ScrollRect
+---@field HealthDiseaseTreat CS.UnityEngine.UI.Button
+---@field HealthDiseaseTreatText CS.UnityEngine.UI.Text
 local View = {}
 return View

@@ -18,9 +18,12 @@ local function fixture()
     function data:Complete(kind,id)assert(self:Status(kind,id)=='ready');self.progress[kind..':'..id].state='completed';self.Revision=self.Revision+1 end
     function data:RecordKill(id)self.kills[id]=(self.kills[id] or 0)+1;self.Revision=self.Revision+1 end
     function data:KillCount(kind,id,target)local row=assert(self.progress[kind..':'..id]);return (self.kills[target] or 0)-(row.baseline[target] or 0) end
-    function data:BeginDialogue(id,npc)local old=self.DialogueOpen;assert(not old);self.DialogueOpen=true;self.DialogueId=id;self.DialogueNpcId=npc;self.DialogueVersion=self.DialogueVersion+1 end
+    function data:BeginDialogue(id,npc)local old=self.DialogueOpen;assert(not old);self.interjections={};self.DialogueOpen=true;self.DialogueId=id;self.DialogueNpcId=npc;self.DialogueVersion=self.DialogueVersion+1 end
     function data:EnterDialogueNode(id)self.DialogueNodeId=id;self.DialogueVersion=self.DialogueVersion+1 end
     function data:AddDialogueLine()end
+    function data:HasDialogueInterjection(id)return self.interjections[id]==true end
+    function data:AddCompanionLine()end
+    function data:CompleteDialogueInterjection(id)self.interjections[id]=true;self.DialogueVersion=self.DialogueVersion+1 end
     function data:CloseDialogue()self.DialogueOpen=false;self.DialogueVersion=self.DialogueVersion+1 end
     local actors={}
     for id=1,3 do
@@ -28,10 +31,11 @@ local function fixture()
         function growth:AddExperience(amount)self.Experience=self.Experience+amount;self.total=self.total+amount end
         function growth:AdvanceLevel(cost,attributes,talents,learn)self.Experience=self.Experience-cost;self.Level=self.Level+1;self.AttributePoints=self.AttributePoints+attributes;self.TalentPoints=self.TalentPoints+talents;if learn then self.opportunities=self.opportunities+1 end end
         actors[id]={Id=id,TemplateId=id,HP=10,Growth=growth,attributes={}}
+        actors[id].HasTrait=function()return false end
     end
     local inventory={Revision=0,Grid={Count=0},items={}}
     function inventory:CountItem(id)return self.items[id] or 0 end
-    local world={PartyCount=#actors,Phase='area',Equipment=inventory,Areas={Active={InteractionKind=2,InteractionId=1,GetMemberIdAt=function()return 1 end,Stop=function()end}}}
+    local world={PartyCount=#actors,JournalCount=0,Phase='area',Equipment=inventory,Areas={Active={InteractionKind=2,InteractionId=1,GetMemberIdAt=function()return 1 end,Stop=function()end}}}
     function world:GetPartyAt(i)return assert(actors[i+1]) end
     local growth=require('Game.Progression.GrowthSystem')()
     growth.rules={maxLevel=10,levels=config:GetTable('GrowthLevelTable')};growth.chronicle={Record=function()end}
@@ -42,6 +46,7 @@ local function fixture()
     function player:TrySpendCoins(value)if self.Coins<value then return false end;self.Coins=self.Coins-value;return true end
     function player:AddCoins(value)self.Coins=self.Coins+value end
     local story=require('Game.Narrative.NarrativeSystem')()
+    story.townMissions={Refresh=function()end}
     story.data=data;story.rules=Rules.New(config)
     story.adventure={data=world,player=player,equipment=equipment,growth=growth,recipe={maxPartySize=4},areas={CloseInteraction=function()end},battle={stats={Get=function(_,actor,code)return actor.attributes[code] or 0 end}}}
     story.conditions=require('Game.Condition.ConditionSystem')()
@@ -168,11 +173,13 @@ local restored=fixture()
 restored.data.values=copy(best.data.values);restored.data.kills=copy(best.data.kills)
 for key,row in pairs(best.data.progress)do restored.data.progress[key]={state=row.state,baseline=copy(row.baseline)}end
 restored.story:Refresh();assert(not restored.story:Claim('mission',500) and restored.actors[1].Growth.total==0)
--- 实际城镇生成与 NPC 日程占位；六位叙事 NPC 不得挤在同一出生/停留格。
+-- 实际城镇生成与 NPC 日程占位；配置中的叙事 NPC 不得挤在同一出生/停留格。
 local generator=require('Game.MapArea.MapAreaGenerator')(config)
 generator:Register(2,require('Game.MapArea.TownGenerator'),'MapAreaTownTable','MapAreaTownThemeTable')
 local npcs=require('Game.Narrative.NpcSystem').New(f.story)
 local site={id=11,areaConfigId=2};npcs:BindWorld({site})
+local expectedNpcCount=0
+for _,placement in ipairs(f.story.rules.placements:All())do if placement.areaId==site.areaConfigId then expectedNpcCount=expectedNpcCount+1 end end
 for _,seed in ipairs({20260924,20261016})do
     local area=generator:Generate(2,seed,site.id,{regionId=7,regionType=5,regionConfigId=5,q=0,r=0,height=1,biomeWeights={{regionType=5,weight=1}}},function(layout)npcs:Populate(layout,site)end)
     local count,occupied=0,{}
@@ -183,6 +190,6 @@ for _,seed in ipairs({20260924,20261016})do
             for _,target in pairs(npc.scheduleTargets)do assert(area:FindPath(npc.spawnIndex,target))end
         end
     end
-    assert(count==6,'All named story NPCs must be present in the town')
+    assert(count==expectedNpcCount,'All configured story NPCs must be present in the town')
 end
 print('PASS campaign: 12 complete routes, low-attribute alternatives, both mission orders, four endings, activation kill baselines, one-time/full-bag XP, real level growth, restored completion, attribute and time boundaries')

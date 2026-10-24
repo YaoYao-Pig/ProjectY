@@ -103,6 +103,7 @@ namespace ProjectY.Samples
         }
         public void Interact(int actorId,bool talking) {pawns.Find(p=>p.ActorId==actorId).View.PlayInteraction(talking);}
         public Vector3 Position(int actorId) => Target(actorId).position;
+        public PawnView PresentationPawn(int actorId) => pawns.Find(value => value.ActorId == actorId)?.View;
         public Transform HealthTarget(int actorId)
         {
             var pawn=pawns.Find(value=>value.ActorId==actorId);

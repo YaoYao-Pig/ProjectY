@@ -23,6 +23,10 @@ function Visuals:ctor(config, regionTypes)
         assert(regionTypes[row.id], 'Biome profile refers to an unknown region type')
         self.biomes[row.id] = { row = row, color = color(row.groundColor) }
         self.assets:Get(row.terrainAssetId); self.assets:Get(row.waterAssetId)
+        for _, id in ipairs(row.terrainVariantAssetIds) do
+            local asset = self.assets:Get(id)
+            assert(asset.previewShape == 'terrain' and asset.footprintRadius == 0, 'Terrain variant requires a single hex tile')
+        end
         for _, id in ipairs(row.decorationAssetIds) do self.assets:Get(id) end
         assert(row.decorationDensity >= 0 and row.decorationDensity <= 1 and row.minScale > 0 and row.maxScale >= row.minScale, 'Invalid decoration distribution')
         assert(type(row.groundTexture) == 'string' and row.groundTexture:match('^MapGround/%w+$'), 'Invalid ground texture resource key')
@@ -52,6 +56,11 @@ function Visuals:Build(map)
         end
         local row = self.biomes[dominant.regionType].row
         cell.groundColor = rgb; cell.terrainAssetId = row.terrainAssetId; cell.waterAssetId = row.waterAssetId
+        if #row.terrainVariantAssetIds > 0 then
+            local pick = math.min(#row.terrainVariantAssetIds,
+                1 + math.floor(random:Noise(cell.q, cell.r, 3, 9751) * #row.terrainVariantAssetIds))
+            cell.terrainAssetId = row.terrainVariantAssetIds[pick]
+        end
         if not cell.waterLevel and not cell.buildingId and #cell.roadIds == 0 and #row.decorationAssetIds > 0 then
             local cluster = random:Noise(cell.q, cell.r, 5, 9701)
             local probability = row.decorationDensity * dominant.weight * (.45 + cluster * .8)

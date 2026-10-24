@@ -7,28 +7,48 @@ using Object = UnityEngine.Object;
 namespace ProjectY.Samples
 {
     // 只持有显示资源。地块用 GPU 实例批次，避免数千格各创建一个 GameObject。
-    public sealed class MapPreviewRenderer : IDisposable
+    public sealed partial class MapPreviewRenderer : IDisposable
     {
         public enum Kind { Terrain, Water, City, Building, Decoration }
         private sealed class Model
         {
             public Mesh Mesh;
             public Material[] Materials;
-            public readonly Dictionary<Kind, List<Batch>[]> Groups = new Dictionary<Kind, List<Batch>[]>();
+            public readonly Dictionary<Kind, Dictionary<Vector2Int, List<Batch>[]>> Groups = new Dictionary<Kind, Dictionary<Vector2Int, List<Batch>[]>>();
+            public readonly Dictionary<Kind, DrawGroup[]> Submissions = new Dictionary<Kind, DrawGroup[]>();
+        }
+        private sealed class DrawGroup
+        {
+            public Mesh Mesh;
+            public int Submesh;
+            public Kind Kind;
+            public readonly List<Batch> Near = new List<Batch>(), Distant = new List<Batch>();
         }
         private sealed class Batch
         {
             public Mesh Mesh;
             public int Submesh, Count;
             public Kind Kind;
-            public readonly Matrix4x4[] Matrices = new Matrix4x4[1023];
-            public readonly Vector4[] Colors = new Vector4[1023];
+            public Matrix4x4[] Matrices = new Matrix4x4[16];
+            public Vector4[] Colors = new Vector4[16];
+            public int[] CellIndices = new int[16];
+            public Bounds Bounds;
+            public MapRenderLod.Tier Tier;
+            public DrawGroup Group;
+            public Vector4[] FocusFlags;
             public Vector4[] WaterFlows;
             public Vector4[] GroundData;
             public readonly MaterialPropertyBlock Properties = new MaterialPropertyBlock();
+            public void Resize(int size)
+            {
+                Array.Resize(ref Matrices, size); Array.Resize(ref Colors, size); Array.Resize(ref CellIndices, size);
+                if (WaterFlows != null) Array.Resize(ref WaterFlows, size);
+                if (GroundData != null) Array.Resize(ref GroundData, size);
+            }
         }
         private readonly Dictionary<GameObject, Model> models = new Dictionary<GameObject, Model>();
         private readonly List<Batch> batches = new List<Batch>();
+        private readonly List<DrawGroup> drawGroups = new List<DrawGroup>();
         private readonly Material material;
         private readonly Material roadMaterial;
         private readonly GameObject roadObject;
@@ -39,6 +59,32 @@ namespace ProjectY.Samples
         private readonly MapWaterEffects waterEffects;
         private readonly MapGroundPresentation groundPresentation;
         private readonly MapNatureRenderer natureRenderer;
+        private readonly MapRenderLod.View lodView = new MapRenderLod.View();
+        private readonly MapRenderLod.Settings defaultLod = new MapRenderLod.Settings();
+        private readonly Matrix4x4[] detailMatrices = new Matrix4x4[1023];
+        private readonly Vector4[] detailColors = new Vector4[1023];
+        private readonly Vector4[] visibleFlows = new Vector4[1023], visibleGround = new Vector4[1023];
+        private readonly MaterialPropertyBlock detailProperties = new MaterialPropertyBlock();
+        private float mapRadius;
+        private MapPreviewData fogMap;
+        private WorldFogRenderer worldFog;
+        public void SetExploration(ProjectY.Data.WorldMapExplorationData state)
+        {
+            if(state==null)return; // Standalone map previews deliberately have no expedition fog.
+            if(worldFog==null)
+            {
+                worldFog=new WorldFogRenderer(fogMap,roadObject.transform.parent);
+                worldFog.Bind(material);worldFog.Bind(roadMaterial);worldFog.Bind(groundPresentation.Material);
+                worldFog.Bind(natureRenderer.SharedMaterial);worldFog.Bind(waterEffects.SurfaceMaterial);worldFog.Bind(waterEffects.FoamMaterial);
+                foreach(var waterMaterial in waterMaterials)worldFog.Bind(waterMaterial);
+                waterEffects.VisibilityFilter=worldFog.VisibleAt;
+            }
+            worldFog.Update(state);
+        }
+        public int SubmittedBatches { get; private set; }
+        public int SubmittedInstances { get; private set; }
+        public int SubmittedDetailInstances { get; private set; }
+        public int CulledBatches { get; private set; }
         public Bounds Bounds { get; private set; }
 
         public MapPreviewRenderer(Shader shader, Transform owner)
@@ -76,28 +122,39 @@ namespace ProjectY.Samples
         }
 
         private void Add(GameObject prefab, Kind kind, Vector3 position, Vector3 scale, Quaternion rotation,
-            Color? ground = null, string tintMaterial = null, Vector4 waterFlow = default, Vector4 groundData = default)
+            Color? ground = null, string tintMaterial = null, Vector4 waterFlow = default, Vector4 groundData = default, int cellIndex = -1)
         {
             var model = GetModel(prefab);
-            if (!model.Groups.TryGetValue(kind, out var groups))
+            if (!model.Groups.TryGetValue(kind, out var chunks))
+            {
+                chunks = new Dictionary<Vector2Int, List<Batch>[]>(); model.Groups.Add(kind, chunks);
+                var submissions = new DrawGroup[model.Mesh.subMeshCount];
+                for (var i = 0; i < submissions.Length; i++)
+                { submissions[i] = new DrawGroup { Mesh = model.Mesh, Submesh = i, Kind = kind }; drawGroups.Add(submissions[i]); }
+                model.Submissions.Add(kind, submissions);
+            }
+            var chunk = new Vector2Int(Mathf.FloorToInt(position.x / (mapRadius * 8)), Mathf.FloorToInt(position.z / (mapRadius * 8)));
+            if (!chunks.TryGetValue(chunk, out var groups))
             {
                 groups = new List<Batch>[model.Mesh.subMeshCount];
                 for (var i = 0; i < groups.Length; i++) groups[i] = new List<Batch>();
-                model.Groups.Add(kind, groups);
+                chunks.Add(chunk, groups);
             }
             for (var slot = 0; slot < groups.Length; slot++)
             {
                 var group = groups[slot];
                 if (group.Count == 0 || group[group.Count - 1].Count == 1023)
                 {
-                    var added = new Batch { Mesh = model.Mesh, Submesh = slot, Kind = kind,
-                        WaterFlows = kind == Kind.Water ? new Vector4[1023] : null,
-                        GroundData = kind == Kind.Terrain ? new Vector4[1023] : null };
+                    var added = new Batch { Mesh = model.Mesh, Submesh = slot, Kind = kind, Group = model.Submissions[kind][slot],
+                        WaterFlows = kind == Kind.Water ? new Vector4[16] : null,
+                        GroundData = kind == Kind.Terrain ? new Vector4[16] : null };
                     group.Add(added); batches.Add(added);
                 }
                 var batch = group[group.Count - 1];
+                if (batch.Count == batch.Matrices.Length) batch.Resize(Mathf.Min(1023, batch.Count * 2));
                 var color = model.Materials[slot].color;
-                if (ground.HasValue)
+                // Empty tint binding preserves authored material palettes, including multi-color terrain variants.
+                if (ground.HasValue && !string.IsNullOrEmpty(tintMaterial))
                 {
                     var top = model.Materials[slot].name == tintMaterial;
                     color = ground.Value * (top ? 1f : .82f); color.a = 1;
@@ -106,12 +163,26 @@ namespace ProjectY.Samples
                 batch.Colors[batch.Count] = QualitySettings.activeColorSpace == ColorSpace.Linear ? color.linear : color;
                 if (kind == Kind.Water) batch.WaterFlows[batch.Count] = waterFlow;
                 if (kind == Kind.Terrain) batch.GroundData[batch.Count] = groundData;
-                batch.Matrices[batch.Count++] = Matrix4x4.TRS(position, rotation, scale);
+                batch.Matrices[batch.Count] = Matrix4x4.TRS(position, rotation, scale);
+                batch.CellIndices[batch.Count] = cellIndex;
+                var bounds = InstanceBounds(model.Mesh.bounds, batch.Matrices[batch.Count]);
+                bounds.Expand(new Vector3(0, mapRadius * .48f, 0)); // Includes the existing site-hover lift.
+                if (batch.Count == 0) batch.Bounds = bounds; else batch.Bounds.Encapsulate(bounds);
+                RegisterFocusInstance(cellIndex, batch, batch.Count);
+                batch.Count++;
             }
         }
 
         public void Build(MapPreviewData map, Func<MapPreviewData.Asset, GameObject> resolve)
         {
+            foreach (var progress in BuildIncremental(map, resolve)) { }
+        }
+
+        // Shared algorithm for synchronous previews and frame-by-frame campaign loading.
+        public IEnumerable<float> BuildIncremental(MapPreviewData map, Func<MapPreviewData.Asset, GameObject> resolve)
+        {
+            mapRadius = map.Radius;
+            worldFog?.Dispose();worldFog=null;fogMap=map;waterEffects.VisibilityFilter=null;
             // ID 与资源路径同时校验，改表后忘记同步场景时明确报错。
             var assets = new Dictionary<int, MapPreviewData.Asset>();
             var prefabs = new Dictionary<int, GameObject>();
@@ -123,11 +194,16 @@ namespace ProjectY.Samples
                     throw new InvalidOperationException("资源没有配置的顶面材质: " + asset.Path + " / " + asset.TintMaterial);
                 prefabs.Add(asset.Id, prefab);
             }
-            batches.Clear();
-            foreach (var model in models.Values) model.Groups.Clear();
+            yield return .03f;
+            batches.Clear(); drawGroups.Clear();
+            ResetFocus(map);
+            foreach (var model in models.Values) { model.Groups.Clear(); model.Submissions.Clear(); }
             waterEffects.Build(map);
+            yield return .08f;
             groundPresentation.Build(map);
+            yield return .16f;
             natureRenderer.Build(map);
+            yield return .28f;
             Bounds = new Bounds(map.Cells[0].Position, Vector3.zero);
             var bottom = map.Cells[0].Position.y;
             foreach (var cell in map.Cells) { Bounds = Encapsulate(Bounds, cell.Position); bottom = Mathf.Min(bottom, cell.Position.y); }
@@ -137,11 +213,13 @@ namespace ProjectY.Samples
                 var cell = map.Cells[cellIndex];
                 Add(prefabs[cell.TerrainAssetId], Kind.Terrain, cell.Position,
                     new Vector3(map.Radius, cell.Position.y - bottom, map.Radius), Quaternion.identity,
-                    cell.Color, assets[cell.TerrainAssetId].TintMaterial, groundData: groundPresentation.GetData(cell));
+                    cell.Color, assets[cell.TerrainAssetId].TintMaterial, groundData: groundPresentation.GetData(cell), cellIndex: cellIndex);
                 if (cell.HasWater)
                     Add(prefabs[cell.WaterAssetId], Kind.Water, new Vector3(cell.Position.x, cell.WaterLevel, cell.Position.z),
-                        new Vector3(map.Radius, 1, map.Radius), Quaternion.identity, waterFlow: waterEffects.Flows[cellIndex]);
+                        new Vector3(map.Radius, 1, map.Radius), Quaternion.identity, waterFlow: waterEffects.Flows[cellIndex], cellIndex: cellIndex);
+                if ((cellIndex + 1) % 512 == 0) yield return .3f + .4f * (cellIndex + 1) / map.Cells.Length;
             }
+            yield return .7f;
             foreach (var building in map.Buildings)
             {
                 var prefab = prefabs[building.AssetId];
@@ -154,32 +232,39 @@ namespace ProjectY.Samples
                 position.y = building.BaseHeight + .04f;
                 Add(prefabs[building.PlatformAssetId], Kind.City, position,
                     new Vector3(map.Radius, position.y - minimum + .12f, map.Radius), Quaternion.identity,
-                    map.Towns[building.TownId].GroundColor, assets[building.PlatformAssetId].TintMaterial);
+                    map.Towns[building.TownId].GroundColor, assets[building.PlatformAssetId].TintMaterial, cellIndex: building.Center);
                 // 原件正面为 +Z；入口方向由布局给出，七格底板自身不旋转。
                 var direction = map.Cells[building.Entrance].Position - position; direction.y = 0;
                 if (direction.sqrMagnitude < .01f) throw new InvalidOperationException("建筑入口与中心重合。");
                 var scale = new Vector3(map.Radius, building.Height / referenceHeight, map.Radius);
-                Add(prefab, Kind.Building, position, scale, Quaternion.LookRotation(direction));
+                Add(prefab, Kind.Building, position, scale, Quaternion.LookRotation(direction), cellIndex: building.Center);
                 Bounds = Encapsulate(Bounds, position + Vector3.up * GetModel(prefab).Mesh.bounds.size.y * scale.y);
             }
-            foreach (var item in map.Decorations)
+            yield return .8f;
+            for (var index = 0; index < map.Decorations.Length; index++)
             {
+                var item = map.Decorations[index];
                 var position = map.Cells[item.Cell].Position;
                 position.y = item.Height;
                 var prefab = prefabs[item.AssetId];
                 var scale = Vector3.one * (item.Scale * map.Radius);
-                Add(prefab, Kind.Decoration, position, scale, Quaternion.Euler(0, item.Yaw, 0));
+                Add(prefab, Kind.Decoration, position, scale, Quaternion.Euler(0, item.Yaw, 0), cellIndex: item.Cell);
                 Bounds = Encapsulate(Bounds, position + Vector3.up * GetModel(prefab).Mesh.bounds.size.y * scale.y);
+                if ((index + 1) % 512 == 0) yield return .8f + .14f * (index + 1) / map.Decorations.Length;
             }
             Bounds = new Bounds(Bounds.center, Bounds.size + Vector3.one * map.Radius * 2);
             foreach (var batch in batches)
             {
+                batch.Resize(batch.Count);
                 batch.Properties.SetVectorArray("_Color", batch.Colors);
                 if (batch.Kind == Kind.Water) batch.Properties.SetVectorArray("_WaterFlow", batch.WaterFlows);
                 if (batch.Kind == Kind.Terrain) batch.Properties.SetVectorArray("_GroundData", batch.GroundData);
             }
+            yield return .94f;
             BuildRoads(map);
+            yield return .97f;
             BuildWaterEdges(map, prefabs, assets);
+            yield return 1;
         }
 
         private static Bounds Encapsulate(Bounds bounds, Vector3 point) { bounds.Encapsulate(point); return bounds; }
@@ -188,10 +273,12 @@ namespace ProjectY.Samples
         {
             Release(roadMesh);
             var vertices = new List<Vector3>(); var triangles = new List<int>();
+            var vertexCells = new List<int>(); int fromCell = 0, toCell = 0;
             var used = new HashSet<ulong>();
             Action<Vector3, Vector3, Vector3> quad = (a, b, side) => {
                 var start = vertices.Count;
                 vertices.Add(a - side); vertices.Add(a + side); vertices.Add(b + side); vertices.Add(b - side);
+                vertexCells.Add(fromCell); vertexCells.Add(fromCell); vertexCells.Add(toCell); vertexCells.Add(toCell);
                 triangles.Add(start); triangles.Add(start + 2); triangles.Add(start + 1);
                 triangles.Add(start); triangles.Add(start + 3); triangles.Add(start + 2);
             };
@@ -208,12 +295,16 @@ namespace ProjectY.Samples
                     var edgeA = (a + b) * .5f; edgeA.y = a.y;
                     var edgeB = edgeA; edgeB.y = b.y;
                     // 在各格顶面画路，高差处补立面，避免斜线穿进高格地面。
-                    quad(a, edgeA, side); quad(edgeB, b, side);
-                    if (Mathf.Abs(a.y - b.y) > .001f) { quad(edgeA, edgeB, side); quad(edgeB, edgeA, side); }
+                    fromCell = toCell = first; quad(a, edgeA, side);
+                    fromCell = toCell = second; quad(edgeB, b, side);
+                    if (Mathf.Abs(a.y - b.y) > .001f)
+                    { fromCell = first; toCell = second; quad(edgeA, edgeB, side); fromCell = second; toCell = first; quad(edgeB, edgeA, side); }
                 }
             roadMesh = new Mesh { name = "地图预览_道路网格", indexFormat = IndexFormat.UInt32 };
             roadMesh.SetVertices(vertices); roadMesh.SetTriangles(triangles, 0); roadMesh.RecalculateNormals(); roadMesh.RecalculateBounds();
             roadObject.GetComponent<MeshFilter>().sharedMesh = roadMesh;
+            roadVertexCells = vertexCells.ToArray(); originalRoadVertices = vertices.ToArray(); focusRoadVertices = vertices.ToArray();
+            CacheFocusRoadVertices();
         }
 
         // 水面保持分格高度；共边补连续竖面，解决跨区落差处悬空和裂缝。
@@ -333,39 +424,79 @@ namespace ProjectY.Samples
         // 同一个观察器切换到局部地图时，连同独立 Mesh 一起隐藏大地图。
         public void SetVisible(bool visible)
         {
+            worldFog?.SetVisible(visible);
             roadObject.SetActive(visible); waterEdges.SetActive(visible); waterEffects.SetVisible(visible);
             natureRenderer.SetVisible(visible);
         }
 
-        public void Draw(Camera camera, bool water, bool buildings, bool roads, bool decorations)
+        public void Draw(Camera camera, bool water, bool buildings, bool roads, bool decorations, MapRenderLod.Settings settings = null)
         {
+            settings = settings ?? defaultLod;
+            lodView.Update(camera, Bounds.center.y, mapRadius, settings);
+            SubmittedBatches = SubmittedInstances = SubmittedDetailInstances = CulledBatches = 0;
             roadObject.SetActive(roads);
             waterEdges.SetActive(water);
             waterEffects.SetVisible(water);
             waterEffects.Tick(camera, Time.deltaTime);
-            natureRenderer.SetVisible(decorations);
-            natureRenderer.Draw(camera, decorations);
+            var natureVisible = decorations && (!camera.orthographic || camera.orthographicSize <= settings.nearDistance * mapRadius);
+            natureRenderer.SetVisible(natureVisible);
+            natureRenderer.Draw(camera, natureVisible);
+            foreach (var group in drawGroups) { group.Near.Clear(); group.Distant.Clear(); }
             foreach (var batch in batches)
             {
                 if (batch.Kind == Kind.Water && !water || batch.Kind == Kind.Building && !buildings ||
                     batch.Kind == Kind.Decoration && !decorations) continue;
-                var batchMaterial = batch.Kind == Kind.Water ? waterEffects.SurfaceMaterial
-                    : batch.Kind == Kind.Terrain ? groundPresentation.Material : material;
-                Graphics.DrawMeshInstanced(batch.Mesh, batch.Submesh, batchMaterial, batch.Matrices, batch.Count, batch.Properties,
-                    batch.Kind == Kind.Water ? ShadowCastingMode.Off : ShadowCastingMode.On, true, 0, camera,
-                    LightProbeUsage.Off);
+                batch.Tier = lodView.Classify(batch.Bounds, batch.Tier);
+                var detail = batch.Kind == Kind.Building || batch.Kind == Kind.Decoration || batch.Kind == Kind.City;
+                if (batch.Tier == MapRenderLod.Tier.Hidden || detail && batch.Tier == MapRenderLod.Tier.Far)
+                { CulledBatches++; continue; }
+                (batch.Tier == MapRenderLod.Tier.Near ? batch.Group.Near : batch.Group.Distant).Add(batch);
             }
+            // Spatial buckets are a culling index, not extra draw calls in the full-map view.
+            foreach (var group in drawGroups)
+            { DrawVisible(group, group.Near, camera, settings, true); DrawVisible(group, group.Distant, camera, settings, false); }
+        }
+        private void DrawVisible(DrawGroup group, List<Batch> visible, Camera camera, MapRenderLod.Settings settings, bool near)
+        {
+            var count = 0;
+            var detail = group.Kind == Kind.Building || group.Kind == Kind.Decoration || group.Kind == Kind.City;
+            foreach (var batch in visible)
+                for (var i = 0; i < batch.Count; i++)
+                {
+                    if(worldFog!=null && !worldFog.Known(batch.CellIndices[i]))continue;
+                    if (batch.Kind == Kind.Decoration && !near && batch.CellIndices[i] % settings.mediumDecorationStride != 0) continue;
+                    if (detail && !lodView.Visible(InstanceBounds(batch.Mesh.bounds, batch.Matrices[i]))) continue;
+                    detailMatrices[count] = batch.Matrices[i]; detailColors[count] = batch.Colors[i];
+                    if (batch.WaterFlows != null) visibleFlows[count] = batch.WaterFlows[i];
+                    if (batch.GroundData != null) visibleGround[count] = batch.GroundData[i];
+                    count++;
+                    if (count == 1023) { SubmitVisible(group, camera, count, near, detail); count = 0; }
+                }
+            if (count > 0) SubmitVisible(group, camera, count, near, detail);
+        }
+        private void SubmitVisible(DrawGroup group, Camera camera, int count, bool near, bool detail)
+        {
+            detailProperties.SetVectorArray("_Color", detailColors);
+            if (group.Kind == Kind.Water) detailProperties.SetVectorArray("_WaterFlow", visibleFlows);
+            if (group.Kind == Kind.Terrain) detailProperties.SetVectorArray("_GroundData", visibleGround);
+            SubmittedBatches++; SubmittedInstances += count;
+            if (detail) SubmittedDetailInstances += count;
+            var batchMaterial = group.Kind == Kind.Water ? waterEffects.SurfaceMaterial : group.Kind == Kind.Terrain ? groundPresentation.Material : material;
+            Graphics.DrawMeshInstanced(group.Mesh, group.Submesh, batchMaterial, detailMatrices, count, detailProperties,
+                group.Kind == Kind.Water || !near ? ShadowCastingMode.Off : ShadowCastingMode.On, true, 0, camera, LightProbeUsage.Off);
         }
 
         public void Dispose()
         {
+            worldFog?.Dispose();worldFog=null;
+            DisposeFocus();
             Release(roadMesh); Release(waterMesh);
             foreach (var value in waterMaterials) Release(value);
             waterMaterials.Clear(); Release(waterEdges);
             waterEffects.Dispose();
             natureRenderer.Dispose(); groundPresentation.Dispose();
             Release(roadObject); Release(material); Release(roadMaterial);
-            batches.Clear(); models.Clear();
+            batches.Clear(); drawGroups.Clear(); models.Clear();
         }
         private static void Release(Object value)
         {

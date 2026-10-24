@@ -102,6 +102,19 @@
       "type": "int[]",
       "description": "角色拥有的技能",
       "ref": "CombatSkillTable"
+    },
+    {
+      "name": "traitIds",
+      "type": "int[]",
+      "description": "创建角色时授予的固有特质；与实例特质同 ID 不叠加",
+      "ref": "CombatTraitTable",
+      "default": []
+    },
+    {
+      "name": "bodyInjuries",
+      "type": "bool",
+      "description": "启用人形六部位创伤；非人形关闭",
+      "default": true
     }
   ],
   "rows": [
@@ -279,7 +292,8 @@
       "moveCost": 1,
       "skillIds": [
         205
-      ]
+      ],
+      "bodyInjuries": false
     },
     {
       "id": 202,
@@ -302,7 +316,8 @@
       "moveCost": 1,
       "skillIds": [
         205
-      ]
+      ],
+      "bodyInjuries": false
     },
     {
       "id": 203,
@@ -325,7 +340,8 @@
       "moveCost": 1,
       "skillIds": [
         205
-      ]
+      ],
+      "bodyInjuries": false
     },
     {
       "id": 401,
@@ -348,7 +364,8 @@
       "moveCost": 1,
       "skillIds": [
         205
-      ]
+      ],
+      "bodyInjuries": false
     },
     {
       "id": 402,
@@ -371,6 +388,494 @@
       "moveCost": 1,
       "skillIds": [
         205
+      ],
+      "bodyInjuries": false
+    },
+    {
+      "id": 701,
+      "name": "传奇 · 血月巨狼 · 裂喉",
+      "vitality": 17,
+      "endurance": 3,
+      "intellect": 1,
+      "strength": 11,
+      "speed": 8,
+      "defense": 2,
+      "attributeNames": [
+        "unarmed"
+      ],
+      "attributeValues": [
+        4
+      ],
+      "maxHealth": "12 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 4,
+      "moveCost": 1,
+      "skillIds": [
+        205
+      ],
+      "traitIds": [
+        101
+      ],
+      "bodyInjuries": false
+    },
+    {
+      "id": 702,
+      "name": "传奇 · 寒潮巨狼 · 听雪",
+      "vitality": 17,
+      "endurance": 3,
+      "intellect": 1,
+      "strength": 11,
+      "speed": 8,
+      "defense": 2,
+      "attributeNames": [
+        "unarmed"
+      ],
+      "attributeValues": [
+        4
+      ],
+      "maxHealth": "12 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 4,
+      "moveCost": 1,
+      "skillIds": [
+        205
+      ],
+      "traitIds": [
+        102
+      ],
+      "bodyInjuries": false
+    },
+    {
+      "id": 703,
+      "name": "传奇 · 磐脊巨兽 · 守誓",
+      "vitality": 31,
+      "endurance": 3,
+      "intellect": 1,
+      "strength": 15,
+      "speed": 3,
+      "defense": 7,
+      "attributeNames": [
+        "unarmed"
+      ],
+      "attributeValues": [
+        4
+      ],
+      "maxHealth": "12 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 2,
+      "moveCost": 1,
+      "skillIds": [
+        205
+      ],
+      "traitIds": [
+        103
+      ],
+      "bodyInjuries": false
+    },
+    {
+      "id": 704,
+      "name": "传奇 · 熔脉巨兽 · 余烬",
+      "vitality": 31,
+      "endurance": 3,
+      "intellect": 1,
+      "strength": 15,
+      "speed": 3,
+      "defense": 7,
+      "attributeNames": [
+        "unarmed"
+      ],
+      "attributeValues": [
+        4
+      ],
+      "maxHealth": "12 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 2,
+      "moveCost": 1,
+      "skillIds": [
+        205
+      ],
+      "traitIds": [
+        104
+      ],
+      "bodyInjuries": false
+    },
+    {
+      "id": 705,
+      "name": "传奇 · 叛誓剑士 · 维兰",
+      "vitality": 8,
+      "endurance": 3,
+      "intellect": 1,
+      "strength": 7,
+      "speed": 4,
+      "defense": 2,
+      "attributeNames": [
+        "sword"
+      ],
+      "attributeValues": [
+        3
+      ],
+      "maxHealth": "18 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 3,
+      "moveCost": 1,
+      "skillIds": [
+        1,
+        4
+      ],
+      "traitIds": [
+        105
+      ]
+    },
+    {
+      "id": 706,
+      "name": "传奇 · 引路游侠 · 洛恩",
+      "vitality": 7,
+      "endurance": 3,
+      "intellect": 2,
+      "strength": 6,
+      "speed": 7,
+      "defense": 1,
+      "attributeNames": [
+        "bow"
+      ],
+      "attributeValues": [
+        4
+      ],
+      "maxHealth": "18 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 3,
+      "moveCost": 1,
+      "skillIds": [
+        2,
+        4
+      ],
+      "traitIds": [
+        106
+      ]
+    },
+    {
+      "id": 901,
+      "name": "陶恩",
+      "vitality": 8,
+      "endurance": 5,
+      "intellect": 2,
+      "strength": 8,
+      "speed": 4,
+      "defense": 2,
+      "attributeNames": [
+        "sword",
+        "scouting"
+      ],
+      "attributeValues": [
+        6,
+        2
+      ],
+      "maxHealth": "18 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 3,
+      "moveCost": 1,
+      "skillIds": [
+        1,
+        4
+      ],
+      "traitIds": []
+    },
+    {
+      "id": 902,
+      "name": "莎芙",
+      "vitality": 5,
+      "endurance": 5,
+      "intellect": 3,
+      "strength": 5,
+      "speed": 9,
+      "defense": 2,
+      "attributeNames": [
+        "bow",
+        "scouting"
+      ],
+      "attributeValues": [
+        7,
+        5
+      ],
+      "maxHealth": "18 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 4,
+      "moveCost": 1,
+      "skillIds": [
+        2,
+        4
+      ],
+      "traitIds": []
+    },
+    {
+      "id": 903,
+      "name": "维珂",
+      "vitality": 7,
+      "endurance": 5,
+      "intellect": 2,
+      "strength": 7,
+      "speed": 6,
+      "defense": 3,
+      "attributeNames": [
+        "sword",
+        "scouting",
+        "crafting"
+      ],
+      "attributeValues": [
+        4,
+        2,
+        4
+      ],
+      "maxHealth": "18 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 3,
+      "moveCost": 1,
+      "skillIds": [
+        1,
+        4
+      ],
+      "traitIds": []
+    },
+    {
+      "id": 904,
+      "name": "米蕾",
+      "vitality": 4,
+      "endurance": 4,
+      "intellect": 8,
+      "strength": 2,
+      "speed": 5,
+      "defense": 1,
+      "attributeNames": [
+        "staff",
+        "scouting",
+        "cooking",
+        "charisma"
+      ],
+      "attributeValues": [
+        6,
+        1,
+        3,
+        3
+      ],
+      "maxHealth": "18 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 3,
+      "moveCost": 1,
+      "skillIds": [
+        3,
+        5,
+        4
+      ],
+      "traitIds": []
+    },
+    {
+      "id": 905,
+      "name": "奥林",
+      "vitality": 5,
+      "endurance": 5,
+      "intellect": 3,
+      "strength": 5,
+      "speed": 9,
+      "defense": 2,
+      "attributeNames": [
+        "bow",
+        "scouting",
+        "animalAffinity",
+        "charisma"
+      ],
+      "attributeValues": [
+        5,
+        2,
+        4,
+        3
+      ],
+      "maxHealth": "18 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 4,
+      "moveCost": 1,
+      "skillIds": [
+        2,
+        4
+      ],
+      "traitIds": []
+    },
+    {
+      "id": 910,
+      "name": "受审骑士",
+      "vitality": 8,
+      "endurance": 5,
+      "intellect": 2,
+      "strength": 8,
+      "speed": 5,
+      "defense": 3,
+      "attributeNames": [
+        "sword",
+        "scouting"
+      ],
+      "attributeValues": [
+        6,
+        2
+      ],
+      "maxHealth": "18 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 3,
+      "moveCost": 1,
+      "skillIds": [
+        1,
+        4
+      ]
+    },
+    {
+      "id": 911,
+      "name": "控方剑士",
+      "vitality": 6,
+      "endurance": 3,
+      "intellect": 1,
+      "strength": 7,
+      "speed": 4,
+      "defense": 2,
+      "attributeNames": [
+        "sword"
+      ],
+      "attributeValues": [
+        5
+      ],
+      "maxHealth": "18 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 3,
+      "moveCost": 1,
+      "skillIds": [
+        1,
+        4
+      ]
+    },
+    {
+      "id": 912,
+      "name": "控方弓手",
+      "vitality": 4,
+      "endurance": 3,
+      "intellect": 2,
+      "strength": 5,
+      "speed": 7,
+      "defense": 1,
+      "attributeNames": [
+        "bow"
+      ],
+      "attributeValues": [
+        4
+      ],
+      "maxHealth": "18 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 3,
+      "moveCost": 1,
+      "skillIds": [
+        2,
+        4
+      ]
+    },
+    {
+      "id": 1101,
+      "name": "洛恩 · 修补匠",
+      "vitality": 7,
+      "endurance": 5,
+      "intellect": 2,
+      "strength": 7,
+      "speed": 6,
+      "defense": 3,
+      "attributeNames": [
+        "sword",
+        "scouting",
+        "crafting",
+        "cooking"
+      ],
+      "attributeValues": [
+        4,
+        2,
+        6,
+        2
+      ],
+      "maxHealth": "18 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 3,
+      "moveCost": 1,
+      "skillIds": [
+        1,
+        4
+      ],
+      "traitIds": []
+    },
+    {
+      "id": 920,
+      "name": "神秘逃兵",
+      "vitality": 7,
+      "endurance": 5,
+      "intellect": 2,
+      "strength": 7,
+      "speed": 6,
+      "defense": 2,
+      "attributeNames": [
+        "sword",
+        "scouting"
+      ],
+      "attributeValues": [
+        6,
+        2
+      ],
+      "maxHealth": "18 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 3,
+      "moveCost": 1,
+      "skillIds": [
+        1,
+        4
+      ]
+    },
+    {
+      "id": 921,
+      "name": "追捕剑士",
+      "vitality": 6,
+      "endurance": 3,
+      "intellect": 1,
+      "strength": 7,
+      "speed": 4,
+      "defense": 2,
+      "attributeNames": [
+        "sword"
+      ],
+      "attributeValues": [
+        5
+      ],
+      "maxHealth": "18 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 3,
+      "moveCost": 1,
+      "skillIds": [
+        1,
+        4
+      ]
+    },
+    {
+      "id": 922,
+      "name": "追捕弓手",
+      "vitality": 4,
+      "endurance": 3,
+      "intellect": 2,
+      "strength": 5,
+      "speed": 7,
+      "defense": 1,
+      "attributeNames": [
+        "bow"
+      ],
+      "attributeValues": [
+        4
+      ],
+      "maxHealth": "18 + vitality * 4",
+      "actionPoints": 4,
+      "moveRange": 3,
+      "moveCost": 1,
+      "skillIds": [
+        2,
+        4
       ]
     }
   ]

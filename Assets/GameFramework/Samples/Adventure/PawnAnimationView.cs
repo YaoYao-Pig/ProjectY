@@ -237,6 +237,7 @@ namespace ProjectY.Samples
             if(authored) separation+=weaponRotation*playingAction.OffGripOffset*Mathf.Sin((1-remaining/actionDuration)*Mathf.PI);
             // Keep the authored primary anchor while rotating the weapon and secondary grip around it.
             Vector3 grip=transform.TransformPoint(pose.MainHand)+baseRotation*primaryPosition;
+            if(authored) grip+=transform.TransformVector(playingAction.GripPosition(1-remaining/actionDuration));
             grip.y=Mathf.Min(grip.y,head.position.y-holdSettings.HandHeadClearance);
             float rightReach=(rightLower.position-rightUpper.position).magnitude+(rightHand.position-rightLower.position).magnitude;
             float leftReach=(leftLower.position-leftUpper.position).magnitude+(leftHand.position-leftLower.position).magnitude;

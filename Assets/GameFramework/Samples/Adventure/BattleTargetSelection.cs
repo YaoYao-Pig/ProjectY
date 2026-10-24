@@ -1,5 +1,6 @@
 using System;
 using System.Collections.Generic;
+using ProjectY.UI;
 
 namespace ProjectY.Samples
 {
@@ -7,6 +8,7 @@ namespace ProjectY.Samples
     public static class BattleTargetSelection
     {
         public static bool Active(AdventureRuntimeDemo demo) => demo.IsSelectingBattleTargets;
+        public static bool NeedsLanding(AdventureRuntimeDemo demo) => demo.IsSelectingBattleLandingSkill;
         public static int Count(AdventureRuntimeDemo demo) => demo.SelectedBattleTargetCount;
         public static int Limit(AdventureRuntimeDemo demo) => demo.BattleTargetLimit;
         public static string Hint(AdventureRuntimeDemo demo) => demo.BattleTargetHint();
@@ -21,31 +23,53 @@ namespace ProjectY.Samples
     {
         private readonly List<int> selectedBattleTargets=new List<int>();
         private int hoveredBattleTarget;
+        private AdventureViewData.Trap hoveredBattleTrap;
+        private int landingTargetId;
+        private AdventureViewData.Cell[] battleLandingCells=Array.Empty<AdventureViewData.Cell>();
         private AdventureViewData.Skill ChosenBattleSkill => view?.Phase=="battle"?Array.Find(view.Skills,row=>row.Id==selectedSkill):null;
-        internal bool IsSelectingBattleTargets => ChosenBattleSkill?.ManualTargets==true;
+        internal bool IsSelectingBattleLandingSkill => ChosenBattleSkill?.NeedsLanding==true;
+        private bool IsChoosingBattleLanding => IsSelectingBattleLandingSkill && landingTargetId!=0;
+        internal bool IsSelectingBattleTargets => ChosenBattleSkill?.ManualTargets==true || IsSelectingBattleLandingSkill;
         internal int SelectedBattleTargetCount => selectedBattleTargets.Count;
         internal int BattleTargetLimit => ChosenBattleSkill?.MaxTargets ?? 0;
-        private void ClearBattleTargets() {selectedBattleTargets.Clear();hoveredBattleTarget=0;}
+        private void ClearBattleTargets() {selectedBattleTargets.Clear();hoveredBattleTarget=0;hoveredBattleTrap=null;landingTargetId=0;battleLandingCells=Array.Empty<AdventureViewData.Cell>();}
         internal void CancelBattleTargets() => CancelBattleSkillSelection();
         internal void ConfirmBattleTargets()
         {
-            if(!IsSelectingBattleTargets || selectedBattleTargets.Count==0)return;
+            if(!IsSelectingBattleTargets || IsSelectingBattleLandingSkill || selectedBattleTargets.Count==0)return;
             SendCommandInternal("skill_targets",selectedSkill,0,0,selectedBattleTargets.ToArray());
         }
         internal void ChooseBattleTarget(int id)
         {
             var skill=ChosenBattleSkill;
             if(skill==null || view.Active.Team!=1 || pendingExitView!=null || AnimationBusy)return;
+            if(skill.NeedsLanding)
+            {
+                if(Array.IndexOf(skill.Targets,id)<0){view.Error=LuaLanguage.Get("BattleSelectionInvalidTarget");BattleHUDRevision++;return;}
+                var option=Array.Find(skill.LandingOptions,row=>row.TargetId==id);
+                if(option==null)throw new InvalidOperationException("Missing landing options for a valid skill target.");
+                if(option.Cells.Length==0){view.Error=LuaLanguage.Get("BattleSelectionNoLanding");BattleHUDRevision++;return;}
+                landingTargetId=id;battleLandingCells=option.Cells;
+                selectedBattleTargets.Clear();selectedBattleTargets.Add(id);
+                hoveredBattleTarget=id;view.Error="";BattleHUDRevision++;return;
+            }
             if(!skill.ManualTargets){SendCommand("skill",selectedSkill,id);return;}
             int existing=selectedBattleTargets.IndexOf(id);
             if(existing>=0)selectedBattleTargets.RemoveAt(existing);
             else
             {
-                if(Array.IndexOf(skill.Targets,id)<0){view.Error="请选择射程内的合法敌人";BattleHUDRevision++;return;}
-                if(selectedBattleTargets.Count>=skill.MaxTargets){view.Error="已选满目标；再次点击已选目标可取消";BattleHUDRevision++;return;}
+                if(Array.IndexOf(skill.Targets,id)<0){view.Error=LuaLanguage.Get("BattleSelectionInvalidTarget");BattleHUDRevision++;return;}
+                if(selectedBattleTargets.Count>=skill.MaxTargets){view.Error=LuaLanguage.Get("BattleSelectionFull");BattleHUDRevision++;return;}
                 selectedBattleTargets.Add(id);
             }
             hoveredBattleTarget=id;view.Error="";BattleHUDRevision++;
+        }
+        private bool IsBattleLandingCell(int q,int r) => IsChoosingBattleLanding && Array.Exists(battleLandingCells,cell=>cell.Q==q && cell.R==r);
+        private void ChooseBattleLanding(int q,int r)
+        {
+            if(!IsChoosingBattleLanding || view.Active.Team!=1 || pendingExitView!=null || AnimationBusy)return;
+            if(!IsBattleLandingCell(q,r)){view.Error=LuaLanguage.Get("BattleSelectionInvalidLanding");BattleHUDRevision++;return;}
+            SendCommandInternal("skill_landing",selectedSkill,0,0,new[]{landingTargetId,q,r});
         }
         private void SyncBattleTargets(AdventureViewData previous,AdventureViewData next)
         {
@@ -53,7 +77,13 @@ namespace ProjectY.Samples
             {ClearBattleTargets();selectedSkill=0;moveSelected=next.Reachable.Length>0;return;}
             var skill=Array.Find(next.Skills,row=>row.Id==selectedSkill);
             if(skill==null){ClearBattleTargets();selectedSkill=0;return;}
-            if(!skill.ManualTargets)selectedBattleTargets.Clear();
+            if(skill.NeedsLanding && landingTargetId!=0)
+            {
+                var option=Array.Find(skill.LandingOptions,row=>row.TargetId==landingTargetId);
+                if(Array.IndexOf(skill.Targets,landingTargetId)<0 || option==null || option.Cells.Length==0)ClearBattleTargets();
+                else battleLandingCells=option.Cells;
+            }
+            else if(!skill.ManualTargets)selectedBattleTargets.Clear();
             else
             {
                 selectedBattleTargets.RemoveAll(id=>Array.IndexOf(skill.Targets,id)<0);
@@ -67,6 +97,12 @@ namespace ProjectY.Samples
             if(hoveredBattleTarget==id)return;
             hoveredBattleTarget=id;BattleHUDRevision++;
         }
+        private void SetBattleCellHover(AdventureViewData.Cell cell)
+        {
+            var trap=cell==null?null:Array.Find(view.Traps,row=>row.Q==cell.Q && row.R==cell.R);
+            if(trap==hoveredBattleTrap)return;
+            hoveredBattleTrap=trap;BattleHUDRevision++;
+        }
         private AdventureViewData.TargetPreview TargetPreview(int id)
         {
             var skill=ChosenBattleSkill;
@@ -75,28 +111,32 @@ namespace ProjectY.Samples
         private string TargetName(int id) => Array.Find(view.Units,row=>row.Id==id)?.Name ?? "";
         private static string RiskText(AdventureViewData.TargetPreview preview)
         {
-            var text=$"命中 {preview.HitChance:0.#}%";
-            if(preview.InterceptChance>0)text+=$" · 误击 {preview.InterceptChance:0.#}%";
-            if(preview.FriendlyRisk)text+=" · 有友军风险";
+            var text=LuaLanguage.Format("BattleSelectionHit",preview.HitChance);
+            if(preview.InterceptChance>0)text=LuaLanguage.Format("BattleSelectionIntercept",text,preview.InterceptChance);
+            if(preview.FriendlyRisk)text=LuaLanguage.Format("BattleSelectionFriendlyRisk",text);
             return text;
         }
         internal string BattleTargetHint()
         {
             var skill=ChosenBattleSkill;if(skill==null)return "";
+            if(skill.NeedsLanding)return IsChoosingBattleLanding
+                ?LuaLanguage.Format("BattleSelectionLandingHint",TargetName(landingTargetId))
+                :LuaLanguage.Get("BattleSelectionLandingTargetHint");
             int id=hoveredBattleTarget!=0?hoveredBattleTarget:selectedBattleTargets.Count>0?selectedBattleTargets[selectedBattleTargets.Count-1]:0;
             var preview=TargetPreview(id);
-            string prefix=skill.ManualTargets?$"已选 {selectedBattleTargets.Count}/{skill.MaxTargets} · ":"";
-            if(preview!=null)return prefix+RiskText(preview);
-            return skill.ManualTargets?prefix+"点击敌人切换 · Enter 确认 · Esc 取消":"";
+            if(preview!=null)return skill.ManualTargets?LuaLanguage.Format("BattleSelectionCountRisk",selectedBattleTargets.Count,skill.MaxTargets,RiskText(preview)):RiskText(preview);
+            return skill.ManualTargets?LuaLanguage.Format("BattleSelectionTargetHint",selectedBattleTargets.Count,skill.MaxTargets):"";
         }
-        internal string BattleTargetPreviewTitle() => TargetPreview(hoveredBattleTarget)==null?"":TargetName(hoveredBattleTarget);
+        internal string BattleTargetPreviewTitle() => hoveredBattleTrap!=null?hoveredBattleTrap.Name:TargetPreview(hoveredBattleTarget)==null?"":TargetName(hoveredBattleTarget);
         internal string BattleTargetPreviewBody()
         {
+            if(hoveredBattleTrap!=null)return LuaLanguage.Get("BattleSelectionTrapHelp");
             var preview=TargetPreview(hoveredBattleTarget);if(preview==null)return "";
             var text=RiskText(preview);
-            if(preview.BlockerCount>0)text+=$"\n弹道经过 {preview.BlockerCount} 处遮挡";
+            if(preview.BlockerCount>0)text=LuaLanguage.Format("BattleSelectionBlockers",text,preview.BlockerCount);
             if(!string.IsNullOrEmpty(preview.Description))text+="\n"+preview.Description;
-            if(IsSelectingBattleTargets)text+="\n点击切换选择；可选 1 至 "+BattleTargetLimit+" 个不同敌人。Enter 确认，Esc 取消。";
+            if(IsSelectingBattleLandingSkill)text+="\n"+BattleTargetHint();
+            else if(IsSelectingBattleTargets)text=LuaLanguage.Format("BattleSelectionMultipleHelp",text,BattleTargetLimit);
             return text;
         }
     }

@@ -12,7 +12,7 @@
     },
     {
       "name": "name",
-      "type": "string",
+      "type": "text",
       "description": "区域名称"
     },
     {
@@ -208,6 +208,32 @@
       "moveStepSeconds": 0.18,
       "seedSalt": 67291,
       "discovery": "explore"
+    },
+    {
+      "id": 60,
+      "name": "骑士审判场",
+      "areaType": 7,
+      "profileId": 1,
+      "width": 32,
+      "height": 32,
+      "hexRadius": 1,
+      "visionRadius": 16,
+      "moveStepSeconds": 0.18,
+      "seedSalt": 91831,
+      "discovery": "open"
+    },
+    {
+      "id": 61,
+      "name": "林缘拦截道",
+      "areaType": 8,
+      "profileId": 1,
+      "width": 32,
+      "height": 32,
+      "hexRadius": 1,
+      "visionRadius": 16,
+      "moveStepSeconds": 0.18,
+      "seedSalt": 92471,
+      "discovery": "open"
     }
   ]
 }

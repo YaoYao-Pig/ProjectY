@@ -52,6 +52,7 @@ namespace ProjectY.Editor
         private static void BuildHeadHealth(GameObject root)
         {
             var reference=root.GetComponent<LuaReference>();var rect=(RectTransform)root.transform;
+            if(reference.GetEditorBindings().Any(entry=>entry.Key=="DamageFollower")){GroundHealthAssets.Build(root);return;}
             rect.sizeDelta=new Vector2(160,50);rect.anchorMin=rect.anchorMax=new Vector2(.5f,.5f);rect.pivot=new Vector2(.5f,0);
             Paint(rect,Ink);
             var name=reference.GetText("Name");Box(name.rectTransform,7,0,148,17);name.fontSize=12;
@@ -67,6 +68,7 @@ namespace ProjectY.Editor
             settings.FindProperty("worldOffset").vector3Value=new Vector3(0,.32f,0);settings.FindProperty("screenOffset").vector2Value=new Vector2(0,4);
             settings.ApplyModifiedPropertiesWithoutUndo();
             BattleFeedbackAssets.SetupHealth(root);
+            GroundHealthAssets.Build(root);
         }
         private static void BuildHeadTooltip(GameObject root)
         {

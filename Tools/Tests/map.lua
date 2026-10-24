@@ -39,7 +39,8 @@ local function fixture()
     function config:GetConstant(module, name) assert(module == 'Map'); return assert(self.constants[name]) end
     function config:GetTable(name)
         return tableOf(assert(({ MapRegionTable = self.rows, MapEnemyTable = self.enemies, MapBuildingTable = self.buildings,
-            MapTownTable = {}, MapAssetTable = {}, MapBiomeTable = {}, MapWaterNetworkTable = {} })[name]))
+            MapTownTable = {}, MapAssetTable = {}, MapBiomeTable = {}, MapWaterNetworkTable = {},
+            MapDecorationRuleTable = {}, MapWaterSiteTable = {} })[name]))
     end
     return config
 end
@@ -76,6 +77,45 @@ test('seeded generation repeats exactly and leaves global RNG untouched', functi
     assert(first:GetRegion(2):IsTestPlateau())
     assert(first:GetRegion(1).configId == first:GetRegion(3).configId)
     assert(first:GetRegion(1).instanceId ~= first:GetRegion(3).instanceId)
+end)
+test('seeded regions include every config, shuffle each round and keep config order irrelevant', function()
+    local config = fixture()
+    local extra = {}; for key, value in pairs(config.rows[1]) do extra[key] = value end
+    extra.id = 101; config.rows[#config.rows + 1] = extra
+    for _, row in ipairs(config.rows) do row.minX = 1; row.maxX = 1; row.minY = 1; row.maxY = 1 end
+    local gen = generator(config)
+    math.randomseed(18); local a, b = math.random(), math.random()
+    math.randomseed(18); assert(math.random() == a)
+    local map = gen:GenerateSeeded(42, 30)
+    assert(math.random() == b and map.generationVersion == 6 and #map.cells == 30)
+    local orders = {}
+    for first = 1, #map.regions, 3 do
+        local seen, ids = {}, {}
+        for i = first, first + 2 do
+            local id = map.regions[i].configId
+            assert(not seen[id], 'Config repeated before covering the candidate pool')
+            seen[id] = true; ids[#ids + 1] = id
+        end
+        assert(seen[10] and seen[20] and seen[101], 'A configured region was excluded')
+        orders[table.concat(ids, ',')] = true
+    end
+    local count = 0; for _ in pairs(orders) do count = count + 1 end
+    assert(count > 1, 'Every round reused the same terrain order')
+    config.rows[1], config.rows[3] = config.rows[3], config.rows[1]
+    assert(signature(map) == signature(generator(config):GenerateSeeded(42, 30)))
+    for _, target in ipairs({1, 2, 3}) do
+        local tiny = gen:GenerateSeeded(42, target); local seen = {}
+        assert(#tiny.cells == target and #tiny.regions == target)
+        for _, region in ipairs(tiny.regions) do assert(not seen[region.configId]); seen[region.configId] = true end
+    end
+    assert(#gen:GenerateSeeded(42).regions == 3, 'No target should visit the pool once')
+    local pool = {20, 10}
+    local restricted = gen:GenerateSeeded(42, 12, nil, pool)
+    for _, region in ipairs(restricted.regions) do assert(region.configId ~= 101, 'Explicit candidate pool was ignored') end
+    assert(pool[1] == 20 and pool[2] == 10, 'Seeded generation mutated its caller candidate pool')
+    assert(signature(restricted) == signature(gen:GenerateSeeded(42, 12, nil, {10, 20})))
+    throws(function() gen:GenerateSeeded(42, 12, nil, {[1]=10,[3]=20}) end)
+    throws(function() gen:GenerateSeeded(42, 12, nil, false) end)
 end)
 -- 从格子图反向验证唯一归属、高度范围和整图连通，而非复写摆放算法。
 test('generated cells have unique ownership, bounded heights and a connected six-neighbor graph', function()

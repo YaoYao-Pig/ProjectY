@@ -1,0 +1,47 @@
+{
+  "version": 1,
+  "name": "TownMissionSettingsTable",
+  "description": "城镇随机委托与护送规则。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "规则 ID",
+      "min": 1
+    },
+    {
+      "name": "minOffers",
+      "type": "int",
+      "description": "每镇每天委托数量下限",
+      "min": 1
+    },
+    {
+      "name": "maxOffers",
+      "type": "int",
+      "description": "每镇每天委托数量上限",
+      "min": 1
+    },
+    {
+      "name": "escortPartyDefinitionId",
+      "type": "int",
+      "description": "护送商队模板",
+      "ref": "WorldPartyTable"
+    },
+    {
+      "name": "escortArrivalRadius",
+      "type": "int",
+      "description": "抵达时玩家距商队的最大格数",
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "minOffers": 1,
+      "maxOffers": 5,
+      "escortPartyDefinitionId": 1,
+      "escortArrivalRadius": 1
+    }
+  ]
+}

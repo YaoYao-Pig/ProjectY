@@ -25,6 +25,11 @@ events.growth={Actor=function()return actor end,AddExperience=function(_,_,amoun
 events.chronicle=require('Game.Progression.Chronicle').New(config,data,stats)
 local adventure=require('Game.Adventure.AdventureSystem')()
 adventure.data=data;adventure.events=events;adventure.battle={stats=stats}
+adventure.specialEvents={CanEnter=function()return true end,CanChoose=function()return true end,
+    Choose=function()return false end,ShouldLeave=function()return false end}
+events.specialEvents=adventure.specialEvents
+adventure.factions={conflicts={EnterSite=function()return false end}}
+adventure.parties={data={IsOpen=false}}
 adventure.camp={data={IsOpen=false}};adventure.shop={data={IsOpen=false}}
 adventure.areas={AreaId=function()return nil end}
 adventure.sites={{id=1,eventId=5,name='石缝里的路标',travelStop=true},{id=2,eventId=6,name='余烬中的援手',travelStop=true}}

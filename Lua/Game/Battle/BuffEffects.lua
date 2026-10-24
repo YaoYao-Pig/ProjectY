@@ -30,7 +30,18 @@ function Buffs:Pending(plan)
 end
 function Buffs:Apply(plan,impact)
     local row,target=plan.buff,plan.target
-    if self.rules:Blocked(target,row) then return true end
+    local blocked,blocker=self.rules:Blocked(target,row)
+    if blocked then
+        self.owner:Report('effect_blocked',plan,{statusName=row.name,reason='受到「'..blocker.name..'」阻止'})
+        return true
+    end
+    for _,tag in ipairs(row.tags)do
+        local immunity=self.owner.stats.growth:Immunity(target,tag)
+        if immunity then
+            self.owner:Report('effect_blocked',plan,{statusName=row.name,reason=require('Language').ProfessionTransferImmune})
+            return true
+        end
+    end
     -- Preparation validates the program; the persistent snapshot belongs to the successful application.
     local values=require('Game.Battle.EffectInstructions').Values(self.owner.stats,plan.source,target,plan.skill,plan.distance)
     for i,id in ipairs(row.componentIds)do

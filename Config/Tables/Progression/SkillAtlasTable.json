@@ -1164,6 +1164,774 @@
         "战斗"
       ],
       "glyphCode": "staff"
+    },
+    {
+      "id": 1625,
+      "categoryId": 12,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 742,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "长枪",
+        "武器专属",
+        "战斗"
+      ],
+      "glyphCode": "greatsword"
+    },
+    {
+      "id": 1630,
+      "categoryId": 11,
+      "relatedCategoryIds": [],
+      "x": 625,
+      "y": 480,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "sword",
+        "battle",
+        "trauma"
+      ],
+      "glyphCode": "sword"
+    },
+    {
+      "id": 1701,
+      "categoryId": 15,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 632,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "装备专属",
+        "枪械",
+        "firearms"
+      ],
+      "glyphCode": "firearms"
+    },
+    {
+      "id": 1702,
+      "categoryId": 15,
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 632,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "装备专属",
+        "枪械",
+        "firearms"
+      ],
+      "glyphCode": "firearms"
+    },
+    {
+      "id": 1703,
+      "categoryId": 15,
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 812,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "装备专属",
+        "枪械",
+        "firearms"
+      ],
+      "glyphCode": "firearms"
+    },
+    {
+      "id": 1704,
+      "categoryId": 15,
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 812,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "装备专属",
+        "枪械",
+        "firearms"
+      ],
+      "glyphCode": "firearms"
+    },
+    {
+      "id": 1801,
+      "categoryId": 71,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 160,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "alchemist",
+        "support"
+      ]
+    },
+    {
+      "id": 1802,
+      "categoryId": 71,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 160,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "alchemist",
+        "support"
+      ]
+    },
+    {
+      "id": 1803,
+      "categoryId": 71,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 340,
+      "prerequisiteIds": [
+        1802
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "alchemist",
+        "support"
+      ]
+    },
+    {
+      "id": 1804,
+      "categoryId": 71,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 340,
+      "prerequisiteIds": [
+        1803
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "alchemist",
+        "support"
+      ]
+    },
+    {
+      "id": 1811,
+      "categoryId": 81,
+      "glyphCode": "charisma",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 520,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "bard",
+        "support"
+      ]
+    },
+    {
+      "id": 1812,
+      "categoryId": 81,
+      "glyphCode": "charisma",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 520,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "bard",
+        "support"
+      ]
+    },
+    {
+      "id": 1813,
+      "categoryId": 81,
+      "glyphCode": "charisma",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 700,
+      "prerequisiteIds": [
+        1812
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "bard",
+        "support"
+      ]
+    },
+    {
+      "id": 1814,
+      "categoryId": 81,
+      "glyphCode": "charisma",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 700,
+      "prerequisiteIds": [
+        1813
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "bard",
+        "support"
+      ]
+    },
+    {
+      "id": 1821,
+      "categoryId": 23,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 880,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "cleric",
+        "spell"
+      ]
+    },
+    {
+      "id": 1822,
+      "categoryId": 23,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 880,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "cleric",
+        "spell"
+      ]
+    },
+    {
+      "id": 1823,
+      "categoryId": 23,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 1060,
+      "prerequisiteIds": [
+        1822
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "cleric",
+        "spell"
+      ]
+    },
+    {
+      "id": 1824,
+      "categoryId": 23,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 1060,
+      "prerequisiteIds": [
+        1823
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "cleric",
+        "spell"
+      ]
+    },
+    {
+      "id": 1831,
+      "categoryId": 24,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 1240,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "warlock",
+        "spell"
+      ]
+    },
+    {
+      "id": 1832,
+      "categoryId": 24,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 1240,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "warlock",
+        "spell"
+      ]
+    },
+    {
+      "id": 1833,
+      "categoryId": 24,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 1420,
+      "prerequisiteIds": [
+        1832
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "warlock",
+        "spell"
+      ]
+    },
+    {
+      "id": 1834,
+      "categoryId": 24,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 1420,
+      "prerequisiteIds": [
+        1833
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "warlock",
+        "spell"
+      ]
+    },
+    {
+      "id": 1841,
+      "categoryId": 17,
+      "glyphCode": "speed",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 1600,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "duelist",
+        "support"
+      ]
+    },
+    {
+      "id": 1842,
+      "categoryId": 17,
+      "glyphCode": "speed",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 1600,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "duelist",
+        "weapon"
+      ]
+    },
+    {
+      "id": 1843,
+      "categoryId": 17,
+      "glyphCode": "speed",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 1780,
+      "prerequisiteIds": [
+        1842
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "duelist",
+        "weapon"
+      ]
+    },
+    {
+      "id": 1844,
+      "categoryId": 17,
+      "glyphCode": "speed",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 1780,
+      "prerequisiteIds": [
+        1843
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "duelist",
+        "weapon"
+      ]
+    },
+    {
+      "id": 1851,
+      "categoryId": 54,
+      "glyphCode": "animalAffinity",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 1960,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "beastmaster",
+        "animal"
+      ]
+    },
+    {
+      "id": 1852,
+      "categoryId": 54,
+      "glyphCode": "animalAffinity",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 1960,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "beastmaster",
+        "animal"
+      ]
+    },
+    {
+      "id": 1853,
+      "categoryId": 54,
+      "glyphCode": "animalAffinity",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 2140,
+      "prerequisiteIds": [
+        1852
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "beastmaster",
+        "animal"
+      ]
+    },
+    {
+      "id": 1854,
+      "categoryId": 54,
+      "glyphCode": "animalAffinity",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 2140,
+      "prerequisiteIds": [
+        1853
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "beastmaster",
+        "animal"
+      ]
+    },
+    {
+      "id": 1901,
+      "categoryId": 13,
+      "glyphCode": "sword",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 2320,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_expansion",
+        "weapon"
+      ]
+    },
+    {
+      "id": 1902,
+      "categoryId": 16,
+      "glyphCode": "sword",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 2320,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_expansion",
+        "weapon"
+      ]
+    },
+    {
+      "id": 1903,
+      "categoryId": 14,
+      "glyphCode": "sword",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 2500,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_expansion",
+        "weapon"
+      ]
+    },
+    {
+      "id": 1904,
+      "categoryId": 14,
+      "glyphCode": "sword",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 2500,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_expansion",
+        "weapon"
+      ]
+    },
+    {
+      "id": 1905,
+      "categoryId": 21,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 2680,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_expansion",
+        "spell"
+      ]
+    },
+    {
+      "id": 1906,
+      "categoryId": 21,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 2680,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_expansion",
+        "spell"
+      ]
+    },
+    {
+      "id": 1907,
+      "categoryId": 41,
+      "glyphCode": "sword",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 2860,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_expansion",
+        "construction"
+      ]
+    },
+    {
+      "id": 1908,
+      "categoryId": 34,
+      "glyphCode": "sword",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 2860,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_expansion",
+        "construction"
+      ]
+    },
+    {
+      "id": 1909,
+      "categoryId": 13,
+      "glyphCode": "sword",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 3040,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_expansion",
+        "support"
+      ]
+    },
+    {
+      "id": 1910,
+      "categoryId": 13,
+      "glyphCode": "sword",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 3040,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_expansion",
+        "support"
+      ]
+    },
+    {
+      "id": 1861,
+      "categoryId": 71,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 3220,
+      "prerequisiteIds": [
+        1801
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "alchemist",
+        "support"
+      ]
+    },
+    {
+      "id": 1862,
+      "categoryId": 71,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 3220,
+      "prerequisiteIds": [
+        1804
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "alchemist",
+        "support"
+      ]
+    },
+    {
+      "id": 1863,
+      "categoryId": 24,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 3400,
+      "prerequisiteIds": [
+        1834
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "warlock",
+        "spell"
+      ]
+    },
+    {
+      "id": 1864,
+      "categoryId": 24,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 3400,
+      "prerequisiteIds": [
+        1834
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "warlock",
+        "spell"
+      ]
+    },
+    {
+      "id": 1865,
+      "categoryId": 21,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 3580,
+      "prerequisiteIds": [
+        1905
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_expansion",
+        "spell"
+      ]
+    },
+    {
+      "id": 1806,
+      "categoryId": 71,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 3580,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "alchemist",
+        "profession_life_extract"
+      ]
+    },
+    {
+      "id": 1816,
+      "categoryId": 81,
+      "glyphCode": "charisma",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 3760,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "bard",
+        "profession_life_rumor"
+      ]
+    },
+    {
+      "id": 1826,
+      "categoryId": 23,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 3760,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "cleric",
+        "profession_life_care"
+      ]
+    },
+    {
+      "id": 1836,
+      "categoryId": 24,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 3940,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "warlock",
+        "profession_life_curse"
+      ]
+    },
+    {
+      "id": 1846,
+      "categoryId": 17,
+      "glyphCode": "speed",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 3940,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "duelist",
+        "profession_life_duel"
+      ]
+    },
+    {
+      "id": 1856,
+      "categoryId": 54,
+      "glyphCode": "animalAffinity",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 4120,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "beastmaster",
+        "profession_life_track"
+      ]
+    },
+    {
+      "id": 1867,
+      "categoryId": 54,
+      "glyphCode": "animalAffinity",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 4120,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_expansion",
+        "profession_life_companion"
+      ]
     }
   ]
 }

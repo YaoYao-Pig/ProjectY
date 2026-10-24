@@ -1,10 +1,19 @@
 <linker>
   <assembly fullname="Assembly-CSharp">
+    <type fullname="ProjectY.Data.BodyHealth" preserve="all" />
     <type fullname="ProjectY.Data.ExpeditionPersistence" preserve="all" />
     <type fullname="ProjectY.Data.GameBuffState" preserve="all" />
     <type fullname="ProjectY.Data.WorldTravelData" preserve="all" />
+    <type fullname="ProjectY.Data.WorldMapExplorationData" preserve="all" />
     <type fullname="ProjectY.Data.WorldPartiesData" preserve="all" />
     <type fullname="ProjectY.Data.WorldPartyData" preserve="all" />
+    <type fullname="ProjectY.Data.WorldPartySimulationStep" preserve="all" />
+    <type fullname="ProjectY.Data.WorldPartySimulationBatch" preserve="all" />
+    <type fullname="ProjectY.Data.WorldFactionsData" preserve="all" />
+    <type fullname="ProjectY.Data.WorldFactionRelationData" preserve="all" />
+    <type fullname="ProjectY.Data.WorldFactionSiteData" preserve="all" />
+    <type fullname="ProjectY.Data.WorldFactionConflictData" preserve="all" />
+    <type fullname="ProjectY.Data.FactionPersistence" preserve="all" />
     <type fullname="ProjectY.Data.WorldTravelStep" preserve="all" />
     <type fullname="ProjectY.Data.WorldTravelStop" preserve="all" />
     <type fullname="ProjectY.Data.CampData" preserve="all" />
@@ -17,8 +26,19 @@
     <type fullname="ProjectY.Data.EquipmentConditionData" preserve="all" />
     <type fullname="ProjectY.Data.EquipmentAffixData" preserve="all" />
     <type fullname="ProjectY.Data.EquipmentCombatState" preserve="all" />
+    <type fullname="ProjectY.Data.EncounterRecruitment" preserve="all" />
     <type fullname="ProjectY.Data.InventoryStacks" preserve="all" />
     <type fullname="ProjectY.Data.BattleMovement" preserve="all" />
+    <type fullname="ProjectY.Data.AnimalCompanionState" preserve="all" />
+    <type fullname="ProjectY.Data.ProfessionCombatState" preserve="all" />
+    <type fullname="ProjectY.Data.ProfessionTrapData" preserve="all" />
+    <type fullname="ProjectY.Data.ProfessionExplorationState" preserve="all" />
+    <type fullname="ProjectY.Data.ProfessionDuelState" preserve="all" />
+    <type fullname="ProjectY.Data.CampaignSaves" preserve="all" />
+    <type fullname="ProjectY.Data.SkillSynergyDiscovery" preserve="all" />
+    <type fullname="ProjectY.Data.TownMissionData" preserve="all" />
+    <type fullname="ProjectY.Data.TownMissionInstance" preserve="all" />
+    <type fullname="ProjectY.Data.SaveCatalogEntry" preserve="all" />
     <type fullname="ProjectY.Data.ShopData" preserve="all" />
     <type fullname="ProjectY.Data.ShopStock" preserve="all" />
     <type fullname="ProjectY.Data.ShopStockEntry" preserve="all" />

@@ -11,6 +11,7 @@ namespace ProjectY.Data
         private readonly List<int> order = new List<int>();
         private readonly List<string> logs = new List<string>();
         private uint hitState = 1;
+        internal readonly List<ProfessionTrapData> ProfessionTraps=new List<ProfessionTrapData>();
         public void SetRandomSeed(uint seed) { hitState = seed == 0 ? 1u : seed; }
         public int RollPercent()
         {
@@ -33,6 +34,7 @@ namespace ProjectY.Data
         public void Clear()
         {
             units.Clear(); order.Clear(); logs.Clear();
+            ProfessionTraps.Clear();
             EncounterId = 0; MaxRounds = 0; Round = 0; ActiveId = 0; TurnIndex = 0; Winner = "";
             Phase = "idle";
         }

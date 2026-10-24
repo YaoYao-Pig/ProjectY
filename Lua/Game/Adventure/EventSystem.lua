@@ -3,6 +3,7 @@ local System = require('Core.LuaSystem')
 local Events = Class('AdventureEventSystem', System)
 function Events:OnInit(context)
     System.OnInit(self, context)
+    self.CheckResolved = require('Core.Signal')(context.log)
     local config = context.systems:Get('Config')
     self.events = config:GetTable('AdventureEventTable')
     self.choices = config:GetTable('AdventureChoiceTable')
@@ -89,6 +90,10 @@ function Events:CanChoose(choiceId)
     for _, id in ipairs(self.events:Get(self.data.EventId).choiceIds) do if id == choiceId then member = true; break end end
     if not member then return false, '这个选项不属于当前事件' end
     local choice = self.choices:Get(choiceId)
+    if self.specialEvents then
+        local ok,reason=self.specialEvents:CanChoose(choiceId)
+        if not ok then return false,reason end
+    end
     if choice.obstacleAction~='' then
         local ok,reason=self.context.systems:Get('Adventure').obstacles:CanChoose(choice.obstacleAction)
         if not ok then return false,reason end
@@ -140,8 +145,8 @@ function Events:Choose(choiceId)
     end
     -- 先离开可选择状态；重复提交同一按钮不会重复扣费或发奖。
     self.data:ResolveChoice(choiceId)
-    local resultText
-    if choice.obstacleAction~='' then resultText=self.context.systems:Get('Adventure').obstacles:Resolve(choice.obstacleAction) end
+    local resultText,check
+    if choice.obstacleAction~='' then resultText,check=self.context.systems:Get('Adventure').obstacles:Resolve(choice.obstacleAction) end
     assert(self.player:TrySpendCoins(choice.costCoins), 'Coins changed during event resolution')
     if choice.timeMinutes>0 then self.context.systems:Get('Adventure').narrative:AdvanceMinutes(choice.timeMinutes) end
     if choice.healParty then
@@ -178,6 +183,7 @@ function Events:Choose(choiceId)
         self.growth:AddExperience(actor,choice.experience,self.data.EventLocation)
     end
     for _,plan in ipairs(plans)do if plan.target.HP>0 then assert(self.gameEffects:ApplyPrepared(plan)) end end
+    if check then self.CheckResolved:Emit(check) end
     return true, choice, resultText
 end
 return Events

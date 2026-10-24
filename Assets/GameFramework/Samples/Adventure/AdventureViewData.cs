@@ -7,6 +7,7 @@ namespace ProjectY.Samples
     // 仅显示副本。每次命令后读取一次，所有 LuaTable 在当前调用中释放。
     public sealed class AdventureViewData
     {
+        public ProjectY.Data.WorldMapExplorationData WorldFog;
         public sealed class Actor
         {
             public int Id, Team, HP, MaxHP, AP, Q, R, Guard, CellIndex;
@@ -19,7 +20,7 @@ namespace ProjectY.Samples
             public int MovementSequence;
             public string MovementStyle;
         }
-        public sealed class Site { public int Id, AreaConfigId; public string Name, Reason, Kind; public Vector3 Position; public bool Available, Visited; }
+        public sealed class Site { public int Id, AreaConfigId, Q, R, WorldTownId; public string Name, Reason, Kind; public Vector3 Position; public bool Available, Visited; }
         public sealed class Choice { public int Id; public string Label, Reason; public bool Available; }
         public sealed class Cell { public int Q, R, CellIndex; public bool Blocked; }
         public sealed class TargetPreview
@@ -33,10 +34,13 @@ namespace ProjectY.Samples
         {
             public int Id, Cost, MaxTargets;
             public string Name, Description, Action;
-            public bool ManualTargets, Guided;
+            public bool ManualTargets, Guided, NeedsLanding;
             public int[] Targets, TargetCells, ContainerTargets;
             public TargetPreview[] TargetPreviews;
+            public LandingOption[] LandingOptions=Array.Empty<LandingOption>();
         }
+        public sealed class LandingOption { public int TargetId; public Cell[] Cells; }
+        public sealed class Trap { public int Q, R, SourceId; public string Name; }
         public string Phase, BattlePhase, Result, Error, EventTitle, EventText, Encounter;
         public int Coins, Round, ActiveId, Radius;
         public Actor[] Party, Units;
@@ -44,7 +48,9 @@ namespace ProjectY.Samples
         public Choice[] Choices;
         public Cell[] Cells, Reachable;
         public Skill[] Skills;
+        public Trap[] Traps=Array.Empty<Trap>();
         public string[] Logs;
+        public WorldEffectEvent[] VisualEffects=Array.Empty<WorldEffectEvent>();
         public MapAreaViewData.State Area;
         public sealed class TravelState
         {
@@ -132,6 +138,8 @@ namespace ProjectY.Samples
         }
         private static Cell ReadCell(LuaTable row) => new Cell { Q = row.Get<int>("q"), R = row.Get<int>("r"), Blocked = row.Get<bool>("blocked"), CellIndex = row.Get<int>("cellIndex") - 1 };
         public static AdventureViewData Read(LuaTable root) => new AdventureViewData {
+            WorldFog=root.Get<ProjectY.Data.WorldMapExplorationData>("worldFog"),
+            VisualEffects=WorldEffectEvent.Read(root),
             Travel=ReadTravel(root), WorldParties=ReadWorldParties(root), Torch=ReadTorch(root),
             Area = MapAreaViewData.ReadState(root),
             Phase = root.Get<string>("phase"), BattlePhase = root.Get<string>("battlePhase"), Result = root.Get<string>("result"), Error = root.Get<string>("error"),
@@ -139,7 +147,9 @@ namespace ProjectY.Samples
             Coins = root.Get<int>("coins"), Round = root.Get<int>("round"), ActiveId = root.Get<int>("activeId"), Radius = root.Get<int>("radius"),
             Party = Rows(root, "party", ReadActor), Units = Rows(root, "units", ReadActor), Cells = Rows(root, "cells", ReadCell),
             Reachable = Rows(root, "reachable", ReadCell), Logs = Values<string>(root, "logs"),
+            Traps=Rows(root,"traps",row=>new Trap { Q=row.Get<int>("q"),R=row.Get<int>("r"),SourceId=row.Get<int>("sourceId"),Name=row.Get<string>("name") }),
             Sites = Rows(root, "sites", row => new Site { Id = row.Get<int>("id"), Name = row.Get<string>("name"),
+                Q = row.Get<int>("q"), R = row.Get<int>("r"), WorldTownId = row.Get<int>("worldTownId"),
                 AreaConfigId = row.Get<int>("areaConfigId"), Reason = row.Get<string>("reason"), Kind = row.Get<string>("kind"),
                 Position = new Vector3(row.Get<float>("x"), row.Get<float>("y"), row.Get<float>("z")),
                 Available = row.Get<bool>("available"), Visited = row.Get<bool>("visited") }),
@@ -149,6 +159,8 @@ namespace ProjectY.Samples
                 Action = row.Get<string>("action"), Description = row.Get<string>("description"), Targets = Values<int>(row, "targets"),
                 TargetCells = Values<int>(row,"targetCells"),ContainerTargets=Values<int>(row,"containerTargets"),
                 ManualTargets=row.Get<bool>("manualTargets"),MaxTargets=row.Get<int>("maxTargets"),Guided=row.Get<bool>("guided"),
+                NeedsLanding=row.Get<bool>("needsLanding"),
+                LandingOptions=Rows(row,"landingOptions",option=>new LandingOption { TargetId=option.Get<int>("targetId"),Cells=Rows(option,"cells",ReadCell) }),
                 TargetPreviews=Rows(row,"targetPreviews",preview=>new TargetPreview {
                     Id=preview.Get<int>("id"),HitChance=preview.Get<float>("hitChance"),InterceptChance=preview.Get<float>("interceptChance"),
                     BlockerCount=preview.Get<int>("blockerCount"),FriendlyRisk=preview.Get<bool>("friendlyRisk"),Description=preview.Get<string>("description") }) })

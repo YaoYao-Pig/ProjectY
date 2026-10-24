@@ -57,7 +57,10 @@ function Rules:Tagged(row,tags)
     return false
 end
 function Rules:Blocked(target,row)
-    for i=0,target.Effects.Count-1 do if self:Tagged(self:Find(target.Effects:GetAt(i).EffectId),row.blockedByTags)then return true end end
+    for i=0,target.Effects.Count-1 do
+        local blocker=self:Find(target.Effects:GetAt(i).EffectId)
+        if self:Tagged(blocker,row.blockedByTags)then return true,blocker end
+    end
     return false
 end
 function Rules:Skipping(target)

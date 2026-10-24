@@ -1,0 +1,14 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class ProfessionCombatTableRow
+---@field id number 技能 ID
+---@field mechanic string 战斗机制代码
+---@field family string 药剂或咒术分组
+---@field materialId number 消耗物品；0 表示无
+---@field materialCount number 每次合法施放消耗份数
+---@field statusTag string 选择或消费的状态标签
+---@field applyEffectId number 机制施加的 CombatEffect；0 表示无
+---@field bonusDamage number 条件附伤；受共享附伤上限约束
+---@field baseSkillId number 共享课程的基础技能；0 表示本人
+---@field requiredEquipment string 额外要求的实际装备类型；shield/bow/melee，空为无
+---@field refundItemId number 拆料返还的实际原投入物品；0 表示无
+return {["name"]="ProfessionCombatTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\230\138\128\232\131\189 ID",["ref"]="CombatSkillTable"},{["name"]="mechanic",["type"]="string",["description"]="\230\136\152\230\150\151\230\156\186\229\136\182\228\187\163\231\160\129"},{["name"]="family",["type"]="string",["description"]="\232\141\175\229\137\130\230\136\150\229\146\146\230\156\175\229\136\134\231\187\132",["default"]=""},{["name"]="materialId",["type"]="int",["description"]="\230\182\136\232\128\151\231\137\169\229\147\129\239\188\1550 \232\161\168\231\164\186\230\151\160",["default"]=0,["min"]=0},{["name"]="materialCount",["type"]="int",["description"]="\230\175\143\230\172\161\229\144\136\230\179\149\230\150\189\230\148\190\230\182\136\232\128\151\228\187\189\230\149\176",["default"]=0,["min"]=0},{["name"]="statusTag",["type"]="string",["description"]="\233\128\137\230\139\169\230\136\150\230\182\136\232\180\185\231\154\132\231\138\182\230\128\129\230\160\135\231\173\190",["default"]=""},{["name"]="applyEffectId",["type"]="int",["description"]="\230\156\186\229\136\182\230\150\189\229\138\160\231\154\132 CombatEffect\239\188\1550 \232\161\168\231\164\186\230\151\160",["default"]=0,["min"]=0},{["name"]="bonusDamage",["type"]="int",["description"]="\230\157\161\228\187\182\233\153\132\228\188\164\239\188\155\229\143\151\229\133\177\228\186\171\233\153\132\228\188\164\228\184\138\233\153\144\231\186\166\230\157\159",["default"]=0,["min"]=0},{["name"]="baseSkillId",["type"]="int",["description"]="\229\133\177\228\186\171\232\175\190\231\168\139\231\154\132\229\159\186\231\161\128\230\138\128\232\131\189\239\188\1550 \232\161\168\231\164\186\230\156\172\228\186\186",["default"]=0,["min"]=0},{["name"]="requiredEquipment",["type"]="string",["description"]="\233\162\157\229\164\150\232\166\129\230\177\130\231\154\132\229\174\158\233\153\133\232\163\133\229\164\135\231\177\187\229\158\139\239\188\155shield/bow/melee\239\188\140\231\169\186\228\184\186\230\151\160",["default"]=""},{["name"]="refundItemId",["type"]="int",["description"]="\230\139\134\230\150\153\232\191\148\232\191\152\231\154\132\229\174\158\233\153\133\229\142\159\230\138\149\229\133\165\231\137\169\229\147\129\239\188\1550 \232\161\168\231\164\186\230\151\160",["default"]=0,["min"]=0}},["fingerprint"]="630f1495a4798d13c1f203fe7598837c095db7fe52d2b49c78e848413852e750"}

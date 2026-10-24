@@ -14,4 +14,5 @@ return function(registry)
     registry:Register('Narrative', require('Game.Narrative.NarrativeSystem'), { 'Adventure', 'Condition' })
     registry:Register('GM', require('Game.GM.GMSystem'), { 'Config', 'Growth', 'Narrative' })
     registry:Register('UI', require('UI.UISystem'), { 'PlayerModel', 'Localization','GM','Narrative' })
+    registry:Register('Loading', require('UI.LoadingSystem'), { 'UI', 'Config' })
 end

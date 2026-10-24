@@ -1,0 +1,26 @@
+{
+  "date": "2026-10-25",
+  "items": 18,
+  "weapons": 6,
+  "magazines": 3,
+  "modules": 7,
+  "ammo_types": 2,
+  "model_triangles": 39148,
+  "passed": [
+    "config export",
+    "firearms_core.lua",
+    "skill_tooltip_core.lua",
+    "ui_localization_sources.mjs",
+    "firearms_integration.lua: 6 guns, 42 module combinations, reload/refill/shotgun combat",
+    "18 native models/materials/sprites, 24 socket bindings",
+    "18 existing Catalog prefab/icon references after visual revision"
+  ],
+  "incomplete": [
+    "projectile_interception_core.lua and equipment_expansion.lua: offline fixtures missing BodyHealth at InjuryRules.lua:42",
+    "global asset/icon catalog rescan waits for unrelated ProfessionArsenal20261025 assets; this batch independently verified"
+  ],
+  "editor_started": false,
+  "play_entered": false,
+  "project_compile_requested": false,
+  "visual_revision": "Grounded proportions, machined edges and independent muted metal/wood/rubber materials"
+}

@@ -1,3 +1,4 @@
+local LuaLanguage = require('Language')
 -- 技能目录、依赖与只读显示查询。技能身份始终来自 CombatSkillTable。
 local Atlas={};Atlas.__index=Atlas
 local function contains(values,id) for _,value in ipairs(values) do if value==id then return true end end return false end
@@ -83,28 +84,28 @@ function Atlas:Related(id)
 end
 function Atlas:State(id,actor,stats,owned)
     if owned[id] then
-        if actor.Growth:HasSkill(id) then return 'owned','已掌握' end
-        for _,skillId in ipairs(stats:Template(actor).skillIds) do if skillId==id then return 'owned','固有技能' end end
-        if self.universal[id] then return 'owned','通用动作' end
-        if stats.animals and stats.animals.bySkill[id] then return 'owned','骑乘能力' end
-        return 'owned','装备授予'
+        if actor.Growth:HasSkill(id) then return 'owned',LuaLanguage.UISkillAtlasText8 end
+        for _,skillId in ipairs(stats:Template(actor).skillIds) do if skillId==id then return 'owned',LuaLanguage.UISkillAtlasText7 end end
+        if self.universal[id] then return 'owned',LuaLanguage.UISkillAtlasText6 end
+        if stats.animals and stats.animals.bySkill[id] then return 'owned',LuaLanguage.UISkillAtlasText5 end
+        return 'owned',LuaLanguage.UISkillAtlasText4
     end
-    if not self.professions.bySkill[id] then return 'source','特定途径获取' end
+    if not self.professions.bySkill[id] then return 'source',LuaLanguage.UISkillAtlasText3 end
     local ok,reason=self.professions:Requirements(actor,id,stats,self,owned)
-    return ok and 'eligible' or 'locked',ok and '可在角色养成 → 职业技能中学习' or reason
+    return ok and 'eligible' or 'locked',ok and LuaLanguage.UISkillAtlasText2 or reason
 end
 function Atlas:EquipmentCondition(skill,actor,stats)
     if skill.catalystKind=='none' then return nil end
     local allowed,reason=stats.equipment:CheckSkillEquipment(actor,skill,stats)
-    return '施放条件：'..(allowed and '触媒就绪' or reason)
+    return string.format(LuaLanguage.UISkillAtlasText10, (allowed and LuaLanguage.UISkillAtlasText9 or reason))
 end
 function Atlas:Details(id,actor,stats,owned)
     local skill=self.skills:Get(id);local node=self.nodes:Get(id)
     local _,status=self:State(id,actor,stats,owned)
-    local contexts={};for _,value in ipairs(skill.contexts) do contexts[#contexts+1]=value=='battle' and '战斗' or (value=='preparation' and '战前部署' or '探索') end
-    local kind=skill.skillKind=='preparation' and '准备技能' or (skill.skillKind=='item' and '道具动作' or '主动技能')
-    local lines={kind..' · '..table.concat(contexts,' / ')..' · '..(skill.action=='main' and '主要行动' or '次要行动'),
-        '行动点 '..skill.cost..'    距离 '..skill.range..' 格    冷却 '..skill.cooldownTurns..' 回合',skill.description}
+    local contexts={};for _,value in ipairs(skill.contexts) do contexts[#contexts+1]=value=='battle' and LuaLanguage.UISkillAtlasContextsContexts12 or (value=='preparation' and LuaLanguage.UIBattleHUDContentRoundText or LuaLanguage.UISkillAtlasContextsContexts1) end
+    local kind=skill.skillKind=='preparation' and LuaLanguage.UISkillAtlasKind2 or (skill.skillKind=='item' and LuaLanguage.UISkillAtlasKind or LuaLanguage.UICharacterGrowthKind)
+    local lines={kind..' · '..table.concat(contexts,' / ')..' · '..(skill.action=='main' and LuaLanguage.BattleMain or LuaLanguage.BattleSecondary),
+        string.format(LuaLanguage.UISkillAtlasLines, (skill.cost), (skill.range), (skill.cooldownTurns)),skill.description}
     local equipmentCondition=self:EquipmentCondition(skill,actor,stats)
     if equipmentCondition then lines[#lines+1]=equipmentCondition end
     if skill.trajectory~='sight' then lines[#lines+1]=require('Game.Battle.SkillTrajectory').Description(skill.trajectory) end
@@ -112,25 +113,25 @@ function Atlas:Details(id,actor,stats,owned)
     if construction then
         local material={}
         for i,item in ipairs(construction.itemIds) do material[#material+1]=self.items:Get(item).name..' ×'..construction.itemCounts[i] end
-        lines[#lines+1]=#material>0 and ('材料：'..table.concat(material,'、')) or '材料：无'
-        if construction.maxHP>0 then lines[#lines+1]='结构耐久：'..construction.maxHP..' + 巧匠 ×'..construction.hpPerCrafting end
-        if construction.toolTag~='' then lines[#lines+1]='工具：角色须装备铲子；仅可挖掘未铺装的泥土、草地' end
-        if construction.kind~='demolish' then lines[#lines+1]='占地：1 格 · 保留至本次远征结束' end
-        if construction.kind=='demolish' then lines[#lines+1]='探索时每次消耗 '..construction.workRounds..' 回合，可清理战后遗留工事' end
+        lines[#lines+1]=#material>0 and (string.format(LuaLanguage.UISkillAtlasLinesLines110, (table.concat(material,'、')))) or LuaLanguage.UISkillAtlasLinesLines19
+        if construction.maxHP>0 then lines[#lines+1]=string.format(LuaLanguage.UISkillAtlasLinesLines18, (construction.maxHP), (construction.hpPerCrafting)) end
+        if construction.toolTag~='' then lines[#lines+1]=LuaLanguage.UISkillAtlasLinesLines17 end
+        if construction.kind~='demolish' then lines[#lines+1]=LuaLanguage.UISkillAtlasLinesLines16 end
+        if construction.kind=='demolish' then lines[#lines+1]=string.format(LuaLanguage.UISkillAtlasLinesLines15, (construction.workRounds)) end
     end
     local courses=self.professions.bySkill[id]
     if courses then
         for _,course in ipairs(courses) do
-            local requirements={'角色等级 '..course.minLevel}
+            local requirements={string.format(LuaLanguage.UISkillAtlasRequirements, (course.minLevel))}
             for i,name in ipairs(course.attributeNames) do
                 requirements[#requirements+1]=stats.growth.attributeByCode[name].name..' ≥ '..course.attributeValues[i]
             end
             lines[#lines+1]=self.professions.professions:Get(course.professionId).name..'：'..table.concat(requirements,'、')
         end
-        lines[#lines+1]='获取：角色养成 → 职业与天赋 → 职业技能，转入对应职业后选学；消耗 1 次学习机会'
-    elseif self.universal[id] then lines[#lines+1]='获取：战斗中的通用动作'
-    elseif skill.skillKind=='item' then lines[#lines+1]='获取：消耗背包中的对应道具，不能研习'
-    else lines[#lines+1]='获取：角色固有、装备或骑乘能力' end
+        lines[#lines+1]=LuaLanguage.UISkillAtlasLinesLines14
+    elseif self.universal[id] then lines[#lines+1]=LuaLanguage.UISkillAtlasLinesLines13
+    elseif skill.skillKind=='item' then lines[#lines+1]=LuaLanguage.UISkillAtlasLinesLines12
+    else lines[#lines+1]=LuaLanguage.UISkillAtlasLinesLines1 end
     lines[#lines+1]=status
     return table.concat(lines,'\n\n'),node
 end

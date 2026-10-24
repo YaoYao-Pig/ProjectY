@@ -1,0 +1,30 @@
+{
+  "pipelineVersion": 1,
+  "recipe": {
+    "id": 10501,
+    "skillId": 501,
+    "slug": "disarm",
+    "styleId": "pixel-simple-v1",
+    "subject": "A short plain iron sword falling sideways beside one large straight orange arrow pointing downward, clearly symbolizing a dropped weapon. Keep the sword nearly horizontal and the separate downward arrow thick. No curved slash, attack swoosh, impact, hand or ground."
+  },
+  "style": {
+    "id": "pixel-simple-v1",
+    "prompt": "Create one intuitive fantasy skill icon on a transparent background. Use a 64x64 logical pixel grid with crisp stepped edges and large solid color blocks. Use a compact palette of 8-12 solid colors at most; each material has only one base color and at most one shadow color. Center one dominant subject filling about 75 percent of the canvas, with at most one simple action or effect. Keep the silhouette readable at 32x32. No text, letters, numbers, frame, border, scenery, texture, thin lines, metallic reflections, shine, glow, gradients, particles, or dense detail. Deliberately simple and restrained.",
+    "maxTextureSize": 256
+  },
+  "skill": {
+    "id": 501,
+    "name": "缴械",
+    "description": "近身夺落对手主手（无主手则副手）武器。基础成功率30%，自身速度每比目标高1点增加2个百分点，低1点减少2个百分点；叠加装备与高地修正，最终限制在0%～100%。成功后武器和配件以原实例落地，双方均可拾回；不伤害护甲。"
+  },
+  "recipeId": 10501,
+  "skillId": 501,
+  "recipeHash": "7faad485ad42711f856fd62cc5e7ffceb189059a4775a65ad668c17ba4ccb91a",
+  "prompt": "Create one intuitive fantasy skill icon on a transparent background. Use a 64x64 logical pixel grid with crisp stepped edges and large solid color blocks. Use a compact palette of 8-12 solid colors at most; each material has only one base color and at most one shadow color. Center one dominant subject filling about 75 percent of the canvas, with at most one simple action or effect. Keep the silhouette readable at 32x32. No text, letters, numbers, frame, border, scenery, texture, thin lines, metallic reflections, shine, glow, gradients, particles, or dense detail. Deliberately simple and restrained.\n\nSubject: A short plain iron sword falling sideways beside one large straight orange arrow pointing downward, clearly symbolizing a dropped weapon. Keep the sword nearly horizontal and the separate downward arrow thick. No curved slash, attack swoosh, impact, hand or ground.",
+  "transparentBackground": true,
+  "maxTextureSize": 256,
+  "version": 1,
+  "assetPath": "Assets/DynamicAsset/UI/Icons/Skills/disarm-v1.png",
+  "preparedAt": "2026-10-24T16:28:18.181Z",
+  "jobPath": "Art/SkillIcons/Jobs/10501.json"
+}

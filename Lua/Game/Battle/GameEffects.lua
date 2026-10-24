@@ -1,19 +1,31 @@
 -- Skills and external gameplay both use Prepare/Apply. All mutable instances live on C# actors.
 local Effects={};Effects.__index=Effects
 local Instructions=require('Game.Battle.EffectInstructions')
+local ArmorDamage=require('Game.Battle.ArmorDamage')
+local LuaLanguage=require('Language')
 function Effects.New(stats,definitions,emit,options)
-    local self=setmetatable({stats=stats,definitions=definitions,emit=emit,roll=options and options.roll,minutes=options and options.minutes},Effects)
+    local self=setmetatable({stats=stats,definitions=definitions,emit=emit,roll=options and options.roll,minutes=options and options.minutes,
+        report=options and options.report},Effects)
     self.buffEffects=require('Game.Battle.BuffEffects').New(self);return self
+end
+function Effects:Report(kind,plan,details)
+    if not self.report then return end -- Standalone effect callers may omit battle-log observation.
+    details.actionName=plan.skill and plan.skill.name or plan.label or plan.definition.name
+    details.sourceName=plan.sourceName
+    self.report(kind,plan,details)
 end
 function Effects:Definition(id)return self.stats.buffs:Find(id) or self.definitions:Get(id)end
 function Effects:Validate()
     for _,row in ipairs(self.definitions:All()) do
         assert(row.recipient=='target' or row.recipient=='source','Unknown effect recipient: '..row.id)
-        for _,field in ipairs({'requiredTags','forbiddenTags','removeTags','removeCategories'})do
+        for _,field in ipairs({'requiredTags','forbiddenTags','removeTags','removeCategories','sourceRequiredTags','sourceForbiddenTags'})do
+            if row[field] then
             local seen={};for _,value in ipairs(row[field])do assert(value~='' and not seen[value],'Empty/duplicate effect filter: '..row.id);seen[value]=true end
+            end
         end
         if row.kind=='remove_buffs' then assert(row.duration=='instant' and (#row.removeTags>0 or #row.removeCategories>0),'Dispel requires an instant filtered removal')
         else assert(#row.removeTags==0 and #row.removeCategories==0,'Only remove_buffs may specify removal filters')end
+        if row.injuryTypeId~=0 then assert(row.kind=='damage','Only damage may cause trauma');self.stats.injuries.types:Get(row.injuryTypeId) end
         if row.damageColor~='' then require('Config.Color').Normalize(row.damageColor) end
         if row.kind=='apply_buff' then assert(row.duration=='instant','Buff application must be an instant action');self.stats.buffs:Get(row.buffId)
         else assert(row.buffId==0,'Only apply_buff can reference a buff')end
@@ -58,35 +70,60 @@ end
 function Effects:Notify(kind,message,sourceId,target,amount,attackHit,impact)
     self.emit(kind,message,sourceId,target.Id,amount,target,attackHit,impact)
 end
-function Effects:Execute(row,target,amount,sourceId,sourceName,label,source,attackHit,impact,periodic)
+function Effects:Execute(row,target,amount,sourceId,sourceName,label,source,attackHit,impact,periodic,skill)
     local alive=target.HP>0
     if not alive then return end
     local incoming=impact;impact={}
     if incoming then for key,value in pairs(incoming) do impact[key]=value end end
-    impact.hpBefore=target.HP;impact.periodic=periodic==true
+    local health=row.kind=='damage' and target.MountedAnimal or target
+    impact.hpBefore=health.HP;impact.maxHP=health.MaxHP;impact.periodic=periodic==true
+    impact.actionName=label;impact.sourceName=sourceName
     if row.kind=='damage' then
+        if not periodic and attackHit and self.professions then amount=self.professions:Mitigate(target,amount,impact)end
         local color=impact.damageColor or (row.damageColor~='' and row.damageColor) or (periodic and row.color) or ''
         impact.damageColor=color~='' and require('Config.Color').Normalize(color) or ''
-        local mount=target.MountedAnimal;amount=target:Damage(amount)
+        local mount=target.MountedAnimal
+        local bodyHit=not mount and attackHit and not periodic and source~=target and self.stats:Template(target).bodyInjuries
+        local armored=ArmorDamage.Applies(skill,source,target,attackHit,periodic,impact.damageType or row.damageType)
+        local hit
+        if armored then
+            if bodyHit and amount>0 then hit=self.stats.injuries:SelectHit(target,self.roll) end
+            local preserve=skill.preserveArmor or (impact.professionContext and impact.professionContext.preserveArmor)
+            amount,impact.armor=ArmorDamage.Apply(self.stats.equipment.data,target,amount,skill,hit,preserve)
+            impact.equipmentDamage=impact.armor.damage
+        end
+        if self.damageLimit then amount=self.damageLimit(target,amount)end
+        if bodyHit and amount>0 then
+            amount,impact.injury=self.stats.injuries:DamageHit(source,target,row,amount,self.roll,hit)
+        else amount=target:Damage(amount) end
         impact.shot=impact.shot or 1;impact.critical=impact.critical==true
         impact.defeated=target.HP==0 or (mount~=nil and target.MountedAnimal==nil)
-        if not mount and amount>0 and row.equipmentDamage>0 then
+        if not armored and not mount and amount>0 and row.equipmentDamage>0 and not (impact.professionContext and impact.professionContext.preserveArmor) then
             local wear=row.equipmentDamage+(target.HP==0 and row.killEquipmentDamage or 0)
             impact.equipmentDamage=CS.ProjectY.Data.EquipmentCombatState.DamageArmor(self.stats.equipment.data,target.Id,wear)
+        end
+        if not mount and impact.equipmentDamage and impact.equipmentDamage>0 then
             CS.ProjectY.Data.EquipmentCombatState.RefreshMaximum(target,self.stats:MaximumHP(target))
         end
         if mount and not target.MountedAnimal then
             self:Clear(mount,'death');self:Notify('mount_defeated',self.stats:Template(mount).name..' 死亡，骑手下马',target.Id,mount,0)
         end
     elseif row.kind=='heal' then amount=target:Heal(amount)
-    elseif row.kind=='guard' then target:SetGuard(amount)
-    elseif row.kind=='remove_buffs' then amount=Instructions.Remove(self,target,row)
+    elseif row.kind=='guard' then impact.guardBefore=target.Guard;target:SetGuard(amount);impact.guardAfter=target.Guard
+    elseif row.kind=='remove_buffs' then
+        local debuffs;amount,debuffs=Instructions.Remove(self,target,row)
+        if self.professions and not periodic then self.professions:OnCleansed(source,target,debuffs)end
     elseif row.kind=='reload' then
         amount=assert(self.stats.equipment:Loaded(self.stats.equipment:Weapon(assert(source))),'Reload has no loaded magazine').Rounds
     else error('Unsupported periodic execution: '..row.kind) end
-    impact.hpAfter=target.HP
+    impact.hpAfter=health.HP;impact.maxHP=health.MaxHP
     local verb=({damage='伤害',heal='治疗',guard='防御',reload='装入子弹',remove_buffs='清除状态'})[row.kind]
     self:Notify(row.kind,sourceName..' · '..(label~='' and label or verb)..' → '..self.stats:Template(target).name..'（'..verb..' '..amount..'）',sourceId,target,amount,attackHit,impact)
+    if impact.injury then
+        local injury=impact.injury
+        self:Notify('injury',string.format(LuaLanguage.BodyInjuryLogV2,self.stats:Template(target).name,injury.partName,injury.injuryName,injury.stage,injury.health,injury.maximum),sourceId,target,injury.damage,false,injury)
+        if injury.trauma and target.HP>0 then self.stats.diseases:OnTrauma(self,source,target) end
+    end
     if target.HP==0 then
         self:Notify('defeated',self.stats:Template(target).name..' 倒地',sourceId,target,0)
         self:Clear(target,'death')
@@ -95,15 +132,33 @@ end
 function Effects:ApplyPrepared(plan,impact,periodic)
     local row,target=plan.definition,plan.target
     if target.HP<=0 then return false,'目标已倒地' end
-    if not Instructions.Allowed(self.stats.buffs,plan.hitTarget or target,row)then return true end
-    if row.chance<100 then
-        if row.chance<=0 or assert(self.roll,'Probabilistic effects need an explicit random stream')()>=row.chance then return true end
+    if not Instructions.Allowed(self.stats.buffs,plan.hitTarget or target,row,plan.source)then return true end
+    if row.chance<100 or row.kind=='apply_buff' then
+        local roll=row.chance>0 and row.chance<100 and assert(self.roll,'Probabilistic effects need an explicit random stream')() or nil
+        local passed=row.chance==100 or row.chance>0 and roll<row.chance
+        local name=row.kind=='apply_buff' and self.stats.buffs:Get(row.buffId).name or row.name
+        self:Report('check',plan,{checkName=string.format(LuaLanguage.DiceEffectTrigger,name),chance=row.chance,roll=roll,passed=passed,
+            successLabel='触发',failureLabel='未触发',shot=impact and impact.shot})
+        if not passed then return true end
     end
     if row.kind=='apply_buff' then return self.buffEffects:Apply(plan,impact)end
     if row.duration=='instant' then
         local amount=plan.amount
-        if not periodic and plan.source then amount=self:Magnitude(row,Instructions.Values(self.stats,plan.source,plan.hitTarget or target,plan.skill,plan.distance),plan.skill)end
-        self:Execute(row,target,amount,plan.sourceId,plan.sourceName,plan.label,plan.source,plan.attackHit,impact,periodic);return true
+        local details={};if impact then for key,value in pairs(impact)do details[key]=value end end
+        if not periodic and plan.source then
+            local values=Instructions.Values(self.stats,plan.source,plan.hitTarget or target,plan.skill,plan.distance)
+            amount=self:Magnitude(row,values,plan.skill)
+            details.defense=values.defense;details.guard=values.guard
+            if row.kind=='damage' and details.professionContext and target~=plan.source then
+                amount=self.professions:Damage(details.professionContext,plan,amount,values)
+                details.damageType=details.professionContext.damageType or row.damageType
+            end
+        end
+        if details.critical and not periodic and row.kind=='damage' and plan.skill and target~=plan.source then
+            amount=math.floor(amount*plan.skill.criticalMultiplier)
+            assert(amount<=1000000,'Critical effect magnitude exceeds bounds: '..row.id)
+        else details.critical=false end
+        self:Execute(row,target,amount,plan.sourceId,plan.sourceName,plan.label,plan.source,plan.attackHit,details,periodic,plan.skill);return true
     end
     local duration=row.duration=='infinite' and -1 or row.durationTurns
     local old=row.stacking~='independent' and target.Effects:Find(row.id)
@@ -116,6 +171,8 @@ function Effects:ApplyPrepared(plan,impact,periodic)
 end
 function Effects:Added(row,target,sourceId,amount,impact,stacks)
     local details={effectId=row.id,statusName=row.name,color=require('Config.Color').Normalize(row.color),stacks=stacks,shot=impact and impact.shot or 1}
+    if row.clock=='turns' or row.duration=='duration' then details.durationTurns=row.durationTurns end
+    if row.clock=='minutes' then details.durationMinutes=row.durationMinutes end
     self:Notify('effect_added',self.stats:Template(target).name..' 获得 '..row.name,sourceId,target,amount,false,details)
 end
 function Effects:Apply(id,source,target)
@@ -128,7 +185,8 @@ function Effects:Remove(target,id)
     local row=self:Definition(instance.EffectId)
     target.Effects:Remove(id)
     if row.kind=='modifier' or row.kind=='buff' and #row.modifierEffectIds>0 then target:SetMaxHP(self.stats:MaximumHP(target)) end
-    self:Notify('effect_removed',self.stats:Template(target).name..' · '..row.name..' 结束',instance.SourceId,target,0)
+    self:Notify('effect_removed',self.stats:Template(target).name..' · '..row.name..' 结束',instance.SourceId,target,0,false,
+        {statusName=row.name,color=row.color,sourceName=instance.SourceName})
 end
 function Effects:TickActor(target,phase)
     local mount=target.MountedAnimal
@@ -160,10 +218,17 @@ function Effects:Tick(target,phase)
     end
 end
 function Effects:TickWorldActor(target,now)
-    local mount=target.MountedAnimal;local changed=false
+    local mount=CS.ProjectY.Data.AnimalCompanionState.Bound(target);local changed=false
     if mount then
         changed=self.buffEffects:TickWorld(mount,now)
-        if mount.HP==0 then target:DetachDefeatedMount();self:Notify('mount_defeated',self.stats:Template(mount).name..' 死亡，骑手下马',target.Id,mount,0)end
+        if mount.HP==0 then
+            if CS.ProjectY.Data.AnimalCompanionState.Independent(mount)then
+                CS.ProjectY.Data.AnimalCompanionState.ReleaseDefeated(target)
+                self:Notify('mount_defeated',string.format(LuaLanguage.ProfessionCompanionDefeated,self.stats:Template(mount).name),target.Id,mount,0)
+            else
+                target:DetachDefeatedMount();self:Notify('mount_defeated',self.stats:Template(mount).name..' 死亡，骑手下马',target.Id,mount,0)
+            end
+        end
     end
     return self.buffEffects:TickWorld(target,now) or changed
 end
@@ -186,6 +251,7 @@ function Effects:Rows(target)
     return rows
 end
 function Effects:ValidateSaved(target)
+    self.stats.injuries:ValidateSaved(target)
     for i=0,target.Effects.Count-1 do
         local instance=target.Effects:GetAt(i);local row=self:Definition(instance.EffectId)
         if row.kind=='buff' then self.buffEffects:ValidateSaved(instance)

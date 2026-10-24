@@ -8,7 +8,14 @@
 
 ## 正文
 
+- 捕潮长枪为物品 742、技能 1625、双手动作模组 9；复用沉船捕潮鱼叉模型，主攻击只打第 2 格，近身禁区与固定射程见[战斗](Battle.md)。伤害/AP/命中沿用基础近战，独立 `spear` 类别继承近战品质词缀池，杂货商模板 1 每次补货包含它；旧库存需等补货或主动授予，不迁移玩家背包。没有额外配件槽，不能与副手并用。
+- [SpearAssets.Sync](../../Assets/GameFramework/Editor/SpearAssets.cs) 通过原生 API 注册长枪 Prefab、目录、模型图标及新的持握/前刺轨迹；保留源模型材质及旧动作设置。最小规则检查：`python -B Tools/Tests/run_lua.py Tools/Tests/spear_range.lua`；资源和特写检查：[spear_cinematic_editmode.cs](../../Tools/Tests/spear_cinematic_editmode.cs) 使用独立 PreviewScene 与真实 xLua 快照，不进入 Play。
+
+- 物品类别粒子、成功拾取及武器/组件/穿戴物的展示效果见[技能与物品方块特效](VisualEffects.md)；新物品默认继承类别，也可单独指定 profile。
+
 - 正式远征使用 `AdventureDemoTable.equipmentRecipeId → EquipmentDemoTable`；配方 1 保留完整装备演示，配方 2 仅提供三人基础主武器、少量治疗/营造物资、撬棍和火炬。`equipUnitIds/equipWeaponIds` 指定自动穿戴，`StarterWeapons.Plan` 先检查成员唯一性、属性、背包原实例和角色默认装备冲突，随后只移动实例，不重复发放；读档不执行此初始化。最小检查为 `Tools/Tests/campaign_equipment.lua`。
+- 开始菜单新增[12种身世](CharacterSave.md)，新配方101–112使用基础武器101练习铁剑、102简易猎弓、103学徒木杖、104短柄手斧。均一级、无属性门槛/改装槽/附加命中效果，前3把倍率0.8、手斧0.7；只提供基本攻击，木杖保留奥术触媒与已学法术资格，剑斧可作副手。原有武器及配方1–5保持，品质沿用统一随机规则。
+- 基础武器复用既有模型、握点、姿态微调及图标；共享assetId时只调用 `EquipmentAssets.SyncItemIcons()` 保存目录，不能对这些新物品执行会重建共享Prefab的 `SyncSelected`。新增物品同时进入 `WorldTradePriceTable`（101/102/103/104售价18/20/18/16），满足所有背包物品可交易的契约。验证入口：[starter_weapon_set.lua](../../Tools/Tests/starter_weapon_set.lua)；真实12套库存与读档防重发见[开场检查](../../Tools/Tests/campaign_origin_integration.lua)。
 
 - 宝箱生成、概率池、敌人死亡掉落、满包保留及事件战后拾取见[宝箱与敌人掉落](Loot.md)；EquipmentSystem 的搜刮门面委托 `Game.Loot.MapLoot`，装备与背包仍负责实际授予事务。
 
@@ -51,7 +58,10 @@
 - 散射头石使对敌法术目标上限至少三名，默认自动从主目标两格内按距离/实例ID选取合法目标，每目标70%伤害；具备追踪手选能力时使用 [战斗](Battle.md) 的显式目标列表。精准杆石增加射程2、命中20个百分点、伤害25%、法术CD1。倍率相乘，其余加算；数值全部来自表。
 - `CombatSkillTable.allowTransfer` 是自身法术的显式白名单；`EquipmentRuneTable.transferSelf/transferRange` 独立于伤害命中附加效果。`EquipmentRules:Skill` 保留原技能身份及消耗，在常规组件处理后把允许转施的self法术改为any和固定距离；普通rangeBonus不会继续扩大转施距离。配置要求原目标self、spell组、非item、效果全部recipient=target且属于可转向的状态/治疗/护卫/清除动作；换弹、拾武、道具及source收益不会因此改接收者。准备技能仍只能在准备阶段使用。
 - 转施符文石721装在shaft槽，与head散射组件可同时存在；固定4格内可选自己、队友或敌人，当前白名单为追踪术1624、战场祈愿508、奥术凝聚403。追踪术由法杖1/601–603授予，也可在法师职业课程中学习，并登记同ID图鉴节点；Buff生命周期归 [GameEffect](GameEffects.md)。符文由商店模板1补货、加权掉落池5获取。物品复用资产3与Item_12.png，新增物品ID仍须通过 `EquipmentAssets.SyncItemIcons` 保存到Catalog，不能仅填写已有图片路径。
-- 枪械装备增加点射、连射、换弹技能，并替换模板基础攻击；防御和职业治疗保留。卸下或损坏主武器后获得弱近身徒手攻击，不恢复模板射击/斩击；外观只显示实际穿戴物，详见[背包](Inventory.md)。点射一发，连射三发，12 发实体弹匣。战斗换弹 2 AP，自动取兼容且余弹更多的备用弹匣，旧弹匣回背包并保留子弹。共享背包只供己方换弹；敌人捡到枪械后可使用枪上原有余弹，不能读取或消耗玩家备用弹匣。探索中点击工坊库存列表的弹匣可用散装弹药补弹；选择弹匣挂点装入/卸下不耗 AP。
+- 枪械扩展800–805包含两把突击步枪、两把狙击枪、两把霰弹枪；各具magazine/rail/muzzle/stock四槽。新弹匣810/811/812分别24/5/6发，兼容性仍按weapon.magazineItemId精确匹配；狙击/霰弹使用独立散装弹药820/821，巡猎及铁雨共用31。配件813–819新增瞄具、枪口、枪托，`criticalBonus`与命中加成一样按百分点叠加并限制0–100。六枪、十件弹匣/模块和两种弹药均进商店；新弹药和弹匣每次补货必有，14件进入既有加权池5。旧库存等正常补货，不迁移背包。资源、数值、获得方式和验证记录见[枪械扩展](../../Art/FirearmsExpansion202610/README.md)。
+- 精准射击7为95%基础命中、35%暴击、1发/2AP；连续射击8为三发各70%命中、10%暴击、80%伤害，3发/3AP。原步枪604–606也补齐连续射击。暴击的逐发结算与非伤害排除见[战斗](Battle.md)；技能Tips显示配件修正后的概率与倍率。狙击1701/1702射程2–9；霰弹1703/1704复用主目标1格内最多3人的合法散射，不按目标数重复耗弹。`gunClass=rifle`仍是姿态家族，新分类9/10只用于狙击/霰弹筛选。
+
+- 枪械装备增加点射、连射、换弹技能，并替换模板基础攻击；防御和职业治疗保留。卸下或损坏主武器后获得弱近身徒手攻击，不恢复模板射击/斩击；外观只显示实际穿戴物，详见[背包](Inventory.md)。基础步枪精准单发、连续三发，巡猎弹匣12发；其他枪型的容量及技能由配置决定。战斗换弹 2 AP，自动取兼容且余弹更多的备用弹匣，旧弹匣回背包并保留子弹。共享背包只供己方换弹；敌人捡到枪械后可使用枪上原有余弹，不能读取或消耗玩家备用弹匣。探索中点击工坊库存列表的弹匣可用散装弹药补弹；选择弹匣挂点装入/卸下不耗 AP。
 - CombatSkillTable 配置技能组、命中、CD、自身回合、连击数、每发耗弹、伤害倍率和动作模板。命中用 BattleData 独立种子随机流；旧技能默认 100% 不掷骰。CD 在使用时写入，在自身回合开始减一，基础 CD 1 表示下个自身回合可用，精准后的 CD 2 需多等一次。每次战斗部署清 CD，弹药跨战斗保留。reload 是独立 self 效果，不能混入伤害效果链。
 - 外观沿用低多边形纯色材质。武器 Prefab 按配置显式绑定零个或多个挂点，EquipmentAssetCatalog 序列化资源和物品 Sprite。物品图标由[模型图标管线](Inventory.md)生成或手工指定；技能 BattleIconTable.spritePath 空字符串表示留白。[持武模组与握点](EquipmentMotion.md)按双手装备匹配模组，EquipmentPoseTable 提供基准姿势，EquipmentGripTable 配每件武器的本地握点；公共棋子已使用 [Humanoid 动画与握点求解](PawnAnimation.md)，无动画绑定的外观保留原刚体显示。动画时长和轨迹由 PawnAnimations.asset 调整，装备规则仍使用同一份物品/技能表。
 - 配置在 `Config/Tables/Equipment/` 的装备表及 Adventure 的 CombatSkill/CombatEffect 表。修改后通过 ConfigEditor 导表；新增资源/挂点/图标执行 Edit Mode 菜单 `Project Y/装备/同步模型与改装界面`，需要当前 AdventureDemo。同步会定向补齐旧工坊的引线、分类按钮、属性文本和行 Layout 绑定，并保留其余人工布局。不得编辑 Prefab/importer YAML 或生成的 xLua 包装器。

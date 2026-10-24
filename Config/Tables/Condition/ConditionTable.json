@@ -2428,6 +2428,5826 @@
       "value": 0,
       "state": "ready",
       "reason": "先完成任务 500"
+    },
+    {
+      "id": 4000,
+      "kind": "flag",
+      "reason": "此事已经解决",
+      "key": "legend_bloodmoon_resolved",
+      "value": 0
+    },
+    {
+      "id": 4001,
+      "kind": "flag",
+      "reason": "尚未化解这场冲突",
+      "key": "legend_bloodmoon_resolved",
+      "value": 1
+    },
+    {
+      "id": 4002,
+      "kind": "party_attribute",
+      "reason": "[动物亲和 4] 条件不足",
+      "targetId": 18,
+      "value": 4
+    },
+    {
+      "id": 4003,
+      "kind": "all",
+      "reason": "尚不能说服它放下敌意",
+      "conditionIds": [
+        4000,
+        4002
+      ]
+    },
+    {
+      "id": 4004,
+      "kind": "flag",
+      "reason": "此事已经解决",
+      "key": "legend_ember_resolved",
+      "value": 0
+    },
+    {
+      "id": 4005,
+      "kind": "flag",
+      "reason": "尚未化解这场冲突",
+      "key": "legend_ember_resolved",
+      "value": 1
+    },
+    {
+      "id": 4006,
+      "kind": "party_attribute",
+      "reason": "[营造 4] 条件不足",
+      "targetId": 16,
+      "value": 4
+    },
+    {
+      "id": 4007,
+      "kind": "all",
+      "reason": "尚不能说服它放下敌意",
+      "conditionIds": [
+        4004,
+        4006
+      ]
+    },
+    {
+      "id": 4008,
+      "kind": "flag",
+      "reason": "此事已经解决",
+      "key": "legend_oathbreaker_resolved",
+      "value": 0
+    },
+    {
+      "id": 4009,
+      "kind": "flag",
+      "reason": "尚未化解这场冲突",
+      "key": "legend_oathbreaker_resolved",
+      "value": 1
+    },
+    {
+      "id": 4010,
+      "kind": "party_attribute",
+      "reason": "[魅力 5] 条件不足",
+      "targetId": 19,
+      "value": 5
+    },
+    {
+      "id": 4011,
+      "kind": "all",
+      "reason": "尚不能说服它放下敌意",
+      "conditionIds": [
+        4008,
+        4010
+      ]
+    },
+    {
+      "id": 4012,
+      "kind": "flag",
+      "reason": "先与委托人交谈",
+      "key": "legend_mission_701_offered",
+      "value": 1
+    },
+    {
+      "id": 4013,
+      "kind": "mission_state",
+      "reason": "任务已经接取",
+      "targetId": 701,
+      "state": "inactive"
+    },
+    {
+      "id": 4014,
+      "kind": "mission_state",
+      "reason": "请先接取委托",
+      "targetId": 701,
+      "state": "active"
+    },
+    {
+      "id": 4015,
+      "kind": "mission_state",
+      "reason": "尚未回报委托",
+      "targetId": 701,
+      "state": "ready"
+    },
+    {
+      "id": 4016,
+      "kind": "mission_state",
+      "reason": "任务尚未完成",
+      "targetId": 701,
+      "state": "completed"
+    },
+    {
+      "id": 4017,
+      "kind": "all",
+      "reason": "先解决目标，再回来回报",
+      "conditionIds": [
+        4014,
+        4001
+      ]
+    },
+    {
+      "id": 4018,
+      "kind": "flag",
+      "reason": "返回委托人处回报",
+      "key": "legend_mission_701_reported",
+      "value": 1
+    },
+    {
+      "id": 4019,
+      "kind": "quest_state",
+      "reason": "完成回报阶段",
+      "targetId": 7012,
+      "state": "completed"
+    },
+    {
+      "id": 4020,
+      "kind": "flag",
+      "reason": "先与委托人交谈",
+      "key": "legend_mission_702_offered",
+      "value": 1
+    },
+    {
+      "id": 4021,
+      "kind": "mission_state",
+      "reason": "任务已经接取",
+      "targetId": 702,
+      "state": "inactive"
+    },
+    {
+      "id": 4022,
+      "kind": "mission_state",
+      "reason": "请先接取委托",
+      "targetId": 702,
+      "state": "active"
+    },
+    {
+      "id": 4023,
+      "kind": "mission_state",
+      "reason": "尚未回报委托",
+      "targetId": 702,
+      "state": "ready"
+    },
+    {
+      "id": 4024,
+      "kind": "mission_state",
+      "reason": "任务尚未完成",
+      "targetId": 702,
+      "state": "completed"
+    },
+    {
+      "id": 4025,
+      "kind": "all",
+      "reason": "先解决目标，再回来回报",
+      "conditionIds": [
+        4022,
+        4005
+      ]
+    },
+    {
+      "id": 4026,
+      "kind": "flag",
+      "reason": "返回委托人处回报",
+      "key": "legend_mission_702_reported",
+      "value": 1
+    },
+    {
+      "id": 4027,
+      "kind": "quest_state",
+      "reason": "完成回报阶段",
+      "targetId": 7022,
+      "state": "completed"
+    },
+    {
+      "id": 4028,
+      "kind": "flag",
+      "reason": "先与委托人交谈",
+      "key": "legend_mission_703_offered",
+      "value": 1
+    },
+    {
+      "id": 4029,
+      "kind": "mission_state",
+      "reason": "任务已经接取",
+      "targetId": 703,
+      "state": "inactive"
+    },
+    {
+      "id": 4030,
+      "kind": "mission_state",
+      "reason": "请先接取委托",
+      "targetId": 703,
+      "state": "active"
+    },
+    {
+      "id": 4031,
+      "kind": "mission_state",
+      "reason": "尚未回报委托",
+      "targetId": 703,
+      "state": "ready"
+    },
+    {
+      "id": 4032,
+      "kind": "mission_state",
+      "reason": "任务尚未完成",
+      "targetId": 703,
+      "state": "completed"
+    },
+    {
+      "id": 4033,
+      "kind": "all",
+      "reason": "先解决目标，再回来回报",
+      "conditionIds": [
+        4030,
+        4009
+      ]
+    },
+    {
+      "id": 4034,
+      "kind": "flag",
+      "reason": "返回委托人处回报",
+      "key": "legend_mission_703_reported",
+      "value": 1
+    },
+    {
+      "id": 4035,
+      "kind": "quest_state",
+      "reason": "完成回报阶段",
+      "targetId": 7032,
+      "state": "completed"
+    },
+    {
+      "conditionIds": [],
+      "targetId": 3,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "id": 4036,
+      "kind": "actor_trait",
+      "reason": "需要傲慢特质"
+    },
+    {
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "battle",
+      "value": 1,
+      "state": "participant",
+      "id": 4037,
+      "kind": "actor_history",
+      "reason": "需要亲历过一次战斗"
+    },
+    {
+      "conditionIds": [],
+      "targetId": 2,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "id": 4038,
+      "kind": "actor_trait",
+      "reason": "需要坚韧特质"
+    },
+    {
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "relationship",
+      "value": 1,
+      "state": "participant",
+      "id": 4039,
+      "kind": "actor_history",
+      "reason": "需要与同行者建立过共同经历"
+    },
+    {
+      "conditionIds": [],
+      "targetId": 16,
+      "key": "",
+      "value": 3,
+      "state": "",
+      "id": 4040,
+      "kind": "actor_attribute",
+      "reason": "需要巧匠达到 3"
+    },
+    {
+      "conditionIds": [
+        4038,
+        4037
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "id": 4041,
+      "kind": "all",
+      "reason": "需要同一位队员兼具坚韧与战斗经历"
+    },
+    {
+      "id": 8000,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_801_seen",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8001,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_801_told",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8002,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_801_evidence",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8003,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_801_end",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8004,
+      "kind": "not",
+      "conditionIds": [
+        8003
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8005,
+      "kind": "all",
+      "conditionIds": [
+        8001,
+        8002
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8006,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8011,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8007,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8012,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8008,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8013,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8009,
+      "kind": "all",
+      "conditionIds": [
+        8000,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8010,
+      "kind": "all",
+      "conditionIds": [
+        8006,
+        8007,
+        8008
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8011,
+      "kind": "all",
+      "conditionIds": [
+        8003,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8012,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_801_told",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8013,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_801_evidence",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8014,
+      "kind": "all",
+      "conditionIds": [
+        8001,
+        8013,
+        8003
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8015,
+      "kind": "all",
+      "conditionIds": [
+        8001,
+        8002,
+        8003
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8016,
+      "kind": "all",
+      "conditionIds": [
+        8014,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8017,
+      "kind": "party_attribute",
+      "conditionIds": [],
+      "targetId": 3,
+      "key": "",
+      "value": 8,
+      "state": "",
+      "reason": "需要队伍中一位存活成员的智力达到 8"
+    },
+    {
+      "id": 8018,
+      "kind": "all",
+      "conditionIds": [
+        8014,
+        8017
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8019,
+      "kind": "actor_trait",
+      "conditionIds": [],
+      "targetId": 6,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "需要具有相应特质的队员"
+    },
+    {
+      "id": 8020,
+      "kind": "all",
+      "conditionIds": [
+        8014,
+        8019
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8021,
+      "kind": "all",
+      "conditionIds": [
+        8015,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8022,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_801_end",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8023,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_801_end",
+      "value": 2,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8024,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_801_exception",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8025,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_807_end",
+      "value": 2,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8026,
+      "kind": "any",
+      "conditionIds": [
+        8024,
+        8025
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8027,
+      "kind": "all",
+      "conditionIds": [
+        8015,
+        8026
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8028,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_801_end",
+      "value": 3,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8029,
+      "kind": "actor_trait",
+      "conditionIds": [],
+      "targetId": 3,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "需要具有相应特质的队员"
+    },
+    {
+      "id": 8030,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_802_seen",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8031,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_802_told",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8032,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_802_evidence",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8033,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_802_end",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8034,
+      "kind": "not",
+      "conditionIds": [
+        8033
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8035,
+      "kind": "all",
+      "conditionIds": [
+        8031,
+        8032
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8036,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8021,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8037,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8022,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8038,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8023,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8039,
+      "kind": "all",
+      "conditionIds": [
+        8030,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8040,
+      "kind": "all",
+      "conditionIds": [
+        8036,
+        8037,
+        8038
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8041,
+      "kind": "all",
+      "conditionIds": [
+        8033,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8042,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_802_told",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8043,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_802_evidence",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8044,
+      "kind": "all",
+      "conditionIds": [
+        8031,
+        8043,
+        8033
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8045,
+      "kind": "all",
+      "conditionIds": [
+        8031,
+        8032,
+        8033
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8046,
+      "kind": "all",
+      "conditionIds": [
+        8044,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8047,
+      "kind": "actor_trait",
+      "conditionIds": [],
+      "targetId": 1,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "需要具有相应特质的队员"
+    },
+    {
+      "id": 8048,
+      "kind": "actor_history",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "battle",
+      "value": 1,
+      "state": "participant",
+      "reason": "需要亲历过此类事情的队员"
+    },
+    {
+      "id": 8049,
+      "kind": "all",
+      "conditionIds": [
+        8047,
+        8048
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8050,
+      "kind": "all",
+      "conditionIds": [
+        8044,
+        8049
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8051,
+      "kind": "party_attribute",
+      "conditionIds": [],
+      "targetId": 15,
+      "key": "",
+      "value": 4,
+      "state": "",
+      "reason": "需要队伍中一位存活成员的侦察达到 4"
+    },
+    {
+      "id": 8052,
+      "kind": "all",
+      "conditionIds": [
+        8044,
+        8051
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8053,
+      "kind": "all",
+      "conditionIds": [
+        8045,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8054,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_802_end",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8055,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_802_witness",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8056,
+      "kind": "party_attribute",
+      "conditionIds": [],
+      "targetId": 19,
+      "key": "",
+      "value": 5,
+      "state": "",
+      "reason": "需要队伍中一位存活成员的魅力达到 5"
+    },
+    {
+      "id": 8057,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "ash_named",
+      "value": 1,
+      "state": "",
+      "reason": "旧案中尚未取得这项证据"
+    },
+    {
+      "id": 8058,
+      "kind": "any",
+      "conditionIds": [
+        8055,
+        8056,
+        8057
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8059,
+      "kind": "all",
+      "conditionIds": [
+        8045,
+        8058
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8060,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_802_end",
+      "value": 2,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8061,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_802_end",
+      "value": 3,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8062,
+      "kind": "actor_trait",
+      "conditionIds": [],
+      "targetId": 5,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "需要具有相应特质的队员"
+    },
+    {
+      "id": 8063,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_803_seen",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8064,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_803_told",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8065,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_803_evidence",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8066,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_803_end",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8067,
+      "kind": "not",
+      "conditionIds": [
+        8066
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8068,
+      "kind": "all",
+      "conditionIds": [
+        8064,
+        8065
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8069,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8031,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8070,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8032,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8071,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8033,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8072,
+      "kind": "all",
+      "conditionIds": [
+        8063,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8073,
+      "kind": "all",
+      "conditionIds": [
+        8069,
+        8070,
+        8071
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8074,
+      "kind": "all",
+      "conditionIds": [
+        8066,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8075,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_803_told",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8076,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_803_evidence",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8077,
+      "kind": "all",
+      "conditionIds": [
+        8064,
+        8076,
+        8066
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8078,
+      "kind": "all",
+      "conditionIds": [
+        8064,
+        8065,
+        8066
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8079,
+      "kind": "all",
+      "conditionIds": [
+        8077,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8080,
+      "kind": "party_attribute",
+      "conditionIds": [],
+      "targetId": 16,
+      "key": "",
+      "value": 4,
+      "state": "",
+      "reason": "需要队伍中一位存活成员的巧匠达到 4"
+    },
+    {
+      "id": 8081,
+      "kind": "all",
+      "conditionIds": [
+        8077,
+        8080
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8082,
+      "kind": "all",
+      "conditionIds": [
+        8077,
+        8029
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8083,
+      "kind": "any",
+      "conditionIds": [
+        8022,
+        8028
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8084,
+      "kind": "all",
+      "conditionIds": [
+        8078,
+        8083
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8085,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_803_end",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8086,
+      "kind": "all",
+      "conditionIds": [
+        8078,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8087,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_803_end",
+      "value": 2,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8088,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_803_end",
+      "value": 3,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8089,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_804_seen",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8090,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_804_told",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8091,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_804_evidence",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8092,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_804_end",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8093,
+      "kind": "not",
+      "conditionIds": [
+        8092
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8094,
+      "kind": "all",
+      "conditionIds": [
+        8090,
+        8091
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8095,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8041,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8096,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8042,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8097,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8043,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8098,
+      "kind": "all",
+      "conditionIds": [
+        8089,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8099,
+      "kind": "all",
+      "conditionIds": [
+        8095,
+        8096,
+        8097
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8100,
+      "kind": "all",
+      "conditionIds": [
+        8092,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8101,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_804_told",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8102,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_804_evidence",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8103,
+      "kind": "all",
+      "conditionIds": [
+        8090,
+        8102,
+        8092
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8104,
+      "kind": "all",
+      "conditionIds": [
+        8090,
+        8091,
+        8092
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8105,
+      "kind": "all",
+      "conditionIds": [
+        8103,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8106,
+      "kind": "all",
+      "conditionIds": [
+        8103,
+        8056
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8107,
+      "kind": "all",
+      "conditionIds": [
+        8103,
+        8019
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8108,
+      "kind": "all",
+      "conditionIds": [
+        8104,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8109,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_804_end",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8110,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_804_admitted",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8111,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_808_end",
+      "value": 2,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8112,
+      "kind": "any",
+      "conditionIds": [
+        8110,
+        8111
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8113,
+      "kind": "all",
+      "conditionIds": [
+        8104,
+        8112
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8114,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_804_end",
+      "value": 2,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8115,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_804_end",
+      "value": 3,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8116,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_805_seen",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8117,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_805_told",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8118,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_805_evidence",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8119,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_805_end",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8120,
+      "kind": "not",
+      "conditionIds": [
+        8119
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8121,
+      "kind": "all",
+      "conditionIds": [
+        8117,
+        8118
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8122,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8051,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8123,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8052,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8124,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8053,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8125,
+      "kind": "all",
+      "conditionIds": [
+        8116,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8126,
+      "kind": "all",
+      "conditionIds": [
+        8122,
+        8123,
+        8124
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8127,
+      "kind": "all",
+      "conditionIds": [
+        8119,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8128,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_805_told",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8129,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_805_evidence",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8130,
+      "kind": "all",
+      "conditionIds": [
+        8117,
+        8129,
+        8119
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8131,
+      "kind": "all",
+      "conditionIds": [
+        8117,
+        8118,
+        8119
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8132,
+      "kind": "all",
+      "conditionIds": [
+        8130,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8133,
+      "kind": "party_attribute",
+      "conditionIds": [],
+      "targetId": 18,
+      "key": "",
+      "value": 4,
+      "state": "",
+      "reason": "需要队伍中一位存活成员的动物亲和达到 4"
+    },
+    {
+      "id": 8134,
+      "kind": "all",
+      "conditionIds": [
+        8130,
+        8133
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8135,
+      "kind": "actor_trait",
+      "conditionIds": [],
+      "targetId": 2,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "需要具有相应特质的队员"
+    },
+    {
+      "id": 8136,
+      "kind": "actor_attribute",
+      "conditionIds": [],
+      "targetId": 18,
+      "key": "",
+      "value": 3,
+      "state": "",
+      "reason": "需要这位队员达到属性要求"
+    },
+    {
+      "id": 8137,
+      "kind": "all",
+      "conditionIds": [
+        8135,
+        8136
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8138,
+      "kind": "all",
+      "conditionIds": [
+        8130,
+        8137
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8139,
+      "kind": "all",
+      "conditionIds": [
+        8131,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8140,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_805_end",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8141,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_805_end",
+      "value": 2,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8142,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_805_signal",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8143,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_806_end",
+      "value": 2,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8144,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_806_end",
+      "value": 3,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8145,
+      "kind": "any",
+      "conditionIds": [
+        8142,
+        8143,
+        8144
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8146,
+      "kind": "all",
+      "conditionIds": [
+        8131,
+        8145
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8147,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_805_end",
+      "value": 3,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8148,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_806_seen",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8149,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_806_told",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8150,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_806_evidence",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8151,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_806_end",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8152,
+      "kind": "not",
+      "conditionIds": [
+        8151
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8153,
+      "kind": "all",
+      "conditionIds": [
+        8149,
+        8150
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8154,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8061,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8155,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8062,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8156,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8063,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8157,
+      "kind": "all",
+      "conditionIds": [
+        8148,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8158,
+      "kind": "all",
+      "conditionIds": [
+        8154,
+        8155,
+        8156
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8159,
+      "kind": "all",
+      "conditionIds": [
+        8151,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8160,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_806_told",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8161,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_806_evidence",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8162,
+      "kind": "all",
+      "conditionIds": [
+        8149,
+        8161,
+        8151
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8163,
+      "kind": "all",
+      "conditionIds": [
+        8149,
+        8150,
+        8151
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8164,
+      "kind": "all",
+      "conditionIds": [
+        8162,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8165,
+      "kind": "all",
+      "conditionIds": [
+        8162,
+        8017
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8166,
+      "kind": "all",
+      "conditionIds": [
+        8162,
+        8049
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8167,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_806_patrol",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8168,
+      "kind": "kill_count",
+      "conditionIds": [],
+      "targetId": 4,
+      "key": "",
+      "value": 2,
+      "state": "",
+      "reason": "需要在本阶段激活后击败两名废墟掠夺者"
+    },
+    {
+      "id": 8169,
+      "kind": "any",
+      "conditionIds": [
+        8168,
+        8152
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8170,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_806_patrol",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8171,
+      "kind": "all",
+      "conditionIds": [
+        8163,
+        8170
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8172,
+      "kind": "all",
+      "conditionIds": [
+        8163,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8173,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_806_end",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8174,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8064,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "出城阶段尚未完成"
+    },
+    {
+      "id": 8175,
+      "kind": "all",
+      "conditionIds": [
+        8167,
+        8174
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8176,
+      "kind": "all",
+      "conditionIds": [
+        8163,
+        8175
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8177,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_806_gap",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8178,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_802_review",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8179,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_805_guide",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8180,
+      "kind": "any",
+      "conditionIds": [
+        8177,
+        8178,
+        8179
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8181,
+      "kind": "all",
+      "conditionIds": [
+        8163,
+        8180
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8182,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_807_seen",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8183,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_807_told",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8184,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_807_evidence",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8185,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_807_end",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8186,
+      "kind": "not",
+      "conditionIds": [
+        8185
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8187,
+      "kind": "all",
+      "conditionIds": [
+        8183,
+        8184
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8188,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8071,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8189,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8072,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8190,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8073,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8191,
+      "kind": "all",
+      "conditionIds": [
+        8182,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8192,
+      "kind": "all",
+      "conditionIds": [
+        8188,
+        8189,
+        8190
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8193,
+      "kind": "all",
+      "conditionIds": [
+        8185,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8194,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_807_told",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8195,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_807_evidence",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8196,
+      "kind": "all",
+      "conditionIds": [
+        8183,
+        8195,
+        8185
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8197,
+      "kind": "all",
+      "conditionIds": [
+        8183,
+        8184,
+        8185
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8198,
+      "kind": "all",
+      "conditionIds": [
+        8196,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8199,
+      "kind": "all",
+      "conditionIds": [
+        8196,
+        8080
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8200,
+      "kind": "all",
+      "conditionIds": [
+        8196,
+        8029
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8201,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_807_screen",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8202,
+      "kind": "all",
+      "conditionIds": [
+        8197,
+        8201
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8203,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_807_end",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8204,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_803_collective",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8205,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_809_end",
+      "value": 2,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8206,
+      "kind": "any",
+      "conditionIds": [
+        8204,
+        8205,
+        8056
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8207,
+      "kind": "all",
+      "conditionIds": [
+        8197,
+        8206
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8208,
+      "kind": "all",
+      "conditionIds": [
+        8197,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8209,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_807_end",
+      "value": 3,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8210,
+      "kind": "actor_trait",
+      "conditionIds": [],
+      "targetId": 4,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "需要具有相应特质的队员"
+    },
+    {
+      "id": 8211,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_808_seen",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8212,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_808_told",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8213,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_808_evidence",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8214,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_808_end",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8215,
+      "kind": "not",
+      "conditionIds": [
+        8214
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8216,
+      "kind": "all",
+      "conditionIds": [
+        8212,
+        8213
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8217,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8081,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8218,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8082,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8219,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8083,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8220,
+      "kind": "all",
+      "conditionIds": [
+        8211,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8221,
+      "kind": "all",
+      "conditionIds": [
+        8217,
+        8218,
+        8219
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8222,
+      "kind": "all",
+      "conditionIds": [
+        8214,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8223,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_808_told",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8224,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_808_evidence",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8225,
+      "kind": "all",
+      "conditionIds": [
+        8212,
+        8224,
+        8214
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8226,
+      "kind": "all",
+      "conditionIds": [
+        8212,
+        8213,
+        8214
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8227,
+      "kind": "all",
+      "conditionIds": [
+        8225,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8228,
+      "kind": "party_attribute",
+      "conditionIds": [],
+      "targetId": 17,
+      "key": "",
+      "value": 3,
+      "state": "",
+      "reason": "需要队伍中一位存活成员的厨艺达到 3"
+    },
+    {
+      "id": 8229,
+      "kind": "all",
+      "conditionIds": [
+        8225,
+        8228
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8230,
+      "kind": "actor_history",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "relationship",
+      "value": 1,
+      "state": "object",
+      "reason": "需要亲历过此类事情的队员"
+    },
+    {
+      "id": 8231,
+      "kind": "all",
+      "conditionIds": [
+        8225,
+        8230
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8232,
+      "kind": "all",
+      "conditionIds": [
+        8226,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8233,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_808_end",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8234,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_808_taste",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8235,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_804_supper",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8236,
+      "kind": "any",
+      "conditionIds": [
+        8234,
+        8235,
+        8061
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8237,
+      "kind": "all",
+      "conditionIds": [
+        8226,
+        8236
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8238,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_808_end",
+      "value": 3,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8239,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_809_seen",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8240,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_809_told",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8241,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_809_evidence",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8242,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_809_end",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8243,
+      "kind": "not",
+      "conditionIds": [
+        8242
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8244,
+      "kind": "all",
+      "conditionIds": [
+        8240,
+        8241
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8245,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8091,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8246,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8092,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8247,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8093,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8248,
+      "kind": "all",
+      "conditionIds": [
+        8239,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8249,
+      "kind": "all",
+      "conditionIds": [
+        8245,
+        8246,
+        8247
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8250,
+      "kind": "all",
+      "conditionIds": [
+        8242,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8251,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_809_told",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8252,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_809_evidence",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8253,
+      "kind": "all",
+      "conditionIds": [
+        8240,
+        8252,
+        8242
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8254,
+      "kind": "all",
+      "conditionIds": [
+        8240,
+        8241,
+        8242
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8255,
+      "kind": "all",
+      "conditionIds": [
+        8253,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8256,
+      "kind": "all",
+      "conditionIds": [
+        8253,
+        8017
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8257,
+      "kind": "all",
+      "conditionIds": [
+        8253,
+        8029
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8258,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_802_account",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8259,
+      "kind": "all",
+      "conditionIds": [
+        8254,
+        8258
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8260,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_809_end",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8261,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_809_versions",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8262,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_809_front",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8263,
+      "kind": "any",
+      "conditionIds": [
+        8261,
+        8262,
+        8056
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8264,
+      "kind": "all",
+      "conditionIds": [
+        8254,
+        8263
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8265,
+      "kind": "all",
+      "conditionIds": [
+        8254,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8266,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_809_end",
+      "value": 3,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8267,
+      "kind": "all",
+      "conditionIds": [
+        8004,
+        8067
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8268,
+      "kind": "all",
+      "conditionIds": [
+        8067,
+        8186
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8269,
+      "kind": "all",
+      "conditionIds": [
+        8004,
+        8186
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8270,
+      "kind": "any",
+      "conditionIds": [
+        8267,
+        8268,
+        8269
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8271,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_810_seen",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8272,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_810_told",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8273,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_810_evidence",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8274,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_810_end",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8275,
+      "kind": "not",
+      "conditionIds": [
+        8274
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8276,
+      "kind": "all",
+      "conditionIds": [
+        8272,
+        8273
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8277,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8101,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8278,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8102,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8279,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 8103,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还有事情没有谈完"
+    },
+    {
+      "id": 8280,
+      "kind": "all",
+      "conditionIds": [
+        8271,
+        8270
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8281,
+      "kind": "all",
+      "conditionIds": [
+        8277,
+        8278,
+        8279
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8282,
+      "kind": "all",
+      "conditionIds": [
+        8274,
+        8270
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8283,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_810_told",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8284,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_810_evidence",
+      "value": 0,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8285,
+      "kind": "all",
+      "conditionIds": [
+        8272,
+        8284,
+        8274
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8286,
+      "kind": "all",
+      "conditionIds": [
+        8272,
+        8273,
+        8274
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8287,
+      "kind": "all",
+      "conditionIds": [
+        8285,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8288,
+      "kind": "all",
+      "conditionIds": [
+        8285,
+        8056
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8289,
+      "kind": "actor_history",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "relationship",
+      "value": 1,
+      "state": "participant",
+      "reason": "需要亲历过此类事情的队员"
+    },
+    {
+      "id": 8290,
+      "kind": "all",
+      "conditionIds": [
+        8062,
+        8289
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8291,
+      "kind": "all",
+      "conditionIds": [
+        8285,
+        8290
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8292,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_807_agreement",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8293,
+      "kind": "all",
+      "conditionIds": [
+        8204,
+        8292
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8294,
+      "kind": "all",
+      "conditionIds": [
+        8286,
+        8293
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8295,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_810_end",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8296,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_803_named",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8297,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_810_invitation",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8298,
+      "kind": "any",
+      "conditionIds": [
+        8296,
+        8297
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8299,
+      "kind": "all",
+      "conditionIds": [
+        8083,
+        8298
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8300,
+      "kind": "all",
+      "conditionIds": [
+        8286,
+        8299
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8301,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_810_end",
+      "value": 2,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8302,
+      "kind": "all",
+      "conditionIds": [
+        8286,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8303,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_810_end",
+      "value": 3,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8304,
+      "kind": "all",
+      "conditionIds": [
+        8296,
+        8083
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8305,
+      "kind": "all",
+      "conditionIds": [
+        8088,
+        8023
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8306,
+      "kind": "all",
+      "conditionIds": [
+        8178,
+        8144
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8307,
+      "kind": "all",
+      "conditionIds": [
+        8260,
+        8215
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8308,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_808_table",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8309,
+      "kind": "all",
+      "conditionIds": [
+        8235,
+        8308
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8310,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_809_public",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8311,
+      "kind": "all",
+      "conditionIds": [
+        8310,
+        8292
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8312,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_807_offended",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8313,
+      "kind": "all",
+      "conditionIds": [
+        8312,
+        8186
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8314,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_803_overtime",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8315,
+      "kind": "all",
+      "conditionIds": [
+        8314,
+        8275
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8316,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_803_bond",
+      "value": 1,
+      "state": "",
+      "reason": "还没有这条消息"
+    },
+    {
+      "id": 8317,
+      "kind": "all",
+      "conditionIds": [
+        8316,
+        8303
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8318,
+      "kind": "any",
+      "conditionIds": [
+        8143,
+        8144
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 8319,
+      "kind": "all",
+      "conditionIds": [
+        8179,
+        8318
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "尚未满足交谈条件"
+    },
+    {
+      "id": 10000,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_901_offer",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10001,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_901_told",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10002,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_901_evidence",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10003,
+      "kind": "all",
+      "conditionIds": [
+        10001,
+        10002,
+        10000
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10004,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_901_evidence",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10005,
+      "kind": "all",
+      "conditionIds": [
+        10001,
+        10004,
+        10000
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10006,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_901_told",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10007,
+      "kind": "all",
+      "conditionIds": [
+        10001,
+        10002
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10008,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_901_offer",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10009,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_901_offer",
+      "value": 2,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10010,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_901_offer",
+      "value": 3,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10011,
+      "kind": "any",
+      "conditionIds": [
+        10008,
+        10009,
+        10010
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10012,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_901_seen",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10013,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 9011,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还没有谈妥同行条件"
+    },
+    {
+      "id": 10014,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 9012,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还没有谈妥同行条件"
+    },
+    {
+      "id": 10015,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 9013,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还没有谈妥同行条件"
+    },
+    {
+      "id": 10016,
+      "kind": "all",
+      "conditionIds": [
+        10013,
+        10014,
+        10015
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10017,
+      "kind": "mission_state",
+      "conditionIds": [],
+      "targetId": 901,
+      "key": "",
+      "value": 0,
+      "state": "ready",
+      "reason": "还没有谈妥同行条件"
+    },
+    {
+      "id": 10018,
+      "kind": "npc_recruited",
+      "conditionIds": [],
+      "targetId": 201,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "已经同行"
+    },
+    {
+      "id": 10019,
+      "kind": "not",
+      "conditionIds": [
+        10018
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10020,
+      "kind": "all",
+      "conditionIds": [
+        10005,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10021,
+      "kind": "party_attribute",
+      "conditionIds": [],
+      "targetId": 19,
+      "key": "",
+      "value": 5,
+      "state": "",
+      "reason": "需要队伍中一位存活成员的魅力达到 5"
+    },
+    {
+      "id": 10022,
+      "kind": "all",
+      "conditionIds": [
+        10005,
+        10021
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10023,
+      "kind": "actor_trait",
+      "conditionIds": [],
+      "targetId": 1,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "需要相应特质的队员"
+    },
+    {
+      "id": 10024,
+      "kind": "actor_history",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "battle",
+      "value": 1,
+      "state": "participant",
+      "reason": "需要有过相应经历的队员"
+    },
+    {
+      "id": 10025,
+      "kind": "all",
+      "conditionIds": [
+        10023,
+        10024
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10026,
+      "kind": "all",
+      "conditionIds": [
+        10005,
+        10025
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10027,
+      "kind": "all",
+      "conditionIds": [
+        10003,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10028,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_901_private",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10029,
+      "kind": "all",
+      "conditionIds": [
+        10003,
+        10028
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10030,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_802_review",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10031,
+      "kind": "all",
+      "conditionIds": [
+        10003,
+        10030
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10032,
+      "kind": "actor_trait",
+      "conditionIds": [],
+      "targetId": 4,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "需要相应特质的队员"
+    },
+    {
+      "id": 10033,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_902_offer",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10034,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_902_told",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10035,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_902_evidence",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10036,
+      "kind": "all",
+      "conditionIds": [
+        10034,
+        10035,
+        10033
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10037,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_902_evidence",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10038,
+      "kind": "all",
+      "conditionIds": [
+        10034,
+        10037,
+        10033
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10039,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_902_told",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10040,
+      "kind": "all",
+      "conditionIds": [
+        10034,
+        10035
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10041,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_902_offer",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10042,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_902_offer",
+      "value": 2,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10043,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_902_offer",
+      "value": 3,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10044,
+      "kind": "any",
+      "conditionIds": [
+        10041,
+        10042,
+        10043
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10045,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_902_seen",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10046,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 9021,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还没有谈妥同行条件"
+    },
+    {
+      "id": 10047,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 9022,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还没有谈妥同行条件"
+    },
+    {
+      "id": 10048,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 9023,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还没有谈妥同行条件"
+    },
+    {
+      "id": 10049,
+      "kind": "all",
+      "conditionIds": [
+        10046,
+        10047,
+        10048
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10050,
+      "kind": "mission_state",
+      "conditionIds": [],
+      "targetId": 902,
+      "key": "",
+      "value": 0,
+      "state": "ready",
+      "reason": "还没有谈妥同行条件"
+    },
+    {
+      "id": 10051,
+      "kind": "npc_recruited",
+      "conditionIds": [],
+      "targetId": 202,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "已经同行"
+    },
+    {
+      "id": 10052,
+      "kind": "not",
+      "conditionIds": [
+        10051
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10053,
+      "kind": "all",
+      "conditionIds": [
+        10038,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10054,
+      "kind": "party_attribute",
+      "conditionIds": [],
+      "targetId": 15,
+      "key": "",
+      "value": 4,
+      "state": "",
+      "reason": "需要队伍中一位存活成员的侦察达到 4"
+    },
+    {
+      "id": 10055,
+      "kind": "all",
+      "conditionIds": [
+        10038,
+        10054
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10056,
+      "kind": "actor_trait",
+      "conditionIds": [],
+      "targetId": 6,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "需要相应特质的队员"
+    },
+    {
+      "id": 10057,
+      "kind": "all",
+      "conditionIds": [
+        10038,
+        10056
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10058,
+      "kind": "all",
+      "conditionIds": [
+        10036,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10059,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_902_copy",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10060,
+      "kind": "all",
+      "conditionIds": [
+        10036,
+        10059
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10061,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_806_end",
+      "value": 2,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10062,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_806_end",
+      "value": 3,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10063,
+      "kind": "any",
+      "conditionIds": [
+        10061,
+        10062
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10064,
+      "kind": "all",
+      "conditionIds": [
+        10036,
+        10063
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10065,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_903_offer",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10066,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_903_told",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10067,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_903_evidence",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10068,
+      "kind": "all",
+      "conditionIds": [
+        10066,
+        10067,
+        10065
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10069,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_903_evidence",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10070,
+      "kind": "all",
+      "conditionIds": [
+        10066,
+        10069,
+        10065
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10071,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_903_told",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10072,
+      "kind": "all",
+      "conditionIds": [
+        10066,
+        10067
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10073,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_903_offer",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10074,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_903_offer",
+      "value": 2,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10075,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_903_offer",
+      "value": 3,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10076,
+      "kind": "any",
+      "conditionIds": [
+        10073,
+        10074,
+        10075
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10077,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_903_seen",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10078,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 9031,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还没有谈妥同行条件"
+    },
+    {
+      "id": 10079,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 9032,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还没有谈妥同行条件"
+    },
+    {
+      "id": 10080,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 9033,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还没有谈妥同行条件"
+    },
+    {
+      "id": 10081,
+      "kind": "all",
+      "conditionIds": [
+        10078,
+        10079,
+        10080
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10082,
+      "kind": "mission_state",
+      "conditionIds": [],
+      "targetId": 903,
+      "key": "",
+      "value": 0,
+      "state": "ready",
+      "reason": "还没有谈妥同行条件"
+    },
+    {
+      "id": 10083,
+      "kind": "npc_recruited",
+      "conditionIds": [],
+      "targetId": 203,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "已经同行"
+    },
+    {
+      "id": 10084,
+      "kind": "not",
+      "conditionIds": [
+        10083
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10085,
+      "kind": "all",
+      "conditionIds": [
+        10070,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10086,
+      "kind": "party_attribute",
+      "conditionIds": [],
+      "targetId": 16,
+      "key": "",
+      "value": 4,
+      "state": "",
+      "reason": "需要队伍中一位存活成员的巧匠达到 4"
+    },
+    {
+      "id": 10087,
+      "kind": "all",
+      "conditionIds": [
+        10070,
+        10086
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10088,
+      "kind": "actor_trait",
+      "conditionIds": [],
+      "targetId": 3,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "需要相应特质的队员"
+    },
+    {
+      "id": 10089,
+      "kind": "all",
+      "conditionIds": [
+        10070,
+        10088
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10090,
+      "kind": "all",
+      "conditionIds": [
+        10068,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10091,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_903_samples",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10092,
+      "kind": "all",
+      "conditionIds": [
+        10068,
+        10091
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10093,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_803_collective",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10094,
+      "kind": "all",
+      "conditionIds": [
+        10068,
+        10093
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10095,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_904_offer",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10096,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_904_told",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10097,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_904_evidence",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10098,
+      "kind": "all",
+      "conditionIds": [
+        10096,
+        10097,
+        10095
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10099,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_904_evidence",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10100,
+      "kind": "all",
+      "conditionIds": [
+        10096,
+        10099,
+        10095
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10101,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_904_told",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10102,
+      "kind": "all",
+      "conditionIds": [
+        10096,
+        10097
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10103,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_904_offer",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10104,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_904_offer",
+      "value": 2,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10105,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_904_offer",
+      "value": 3,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10106,
+      "kind": "any",
+      "conditionIds": [
+        10103,
+        10104,
+        10105
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10107,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_904_seen",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10108,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 9041,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还没有谈妥同行条件"
+    },
+    {
+      "id": 10109,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 9042,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还没有谈妥同行条件"
+    },
+    {
+      "id": 10110,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 9043,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还没有谈妥同行条件"
+    },
+    {
+      "id": 10111,
+      "kind": "all",
+      "conditionIds": [
+        10108,
+        10109,
+        10110
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10112,
+      "kind": "mission_state",
+      "conditionIds": [],
+      "targetId": 904,
+      "key": "",
+      "value": 0,
+      "state": "ready",
+      "reason": "还没有谈妥同行条件"
+    },
+    {
+      "id": 10113,
+      "kind": "npc_recruited",
+      "conditionIds": [],
+      "targetId": 204,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "已经同行"
+    },
+    {
+      "id": 10114,
+      "kind": "not",
+      "conditionIds": [
+        10113
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10115,
+      "kind": "all",
+      "conditionIds": [
+        10100,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10116,
+      "kind": "party_attribute",
+      "conditionIds": [],
+      "targetId": 3,
+      "key": "",
+      "value": 8,
+      "state": "",
+      "reason": "需要队伍中一位存活成员的智力达到 8"
+    },
+    {
+      "id": 10117,
+      "kind": "all",
+      "conditionIds": [
+        10100,
+        10116
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10118,
+      "kind": "actor_trait",
+      "conditionIds": [],
+      "targetId": 2,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "需要相应特质的队员"
+    },
+    {
+      "id": 10119,
+      "kind": "all",
+      "conditionIds": [
+        10100,
+        10118
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10120,
+      "kind": "all",
+      "conditionIds": [
+        10098,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10121,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_904_record",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10122,
+      "kind": "all",
+      "conditionIds": [
+        10098,
+        10121
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10123,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_808_end",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10124,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_808_end",
+      "value": 2,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10125,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_808_end",
+      "value": 3,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10126,
+      "kind": "any",
+      "conditionIds": [
+        10123,
+        10124,
+        10125
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10127,
+      "kind": "all",
+      "conditionIds": [
+        10098,
+        10126
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10128,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_905_offer",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10129,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_905_told",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10130,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_905_evidence",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10131,
+      "kind": "all",
+      "conditionIds": [
+        10129,
+        10130,
+        10128
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10132,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_905_evidence",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10133,
+      "kind": "all",
+      "conditionIds": [
+        10129,
+        10132,
+        10128
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10134,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_905_told",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10135,
+      "kind": "all",
+      "conditionIds": [
+        10129,
+        10130
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10136,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_905_offer",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10137,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_905_offer",
+      "value": 2,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10138,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_905_offer",
+      "value": 3,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10139,
+      "kind": "any",
+      "conditionIds": [
+        10136,
+        10137,
+        10138
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10140,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_905_seen",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10141,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 9051,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还没有谈妥同行条件"
+    },
+    {
+      "id": 10142,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 9052,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还没有谈妥同行条件"
+    },
+    {
+      "id": 10143,
+      "kind": "quest_state",
+      "conditionIds": [],
+      "targetId": 9053,
+      "key": "",
+      "value": 0,
+      "state": "completed",
+      "reason": "还没有谈妥同行条件"
+    },
+    {
+      "id": 10144,
+      "kind": "all",
+      "conditionIds": [
+        10141,
+        10142,
+        10143
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10145,
+      "kind": "mission_state",
+      "conditionIds": [],
+      "targetId": 905,
+      "key": "",
+      "value": 0,
+      "state": "ready",
+      "reason": "还没有谈妥同行条件"
+    },
+    {
+      "id": 10146,
+      "kind": "npc_recruited",
+      "conditionIds": [],
+      "targetId": 205,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "已经同行"
+    },
+    {
+      "id": 10147,
+      "kind": "not",
+      "conditionIds": [
+        10146
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10148,
+      "kind": "all",
+      "conditionIds": [
+        10133,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10149,
+      "kind": "all",
+      "conditionIds": [
+        10133,
+        10021
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10150,
+      "kind": "actor_trait",
+      "conditionIds": [],
+      "targetId": 5,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "需要相应特质的队员"
+    },
+    {
+      "id": 10151,
+      "kind": "all",
+      "conditionIds": [
+        10133,
+        10150
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10152,
+      "kind": "all",
+      "conditionIds": [
+        10131,
+        1
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10153,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "recruit_905_firstday",
+      "value": 1,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10154,
+      "kind": "all",
+      "conditionIds": [
+        10131,
+        10153
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10155,
+      "kind": "flag",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "bt_809_end",
+      "value": 2,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 10156,
+      "kind": "all",
+      "conditionIds": [
+        10131,
+        10155
+      ],
+      "targetId": 0,
+      "key": "",
+      "value": 0,
+      "state": "",
+      "reason": "还没有谈到这里"
+    },
+    {
+      "id": 11000,
+      "kind": "flag",
+      "reason": "赢得骑士审判，且骑士存活",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "knight_trial_outcome",
+      "value": 1,
+      "state": ""
+    },
+    {
+      "id": 11001,
+      "kind": "flag",
+      "reason": "击败追兵，成功救下逃兵",
+      "conditionIds": [],
+      "targetId": 0,
+      "key": "mysterious_deserter_outcome",
+      "value": 1,
+      "state": ""
     }
   ]
 }

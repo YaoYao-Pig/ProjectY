@@ -1,3 +1,4 @@
+local LuaLanguage = require('Language')
 local Class=require('Core.Class')
 local Base=require('UI.UIPanelCtrl')
 local Panel=Class('GMCtr',Base)
@@ -19,21 +20,21 @@ function Panel:OnShow(args)
 end
 function Panel:Refresh()
     local actor,reason=self.gm:Slot(tonumber(self.view.Slot.text))
-    self.view.Target.text=actor and (self.gm.growth.stats:Template(actor).name..'  ·  等级 '..actor.Growth.Level) or reason
+    self.view.Target.text=actor and (string.format(LuaLanguage.UIGMTargetText, (self.gm.growth.stats:Template(actor).name), (actor.Growth.Level))) or reason
     local skill=self.gm:Skill(tonumber(self.view.SkillId.text))
-    self.view.SkillName.text=skill and skill.name or '请输入有效技能 ID（例如 201：驯服）'
+    self.view.SkillName.text=skill and skill.name or LuaLanguage.UIGMSkillNameText
     self.slotText,self.skillText=self.view.Slot.text,self.view.SkillId.text
 end
 function Panel:Execute(command)
     local slot=tonumber(self.view.Slot.text);local actor,reason=self.gm:Slot(slot)
     if not actor then self.view.Result.text=reason;return end
     local id=tonumber(self.view.SkillId.text)
-    if command=='grant_skill' and not self.gm:Skill(id) then self.view.Result.text='请输入有效的整数技能 ID';return end
+    if command=='grant_skill' and not self.gm:Skill(id) then self.view.Result.text=LuaLanguage.UIGMResultText4;return end
     local previous=self.demo.BattleHUDRevision
     self.demo:SendCommand('gm_'..command,slot,id or 0)
-    if previous==self.demo.BattleHUDRevision then self.view.Result.text='当前动作尚未结束，请稍后再试';return end
+    if previous==self.demo.BattleHUDRevision then self.view.Result.text=LuaLanguage.UIGMResultText3;return end
     local errorText=self.demo.LastError
-    self.view.Result.text=errorText and errorText~='' and errorText or (command=='level_up' and ('升级完成：等级 '..actor.Growth.Level) or ('已获得「'..self.gm:Skill(id).name..'」'))
+    self.view.Result.text=errorText and errorText~='' and errorText or (command=='level_up' and (string.format(LuaLanguage.UIGMResultText2, (actor.Growth.Level))) or (string.format(LuaLanguage.UIGMResultText, (self.gm:Skill(id).name))))
     self:Refresh()
 end
 function Panel:Tick()
@@ -43,7 +44,7 @@ end
 function Panel:RefreshNpcs()
     self.npcQuery=self.view.NpcSearch.text
     local rows=self.gm.npcs:Search(self.npcQuery)
-    self.view.NpcCount.text=#rows==0 and '没有匹配的 NPC' or ('找到 '..#rows..' 位 NPC')
+    self.view.NpcCount.text=#rows==0 and LuaLanguage.UIGMNpcCountText2 or (string.format(LuaLanguage.UIGMNpcCountText, (#rows)))
     for i,row in ipairs(rows) do
         if not self.npcRows[i] then self.npcRows[i]=self:CreateWidget('NarrativeEntry',self.view.NpcRows) end
         local id=row.id
@@ -54,9 +55,9 @@ end
 function Panel:GoToNpc(id)
     local previous=self.demo.BattleHUDRevision
     self.demo:SendCommand('gm_goto_npc',id,0)
-    if self.demo.BattleHUDRevision==previous then self.view.Result.text='当前动作尚未结束，请稍后再试';return end
+    if self.demo.BattleHUDRevision==previous then self.view.Result.text=LuaLanguage.UIGMResultText3;return end
     local errorText=self.demo.LastError
-    self.view.Result.text=errorText and errorText~='' and errorText or ('已到达「'..self.gm.npcs.story.rules.npcs:Get(id).name..'」附近。关闭 GM 后按 E 交谈。')
+    self.view.Result.text=errorText and errorText~='' and errorText or (string.format(LuaLanguage.UIGMResultText5, (self.gm.npcs.story.rules.npcs:Get(id).name)))
     self:RefreshNpcs()
 end
 function Panel:OnHide() if self.demo then self.demo:SetGMOpen(false);self.demo=nil end end

@@ -10,6 +10,7 @@ namespace ProjectY.Samples
         public sealed class Asset { public int Id; public string Path, TintMaterial; public float ReferenceHeight; }
         public sealed class Cell
         {
+            public int Q, R, TownId;
             public Vector3 Position; public Color Color; public bool HasWater, IsRiver; public float WaterLevel, WaterDepth;
             public int TerrainAssetId, WaterAssetId, RiverId; public int FlowTo = -1; public int[] Neighbors;
             public int SurfaceA, SurfaceB; public float SurfaceBlend;
@@ -79,7 +80,8 @@ namespace ProjectY.Samples
             Color color;
             using (var rgb = row.Get<LuaTable>("groundColor"))
                 color = new Color(rgb.Get<int, float>(1), rgb.Get<int, float>(2), rgb.Get<int, float>(3), 1);
-            return new Cell { Position = new Vector3(row.Get<float>("x"), row.Get<float>("y"), row.Get<float>("z")),
+            return new Cell { Q = row.Get<int>("q"), R = row.Get<int>("r"), TownId = row.Get<int>("townId"),
+                Position = new Vector3(row.Get<float>("x"), row.Get<float>("y"), row.Get<float>("z")),
                 HasWater = row.Get<bool>("hasWater"), WaterLevel = row.Get<float>("waterLevel"), Color = color,
                 IsRiver = row.Get<bool>("isRiver"), RiverId = row.Get<int>("riverId"),
                 FlowTo = row.Get<int>("flowTo") - 1, WaterDepth = row.Get<float>("waterDepth"),

@@ -6,12 +6,15 @@
 
 ## 正文
 
+- `SpecialEventTable` 已纳入叙事批量工具，连接事件选择、专属区域、盟军槽位与招募身份；语义和生命周期见 [特殊事件](../Business/SpecialEvents.md)。
+
 - 使用现有 Web 服务管理器：`node Tools/WebServices/manage.mjs start narrative`，访问 `http://127.0.0.1:4179`。Unity Web 服务管理窗口自动列出“叙事工坊”。Node 无额外 npm 依赖，仅监听 loopback，写入需会话 token 和同源校验。
 - 左侧搜索任务、阶段、条件、动作、NPC、阵营、日程和对话；中间故事总览折叠条件/动作的中间节点，当前关联视图展开两层引用，支持缩放/平移/点击；右侧表单编辑、引用与影响分析、对话文本分支预览。预览只展示分支，不模拟战斗或执行奖励。
 - 页面编辑保留在本地草稿，支持多表联改、新建/删除、下载 patch JSON；检查整组草稿后保存，保存并导出才更新游戏产物。刷新前提醒未保存修改。所有保存必须匹配 workspace revision，包含表源、位置、Catalog、Language.lua；409 时保留草稿并要求用户重新合并。
 - `workspace.mjs` 是 Web/CLI 的共同读写入口；批量保存先完整校验，提交前复查 revision，使用写锁串行化叙事工具自身写入。单文件原子替换，捕获写入异常时回滚本次已写且未被外部改动的文件；多文件保存不是断电原子事务。通用配置编辑器/外部编辑器不受叙事锁控制，因此不要并发修改同一批源文件。
 - `rules.mjs` 接入通用 exporter 的 validateTables，通用配置工作台、导表、Web 与 CLI 使用一致的叙事规则：Condition 环/深度/参数、引用目标、奖励动作限制、对话所有权/可达性、NPC 数值范围/安置/日程/设施。完成状态前置环给警告；任意自定义 Condition 给出需执行对应 Lua 校验的提示，不伪称静态证明其语义正确。
 - 关系图包含表字段引用、条件/动作的动态目标引用，以及 flag 读者到同键写入动作的依赖。`impact` 按反向引用遍历，返回更改某实体可能影响的全部节点。它不是剧情可达性证明，仍需核对实际条件与玩法。
+- `DialogueInterjectionTable` 纳入工坊与内容中心的任务分类；预览展示自动/主动发言、Condition、缘由和可点击接续节点。图及可达性检查包含插话跳转，禁止自动插话跳转及跨 Dialogue 跳转；actor 条件只允许插话上下文，特质/属性/事件历史引用均参与校验与影响分析。运行语义见[任务对话与 NPC](../Business/Narrative.md)。
 - `party_attribute` 显式投影到 GrowthAttributeTable，并校验属性 ID、正阈值及空 key/state；`grant_experience` 校验全队目标和正数量。三线剧情的可达性与奖励原子预检由 [narrative_campaign_core.lua](../../Tools/Tests/narrative_campaign_core.lua) 执行真实 Lua 流转验证，不能用关系图无环代替路线验证。
 - [内容中心](ContentCenter.md)复用同一批量保存实现；写锁位于 `Tools/ConfigEditor/.cache/write.lock`，两者相互串行。Narrative 的默认可编辑白名单保持为叙事表，内容中心显式传入源表列表。
 - Agent 命令统一为 `node Tools/Narrative/cli.mjs <command>`：`list [table]`、`get <table> <id>`、`schema [table]`、`graph`、`impact <table:id>`、`snapshot`、`validate`、`review <patch.json>`、`patch <patch.json>`、`export <revision>`。成功输出 JSON，失败输出 error/status 并返回非零退出码；无需启动 Web 服务。

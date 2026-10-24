@@ -1,0 +1,3180 @@
+{
+  "files": [
+    {
+      "file": "Lua/UI/LoadingSystem.lua",
+      "replacements": 1
+    },
+    {
+      "file": "Lua/UI/Panel/CampCtr.lua",
+      "replacements": 7
+    },
+    {
+      "file": "Lua/UI/Panel/CharacterGrowthCtr.lua",
+      "replacements": 47
+    },
+    {
+      "file": "Lua/UI/Panel/DialogueCtr.lua",
+      "replacements": 4
+    },
+    {
+      "file": "Lua/UI/Panel/DiceRollCtr.lua",
+      "replacements": 2
+    },
+    {
+      "file": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua",
+      "replacements": 33
+    },
+    {
+      "file": "Lua/UI/Panel/GMCtr.lua",
+      "replacements": 10
+    },
+    {
+      "file": "Lua/UI/Panel/InventoryCtr.lua",
+      "replacements": 14
+    },
+    {
+      "file": "Lua/UI/Panel/LootCtr.lua",
+      "replacements": 15
+    },
+    {
+      "file": "Lua/UI/Panel/MainHudCtr.lua",
+      "replacements": 15
+    },
+    {
+      "file": "Lua/UI/Panel/MissionJournalCtr.lua",
+      "replacements": 38
+    },
+    {
+      "file": "Lua/UI/Panel/ShopCtr.lua",
+      "replacements": 7
+    },
+    {
+      "file": "Lua/UI/Panel/SkillAtlasCtr.lua",
+      "replacements": 9
+    },
+    {
+      "file": "Lua/UI/Panel/StartMenuCtr.lua",
+      "replacements": 15
+    },
+    {
+      "file": "Lua/UI/Panel/StoryEventCtr.lua",
+      "replacements": 7
+    },
+    {
+      "file": "Lua/UI/Panel/WorldPartyCtr.lua",
+      "replacements": 2
+    },
+    {
+      "file": "Lua/UI/SkillTipPresenter.lua",
+      "replacements": 1
+    },
+    {
+      "file": "Lua/UI/Widget/BattleHUDContent.lua",
+      "replacements": 12
+    },
+    {
+      "file": "Lua/UI/Widget/CharacterSkill.lua",
+      "replacements": 3
+    },
+    {
+      "file": "Lua/UI/Widget/HudHealth.lua",
+      "replacements": 1
+    },
+    {
+      "file": "Lua/UI/Widget/HudParty.lua",
+      "replacements": 1
+    },
+    {
+      "file": "Lua/Game/Presentation/DiceChecks.lua",
+      "replacements": 5
+    },
+    {
+      "file": "Lua/Game/Presentation/SkillTipModel.lua",
+      "replacements": 40
+    },
+    {
+      "file": "Lua/Game/Adventure/MainHudModel.lua",
+      "replacements": 46
+    },
+    {
+      "file": "Lua/Game/Adventure/InteractionPrompt.lua",
+      "replacements": 8
+    },
+    {
+      "file": "Lua/Game/Battle/BattleHUDModel.lua",
+      "replacements": 2
+    },
+    {
+      "file": "Lua/Game/Equipment/InventoryModel.lua",
+      "replacements": 22
+    },
+    {
+      "file": "Lua/Game/Equipment/EquipmentPresentation.lua",
+      "replacements": 55
+    },
+    {
+      "file": "Lua/Game/Camp/CampModel.lua",
+      "replacements": 38
+    },
+    {
+      "file": "Lua/Game/Loot/LootModel.lua",
+      "replacements": 5
+    },
+    {
+      "file": "Lua/Game/Shop/ShopModel.lua",
+      "replacements": 14
+    },
+    {
+      "file": "Lua/Game/Progression/SkillAtlas.lua",
+      "replacements": 29
+    }
+  ],
+  "keys": [
+    {
+      "id": "DiceRequirement",
+      "txt": "要求：%s",
+      "desc": "检定要求，%s 为数值"
+    },
+    {
+      "id": "DiceTens",
+      "txt": "十位",
+      "desc": "骰子十位标签"
+    },
+    {
+      "id": "DiceUnits",
+      "txt": "个位",
+      "desc": "骰子个位标签"
+    },
+    {
+      "id": "DiceTenths",
+      "txt": "十分位",
+      "desc": "骰子小数第一位"
+    },
+    {
+      "id": "DiceHundredths",
+      "txt": "百分位",
+      "desc": "骰子小数第二位"
+    },
+    {
+      "id": "DiceSuccess",
+      "txt": "检定成功",
+      "desc": "检定结果"
+    },
+    {
+      "id": "DiceFailure",
+      "txt": "检定失败",
+      "desc": "检定结果"
+    },
+    {
+      "id": "BattleLogExpandedTitle",
+      "txt": "战斗记录 · {0} 条",
+      "desc": "C# 格式，{0} 为记录条数"
+    },
+    {
+      "id": "BattleLogCollapsedTitle",
+      "txt": "战斗记录 · 点击展开",
+      "desc": "战斗日志标题"
+    },
+    {
+      "id": "InventorySearching",
+      "txt": "搜索中…",
+      "desc": "搜刮物品状态"
+    },
+    {
+      "id": "InventoryUnsearched",
+      "txt": "未搜索",
+      "desc": "搜刮物品状态"
+    },
+    {
+      "id": "InventoryDragLabel",
+      "txt": "{0}  /  R 旋转",
+      "desc": "C# 格式，{0} 为拖动物品名"
+    },
+    {
+      "id": "SkillTooltipTitle",
+      "txt": "技能说明",
+      "desc": "技能浮窗"
+    },
+    {
+      "id": "SkillSynergyActive",
+      "txt": "生效中",
+      "desc": "技能协同状态"
+    },
+    {
+      "id": "SkillSynergyDiscovered",
+      "txt": "已发现",
+      "desc": "技能协同状态"
+    },
+    {
+      "id": "SkillTooltipScrollHint",
+      "txt": "滚轮翻阅 · 点击下划线术语查看释义",
+      "desc": "技能浮窗底部提示"
+    },
+    {
+      "id": "SkillTooltipTermHint",
+      "txt": "点击下划线术语查看释义",
+      "desc": "技能浮窗底部提示"
+    },
+    {
+      "id": "UILoadingSystemStage",
+      "txt": "准备出发",
+      "desc": "Lua/UI/LoadingSystem.lua:28"
+    },
+    {
+      "id": "UICampSections",
+      "txt": "等待生产",
+      "desc": "Lua/UI/Panel/CampCtr.lua:5"
+    },
+    {
+      "id": "UICampSections2",
+      "txt": "仓库存取",
+      "desc": "Lua/UI/Panel/CampCtr.lua:5"
+    },
+    {
+      "id": "UICampSections3",
+      "txt": "生产与领取",
+      "desc": "Lua/UI/Panel/CampCtr.lua:5"
+    },
+    {
+      "id": "UICampSections4",
+      "txt": "建设设施",
+      "desc": "Lua/UI/Panel/CampCtr.lua:5"
+    },
+    {
+      "id": "UICampHintText",
+      "txt": "材料优先使用仓库；金币、材料或空间不足时，交易不改变资源。",
+      "desc": "Lua/UI/Panel/CampCtr.lua:38"
+    },
+    {
+      "id": "UICampCaptionText",
+      "txt": "第 %d 天 %02d:%02d  |  %d 金币  |  仓库 %d/%d  |  生产订单 %d",
+      "desc": "Lua/UI/Panel/CampCtr.lua:19"
+    },
+    {
+      "id": "UICampTitleText",
+      "txt": "远征营地",
+      "desc": "Lua/UI/Panel/CampCtr.lua:18"
+    },
+    {
+      "id": "UICharacterGrowthNextTreeTextText",
+      "txt": "被动天赋",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:32"
+    },
+    {
+      "id": "UICharacterGrowthPreviousTreeTextText",
+      "txt": "职业技能",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:32"
+    },
+    {
+      "id": "UICharacterGrowthAtlasTextText",
+      "txt": "技能图鉴",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:32"
+    },
+    {
+      "id": "UICharacterGrowthHistoryTabTextText",
+      "txt": "旅途经历",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:31"
+    },
+    {
+      "id": "UICharacterGrowthSkillsTabTextText",
+      "txt": "职业与天赋",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:31"
+    },
+    {
+      "id": "UICharacterGrowthOverviewTabTextText",
+      "txt": "属性加点",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:31"
+    },
+    {
+      "id": "UICharacterGrowthHistory",
+      "txt": "每段经历记录发生日期、地点与同行者。",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:74"
+    },
+    {
+      "id": "UICharacterGrowthSkills",
+      "txt": "选择课程查看详情，再点击学习；转职免费，已学能力保留。技能图鉴可查看全部前置。",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:73"
+    },
+    {
+      "id": "UICharacterGrowthSkills2",
+      "txt": "被动天赋消耗天赋点；右侧目录切换天赋树，选中节点后投入。",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:73"
+    },
+    {
+      "id": "UICharacterGrowthOverview",
+      "txt": "属性点用于 + 加点；旅途印记中可查看特质、关系和荣誉。",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:72"
+    },
+    {
+      "id": "UICharacterGrowthSummaryText",
+      "txt": "属性点 %s  /  天赋点 %s  /  学习机会 %s  /  潜力 %s",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:65；%s1=growth.AttributePoints，%s2=growth.TalentPoints，%s3=growth.PendingCount，%s4=growth.LockedPotential"
+    },
+    {
+      "id": "UICharacterGrowthHeroExperienceText",
+      "txt": "已到达本阶段的顶点",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:63"
+    },
+    {
+      "id": "UICharacterGrowthHeroExperienceText2",
+      "txt": "经验 %s / %s",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:63；%s1=growth.Experience，%s2=nextLevel.experience"
+    },
+    {
+      "id": "UICharacterGrowthHeroHealthText",
+      "txt": "生命  %s / %s",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:62；%s1=actor.HP，%s2=actor.MaxHP"
+    },
+    {
+      "id": "UICharacterGrowthHeroLevelText",
+      "txt": "旅人  ·  等级 %s",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:61；%s1=growth.Level"
+    },
+    {
+      "id": "UICharacterGrowthBody",
+      "txt": "尚未解锁 · ",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:146"
+    },
+    {
+      "id": "UICharacterGrowthBody2",
+      "txt": "已开放 · ",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:146"
+    },
+    {
+      "id": "UICharacterGrowthTitle",
+      "txt": "当前 · ",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:145"
+    },
+    {
+      "id": "UICharacterGrowthSkillTitleText",
+      "txt": "天赋树目录 · %s 点可用",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:143；%s1=actor.Growth.TalentPoints"
+    },
+    {
+      "id": "UICharacterGrowthTalentDetailText",
+      "txt": "可以投入",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:142"
+    },
+    {
+      "id": "UICharacterGrowthTalentNameText",
+      "txt": "星火成途",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:141"
+    },
+    {
+      "id": "UICharacterGrowthInvestTextText",
+      "txt": "投入 %s 天赋点",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:140；%s1=node.pointCost"
+    },
+    {
+      "id": "UICharacterGrowthInvestTextText2",
+      "txt": "无可选课程",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:195"
+    },
+    {
+      "id": "UICharacterGrowthTalentDetailText2",
+      "txt": "可切换研习职业，查看其他职业的课程。",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:194"
+    },
+    {
+      "id": "UICharacterGrowthTalentNameText2",
+      "txt": "当前职业暂无课程",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:194"
+    },
+    {
+      "id": "UICharacterGrowthInvestTextText3",
+      "txt": "暂不可学习",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:192"
+    },
+    {
+      "id": "UICharacterGrowthInvestTextText4",
+      "txt": "已经掌握",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:192"
+    },
+    {
+      "id": "UICharacterGrowthInvestTextText5",
+      "txt": "学习 · 消耗 1 次机会",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:192"
+    },
+    {
+      "id": "UICharacterGrowthTalentDetailText3",
+      "txt": "%s · %s\n\n%s%s\n\n详细效果与前置可在技能图鉴中查看。",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:191；%s1=kind，%s2=reason，%s3=skill.description，%s4=condition and '\\n\\n'..condition or ''"
+    },
+    {
+      "id": "UICharacterGrowthKind",
+      "txt": "主动技能",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:189"
+    },
+    {
+      "id": "UICharacterGrowthKind2",
+      "txt": "战前准备技能",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:189"
+    },
+    {
+      "id": "UICharacterGrowthBody3",
+      "txt": "主动技能 · ",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:171"
+    },
+    {
+      "id": "UICharacterGrowthBody4",
+      "txt": "战前准备 · ",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:171"
+    },
+    {
+      "id": "UICharacterGrowthTitle2",
+      "txt": "未满足 · ",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:170"
+    },
+    {
+      "id": "UICharacterGrowthTitle3",
+      "txt": "可学习 · ",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:170"
+    },
+    {
+      "id": "UICharacterGrowthTitle4",
+      "txt": "已掌握 · ",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:170"
+    },
+    {
+      "id": "UICharacterGrowthBody5",
+      "txt": "%s 转职不赠送新技能。",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:162；%s1=profession.description"
+    },
+    {
+      "id": "UICharacterGrowthTitle5",
+      "txt": "转入职业 · ",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:161"
+    },
+    {
+      "id": "UICharacterGrowthTitle6",
+      "txt": "正在研习 · ",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:161"
+    },
+    {
+      "id": "UICharacterGrowthInvestTextText6",
+      "txt": "在左侧选择职业",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:158"
+    },
+    {
+      "id": "UICharacterGrowthTalentDetailText4",
+      "txt": "转职后开放对应课程和天赋树。\n\n已掌握的技能与天赋保留，可自由组合。\n\n转职不消耗学习机会，也不赠送新技能。",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:157"
+    },
+    {
+      "id": "UICharacterGrowthTalentNameText3",
+      "txt": "选择研习职业",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:157"
+    },
+    {
+      "id": "UICharacterGrowthBody6",
+      "txt": "探索期间免费转职；已学能力永久保留，装备仍由属性与触媒要求决定。",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:155"
+    },
+    {
+      "id": "UICharacterGrowthTitle7",
+      "txt": "切换研习职业",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:154"
+    },
+    {
+      "id": "UICharacterGrowthTitle8",
+      "txt": "返回当前职业技能",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:154"
+    },
+    {
+      "id": "UICharacterGrowthTreeTitleText",
+      "txt": "%s · 学习机会 %s",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:153；%s1=current.name，%s2=growth.PendingCount"
+    },
+    {
+      "id": "UICharacterGrowthHistorySummaryText",
+      "txt": "留下 %s 段经历  ·  %s / %s",
+      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:210；%s1=#all，%s2=self.historyPage，%s3=pages"
+    },
+    {
+      "id": "UIDialogueHintText",
+      "txt": "滚动回看  ·  选择回应或让同行者接话",
+      "desc": "Lua/UI/Panel/DialogueCtr.lua:68"
+    },
+    {
+      "id": "UIDialogueTitle",
+      "txt": "查看商品",
+      "desc": "Lua/UI/Panel/DialogueCtr.lua:62"
+    },
+    {
+      "id": "UIDialogueTitle2",
+      "txt": "<b>让 %s 接话</b>  <size=70%%>%s</size>",
+      "desc": "Lua/UI/Panel/DialogueCtr.lua:45；%s1=Rich.Escape(entry.name)，%s2=Rich.Escape(entry.cue)"
+    },
+    {
+      "id": "UIDialogueCaptionText",
+      "txt": "%s  /  小队交谈",
+      "desc": "Lua/UI/Panel/DialogueCtr.lua:20；%s1=story.rules.factions:Get(npc.factionId).name"
+    },
+    {
+      "id": "UIEquipmentWorkbenchMessage",
+      "txt": "点击外侧标签选择组件；拖动旋转，滚轮缩放。维修可在背包选中装备后进行。",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:37"
+    },
+    {
+      "id": "UIEquipmentWorkbenchMessage2",
+      "txt": "已应用，装备与战斗参数已同步。",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:53"
+    },
+    {
+      "id": "UIEquipmentWorkbenchEffectsEffects1",
+      "txt": "每次耗弹 %s",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:190；%s1=skill.shots*skill.ammoPerShot"
+    },
+    {
+      "id": "UIEquipmentWorkbenchEffectsEffects12",
+      "txt": "奥术触媒已就绪",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:188"
+    },
+    {
+      "id": "UIEquipmentWorkbenchEffectsEffects13",
+      "txt": "射程 %d · 目标 %d · 冷却 %d 回合",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:185"
+    },
+    {
+      "id": "UIEquipmentWorkbenchEffectsEffects14",
+      "txt": "命中 %d%%  ·  伤害 ×%.2f",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:184"
+    },
+    {
+      "id": "UIEquipmentWorkbenchLinesLines1",
+      "txt": "装备技能",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:175"
+    },
+    {
+      "id": "UIEquipmentWorkbenchLinesLines12",
+      "txt": "备用弹药 %s",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:174；%s1=data:CountItem(loaded.AmmoItemId)"
+    },
+    {
+      "id": "UIEquipmentWorkbenchLinesLines13",
+      "txt": "弹匣",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:174"
+    },
+    {
+      "id": "UIEquipmentWorkbenchLinesLines14",
+      "txt": "已安装组件",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:172"
+    },
+    {
+      "id": "UIEquipmentWorkbenchR",
+      "txt": "尚未获得 · 商店补货 / 搜刮",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:161"
+    },
+    {
+      "id": "UIEquipmentWorkbenchR2",
+      "txt": "已安装",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:161"
+    },
+    {
+      "id": "UIEquipmentWorkbenchR3",
+      "txt": "点击安装",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:161"
+    },
+    {
+      "id": "UIEquipmentWorkbenchR4",
+      "txt": "%s/%s 发",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:155；%s1=mag.Rounds，%s2=mag.Capacity"
+    },
+    {
+      "id": "UIEquipmentWorkbenchR5",
+      "txt": "弹匣 #%s",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:155；%s1=mag.Id"
+    },
+    {
+      "id": "UIEquipmentWorkbenchSocketTitleText",
+      "txt": "此武器没有改装槽",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:150"
+    },
+    {
+      "id": "UIEquipmentWorkbenchSocketTitleText2",
+      "txt": "%s · 可安装组件",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:150；%s1=slot.name"
+    },
+    {
+      "id": "UIEquipmentWorkbenchRequirementsText",
+      "txt": "已装备削弱：伤害 -%d%% · 命中 -%d",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:147"
+    },
+    {
+      "id": "UIEquipmentWorkbenchRequirementsText2",
+      "txt": "属性不足，无法装备",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:144"
+    },
+    {
+      "id": "UIEquipmentWorkbenchRequirementsText3",
+      "txt": "已满足要求",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:144"
+    },
+    {
+      "id": "UIEquipmentWorkbenchRequirementsText4",
+      "txt": "无属性限制",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:143"
+    },
+    {
+      "id": "UIEquipmentWorkbenchRequirementsText5",
+      "txt": "装备要求",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:143"
+    },
+    {
+      "id": "UIEquipmentWorkbenchR6",
+      "txt": "共享库存",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:132"
+    },
+    {
+      "id": "UIEquipmentWorkbenchR7",
+      "txt": "已装入武器",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:122"
+    },
+    {
+      "id": "UIEquipmentWorkbenchR8",
+      "txt": "备用 · 点击装填",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:122"
+    },
+    {
+      "id": "UIEquipmentWorkbenchR9",
+      "txt": "%s/%s 发 · %s",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:122；%s1=mag.Rounds，%s2=mag.Capacity，%s3=data:MagazineWeapon(mag.Id)==0 and LuaLanguage.UIEquipmentWorkbenchR8 or LuaLanguage.UIEquipmentWorkbenchR7"
+    },
+    {
+      "id": "UIEquipmentWorkbenchR10",
+      "txt": " · 已装备",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:111"
+    },
+    {
+      "id": "UIEquipmentWorkbenchR11",
+      "txt": " · 背包",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:111"
+    },
+    {
+      "id": "UIEquipmentWorkbenchCategoryTextText",
+      "txt": "全部武器",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:107"
+    },
+    {
+      "id": "UIEquipmentWorkbenchEquipTextText",
+      "txt": "装备给 %s",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:91；%s1=self.stats:Template(actor).name"
+    },
+    {
+      "id": "UIEquipmentWorkbenchSubtitleText",
+      "txt": "持有者：%s",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:90；%s1=self.stats:Template(self.system:Actor(weapon.OwnerActorId)).name"
+    },
+    {
+      "id": "UIEquipmentWorkbenchSubtitleText2",
+      "txt": "共享背包 · 未装备",
+      "desc": "Lua/UI/Panel/EquipmentWorkbenchCtr.lua:90"
+    },
+    {
+      "id": "UIGMSkillNameText",
+      "txt": "请输入有效技能 ID（例如 201：驯服）",
+      "desc": "Lua/UI/Panel/GMCtr.lua:24"
+    },
+    {
+      "id": "UIGMTargetText",
+      "txt": "%s  ·  等级 %s",
+      "desc": "Lua/UI/Panel/GMCtr.lua:22；%s1=self.gm.growth.stats:Template(actor).name，%s2=actor.Growth.Level"
+    },
+    {
+      "id": "UIGMResultText",
+      "txt": "已获得「%s」",
+      "desc": "Lua/UI/Panel/GMCtr.lua:36；%s1=self.gm:Skill(id).name"
+    },
+    {
+      "id": "UIGMResultText2",
+      "txt": "升级完成：等级 %s",
+      "desc": "Lua/UI/Panel/GMCtr.lua:36；%s1=actor.Growth.Level"
+    },
+    {
+      "id": "UIGMResultText3",
+      "txt": "当前动作尚未结束，请稍后再试",
+      "desc": "Lua/UI/Panel/GMCtr.lua:34"
+    },
+    {
+      "id": "UIGMResultText4",
+      "txt": "请输入有效的整数技能 ID",
+      "desc": "Lua/UI/Panel/GMCtr.lua:31"
+    },
+    {
+      "id": "UIGMNpcCountText",
+      "txt": "找到 %s 位 NPC",
+      "desc": "Lua/UI/Panel/GMCtr.lua:46；%s1=#rows"
+    },
+    {
+      "id": "UIGMNpcCountText2",
+      "txt": "没有匹配的 NPC",
+      "desc": "Lua/UI/Panel/GMCtr.lua:46"
+    },
+    {
+      "id": "UIGMResultText5",
+      "txt": "已到达「%s」附近。关闭 GM 后按 E 交谈。",
+      "desc": "Lua/UI/Panel/GMCtr.lua:59；%s1=self.gm.npcs.story.rules.npcs:Get(id).name"
+    },
+    {
+      "id": "UIInventoryMessage",
+      "txt": "已取消移动，物品保留原位",
+      "desc": "Lua/UI/Panel/InventoryCtr.lua:14"
+    },
+    {
+      "id": "UIInventoryMessage2",
+      "txt": "拖动收纳  ·  拖动时 R 旋转 / 右键取消  ·  拖到装备槽穿戴",
+      "desc": "Lua/UI/Panel/InventoryCtr.lua:50"
+    },
+    {
+      "id": "UIInventoryMessage3",
+      "txt": "已保存收纳与装备变更",
+      "desc": "Lua/UI/Panel/InventoryCtr.lua:58"
+    },
+    {
+      "id": "UIInventoryRepairTextText",
+      "txt": "维修装备",
+      "desc": "Lua/UI/Panel/InventoryCtr.lua:90"
+    },
+    {
+      "id": "UIInventoryRepairTextText2",
+      "txt": "维修 · 铁件%d / 金币%d",
+      "desc": "Lua/UI/Panel/InventoryCtr.lua:90"
+    },
+    {
+      "id": "UIInventoryItemDetailText",
+      "txt": "点击物品查看属性与品质\n\n拖动整理 · R 旋转\n装备后释放背包空间",
+      "desc": "Lua/UI/Panel/InventoryCtr.lua:83"
+    },
+    {
+      "id": "UIInventoryItemDetailText2",
+      "txt": "物品详情",
+      "desc": "Lua/UI/Panel/InventoryCtr.lua:83"
+    },
+    {
+      "id": "UIInventoryItemDetailText3",
+      "txt": "可在武器工坊中使用",
+      "desc": "Lua/UI/Panel/InventoryCtr.lua:82"
+    },
+    {
+      "id": "UIInventoryItemDetailText4",
+      "txt": "拖动至装备槽即可穿戴",
+      "desc": "Lua/UI/Panel/InventoryCtr.lua:82"
+    },
+    {
+      "id": "UIInventoryItemDetailText5",
+      "txt": "已穿戴 · %s",
+      "desc": "Lua/UI/Panel/InventoryCtr.lua:82；%s1=Model.slotNames[selected.slot]"
+    },
+    {
+      "id": "UIInventoryItemDetailText6",
+      "txt": "%d × %d 格 · 数量 %d",
+      "desc": "Lua/UI/Panel/InventoryCtr.lua:81"
+    },
+    {
+      "id": "UIInventoryItemNameText",
+      "txt": "选择一件物品",
+      "desc": "Lua/UI/Panel/InventoryCtr.lua:80"
+    },
+    {
+      "id": "UIInventoryCapacityText",
+      "txt": "%d × %d  /  已用 %d 格 · 剩余 %d 格",
+      "desc": "Lua/UI/Panel/InventoryCtr.lua:79"
+    },
+    {
+      "id": "UIInventoryActorStatsText",
+      "txt": "生命 %d / %d\n",
+      "desc": "Lua/UI/Panel/InventoryCtr.lua:77"
+    },
+    {
+      "id": "UILootMessage",
+      "txt": "已切换容器，可以整理位置或双向存取",
+      "desc": "Lua/UI/Panel/LootCtr.lua:21"
+    },
+    {
+      "id": "UILootText",
+      "txt": "全部战利品 · 选择容器以整理或存入",
+      "desc": "Lua/UI/Panel/LootCtr.lua:40"
+    },
+    {
+      "id": "UILootMessage2",
+      "txt": "左右背包可双向拖拽，右侧也能整理位置。",
+      "desc": "Lua/UI/Panel/LootCtr.lua:31"
+    },
+    {
+      "id": "UILootMessage3",
+      "txt": "汇总中可领取；选择一个容器后可整理或存入物品。",
+      "desc": "Lua/UI/Panel/LootCtr.lua:31"
+    },
+    {
+      "id": "UILootCapacityText",
+      "txt": "%d × %d  ·  已用 %d 格 / 剩余 %d 格",
+      "desc": "Lua/UI/Panel/LootCtr.lua:52"
+    },
+    {
+      "id": "UILootEmptyText",
+      "txt": "这里没有可搜刮的物品",
+      "desc": "Lua/UI/Panel/LootCtr.lua:61"
+    },
+    {
+      "id": "UILootEmptyText2",
+      "txt": "空容器\n可从左侧背包拖入物品",
+      "desc": "Lua/UI/Panel/LootCtr.lua:61"
+    },
+    {
+      "id": "UILootSearchStatusText",
+      "txt": "搜索完成  ·  剩余 %d 件  ·  可双向存取",
+      "desc": "Lua/UI/Panel/LootCtr.lua:60"
+    },
+    {
+      "id": "UILootSearchStatusText2",
+      "txt": "剩余 %d 件  ·  %d 件等待揭示  ·  滚轮浏览",
+      "desc": "Lua/UI/Panel/LootCtr.lua:60"
+    },
+    {
+      "id": "UILootItemDetailText",
+      "txt": "选择已搜索的物品查看属性。\n\n拖入左侧背包即可领取。",
+      "desc": "Lua/UI/Panel/LootCtr.lua:70"
+    },
+    {
+      "id": "UILootItemNameText",
+      "txt": "选择物品查看详情",
+      "desc": "Lua/UI/Panel/LootCtr.lua:69"
+    },
+    {
+      "id": "UILootReason",
+      "txt": "已整理背包",
+      "desc": "Lua/UI/Panel/LootCtr.lua:88"
+    },
+    {
+      "id": "UILootReason2",
+      "txt": "已收入背包：%s",
+      "desc": "Lua/UI/Panel/LootCtr.lua:85；%s1=reason"
+    },
+    {
+      "id": "UIMainHudRestartTextText",
+      "txt": "营地",
+      "desc": "Lua/UI/Panel/MainHudCtr.lua:37"
+    },
+    {
+      "id": "UIMainHudGrowthTextText",
+      "txt": "角色养成",
+      "desc": "Lua/UI/Panel/MainHudCtr.lua:22"
+    },
+    {
+      "id": "UIMainHudSkillHintText",
+      "txt": "生活技能 · 悬停查看说明",
+      "desc": "Lua/UI/Panel/MainHudCtr.lua:140"
+    },
+    {
+      "id": "UIMainHudSkillHintText2",
+      "txt": "点击场景中的目标释放技能 · Esc 取消",
+      "desc": "Lua/UI/Panel/MainHudCtr.lua:140"
+    },
+    {
+      "id": "UIMainHudSkillEmptyText",
+      "txt": "点击左侧队员卡片进行选择",
+      "desc": "Lua/UI/Panel/MainHudCtr.lua:137"
+    },
+    {
+      "id": "UIMainHudSkillEmptyText2",
+      "txt": "尚未掌握生活技能，可在升级研习时学习。",
+      "desc": "Lua/UI/Panel/MainHudCtr.lua:137"
+    },
+    {
+      "id": "UIMainHudSkillActorText",
+      "txt": "选择一位队员，查看拥有的技能",
+      "desc": "Lua/UI/Panel/MainHudCtr.lua:136"
+    },
+    {
+      "id": "UIMainHudSkillActorText2",
+      "txt": "%s · 技能",
+      "desc": "Lua/UI/Panel/MainHudCtr.lua:136；%s1=self.adventure.battle.stats:Template(actor).name"
+    },
+    {
+      "id": "UIMainHudNavigationTitleText",
+      "txt": "附 近 与 目 的 地",
+      "desc": "Lua/UI/Panel/MainHudCtr.lua:86"
+    },
+    {
+      "id": "UIMainHudNavigationTitleText2",
+      "txt": "这 一 程，去 哪 里",
+      "desc": "Lua/UI/Panel/MainHudCtr.lua:86"
+    },
+    {
+      "id": "UIMainHudCoinsText",
+      "txt": "%s  金币",
+      "desc": "Lua/UI/Panel/MainHudCtr.lua:85；%s1=model.coins"
+    },
+    {
+      "id": "UIMainHudTimeSpeedTextText",
+      "txt": "速度 %s×",
+      "desc": "Lua/UI/Panel/MainHudCtr.lua:81；%s1=model.timeControl.speed"
+    },
+    {
+      "id": "UIMainHudClockDayText",
+      "txt": "第 %s 天",
+      "desc": "Lua/UI/Panel/MainHudCtr.lua:156；%s1=minutes//1440+1"
+    },
+    {
+      "id": "UIMissionJournalCategories",
+      "txt": "招募",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:5"
+    },
+    {
+      "id": "UIMissionJournalCategories2",
+      "txt": "支线",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:5"
+    },
+    {
+      "id": "UIMissionJournalCategories3",
+      "txt": "主线",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:5"
+    },
+    {
+      "id": "UIMissionJournalCategories4",
+      "txt": "基础",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:5"
+    },
+    {
+      "id": "UIMissionJournalCategories5",
+      "txt": "城镇委托",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:5"
+    },
+    {
+      "id": "UIMissionJournalFailed",
+      "txt": "已失败",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:6"
+    },
+    {
+      "id": "UIMissionJournalCompleted",
+      "txt": "已完成",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:6"
+    },
+    {
+      "id": "UIMissionJournalReady",
+      "txt": "待交付",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:6"
+    },
+    {
+      "id": "UIMissionJournalActive",
+      "txt": "进行中",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:6"
+    },
+    {
+      "id": "UIMissionJournalInactive",
+      "txt": "可接取",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:6"
+    },
+    {
+      "id": "UIMissionJournalDescriptionDefaultText",
+      "txt": "此分类下还没有可接取或已接取的任务。",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:95"
+    },
+    {
+      "id": "UIMissionJournalDetailTitleDefaultText",
+      "txt": "暂无任务",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:95"
+    },
+    {
+      "id": "UIMissionJournalBody",
+      "txt": "尚未激活任务阶段。",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:93"
+    },
+    {
+      "id": "UIMissionJournalBody2",
+      "txt": "这段旅程已经完成。",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:93"
+    },
+    {
+      "id": "UIMissionJournalBody3",
+      "txt": "靠近商队正在交战的位置后加入。",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:81"
+    },
+    {
+      "id": "UIMissionJournalTitle",
+      "txt": "加入战斗，保护商队",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:81"
+    },
+    {
+      "id": "UIMissionJournalBody4",
+      "txt": "返回大地图后沿可行道路追上商队；到达附近再选择随行或参战。",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:76"
+    },
+    {
+      "id": "UIMissionJournalTitle2",
+      "txt": "赶往护送商队",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:76"
+    },
+    {
+      "id": "UIMissionJournalBody5",
+      "txt": "在大地图靠近商队后随行，遇袭时一同作战。",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:74"
+    },
+    {
+      "id": "UIMissionJournalBody6",
+      "txt": "小队正与商队一起移动，遇袭会进入战斗。",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:74"
+    },
+    {
+      "id": "UIMissionJournalBody7",
+      "txt": "商队在城外等待；出城后可随行。",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:74"
+    },
+    {
+      "id": "UIMissionJournalTitle3",
+      "txt": "随商队同行",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:73"
+    },
+    {
+      "id": "UIMissionJournalTitle4",
+      "txt": "离开商队，独立行动",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:73"
+    },
+    {
+      "id": "UIMissionJournalTitle5",
+      "txt": "领取任务奖励",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:63"
+    },
+    {
+      "id": "UIMissionJournalTitle6",
+      "txt": "交付委托并领取报酬",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:63"
+    },
+    {
+      "id": "UIMissionJournalTitle7",
+      "txt": "接取任务",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:63"
+    },
+    {
+      "id": "UIMissionJournalBody8",
+      "txt": "%s\n好感 %s · %s声望 %s\n%s · %s",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:54；%s1=Rich.Escape(npc.description)，%s2=story.data:GetValue('relation:'..npc.id)，%s3=Rich.Escape(story.rules.factions:Get(npc.factionId).name)，%s4=story.data:GetValue('reputation:'..npc.factionId)，%s5=Rich.Escape(location)，%s6=Rich.Escape(activity)"
+    },
+    {
+      "id": "UIMissionJournalTitle8",
+      "txt": " · 已入队",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:54"
+    },
+    {
+      "id": "UIMissionJournalActivity",
+      "txt": "传奇路遇 · 接近后交谈",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:52"
+    },
+    {
+      "id": "UIMissionJournalLocation",
+      "txt": "本地图没有该 NPC 的出生地点",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:51"
+    },
+    {
+      "id": "UIMissionJournalLocation2",
+      "txt": "大地图游荡",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:51"
+    },
+    {
+      "id": "UIMissionJournalDescriptionDefaultText2",
+      "txt": "关系、所属阵营与当前日程",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:48"
+    },
+    {
+      "id": "UIMissionJournalDetailTitleDefaultText2",
+      "txt": "同行者与城镇居民",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:48"
+    },
+    {
+      "id": "UIMissionJournalCompanionsTextText",
+      "txt": "同行者",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:31"
+    },
+    {
+      "id": "UIMissionJournalCompanionsTextText2",
+      "txt": "返回任务",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:31"
+    },
+    {
+      "id": "UIMissionJournalCaptionText",
+      "txt": "第 %d 天 · %02d:%02d",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:27"
+    },
+    {
+      "id": "UIMissionJournalTitleText",
+      "txt": "任务手记",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:25"
+    },
+    {
+      "id": "UIMissionJournalTitleText2",
+      "txt": "居民委托",
+      "desc": "Lua/UI/Panel/MissionJournalCtr.lua:25"
+    },
+    {
+      "id": "UIShopHintText",
+      "txt": "商品直接收入共享背包；售罄后需等待补货。",
+      "desc": "Lua/UI/Panel/ShopCtr.lua:30"
+    },
+    {
+      "id": "UIShopBody",
+      "txt": "点击购买 1 件",
+      "desc": "Lua/UI/Panel/ShopCtr.lua:24"
+    },
+    {
+      "id": "UIShopBody2",
+      "txt": "%d 金币 / 件  ·  剩余 %d  ·  占格 %d × %d\n%s",
+      "desc": "Lua/UI/Panel/ShopCtr.lua:23"
+    },
+    {
+      "id": "UIShopBody3",
+      "txt": "商人正在等待补货，请下次再来。",
+      "desc": "Lua/UI/Panel/ShopCtr.lua:23"
+    },
+    {
+      "id": "UIShopName",
+      "txt": "本期没有商品",
+      "desc": "Lua/UI/Panel/ShopCtr.lua:19"
+    },
+    {
+      "id": "UIShopCaptionText",
+      "txt": "%s  |  持有 %d 金币  |  下次补货：第 %d 天",
+      "desc": "Lua/UI/Panel/ShopCtr.lua:17"
+    },
+    {
+      "id": "UIShopTitleText",
+      "txt": "%s · 商品",
+      "desc": "Lua/UI/Panel/ShopCtr.lua:16；%s1=snapshot.name"
+    },
+    {
+      "id": "UISkillAtlasCloseTextText",
+      "txt": "关闭  Esc",
+      "desc": "Lua/UI/Panel/SkillAtlasCtr.lua:35"
+    },
+    {
+      "id": "UISkillAtlasCloseTextText2",
+      "txt": "返回角色手记",
+      "desc": "Lua/UI/Panel/SkillAtlasCtr.lua:35"
+    },
+    {
+      "id": "UISkillAtlasText",
+      "txt": "%s 项技艺",
+      "desc": "Lua/UI/Panel/SkillAtlasCtr.lua:63；%s1=#self.atlas:Nodes(row.id)"
+    },
+    {
+      "id": "UISkillAtlasLabel",
+      "txt": "关联 · %s",
+      "desc": "Lua/UI/Panel/SkillAtlasCtr.lua:90；%s1=self.atlas.categories:Get(row.categoryId).name"
+    },
+    {
+      "id": "UISkillAtlasTreeTitleText",
+      "txt": "%s / %s · 图鉴",
+      "desc": "Lua/UI/Panel/SkillAtlasCtr.lua:77；%s1=self.atlas.disciplines:Get(category.disciplineId).name，%s2=category.name"
+    },
+    {
+      "id": "UISkillAtlasPrerequisiteTitleText",
+      "txt": "前置：任意掌握",
+      "desc": "Lua/UI/Panel/SkillAtlasCtr.lua:108"
+    },
+    {
+      "id": "UISkillAtlasPrerequisiteTitleText2",
+      "txt": "前置：全部掌握",
+      "desc": "Lua/UI/Panel/SkillAtlasCtr.lua:108"
+    },
+    {
+      "id": "UISkillAtlasPrerequisiteTitleText3",
+      "txt": "无前置技能",
+      "desc": "Lua/UI/Panel/SkillAtlasCtr.lua:108"
+    },
+    {
+      "id": "UISkillAtlasSearchSummaryText",
+      "txt": "%s 项匹配结果",
+      "desc": "Lua/UI/Panel/SkillAtlasCtr.lua:125；%s1=#rows"
+    },
+    {
+      "id": "UIStartMenuHintText",
+      "txt": "请输入 0–4294967295 的整数种子，或点击“随机种子”。",
+      "desc": "Lua/UI/Panel/StartMenuCtr.lua:37"
+    },
+    {
+      "id": "UIStartMenuCaptionText",
+      "txt": "保存时间为本地时间；载入成功后，F5 更新所选存档。",
+      "desc": "Lua/UI/Panel/StartMenuCtr.lua:55"
+    },
+    {
+      "id": "UIStartMenuTitleText",
+      "txt": "选择存档",
+      "desc": "Lua/UI/Panel/StartMenuCtr.lua:55"
+    },
+    {
+      "id": "UIStartMenuCaptionText2",
+      "txt": "新世界使用独立存档，不覆盖其他旅程。",
+      "desc": "Lua/UI/Panel/StartMenuCtr.lua:51"
+    },
+    {
+      "id": "UIStartMenuTitleText2",
+      "txt": "创建新世界",
+      "desc": "Lua/UI/Panel/StartMenuCtr.lua:51"
+    },
+    {
+      "id": "UIStartMenuCaptionText3",
+      "txt": "开始新的旅程，或继续已经保存的世界。",
+      "desc": "Lua/UI/Panel/StartMenuCtr.lua:49"
+    },
+    {
+      "id": "UIStartMenuTitleText3",
+      "txt": "远征",
+      "desc": "Lua/UI/Panel/StartMenuCtr.lua:49"
+    },
+    {
+      "id": "UIStartMenuBody",
+      "txt": "种子 %s  ·  %s\n%s",
+      "desc": "Lua/UI/Panel/StartMenuCtr.lua:78；%s1=tostring(saved.Seed)，%s2=size，%s3=saved.PartySummary"
+    },
+    {
+      "id": "UIStartMenuSize",
+      "txt": "旧档未记录世界",
+      "desc": "Lua/UI/Panel/StartMenuCtr.lua:77"
+    },
+    {
+      "id": "UIStartMenuSize2",
+      "txt": "按原配方规模",
+      "desc": "Lua/UI/Panel/StartMenuCtr.lua:77"
+    },
+    {
+      "id": "UIStartMenuSize3",
+      "txt": "%s 格",
+      "desc": "Lua/UI/Panel/StartMenuCtr.lua:77；%s1=saved.TargetCells"
+    },
+    {
+      "id": "UIStartMenuTitle",
+      "txt": "远征 · ",
+      "desc": "Lua/UI/Panel/StartMenuCtr.lua:76"
+    },
+    {
+      "id": "UIStartMenuTitle2",
+      "txt": "旧版存档 · ",
+      "desc": "Lua/UI/Panel/StartMenuCtr.lua:76"
+    },
+    {
+      "id": "UIStartMenuEmptyText",
+      "txt": "还没有存档\n从“开始游戏”创建第一段旅程",
+      "desc": "Lua/UI/Panel/StartMenuCtr.lua:71"
+    },
+    {
+      "id": "UIStartMenuEmptyText2",
+      "txt": "无法读取存档列表",
+      "desc": "Lua/UI/Panel/StartMenuCtr.lua:67"
+    },
+    {
+      "id": "UIStoryEventRewardsRewards1",
+      "txt": "可能唤醒潜力",
+      "desc": "Lua/UI/Panel/StoryEventCtr.lua:31"
+    },
+    {
+      "id": "UIStoryEventRewardsRewards12",
+      "txt": "开启新的天赋道路",
+      "desc": "Lua/UI/Panel/StoryEventCtr.lua:30"
+    },
+    {
+      "id": "UIStoryEventRewardsRewards13",
+      "txt": "经验 +%s",
+      "desc": "Lua/UI/Panel/StoryEventCtr.lua:29；%s1=row.experience"
+    },
+    {
+      "id": "UIStoryEventRewardsRewards14",
+      "txt": "用时 %s 分钟",
+      "desc": "Lua/UI/Panel/StoryEventCtr.lua:26；%s1=row.timeMinutes"
+    },
+    {
+      "id": "UIStoryEventRewardsRewards15",
+      "txt": "消耗 %s 金币",
+      "desc": "Lua/UI/Panel/StoryEventCtr.lua:25；%s1=row.costCoins"
+    },
+    {
+      "id": "UIStoryEventContinueTextText",
+      "txt": "返回旅途",
+      "desc": "Lua/UI/Panel/StoryEventCtr.lua:19"
+    },
+    {
+      "id": "UIStoryEventContinueTextText2",
+      "txt": "继续探索",
+      "desc": "Lua/UI/Panel/StoryEventCtr.lua:19"
+    },
+    {
+      "id": "UIWorldPartyHintText",
+      "txt": "关闭后时间保持暂停；按空格继续，1 / 2 / 3 调整流速。",
+      "desc": "Lua/UI/Panel/WorldPartyCtr.lua:25"
+    },
+    {
+      "id": "UIWorldPartyCaptionText",
+      "txt": "%s  |  持有 %s 金币",
+      "desc": "Lua/UI/Panel/WorldPartyCtr.lua:17；%s1=snapshot.caption，%s2=snapshot.coins"
+    },
+    {
+      "id": "UISkillTipPresenterBreadcrumb",
+      "txt": "术语释义 · 第 %s 层",
+      "desc": "Lua/UI/SkillTipPresenter.lua:32；%s1=#self.stack"
+    },
+    {
+      "id": "UIBattleHUDContentHintText",
+      "txt": "可分段移动，剩余 %s 距离；技能释放后结束移动。",
+      "desc": "Lua/UI/Widget/BattleHUDContent.lua:94；%s1=model.moveRemaining"
+    },
+    {
+      "id": "UIBattleHUDContentHintText2",
+      "txt": "部署：可先移动，也可直接准备；使用技能或道具后跳过剩余移动。",
+      "desc": "Lua/UI/Widget/BattleHUDContent.lua:93"
+    },
+    {
+      "id": "UIBattleHUDContentHintText3",
+      "txt": "移动阶段已结束；选择可用技能、道具或结束回合。",
+      "desc": "Lua/UI/Widget/BattleHUDContent.lua:92"
+    },
+    {
+      "id": "UIBattleHUDContentMoveTextText",
+      "txt": "%s%s · 余 %s",
+      "desc": "Lua/UI/Widget/BattleHUDContent.lua:79；%s1=self.demo.IsBattleMoveSelected and '• ' or ''，%s2=L.BattleMove，%s3=model.moveRemaining"
+    },
+    {
+      "id": "UIBattleHUDContentMoveTextText2",
+      "txt": "移动已结束",
+      "desc": "Lua/UI/Widget/BattleHUDContent.lua:78"
+    },
+    {
+      "id": "UIBattleHUDContentMoveTextText3",
+      "txt": "取消选择 [Esc]",
+      "desc": "Lua/UI/Widget/BattleHUDContent.lua:78"
+    },
+    {
+      "id": "UIBattleHUDContentEndTurnTextText",
+      "txt": "结束部署",
+      "desc": "Lua/UI/Widget/BattleHUDContent.lua:76"
+    },
+    {
+      "id": "UIBattleHUDContentEndTurnTextText2",
+      "txt": "确认释放 %s/%s",
+      "desc": "Lua/UI/Widget/BattleHUDContent.lua:75；%s1=selection.Count(self.demo)，%s2=selection.Limit(self.demo)"
+    },
+    {
+      "id": "UIBattleHUDContentSkillTitleText",
+      "txt": "职业准备技能",
+      "desc": "Lua/UI/Widget/BattleHUDContent.lua:73"
+    },
+    {
+      "id": "UIBattleHUDContentRoundText",
+      "txt": "战前部署",
+      "desc": "Lua/UI/Widget/BattleHUDContent.lua:72"
+    },
+    {
+      "id": "UICharacterSkillStateText",
+      "txt": "暂不可用",
+      "desc": "Lua/UI/Widget/CharacterSkill.lua:12"
+    },
+    {
+      "id": "UICharacterSkillStateText2",
+      "txt": "点击使用",
+      "desc": "Lua/UI/Widget/CharacterSkill.lua:12"
+    },
+    {
+      "id": "UICharacterSkillStateText3",
+      "txt": "请选择目标",
+      "desc": "Lua/UI/Widget/CharacterSkill.lua:12"
+    },
+    {
+      "id": "UIHudHealthHealthTextText",
+      "txt": "骑%s/%s 人%s/%s",
+      "desc": "Lua/UI/Widget/HudHealth.lua:18；%s1=row.hp，%s2=row.maxHP，%s3=row.riderHP，%s4=row.riderMaxHP"
+    },
+    {
+      "id": "UISkillTipAny",
+      "txt": "任意角色",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:3"
+    },
+    {
+      "id": "UISkillTipCell",
+      "txt": "地格",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:3"
+    },
+    {
+      "id": "UISkillTipSelf",
+      "txt": "自身",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:3"
+    },
+    {
+      "id": "UISkillTipAlly",
+      "txt": "友方角色",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:3"
+    },
+    {
+      "id": "UISkillTipEnemy",
+      "txt": "敌方角色",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:3"
+    },
+    {
+      "id": "UISkillTipBreadcrumb",
+      "txt": "技能详情  ·  协同效应已发现 %s / %s",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:48；%s1=discovered，%s2=#result.synergies"
+    },
+    {
+      "id": "UISkillTipBody",
+      "txt": "%s\n\n<color=#A6B8BB>点击道具立即对自己使用。</color>",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:41；%s1=result.body"
+    },
+    {
+      "id": "UISkillTipBody2",
+      "txt": "%s\n<color=#A6B8BB>选择 1–%s 个不同目标后确认释放。</color>",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:38；%s1=result.body，%s2=skill.maxTargets"
+    },
+    {
+      "id": "UISkillTipBody3",
+      "txt": "%s\n\n<color=#A6B8BB>相关规则</color>  %s",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:37；%s1=result.body，%s2=self.catalog:Rich(table.concat(mechanics,'  ·  '))"
+    },
+    {
+      "id": "UISkillTipMechanicsMechanics1",
+      "txt": "转施",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:36"
+    },
+    {
+      "id": "UISkillTipMechanicsMechanics12",
+      "txt": "抛射",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:35"
+    },
+    {
+      "id": "UISkillTipMechanicsMechanics13",
+      "txt": "直射",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:35"
+    },
+    {
+      "id": "UISkillTipMechanicsMechanics14",
+      "txt": "追踪",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:34"
+    },
+    {
+      "id": "UISkillTipMechanicsMechanics15",
+      "txt": "高打低",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:33"
+    },
+    {
+      "id": "UISkillTipText",
+      "txt": "扩散半径",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:31"
+    },
+    {
+      "id": "UISkillTipText2",
+      "txt": "%s 发",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:30；%s1=skill.shots*skill.ammoPerShot"
+    },
+    {
+      "id": "UISkillTipText3",
+      "txt": "弹药消耗",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:30"
+    },
+    {
+      "id": "UISkillTipText4",
+      "txt": "%s 次",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:29；%s1=skill.shots"
+    },
+    {
+      "id": "UISkillTipText5",
+      "txt": "连续次数",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:29"
+    },
+    {
+      "id": "UISkillTipText6",
+      "txt": "%s 个",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:28；%s1=skill.maxTargets"
+    },
+    {
+      "id": "UISkillTipText7",
+      "txt": "目标上限",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:28"
+    },
+    {
+      "id": "UISkillTipText8",
+      "txt": "  ·  剩余 %s",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:27；%s1=row.cooldown"
+    },
+    {
+      "id": "UISkillTipText9",
+      "txt": "%s 回合%s",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:27；%s1=skill.cooldownTurns，%s2=row.cooldown>0 and (string.format(LuaLanguage.UISkillTipText8, (row.cooldown))) or ''"
+    },
+    {
+      "id": "UISkillTipText10",
+      "txt": "冷却",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:27"
+    },
+    {
+      "id": "UISkillTipText11",
+      "txt": "技能命中",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:26"
+    },
+    {
+      "id": "UISkillTipText12",
+      "txt": "伤害倍率",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:25"
+    },
+    {
+      "id": "UISkillTipText13",
+      "txt": "目标",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:22"
+    },
+    {
+      "id": "UISkillTipText14",
+      "txt": "固定距离",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:21"
+    },
+    {
+      "id": "UISkillTipText15",
+      "txt": "射程规则",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:21"
+    },
+    {
+      "id": "UISkillTipText16",
+      "txt": "最小距离",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:20"
+    },
+    {
+      "id": "UISkillTipText17",
+      "txt": "射程",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:19"
+    },
+    {
+      "id": "UISkillTipText18",
+      "txt": "行动类型",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:18"
+    },
+    {
+      "id": "UISkillTipText19",
+      "txt": "行动点",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:17"
+    },
+    {
+      "id": "UISkillTipBreadcrumb2",
+      "txt": "技能详情",
+      "desc": "Lua/Game/Presentation/SkillTipModel.lua:13"
+    },
+    {
+      "id": "UIMainHudBody",
+      "txt": "选择要继续的远征存档；显示保存时间、种子与队伍摘要",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:102"
+    },
+    {
+      "id": "UIMainHudTitle",
+      "txt": "加载游戏",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:102"
+    },
+    {
+      "id": "UIMainHudBody2",
+      "txt": "%s · 保存探索、敌群、战利品和剧情",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:101；%s1=adventure.characterSaves.Status"
+    },
+    {
+      "id": "UIMainHudTitle2",
+      "txt": "保存远征 [F5]",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:101"
+    },
+    {
+      "id": "UIMainHudBody3",
+      "txt": "携带火炬可照亮小队周围；亮度只在局部探索生效",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:100"
+    },
+    {
+      "id": "UIMainHudBody4",
+      "txt": "查询技能效果与前置；学习与加点请打开角色养成",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:98"
+    },
+    {
+      "id": "UIMainHudTitle3",
+      "txt": "技能图鉴 · 浏览",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:98"
+    },
+    {
+      "id": "UIMainHudBody5",
+      "txt": "创建新世界：输入或随机种子，选择世界大小；已有存档保留",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:96"
+    },
+    {
+      "id": "UIMainHudTitle4",
+      "txt": "开始菜单",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:96"
+    },
+    {
+      "id": "UIMainHudCaption",
+      "txt": "继续探索  [Esc]",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:76"
+    },
+    {
+      "id": "UIMainHudBody6",
+      "txt": "到达服务点附近后按 E",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:70"
+    },
+    {
+      "id": "UIMainHudTitle5",
+      "txt": "前往 · %s",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:70；%s1=site.name"
+    },
+    {
+      "id": "UIMainHudBody7",
+      "txt": "走近后选择工具或徒手处理",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:67"
+    },
+    {
+      "id": "UIMainHudTitle6",
+      "txt": "处理 · %s",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:67；%s1=obstacle.name"
+    },
+    {
+      "id": "UIMainHudBody8",
+      "txt": "耐久 %s/%s · 选择伤害技能攻击；锁定容器须先清除守卫",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:63；%s1=loot.durability，%s2=loot.maxDurability"
+    },
+    {
+      "id": "UIMainHudBody9",
+      "txt": "靠近后整理容器、存入或取出物品",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:63"
+    },
+    {
+      "id": "UIMainHudTitle7",
+      "txt": "容器 · ",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:62"
+    },
+    {
+      "id": "UIMainHudTitle8",
+      "txt": "搜刮 · ",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:62"
+    },
+    {
+      "id": "UIMainHudTitle9",
+      "txt": "存放 · ",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:62"
+    },
+    {
+      "id": "UIMainHudBody10",
+      "txt": "从全图视角回到同行者身边",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:60"
+    },
+    {
+      "id": "UIMainHudTitle10",
+      "txt": "定位小队并跟随",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:60"
+    },
+    {
+      "id": "UIMainHudTitle11",
+      "txt": "最近结果",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:59"
+    },
+    {
+      "id": "UIMainHudSubtitle",
+      "txt": "左键走格子 · E 交互 · 空格停止",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:57"
+    },
+    {
+      "id": "UIMainHudBody11",
+      "txt": "旅途中的抉择",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:50"
+    },
+    {
+      "id": "UIMainHudBody12",
+      "txt": "服务台按 E 交互",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:50"
+    },
+    {
+      "id": "UIMainHudBody13",
+      "txt": "装备、材料与守卫宝库",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:50"
+    },
+    {
+      "id": "UIMainHudBody14",
+      "txt": "野生动物 · 驯服坐骑 · 哥布林",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:50"
+    },
+    {
+      "id": "UIMainHudBody15",
+      "txt": "重返战场 · 领取遗留战利品",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:50"
+    },
+    {
+      "id": "UIMainHudBody16",
+      "txt": "数字键 %s · 同步调整行进与游戏时间",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:36；%s1=key"
+    },
+    {
+      "id": "UIMainHudTitle12",
+      "txt": "%s%s 倍时间",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:36；%s1=travel.speed==speed and '● ' or ''，%s2=speed"
+    },
+    {
+      "id": "UIMainHudBody17",
+      "txt": "空格切换 · 同时控制小队、商队与敌人",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:35"
+    },
+    {
+      "id": "UIMainHudTitle13",
+      "txt": "Ⅱ 暂停时间",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:35"
+    },
+    {
+      "id": "UIMainHudTitle14",
+      "txt": "▶ 继续时间",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:35"
+    },
+    {
+      "id": "UIMainHudBody18",
+      "txt": "小队原地待命 · 时间继续流逝",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:33"
+    },
+    {
+      "id": "UIMainHudBody19",
+      "txt": "时间已暂停",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:33"
+    },
+    {
+      "id": "UIMainHudBody20",
+      "txt": "行进中",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:32"
+    },
+    {
+      "id": "UIMainHudBody21",
+      "txt": "已暂停",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:32"
+    },
+    {
+      "id": "UIMainHudBody22",
+      "txt": "%s · %s · 预计 %.0f 分钟",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:32"
+    },
+    {
+      "id": "UIMainHudTitle15",
+      "txt": "小队待命",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:31"
+    },
+    {
+      "id": "UIMainHudSubtitle2",
+      "txt": "种子 %s · 左键前往 · 空格暂停/继续 · 1 / 2 / 3 调速",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:30；%s1=data.Seed"
+    },
+    {
+      "id": "UIMainHudTitle16",
+      "txt": "边境远征 · 大地图",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:30"
+    },
+    {
+      "id": "UIMainHudEffectBody",
+      "txt": "坐骑：%s\n%s",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:12；%s1=stats:Template(mount).name，%s2=effect.body"
+    },
+    {
+      "id": "UIMainHudEffectName",
+      "txt": "%s · 坐骑",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:12；%s1=effect.name"
+    },
+    {
+      "id": "UIMainHudSubtitle3",
+      "txt": "选择目的地，开始这一程。",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:5"
+    },
+    {
+      "id": "UIMainHudTitle17",
+      "txt": "边境远征",
+      "desc": "Lua/Game/Adventure/MainHudModel.lua:5"
+    },
+    {
+      "id": "UIInteractionPromptText",
+      "txt": "处理",
+      "desc": "Lua/Game/Adventure/InteractionPrompt.lua:35"
+    },
+    {
+      "id": "UIInteractionPromptText2",
+      "txt": "搜刮",
+      "desc": "Lua/Game/Adventure/InteractionPrompt.lua:31"
+    },
+    {
+      "id": "UIInteractionPromptText3",
+      "txt": "存放",
+      "desc": "Lua/Game/Adventure/InteractionPrompt.lua:31"
+    },
+    {
+      "id": "UIInteractionPromptText4",
+      "txt": "交谈",
+      "desc": "Lua/Game/Adventure/InteractionPrompt.lua:27"
+    },
+    {
+      "id": "UIInteractionPromptText5",
+      "txt": "交易",
+      "desc": "Lua/Game/Adventure/InteractionPrompt.lua:27"
+    },
+    {
+      "id": "UIInteractionPromptText6",
+      "txt": "交互",
+      "desc": "Lua/Game/Adventure/InteractionPrompt.lua:21"
+    },
+    {
+      "id": "UIInteractionPromptBody",
+      "txt": "靠近目标后按 E",
+      "desc": "Lua/Game/Adventure/InteractionPrompt.lua:16"
+    },
+    {
+      "id": "UIInteractionPromptText7",
+      "txt": "附近没有可交互的目标",
+      "desc": "Lua/Game/Adventure/InteractionPrompt.lua:42"
+    },
+    {
+      "id": "UIBattleHUDAmmo",
+      "txt": "未装弹匣",
+      "desc": "Lua/Game/Battle/BattleHUDModel.lua:22"
+    },
+    {
+      "id": "UIBattleHUDAmmo2",
+      "txt": "弹匣 %s/%s",
+      "desc": "Lua/Game/Battle/BattleHUDModel.lua:22；%s1=magazine.Rounds，%s2=magazine.Capacity"
+    },
+    {
+      "id": "UIInventoryOffhand",
+      "txt": "副手",
+      "desc": "Lua/Game/Equipment/InventoryModel.lua:5"
+    },
+    {
+      "id": "UIInventoryWeapon",
+      "txt": "主手",
+      "desc": "Lua/Game/Equipment/InventoryModel.lua:5"
+    },
+    {
+      "id": "UIInventoryFeet",
+      "txt": "鞋子",
+      "desc": "Lua/Game/Equipment/InventoryModel.lua:5"
+    },
+    {
+      "id": "UIInventoryLegs",
+      "txt": "裤子",
+      "desc": "Lua/Game/Equipment/InventoryModel.lua:5"
+    },
+    {
+      "id": "UIInventoryRightRing",
+      "txt": "右戒指",
+      "desc": "Lua/Game/Equipment/InventoryModel.lua:5"
+    },
+    {
+      "id": "UIInventoryLeftRing",
+      "txt": "左戒指",
+      "desc": "Lua/Game/Equipment/InventoryModel.lua:5"
+    },
+    {
+      "id": "UIInventoryBody",
+      "txt": "身体甲",
+      "desc": "Lua/Game/Equipment/InventoryModel.lua:5"
+    },
+    {
+      "id": "UIInventoryHead",
+      "txt": "头部",
+      "desc": "Lua/Game/Equipment/InventoryModel.lua:5"
+    },
+    {
+      "id": "UIInventoryText",
+      "txt": "拖到空格另放一堆，拖到同类物品上合并",
+      "desc": "Lua/Game/Equipment/InventoryModel.lua:43"
+    },
+    {
+      "id": "UIInventoryText2",
+      "txt": "弹药 %d / %d",
+      "desc": "Lua/Game/Equipment/InventoryModel.lua:39"
+    },
+    {
+      "id": "UIInventoryText3",
+      "txt": "双手武器 · 需要空副手",
+      "desc": "Lua/Game/Equipment/InventoryModel.lua:36"
+    },
+    {
+      "id": "UIInventoryText4",
+      "txt": "单手武器 · 可装备主手或副手",
+      "desc": "Lua/Game/Equipment/InventoryModel.lua:36"
+    },
+    {
+      "id": "UIInventoryText5",
+      "txt": "背包空间不足，无法放回原装备",
+      "desc": "Lua/Game/Equipment/InventoryModel.lua:80"
+    },
+    {
+      "id": "UIInventoryText6",
+      "txt": "物品与装备槽不兼容",
+      "desc": "Lua/Game/Equipment/InventoryModel.lua:77"
+    },
+    {
+      "id": "UIInventoryText7",
+      "txt": "无效装备槽",
+      "desc": "Lua/Game/Equipment/InventoryModel.lua:70"
+    },
+    {
+      "id": "UIInventoryText8",
+      "txt": "背包空间不足，无法卸下装备",
+      "desc": "Lua/Game/Equipment/InventoryModel.lua:67"
+    },
+    {
+      "id": "UIInventoryText9",
+      "txt": "物品尚未穿戴",
+      "desc": "Lua/Game/Equipment/InventoryModel.lua:65"
+    },
+    {
+      "id": "UIInventoryText10",
+      "txt": "位置被占用或超出背包范围",
+      "desc": "Lua/Game/Equipment/InventoryModel.lua:62"
+    },
+    {
+      "id": "UIInventoryText11",
+      "txt": "物品不在当前背包或角色身上",
+      "desc": "Lua/Game/Equipment/InventoryModel.lua:55"
+    },
+    {
+      "id": "UIInventoryText12",
+      "txt": "无效队员",
+      "desc": "Lua/Game/Equipment/InventoryModel.lua:52"
+    },
+    {
+      "id": "UIInventoryText13",
+      "txt": "只能在探索期间整理背包",
+      "desc": "Lua/Game/Equipment/InventoryModel.lua:51"
+    },
+    {
+      "id": "UIEquipmentPresentationLinesLines1",
+      "txt": "无额外属性修正",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:24"
+    },
+    {
+      "id": "UIEquipmentPresentationLinesLines12",
+      "txt": " 个百分点",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:22"
+    },
+    {
+      "id": "UIEquipmentPresentationLinesLines13",
+      "txt": "命中",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:22"
+    },
+    {
+      "id": "UIEquipmentPresentationLinesLines14",
+      "txt": "伤害",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:21"
+    },
+    {
+      "id": "UIEquipmentPresentationLines",
+      "txt": "品质效果",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:20"
+    },
+    {
+      "id": "UIEquipmentPresentationLinesLines15",
+      "txt": "已损毁 · 维修后可用",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:33"
+    },
+    {
+      "id": "UIEquipmentPresentationLinesLines16",
+      "txt": "原始耐久上限 %s · 已有永久损伤",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:32；%s1=condition.BaseMaximum"
+    },
+    {
+      "id": "UIEquipmentPresentationLinesLines17",
+      "txt": "效能 %d%%",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:31"
+    },
+    {
+      "id": "UIEquipmentPresentationLines2",
+      "txt": "耐久",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:30"
+    },
+    {
+      "id": "UIEquipmentPresentationLines3",
+      "txt": "装备状态",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:30"
+    },
+    {
+      "id": "UIEquipmentPresentationLinesLines18",
+      "txt": "当前值 / 需求 · 不含装备加成",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:43"
+    },
+    {
+      "id": "UIEquipmentPresentationLinesLines19",
+      "txt": "已计入品质与当前耐久",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:65"
+    },
+    {
+      "id": "UIEquipmentPresentationLinesLines110",
+      "txt": "当前无有效属性加成",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:64"
+    },
+    {
+      "id": "UIEquipmentPresentationLines4",
+      "txt": "装备属性",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:54"
+    },
+    {
+      "id": "UIEquipmentPresentationRing",
+      "txt": "戒指",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:74"
+    },
+    {
+      "id": "UIEquipmentPresentationOffhand",
+      "txt": "盾牌",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:74"
+    },
+    {
+      "id": "UIEquipmentPresentationFeet",
+      "txt": "足部护具",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:74"
+    },
+    {
+      "id": "UIEquipmentPresentationLegs",
+      "txt": "腿部护具",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:74"
+    },
+    {
+      "id": "UIEquipmentPresentationBody",
+      "txt": "身体护甲",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:74"
+    },
+    {
+      "id": "UIEquipmentPresentationHead",
+      "txt": "头部护具",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:74"
+    },
+    {
+      "id": "UIEquipmentPresentationCategory",
+      "txt": "双手",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:72"
+    },
+    {
+      "id": "UIEquipmentPresentationCategory2",
+      "txt": "单手",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:72"
+    },
+    {
+      "id": "UIEquipmentPresentationLinesLines111",
+      "txt": "在武器改装界面选择对应挂点安装",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:101"
+    },
+    {
+      "id": "UIEquipmentPresentationLinesLines112",
+      "txt": "需要专精：%s",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:100；%s1=rules.passives:Get(rules.talents:Get(row.requiredTalentId).passiveId).name"
+    },
+    {
+      "id": "UIEquipmentPresentationLinesLines113",
+      "txt": "伤害命中后",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:97"
+    },
+    {
+      "id": "UIEquipmentPresentationTarget",
+      "txt": "自身：",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:96"
+    },
+    {
+      "id": "UIEquipmentPresentationLinesLines114",
+      "txt": "仅影响允许转施的自身法术；可选择自己、队友或敌人，保留原行动消耗。",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:91"
+    },
+    {
+      "id": "UIEquipmentPresentationLinesLines115",
+      "txt": "%s 格内任意角色",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:90；%s1=row.transferRange"
+    },
+    {
+      "id": "UIEquipmentPresentationLinesLines116",
+      "txt": "%s 格内 · 目标上限至少 %s 人",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:88；%s1=row.splashRadius，%s2=row.maxTargets"
+    },
+    {
+      "id": "UIEquipmentPresentationLinesLines117",
+      "txt": "扩散",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:88"
+    },
+    {
+      "id": "UIEquipmentPresentationLinesLines118",
+      "txt": "%+d 回合",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:87"
+    },
+    {
+      "id": "UIEquipmentPresentationLinesLines119",
+      "txt": " 格",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:85"
+    },
+    {
+      "id": "UIEquipmentPresentationLinesLines120",
+      "txt": "技能伤害",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:84"
+    },
+    {
+      "id": "UIEquipmentPresentationLines5",
+      "txt": "改装效果",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:83"
+    },
+    {
+      "id": "UIEquipmentPresentationStock",
+      "txt": "步枪 · 枪托组件",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:82"
+    },
+    {
+      "id": "UIEquipmentPresentationMuzzle",
+      "txt": "步枪 · 枪口组件",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:82"
+    },
+    {
+      "id": "UIEquipmentPresentationBowstring",
+      "txt": "弓 · 弓弦组件",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:82"
+    },
+    {
+      "id": "UIEquipmentPresentationBowlimb",
+      "txt": "弓 · 弓臂组件",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:82"
+    },
+    {
+      "id": "UIEquipmentPresentationPommel",
+      "txt": "近战武器 · 柄尾配重",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:82"
+    },
+    {
+      "id": "UIEquipmentPresentationGrip",
+      "txt": "近战武器 · 握柄组件",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:82"
+    },
+    {
+      "id": "UIEquipmentPresentationEdge",
+      "txt": "近战武器 · 刃部组件",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:81"
+    },
+    {
+      "id": "UIEquipmentPresentationRail",
+      "txt": "步枪/弓 · 导轨",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:81"
+    },
+    {
+      "id": "UIEquipmentPresentationCatalyst",
+      "txt": "单手剑 · 奥术触媒",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:81"
+    },
+    {
+      "id": "UIEquipmentPresentationThruster",
+      "txt": "巨剑 · 剑脊机械组件",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:81"
+    },
+    {
+      "id": "UIEquipmentPresentationShaft",
+      "txt": "法杖 · 杖身",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:81"
+    },
+    {
+      "id": "UIEquipmentPresentationHead2",
+      "txt": "法杖 · 杖头",
+      "desc": "Lua/Game/Equipment/EquipmentPresentation.lua:81"
+    },
+    {
+      "id": "UICampText",
+      "txt": "请先结束当前交互",
+      "desc": "Lua/Game/Camp/CampModel.lua:15"
+    },
+    {
+      "id": "UICampText2",
+      "txt": "请先结束队伍交互",
+      "desc": "Lua/Game/Camp/CampModel.lua:14"
+    },
+    {
+      "id": "UICampText3",
+      "txt": "请先返回地图营地",
+      "desc": "Lua/Game/Camp/CampModel.lua:13"
+    },
+    {
+      "id": "UICampText4",
+      "txt": "营地已经打开",
+      "desc": "Lua/Game/Camp/CampModel.lua:20"
+    },
+    {
+      "id": "UICampText5",
+      "txt": "营地状态已变化，请重新选择",
+      "desc": "Lua/Game/Camp/CampModel.lua:27"
+    },
+    {
+      "id": "UICampText6",
+      "txt": "请先打开营地",
+      "desc": "Lua/Game/Camp/CampModel.lua:26"
+    },
+    {
+      "id": "UICampText7",
+      "txt": "%s 升至 %s 级",
+      "desc": "Lua/Game/Camp/CampModel.lua:41；%s1=self.rules.facilities:Get(facilityId).name，%s2=upgrade.level"
+    },
+    {
+      "id": "UICampText8",
+      "txt": "营地建设",
+      "desc": "Lua/Game/Camp/CampModel.lua:41"
+    },
+    {
+      "id": "UICampText9",
+      "txt": "%s · %s 分钟后可领取",
+      "desc": "Lua/Game/Camp/CampModel.lua:52；%s1=row.name，%s2=row.minutes"
+    },
+    {
+      "id": "UICampText10",
+      "txt": "开始生产",
+      "desc": "Lua/Game/Camp/CampModel.lua:52"
+    },
+    {
+      "id": "UICampText11",
+      "txt": "领取营地产物",
+      "desc": "Lua/Game/Camp/CampModel.lua:62"
+    },
+    {
+      "id": "UICampText12",
+      "txt": "该设施没有待领取订单",
+      "desc": "Lua/Game/Camp/CampModel.lua:56"
+    },
+    {
+      "id": "UICampText13",
+      "txt": "营地仓库只接收材料、弹药、药品与组件",
+      "desc": "Lua/Game/Camp/CampModel.lua:66"
+    },
+    {
+      "id": "UICampText14",
+      "txt": "营地仓库只保存堆叠物品",
+      "desc": "Lua/Game/Camp/CampModel.lua:72"
+    },
+    {
+      "id": "UICampText15",
+      "txt": "推进营地生产、世界时钟与商人补货周期。等待不直接恢复伤势或发放物品。",
+      "desc": "Lua/Game/Camp/CampModel.lua:127"
+    },
+    {
+      "id": "UICampText16",
+      "txt": "等待 %s 小时",
+      "desc": "Lua/Game/Camp/CampModel.lua:127；%s1=duration//60"
+    },
+    {
+      "id": "UICampText17",
+      "txt": "探索、搜刮或向商人购买材料后，可在这里安全存放。",
+      "desc": "Lua/Game/Camp/CampModel.lua:125"
+    },
+    {
+      "id": "UICampText18",
+      "txt": "尚无可转移物资",
+      "desc": "Lua/Game/Camp/CampModel.lua:125"
+    },
+    {
+      "id": "UICampText19",
+      "txt": "\n背包空间不足，物品留在仓库",
+      "desc": "Lua/Game/Camp/CampModel.lua:122"
+    },
+    {
+      "id": "UICampText20",
+      "txt": "仓库 %s  |  背包 %s%s",
+      "desc": "Lua/Game/Camp/CampModel.lua:122；%s1=stored，%s2=bag，%s3=not fits and LuaLanguage.UICampText19 or ''"
+    },
+    {
+      "id": "UICampText21",
+      "txt": "取出 %s ×%s",
+      "desc": "Lua/Game/Camp/CampModel.lua:122；%s1=item.name，%s2=amount"
+    },
+    {
+      "id": "UICampText22",
+      "txt": "\n仓库已满，请先升级或取出",
+      "desc": "Lua/Game/Camp/CampModel.lua:118"
+    },
+    {
+      "id": "UICampText23",
+      "txt": "背包 %s  |  仓库 %s%s",
+      "desc": "Lua/Game/Camp/CampModel.lua:118；%s1=bag，%s2=stored，%s3=free==0 and LuaLanguage.UICampText22 or ''"
+    },
+    {
+      "id": "UICampText24",
+      "txt": "存入 %s ×%s",
+      "desc": "Lua/Game/Camp/CampModel.lua:118；%s1=item.name，%s2=amount"
+    },
+    {
+      "id": "UICampText25",
+      "txt": "材料先从仓库扣除，再从背包补足。每次转移最多 10 件，药品和组件每次 1 件。",
+      "desc": "Lua/Game/Camp/CampModel.lua:111"
+    },
+    {
+      "id": "UICampText26",
+      "txt": "营地仓库 · %s / %s",
+      "desc": "Lua/Game/Camp/CampModel.lua:111；%s1=data.StoredTotal，%s2=capacity"
+    },
+    {
+      "id": "UICampText27",
+      "txt": "点击安排生产 · 每个设施保留一个订单",
+      "desc": "Lua/Game/Camp/CampModel.lua:107"
+    },
+    {
+      "id": "UICampText28",
+      "txt": "产出 %s  |  %s 分钟\n投入 %s\n%s",
+      "desc": "Lua/Game/Camp/CampModel.lua:106；%s1=rules:ItemsText(recipe.outputIds,recipe.outputCounts)，%s2=recipe.minutes，%s3=rules:CostText(recipe)，%s4=ok and LuaLanguage.UICampText27 or reason"
+    },
+    {
+      "id": "UICampText29",
+      "txt": "%s · %s %s 级",
+      "desc": "Lua/Game/Camp/CampModel.lua:105；%s1=recipe.name，%s2=facility.name，%s3=recipe.requiredLevel"
+    },
+    {
+      "id": "UICampText30",
+      "txt": "剩余 %s 分钟",
+      "desc": "Lua/Game/Camp/CampModel.lua:100；%s1=math.ceil(job.ReadyAt-minutes)"
+    },
+    {
+      "id": "UICampText31",
+      "txt": "背包空间不足，产物保留在设施中",
+      "desc": "Lua/Game/Camp/CampModel.lua:100"
+    },
+    {
+      "id": "UICampText32",
+      "txt": "生产已完成，点击收入背包",
+      "desc": "Lua/Game/Camp/CampModel.lua:100"
+    },
+    {
+      "id": "UICampText33",
+      "txt": "生产中 · ",
+      "desc": "Lua/Game/Camp/CampModel.lua:99"
+    },
+    {
+      "id": "UICampText34",
+      "txt": "领取 · ",
+      "desc": "Lua/Game/Camp/CampModel.lua:99"
+    },
+    {
+      "id": "UICampText35",
+      "txt": "%s · %s 级",
+      "desc": "Lua/Game/Camp/CampModel.lua:94；%s1=facility.name，%s2=level"
+    },
+    {
+      "id": "UICampDetail",
+      "txt": "点击建设，费用一次性扣除",
+      "desc": "Lua/Game/Camp/CampModel.lua:93"
+    },
+    {
+      "id": "UICampDetail2",
+      "txt": "建设至 %s 级：%s",
+      "desc": "Lua/Game/Camp/CampModel.lua:92；%s1=upgrade.level，%s2=rules:CostText(upgrade)"
+    },
+    {
+      "id": "UILootDisplayName",
+      "txt": "未搜索的物品",
+      "desc": "Lua/Game/Loot/LootModel.lua:32"
+    },
+    {
+      "id": "UILootDetail",
+      "txt": "来自：%s",
+      "desc": "Lua/Game/Loot/LootModel.lua:30；%s1=source.Name"
+    },
+    {
+      "id": "UILootDetail2",
+      "txt": "正在搜索，揭示后可以拖入背包",
+      "desc": "Lua/Game/Loot/LootModel.lua:26"
+    },
+    {
+      "id": "UIShopText",
+      "txt": "对话已变化，请重新选择",
+      "desc": "Lua/Game/Shop/ShopModel.lua:16"
+    },
+    {
+      "id": "UIShopText2",
+      "txt": "这位居民不出售商品",
+      "desc": "Lua/Game/Shop/ShopModel.lua:14"
+    },
+    {
+      "id": "UIShopText3",
+      "txt": "商人不存在",
+      "desc": "Lua/Game/Shop/ShopModel.lua:12"
+    },
+    {
+      "id": "UIShopText4",
+      "txt": "当前不能开启商店",
+      "desc": "Lua/Game/Shop/ShopModel.lua:7"
+    },
+    {
+      "id": "UIShopText5",
+      "txt": "%s ×%s（花费 %s 金币）",
+      "desc": "Lua/Game/Shop/ShopModel.lua:54；%s1=item.name，%s2=count，%s3=entry.Price*count"
+    },
+    {
+      "id": "UIShopText6",
+      "txt": "购买商品",
+      "desc": "Lua/Game/Shop/ShopModel.lua:54"
+    },
+    {
+      "id": "UIShopText7",
+      "txt": "商品不在当前商店中",
+      "desc": "Lua/Game/Shop/ShopModel.lua:49"
+    },
+    {
+      "id": "UIShopText8",
+      "txt": "商店已到补货时间，请重新打开",
+      "desc": "Lua/Game/Shop/ShopModel.lua:46"
+    },
+    {
+      "id": "UIShopText9",
+      "txt": "商品列表已变化，请重新选择",
+      "desc": "Lua/Game/Shop/ShopModel.lua:42"
+    },
+    {
+      "id": "UIShopText10",
+      "txt": "商店已关闭",
+      "desc": "Lua/Game/Shop/ShopModel.lua:39"
+    },
+    {
+      "id": "UIShopName2",
+      "txt": "%s · 随机词缀",
+      "desc": "Lua/Game/Shop/ShopModel.lua:68；%s1=name"
+    },
+    {
+      "id": "UIShopReason",
+      "txt": "背包空间不足",
+      "desc": "Lua/Game/Shop/ShopModel.lua:66"
+    },
+    {
+      "id": "UIShopReason2",
+      "txt": "金币不足",
+      "desc": "Lua/Game/Shop/ShopModel.lua:65"
+    },
+    {
+      "id": "UIShopReason3",
+      "txt": "已售罄",
+      "desc": "Lua/Game/Shop/ShopModel.lua:65"
+    },
+    {
+      "id": "UISkillAtlasText2",
+      "txt": "可在角色养成 → 职业技能中学习",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:94"
+    },
+    {
+      "id": "UISkillAtlasText3",
+      "txt": "特定途径获取",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:92"
+    },
+    {
+      "id": "UISkillAtlasText4",
+      "txt": "装备授予",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:90"
+    },
+    {
+      "id": "UISkillAtlasText5",
+      "txt": "骑乘能力",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:89"
+    },
+    {
+      "id": "UISkillAtlasText6",
+      "txt": "通用动作",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:88"
+    },
+    {
+      "id": "UISkillAtlasText7",
+      "txt": "固有技能",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:87"
+    },
+    {
+      "id": "UISkillAtlasText8",
+      "txt": "已掌握",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:86"
+    },
+    {
+      "id": "UISkillAtlasText9",
+      "txt": "触媒就绪",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:99"
+    },
+    {
+      "id": "UISkillAtlasText10",
+      "txt": "施放条件：%s",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:99；%s1=allowed and LuaLanguage.UISkillAtlasText9 or reason"
+    },
+    {
+      "id": "UISkillAtlasLinesLines1",
+      "txt": "获取：角色固有、装备或骑乘能力",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:133"
+    },
+    {
+      "id": "UISkillAtlasLinesLines12",
+      "txt": "获取：消耗背包中的对应道具，不能研习",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:132"
+    },
+    {
+      "id": "UISkillAtlasLinesLines13",
+      "txt": "获取：战斗中的通用动作",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:131"
+    },
+    {
+      "id": "UISkillAtlasLinesLines14",
+      "txt": "获取：角色养成 → 职业与天赋 → 职业技能，转入对应职业后选学；消耗 1 次学习机会",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:130"
+    },
+    {
+      "id": "UISkillAtlasRequirements",
+      "txt": "角色等级 %s",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:124；%s1=course.minLevel"
+    },
+    {
+      "id": "UISkillAtlasLinesLines15",
+      "txt": "探索时每次消耗 %s 回合，可清理战后遗留工事",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:119；%s1=construction.workRounds"
+    },
+    {
+      "id": "UISkillAtlasLinesLines16",
+      "txt": "占地：1 格 · 保留至本次远征结束",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:118"
+    },
+    {
+      "id": "UISkillAtlasLinesLines17",
+      "txt": "工具：角色须装备铲子；仅可挖掘未铺装的泥土、草地",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:117"
+    },
+    {
+      "id": "UISkillAtlasLinesLines18",
+      "txt": "结构耐久：%s + 巧匠 ×%s",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:116；%s1=construction.maxHP，%s2=construction.hpPerCrafting"
+    },
+    {
+      "id": "UISkillAtlasLinesLines19",
+      "txt": "材料：无",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:115"
+    },
+    {
+      "id": "UISkillAtlasLinesLines110",
+      "txt": "材料：%s",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:115；%s1=table.concat(material,'、')"
+    },
+    {
+      "id": "UISkillAtlasLines",
+      "txt": "行动点 %s    距离 %s 格    冷却 %s 回合",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:107；%s1=skill.cost，%s2=skill.range，%s3=skill.cooldownTurns"
+    },
+    {
+      "id": "UISkillAtlasKind",
+      "txt": "道具动作",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:105"
+    },
+    {
+      "id": "UISkillAtlasKind2",
+      "txt": "准备技能",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:105"
+    },
+    {
+      "id": "UISkillAtlasContextsContexts1",
+      "txt": "探索",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:104"
+    },
+    {
+      "id": "UISkillAtlasContextsContexts12",
+      "txt": "战斗",
+      "desc": "Lua/Game/Progression/SkillAtlas.lua:104"
+    },
+    {
+      "id": "UIAdventureJournalPanelJournalHeading",
+      "txt": "旅途见闻",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/AdventureJournalPanel.prefab / Journal/Heading"
+    },
+    {
+      "id": "UIAdventureJournalPanelJournalGrowthLabel",
+      "txt": "同行者  [C]",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/AdventureJournalPanel.prefab / Journal/Growth/Label"
+    },
+    {
+      "id": "UICharacterGrowthPanelPageHeroCollection",
+      "txt": "边 境 远 征  /  同 行 者",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/CharacterGrowthPanel.prefab / Page/Hero/Collection"
+    },
+    {
+      "id": "UICharacterGrowthPanelPageHeroTitle",
+      "txt": "艾岚",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/CharacterGrowthPanel.prefab / Page/Hero/Title"
+    },
+    {
+      "id": "UICharacterGrowthPanelPageHeroRole",
+      "txt": "剑士",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/CharacterGrowthPanel.prefab / Page/Hero/Role"
+    },
+    {
+      "id": "UICharacterGrowthPanelPageHeroHeroLevel",
+      "txt": "旅人 · 等级 1",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/CharacterGrowthPanel.prefab / Page/Hero/HeroLevel"
+    },
+    {
+      "id": "UICharacterGrowthPanelPageHeroHeroHealth",
+      "txt": "生命  46 / 46",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/CharacterGrowthPanel.prefab / Page/Hero/HeroHealth"
+    },
+    {
+      "id": "UICharacterGrowthPanelPageHeroHeroExperience",
+      "txt": "距下一次成长",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/CharacterGrowthPanel.prefab / Page/Hero/HeroExperience"
+    },
+    {
+      "id": "UICharacterGrowthPanelPageHeroOrbitHint",
+      "txt": "拖动旋转 · 滚轮缩放",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/CharacterGrowthPanel.prefab / Page/Hero/OrbitHint"
+    },
+    {
+      "id": "UICharacterGrowthPanelPageBookTitle",
+      "txt": "旅 人 手 记",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/CharacterGrowthPanel.prefab / Page/BookTitle"
+    },
+    {
+      "id": "UICharacterGrowthPanelPageBookSubtitle",
+      "txt": "来历、选择，以及尚未走过的路。",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/CharacterGrowthPanel.prefab / Page/BookSubtitle"
+    },
+    {
+      "id": "UICharacterGrowthPanelPageCloseLabel",
+      "txt": "关闭  ×",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/CharacterGrowthPanel.prefab / Page/Close/Label"
+    },
+    {
+      "id": "UICharacterGrowthPanelPageOverviewTabLabel",
+      "txt": "总 览",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/CharacterGrowthPanel.prefab / Page/OverviewTab/Label"
+    },
+    {
+      "id": "UICharacterGrowthPanelPageSkillsTabLabel",
+      "txt": "天 赋 与 技 能",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/CharacterGrowthPanel.prefab / Page/SkillsTab/Label"
+    },
+    {
+      "id": "UICharacterGrowthPanelPageHistoryTabLabel",
+      "txt": "经 历",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/CharacterGrowthPanel.prefab / Page/HistoryTab/Label"
+    },
+    {
+      "id": "UICharacterGrowthPanelPageOverviewAttributesHeading",
+      "txt": "属 性",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/CharacterGrowthPanel.prefab / Page/Overview/AttributesHeading"
+    },
+    {
+      "id": "UICharacterGrowthPanelPageOverviewAttributeNote",
+      "txt": "选择 + 为属性投入一点",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/CharacterGrowthPanel.prefab / Page/Overview/AttributeNote"
+    },
+    {
+      "id": "UICharacterGrowthPanelPageOverviewTraitsHeading",
+      "txt": "旅 途 印 记",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/CharacterGrowthPanel.prefab / Page/Overview/TraitsHeading"
+    },
+    {
+      "id": "UICharacterGrowthPanelPageOverviewTraitsNote",
+      "txt": "每段经历，都会留下痕迹。",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/CharacterGrowthPanel.prefab / Page/Overview/TraitsNote"
+    },
+    {
+      "id": "UICharacterGrowthPanelPageOverviewTraitDetail",
+      "txt": "选择一枚印记，回顾它的来由。",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/CharacterGrowthPanel.prefab / Page/Overview/TraitDetail"
+    },
+    {
+      "id": "UICharacterGrowthPanelPageSkillsTalentName",
+      "txt": "选择一项天赋",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/CharacterGrowthPanel.prefab / Page/Skills/TalentName"
+    },
+    {
+      "id": "UICharacterGrowthPanelPageSkillsInvestLabel",
+      "txt": "投入天赋点",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/CharacterGrowthPanel.prefab / Page/Skills/Invest/Label"
+    },
+    {
+      "id": "UICharacterGrowthPanelPageHistoryPreviousHistoryLabel",
+      "txt": "上一页",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/CharacterGrowthPanel.prefab / Page/History/PreviousHistory/Label"
+    },
+    {
+      "id": "UICharacterGrowthPanelPageHistoryNextHistoryLabel",
+      "txt": "下一页",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/CharacterGrowthPanel.prefab / Page/History/NextHistory/Label"
+    },
+    {
+      "id": "UICharacterGrowthPanelPageAtlasLabel",
+      "txt": "技艺图谱",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/CharacterGrowthPanel.prefab / Page/Atlas/Label"
+    },
+    {
+      "id": "UIJournalAttributeWidgetTitle",
+      "txt": "体力",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/JournalAttributeWidget.prefab / Title"
+    },
+    {
+      "id": "UIStartMenuPanelPageCaption",
+      "txt": "选择一段旅程",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/StartMenuPanel.prefab / Page/Caption"
+    },
+    {
+      "id": "UIStartMenuPanelPageHomePageStartLabel",
+      "txt": "开始游戏",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/StartMenuPanel.prefab / Page/HomePage/Start/Label"
+    },
+    {
+      "id": "UIStartMenuPanelPageHomePageHomeHint",
+      "txt": "每次新游戏创建独立存档\nF5 保存当前旅程",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/StartMenuPanel.prefab / Page/HomePage/HomeHint"
+    },
+    {
+      "id": "UIStartMenuPanelPageNewPageSeedLabel",
+      "txt": "世界种子",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/StartMenuPanel.prefab / Page/NewPage/SeedLabel"
+    },
+    {
+      "id": "UIStartMenuPanelPageNewPageRandomSeedLabel",
+      "txt": "随机种子",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/StartMenuPanel.prefab / Page/NewPage/RandomSeed/Label"
+    },
+    {
+      "id": "UIStartMenuPanelPageNewPageSeedHint",
+      "txt": "输入 0–4294967295 的整数；相同种子和规模可重现世界布局。",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/StartMenuPanel.prefab / Page/NewPage/SeedHint"
+    },
+    {
+      "id": "UIStartMenuPanelPageNewPageSizeLabel",
+      "txt": "地图规模",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/StartMenuPanel.prefab / Page/NewPage/SizeLabel"
+    },
+    {
+      "id": "UIStartMenuPanelPageNewPageWorldSizeCaption",
+      "txt": "标准 · 10,000 格",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/StartMenuPanel.prefab / Page/NewPage/WorldSize/Caption"
+    },
+    {
+      "id": "UIStartMenuPanelPageNewPageSizeHint",
+      "txt": "较大的世界需要更长的生成与保存时间。",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/StartMenuPanel.prefab / Page/NewPage/SizeHint"
+    },
+    {
+      "id": "UIStartMenuPanelPageNewPageCreateLabel",
+      "txt": "创建世界并开始",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/StartMenuPanel.prefab / Page/NewPage/Create/Label"
+    },
+    {
+      "id": "UIStartMenuPanelPageBackLabel",
+      "txt": "返回首页",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/StartMenuPanel.prefab / Page/Back/Label"
+    },
+    {
+      "id": "UIStartMenuPanelPageResumeLabel",
+      "txt": "返回游戏",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/StartMenuPanel.prefab / Page/Resume/Label"
+    },
+    {
+      "id": "UIStoryChoiceWidgetTitle",
+      "txt": "做出选择",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/StoryChoiceWidget.prefab / Title"
+    },
+    {
+      "id": "UIStoryChoiceWidgetBody",
+      "txt": "条件与后果",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/StoryChoiceWidget.prefab / Body"
+    },
+    {
+      "id": "UIStoryEventPanelPageTitle",
+      "txt": "旅途中的一页",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/StoryEventPanel.prefab / Page/Title"
+    },
+    {
+      "id": "UIStoryEventPanelPageDescription",
+      "txt": "有人向你伸出手。",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/StoryEventPanel.prefab / Page/Description"
+    },
+    {
+      "id": "UIStoryEventPanelPageContinueLabel",
+      "txt": "继续旅程",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/StoryEventPanel.prefab / Page/Continue/Label"
+    },
+    {
+      "id": "UITraitTagWidgetTitle",
+      "txt": "◆ 印记",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Adventure/TraitTagWidget.prefab / Title"
+    },
+    {
+      "id": "UIBattleHUDPanelSafeAreaCombatLogLogCloseLabel",
+      "txt": "收起",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Battle/BattleHUDPanel.prefab / SafeArea/CombatLog/LogClose/Label"
+    },
+    {
+      "id": "UIBattleHUDPanelSafeAreaSkillTipBackLabel",
+      "txt": "‹ 返回",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Battle/BattleHUDPanel.prefab / SafeArea/SkillTip/Back/Label"
+    },
+    {
+      "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentStatsTitle",
+      "txt": "技能参数",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Battle/BattleHUDPanel.prefab / SafeArea/SkillTip/Scroll/Viewport/Content/StatsTitle"
+    },
+    {
+      "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentSynergyTitle",
+      "txt": "协同效应",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Battle/BattleHUDPanel.prefab / SafeArea/SkillTip/Scroll/Viewport/Content/SynergyTitle"
+    },
+    {
+      "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentSynergiesSynergyTemplateUndiscoveredMaskUnknown",
+      "txt": "尚未发现",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Battle/BattleHUDPanel.prefab / SafeArea/SkillTip/Scroll/Viewport/Content/Synergies/SynergyTemplate/UndiscoveredMask/Unknown"
+    },
+    {
+      "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentSynergiesSynergyTemplateUndiscoveredMaskUnlockHint",
+      "txt": "首次成功装配对应符文组合后解锁",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Battle/BattleHUDPanel.prefab / SafeArea/SkillTip/Scroll/Viewport/Content/Synergies/SynergyTemplate/UndiscoveredMask/UnlockHint"
+    },
+    {
+      "id": "UIStatusEffectWidgetGlyph",
+      "txt": "效",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Battle/StatusEffectWidget.prefab / Glyph"
+    },
+    {
+      "id": "UICampPanelPageCloseLabel",
+      "txt": "关闭",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Camp/CampPanel.prefab / Page/Close/Label"
+    },
+    {
+      "id": "UILoadingPanelContentTitle",
+      "txt": "创建世界",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Common/LoadingPanel.prefab / Content/Title"
+    },
+    {
+      "id": "UILoadingPanelContentTipCategory",
+      "txt": "旅途建议",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Common/LoadingPanel.prefab / Content/TipCategory"
+    },
+    {
+      "id": "UILoadingPanelContentTip",
+      "txt": "世界正在展开。",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Common/LoadingPanel.prefab / Content/Tip"
+    },
+    {
+      "id": "UITabButtonWidgetLabel",
+      "txt": "分类",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Common/TabButtonWidget.prefab / Label"
+    },
+    {
+      "id": "UIEquipmentWorkbenchPanelSafeAreaHeading",
+      "txt": "旅 人 工 坊  /  FIELD WORKBENCH",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Equipment/EquipmentWorkbenchPanel.prefab / SafeArea/Heading"
+    },
+    {
+      "id": "UIEquipmentWorkbenchPanelSafeAreaCloseLabel",
+      "txt": "关闭 [I / Esc]",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Equipment/EquipmentWorkbenchPanel.prefab / SafeArea/Close/Label"
+    },
+    {
+      "id": "UIEquipmentWorkbenchPanelSafeAreaInventoryInventoryTitle",
+      "txt": "共 享 背 包",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Equipment/EquipmentWorkbenchPanel.prefab / SafeArea/Inventory/InventoryTitle"
+    },
+    {
+      "id": "UIEquipmentWorkbenchPanelSafeAreaPreviewOrbitHint",
+      "txt": "拖动旋转  ·  滚轮缩放  ·  点击挂点",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Equipment/EquipmentWorkbenchPanel.prefab / SafeArea/Preview/OrbitHint"
+    },
+    {
+      "id": "UIEquipmentWorkbenchPanelSafeAreaDetailsScrollViewportContentRemoveLabel",
+      "txt": "卸下选中挂点组件",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Equipment/EquipmentWorkbenchPanel.prefab / SafeArea/Details/Scroll/Viewport/Content/Remove/Label"
+    },
+    {
+      "id": "UIEquipmentWorkbenchPanelSafeAreaDetailsScrollViewportContentFillLabel",
+      "txt": "补满当前弹匣",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Equipment/EquipmentWorkbenchPanel.prefab / SafeArea/Details/Scroll/Viewport/Content/Fill/Label"
+    },
+    {
+      "id": "UIEquipmentWorkbenchPanelSafeAreaDetailsScrollViewportContentStatsTitle",
+      "txt": "装备详情与技能",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Equipment/EquipmentWorkbenchPanel.prefab / SafeArea/Details/Scroll/Viewport/Content/StatsTitle"
+    },
+    {
+      "id": "UIEquipmentWorkbenchPanelSafeAreaFooterUnequipLabel",
+      "txt": "卸下角色武器",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Equipment/EquipmentWorkbenchPanel.prefab / SafeArea/Footer/Unequip/Label"
+    },
+    {
+      "id": "UIInventoryPanelFrameHeading",
+      "txt": "远 征 行 囊",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Equipment/InventoryPanel.prefab / Frame/Heading"
+    },
+    {
+      "id": "UIInventoryPanelFrameSubtitle",
+      "txt": "INVENTORY  /  装备与空间管理",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Equipment/InventoryPanel.prefab / Frame/Subtitle"
+    },
+    {
+      "id": "UIInventoryPanelFrameCloseLabel",
+      "txt": "关闭  [ I / Esc ]",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Equipment/InventoryPanel.prefab / Frame/Close/Label"
+    },
+    {
+      "id": "UIInventoryPanelFrameEquipmentCharacterPreviewSlotoffhandEmpty",
+      "txt": "单手 / 盾牌",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Equipment/InventoryPanel.prefab / Frame/Equipment/CharacterPreview/Slot_offhand/Empty"
+    },
+    {
+      "id": "UIInventoryPanelFrameEquipmentCharacterPreviewSlotheadEmpty",
+      "txt": "空槽",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Equipment/InventoryPanel.prefab / Frame/Equipment/CharacterPreview/Slot_head/Empty"
+    },
+    {
+      "id": "UIInventoryPanelFrameEquipmentCharacterPreviewOrbitHint",
+      "txt": "拖动角色旋转  ·  滚轮缩放",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Equipment/InventoryPanel.prefab / Frame/Equipment/CharacterPreview/OrbitHint"
+    },
+    {
+      "id": "UIInventoryPanelFrameDetailsDetailHeading",
+      "txt": "装备详情  ·  滚轮查看",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Equipment/InventoryPanel.prefab / Frame/Details/DetailHeading"
+    },
+    {
+      "id": "UIInventoryPanelFrameDetailsEquipLabel",
+      "txt": "穿戴装备",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Equipment/InventoryPanel.prefab / Frame/Details/Equip/Label"
+    },
+    {
+      "id": "UIInventoryPanelFrameDetailsUnequipLabel",
+      "txt": "卸下装备",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Equipment/InventoryPanel.prefab / Frame/Details/Unequip/Label"
+    },
+    {
+      "id": "UIInventoryPanelFrameDetailsRotateLabel",
+      "txt": "旋转 90°",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Equipment/InventoryPanel.prefab / Frame/Details/Rotate/Label"
+    },
+    {
+      "id": "UIInventoryPanelFrameWorkbenchLabel",
+      "txt": "武器改装工坊  →",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Equipment/InventoryPanel.prefab / Frame/Workbench/Label"
+    },
+    {
+      "id": "UILootPanelFrameTitle",
+      "txt": "搜刮战利品",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Equipment/LootPanel.prefab / Frame/Title"
+    },
+    {
+      "id": "UILootPanelFrameLootLootTitle",
+      "txt": "战 利 品",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Equipment/LootPanel.prefab / Frame/Loot/LootTitle"
+    },
+    {
+      "id": "UILootPanelFrameHint",
+      "txt": "左右双向拖拽  ·  R 旋转  ·  右键取消  ·  战斗汇总先选择容器再存入",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Equipment/LootPanel.prefab / Frame/Hint"
+    },
+    {
+      "id": "UIGMPanelFrameTitle",
+      "txt": "GM · 角色与 NPC",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab / Frame/Title"
+    },
+    {
+      "id": "UIGMPanelFrameDescription",
+      "txt": "槽位按队伍顺序从 1 开始 · F8 打开/关闭 · Esc 关闭",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab / Frame/Description"
+    },
+    {
+      "id": "UIGMPanelFrameSlotLabel",
+      "txt": "角色槽位",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab / Frame/SlotLabel"
+    },
+    {
+      "id": "UIGMPanelFrameLevelUpText",
+      "txt": "升 1 级",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab / Frame/LevelUp/Text"
+    },
+    {
+      "id": "UIGMPanelFrameSkillLabel",
+      "txt": "技能 ID",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab / Frame/SkillLabel"
+    },
+    {
+      "id": "UIGMPanelFrameGrantSkillText",
+      "txt": "获取技能",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab / Frame/GrantSkill/Text"
+    },
+    {
+      "id": "UIGMPanelFrameNpcTitle",
+      "txt": "查找 NPC · 名称 / ID",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab / Frame/NpcTitle"
+    },
+    {
+      "id": "UIGMPanelFrameNpcHint",
+      "txt": "留空显示全部叙事 NPC。点击条目传送，关闭 GM 后按 E 交谈。",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab / Frame/NpcHint"
+    },
+    {
+      "id": "UICharacterSkillWidgetContexts",
+      "txt": "生活 + 战斗",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/CharacterSkillWidget.prefab / Contexts"
+    },
+    {
+      "id": "UIHudHealthWidgetDamageAnchorDamageNumberTemplateCritical",
+      "txt": "暴击!",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/HudHealthWidget.prefab / DamageAnchor/DamageNumberTemplate/Critical"
+    },
+    {
+      "id": "UIMainHudPanelExplorationSafeNavigationNavigationTitle",
+      "txt": "目的地",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Exploration/Safe/Navigation/NavigationTitle"
+    },
+    {
+      "id": "UIMainHudPanelExplorationSafeJournalJournalTitle",
+      "txt": "旅 途 见 闻",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Exploration/Safe/Journal/JournalTitle"
+    },
+    {
+      "id": "UIMainHudPanelExplorationSafeInteractionInteractLabel",
+      "txt": "交互  E",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Exploration/Safe/Interaction/Interact/Label"
+    },
+    {
+      "id": "UIMainHudPanelExplorationSafeCharacterSkillsSkillActor",
+      "txt": "选择队员 · 生活技能",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Exploration/Safe/CharacterSkills/SkillActor"
+    },
+    {
+      "id": "UIMainHudPanelExplorationSafeCharacterSkillsCancelSkillLabel",
+      "txt": "取消  Esc",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Exploration/Safe/CharacterSkills/CancelSkill/Label"
+    },
+    {
+      "id": "UIMainHudPanelExplorationSafeCharacterSkillsSkillEmpty",
+      "txt": "点击下方队员卡片进行选择",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Exploration/Safe/CharacterSkills/SkillEmpty"
+    },
+    {
+      "id": "UIMainHudPanelCommonEntryRailMenuToggleMenuToggleText",
+      "txt": "菜单",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/EntryRail/MenuToggle/MenuToggleText"
+    },
+    {
+      "id": "UIMainHudPanelCommonEntryRailMissionsMissionsText",
+      "txt": "任务",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/EntryRail/Missions/MissionsText"
+    },
+    {
+      "id": "UIMainHudPanelCommonEntryRailInventoryLabel",
+      "txt": "背包  I",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/EntryRail/Inventory/Label"
+    },
+    {
+      "id": "UIMainHudPanelCommonEntryRailNavigationToggleLabel",
+      "txt": "地图",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/EntryRail/NavigationToggle/Label"
+    },
+    {
+      "id": "UIMainHudPanelCommonMenuMenuTitle",
+      "txt": "旅途菜单",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/Menu/MenuTitle"
+    },
+    {
+      "id": "UIMainHudPanelCommonMenuGrowthLabel",
+      "txt": "手记 C",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/Menu/Growth/Label"
+    },
+    {
+      "id": "UIMainHudPanelCommonMenuFocusLabel",
+      "txt": "全图  F",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/Menu/Focus/Label"
+    },
+    {
+      "id": "UIMainHudPanelCommonMenuEnvironmentLabel",
+      "txt": "画面",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/Menu/Environment/Label"
+    },
+    {
+      "id": "UIMainHudPanelCommonMenuLeaveLabel",
+      "txt": "返回大地图",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/Menu/Leave/Label"
+    },
+    {
+      "id": "UIMainHudPanelCommonMenuStopLabel",
+      "txt": "停止  Space",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/Menu/Stop/Label"
+    },
+    {
+      "id": "UIMainHudPanelCommonMenuCameraModeLabel",
+      "txt": "切换视角  V",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/Menu/CameraMode/Label"
+    },
+    {
+      "id": "UIMainHudPanelCommonMenuRestartLabel",
+      "txt": "新的远征",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/Menu/Restart/Label"
+    },
+    {
+      "id": "UIMainHudPanelCommonWorldControlsTimeControlsTimeStartLabel",
+      "txt": "开始",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/WorldControls/TimeControls/TimeStart/Label"
+    },
+    {
+      "id": "UIMainHudPanelCommonWorldControlsTimeControlsTimePauseLabel",
+      "txt": "暂停",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/WorldControls/TimeControls/TimePause/Label"
+    },
+    {
+      "id": "UIMainHudPanelCommonWorldControlsTimeControlsTimeSpeedLabel",
+      "txt": "速度 1×",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/WorldControls/TimeControls/TimeSpeed/Label"
+    },
+    {
+      "id": "UIMainHudPanelCommonWorldControlsFollowLabel",
+      "txt": "回到小队",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/WorldControls/Follow/Label"
+    },
+    {
+      "id": "UIDiceRollPanelTitle",
+      "txt": "命运的回响",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Presentation/DiceRollPanel.prefab / Title"
+    },
+    {
+      "id": "UIDiceRollPanelDetail",
+      "txt": "掷出你的命运",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Presentation/DiceRollPanel.prefab / Detail"
+    },
+    {
+      "id": "UIDiceRollPanelContinueCaption",
+      "txt": "继续",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Presentation/DiceRollPanel.prefab / Continue/Caption"
+    },
+    {
+      "id": "UIDiceRollPanelRevealCaption",
+      "txt": "快速揭晓",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Presentation/DiceRollPanel.prefab / Reveal/Caption"
+    },
+    {
+      "id": "UISkillAtlasPanelPageTitle",
+      "txt": "技 艺 图 谱",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Progression/SkillAtlasPanel.prefab / Page/Title"
+    },
+    {
+      "id": "UISkillAtlasPanelPageSubtitle",
+      "txt": "武艺与百工 · 自由研习，各有所长",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Progression/SkillAtlasPanel.prefab / Page/Subtitle"
+    },
+    {
+      "id": "UISkillAtlasPanelPageDomain1Label",
+      "txt": "领域",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Progression/SkillAtlasPanel.prefab / Page/Domain1/Label"
+    },
+    {
+      "id": "UISkillAtlasPanelPageTreeTitle",
+      "txt": "营造 / 筑障",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Progression/SkillAtlasPanel.prefab / Page/TreeTitle"
+    },
+    {
+      "id": "UISkillAtlasPanelPageSearchPlaceholder",
+      "txt": "搜索全部技艺…",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Progression/SkillAtlasPanel.prefab / Page/Search/Placeholder"
+    },
+    {
+      "id": "UISkillAtlasPanelPageSearchButtonLabel",
+      "txt": "搜索",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Progression/SkillAtlasPanel.prefab / Page/SearchButton/Label"
+    },
+    {
+      "id": "UISkillAtlasPanelPageClearSearchLabel",
+      "txt": "清空",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Progression/SkillAtlasPanel.prefab / Page/ClearSearch/Label"
+    },
+    {
+      "id": "UISkillAtlasPanelPageGraphScrollViewportEmpty",
+      "txt": "此分类尚未收录技能",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Progression/SkillAtlasPanel.prefab / Page/GraphScroll/Viewport/Empty"
+    },
+    {
+      "id": "UISkillAtlasPanelPageLegend",
+      "txt": "■ 已掌握 / 当前可用    □ 满足研习条件    ▧ 条件不足或特定途径",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Progression/SkillAtlasPanel.prefab / Page/Legend"
+    },
+    {
+      "id": "UISkillAtlasPanelPageHint",
+      "txt": "点击技能查看效果与前置 · 图谱用于浏览，不直接学习",
+      "desc": "Assets/DynamicAsset/UI/Prefabs/Progression/SkillAtlasPanel.prefab / Page/Hint"
+    }
+  ],
+  "skipped": []
+}

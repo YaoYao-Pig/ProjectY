@@ -6,6 +6,7 @@ function Npcs:Target(id)
     if not integer(id) then return nil,'请输入有效的 NPC 整数 ID' end
     local definition=self.story.rules.npcs:Find(id)
     if not definition then return nil,'不存在 NPC #'..id end
+    if definition.locationKind=='world_party' then return nil,definition.name..' 在大地图游荡，请接近地图上的传奇队伍交谈' end
     local actorId=self.story.data:GetValue('recruited:'..id)
     if actorId~=0 then
         for i=0,self.adventure.data.PartyCount-1 do if self.adventure.data:GetPartyAt(i).Id==actorId then

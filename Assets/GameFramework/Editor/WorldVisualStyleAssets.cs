@@ -80,19 +80,19 @@ namespace ProjectY.Editor
                 AssetDatabase.CreateAsset(profile, ProfilePath);
                 profile.Add<Tonemapping>(true).mode.value = TonemappingMode.ACES;
                 var color = profile.Add<ColorAdjustments>(true);
-                color.postExposure.value = .4f; color.contrast.value = 10; color.saturation.value = 6;
+                color.postExposure.value = .1f; color.contrast.value = 15; color.saturation.value = 14;
                 profile.Add<WhiteBalance>(true).temperature.value = 0;
                 var tone = profile.Add<SplitToning>(true);
                 tone.shadows.value = new Color(.465f, .49f, .535f);
                 tone.highlights.value = new Color(.51f, .505f, .495f); tone.balance.value = 0;
                 var bloom = profile.Add<Bloom>(true);
-                bloom.threshold.value = .9f; bloom.intensity.value = .48f; bloom.scatter.value = .6f; bloom.highQualityFiltering.value = true;
+                bloom.threshold.value = .85f; bloom.intensity.value = .65f; bloom.scatter.value = .7f; bloom.highQualityFiltering.value = true;
                 var vignette = profile.Add<Vignette>(true); vignette.intensity.value = .025f; vignette.smoothness.value = .55f;
                 profile.Add<PixelArt>(true).enableEffect.value = false;
                 var atmosphere = profile.Add<FantasyAtmosphere>(true); atmosphere.enableEffect.value = true;
-                atmosphere.strength.value = .85f; atmosphere.density.value = .0045f;
-                atmosphere.sunlight.value = 2; atmosphere.anisotropy.value = .68f;
-                atmosphere.samples.value = 16; atmosphere.maximumDistance.value = 110;
+                atmosphere.strength.value = .75f; atmosphere.density.value = .0028f;
+                atmosphere.sunlight.value = 2.6f; atmosphere.anisotropy.value = .68f;
+                atmosphere.samples.value = 20; atmosphere.maximumDistance.value = 110;
                 foreach (var component in profile.components) { component.name = component.GetType().Name; AssetDatabase.AddObjectToAsset(component, profile); }
                 EditorUtility.SetDirty(profile); AssetDatabase.SaveAssetIfDirty(profile);
             }

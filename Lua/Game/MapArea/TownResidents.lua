@@ -6,7 +6,7 @@ function Residents.Tick(area,state,dt)
     for i=0,state.NpcCount-1 do local npc=state:GetNpcAt(i);if npc.Present then occupied[npc.CellIndex]=npc.Id end end
     for _,definition in ipairs(area.npcs) do
         local npc=state:GetNpcAt(definition.id-1)
-        if not definition.narrativeId and #definition.route>0 and not (state.InteractionKind==2 and state.InteractionId==npc.Id)
+        if npc.Present and not definition.narrativeId and #definition.route>0 and not (state.InteractionKind==2 and state.InteractionId==npc.Id)
             and npc:Due(dt,definition.stepSeconds) then
             local allowed=function(cell)
                 return not cell.interiorId and (not occupied[cell.index] or occupied[cell.index]==npc.Id) and not state:IsSquadReserved(cell.index)
@@ -72,7 +72,8 @@ function Residents.Populate(area,row,config,doors)
                 and cell.interiorId==door.interiorId then found=cell;break end
         end
         end
-        assert(found,'No service NPC space');addNpc(site.npcTemplateId,found.index,{}).facilityId=site.id
+        assert(found,'No service NPC space');local npc=addNpc(site.npcTemplateId,found.index,{})
+        npc.facilityId=site.id;npc.stableId=site.configId
     end
     for i=1,row.residentCount do
         local start=doors[(i-1)%#doors+1];local target=doors[(i+3)%#doors+1]
@@ -82,7 +83,7 @@ function Residents.Populate(area,row,config,doors)
         local public=function(cell)return not cell.interiorId end
         local out=assert(area:FindPath(spawn.index,target.index,public));local back=assert(area:FindPath(target.index,spawn.index,public))
         local route={};for _,index in ipairs(out) do route[#route+1]=index end;for _,index in ipairs(back) do route[#route+1]=index end
-        addNpc(row.residentTemplateIds[(i-1)%#row.residentTemplateIds+1],spawn.index,route)
+        addNpc(row.residentTemplateIds[(i-1)%#row.residentTemplateIds+1],spawn.index,route).stableId=100000+i
     end
 end
 return Residents

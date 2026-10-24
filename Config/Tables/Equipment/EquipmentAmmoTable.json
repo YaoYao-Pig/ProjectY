@@ -1,0 +1,152 @@
+{
+  "version": 1,
+  "name": "EquipmentAmmoTable",
+  "description": "同口径三种弹药的战斗取舍；不设置弹药等级，弹匣当前弹种决定每次射击的甲伤、肉伤与穿甲修正。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "散装弹药物品ID",
+      "ref": "EquipmentItemTable"
+    },
+    {
+      "name": "caliberId",
+      "type": "int",
+      "description": "口径身份：1巡猎、2狙击、3霰弹；同口径弹匣可选择三种弹药",
+      "min": 1,
+      "max": 3
+    },
+    {
+      "name": "ammoType",
+      "type": "enum",
+      "description": "弹药用途分类，不代表品质或等级",
+      "values": [
+        "balanced",
+        "armor_piercing",
+        "flesh"
+      ]
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "弹药类型显示名称"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "弹药用途与装填限制说明"
+    },
+    {
+      "name": "armorDamageMultiplier",
+      "type": "float",
+      "description": "本次射击的护甲伤害倍率",
+      "min": 0
+    },
+    {
+      "name": "fleshDamageMultiplier",
+      "type": "float",
+      "description": "本次射击的生命伤害倍率",
+      "min": 0
+    },
+    {
+      "name": "armorPenetrationBonus",
+      "type": "float",
+      "description": "对武器基础穿甲率的百分点修正，最终穿甲率限制在0至100",
+      "min": -100,
+      "max": 100
+    }
+  ],
+  "rows": [
+    {
+      "id": 31,
+      "caliberId": 1,
+      "ammoType": "balanced",
+      "name": "巡猎综合弹",
+      "description": "对护甲与生命的伤害均衡。仅可装入同口径弹匣；更换弹种前需先卸出原有弹药。",
+      "armorDamageMultiplier": 1.0,
+      "fleshDamageMultiplier": 1.0,
+      "armorPenetrationBonus": 0.0
+    },
+    {
+      "id": 822,
+      "caliberId": 1,
+      "ammoType": "armor_piercing",
+      "name": "巡猎破甲弹",
+      "description": "护甲伤害高、穿甲率提高，对生命的伤害较低。仅可装入同口径弹匣；更换弹种前需先卸出原有弹药。",
+      "armorDamageMultiplier": 1.8,
+      "fleshDamageMultiplier": 0.8,
+      "armorPenetrationBonus": 10.0
+    },
+    {
+      "id": 823,
+      "caliberId": 1,
+      "ammoType": "flesh",
+      "name": "巡猎肉弹",
+      "description": "对生命的伤害高、护甲伤害低，适合攻击裸露或已破甲的目标。仅可装入同口径弹匣；更换弹种前需先卸出原有弹药。",
+      "armorDamageMultiplier": 0.35,
+      "fleshDamageMultiplier": 1.35,
+      "armorPenetrationBonus": -10.0
+    },
+    {
+      "id": 820,
+      "caliberId": 2,
+      "ammoType": "balanced",
+      "name": "狙击综合弹",
+      "description": "对护甲与生命的伤害均衡。仅可装入同口径弹匣；更换弹种前需先卸出原有弹药。",
+      "armorDamageMultiplier": 1.0,
+      "fleshDamageMultiplier": 1.0,
+      "armorPenetrationBonus": 0.0
+    },
+    {
+      "id": 824,
+      "caliberId": 2,
+      "ammoType": "armor_piercing",
+      "name": "狙击破甲弹",
+      "description": "护甲伤害高、穿甲率提高，对生命的伤害较低。仅可装入同口径弹匣；更换弹种前需先卸出原有弹药。",
+      "armorDamageMultiplier": 1.8,
+      "fleshDamageMultiplier": 0.8,
+      "armorPenetrationBonus": 10.0
+    },
+    {
+      "id": 825,
+      "caliberId": 2,
+      "ammoType": "flesh",
+      "name": "狙击肉弹",
+      "description": "对生命的伤害高、护甲伤害低，适合攻击裸露或已破甲的目标。仅可装入同口径弹匣；更换弹种前需先卸出原有弹药。",
+      "armorDamageMultiplier": 0.35,
+      "fleshDamageMultiplier": 1.35,
+      "armorPenetrationBonus": -10.0
+    },
+    {
+      "id": 821,
+      "caliberId": 3,
+      "ammoType": "balanced",
+      "name": "霰弹综合弹",
+      "description": "对护甲与生命的伤害均衡。仅可装入同口径弹匣；更换弹种前需先卸出原有弹药。",
+      "armorDamageMultiplier": 1.0,
+      "fleshDamageMultiplier": 1.0,
+      "armorPenetrationBonus": 0.0
+    },
+    {
+      "id": 826,
+      "caliberId": 3,
+      "ammoType": "armor_piercing",
+      "name": "霰弹破甲弹",
+      "description": "护甲伤害高、穿甲率提高，对生命的伤害较低。仅可装入同口径弹匣；更换弹种前需先卸出原有弹药。",
+      "armorDamageMultiplier": 1.8,
+      "fleshDamageMultiplier": 0.8,
+      "armorPenetrationBonus": 10.0
+    },
+    {
+      "id": 827,
+      "caliberId": 3,
+      "ammoType": "flesh",
+      "name": "霰弹肉弹",
+      "description": "对生命的伤害高、护甲伤害低，适合攻击裸露或已破甲的目标。仅可装入同口径弹匣；更换弹种前需先卸出原有弹药。",
+      "armorDamageMultiplier": 0.35,
+      "fleshDamageMultiplier": 1.35,
+      "armorPenetrationBonus": -10.0
+    }
+  ]
+}

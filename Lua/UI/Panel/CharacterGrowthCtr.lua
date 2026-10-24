@@ -1,7 +1,7 @@
+local LuaLanguage = require('Language')
 local Class=require('Core.Class')
 local Base=require('UI.UIPanelCtrl')
 local Widgets=require('UI.GrowthWidgets')
-local L=require('Language')
 local Growth=Class('CharacterGrowthCtr',Base)
 local function place(rect,x,y,width,height)
     rect.anchoredPosition=CS.UnityEngine.Vector2(x,-y);rect.sizeDelta=CS.UnityEngine.Vector2(width,height)
@@ -28,8 +28,8 @@ function Growth:Bind()
         if self.skillMode=='talent' and self.selectedNode then self:Command('growth_talent',self.selectedNode)
         elseif self.skillMode=='profession' and not self.choosingProfession and self.selectedCourse then self:Command('growth_skill',self.selectedCourse) end
     end)
-    self.view.OverviewTabText.text='属性加点';self.view.SkillsTabText.text='职业与天赋';self.view.HistoryTabText.text='旅途经历'
-    self.view.AtlasText.text='技能图鉴';self.view.PreviousTreeText.text='职业技能';self.view.NextTreeText.text='被动天赋'
+    self.view.OverviewTabText.text=LuaLanguage.UICharacterGrowthOverviewTabTextText;self.view.SkillsTabText.text=LuaLanguage.UICharacterGrowthSkillsTabTextText;self.view.HistoryTabText.text=LuaLanguage.UICharacterGrowthHistoryTabTextText
+    self.view.AtlasText.text=LuaLanguage.UICharacterGrowthAtlasTextText;self.view.PreviousTreeText.text=LuaLanguage.UICharacterGrowthPreviousTreeTextText;self.view.NextTreeText.text=LuaLanguage.UICharacterGrowthNextTreeTextText
     place(self.view.PreviousTree.transform,0,0,126,29);place(self.view.NextTree.transform,136,0,126,29)
     place(self.view.TreeTitle.rectTransform,278,0,292,29)
 end
@@ -58,20 +58,20 @@ function Growth:Refresh()
     local nextLevel=self.rules.levels:Find(growth.Level+1)
     local name=self.stats:Template(actor).name:match('^(.-)%s*·%s*(.+)$')
     self.view.Title.text=name or self.stats:Template(actor).name;self.view.Role.text=self.rules.professions.professions:Get(growth.CurrentProfessionId).name
-    self.view.HeroLevel.text='旅人  ·  等级 '..growth.Level
-    self.view.HeroHealth.text='生命  '..actor.HP..' / '..actor.MaxHP
-    self.view.HeroExperience.text=nextLevel and ('经验 '..growth.Experience..' / '..nextLevel.experience) or '已到达本阶段的顶点'
+    self.view.HeroLevel.text=string.format(LuaLanguage.UICharacterGrowthHeroLevelText, (growth.Level))
+    self.view.HeroHealth.text=string.format(LuaLanguage.UICharacterGrowthHeroHealthText, (actor.HP), (actor.MaxHP))
+    self.view.HeroExperience.text=nextLevel and (string.format(LuaLanguage.UICharacterGrowthHeroExperienceText2, (growth.Experience), (nextLevel.experience))) or LuaLanguage.UICharacterGrowthHeroExperienceText
     self.view.ExperienceFill.sizeDelta=CS.UnityEngine.Vector2(210*(nextLevel and math.min(1,growth.Experience/nextLevel.experience) or 1),3)
-    self.view.Summary.text='属性点 '..growth.AttributePoints..'  /  天赋点 '..growth.TalentPoints..'  /  学习机会 '..growth.PendingCount..'  /  潜力 '..growth.LockedPotential
+    self.view.Summary.text=string.format(LuaLanguage.UICharacterGrowthSummaryText, (growth.AttributePoints), (growth.TalentPoints), (growth.PendingCount), (growth.LockedPotential))
     self.view.Character:Show(self.appearance:Template(actor.TemplateId,self.stats.equipment:ActorVisual(actor)))
     for _,key in ipairs({'Overview','Skills','History'}) do
         self.view[key].gameObject:SetActive(self.tab==key);self.view.Style:Highlight(self.view[key..'Tab'],self.tab==key)
         self.view[key..'TabText'].color=self.tab==key and CS.UnityEngine.Color(.91,.87,.77,1) or CS.UnityEngine.Color(.20,.24,.21,1)
     end
     if self.tab=='Overview' then self:Overview() elseif self.tab=='Skills' then self:Skills() else self:History() end
-    local hints={Overview='属性点用于 + 加点；旅途印记中可查看特质、关系和荣誉。',
-        Skills=self.skillMode=='talent' and '被动天赋消耗天赋点；右侧目录切换天赋树，选中节点后投入。' or '选择课程查看详情，再点击学习；转职免费，已学能力保留。技能图鉴可查看全部前置。',
-        History='每段经历记录发生日期、地点与同行者。'}
+    local hints={Overview=LuaLanguage.UICharacterGrowthOverview,
+        Skills=self.skillMode=='talent' and LuaLanguage.UICharacterGrowthSkills2 or LuaLanguage.UICharacterGrowthSkills,
+        History=LuaLanguage.UICharacterGrowthHistory}
     self.view.Hint.text=self.demo.LastError~='' and self.demo.LastError or hints[self.tab]
     self.revision,self.count,self.socialRevision=growth.Revision,data.JournalCount,data.PartyBonds.Revision
 end
@@ -86,7 +86,7 @@ function Growth:Overview()
     Widgets.Rows(self,'Attributes','JournalAttribute',attributes,function(row) self:Command('growth_attribute',row.id) end)
     local traits={}
     for i=0,actor.TraitCount-1 do local row=self.stats.traits:Get(actor:GetTraitAt(i));traits[#traits+1]={title='◆ '..row.name,body=row.description,color='354739'} end
-    if #traits==0 then traits[1]={title=L.GrowthNoTraits,body=L.GrowthTraitHint,color='354739'} end
+    if #traits==0 then traits[1]={title=LuaLanguage.GrowthNoTraits,body=LuaLanguage.GrowthTraitHint,color='354739'} end
     local story=self.context.systems:Get('Adventure').partyStory
     for _,row in ipairs(story:OverviewRows(actor)) do traits[#traits+1]=row end
     self.view.TraitDetail.text=traits[1].body
@@ -117,7 +117,7 @@ function Growth:Talents()
     self.treeIndex=math.min(#all,math.max(1,self.treeIndex))
     local tree=all[self.treeIndex];local open=actor.Growth:HasTree(tree.id)
     if not self.selectedNode then self.selectedNode=tree.rootIds[1] end
-    self.view.TreeTitle.text=tree.name..(open and '' or L.GrowthLockedTree)
+    self.view.TreeTitle.text=tree.name..(open and '' or LuaLanguage.GrowthLockedTree)
     local edges={}
     for _,row in ipairs(self.rules.edges:All()) do if self.rules.nodes:Get(row.fromId).treeId==tree.id then edges[#edges+1]=row end end
     for i,row in ipairs(edges) do
@@ -137,29 +137,29 @@ function Growth:Talents()
     local node=self.selectedNode and self.rules.nodes:Get(self.selectedNode)
     local available,reason=false,''
     if node then available,reason=self.rules:CanInvest(actor,node.id) end
-    self.view.Invest.interactable=available;self.view.InvestText.text=node and ('投入 '..node.pointCost..' 天赋点') or L.GrowthChooseNode
-    self.view.TalentName.text=node and self.rules.passives:Get(node.passiveId).name or '星火成途'
-    self.view.TalentDetail.text=node and (self.rules.passives:Get(node.passiveId).description..'\n'..(available and '可以投入' or reason)) or tree.description
-    self.view.SkillTitle.text='天赋树目录 · '..actor.Growth.TalentPoints..' 点可用'
+    self.view.Invest.interactable=available;self.view.InvestText.text=node and (string.format(LuaLanguage.UICharacterGrowthInvestTextText, (node.pointCost))) or LuaLanguage.GrowthChooseNode
+    self.view.TalentName.text=node and self.rules.passives:Get(node.passiveId).name or LuaLanguage.UICharacterGrowthTalentNameText
+    self.view.TalentDetail.text=node and (self.rules.passives:Get(node.passiveId).description..'\n'..(available and LuaLanguage.UICharacterGrowthTalentDetailText or reason)) or tree.description
+    self.view.SkillTitle.text=string.format(LuaLanguage.UICharacterGrowthSkillTitleText, (actor.Growth.TalentPoints))
     local rows={}
-    for i,row in ipairs(all) do rows[#rows+1]={id=i,title=(i==self.treeIndex and '当前 · ' or '')..row.name,
-        body=(actor.Growth:HasTree(row.id) and '已开放 · ' or '尚未解锁 · ')..(row.unlockRule=='adjacent_any' and L.GrowthAdjacent or L.GrowthPrerequisites),color='354739'} end
+    for i,row in ipairs(all) do rows[#rows+1]={id=i,title=(i==self.treeIndex and LuaLanguage.UICharacterGrowthTitle or '')..row.name,
+        body=(actor.Growth:HasTree(row.id) and LuaLanguage.UICharacterGrowthBody2 or LuaLanguage.UICharacterGrowthBody)..(row.unlockRule=='adjacent_any' and LuaLanguage.GrowthAdjacent or LuaLanguage.GrowthPrerequisites),color='354739'} end
     Widgets.Rows(self,'SkillRows','JournalSkill',rows,function(row) self.treeIndex=row.id;self.selectedNode=nil;self:Refresh() end)
 end
 function Growth:Courses()
     local actor=self.actor;local rows={};local growth=actor.Growth
     local professions=self.rules.professions
     local current=professions.professions:Get(growth.CurrentProfessionId)
-    self.view.TreeTitle.text=current.name..' · 学习机会 '..growth.PendingCount
-    rows[#rows+1]={command='choose_profession',title=self.choosingProfession and '返回当前职业技能' or '切换研习职业',
-        body='探索期间免费转职；已学能力永久保留，装备仍由属性与触媒要求决定。',color='354739'}
+    self.view.TreeTitle.text=string.format(LuaLanguage.UICharacterGrowthTreeTitleText, (current.name), (growth.PendingCount))
+    rows[#rows+1]={command='choose_profession',title=self.choosingProfession and LuaLanguage.UICharacterGrowthTitle8 or LuaLanguage.UICharacterGrowthTitle7,
+        body=LuaLanguage.UICharacterGrowthBody6,color='354739'}
     if self.choosingProfession then
-    self.view.TalentName.text='选择研习职业';self.view.TalentDetail.text='转职后开放对应课程和天赋树。\n\n已掌握的技能与天赋保留，可自由组合。\n\n转职不消耗学习机会，也不赠送新技能。'
-    self.view.Invest.interactable=false;self.view.InvestText.text='在左侧选择职业'
+    self.view.TalentName.text=LuaLanguage.UICharacterGrowthTalentNameText3;self.view.TalentDetail.text=LuaLanguage.UICharacterGrowthTalentDetailText4
+    self.view.Invest.interactable=false;self.view.InvestText.text=LuaLanguage.UICharacterGrowthInvestTextText6
     for _,profession in ipairs(professions.professions:All()) do
         local selected=profession.id==growth.CurrentProfessionId
-        rows[#rows+1]={id=profession.id,command='growth_profession',title=(selected and '正在研习 · ' or '转入职业 · ')..profession.name,
-            body=profession.description..' 转职不赠送新技能。',available=not selected,color='354739'}
+        rows[#rows+1]={id=profession.id,command='growth_profession',title=(selected and LuaLanguage.UICharacterGrowthTitle6 or LuaLanguage.UICharacterGrowthTitle5)..profession.name,
+            body=string.format(LuaLanguage.UICharacterGrowthBody5, (profession.description)),available=not selected,color='354739'}
     end
     else
     local courses={}
@@ -167,8 +167,8 @@ function Growth:Courses()
         local row=self.rules.skills:Get(course.skillId);local available,reason=professions:CanLearn(actor,row.id,self.stats,self.rules.atlas)
         local owned=growth:HasSkill(row.id)
         for _,id in ipairs(self.stats:Template(actor).skillIds) do if id==row.id then owned=true end end
-        courses[#courses+1]={id=row.id,command='select_course',title=(owned and '已掌握 · ' or (available and '可学习 · ' or '未满足 · '))..row.name,
-            body=(row.skillKind=='preparation' and '战前准备 · ' or '主动技能 · ')..reason..'\n'..row.description,
+        courses[#courses+1]={id=row.id,command='select_course',title=(owned and LuaLanguage.UICharacterGrowthTitle4 or (available and LuaLanguage.UICharacterGrowthTitle3 or LuaLanguage.UICharacterGrowthTitle2))..row.name,
+            body=(row.skillKind=='preparation' and LuaLanguage.UICharacterGrowthBody4 or LuaLanguage.UICharacterGrowthBody3)..reason..'\n'..row.description,
             order=owned and 3 or (available and 1 or 2),color=available and '805723' or '354739'}
     end end
     table.sort(courses,function(a,b) return a.order==b.order and a.id<b.id or a.order<b.order end)
@@ -186,13 +186,13 @@ function Growth:Courses()
     if self.selectedCourse then
         local skill=self.rules.skills:Get(self.selectedCourse);local available,reason=professions:CanLearn(actor,skill.id,self.stats,self.rules.atlas)
         self.view.TalentName.text=skill.name
-        local kind=skill.skillKind=='preparation' and '战前准备技能' or '主动技能'
+        local kind=skill.skillKind=='preparation' and LuaLanguage.UICharacterGrowthKind2 or LuaLanguage.UICharacterGrowthKind
         local condition=self.rules.atlas:EquipmentCondition(skill,actor,self.stats)
-        self.view.TalentDetail.text=kind..' · '..reason..'\n\n'..skill.description..(condition and '\n\n'..condition or '')..'\n\n详细效果与前置可在技能图鉴中查看。'
-        self.view.Invest.interactable=available;self.view.InvestText.text=available and '学习 · 消耗 1 次机会' or (growth:HasSkill(skill.id) and '已经掌握' or '暂不可学习')
+        self.view.TalentDetail.text=string.format(LuaLanguage.UICharacterGrowthTalentDetailText3, (kind), (reason), (skill.description), (condition and '\n\n'..condition or ''))
+        self.view.Invest.interactable=available;self.view.InvestText.text=available and LuaLanguage.UICharacterGrowthInvestTextText5 or (growth:HasSkill(skill.id) and LuaLanguage.UICharacterGrowthInvestTextText4 or LuaLanguage.UICharacterGrowthInvestTextText3)
     else
-        self.view.TalentName.text='当前职业暂无课程';self.view.TalentDetail.text='可切换研习职业，查看其他职业的课程。'
-        self.view.Invest.interactable=false;self.view.InvestText.text='无可选课程'
+        self.view.TalentName.text=LuaLanguage.UICharacterGrowthTalentNameText2;self.view.TalentDetail.text=LuaLanguage.UICharacterGrowthTalentDetailText2
+        self.view.Invest.interactable=false;self.view.InvestText.text=LuaLanguage.UICharacterGrowthInvestTextText2
     end
     end
     Widgets.Rows(self,'SkillRows','JournalSkill',rows,function(row)
@@ -207,7 +207,7 @@ function Growth:History()
     for i=(self.historyPage-1)*8+1,math.min(#all,self.historyPage*8) do
         local row=all[i];rows[#rows+1]={title=row.date..'  【'..row.label..'】'..row.title..'  ·  '..row.location,body=row.body,color='805723'}
     end
-    self.view.HistorySummary.text='留下 '..#all..' 段经历  ·  '..self.historyPage..' / '..pages
+    self.view.HistorySummary.text=string.format(LuaLanguage.UICharacterGrowthHistorySummaryText, (#all), (self.historyPage), (pages))
     self.view.PreviousHistory.interactable=self.historyPage>1;self.view.NextHistory.interactable=self.historyPage<pages
     Widgets.Rows(self,'HistoryRows','JournalEntry',rows)
 end

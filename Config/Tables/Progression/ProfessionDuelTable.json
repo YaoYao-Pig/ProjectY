@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "name": "ProfessionDuelTable",
+  "description": "公会礼式决斗的单挑契约",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "规则 ID"
+    },
+    {
+      "name": "facilityKind",
+      "type": "enum",
+      "description": "允许发起的设施",
+      "values": [
+        "guild"
+      ]
+    },
+    {
+      "name": "encounterId",
+      "type": "int",
+      "description": "实际单挑遭遇",
+      "ref": "CombatEncounterTable"
+    },
+    {
+      "name": "minimumHealthPercent",
+      "type": "int",
+      "description": "认输生命百分比",
+      "min": 1,
+      "max": 99
+    },
+    {
+      "name": "rewardCoins",
+      "type": "int",
+      "description": "胜利奖励",
+      "min": 0
+    },
+    {
+      "name": "lossCoins",
+      "type": "int",
+      "description": "失败代价",
+      "min": 0
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "单挑的明确规则"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "facilityKind": "guild",
+      "encounterId": 1801,
+      "minimumHealthPercent": 25,
+      "rewardCoins": 30,
+      "lossCoins": 15,
+      "description": "双方自愿单挑，任一方生命降至四分之一时认输；保留伤势，每城每日一次，不生成战利品。"
+    }
+  ]
+}

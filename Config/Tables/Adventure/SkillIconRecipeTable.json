@@ -1,0 +1,872 @@
+{
+  "version": 1,
+  "name": "SkillIconRecipeTable",
+  "description": "每个技能独立的图标生成配方；存在配方不代表已生成或已接入，开发美术提示不属于玩家文案。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配方 ID，约定为 10000 + skillId",
+      "min": 1
+    },
+    {
+      "name": "skillId",
+      "type": "int",
+      "description": "此配方专属的战斗技能",
+      "ref": "CombatSkillTable",
+      "min": 1
+    },
+    {
+      "name": "slug",
+      "type": "string",
+      "description": "唯一英文 kebab-case 资源名"
+    },
+    {
+      "name": "styleId",
+      "type": "string",
+      "description": "共用美术风格",
+      "ref": "SkillIconStyleTable"
+    },
+    {
+      "name": "subject",
+      "type": "string",
+      "description": "单主体英文美术提示，至多一个简单动作或效果；仅供开发工具使用"
+    }
+  ],
+  "rows": [
+    {
+      "id": 10001,
+      "skillId": 1,
+      "slug": "slash",
+      "styleId": "pixel-simple-v1",
+      "subject": "A plain iron sword tilted upward with one broad curved slash mark."
+    },
+    {
+      "id": 10002,
+      "skillId": 2,
+      "slug": "shoot",
+      "styleId": "pixel-simple-v1",
+      "subject": "A plain wooden bow with one nocked arrow, seen from the side."
+    },
+    {
+      "id": 10003,
+      "skillId": 3,
+      "slug": "spark",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single compact orange flame with a simple yellow inner shape."
+    },
+    {
+      "id": 10004,
+      "skillId": 4,
+      "slug": "defend",
+      "styleId": "pixel-simple-v1",
+      "subject": "A plain iron kite shield with a broad undecorated face."
+    },
+    {
+      "id": 10005,
+      "skillId": 5,
+      "slug": "heal",
+      "styleId": "pixel-simple-v1",
+      "subject": "A pale healing cross surrounded by two simple green leaves as one compact emblem; no hands or character."
+    },
+    {
+      "id": 10006,
+      "skillId": 6,
+      "slug": "arcane-bolt",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single violet crystal dart with one short tapering energy tail."
+    },
+    {
+      "id": 10007,
+      "skillId": 7,
+      "slug": "single-shot",
+      "styleId": "pixel-simple-v1",
+      "subject": "A simple chunky wooden-stock rifle pointing diagonally upward with one short block-shaped muzzle mark. Use only a broad brown stock and one plain iron barrel; no scope, sights, screws, engravings or modern tactical parts."
+    },
+    {
+      "id": 10008,
+      "skillId": 8,
+      "slug": "burst-fire",
+      "styleId": "pixel-simple-v1",
+      "subject": "A simple chunky wooden-stock rifle with one short firing trail made of three separated rectangular blocks. Use only a broad brown stock and one plain iron barrel; no scope, sights, screws, engravings or modern tactical parts."
+    },
+    {
+      "id": 10009,
+      "skillId": 9,
+      "slug": "reload",
+      "styleId": "pixel-simple-v1",
+      "subject": "A plain box magazine with one large brass cartridge visible at its open top."
+    },
+    {
+      "id": 10010,
+      "skillId": 10,
+      "slug": "one-handed-slash",
+      "styleId": "pixel-simple-v1",
+      "subject": "A compact iron arming sword with a short plain grip, angled diagonally upward."
+    },
+    {
+      "id": 10011,
+      "skillId": 11,
+      "slug": "greatsword-cleave",
+      "styleId": "pixel-simple-v1",
+      "subject": "A heavy wide greatsword with one broad downward slash wedge."
+    },
+    {
+      "id": 10012,
+      "skillId": 12,
+      "slug": "giant-blade-cleave",
+      "styleId": "pixel-simple-v1",
+      "subject": "A massive rectangular iron cleaver angled downward, with an oversized blade and a small dark grip."
+    },
+    {
+      "id": 10013,
+      "skillId": 13,
+      "slug": "offhand-slash",
+      "styleId": "pixel-simple-v1",
+      "subject": "A short iron dagger tilted toward the left with one small solid orange curved slash mark. The slash is a single opaque flat shape with crisp filled edges; no white trail, glow, translucent edges or scattered pixels."
+    },
+    {
+      "id": 10101,
+      "skillId": 101,
+      "slug": "guard-break",
+      "styleId": "pixel-simple-v1",
+      "subject": "A sturdy iron sword with one blunt orange impact wedge at its tip."
+    },
+    {
+      "id": 10102,
+      "skillId": 102,
+      "slug": "line-cleaver",
+      "styleId": "pixel-simple-v1",
+      "subject": "A broad iron sword with one wide horizontal sweeping slash."
+    },
+    {
+      "id": 10103,
+      "skillId": 103,
+      "slug": "focused-light",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single pale violet crystal orb narrowing to a sharp point on one side."
+    },
+    {
+      "id": 10104,
+      "skillId": 104,
+      "slug": "starfire",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single orange flame shaped like a bold four-pointed star with a small yellow core."
+    },
+    {
+      "id": 10105,
+      "skillId": 105,
+      "slug": "leaf-piercing-arrow",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single wooden arrow piercing one broad green leaf."
+    },
+    {
+      "id": 10106,
+      "skillId": 106,
+      "slug": "wind-piercing-arrow",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single pale arrow with one broad curved wind band around its shaft."
+    },
+    {
+      "id": 10107,
+      "skillId": 107,
+      "slug": "field-aid",
+      "styleId": "pixel-simple-v1",
+      "subject": "A compact cream medical satchel with one large green cross-shaped patch."
+    },
+    {
+      "id": 10108,
+      "skillId": 108,
+      "slug": "steady-stance",
+      "styleId": "pixel-simple-v1",
+      "subject": "A broad square iron shield with a heavy flat lower edge and one central brace."
+    },
+    {
+      "id": 10201,
+      "skillId": 201,
+      "slug": "tame",
+      "styleId": "pixel-simple-v1",
+      "subject": "A simple brown animal collar with one large heart-shaped green tag."
+    },
+    {
+      "id": 10202,
+      "skillId": 202,
+      "slug": "mounted-charge",
+      "styleId": "pixel-simple-v1",
+      "subject": "A simplified brown horse head leaning forward with one broad forward motion wedge."
+    },
+    {
+      "id": 10203,
+      "skillId": 203,
+      "slug": "chicken-pounce",
+      "styleId": "pixel-simple-v1",
+      "subject": "A compact cream chicken silhouette with raised wings and one short curved leap mark."
+    },
+    {
+      "id": 10204,
+      "skillId": 204,
+      "slug": "rabbit-jump",
+      "styleId": "pixel-simple-v1",
+      "subject": "A simple white rabbit silhouette stretched into a leap above one broad curved motion arc."
+    },
+    {
+      "id": 10205,
+      "skillId": 205,
+      "slug": "animal-bite",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single open animal jaw symbol with two large cream fangs and a dark interior."
+    },
+    {
+      "id": 10301,
+      "skillId": 301,
+      "slug": "simple-fence",
+      "styleId": "pixel-simple-v1",
+      "subject": "A small wooden fence section made of two chunky posts and one broad crossbar."
+    },
+    {
+      "id": 10302,
+      "skillId": 302,
+      "slug": "wooden-wall",
+      "styleId": "pixel-simple-v1",
+      "subject": "A compact wall panel made of exactly three chunky perfectly smooth flat brown rectangular planks and one broad horizontal cross brace. Only the two large seams between planks are visible. Each plank is a plain solid brown color with at most one side shadow. Absolutely no wood grain, knots, rings, streaks, interior lines, scratches, nail heads, holes, speckles or surface texture."
+    },
+    {
+      "id": 10303,
+      "skillId": 303,
+      "slug": "simple-step",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single squat wooden step stool with one broad top and two short solid legs."
+    },
+    {
+      "id": 10304,
+      "skillId": 304,
+      "slug": "shooting-platform",
+      "styleId": "pixel-simple-v1",
+      "subject": "A simple raised wooden platform with a square top, tall thick supports, and one broad ladder rung."
+    },
+    {
+      "id": 10305,
+      "skillId": 305,
+      "slug": "dig-shallow-pit",
+      "styleId": "pixel-simple-v1",
+      "subject": "A plain iron spade with one shallow curved brown cut beneath its blade."
+    },
+    {
+      "id": 10306,
+      "skillId": 306,
+      "slug": "dig-trench",
+      "styleId": "pixel-simple-v1",
+      "subject": "A plain iron spade with one deep U-shaped brown cut beneath its blade."
+    },
+    {
+      "id": 10307,
+      "skillId": 307,
+      "slug": "demolish",
+      "styleId": "pixel-simple-v1",
+      "subject": "A chunky iron hammer angled downward with one broad impact notch beside its head."
+    },
+    {
+      "id": 10401,
+      "skillId": 401,
+      "slug": "battle-spirit",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single raised clenched fist in warm red-brown solid blocks, with a strong square silhouette."
+    },
+    {
+      "id": 10402,
+      "skillId": 402,
+      "slug": "vigilance",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single wide-open amber eye with one short thick alert ray above it."
+    },
+    {
+      "id": 10403,
+      "skillId": 403,
+      "slug": "arcane-focus",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single purple crystal orb enclosed by one thick inward-curving violet band."
+    },
+    {
+      "id": 10404,
+      "skillId": 404,
+      "slug": "temporary-reinforcement",
+      "styleId": "pixel-simple-v1",
+      "subject": "A plain wooden shield with one broad iron reinforcing band across its center."
+    },
+    {
+      "id": 10701,
+      "skillId": 701,
+      "slug": "use-first-aid-kit",
+      "styleId": "pixel-simple-v1",
+      "subject": "A compact cream bandage roll with one large green cross-shaped patch on its wrapping."
+    },
+    {
+      "id": 10702,
+      "skillId": 702,
+      "slug": "drink-battle-potion",
+      "styleId": "pixel-simple-v1",
+      "subject": "A squat capped flask filled with muted steel-blue liquid, its body shaped like a simple shield."
+    },
+    {
+      "id": 10501,
+      "skillId": 501,
+      "slug": "disarm",
+      "styleId": "pixel-simple-v1",
+      "subject": "A short plain iron sword falling sideways beside one large straight orange arrow pointing downward, clearly symbolizing a dropped weapon. Keep the sword nearly horizontal and the separate downward arrow thick. No curved slash, attack swoosh, impact, hand or ground."
+    },
+    {
+      "id": 10502,
+      "skillId": 502,
+      "slug": "precision-thrust",
+      "styleId": "pixel-simple-v1",
+      "subject": "A short broad pointed iron stabbing blade angled upward, with a plain straight guard and one large dark-red drop at its tip. The blade must be a thick readable shape at 32 pixels, not a thin needle. No basket guard, loops, wirework or decorative hilt."
+    },
+    {
+      "id": 10503,
+      "skillId": 503,
+      "slug": "pick-up-weapon",
+      "styleId": "pixel-simple-v1",
+      "subject": "A plain iron sword pointing upward with one broad upward lifting mark beside its grip."
+    },
+    {
+      "id": 10504,
+      "skillId": 504,
+      "slug": "unarmed-strike",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single plain tan clenched fist facing forward with a broad knuckle silhouette."
+    },
+    {
+      "id": 10505,
+      "skillId": 505,
+      "slug": "poison-mist",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single compact muted-green cloud with three large rounded lobes and a dark-green lower shadow."
+    },
+    {
+      "id": 10506,
+      "skillId": 506,
+      "slug": "soothing-water",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single broad blue water droplet with one short curved water band around its base."
+    },
+    {
+      "id": 10507,
+      "skillId": 507,
+      "slug": "lasting-renewal",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single green sprout with two broad leaves enclosed by one simple open circular renewal band."
+    },
+    {
+      "id": 10508,
+      "skillId": 508,
+      "slug": "battle-prayer",
+      "styleId": "pixel-simple-v1",
+      "subject": "A simple upright golden sword with a short broad crossguard and one muted-red upward chevron at its base."
+    },
+    {
+      "id": 10509,
+      "skillId": 509,
+      "slug": "fireball",
+      "styleId": "pixel-simple-v1",
+      "subject": "A compact round orange fireball with one short flame-shaped tail and a plain yellow core."
+    },
+    {
+      "id": 11601,
+      "skillId": 1601,
+      "slug": "tide-bolt",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single blue water droplet stretched into a pointed dart with one short wave-shaped tail."
+    },
+    {
+      "id": 11621,
+      "skillId": 1621,
+      "slug": "conductive-judgment",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single thick yellow lightning bolt with one broad blue water band crossing its lower half."
+    },
+    {
+      "id": 11602,
+      "skillId": 1602,
+      "slug": "kindle-furnace",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single dark-red coal with one short upright orange flame."
+    },
+    {
+      "id": 11622,
+      "skillId": 1622,
+      "slug": "furnace-detonation",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single orange ember core inside one bold four-pointed red burst shape."
+    },
+    {
+      "id": 11603,
+      "skillId": 1603,
+      "slug": "cleansing-branch",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single pale-green branch with two broad leaves and one clean broken dark band falling away."
+    },
+    {
+      "id": 11604,
+      "skillId": 1604,
+      "slug": "armor-piercing-shot",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single brass bullet passing through one small flat iron plate with a large simple split."
+    },
+    {
+      "id": 11605,
+      "skillId": 1605,
+      "slug": "pendulum-double-shot",
+      "styleId": "pixel-simple-v1",
+      "subject": "A simple chunky wooden-stock rifle with one curved firing trail containing two large brass blocks. Use only a broad brown stock and one plain iron barrel; no scope, sights, screws, engravings or modern tactical parts."
+    },
+    {
+      "id": 11606,
+      "skillId": 1606,
+      "slug": "dusk-finisher",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single heavy dark-brass bullet with one short muted-red tapering trail."
+    },
+    {
+      "id": 11607,
+      "skillId": 1607,
+      "slug": "ritual-spellbreak",
+      "styleId": "pixel-simple-v1",
+      "subject": "A plain iron sword cutting through one broad violet ring broken into two halves."
+    },
+    {
+      "id": 11608,
+      "skillId": 1608,
+      "slug": "redline-bloodletting",
+      "styleId": "pixel-simple-v1",
+      "subject": "A slim iron blade with one large dark-red drop curled toward its grip."
+    },
+    {
+      "id": 11609,
+      "skillId": 1609,
+      "slug": "thorn-crown-absolution",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single simple green thorn crown with one broad opening breaking its lower rim."
+    },
+    {
+      "id": 11610,
+      "skillId": 1610,
+      "slug": "crushing-edge",
+      "styleId": "pixel-simple-v1",
+      "subject": "A broad medium slate-gray iron greatsword pointing downward with one separate solid dark-orange downward triangle beside its blade, symbolizing pressure. Use a thick solid gray blade and plain short straight guard, clearly readable on a dark background at 32 pixels. Both shapes float on transparency. No black blade interior, outline-only blade, engraving, ground, stone, dirt, rubble, debris, cracks, impact splashes or particles."
+    },
+    {
+      "id": 11611,
+      "skillId": 1611,
+      "slug": "patrol-fan-sweep",
+      "styleId": "pixel-simple-v1",
+      "subject": "A wide iron greatsword with one broad fan-shaped ochre slash. The slash is a single opaque flat color wedge with crisp filled edges; no white trail, glow, translucent edges, ground, debris or scattered pixels."
+    },
+    {
+      "id": 11612,
+      "skillId": 1612,
+      "slug": "last-candle-oath",
+      "styleId": "pixel-simple-v1",
+      "subject": "A broad medium slate-gray iron greatsword with one compact muted-red candle-shaped flame at its tip. Use a solid clearly visible gray blade and plain hilt, with no black interior, engraved grooves or fine outline-only shapes. Both blade and flame must read clearly on a dark background at 32 pixels."
+    },
+    {
+      "id": 11613,
+      "skillId": 1613,
+      "slug": "wall-breaker",
+      "styleId": "pixel-simple-v1",
+      "subject": "A massive solid medium-gray iron cleaver with a complete unbroken blade, beside one separate small square gray block emblem split by a single broad crack. The cleaver is intact; the crack belongs only to the square block symbol. No chipped blade, ground, rubble, flying fragments or fine cracks."
+    },
+    {
+      "id": 11614,
+      "skillId": 1614,
+      "slug": "frost-bell-strike",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single plain pale-blue iron bell with one thick angular frost band around its lower rim."
+    },
+    {
+      "id": 11615,
+      "skillId": 1615,
+      "slug": "crimson-siphon",
+      "styleId": "pixel-simple-v1",
+      "subject": "A broad iron blade with one thick dark-red curved stream returning toward its hilt."
+    },
+    {
+      "id": 11616,
+      "skillId": 1616,
+      "slug": "web-snare-arrow",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single wooden arrow wrapped in one thick pale loop of webbing; no fine web mesh."
+    },
+    {
+      "id": 11617,
+      "skillId": 1617,
+      "slug": "egret-split-feather",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single white-fletched arrow splitting into two broad arrowheads in a simple fork."
+    },
+    {
+      "id": 11618,
+      "skillId": 1618,
+      "slug": "grave-poison-arrow",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single wooden arrow with one large muted-green poison drop clinging to its head."
+    },
+    {
+      "id": 11623,
+      "skillId": 1623,
+      "slug": "distilled-poison-finisher",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single dark wooden arrow with one concentrated green drop drawn into its broad arrowhead."
+    },
+    {
+      "id": 11619,
+      "skillId": 1619,
+      "slug": "kiln-temper",
+      "styleId": "pixel-simple-v1",
+      "subject": "A plain iron sword with one compact orange flame curling around its broad guard."
+    },
+    {
+      "id": 11620,
+      "skillId": 1620,
+      "slug": "fault-seeking-strike",
+      "styleId": "pixel-simple-v1",
+      "subject": "A heavy solid medium-gray iron greatsword pointing downward with one separate thick ochre zigzag fissure mark beneath its point. Keep the blade complete, plain and clearly visible on a dark background. The fissure is one simple flat symbol floating on transparency, not a ground surface. No black blade interior, engraving, dirt, stone, rubble, flying fragments or fine cracks."
+    },
+    {
+      "id": 11624,
+      "skillId": 1624,
+      "slug": "tracking-spell",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single pale-blue eye with one thick curved arrow-shaped tail wrapping around its outer edge."
+    },
+    {
+      "id": 11625,
+      "skillId": 1625,
+      "slug": "spear-thrust",
+      "styleId": "pixel-simple-v1",
+      "subject": "A long plain wooden spear with a broad iron point and one short forward thrust mark."
+    },
+    {
+      "id": 11801,
+      "skillId": 1801,
+      "slug": "profession-skill-1801",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single corked potion bottle with one bold droplet."
+    },
+    {
+      "id": 11802,
+      "skillId": 1802,
+      "slug": "profession-skill-1802",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single corked potion bottle with one bold droplet."
+    },
+    {
+      "id": 11803,
+      "skillId": 1803,
+      "slug": "profession-skill-1803",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single corked potion bottle with one bold droplet."
+    },
+    {
+      "id": 11804,
+      "skillId": 1804,
+      "slug": "profession-skill-1804",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single corked potion bottle with one bold droplet."
+    },
+    {
+      "id": 11811,
+      "skillId": 1811,
+      "slug": "profession-skill-1811",
+      "styleId": "pixel-simple-v1",
+      "subject": "A simple lute with one broad musical note."
+    },
+    {
+      "id": 11812,
+      "skillId": 1812,
+      "slug": "profession-skill-1812",
+      "styleId": "pixel-simple-v1",
+      "subject": "A simple lute with one broad musical note."
+    },
+    {
+      "id": 11813,
+      "skillId": 1813,
+      "slug": "profession-skill-1813",
+      "styleId": "pixel-simple-v1",
+      "subject": "A simple lute with one broad musical note."
+    },
+    {
+      "id": 11814,
+      "skillId": 1814,
+      "slug": "profession-skill-1814",
+      "styleId": "pixel-simple-v1",
+      "subject": "A simple lute with one broad musical note."
+    },
+    {
+      "id": 11821,
+      "skillId": 1821,
+      "slug": "profession-skill-1821",
+      "styleId": "pixel-simple-v1",
+      "subject": "A plain golden shield with one pale healing cross."
+    },
+    {
+      "id": 11822,
+      "skillId": 1822,
+      "slug": "profession-skill-1822",
+      "styleId": "pixel-simple-v1",
+      "subject": "A plain golden shield with one pale healing cross."
+    },
+    {
+      "id": 11823,
+      "skillId": 1823,
+      "slug": "profession-skill-1823",
+      "styleId": "pixel-simple-v1",
+      "subject": "A plain golden shield with one pale healing cross."
+    },
+    {
+      "id": 11824,
+      "skillId": 1824,
+      "slug": "profession-skill-1824",
+      "styleId": "pixel-simple-v1",
+      "subject": "A plain golden shield with one pale healing cross."
+    },
+    {
+      "id": 11831,
+      "skillId": 1831,
+      "slug": "profession-skill-1831",
+      "styleId": "pixel-simple-v1",
+      "subject": "A violet wax seal with one broken circle."
+    },
+    {
+      "id": 11832,
+      "skillId": 1832,
+      "slug": "profession-skill-1832",
+      "styleId": "pixel-simple-v1",
+      "subject": "A violet wax seal with one broken circle."
+    },
+    {
+      "id": 11833,
+      "skillId": 1833,
+      "slug": "profession-skill-1833",
+      "styleId": "pixel-simple-v1",
+      "subject": "A violet wax seal with one broken circle."
+    },
+    {
+      "id": 11834,
+      "skillId": 1834,
+      "slug": "profession-skill-1834",
+      "styleId": "pixel-simple-v1",
+      "subject": "A violet wax seal with one broken circle."
+    },
+    {
+      "id": 11841,
+      "skillId": 1841,
+      "slug": "profession-skill-1841",
+      "styleId": "pixel-simple-v1",
+      "subject": "A slender rapier with one bold opening in a shield."
+    },
+    {
+      "id": 11842,
+      "skillId": 1842,
+      "slug": "profession-skill-1842",
+      "styleId": "pixel-simple-v1",
+      "subject": "A slender rapier with one bold opening in a shield."
+    },
+    {
+      "id": 11843,
+      "skillId": 1843,
+      "slug": "profession-skill-1843",
+      "styleId": "pixel-simple-v1",
+      "subject": "A slender rapier with one bold opening in a shield."
+    },
+    {
+      "id": 11844,
+      "skillId": 1844,
+      "slug": "profession-skill-1844",
+      "styleId": "pixel-simple-v1",
+      "subject": "A slender rapier with one bold opening in a shield."
+    },
+    {
+      "id": 11851,
+      "skillId": 1851,
+      "slug": "profession-skill-1851",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single wolf paw print and one clear command mark."
+    },
+    {
+      "id": 11852,
+      "skillId": 1852,
+      "slug": "profession-skill-1852",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single wolf paw print and one clear command mark."
+    },
+    {
+      "id": 11853,
+      "skillId": 1853,
+      "slug": "profession-skill-1853",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single wolf paw print and one clear command mark."
+    },
+    {
+      "id": 11854,
+      "skillId": 1854,
+      "slug": "profession-skill-1854",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single wolf paw print and one clear command mark."
+    },
+    {
+      "id": 11901,
+      "skillId": 1901,
+      "slug": "profession-skill-1901",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single medieval weapon with one clear directional motion mark."
+    },
+    {
+      "id": 11902,
+      "skillId": 1902,
+      "slug": "profession-skill-1902",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single medieval weapon with one clear directional motion mark."
+    },
+    {
+      "id": 11903,
+      "skillId": 1903,
+      "slug": "profession-skill-1903",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single medieval weapon with one clear directional motion mark."
+    },
+    {
+      "id": 11904,
+      "skillId": 1904,
+      "slug": "profession-skill-1904",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single medieval weapon with one clear directional motion mark."
+    },
+    {
+      "id": 11905,
+      "skillId": 1905,
+      "slug": "profession-skill-1905",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single medieval weapon with one clear directional motion mark."
+    },
+    {
+      "id": 11906,
+      "skillId": 1906,
+      "slug": "profession-skill-1906",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single medieval weapon with one clear directional motion mark."
+    },
+    {
+      "id": 11907,
+      "skillId": 1907,
+      "slug": "profession-skill-1907",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single medieval weapon with one clear directional motion mark."
+    },
+    {
+      "id": 11908,
+      "skillId": 1908,
+      "slug": "profession-skill-1908",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single medieval weapon with one clear directional motion mark."
+    },
+    {
+      "id": 11909,
+      "skillId": 1909,
+      "slug": "profession-skill-1909",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single medieval weapon with one clear directional motion mark."
+    },
+    {
+      "id": 11910,
+      "skillId": 1910,
+      "slug": "profession-skill-1910",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single medieval weapon with one clear directional motion mark."
+    },
+    {
+      "id": 11861,
+      "skillId": 1861,
+      "slug": "profession-skill-1861",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single corked potion bottle with one bold droplet."
+    },
+    {
+      "id": 11862,
+      "skillId": 1862,
+      "slug": "profession-skill-1862",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single corked potion bottle with one bold droplet."
+    },
+    {
+      "id": 11863,
+      "skillId": 1863,
+      "slug": "profession-skill-1863",
+      "styleId": "pixel-simple-v1",
+      "subject": "A violet wax seal with one broken circle."
+    },
+    {
+      "id": 11864,
+      "skillId": 1864,
+      "slug": "profession-skill-1864",
+      "styleId": "pixel-simple-v1",
+      "subject": "A violet wax seal with one broken circle."
+    },
+    {
+      "id": 11865,
+      "skillId": 1865,
+      "slug": "profession-skill-1865",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single medieval weapon with one clear directional motion mark."
+    },
+    {
+      "id": 11806,
+      "skillId": 1806,
+      "slug": "profession-skill-1806",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single corked potion bottle with one bold droplet."
+    },
+    {
+      "id": 11816,
+      "skillId": 1816,
+      "slug": "profession-skill-1816",
+      "styleId": "pixel-simple-v1",
+      "subject": "A simple lute with one broad musical note."
+    },
+    {
+      "id": 11826,
+      "skillId": 1826,
+      "slug": "profession-skill-1826",
+      "styleId": "pixel-simple-v1",
+      "subject": "A plain golden shield with one pale healing cross."
+    },
+    {
+      "id": 11836,
+      "skillId": 1836,
+      "slug": "profession-skill-1836",
+      "styleId": "pixel-simple-v1",
+      "subject": "A violet wax seal with one broken circle."
+    },
+    {
+      "id": 11846,
+      "skillId": 1846,
+      "slug": "profession-skill-1846",
+      "styleId": "pixel-simple-v1",
+      "subject": "A slender rapier with one bold opening in a shield."
+    },
+    {
+      "id": 11856,
+      "skillId": 1856,
+      "slug": "profession-skill-1856",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single wolf paw print and one clear command mark."
+    },
+    {
+      "id": 11867,
+      "skillId": 1867,
+      "slug": "profession-skill-1867",
+      "styleId": "pixel-simple-v1",
+      "subject": "A single medieval weapon with one clear directional motion mark."
+    }
+  ]
+}

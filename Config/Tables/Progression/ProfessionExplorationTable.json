@@ -1,0 +1,179 @@
+{
+  "version": 1,
+  "name": "ProfessionExplorationTable",
+  "description": "职业探索能力的耗时、材料和实体交互规则",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "探索技能 ID",
+      "ref": "CombatSkillTable"
+    },
+    {
+      "name": "kind",
+      "type": "enum",
+      "description": "探索交互类型",
+      "values": [
+        "extract",
+        "rumor",
+        "care",
+        "curse",
+        "duel",
+        "track",
+        "companion"
+      ]
+    },
+    {
+      "name": "minutes",
+      "type": "float",
+      "description": "成功推进游戏分钟",
+      "min": 0
+    },
+    {
+      "name": "range",
+      "type": "int",
+      "description": "有效实体距离",
+      "min": 0
+    },
+    {
+      "name": "itemId",
+      "type": "int",
+      "description": "消耗物品；0 表示无",
+      "default": 0,
+      "min": 0
+    },
+    {
+      "name": "itemCount",
+      "type": "int",
+      "description": "消耗份数",
+      "default": 0,
+      "min": 0
+    },
+    {
+      "name": "rewardItemId",
+      "type": "int",
+      "description": "采集获得物品；0 表示无",
+      "default": 0,
+      "min": 0
+    },
+    {
+      "name": "rewardCount",
+      "type": "int",
+      "description": "采集获得份数",
+      "default": 0,
+      "min": 0
+    },
+    {
+      "name": "daily",
+      "type": "bool",
+      "description": "按实体或城镇每日限一次",
+      "default": false
+    },
+    {
+      "name": "amount",
+      "type": "int",
+      "description": "该能力配置数值",
+      "default": 0,
+      "min": 0
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "探索用途与限制"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1806,
+      "kind": "extract",
+      "minutes": 5,
+      "range": 2,
+      "itemId": 0,
+      "itemCount": 0,
+      "rewardItemId": 8014,
+      "rewardCount": 1,
+      "daily": false,
+      "amount": 0,
+      "description": "采集一处相邻范围内尚未采过的有效蕨类植物，得到 1 份毒剂；同一真实实体只能采一次。"
+    },
+    {
+      "id": 1816,
+      "kind": "rumor",
+      "minutes": 30,
+      "range": 3,
+      "itemId": 0,
+      "itemCount": 0,
+      "rewardItemId": 0,
+      "rewardCount": 0,
+      "daily": true,
+      "amount": 12,
+      "description": "在当地酒馆听取有来源、12 格以内的真实附近地点消息；每城镇每日一次，已知线索不重复授予。"
+    },
+    {
+      "id": 1826,
+      "kind": "care",
+      "minutes": 10,
+      "range": 3,
+      "itemId": 91,
+      "itemCount": 1,
+      "rewardItemId": 0,
+      "rewardCount": 0,
+      "daily": true,
+      "amount": 360,
+      "description": "消耗 1 份急救包，为有可恢复伤势的队员缩短 6 小时恢复时间；每队员每日一次，不能再生永久缺失部位。"
+    },
+    {
+      "id": 1836,
+      "kind": "curse",
+      "minutes": 5,
+      "range": 0,
+      "itemId": 0,
+      "itemCount": 0,
+      "rewardItemId": 0,
+      "rewardCount": 0,
+      "daily": false,
+      "amount": 0,
+      "description": "识别持有诅咒物的真实触发条件与解除线索；已识别后再次使用，若携带净咒药剂则消耗 1 份净化该武器实例。"
+    },
+    {
+      "id": 1846,
+      "kind": "duel",
+      "minutes": 0,
+      "range": 3,
+      "itemId": 0,
+      "itemCount": 0,
+      "rewardItemId": 0,
+      "rewardCount": 0,
+      "daily": true,
+      "amount": 0,
+      "description": "在公会按约定请求一次单挑，每城镇每日一次；任一方生命低至 25% 时认输，保留真实伤势，胜利得 30 金币、失败付 15 金币。"
+    },
+    {
+      "id": 1856,
+      "kind": "track",
+      "minutes": 5,
+      "range": 4,
+      "itemId": 0,
+      "itemCount": 0,
+      "rewardItemId": 0,
+      "rewardCount": 0,
+      "daily": false,
+      "amount": 120,
+      "description": "从附近真实动物足迹提取行动方向，记录带时间、有效 120 分钟的线索；不能定位世界上全部动物。"
+    },
+    {
+      "id": 1867,
+      "kind": "companion",
+      "minutes": 0,
+      "range": 1,
+      "itemId": 0,
+      "itemCount": 0,
+      "rewardItemId": 0,
+      "rewardCount": 0,
+      "daily": false,
+      "amount": 0,
+      "description": "将本人绑定的同一只真实动物切换为独立随行或骑乘；两个模式互斥，保留生命、伤势与死亡状态。"
+    }
+  ]
+}

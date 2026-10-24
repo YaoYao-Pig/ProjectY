@@ -1,0 +1,35 @@
+---@meta
+-- Generated from LuaReference. Do not edit; never require this file.
+---@class StartMenuPanelView
+---@field Root CS.UnityEngine.RectTransform
+---@field Title CS.UnityEngine.UI.Text
+---@field Caption CS.UnityEngine.UI.Text
+---@field HomePage CS.UnityEngine.RectTransform
+---@field Start CS.UnityEngine.UI.Button
+---@field Load CS.UnityEngine.UI.Button
+---@field NewPage CS.UnityEngine.RectTransform
+---@field Seed CS.UnityEngine.UI.InputField
+---@field RandomSeed CS.UnityEngine.UI.Button
+---@field Size CS.UnityEngine.UI.Dropdown
+---@field Create CS.UnityEngine.UI.Button
+---@field LoadPage CS.UnityEngine.RectTransform
+---@field SaveContent CS.UnityEngine.RectTransform
+---@field SaveScroll CS.UnityEngine.UI.ScrollRect
+---@field Empty CS.UnityEngine.UI.Text
+---@field Hint CS.UnityEngine.UI.Text
+---@field Back CS.UnityEngine.UI.Button
+---@field Resume CS.UnityEngine.UI.Button
+---@field Style CS.ProjectY.UI.NarrativeView
+---@field OriginsTitle CS.UnityEngine.UI.Text
+---@field Origins CS.UnityEngine.RectTransform
+---@field OriginsScroll CS.UnityEngine.UI.ScrollRect
+---@field StartDetail CS.UnityEngine.RectTransform
+---@field StartDetailScroll CS.UnityEngine.UI.ScrollRect
+---@field StartName CS.ProjectY.UI.UITxt
+---@field StartDescription CS.ProjectY.UI.UITxt
+---@field StartParty CS.ProjectY.UI.UITxt
+---@field StartKitTitle CS.ProjectY.UI.UITxt
+---@field StartItems CS.UnityEngine.RectTransform
+---@field CreateText CS.UnityEngine.UI.Text
+local View = {}
+return View

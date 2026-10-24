@@ -114,6 +114,7 @@ namespace ProjectY.UI
                 panel.Initialize(this, definition);
                 var view = panel.View;
                 view.ValidateBindings();
+                view.ApplyLocalizations();
                 instances.Add(view, panel);
                 return view;
             }
@@ -133,7 +134,9 @@ namespace ProjectY.UI
             {
                 var view = instance.GetComponent<LuaReference>();
                 view.ValidateBindings();
-                instance.transform.SetParent(parent, false);
+                view.ApplyLocalizations();
+                // World widgets retain their controller's lifecycle while rendering outside the screen Canvas.
+                instance.transform.SetParent(definition.IsWorldUI ? worldRoot : parent, false);
                 widgets.Add(view);
                 return view;
             }

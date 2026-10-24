@@ -1,5 +1,6 @@
 -- MapArea 静态布局归此系统，唯一可变探索状态归 AdventureData.Areas。
 local Class=require('Core.Class')
+local LuaLanguage=require('Language')
 local System=require('Core.LuaSystem')
 local Generator=require('Game.MapArea.MapAreaGenerator')
 local Squad=require('Game.MapArea.SquadMovement')
@@ -49,6 +50,10 @@ function AreaSystem:OnInit(context)
     self.generator:Register(self.shipwreckType,require('Game.MapArea.ShipwreckGenerator'),'MapAreaShipwreckTable','MapAreaShipwreckThemeTable')
     self.generator:Register(self.config:GetEnum('MapArea','E_MapAreaType').Mine,
         require('Game.MapArea.MineGenerator'),'MapAreaMineTable','MapAreaMineThemeTable')
+    self.generator:Register(self.config:GetEnum('MapArea','E_MapAreaType').TrialGround,
+        require('Game.MapArea.TrialGroundGenerator'),'MapAreaTrialGroundTable','MapAreaTrialGroundThemeTable')
+    self.generator:Register(self.config:GetEnum('MapArea','E_MapAreaType').RoadsideRescue,
+        require('Game.MapArea.RoadsideRescueGenerator'),'MapAreaRoadsideRescueTable','MapAreaRoadsideRescueThemeTable')
     assert(self.generator.definitions:Get(self.battlefieldAreaId).areaType==self.battlefieldType,'Invalid event battlefield definition')
     self.appearance=require('Game.Adventure.PawnAppearance').New(self.config)
     self.combatStats=require('Game.Battle.CombatStats')(self.config,context.services.Adventure.Equipment)
@@ -119,10 +124,10 @@ function AreaSystem:Enter(site,worldSeed)
     local ok,reason=self:CanEnter(site);if not ok then return false,reason end
     return self:Activate(site,worldSeed,false)
 end
-function AreaSystem:EnterEventBattlefield(site,worldSeed,source)
+function AreaSystem:EnterEventBattlefield(site,worldSeed,source,areaId,decorate)
     assert(self.adventure.Phase=='resolving' and self.data.ActiveSiteId==0,'Event battlefield must start from a resolved world event')
     assert(not self.layouts[site.id],'Event battlefield already exists')
-    self.layouts[site.id]=self.generator:Generate(self.battlefieldAreaId,worldSeed,site.id,source)
+    self.layouts[site.id]=self.generator:Generate(areaId or self.battlefieldAreaId,worldSeed,site.id,source,decorate)
     return self:Activate(site,worldSeed,true)
 end
 function AreaSystem:Activate(site,worldSeed,fromEvent)
@@ -172,17 +177,32 @@ function AreaSystem:InitializeEncounters(layout,state)
             local group=state:AddEncounter(plan.id,plan.encounterId)
             local appearanceGroup=self.characterAppearances:Group(encounter.appearancePoolId,(layout.seed ~ (plan.id*65537)) & 0xffffffff)
             for i,cell in ipairs(plan.cells) do
-                local actor=group:AddEnemy(100000+state.SiteId*1000+plan.id*10+i,encounter.enemyIds[i],cell.q,cell.r)
+                local fixedId=plan.actorIds and plan.actorIds[i]
+                local actor=group:AddEnemy(fixedId or 100000+state.SiteId*1000+plan.id*10+i,encounter.enemyIds[i],cell.q,cell.r)
+                local team=plan.teams and plan.teams[i] or plan.team or 2
+                assert(team==0 or team>=2 and team<=64,'Encounter actors cannot belong to the player side')
                 local species=self.combatStats.animals.byUnit[actor.TemplateId]
                 if species then
                     actor:InitializeAnimal(species.id,(layout.seed ~ actor.Id) & 0xffffffff)
-                    actor:Deploy(plan.team or 2,cell.q,cell.r)
+                    actor:Deploy(team,cell.q,cell.r)
                 else
-                    assert(not plan.team or plan.team==2,'Only animals can be neutral encounter actors')
-                    if not self.combatStats.animals:IsStaticBody(actor) then self.characterAppearances:Assign(actor,appearanceGroup) end
+                    assert(team>=2,'Only animals can be neutral encounter actors')
+                    actor:Deploy(team,cell.q,cell.r)
+                    if fixedId then self.characterAppearances:Party(actor,self.adventure.Seed)
+                    elseif not self.combatStats.animals:IsStaticBody(actor) then self.characterAppearances:Assign(actor,appearanceGroup) end
                 end
                 self.context.systems:Get('Equipment'):InitializeEnemy(actor)
                 actor:SetMaxHP(self.combatStats:MaximumHP(actor));actor:Restore()
+                local health=plan.initialHealthPercents and plan.initialHealthPercents[i]
+                if health then
+                    assert(health>=1 and health<=100,'Encounter initial health must be in [1,100]')
+                    actor:Damage(actor.HP-math.max(1,math.floor(actor.MaxHP*health/100)))
+                end
+                local injuries=plan.injuries and plan.injuries[i]
+                if injuries then for _,injury in ipairs(injuries) do
+                    assert(self.config:GetTable('CombatUnitTable'):Get(actor.TemplateId).bodyInjuries,'Initial injuries require a humanoid actor')
+                    assert(CS.ProjectY.Data.BodyHealth.Injure(actor,injury.part,injury.kind,injury.damage))
+                end end
             end
         end
     end
@@ -199,6 +219,12 @@ function AreaSystem:EnemyOccupancy(layout,state,exceptGroup)
             end
         end end
     end
+    for i=0,self.adventure.PartyCount-1 do
+        local pet=CS.ProjectY.Data.AnimalCompanionState.Partner(self.adventure:GetPartyAt(i))
+        if pet and pet.HP>0 and layout:Find(pet.Q,pet.R,CS.ProjectY.Data.AnimalCompanionState.Layer(pet))then
+            for _,cell in ipairs(assert(self.combatStats.animals:Cells(pet,layout,nil,nil,CS.ProjectY.Data.AnimalCompanionState.Layer(pet))))do occupied[cell.index]=true end
+        end
+    end
     return occupied
 end
 -- 每次攻击读取当前权威位置；战斗中的队员用战斗坐标，探索中用编队坐标。
@@ -212,7 +238,7 @@ function AreaSystem:ShotOccupancy(sourceId,targetId,battle,layer)
         end
     end
     local function addActor(actor,cell)
-        if actor.Id~=sourceId and actor.Id~=targetId and actor.HP>0 and actor.AnimalOwnerId==0 then
+        if actor.Id~=sourceId and actor.Id~=targetId and actor.HP>0 and (actor.AnimalOwnerId==0 or CS.ProjectY.Data.AnimalCompanionState.Independent(actor)) then
             local descriptor={kind='actor',key='actor:'..actor.Id,actor=actor}
             for _,part in ipairs(assert(self.combatStats.animals:Cells(actor,area,cell.q,cell.r,cell.layer))) do addCell(part,descriptor) end
         end
@@ -221,10 +247,14 @@ function AreaSystem:ShotOccupancy(sourceId,targetId,battle,layer)
         local actor=self:PartyActor(state:GetMemberIdAt(i))
         local cell=battle and assert(area:Find(actor.Q,actor.R,layer)) or area.cells[state:GetMemberCellAt(i)]
         addActor(actor,cell)
+        local pet=CS.ProjectY.Data.AnimalCompanionState.Partner(actor)
+        if pet and pet.HP>0 and CS.ProjectY.Data.AnimalCompanionState.Layer(pet)==layer then local petCell=area:Find(pet.Q,pet.R,layer)
+            if petCell then addActor(pet,petCell)end
+        end
     end
     for i=0,state.EncounterCount-1 do local group=state:GetEncounterAt(i)
         for j=0,group.EnemyCount-1 do local actor=group:GetEnemyAt(j)
-            addActor(actor,assert(area:Find(actor.Q,actor.R)))
+            if actor.AnimalOwnerId==0 then addActor(actor,assert(area:Find(actor.Q,actor.R)))end
         end
     end
     for i=0,state.NpcCount-1 do local npc=state:GetNpcAt(i)
@@ -264,7 +294,7 @@ function AreaSystem:FindEncounter()
         end
     end
 end
-function AreaSystem:StartBattle(battle,group)
+function AreaSystem:StartBattle(battle,group,conflict)
     local area,state=self:ActiveLayout(),self.data.Active
     local rule=assert(self.encounterRules:Find(area.configId))
     local party,enemies={},{}
@@ -277,19 +307,32 @@ function AreaSystem:StartBattle(battle,group)
         local cell=area.cells[state:GetMemberCellAt(i)]
         party[#party+1]={actor=assert(actor),q=cell.q,r=cell.r}
     end
-    for i=0,group.EnemyCount-1 do local actor=group:GetEnemyAt(i);if actor.HP>0 and actor.AnimalOwnerId==0 then enemies[#enemies+1]=actor end end
+    local participating={};local excluded=conflict and conflict.excludedActorIds
+    local function addGroup(current)
+        participating[current.Id]=true
+        for i=0,current.EnemyCount-1 do local actor=current:GetEnemyAt(i)
+            if actor.HP>0 and actor.AnimalOwnerId==0 and not (excluded and excluded[actor.Id]) then enemies[#enemies+1]=actor end
+        end
+    end
+    if conflict then for i=0,state.EncounterCount-1 do addGroup(state:GetEncounterAt(i)) end else addGroup(group) end
     local center=assert(area:Find(enemies[1].Q,enemies[1].R));local radius=0
     local Hex=require('Game.Map.HexGrid')
     for _,row in ipairs(party) do radius=math.max(radius,Hex.Distance(center.q,center.r,row.q,row.r)) end
     for _,actor in ipairs(enemies) do radius=math.max(radius,Hex.Distance(center.q,center.r,actor.Q,actor.R)) end
     local board=self:BattleWindow(center.index,radius+rule.battleMargin)
+    if conflict then board.sideRelations=conflict.relations;board.primaryEnemyTeam=conflict.primary;board.worldConflict=conflict.conflict end
+    if conflict then board.aiProfiles=conflict.aiProfiles;board.protectedActorId=conflict.protectedActorId end
     board.lootStartCount=state.LootCount
     board.shotOccupancy=function(sourceId,targetId) return self:ShotOccupancy(sourceId,targetId,battle,board.originLayer) end
     board.onRoundCompleted=function() state:CompleteWorldRound() end
     local obstacles=self.obstacles and self.obstacles:BlockedCells() or {}
     board.allowed=function(cell) return state:IsKnown(cell.index) and not obstacles[cell.index] end
-    for index in pairs(self:EnemyOccupancy(area,state,group.Id)) do
-        local cell=area.cells[index];board.externalOccupied[Hex.Key(cell.q,cell.r)]=true
+    for i=0,state.EncounterCount-1 do local other=state:GetEncounterAt(i)
+        for j=0,other.EnemyCount-1 do local actor=other:GetEnemyAt(j)
+            if (not participating[other.Id] or excluded and excluded[actor.Id]) and actor.HP>0 and actor.AnimalOwnerId==0 then
+                for _,cell in ipairs(assert(self.combatStats.animals:Cells(actor,area))) do board.externalOccupied[Hex.Key(cell.q,cell.r)]=true end
+            end
+        end
     end
     self.adventure:BeginAreaBattle(group.Id)
     battle:StartArea(group.EncounterId,board,party,enemies)
@@ -297,7 +340,7 @@ function AreaSystem:StartBattle(battle,group)
 end
 function AreaSystem:BattleMembers(battle)
     local members={};local area=self:ActiveLayout()
-    for _,actor in ipairs(battle:Units()) do if actor.Team==1 and actor.HP>0 then
+    for _,actor in ipairs(battle:Units()) do if actor.Team==1 and actor.AnimalOwnerId==0 and actor.HP>0 then
         members[#members+1]={actorId=actor.Id,cellIndex=assert(area:Find(actor.Q,actor.R)).index}
     end end
     return members
@@ -379,8 +422,11 @@ end
 function AreaSystem:Tame(actorId,animalId)
     local ok,reason=self:CanTame(actorId,animalId);if not ok then return false,reason end
     local source,target=self:PartyActor(actorId),self:FindAnimal(animalId)
-    local success,chance=self.combatStats.animals:Tame(source,target,self.combatStats)
+    local success,chance,roll=self.combatStats.animals:Tame(source,target,self.combatStats)
     self.data.Active:Stop()
+    local check=require('Game.Presentation.DiceChecks').Percent(string.format(LuaLanguage.DiceTamingTitle,self.combatStats:Template(target).name),
+        roll,math.floor(chance*100)/100,success,'exclusive',100)
+    self.context.systems:Get('AdventureEvents').CheckResolved:Emit(check)
     if success then
         local area,state=self:ActiveLayout(),self.data.Active;local ids,cells={},{}
         for i=0,state.MemberCount-1 do
@@ -445,6 +491,7 @@ function AreaSystem:Walk(direction)
 end
 function AreaSystem:Interact(kind,id)
     if self.adventure.Phase~='area' then return false,'当前不在探索区域' end
+    if self.factions then local ok,reason=self.factions:ServiceAllowed(self.data.ActiveSiteId);if not ok then return false,reason end end
     local area,state=self:ActiveLayout(),self.data.Active
     local index,radius
     if kind==1 then
@@ -479,7 +526,11 @@ function AreaSystem:ResolveWorldRounds(rounds)
     if rounds>0 then
         local effects=self.context.systems:Get('Battle').gameEffects
         local targets={}
-        for i=0,self.adventure.PartyCount-1 do targets[#targets+1]=self.adventure:GetPartyAt(i) end
+        for i=0,self.adventure.PartyCount-1 do
+            local actor=self.adventure:GetPartyAt(i);targets[#targets+1]=actor
+            local pet=CS.ProjectY.Data.AnimalCompanionState.Partner(actor)
+            if pet and pet.HP>0 then targets[#targets+1]=pet end
+        end
         for i=0,state.EncounterCount-1 do local group=state:GetEncounterAt(i)
             for j=0,group.EnemyCount-1 do local actor=group:GetEnemyAt(j);if actor.AnimalOwnerId==0 then targets[#targets+1]=actor end end
         end
@@ -535,7 +586,10 @@ function AreaSystem:Snapshot(battle)
     local known,visible,route,members,npcs={},{},{},{},{}
     local knownCount,visibleCount=state.KnownCount,state.VisibleCount
     local fullVisibilityCount=knownCount==#area.cells and visibleCount==#area.cells and #area.cells or 0
-    for i=0,state.NpcCount-1 do local npc=state:GetNpcAt(i);npcs[#npcs+1]={id=npc.Id,cellIndex=npc.CellIndex,present=npc.Present} end
+    for i=0,state.NpcCount-1 do local npc=state:GetNpcAt(i);local marker=0
+        if npc.Present and self.narrative then marker=self.narrative.npcs:MissionMarker(self.data.ActiveSiteId,area.npcs[i+1]) end
+        npcs[#npcs+1]={id=npc.Id,cellIndex=npc.CellIndex,present=npc.Present,missionMarker=marker}
+    end
     for i=0,state.MemberCount-1 do members[#members+1]={actorId=state:GetMemberIdAt(i),cellIndex=state:GetMemberCellAt(i)} end
     -- 全公开区域发送范围，不让每次人物/NPC移动把整张地图逐项搬过 xLua 两次。
     if fullVisibilityCount==0 then
@@ -549,12 +603,35 @@ function AreaSystem:Snapshot(battle)
     for i=0,state.EncounterCount-1 do
         local group=state:GetEncounterAt(i);if group.Defeated then cleared=cleared+1 end
         for j=0,group.EnemyCount-1 do
-            local actor=group:GetEnemyAt(j);local cell=assert(area:Find(actor.Q,actor.R))
-            if actor.AnimalOwnerId==0 and actor.HP>0 and (fullVisibilityCount>0 or visibleSet[cell.index]) then
+            local actor=group:GetEnemyAt(j)
+            if actor.AnimalOwnerId==0 then
+            local cell=assert(area:Find(actor.Q,actor.R))
+            if actor.HP>0 and (fullVisibilityCount>0 or visibleSet[cell.index]) then
                 enemies[#enemies+1]=require('Game.Battle.CombatSnapshot')(actor,self.combatStats,self.appearance,area)
-            elseif actor.AnimalOwnerId==0 and actor.HP==0 and (fullVisibilityCount>0 or visibleSet[cell.index]) then
+                if battle then enemies[#enemies].team=battle:PresentationTeam(actor) end
+            elseif actor.HP==0 and (fullVisibilityCount>0 or visibleSet[cell.index]) then
                 defeated[#defeated+1]=require('Game.Battle.CombatSnapshot')(actor,self.combatStats,self.appearance,area)
+                if battle then defeated[#defeated].team=battle:PresentationTeam(actor) end
             end
+            end
+        end
+    end
+    -- Independent companions and voluntary duel opponents are not duplicated as area encounter entries.
+    local listed={};for _,row in ipairs(enemies)do listed[row.id]=true end;for _,row in ipairs(defeated)do listed[row.id]=true end
+    local function extra(actor)
+        if listed[actor.Id]then return end
+        local actorLayer=CS.ProjectY.Data.AnimalCompanionState.Independent(actor)and CS.ProjectY.Data.AnimalCompanionState.Layer(actor)or nil
+        local cell=area:Find(actor.Q,actor.R,actorLayer)
+        if not cell or not (fullVisibilityCount>0 or visibleSet[cell.index])then return end
+        local row=require('Game.Battle.CombatSnapshot')(actor,self.combatStats,self.appearance,area)
+        if battle then row.team=battle:PresentationTeam(actor)end
+        local list=actor.HP>0 and enemies or defeated;list[#list+1]=row;listed[actor.Id]=true
+    end
+    if battle then
+        for _,actor in ipairs(battle:Units())do if actor.AnimalOwnerId>0 or actor.Team~=1 then extra(actor)end end
+    else
+        for i=0,self.adventure.PartyCount-1 do
+            local pet=CS.ProjectY.Data.AnimalCompanionState.Partner(self.adventure:GetPartyAt(i));if pet then extra(pet)end
         end
     end
     for i=0,state.RemainingSteps-1 do route[#route+1]=state:GetRouteAt(i) end
@@ -588,12 +665,20 @@ function AreaSystem:LayoutSnapshot()
     for i,npc in ipairs(area.npcs) do
         local template=self.config:GetTable('MapAreaTownNpcTable'):Get(npc.templateId)
         local identity=npc.narrativeId and self.narrative.rules.npcs:Get(npc.narrativeId) or template
+        local spawn=assert(area.cells[npc.spawnIndex],'NPC spawn is outside the area')
+        local x,y,z=Hex.ToWorld(spawn.q,spawn.r,spawn.height,area.hexRadius)
         result.npcs[i]={id=npc.id,narrativeId=npc.narrativeId or 0,name=identity.name,description=identity.description,stepSeconds=npc.stepSeconds,
+            decorative=false,showName=false,spawnIndex=npc.spawnIndex,x=x,y=y,z=z,yaw=0,scale=1,
             appearance={templateId=npc.templateId,parts=self.appearance:Resolve(template.partIds)}}
         if npc.narrativeId then
             local look=self.narrative.adventure.characterAppearances.fixed[identity.actorTemplateId]
             if look then result.npcs[i].appearance.customizationJson=look end
         end
+    end
+    for _,npc in ipairs(area.decorativeNpcs or {}) do
+        result.npcs[#result.npcs+1]={id=npc.id,narrativeId=0,name=npc.name,description=npc.description,stepSeconds=1,
+            decorative=true,spawnIndex=npc.spawnIndex,x=npc.x,y=npc.y,z=npc.z,yaw=npc.yaw,scale=npc.scale,showName=npc.showName,
+            appearance={templateId=0,parts=self.appearance:Resolve(npc.partIds)}}
     end
     for i,cell in ipairs((area.baseLayout or area).cells) do
         local x,_,z=Hex.ToWorld(cell.q,cell.r,cell.height,area.hexRadius)

@@ -40,14 +40,19 @@ MonoBehaviour:
     GripKeys:
     - Time: 0
       WeaponRotation: {x: 0, y: -25, z: 0}
+      WeaponPosition: {x: 0, y: 0, z: 0}
     - Time: 0.2
       WeaponRotation: {x: -5, y: -25, z: 0}
+      WeaponPosition: {x: 0, y: 0, z: 0}
     - Time: 0.45
       WeaponRotation: {x: -2, y: -25, z: 0}
+      WeaponPosition: {x: 0, y: 0, z: 0}
     - Time: 0.8
       WeaponRotation: {x: 0, y: -25, z: 0}
+      WeaponPosition: {x: 0, y: 0, z: 0}
     - Time: 1
       WeaponRotation: {x: 0, y: -25, z: 0}
+      WeaponPosition: {x: 0, y: 0, z: 0}
     OffGripOffset: {x: 0, y: 0, z: 0}
   - TemplateId: 3
     State: Reload
@@ -58,14 +63,19 @@ MonoBehaviour:
     GripKeys:
     - Time: 0
       WeaponRotation: {x: 0, y: -25, z: 0}
+      WeaponPosition: {x: 0, y: 0, z: 0}
     - Time: 0.2
       WeaponRotation: {x: -10, y: -45, z: 0}
+      WeaponPosition: {x: 0, y: 0, z: 0}
     - Time: 0.45
       WeaponRotation: {x: -10, y: -45, z: 0}
+      WeaponPosition: {x: 0, y: 0, z: 0}
     - Time: 0.8
       WeaponRotation: {x: -5, y: -35, z: 0}
+      WeaponPosition: {x: 0, y: 0, z: 0}
     - Time: 1
       WeaponRotation: {x: 0, y: -25, z: 0}
+      WeaponPosition: {x: 0, y: 0, z: 0}
     OffGripOffset: {x: 0, y: -0.14, z: -0.12}
   - TemplateId: 4
     State: Attack
@@ -84,14 +94,19 @@ MonoBehaviour:
     GripKeys:
     - Time: 0
       WeaponRotation: {x: 40, y: 0, z: 4}
+      WeaponPosition: {x: 0, y: 0, z: 0}
     - Time: 0.2
       WeaponRotation: {x: 55, y: -10, z: 4}
+      WeaponPosition: {x: 0, y: 0, z: 0}
     - Time: 0.45
       WeaponRotation: {x: 100, y: 5, z: 4}
+      WeaponPosition: {x: 0, y: 0, z: 0}
     - Time: 0.8
       WeaponRotation: {x: 75, y: 5, z: 4}
+      WeaponPosition: {x: 0, y: 0, z: 0}
     - Time: 1
       WeaponRotation: {x: 40, y: 0, z: 4}
+      WeaponPosition: {x: 0, y: 0, z: 0}
     OffGripOffset: {x: 0, y: 0, z: 0}
   - TemplateId: 6
     State: HeavySlash
@@ -102,18 +117,25 @@ MonoBehaviour:
     GripKeys:
     - Time: 0
       WeaponRotation: {x: 40, y: 0, z: 4}
+      WeaponPosition: {x: 0, y: 0, z: 0}
     - Time: 0.26
       WeaponRotation: {x: 60, y: 90, z: 35}
+      WeaponPosition: {x: 0, y: 0, z: 0}
     - Time: 0.32
       WeaponRotation: {x: 60, y: 90, z: 35}
+      WeaponPosition: {x: 0, y: 0, z: 0}
     - Time: 0.48
       WeaponRotation: {x: 60, y: 90, z: 115}
+      WeaponPosition: {x: 0, y: 0, z: 0}
     - Time: 0.56
       WeaponRotation: {x: 60, y: 90, z: 145}
+      WeaponPosition: {x: 0, y: 0, z: 0}
     - Time: 0.76
       WeaponRotation: {x: 60, y: 90, z: 80}
+      WeaponPosition: {x: 0, y: 0, z: 0}
     - Time: 1
       WeaponRotation: {x: 40, y: 0, z: 4}
+      WeaponPosition: {x: 0, y: 0, z: 0}
     OffGripOffset: {x: 0, y: 0, z: 0}
   - TemplateId: 7
     State: OffAttack
@@ -130,6 +152,29 @@ MonoBehaviour:
     Impact: 0.45
     UseAuthoredGrip: 0
     GripKeys: []
+    OffGripOffset: {x: 0, y: 0, z: 0}
+  - TemplateId: 9
+    State: HeavySlash
+    Clip: {fileID: 1705686167135224321, guid: bc2d6c5c87eb98648a666352a52c7ac4, type: 3}
+    Duration: 0.65
+    Impact: 0.48
+    UseAuthoredGrip: 1
+    GripKeys:
+    - Time: 0
+      WeaponRotation: {x: 76, y: 0, z: 0}
+      WeaponPosition: {x: 0, y: 0, z: 0}
+    - Time: 0.28
+      WeaponRotation: {x: 82, y: 0, z: 0}
+      WeaponPosition: {x: 0, y: 0, z: -0.1}
+    - Time: 0.48
+      WeaponRotation: {x: 90, y: 0, z: 0}
+      WeaponPosition: {x: 0, y: 0, z: 0.22}
+    - Time: 0.62
+      WeaponRotation: {x: 90, y: 0, z: 0}
+      WeaponPosition: {x: 0, y: 0, z: 0.18}
+    - Time: 1
+      WeaponRotation: {x: 76, y: 0, z: 0}
+      WeaponPosition: {x: 0, y: 0, z: 0}
     OffGripOffset: {x: 0, y: 0, z: 0}
   Holds:
   - PoseId: 0
@@ -210,6 +255,15 @@ MonoBehaviour:
     MainGripRotation: {x: 297.20105, y: 14.348194, z: 82.25716}
     OffGripRotation: {x: 308.03137, y: 138.99652, z: 89.629715}
     HandHeadClearance: 0.16
+    IdleVariants:
+    - IdleRifle
+    - Idle
+    KeepWeaponUpright: 1
+  - PoseId: 9
+    IdleState: IdleRifle
+    MainGripRotation: {x: 297.20105, y: 14.348194, z: 82.25716}
+    OffGripRotation: {x: 308.03137, y: 138.99652, z: 89.629715}
+    HandHeadClearance: 0.4
     IdleVariants:
     - IdleRifle
     - Idle

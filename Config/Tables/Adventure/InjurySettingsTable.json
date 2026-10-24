@@ -1,0 +1,88 @@
+{
+  "version": 1,
+  "name": "InjurySettingsTable",
+  "description": "受伤概率及累积量；使用同一战斗随机流",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定编号",
+      "min": 1
+    },
+    {
+      "name": "baseChance",
+      "type": "int",
+      "description": "基础创伤概率",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "damageChanceScale",
+      "type": "float",
+      "description": "每损失1%最大生命增加的概率百分点",
+      "min": 0
+    },
+    {
+      "name": "maximumChance",
+      "type": "int",
+      "description": "概率上限",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "damageScale",
+      "type": "float",
+      "description": "实际损失生命占最大生命百分比转为损伤的倍率",
+      "min": 0.01
+    },
+    {
+      "name": "minimumDamage",
+      "type": "int",
+      "description": "单次创伤最小损伤",
+      "min": 1,
+      "max": 100
+    },
+    {
+      "name": "maximumDamage",
+      "type": "int",
+      "description": "单次创伤最大损伤",
+      "min": 1,
+      "max": 100
+    },
+    {
+      "name": "maximumPenalty",
+      "type": "float",
+      "description": "叠加属性与移动惩罚上限",
+      "min": 0,
+      "max": 0.95
+    },
+    {
+      "name": "missingHealthChanceScale",
+      "type": "float",
+      "description": "部位每缺失1%血量增加的创伤概率百分点",
+      "min": 0
+    },
+    {
+      "name": "defaultInjuryTypeId",
+      "type": "int",
+      "description": "无创伤动作造成致残时记录的创伤类型",
+      "ref": "InjuryTypeTable",
+      "min": 1
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "baseChance": 20,
+      "damageChanceScale": 0.2,
+      "maximumChance": 95,
+      "damageScale": 1.5,
+      "minimumDamage": 12,
+      "maximumDamage": 45,
+      "maximumPenalty": 0.8,
+      "missingHealthChanceScale": 0.65,
+      "defaultInjuryTypeId": 1
+    }
+  ]
+}

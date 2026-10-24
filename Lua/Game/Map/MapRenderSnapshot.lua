@@ -27,7 +27,8 @@ return function(map)
             elseif not second or item.weight > second.weight then second = item end
         end
         assert(first and first.weight > 0, 'Render cell requires a positive biome weight')
-        result.cells[i] = { x = x, y = y, z = z, hasWater = cell.waterLevel ~= nil,
+        result.cells[i] = { q = cell.q, r = cell.r, townId = cell.townId or 0,
+            x = x, y = y, z = z, hasWater = cell.waterLevel ~= nil,
             waterLevel = cell.waterLevel or 0, waterDepth = cell.waterDepth or 0,
             isRiver = cell.waterKind == 'river', riverId = cell.riverId or 0,
             flowTo = cell.flowTo and assert(indices[cell.flowTo], 'River flow target is outside this map') or 0,

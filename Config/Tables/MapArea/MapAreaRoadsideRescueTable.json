@@ -1,0 +1,72 @@
+{
+  "version": 1,
+  "name": "MapAreaRoadsideRescueTable",
+  "description": "路边拦截：三名追兵、南侧玩家入口和战斗窗口外的后方藏身处。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "encounterId",
+      "type": "int",
+      "description": "三名追兵与一名后方逃兵；固定顺序由事件配置接入",
+      "ref": "CombatEncounterTable"
+    },
+    {
+      "name": "groundSurfaceId",
+      "type": "int",
+      "description": "道路两侧的陆地地表",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "roadSurfaceId",
+      "type": "int",
+      "description": "贯穿南北的夯土道路",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "treeAssetIds",
+      "type": "int[]",
+      "description": "复用现有树木模型作为路边掩体",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "rockAssetId",
+      "type": "int",
+      "description": "复用现有小石堆掩体",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "cartAssetId",
+      "type": "int",
+      "description": "复用现有遗弃货车掩体",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "battleRadius",
+      "type": "int",
+      "description": "以第一名追兵为中心的战场半径；后方逃兵在18格外",
+      "min": 10,
+      "max": 12
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "encounterId": 302,
+      "groundSurfaceId": 1,
+      "roadSurfaceId": 3,
+      "treeAssetIds": [
+        13,
+        14
+      ],
+      "rockAssetId": 95,
+      "cartAssetId": 98,
+      "battleRadius": 12
+    }
+  ]
+}

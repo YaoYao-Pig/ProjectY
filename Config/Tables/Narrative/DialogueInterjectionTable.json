@@ -1,0 +1,361 @@
+{
+  "version": 1,
+  "name": "DialogueInterjectionTable",
+  "description": "队员参与对白。逐人检查 Condition；自动模式按队伍顺序让所有满足者发言，主动模式选择一位队员；每条每次会话只触发一次。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定发言 ID",
+      "min": 1
+    },
+    {
+      "name": "nodeId",
+      "type": "int",
+      "description": "触发所在的对话节点",
+      "ref": "DialogueNodeTable"
+    },
+    {
+      "name": "order",
+      "type": "int",
+      "description": "节点内顺序，同序号按 ID 排序",
+      "min": 1,
+      "default": 1
+    },
+    {
+      "name": "mode",
+      "type": "enum",
+      "description": "自动插话或由玩家选择发言者",
+      "values": [
+        "auto",
+        "optional"
+      ]
+    },
+    {
+      "name": "conditionId",
+      "type": "int",
+      "description": "以同一候选队员作为 actor 求值的共享条件",
+      "ref": "ConditionTable"
+    },
+    {
+      "name": "cue",
+      "type": "text",
+      "description": "玩家可见的发言缘由，例如特质或过往经历"
+    },
+    {
+      "name": "text",
+      "type": "text",
+      "description": "队员对白正文"
+    },
+    {
+      "name": "nextNodeId",
+      "type": "int",
+      "description": "主动发言后的接续节点；0 留在当前节点。自动模式必须为 0",
+      "min": 0,
+      "default": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "nodeId": 1,
+      "order": 1,
+      "mode": "auto",
+      "conditionId": 4036,
+      "cue": "傲慢 · 不愿示弱",
+      "text": "三天而已。路上总要有人先走一步——我可不打算在这里等第四天。",
+      "nextNodeId": 0
+    },
+    {
+      "id": 2,
+      "nodeId": 1,
+      "order": 2,
+      "mode": "optional",
+      "conditionId": 4037,
+      "cue": "战斗经历 · 先问清风险",
+      "text": "我们在路上交过手。出发前先说清楚：驿使最后经过哪里，沿途有谁看见过他？",
+      "nextNodeId": 4156
+    },
+    {
+      "id": 3,
+      "nodeId": 2,
+      "order": 1,
+      "mode": "auto",
+      "conditionId": 4041,
+      "cue": "坚韧 / 战斗经历",
+      "text": "弹药要带够，退路也要留好。我挨得住几下，不代表每个人都该硬撑。",
+      "nextNodeId": 0
+    },
+    {
+      "id": 4,
+      "nodeId": 3,
+      "order": 1,
+      "mode": "auto",
+      "conditionId": 4039,
+      "cue": "共同经历 · 理解同行",
+      "text": "一起走过一段路以后，就知道等一个人并不是耽误。有时那正是继续走下去的理由。",
+      "nextNodeId": 0
+    },
+    {
+      "id": 5,
+      "nodeId": 3001,
+      "order": 1,
+      "mode": "optional",
+      "conditionId": 4040,
+      "cue": "巧匠 ≥ 3 · 查看旧零件",
+      "text": "让我看看这些磨损的位置。账目可以改写，零件承受过的力却会留下痕迹。先把旧件与换下来的件摆在一起。",
+      "nextNodeId": 0
+    },
+    {
+      "id": 6,
+      "nodeId": 3065,
+      "order": 1,
+      "mode": "auto",
+      "conditionId": 4039,
+      "cue": "共同经历 · 信任需要约束",
+      "text": "一起冒过险，不等于永远不会犯错。把谁来复查、谁能提出异议也写进去。",
+      "nextNodeId": 0
+    },
+    {
+      "id": 8000,
+      "nodeId": 8007,
+      "order": 1,
+      "mode": "optional",
+      "conditionId": 8020,
+      "cue": "孤僻",
+      "text": "“三次。她每次都自己来？”",
+      "nextNodeId": 8010
+    },
+    {
+      "id": 8001,
+      "nodeId": 8005,
+      "order": 1,
+      "mode": "auto",
+      "conditionId": 8029,
+      "cue": "傲慢",
+      "text": "“她人就在镇上，叫她来一趟，不就清楚了吗？”",
+      "nextNodeId": 0
+    },
+    {
+      "id": 8002,
+      "nodeId": 8021,
+      "order": 1,
+      "mode": "optional",
+      "conditionId": 8050,
+      "cue": "老练 · 亲历战斗",
+      "text": "“背着人走的时候，衣领会往后勒。剪断扣带就能松开，不必先把人放下。”",
+      "nextNodeId": 8023
+    },
+    {
+      "id": 8003,
+      "nodeId": 8025,
+      "order": 1,
+      "mode": "auto",
+      "conditionId": 8062,
+      "cue": "同袍之谊",
+      "text": "“写救人的那一段时，把那个徒弟的名字也写上。他活着，可以来作证。”",
+      "nextNodeId": 0
+    },
+    {
+      "id": 8004,
+      "nodeId": 8034,
+      "order": 1,
+      "mode": "optional",
+      "conditionId": 8082,
+      "cue": "傲慢",
+      "text": "“赫铎肯拿自己的钱作保，工人还会怕领不到工钱？”",
+      "nextNodeId": 8037
+    },
+    {
+      "id": 8005,
+      "nodeId": 8038,
+      "order": 1,
+      "mode": "auto",
+      "conditionId": 8019,
+      "cue": "孤僻",
+      "text": "“我会要自己的那张领据。大家都说记得，过一年就未必了。”",
+      "nextNodeId": 0
+    },
+    {
+      "id": 8006,
+      "nodeId": 8047,
+      "order": 1,
+      "mode": "optional",
+      "conditionId": 8107,
+      "cue": "孤僻",
+      "text": "“他们站在旁边，看你写完？”",
+      "nextNodeId": 8050
+    },
+    {
+      "id": 8007,
+      "nodeId": 8060,
+      "order": 1,
+      "mode": "optional",
+      "conditionId": 8138,
+      "cue": "坚韧 · 动物亲和 3",
+      "text": "“白天跟巡查的人出去，晚上送回酒馆，行不行？别让它一直等着回家。”",
+      "nextNodeId": 8063
+    },
+    {
+      "id": 8008,
+      "nodeId": 8064,
+      "order": 1,
+      "mode": "auto",
+      "conditionId": 8062,
+      "cue": "同袍之谊",
+      "text": "“换班的时候得把狗交给下一班的人，别两边都以为对方带走了。”",
+      "nextNodeId": 0
+    },
+    {
+      "id": 8009,
+      "nodeId": 8073,
+      "order": 1,
+      "mode": "optional",
+      "conditionId": 8166,
+      "cue": "老练 · 亲历战斗",
+      "text": "“匪帮怎么知道哪一趟车没有护卫？有人告诉他们巡逻的时间吗？”",
+      "nextNodeId": 8076
+    },
+    {
+      "id": 8010,
+      "nodeId": 8087,
+      "order": 1,
+      "mode": "optional",
+      "conditionId": 8200,
+      "cue": "傲慢",
+      "text": "“收着房钱，还想随时开门。这样的工坊不如交给别人管。”",
+      "nextNodeId": 8090
+    },
+    {
+      "id": 8011,
+      "nodeId": 8091,
+      "order": 1,
+      "mode": "auto",
+      "conditionId": 8210,
+      "cue": "余烬伤痕",
+      "text": "“门口别堆换下来的木板。我见过人跑到门边，又被绊倒。”",
+      "nextNodeId": 0
+    },
+    {
+      "id": 8012,
+      "nodeId": 8100,
+      "order": 1,
+      "mode": "optional",
+      "conditionId": 8231,
+      "cue": "曾接受同伴援手",
+      "text": "“帮过我的人也常替我拿主意。先把字条交给阿苇，再去问问岑姨自己想怎么办。”",
+      "nextNodeId": 8103
+    },
+    {
+      "id": 8013,
+      "nodeId": 8104,
+      "order": 1,
+      "mode": "auto",
+      "conditionId": 8019,
+      "cue": "孤僻",
+      "text": "“要问她想不想见人。有人把饭送来，已经很好了。”",
+      "nextNodeId": 0
+    },
+    {
+      "id": 8014,
+      "nodeId": 8113,
+      "order": 1,
+      "mode": "optional",
+      "conditionId": 8257,
+      "cue": "傲慢",
+      "text": "“让他们当着塞维恩的面唱。敢唱才算本事。”",
+      "nextNodeId": 8116
+    },
+    {
+      "id": 8015,
+      "nodeId": 8126,
+      "order": 1,
+      "mode": "optional",
+      "conditionId": 8291,
+      "cue": "同袍之谊 · 同伴经历",
+      "text": "“谁当班，谁替班，都写清楚。出了事大家才知道该叫醒谁。”",
+      "nextNodeId": 8129
+    },
+    {
+      "id": 8016,
+      "nodeId": 8130,
+      "order": 1,
+      "mode": "auto",
+      "conditionId": 8029,
+      "cue": "傲慢",
+      "text": "“几把钥匙分给几个人，一天能吵三回。”",
+      "nextNodeId": 0
+    },
+    {
+      "id": 8017,
+      "nodeId": 8130,
+      "order": 1,
+      "mode": "auto",
+      "conditionId": 8062,
+      "cue": "同袍之谊",
+      "text": "“管钥匙的人住哪儿，也写下来。半夜出事，别到处找不到人。”",
+      "nextNodeId": 0
+    },
+    {
+      "id": 10000,
+      "nodeId": 10002,
+      "order": 1,
+      "mode": "optional",
+      "conditionId": 10026,
+      "cue": "老练 · 亲历战斗",
+      "text": "“先给他个能坐下的地方。别让他站在点名的位置上讲。”",
+      "nextNodeId": 10008
+    },
+    {
+      "id": 10001,
+      "nodeId": 10001,
+      "order": 1,
+      "mode": "auto",
+      "conditionId": 10032,
+      "cue": "余烬伤痕",
+      "text": "“我也受过伤。有些事不想再提，你想好了再说。”",
+      "nextNodeId": 0
+    },
+    {
+      "id": 10002,
+      "nodeId": 10014,
+      "order": 1,
+      "mode": "optional",
+      "conditionId": 10057,
+      "cue": "孤僻",
+      "text": "“那两个人死了，她还一直记着名字。图是你借出去的，你连借给谁都没记？”",
+      "nextNodeId": 10020
+    },
+    {
+      "id": 10003,
+      "nodeId": 10026,
+      "order": 1,
+      "mode": "optional",
+      "conditionId": 10089,
+      "cue": "傲慢",
+      "text": "“你买了坏铁料，还要徒弟赔钱？当师傅就能这么算账？”",
+      "nextNodeId": 10032
+    },
+    {
+      "id": 10004,
+      "nodeId": 10038,
+      "order": 1,
+      "mode": "optional",
+      "conditionId": 10119,
+      "cue": "坚韧",
+      "text": "“会治哪些伤病就写清楚。实在治不了，也得告诉人家可以去找谁。”",
+      "nextNodeId": 10044
+    },
+    {
+      "id": 10005,
+      "nodeId": 10050,
+      "order": 1,
+      "mode": "optional",
+      "conditionId": 10151,
+      "cue": "同袍之谊",
+      "text": "“他会不会带路我不在乎。我想知道出了事，他会不会丢下同伴自己跑。”",
+      "nextNodeId": 10056
+    }
+  ]
+}

@@ -37,6 +37,9 @@ try{
   var result=bootstrap.ExecuteEditorConsole(runner,code,"@dialogue_pause_command");
   if(!(bool)result[0])throw new System.Exception((string)result[3]);
  };
+ var build=typeof(ProjectY.Samples.AdventureRuntimeDemo).GetMethod("BuildExpedition",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+ if(!(bool)build.Invoke(demo,new object[]{"start_story",0,null}))throw new System.Exception("Narrative fixture did not create its expedition");
+ check("local ui=console.systems:Get('UI'); if ui:IsOpen('StartMenu') then ui:Close('StartMenu') end");
  if(!string.IsNullOrEmpty(demo.LastError))throw new System.Exception(demo.LastError);
  demo.SendCommand("gm_goto_npc",1,0);
  if(!string.IsNullOrEmpty(demo.LastError))throw new System.Exception(demo.LastError);
@@ -46,20 +49,23 @@ try{
  using(var rows=layout.Get<XLua.LuaTable>("npcs"))
   for(int i=1;i<=rows.Length;i++)using(var row=rows.Get<int,XLua.LuaTable>(i))if(row.Get<int>("narrativeId")==1)localNpc=row.Get<int>("id");
  if(localNpc==0)throw new System.Exception("Narrative NPC not rendered");
+ check("local a=console.systems:Get('Adventure'); a.data:Record('battle','接话验证','独立预览的战斗经历','验证场景',0,0,0,true)");
  demo.SendCommand("area_interact",2,localNpc);
  check("local s=console.systems:Get('Narrative'); assert(s.data.DialogueOpen and s.data.DialogueNodeId==1); assert(console.services.UI.IsWorldPaused and CS.UnityEngine.Time.timeScale==0)");
+ check("local hud=console.systems:Get('UI').panels.MainHud.ctrl; hud:Tick(); assert(hud.view.Group.alpha==0, 'Dialogue must hide distracting exploration HUD')");
  var narrative=(ProjectY.Data.NarrativeData)bootstrap.CallModule("Game.Narrative.Bridge","data")[0];
  var player=demo.HealthTarget(narrative.DialogueActorId).GetComponentInParent<ProjectY.Samples.PawnView>();
  if(player==null)throw new System.Exception("Missing rendered player pawn");
  if(player.PresentationBusy)throw new System.Exception("Opening a paused dialogue queued an interaction animation");
  // 人为保留一个真实未结束动画，验证选项/关闭不会等待 Time.timeScale=0 下的动作。
  player.PlayInteraction(true);if(!player.PresentationBusy)throw new System.Exception("Fixture must contain a busy animated pawn");
- check("local ui=console.systems:Get('UI'); local p=ui.panels.Dialogue.ctrl; assert(p.pool[2].view.Button.interactable); p.pool[2].view.Button.onClick:Invoke(); p:Tick(); assert(console.systems:Get('Narrative').data.DialogueNodeId==2, 'Choice was swallowed by the real Demo animation gate'); assert(console.systems:Get('Narrative').data:Status('mission',100)=='active')");
+ check("local ui=console.systems:Get('UI'); local p=ui.panels.Dialogue.ctrl; assert(p.choices[1].row.kind=='invite' and p.choices[1].view.Button.interactable); p.choices[1].view.Button.onClick:Invoke(); p:Tick(); assert(console.systems:Get('Narrative').data.DialogueNodeId==4156, 'Interjection was swallowed by the real Demo animation gate'); p.choices[1].view.Button.onClick:Invoke(); p:Tick(); assert(console.systems:Get('Narrative').data.DialogueNodeId==1, 'Reply choice was swallowed by animation gate')");
  player.PlayInteraction(true);if(!player.PresentationBusy)throw new System.Exception("Close test needs a busy actor");
  check("local ui=console.systems:Get('UI'); ui.panels.Dialogue.ctrl.view.Close.onClick:Invoke(); assert(not console.systems:Get('Narrative').data.DialogueOpen); assert(not ui:IsOpen('Dialogue')); assert(not console.services.UI.IsWorldPaused)");
+ check("local hud=console.systems:Get('UI').panels.MainHud.ctrl; hud:Tick(); assert(hud.view.Group.alpha==1, 'Closing dialogue must restore exploration HUD')");
  if(UnityEngine.Time.timeScale!=originalScale)throw new System.Exception("Dialogue close did not restore time scale");
  if(!string.IsNullOrEmpty(demo.LastError))throw new System.Exception(demo.LastError);
- return "PASS real AdventureDemo command chain: dialogue opens without queued frozen animation; real choice and close buttons dispatch while actor animation is busy at timeScale=0; pause is released";
+ return "PASS real AdventureDemo command chain: dialogue opens without queued frozen animation; companion invite, reply and close buttons dispatch while actor animation is busy at timeScale=0; pause is released";
 }finally{
  try{
   // 先按正常关闭顺序释放 Lua 回调和 UI，再销毁拥有显示对象的预览场景。

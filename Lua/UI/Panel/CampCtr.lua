@@ -1,8 +1,9 @@
+local LuaLanguage = require('Language')
 local Class=require('Core.Class')
 local Base=require('UI.UIPanelCtrl')
 local Rich=require('UI.RichText')
 local Camp=Class('CampCtr',Base)
-local sections={{'build','建设设施'},{'production','生产与领取'},{'storage','仓库存取'},{'wait','等待生产'}}
+local sections={{'build','UICampSections4'},{'production','UICampSections3'},{'storage','UICampSections2'},{'wait','UICampSections'}}
 function Camp:Bind()
     self.model=self.context.systems:Get('Adventure').camp;self.rows={}
     self:Listen(self.view.Close,function() self.demo:SendCommand('camp_close',0,0) end)
@@ -15,13 +16,13 @@ function Camp:Refresh()
     if not self.model.data.IsOpen then return end
     local snapshot=self.model:Snapshot();local version=snapshot.version;local rows={}
     local minute=math.floor(snapshot.minutes%1440)
-    self.view.Title.text='远征营地'
-    self.view.Caption.text=string.format('第 %d 天 %02d:%02d  |  %d 金币  |  仓库 %d/%d  |  生产订单 %d',
+    self.view.Title.text=LuaLanguage.UICampTitleText
+    self.view.Caption.text=string.format(LuaLanguage.UICampCaptionText,
         math.floor(snapshot.minutes/1440)+1,minute//60,minute%60,snapshot.coins,snapshot.stored,snapshot.capacity,snapshot.jobs)
     -- 页面分类属于显示状态；设施、物品和时间始终从 CampData / NarrativeData 读取。
     for _,section in ipairs(sections) do
         local id=section[1]
-        rows[#rows+1]={title=(id==self.section and '● ' or '○ ')..section[2],body='',selected=id==self.section,action=function()
+        rows[#rows+1]={title=(id==self.section and '● ' or '○ ')..LuaLanguage[section[2]],body='',selected=id==self.section,action=function()
             self.section=id;self:Refresh();self.view.Scroll.verticalNormalizedPosition=1
         end}
     end
@@ -35,7 +36,7 @@ function Camp:Refresh()
         self.rows[i]:SetData(row,self.demo.MainHudFont,row.action)
     end
     for i=#rows+1,#self.rows do self.rows[i]:SetData(nil) end
-    self.view.Hint.text=self.demo.LastError~='' and self.demo.LastError or '材料优先使用仓库；金币、材料或空间不足时，交易不改变资源。'
+    self.view.Hint.text=self.demo.LastError~='' and self.demo.LastError or LuaLanguage.UICampHintText
     self.revision=version;self.equipmentRevision=self.model.adventure.equipment.data.Revision
     self.coins=snapshot.coins;self.minutes=math.floor(snapshot.minutes);self.demoRevision=self.demo.BattleHUDRevision
 end

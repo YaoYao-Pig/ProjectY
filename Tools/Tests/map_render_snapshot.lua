@@ -33,6 +33,7 @@ for i, row in ipairs(snapshot.cells) do
     local cell = map:GetCells()[i]
     local x, y, z = map:GetCellWorldPosition(cell.q, cell.r)
     assert(row.x == x and row.y == y and row.z == z)
+    assert(row.q == cell.q and row.r == cell.r and row.townId == (cell.townId or 0), 'World-site footprint identity lost')
     assert(row.hasWater == (cell.waterLevel ~= nil))
     assert(row.waterLevel == (cell.waterLevel or 0))
     assert(row.waterDepth == (cell.waterDepth or 0))

@@ -30,6 +30,7 @@ function Save.Prepare(adventure,prepared)
     local world=adventure:BuildWorld(prepared.Seed,bridge.Recipe(prepared),bridge.Target(prepared)>0 and bridge.Target(prepared) or nil)
     world.layouts={};world.states={}
     if not bridge.HasWorld(prepared) then return world end
+    adventure.fog:Prepare(world.map,prepared)
     local baseCount=#world.sites
     local travel=bridge.Travel(prepared)
     assert(world.map:GetCell(travel.Q,travel.R),'存档旅行位置不在当前地图')
@@ -43,14 +44,20 @@ function Save.Prepare(adventure,prepared)
     end
     bridge.ValidateSites(prepared,baseCount,#world.sites)
     local parties=CS.ProjectY.Data.WorldPartiesData.Prepared(prepared)
+    local factions=parties.Factions
     assert(not parties.Initialized or parties.Clock<=prepared.Narrative.Minutes,'存档队伍时钟超前')
     for i=0,parties.Count-1 do
         local party=parties:GetAt(i);local row=adventure.parties.definitions:Get(party.DefinitionId)
+        for j=0,party.MemberCount-1 do adventure.battle.gameEffects:ValidateSaved(party:GetMemberAt(j)) end
         assert(world.map:FindCell(party.Travel.Q,party.Travel.R),'存档游荡队伍位置无效')
+        if party.AbstractTravel then
+            local target=assert(world.map:FindCell(party.AbstractQ,party.AbstractR),'存档抽象行程目的地无效')
+            assert(not target.waterLevel,'抽象行程不能到达水域')
+        end
         if row.kind=='caravan' then
             assert(world.sites[party.HomeSiteId] and world.sites[party.DestinationSiteId],'存档商队城镇失效')
             assert(party.Defeated or party.Cargo,'存档商队货物丢失')
-        else assert(not party.Cargo,'敌人不应携带商队货物') end
+        elseif party.Cargo then assert(party.Role=='raider' or party.Role=='patrol','该类队伍不能持有劫获货物') end
         if party.BattleSiteId>0 then
             assert(world.sites[party.BattleSiteId] and world.sites[party.BattleSiteId].travelStop,'存档队伍战场失效')
         end
@@ -62,6 +69,13 @@ function Save.Prepare(adventure,prepared)
             end
         end
     end
+    for i=0,factions.ConflictCount-1 do local conflict=factions:GetConflictAt(i)
+        for j=0,conflict.PendingCargoCount-1 do
+            local cargo=conflict:GetPendingCargoAt(j)
+            validateGround(adventure.equipment.rules,bridge,cargo)
+            for k=0,cargo.ItemCount-1 do adventure.equipment.rules.items:Get(cargo:GetItemIdAt(k)) end
+        end
+    end
     local npcs=adventure.narrative and require('Game.Narrative.NpcSystem').New(adventure.narrative)
     if npcs then npcs:BindWorld(world.sites) end
     for i=0,bridge.AreaCount(prepared)-1 do
@@ -69,14 +83,19 @@ function Save.Prepare(adventure,prepared)
         local definition=bridge.AreaDefinition(prepared,i)
         local source,point=site.source,site.pointId
         if not site.areaConfigId then
-            assert(definition==adventure.areas.battlefieldAreaId,'事件地点必须是战场')
+            local special=adventure.specialEvents.byEvent[site.eventId]
+            assert(definition==(special and special.areaId or adventure.areas.battlefieldAreaId),'事件地点与配置的小地图不一致')
             local cell=world.map:GetCell(site.q,site.r);local region=world.map:GetRegion(cell.regionId)
             source={regionId=region.instanceId,regionConfigId=region.configId,regionType=region.regionType,
                 q=cell.q,r=cell.r,height=cell.height,biomeWeights=cell.biomeWeights,encounterId=bridge.AreaEncounter(prepared,i)}
             if site.travelStop then local terrain=assert(adventure.travel.terrains[region.regionType]);source.obstacleChance=terrain.battleObstacleChance;source.surfaceId=terrain.battleSurfaceId;source.propIds=terrain.battlePropIds end
+            if factions:FindConflict(site.id) then source.factionConflict=true;source.obstacleChance=.06 end
             point=site.id
         else assert(definition==site.areaConfigId,'存档探索区域配置已变化') end
-        local layout=adventure.areas.generator:Generate(definition,prepared.Seed,point,source,npcs and function(area) npcs:Populate(area,site) end or nil)
+        local layout=adventure.areas.generator:Generate(definition,prepared.Seed,point,source,function(area)
+            if npcs then npcs:Populate(area,site) end
+            adventure.specialEvents:Decorate(area)
+        end)
         assert(#layout.cells==bridge.AreaCells(prepared,i),'存档区域布局已变化')
         local state=bridge.Area(prepared,i)
         assert(#layout.npcs==state.NpcCount,'存档居民配置已变化')
@@ -98,6 +117,7 @@ function Save.Prepare(adventure,prepared)
         end
         world.layouts[site.id]=layout;world.states[site.id]=state
     end
+    adventure.narrative.townMissions:ValidateSaved(CS.ProjectY.Data.TownMissionData.Prepared(prepared),world,parties)
     return world
 end
 function Save.BindLayouts(adventure,world)

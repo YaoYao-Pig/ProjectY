@@ -12,6 +12,7 @@ namespace ProjectY.Data
             => data.InitializeCombatEquipment(actorId, main, off, wearables, slots);
         public static void RemoveActor(EquipmentData data, int actorId) => data.RemoveCombatEquipment(actorId);
         public static int DamageArmor(EquipmentData data, int actorId, int amount) => data.DamageCombatArmor(actorId, amount);
+        public static int DamageArmorAt(EquipmentData data, int actorId, string slot, int amount) => data.DamageCombatArmorAt(actorId, slot, amount);
         public static int DamageWeapon(EquipmentData data, int weaponId, int amount) => data.DamageCombatWeapon(weaponId, amount);
         public static void RefreshMaximum(CombatActorData actor, int maximum) => actor.SetEquipmentMaximum(maximum);
         public static void DropWeapon(EquipmentData data, MapAreaStateData area, int containerId, int actorId, int weaponId)
@@ -76,6 +77,14 @@ namespace ProjectY.Data
         }
         internal int DamageCombatWeapon(int id, int amount)
         { int changed = GetWeapon(id).Condition.Damage(amount); if (changed > 0) Revision++; return changed; }
+        internal int DamageCombatArmorAt(int actorId, string slot, int amount)
+        {
+            if (amount < 0 || (slot != "head" && slot != "body")) throw new ArgumentException("Invalid armor damage target.");
+            var item = Worn(actorId, slot);
+            int changed = item == null ? 0 : item.Condition.Damage(amount);
+            if (changed > 0) Revision++;
+            return changed;
+        }
         internal void DropCombatEquipment(MapAreaStateData area, int containerId, int actorId, int weaponId, bool all)
         {
             var container = area.GetLootAt(containerId - 1);
@@ -87,9 +96,9 @@ namespace ProjectY.Data
             foreach (var weapon in selectedWeapons)
                 pending.Add(new LootItemData(container, container.SearchItems.Length + pending.Count, 0, weapon.ItemId, 1, "weapon")
                 { StoredWeapon = weapon, LoadedMagazine = weapon.MagazineId == 0 ? null : GetMagazine(weapon.MagazineId) });
-            foreach (var wearable in selectedWearables)
+            foreach (var wearable in selectedWearables) if (!wearable.Condition.Broken)
                 pending.Add(new LootItemData(container, container.SearchItems.Length + pending.Count, 0, wearable.ItemId, 1, "wearable") { StoredWearable = wearable });
-            // Corpses receive their full loadout in one plan. A newly generated drop may grow, unlike a player storage deposit.
+            // Plan recoverable equipment before removing any item; destroyed armor never occupies corpse storage.
             InventoryGridData planned = null;
             for (int height = container.SearchGrid.Height; height <= 1024; height *= 2)
             {
@@ -111,7 +120,11 @@ namespace ProjectY.Data
                 else { entry.StoredWearable.OwnerActorId = 0; entry.StoredWearable.Slot = ""; wearables.Remove(entry.StoredWearable); }
                 container.AddSearchItem(entry);
             }
-            area.UpdateLootContents(containerId); if (pending.Count > 0) Revision++;
+            foreach (var wearable in selectedWearables) if (wearable.Condition.Broken)
+            {
+                wearable.OwnerActorId = 0; wearable.Slot = ""; wearables.Remove(wearable);
+            }
+            area.UpdateLootContents(containerId); if (selectedWeapons.Length > 0 || selectedWearables.Length > 0) Revision++;
         }
         internal bool RecoverCombatWeapon(MapAreaStateData area, int containerId, int actorId, int weaponId)
         {

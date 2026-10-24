@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "EquipmentMagazineTable",
-  "description": "独立弹匣保留剩余子弹；战斗外使用散弹药装填，战斗中换上背包内的兼容弹匣。",
+  "description": "独立弹匣保留当前弹种与剩余子弹；默认弹种确定口径，战斗外可装填同口径的任一弹种，换弹种前先卸弹。",
   "key": "id",
   "fields": [
     {
@@ -13,7 +13,7 @@
     {
       "name": "ammoItemId",
       "type": "int",
-      "description": "兼容散弹药",
+      "description": "初始默认弹种；其EquipmentAmmoTable.caliberId决定弹匣兼容口径，不限制为单一弹种",
       "ref": "EquipmentItemTable"
     },
     {
@@ -37,6 +37,24 @@
       "ammoItemId": 31,
       "capacity": 12,
       "spawnRounds": 12
+    },
+    {
+      "id": 810,
+      "ammoItemId": 31,
+      "capacity": 24,
+      "spawnRounds": 24
+    },
+    {
+      "id": 811,
+      "ammoItemId": 820,
+      "capacity": 5,
+      "spawnRounds": 5
+    },
+    {
+      "id": 812,
+      "ammoItemId": 821,
+      "capacity": 6,
+      "spawnRounds": 6
     }
   ]
 }

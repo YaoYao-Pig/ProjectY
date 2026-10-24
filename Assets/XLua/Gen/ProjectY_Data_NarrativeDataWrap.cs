@@ -21,7 +21,7 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.NarrativeData);
-			Utils.BeginObjectRegister(type, L, translator, 0, 17, 12, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 20, 13, 0);
 			
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetProgressAt", _m_GetProgressAt);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetValueKeyAt", _m_GetValueKeyAt);
@@ -38,11 +38,15 @@ namespace XLua.CSObjectWrap
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "BeginDialogue", _m_BeginDialogue);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "EnterDialogueNode", _m_EnterDialogueNode);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "AddDialogueLine", _m_AddDialogueLine);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "HasDialogueInterjection", _m_HasDialogueInterjection);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "AddCompanionLine", _m_AddCompanionLine);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "CompleteDialogueInterjection", _m_CompleteDialogueInterjection);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "CloseDialogue", _m_CloseDialogue);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Clear", _m_Clear);
 			
 			
-			Utils.RegisterFunc(L, Utils.GETTER_IDX, "Revision", _g_get_Revision);
+			Utils.RegisterFunc(L, Utils.GETTER_IDX, "TownMissions", _g_get_TownMissions);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "Revision", _g_get_Revision);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "Minutes", _g_get_Minutes);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "ProgressCount", _g_get_ProgressCount);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "ValueCount", _g_get_ValueCount);
@@ -539,6 +543,95 @@ namespace XLua.CSObjectWrap
         }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_HasDialogueInterjection(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.NarrativeData gen_to_be_invoked = (ProjectY.Data.NarrativeData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _id = LuaAPI.xlua_tointeger(L, 2);
+                    
+                        var gen_ret = gen_to_be_invoked.HasDialogueInterjection( _id );
+                        LuaAPI.lua_pushboolean(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_AddCompanionLine(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.NarrativeData gen_to_be_invoked = (ProjectY.Data.NarrativeData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _interjectionId = LuaAPI.xlua_tointeger(L, 2);
+                    int _actorId = LuaAPI.xlua_tointeger(L, 3);
+                    string _speaker = LuaAPI.lua_tostring(L, 4);
+                    string _cue = LuaAPI.lua_tostring(L, 5);
+                    string _text = LuaAPI.lua_tostring(L, 6);
+                    
+                    gen_to_be_invoked.AddCompanionLine( _interjectionId, _actorId, _speaker, _cue, _text );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_CompleteDialogueInterjection(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.NarrativeData gen_to_be_invoked = (ProjectY.Data.NarrativeData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _id = LuaAPI.xlua_tointeger(L, 2);
+                    
+                    gen_to_be_invoked.CompleteDialogueInterjection( _id );
+                    
+                    
+                    
+                    return 0;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _m_CloseDialogue(RealStatePtr L)
         {
 		    try {
@@ -594,6 +687,20 @@ namespace XLua.CSObjectWrap
         
         
         
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_TownMissions(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.NarrativeData gen_to_be_invoked = (ProjectY.Data.NarrativeData)translator.FastGetCSObj(L, 1);
+                translator.Push(L, gen_to_be_invoked.TownMissions);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _g_get_Revision(RealStatePtr L)

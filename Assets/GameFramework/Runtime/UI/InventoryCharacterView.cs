@@ -40,7 +40,7 @@ namespace ProjectY.UI
             pivot.localRotation=Quaternion.identity;
             var renderers=pawn.GetComponentsInChildren<Renderer>();
             bool found=false;var bounds=new Bounds();
-            foreach(var renderer in renderers)if(renderer.enabled&&!renderer.forceRenderingOff)
+            foreach(var renderer in renderers)if(!(renderer is ParticleSystemRenderer)&&renderer.enabled&&!renderer.forceRenderingOff)
             {if(found)bounds.Encapsulate(renderer.bounds);else{bounds=renderer.bounds;found=true;}}
             if(!found) throw new InvalidOperationException("角色预览没有可见模型。");
             focus=studio.transform.InverseTransformPoint(bounds.center);
@@ -92,6 +92,7 @@ namespace ProjectY.UI
             if(portraitMode)studio.SetActive(true);
             try
             {
+                pivot.localRotation=Quaternion.Euler(0,yaw,0);
                 pawn.TickPresentation(Time.unscaledDeltaTime);
                 var size=image.rectTransform.rect.size;
                 int width=Mathf.Clamp(Mathf.RoundToInt(size.x*1.5f),128,1200),height=Mathf.Clamp(Mathf.RoundToInt(size.y*1.5f),128,1200);

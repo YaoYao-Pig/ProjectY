@@ -1,7 +1,7 @@
 -- Read-only equipment/config queries, shared by combat, the workbench and pawn presentation.
 local Rules = {}; Rules.__index = Rules
 function Rules.New(config, data)
-    local self = setmetatable({data=data},Rules)
+    local self = setmetatable({data=data,visualEffectConfig=config},Rules)
     self.motion=require('Game.Equipment.EquipmentMotion').New(config)
     self.affixes=require('Game.Equipment.EquipmentAffixes').New(config)
     self.torch=config:GetTable('TorchTable'):Get(1)
@@ -9,7 +9,19 @@ function Rules.New(config, data)
         magazines='EquipmentMagazineTable',sockets='EquipmentSocketTable',assets='EquipmentAssetTable',
         poses='EquipmentPoseTable',actions='EquipmentActionTable',skills='CombatSkillTable',effects='CombatEffectTable',buffDefinitions='BuffTable',
         categories='EquipmentCategoryTable',tags='EquipmentWeaponTagTable',requirements='EquipmentRequirementTable',attributes='EquipmentAttributeTable',wearables='EquipmentWearableTable',
-        talents='TalentNodeTable',passives='PassiveSkillTable'}) do self[key]=config:GetTable(name) end
+        talents='TalentNodeTable',passives='PassiveSkillTable',traits='CombatTraitTable',units='CombatUnitTable'}) do self[key]=config:GetTable(name) end
+    for _,trait in ipairs(self.traits:All()) do
+        assert(trait.attribute~='' or trait.amount==0,'A trait without an attribute cannot grant an attribute bonus')
+        assert(trait.attribute~='' or #trait.onHitEffectIds>0,'Trait needs an attribute or on-hit effect')
+        for _,id in ipairs(trait.onHitEffectIds) do
+            local effect=self.effects:Get(id)
+            assert(effect.kind=='apply_buff' or effect.kind=='damage' or effect.kind=='heal' or effect.kind=='guard' or effect.kind=='remove_buffs','Unsupported trait on-hit instruction')
+        end
+    end
+    for _,unit in ipairs(self.units:All()) do
+        local seen={}
+        for _,id in ipairs(unit.traitIds) do self.traits:Get(id);assert(not seen[id],'Duplicate innate trait');seen[id]=true end
+    end
     self.pawnParts=config:GetTable('PawnPartTable');self.pawnTemplates={}
     for _,row in ipairs(config:GetTable('PawnTemplateTable'):All()) do self.pawnTemplates[row.unitId]=row end
     for _,row in ipairs(self.wearables:All()) do
@@ -228,15 +240,21 @@ function Rules:CheckSkillEquipment(actor,skill,stats)
 end
 function Rules:Skill(actor, id, stats)
     local base=self.skills:Get(id);local result={}
-    for _,key in ipairs({'id','name','description','iconId','action','cost','range','target','proficiency','effectIds',
-        'skillGroup','cooldownTurns','hitChance','shots','ammoPerShot','damageScale','actionTemplate','contexts','affectsContainers','trajectory','catalystKind','skillKind','weaponWear','allowTransfer'}) do result[key]=base[key] end
+    result.appliedRuneIds={}
+    result.baseHitChance=base.hitChance
+    for _,key in ipairs({'id','name','description','iconId','action','cost','range','minRange','fixedRange','target','proficiency','effectIds',
+        'skillGroup','cooldownTurns','hitChance','shots','ammoPerShot','damageScale','actionTemplate','contexts','affectsContainers','opportunityAttack','trajectory','catalystKind','skillKind','weaponWear','allowTransfer'}) do result[key]=base[key] end
     result.maxTargets=base.maxTargets;result.splashRadius=base.splashRadius
+    result.criticalChance=base.criticalChance;result.criticalMultiplier=base.criticalMultiplier
     local damageSkill=false
     for _,effectId in ipairs(base.effectIds)do if self.effects:Get(effectId).kind=='damage' then damageSkill=true end end
     local function appendEffects(ids)
         if #ids==0 then return end
         if result.effectIds==base.effectIds then local copy={};for _,effectId in ipairs(base.effectIds)do copy[#copy+1]=effectId end;result.effectIds=copy end
         for _,effectId in ipairs(ids)do result.effectIds[#result.effectIds+1]=effectId end
+    end
+    if damageSkill and base.target=='enemy' then
+        for i=0,actor.TraitCount-1 do appendEffects(self.traits:Get(actor:GetTraitAt(i)).onHitEffectIds) end
     end
     local weapon=self:Weapon(actor)
     local off=self:Offhand(actor);local offAttack=off and self.weapons:Get(off.ItemId).offhandSkillId==id
@@ -276,9 +294,11 @@ function Rules:Skill(actor, id, stats)
             if runeId~=0 then
                 local rune=self.runes:Get(runeId)
                 if rune.skillGroup==result.skillGroup or rune.skillGroup=='physical' and (result.skillGroup=='weapon' or result.skillGroup=='slash') then
+                    result.appliedRuneIds[#result.appliedRuneIds+1]=runeId
                     result.damageScale=result.damageScale*rune.damageMultiplier
-                    result.range=result.range+rune.rangeBonus
+                    if not result.fixedRange then result.range=result.range+rune.rangeBonus end
                     result.hitChance=result.hitChance+rune.hitBonus
+                    result.criticalChance=result.criticalChance+rune.criticalBonus
                     result.cooldownTurns=result.cooldownTurns+rune.cooldownBonus
                     if rune.transferSelf and base.allowTransfer and base.target=='self' then
                         transferRange=math.max(transferRange,rune.transferRange)
@@ -301,6 +321,7 @@ function Rules:Skill(actor, id, stats)
         end
     end
     result.hitChance=math.max(0,math.min(100,result.hitChance))
+    result.criticalChance=math.max(0,math.min(100,result.criticalChance))
     result.range=math.max(result.target=='enemy' and 1 or 0,result.range)
     result.cooldownTurns=math.max(0,result.cooldownTurns)
     if transferRange>0 then result.target='any';result.range=transferRange end
@@ -359,20 +380,21 @@ function Rules:Asset(id)
 end
 function Rules:WeaponVisual(weapon)
     local item,definition=self.items:Get(weapon.ItemId),self.weapons:Get(weapon.ItemId)
-    local view={id=weapon.Id,asset=self:Asset(item.assetId),sockets={},previewRotation=vector(definition.previewRotation),previewZoom=definition.previewZoom}
+    local effectCatalog=require('Game.Presentation.VisualEffectCatalog')
+    local view={id=weapon.Id,effect=effectCatalog.Item(self.visualEffectConfig,item.id),asset=self:Asset(item.assetId),sockets={},previewRotation=vector(definition.previewRotation),previewZoom=definition.previewZoom}
     local grip=self.motion:Grip(definition)
     view.primaryGrip={position=vector(grip.mainPosition),rotation=vector(grip.mainRotation)}
     view.secondaryGrip={position=vector(grip.offPosition),rotation=vector(grip.offRotation)}
     for _,id in ipairs(definition.socketIds) do
-        local socket=self.sockets:Get(id);local attachment
+        local socket=self.sockets:Get(id);local attachment,effect
         if socket.kind=='magazine' then
             local magazine=self:Loaded(weapon)
-            if magazine then attachment=self:Asset(self.items:Get(magazine.ItemId).assetId) end
+            if magazine then attachment=self:Asset(self.items:Get(magazine.ItemId).assetId);effect=effectCatalog.Item(self.visualEffectConfig,magazine.ItemId) end
         else
             local runeId=weapon:GetRune(id)
-            if runeId~=0 then attachment=self:Asset(self.items:Get(runeId).assetId) end
+            if runeId~=0 then attachment=self:Asset(self.items:Get(runeId).assetId);effect=effectCatalog.Item(self.visualEffectConfig,runeId) end
         end
-        view.sockets[#view.sockets+1]={id=id,name=socket.name,kind=socket.kind,calloutSide=socket.calloutSide,position=vector(socket.position),rotation=vector(socket.rotation),asset=attachment}
+        view.sockets[#view.sockets+1]={id=id,name=socket.name,kind=socket.kind,calloutSide=socket.calloutSide,position=vector(socket.position),rotation=vector(socket.rotation),asset=attachment,effect=effect}
     end
     return view
 end
@@ -383,7 +405,7 @@ function Rules:ActorVisual(actor)
     local wearables={}
     for i=0,self.data.WearableCount-1 do local worn=self.data:GetWearableAt(i)
         if worn.OwnerActorId==actor.Id then local definition=self.wearables:Get(worn.ItemId)
-            wearables[#wearables+1]={slot=worn.Slot,mount=definition.mount,asset=self:Asset(self.items:Get(worn.ItemId).assetId),position=vector(definition.position),rotation=vector(definition.rotation)}
+            wearables[#wearables+1]={slot=worn.Slot,mount=definition.mount,effect=require('Game.Presentation.VisualEffectCatalog').Item(self.visualEffectConfig,worn.ItemId),asset=self:Asset(self.items:Get(worn.ItemId).assetId),position=vector(definition.position),rotation=vector(definition.rotation)}
         end
     end
     return self:AssembleVisual(weapon,offhand,wearables,actor)
@@ -394,7 +416,7 @@ function Rules:ConfiguredVisual(unitId)
     local main=weapon(mainId);local offItem=offId~=0 and self.items:Get(offId);local off=offItem and offItem.kind=='weapon' and weapon(offId) or nil
     local wearables={}
     if offItem and offItem.kind=='wearable' then local definition=self.wearables:Get(offId)
-        wearables[1]={slot='offhand',mount=definition.mount,asset=self:Asset(offItem.assetId),position=vector(definition.position),rotation=vector(definition.rotation)}
+        wearables[1]={slot='offhand',mount=definition.mount,effect=require('Game.Presentation.VisualEffectCatalog').Item(self.visualEffectConfig,offItem.id),asset=self:Asset(offItem.assetId),position=vector(definition.position),rotation=vector(definition.rotation)}
     end
     local result=self:AssembleVisual(main,off,wearables,nil);result.templateEquipment=true;return result
 end

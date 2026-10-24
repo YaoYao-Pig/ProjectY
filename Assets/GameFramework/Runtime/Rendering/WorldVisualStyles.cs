@@ -13,12 +13,19 @@ namespace ProjectY.Rendering
         [Range(1, 8), Tooltip("白天主光倍率，增强实际照明和高光，不是整屏提亮。")]
         public float daySunMultiplier = 4;
         [Range(.5f, 3), Tooltip("天空漫反射补光倍率，让阴影保留颜色和细节。")]
-        public float dayAmbientMultiplier = 1.18f;
+        public float dayAmbientMultiplier = .68f;
+        [Range(0, 1), Tooltip("室内保留的直射光比例，相对环境配方。")]
+        public float indoorSunMultiplier = .55f;
+        [Range(0, 2), Tooltip("室内环境补光倍率；暖光由局部灯提供。")]
+        public float indoorAmbientMultiplier = .85f;
+        [Range(1, 4), Tooltip("室内点光倍率，让照明形成清晰的暖色光池。")]
+        public float interiorLampMultiplier = 3;
         [Range(0, 2)] public float reflectionIntensity = .75f;
-        public Color skyLightTint = new Color(.88f, .95f, 1);
+        public Color skyLightTint = new Color(.78f, .9f, 1);
         public bool skybox = true;
         public static readonly WorldLightingLook Neutral = new WorldLightingLook
-        { daySunMultiplier = 1, dayAmbientMultiplier = 1, reflectionIntensity = 0, skyLightTint = Color.white, skybox = false };
+        { daySunMultiplier = 1, dayAmbientMultiplier = 1, indoorSunMultiplier = 1, indoorAmbientMultiplier = 1,
+            interiorLampMultiplier = 1, reflectionIntensity = 0, skyLightTint = Color.white, skybox = false };
     }
 
     [CreateAssetMenu(menuName = "Project Y/Rendering/World Visual Styles")]

@@ -34,7 +34,7 @@ function Npcs:Populate(area,site)
         end
         local spawn = target(placement.facilityId)
         for _, schedule in ipairs(self.story.rules.schedulesByNpc[definition.id]) do target(schedule.facilityId) end
-        area.npcs[#area.npcs+1] = {id=#area.npcs+1,narrativeId=definition.id,templateId=definition.townTemplateId,
+        area.npcs[#area.npcs+1] = {id=#area.npcs+1,stableId=200000+definition.id,narrativeId=definition.id,templateId=definition.townTemplateId,
             spawnIndex=spawn,route={},stepSeconds=template.stepSeconds,idleSeconds=template.idleSeconds,scheduleTargets=targets}
     end end
 end
@@ -50,10 +50,31 @@ function Npcs:ActorName(actor)
 end
 function Npcs:SyncPresence()
     local story = self.story; local area,state = story.adventure.areas:ActiveLayout(), story.adventure.data.Areas.Active
-    for _, npc in ipairs(area.npcs) do if npc.narrativeId then
-        local present = story.data:GetValue('recruited:'..npc.narrativeId) == 0 or (story.data.DialogueOpen and story.data.DialogueNpcId == npc.narrativeId)
+    local siteId=story.adventure.data.Areas.ActiveSiteId
+    local service=story.adventure.factions:ServiceAllowed(siteId)
+    for _,npc in ipairs(area.npcs) do
+        local present=service
+        if npc.narrativeId then
+            local recruited=story.data:GetValue('recruited:'..npc.narrativeId)~=0
+            if recruited then present=service and story.data.DialogueOpen and story.data.DialogueNpcId==npc.narrativeId
+            elseif story.rules.npcs:Get(npc.narrativeId).recruitable then
+                present=service and story.adventure.factions:NpcAvailable(siteId,npc.narrativeId)
+            end
+        end
         state:SetNpcPresent(npc.id,present)
-    end end
+    end
+end
+function Npcs:MissionMarker(siteId,npc)
+    local story=self.story
+    local stamp=story.data.Revision..':'..story.adventure.data.Equipment.Revision..':'..story.adventure.player.Coins
+    if self.markerStamp~=stamp then self.markerStamp=stamp;self.markers={} end
+    local key=siteId..':'..npc.stableId
+    if self.markers[key]==nil then
+        local marker=story.townMissions:Marker(siteId,npc)
+        if npc.narrativeId then marker=math.max(marker,require('Game.Narrative.NpcMissionMarkers').Story(story,npc.narrativeId)) end
+        self.markers[key]=marker
+    end
+    return self.markers[key]
 end
 function Npcs:Tick(area,state,dt)
     self:SyncPresence()
@@ -77,6 +98,21 @@ end
 function Npcs:PrepareRecruit(id)
     local story = self.story; local definition = story.rules.npcs:Get(id)
     assert(definition.recruitable,'NPC cannot join the party')
+    if story.data:GetValue('recruited:'..id)~=0 then return nil,'这位同行者已经入队' end
+    if definition.locationKind=='event' then
+        local prepared,reason=story.adventure.specialEvents:PrepareRecruit(id)
+        if not prepared then return nil,reason end
+        assert(prepared.existing and prepared.actorId==10000+id and prepared.actor.Id==prepared.actorId and
+            prepared.actor.TemplateId==definition.actorTemplateId and not prepared.actor.Growth.Initialized,'Invalid event recruit identity')
+        CS.ProjectY.Data.EncounterRecruitment.Validate(story.adventure.data,prepared.group,prepared.actor)
+        prepared.recovery=require('Game.Narrative.EventRecruitRecovery').Prepare(story.adventure,id,prepared.actor)
+        return prepared
+    end
+    local siteId=self.locations[id]
+    if not siteId then return nil,'这位同行者尚未出现在世界中' end
+    local service,reason=story.adventure.factions:ServiceAllowed(siteId)
+    if not service then return nil,reason end
+    if not story.adventure.factions:NpcAvailable(siteId,id) then return nil,'据点仍在恢复，这位同行者暂未归来' end
     local actorId = 10000 + id
     local actor = story.adventure.data:PrepareRecruitActor(actorId,definition.actorTemplateId)
     story.adventure.characterAppearances:Party(actor,story.adventure.data.Seed)
@@ -114,9 +150,18 @@ function Npcs:PrepareDeployment(recruits)
     return {ids=ids,cells=cells}
 end
 function Npcs:Recruit(prepared)
-    self.story.adventure.data:AddPreparedRecruit(prepared.actor)
-    self.story.adventure.equipment.initialLoadouts:Apply(self.story.adventure.equipment.data,prepared.actor)
-    prepared.actor:SetMaxHP(self.story.adventure.battle.stats:MaximumHP(prepared.actor));prepared.actor:Restore()
+    local adventure=self.story.adventure
+    if prepared.existing then
+        CS.ProjectY.Data.EncounterRecruitment.Validate(adventure.data,prepared.group,prepared.actor)
+        adventure.growth:PrepareActor(prepared.actor)
+        CS.ProjectY.Data.EncounterRecruitment.Transfer(adventure.data,prepared.group,prepared.actor)
+        CS.ProjectY.Data.EquipmentCombatState.RefreshMaximum(prepared.actor,adventure.battle.stats:MaximumHP(prepared.actor))
+        require('Game.Narrative.EventRecruitRecovery').Apply(adventure,prepared.actor,prepared.recovery)
+    else
+        adventure.data:AddPreparedRecruit(prepared.actor)
+        adventure.equipment.initialLoadouts:Apply(adventure.equipment.data,prepared.actor)
+        prepared.actor:SetMaxHP(adventure.battle.stats:MaximumHP(prepared.actor));prepared.actor:Restore()
+    end
     self.story.data:SetValue('recruited:'..prepared.npcId,prepared.actorId)
     self.story.adventure.growth:RecordJoined(prepared.actor,'旅途中')
 end

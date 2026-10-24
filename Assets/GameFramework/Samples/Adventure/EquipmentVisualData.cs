@@ -11,7 +11,7 @@ namespace ProjectY.Samples
             public int Id; public string Path;
             public static Asset Read(LuaTable row) => new Asset { Id = row.Get<int>("id"), Path = row.Get<string>("path") };
         }
-        public sealed class Socket { public int Id; public string Name, Kind, CalloutSide; public Vector3 Position, Rotation; public Asset Attachment; }
+        public sealed class Socket { public int Id; public string Name, Kind, CalloutSide; public Vector3 Position, Rotation; public Asset Attachment; public BlockEffectProfile Effect; }
         public sealed class Grip
         {
             public Vector3 Position, Rotation;
@@ -20,11 +20,13 @@ namespace ProjectY.Samples
         public sealed class Weapon
         {
             public int Id; public Asset Model; public Socket[] Sockets;
+            public BlockEffectProfile Effect;
             public Vector3 PreviewRotation; public float PreviewZoom;
             public Grip PrimaryGrip, SecondaryGrip;
             public static Weapon Read(LuaTable row)
             {
                 var result = new Weapon { Id = row.Get<int>("id"),PreviewRotation=Vector(row,"previewRotation"),PreviewZoom=row.Get<float>("previewZoom") };
+                result.Effect=BlockEffectCatalog.ReadOptionalProfile(row,"effect");
                 using (var asset = row.Get<LuaTable>("asset")) result.Model = Asset.Read(asset);
                 using (var grip=row.Get<LuaTable>("primaryGrip")) result.PrimaryGrip=Grip.Read(grip);
                 using (var grip=row.Get<LuaTable>("secondaryGrip")) result.SecondaryGrip=Grip.Read(grip);
@@ -35,6 +37,7 @@ namespace ProjectY.Samples
                     {
                         var item = new Socket { Id = socket.Get<int>("id"), Name = socket.Get<string>("name"), Kind = socket.Get<string>("kind"), CalloutSide=socket.Get<string>("calloutSide"), Position = Vector(socket,"position"), Rotation = Vector(socket,"rotation") };
                         using (var asset = socket.Get<LuaTable>("asset")) if (asset != null) item.Attachment = Asset.Read(asset);
+                        item.Effect=BlockEffectCatalog.ReadOptionalProfile(socket,"effect");
                         result.Sockets[i] = item;
                     }
                 }
@@ -58,7 +61,7 @@ namespace ProjectY.Samples
             public int Sequence, Shots, TargetQ, TargetR; public string Kind;
             public float Duration, Recoil, Pitch, Yaw, Roll, HandLift, MagazineDrop;
         }
-        public sealed class Wearable { public string Slot, Mount; public Asset Model; public Vector3 Position, Rotation; }
+        public sealed class Wearable { public string Slot, Mount; public Asset Model; public Vector3 Position, Rotation; public BlockEffectProfile Effect; }
         public Weapon WeaponView, OffhandView; public Wearable[] Wearables; public Pose Hold; public Action Motion;
         public static Vector3 Vector(LuaTable row, string key)
         {
@@ -76,6 +79,7 @@ namespace ProjectY.Samples
                 {
                     var item=new Wearable {Slot=worn.Get<string>("slot"),Mount=worn.Get<string>("mount"),Position=Vector(worn,"position"),Rotation=Vector(worn,"rotation")};
                     using(var asset=worn.Get<LuaTable>("asset")) item.Model=Asset.Read(asset);
+                    item.Effect=BlockEffectCatalog.ReadOptionalProfile(worn,"effect");
                     result.Wearables[i]=item;
                 }
             }

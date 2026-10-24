@@ -1,0 +1,12 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class TownMissionTableRow
+---@field id number 稳定模板 ID
+---@field name string 委托名称
+---@field description string 委托背景
+---@field kind "delivery"|"clear"|"escort" 目标类型
+---@field itemId number 交付材料 ID；其他类型填 0
+---@field minCount number 目标数量下限
+---@field maxCount number 目标数量上限
+---@field radius number 清剿范围：以城镇为中心的大地图六边形距离
+---@field actionIds number[] 交付成功时的金币与经验奖励
+return {["name"]="TownMissionTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\230\168\161\230\157\191 ID",["min"]=1},{["name"]="name",["type"]="text",["description"]="\229\167\148\230\137\152\229\144\141\231\167\176"},{["name"]="description",["type"]="text",["description"]="\229\167\148\230\137\152\232\131\140\230\153\175"},{["name"]="kind",["type"]="enum",["description"]="\231\155\174\230\160\135\231\177\187\229\158\139",["values"]={"delivery","clear","escort"}},{["name"]="itemId",["type"]="int",["description"]="\228\186\164\228\187\152\230\157\144\230\150\153 ID\239\188\155\229\133\182\228\187\150\231\177\187\229\158\139\229\161\171 0",["min"]=0},{["name"]="minCount",["type"]="int",["description"]="\231\155\174\230\160\135\230\149\176\233\135\143\228\184\139\233\153\144",["min"]=1},{["name"]="maxCount",["type"]="int",["description"]="\231\155\174\230\160\135\230\149\176\233\135\143\228\184\138\233\153\144",["min"]=1},{["name"]="radius",["type"]="int",["description"]="\230\184\133\229\137\191\232\140\131\229\155\180\239\188\154\228\187\165\229\159\142\233\149\135\228\184\186\228\184\173\229\191\131\231\154\132\229\164\167\229\156\176\229\155\190\229\133\173\232\190\185\229\189\162\232\183\157\231\166\187",["min"]=0},{["name"]="actionIds",["type"]="int[]",["description"]="\228\186\164\228\187\152\230\136\144\229\138\159\230\151\182\231\154\132\233\135\145\229\184\129\228\184\142\231\187\143\233\170\140\229\165\150\229\138\177",["ref"]="NarrativeActionTable"}},["fingerprint"]="bb54d7f2538b40059b5b4af2d099d3ba5096519f7e70e0e3d1b48fbc3895d0c5"}

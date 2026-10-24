@@ -32,6 +32,50 @@ return function(story)
         return minute >= row.targetId and minute < row.value
     end, function(row) assert(row.targetId >= 0 and row.targetId < row.value and row.value <= 1440, 'Invalid time window') end)
     register('coins', function(row) return story.adventure.player.Coins >= row.value end, positive)
+    local function actor(context)
+        return assert(context.actor, 'Actor condition requires a specific dialogue participant')
+    end
+    register('actor_trait', function(row, context)
+        return actor(context):HasTrait(row.targetId)
+    end, function(row)
+        rules.config:GetTable('CombatTraitTable'):Get(row.targetId)
+        assert(row.key == '' and row.state == '' and row.value == 0, 'actor_trait uses targetId only')
+    end)
+    register('actor_attribute', function(row, context)
+        local attribute = rules.config:GetTable('GrowthAttributeTable'):Get(row.targetId)
+        local value = story.adventure.battle.stats:Get(actor(context), attribute.code)
+        return value >= row.value, row.reason..'（'..value..' / '..row.value..'）'
+    end, function(row)
+        rules.config:GetTable('GrowthAttributeTable'):Get(row.targetId); positive(row)
+        assert(row.key == '' and row.state == '', 'actor_attribute uses targetId/value only')
+    end)
+    register('actor_history', function(row, context)
+        local id, count = actor(context).Id, 0
+        local data = story.adventure.data
+        for i=0,data.JournalCount-1 do
+            local entry = data:GetJournalAt(i)
+            local involved = row.state == 'subject' and entry.SubjectId == id
+                or row.state == 'object' and entry.ObjectId == id
+                or row.state == 'participant' and entry:Involves(id)
+            if involved and entry.Kind == row.key and (row.targetId == 0 or entry.EventId == row.targetId) then
+                count = count + 1
+                if count >= row.value then return true end
+            end
+        end
+        return false, row.reason..'（'..count..' / '..row.value..'）'
+    end, function(row)
+        positive(row)
+        local known = false
+        for _, template in ipairs(rules.config:GetTable('StoryLogTemplateTable'):All()) do
+            if template.kind == row.key then known = true; break end
+        end
+        assert(known and (row.state == 'participant' or row.state == 'subject' or row.state == 'object'), 'Invalid actor_history kind/role')
+        assert(row.targetId >= 0, 'Invalid actor_history event ID')
+        if row.targetId > 0 then
+            assert(row.key == 'event', 'An event ID requires event history')
+            rules.config:GetTable('AdventureEventTable'):Get(row.targetId)
+        end
+    end)
     register('party_attribute', function(row)
         local attribute = rules.config:GetTable('GrowthAttributeTable'):Get(row.targetId)
         local best = 0

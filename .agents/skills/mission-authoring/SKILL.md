@@ -7,6 +7,8 @@ description: 在 Project Y 中通过叙事工具查询、创建和修改配置�
 
 先读项目 `ForAI/INDEX.md` 的叙事模块；修改 Lua/C# 时同时遵守项目 `lua-code-style`。用户已确认的业务规则沿用，不重复询问。
 
+编写或修改玩家可见内容前，必须读取[本地化约束](../../../ForAI/Framework/Localization.md)。剧情正文按其中的配置 `text` 字段规则维护；通用 UI 标签、拼接模板和业务提示按代码／Prefab 的入口处理，不把剧情文字写进业务代码。
+
 工程根下使用 `node Tools/Narrative/cli.mjs`，输出均为 JSON：
 
 - `list [表名]`：精简实体目录与当前 revision。

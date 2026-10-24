@@ -19,8 +19,14 @@
     {
       "name": "regionIds",
       "type": "int[]",
-      "description": "大地图配方",
+      "description": "固定配方顺序；seededRegions=true 时为随机候选池，空数组使用全部 MapRegionTable 配置",
       "ref": "MapRegionTable"
+    },
+    {
+      "name": "seededRegions",
+      "type": "bool",
+      "default": false,
+      "description": "按种子分轮无放回抽取候选区域，首轮优先覆盖；false 按固定顺序生成"
     },
     {
       "name": "partyIds",
@@ -205,6 +211,447 @@
         1
       ],
       "equipmentRecipeId": 2,
+      "startAreaId": 2
+    },
+    {
+      "id": 4,
+      "seed": 20260921,
+      "regionIds": [
+        1,
+        2,
+        3,
+        4,
+        5,
+        6
+      ],
+      "seededRegions": true,
+      "partyIds": [
+        1,
+        2,
+        3
+      ],
+      "maxPartySize": 4,
+      "campEventId": 2,
+      "wildEventIds": [
+        1,
+        3,
+        5,
+        6
+      ],
+      "buildingIds": [
+        1,
+        4,
+        5
+      ],
+      "buildingEventIds": [
+        1,
+        4,
+        1
+      ],
+      "equipmentRecipeId": 2,
+      "startAreaId": 2
+    },
+    {
+      "id": 5,
+      "seed": 20260921,
+      "regionIds": [],
+      "seededRegions": true,
+      "partyIds": [
+        1,
+        2,
+        3
+      ],
+      "maxPartySize": 4,
+      "campEventId": 2,
+      "wildEventIds": [
+        1,
+        3,
+        5,
+        6
+      ],
+      "buildingIds": [
+        1,
+        4,
+        5
+      ],
+      "buildingEventIds": [
+        1,
+        4,
+        1
+      ],
+      "equipmentRecipeId": 2,
+      "startAreaId": 2
+    },
+    {
+      "id": 101,
+      "seed": 20260921,
+      "regionIds": [],
+      "seededRegions": true,
+      "partyIds": [
+        1,
+        2,
+        3
+      ],
+      "maxPartySize": 4,
+      "campEventId": 2,
+      "wildEventIds": [
+        1,
+        3,
+        5,
+        6
+      ],
+      "buildingIds": [
+        1,
+        4,
+        5
+      ],
+      "buildingEventIds": [
+        1,
+        4,
+        1
+      ],
+      "equipmentRecipeId": 101,
+      "startAreaId": 2
+    },
+    {
+      "id": 102,
+      "seed": 20260921,
+      "regionIds": [],
+      "seededRegions": true,
+      "partyIds": [
+        2,
+        1,
+        3
+      ],
+      "maxPartySize": 4,
+      "campEventId": 2,
+      "wildEventIds": [
+        1,
+        3,
+        5,
+        6
+      ],
+      "buildingIds": [
+        1,
+        4,
+        5
+      ],
+      "buildingEventIds": [
+        1,
+        4,
+        1
+      ],
+      "equipmentRecipeId": 102,
+      "startAreaId": 2
+    },
+    {
+      "id": 103,
+      "seed": 20260921,
+      "regionIds": [],
+      "seededRegions": true,
+      "partyIds": [
+        3,
+        1,
+        2
+      ],
+      "maxPartySize": 4,
+      "campEventId": 2,
+      "wildEventIds": [
+        1,
+        3,
+        5,
+        6
+      ],
+      "buildingIds": [
+        1,
+        4,
+        5
+      ],
+      "buildingEventIds": [
+        1,
+        4,
+        1
+      ],
+      "equipmentRecipeId": 103,
+      "startAreaId": 2
+    },
+    {
+      "id": 104,
+      "seed": 20260921,
+      "regionIds": [],
+      "seededRegions": true,
+      "partyIds": [
+        1101,
+        2,
+        3
+      ],
+      "maxPartySize": 4,
+      "campEventId": 2,
+      "wildEventIds": [
+        1,
+        3,
+        5,
+        6
+      ],
+      "buildingIds": [
+        1,
+        4,
+        5
+      ],
+      "buildingEventIds": [
+        1,
+        4,
+        1
+      ],
+      "equipmentRecipeId": 104,
+      "startAreaId": 2
+    },
+    {
+      "id": 105,
+      "seed": 20260921,
+      "regionIds": [],
+      "seededRegions": true,
+      "partyIds": [
+        1,
+        2,
+        3
+      ],
+      "maxPartySize": 4,
+      "campEventId": 2,
+      "wildEventIds": [
+        1,
+        3,
+        5,
+        6
+      ],
+      "buildingIds": [
+        1,
+        4,
+        5
+      ],
+      "buildingEventIds": [
+        1,
+        4,
+        1
+      ],
+      "equipmentRecipeId": 105,
+      "startAreaId": 2
+    },
+    {
+      "id": 106,
+      "seed": 20260921,
+      "regionIds": [],
+      "seededRegions": true,
+      "partyIds": [
+        1,
+        2,
+        3
+      ],
+      "maxPartySize": 4,
+      "campEventId": 2,
+      "wildEventIds": [
+        1,
+        3,
+        5,
+        6
+      ],
+      "buildingIds": [
+        1,
+        4,
+        5
+      ],
+      "buildingEventIds": [
+        1,
+        4,
+        1
+      ],
+      "equipmentRecipeId": 106,
+      "startAreaId": 2
+    },
+    {
+      "id": 107,
+      "seed": 20260921,
+      "regionIds": [],
+      "seededRegions": true,
+      "partyIds": [
+        1,
+        2,
+        3
+      ],
+      "maxPartySize": 4,
+      "campEventId": 2,
+      "wildEventIds": [
+        1,
+        3,
+        5,
+        6
+      ],
+      "buildingIds": [
+        1,
+        4,
+        5
+      ],
+      "buildingEventIds": [
+        1,
+        4,
+        1
+      ],
+      "equipmentRecipeId": 107,
+      "startAreaId": 2
+    },
+    {
+      "id": 108,
+      "seed": 20260921,
+      "regionIds": [],
+      "seededRegions": true,
+      "partyIds": [
+        2,
+        1,
+        3
+      ],
+      "maxPartySize": 4,
+      "campEventId": 2,
+      "wildEventIds": [
+        1,
+        3,
+        5,
+        6
+      ],
+      "buildingIds": [
+        1,
+        4,
+        5
+      ],
+      "buildingEventIds": [
+        1,
+        4,
+        1
+      ],
+      "equipmentRecipeId": 108,
+      "startAreaId": 2
+    },
+    {
+      "id": 109,
+      "seed": 20260921,
+      "regionIds": [],
+      "seededRegions": true,
+      "partyIds": [
+        3,
+        1,
+        2
+      ],
+      "maxPartySize": 4,
+      "campEventId": 2,
+      "wildEventIds": [
+        1,
+        3,
+        5,
+        6
+      ],
+      "buildingIds": [
+        1,
+        4,
+        5
+      ],
+      "buildingEventIds": [
+        1,
+        4,
+        1
+      ],
+      "equipmentRecipeId": 109,
+      "startAreaId": 2
+    },
+    {
+      "id": 110,
+      "seed": 20260921,
+      "regionIds": [],
+      "seededRegions": true,
+      "partyIds": [
+        1,
+        2,
+        3
+      ],
+      "maxPartySize": 4,
+      "campEventId": 2,
+      "wildEventIds": [
+        1,
+        3,
+        5,
+        6
+      ],
+      "buildingIds": [
+        1,
+        4,
+        5
+      ],
+      "buildingEventIds": [
+        1,
+        4,
+        1
+      ],
+      "equipmentRecipeId": 110,
+      "startAreaId": 2
+    },
+    {
+      "id": 111,
+      "seed": 20260921,
+      "regionIds": [],
+      "seededRegions": true,
+      "partyIds": [
+        1,
+        2,
+        3
+      ],
+      "maxPartySize": 4,
+      "campEventId": 2,
+      "wildEventIds": [
+        1,
+        3,
+        5,
+        6
+      ],
+      "buildingIds": [
+        1,
+        4,
+        5
+      ],
+      "buildingEventIds": [
+        1,
+        4,
+        1
+      ],
+      "equipmentRecipeId": 111,
+      "startAreaId": 2
+    },
+    {
+      "id": 112,
+      "seed": 20260921,
+      "regionIds": [],
+      "seededRegions": true,
+      "partyIds": [
+        3,
+        1,
+        2
+      ],
+      "maxPartySize": 4,
+      "campEventId": 2,
+      "wildEventIds": [
+        1,
+        3,
+        5,
+        6
+      ],
+      "buildingIds": [
+        1,
+        4,
+        5
+      ],
+      "buildingEventIds": [
+        1,
+        4,
+        1
+      ],
+      "equipmentRecipeId": 112,
       "startAreaId": 2
     }
   ]

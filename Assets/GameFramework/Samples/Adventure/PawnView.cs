@@ -84,7 +84,7 @@ namespace ProjectY.Samples
             if (animated) {animationView.SetIdentity(actor.Id);animationView.Capture(actor, target, impactDelay * animationView.Settings.PresentationSpeed);}
         }
         public void TickPresentation(float deltaTime, float speed = 0)
-        { if (animated) animationView.Tick(deltaTime, speed, transform); }
+        { if (animated) animationView.Tick(deltaTime, speed, transform); equipmentView?.TickEffects(deltaTime); }
         public void SkipPresentation() { if (animated) animationView.Skip(); }
         public void PlayInteraction(bool talking) {if(animated) animationView.Interact(talking);}
 
@@ -192,6 +192,7 @@ namespace ProjectY.Samples
                 foreach(var model in objects.Values)pickRenderers.AddRange(model.GetComponentsInChildren<Renderer>());
                 if(animated)pickRenderers.AddRange(animationView.GetComponentsInChildren<Renderer>());
                 if(riddenAnimal!=null)pickRenderers.AddRange(riddenAnimal.GetComponentsInChildren<Renderer>());
+                pickRenderers.RemoveAll(renderer=>renderer is ParticleSystemRenderer);
             }
         }
 #if UNITY_EDITOR

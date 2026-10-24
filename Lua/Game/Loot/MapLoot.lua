@@ -111,7 +111,7 @@ function Loot:ActorDrops(areas,actors,stats)
     local area,state=areas:ActiveLayout(),areas.data.Active
     local generated=0
     for _,actor in ipairs(actors) do
-        if actor.Team==2 and actor.HP==0 and actor.AnimalOwnerId==0 and not actor.DropResolved then
+        if actor.Team>=2 and actor.HP==0 and actor.AnimalOwnerId==0 and not actor.DropResolved then
             local rule=self.rules.enemies[actor.TemplateId]
             local equipped=self:ActorHasEquipment(actor)
             if rule or equipped then
@@ -201,6 +201,13 @@ function Loot:Take(areas,key,x,y,rotated)
     local count=entry.Count
     local name=(entry.Kind=='weapon' or entry.Kind=='wearable') and self.equipment.rules.affixes:Name(entry) or self.equipment.rules.items:Get(entry.ItemId).name
     if not session:Take(self.equipment.data,key,x,y,rotated,ammo,capacity,rounds) then return false,'空地不足、位置被占用或超出背包范围；物品仍在右侧原位' end
+    local actor=areas:PartyActor(areas.data.Active:GetMemberIdAt(0))
+    local state,container=areas.data.Active
+    for i=0,state.LootCount-1 do local row=state:GetLootAt(i);if row.Id==entry.ContainerId then container=row;break end end
+    local cell=areas:ActiveLayout().cells[assert(container,'Collected loot container is missing').CellIndex]
+    local effects=require('Game.Presentation.VisualEffects')
+    local actorCell=areas:ActiveLayout().cells[state:GetMemberCellAt(0)]
+    effects.Item(self.equipment.context.systems:Get('Battle'),entry.ItemId,effects.Source(actor,actorCell),cell.q,cell.r,'pickup',cell.layer)
     return true,name..' ×'..count,entry.ContainerId
 end
 function Loot:Move(areas,key,x,y,rotated)

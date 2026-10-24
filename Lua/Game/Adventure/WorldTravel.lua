@@ -1,5 +1,9 @@
 local Hex=require('Game.Map.HexGrid')
 local Travel={};Travel.__index=Travel
+local function escort(adventure)
+    local story=adventure.narrative
+    return story and story.townMissions and story.townMissions.escort
+end
 function Travel.New(adventure)
     local config=adventure.config
     local self=setmetatable({adventure=adventure,data=CS.ProjectY.Data.WorldTravelData.For(adventure.data),
@@ -40,6 +44,7 @@ function Travel:Plan(cell,siteId)
     local start=self.map:GetCell(self.data.AnchorQ,self.data.AnchorR)
     local path=self.paths:FindPath(start,cell,function(a,b)return self:Cost(a,b)end)
     if not path then return false,'没有可通行的陆路，请选择其他目的地' end
+    local convoy=escort(self.adventure);if convoy then convoy:Detach() end
     local qs,rs,minutes={},{},{}
     for i=2,#path do qs[#qs+1]=path[i].q;rs[#rs+1]=path[i].r;minutes[#minutes+1]=self:Cost(path[i-1],path[i]) end
     self.data:Plan(qs,rs,minutes,siteId)
@@ -49,8 +54,11 @@ end
 function Travel:Visit(siteId)
     self.adventure.parties.data:Target(0)
     local site=self.adventure.sites[siteId];if not site then return false,'未知地点' end
+    local available,explanation=self.adventure.specialEvents:CanEnter(site)
+    if not available then return false,explanation end
     local ok,reason
-    if self.adventure.areas:AreaId(site) then ok,reason=self.adventure.areas:CanEnter(site) else ok,reason=self.adventure.events:CanVisit(site) end
+    if site.factionSite or self.adventure.factions.data:FindConflict(siteId) then ok=true
+    elseif self.adventure.areas:AreaId(site) then ok,reason=self.adventure.areas:CanEnter(site) else ok,reason=self.adventure.events:CanVisit(site) end
     if not ok then return false,reason end
     return self:Plan(self.map:GetCell(site.q,site.r),siteId)
 end
@@ -58,6 +66,8 @@ function Travel:Command(command,value)
     local ok,reason=self:Allowed();if not ok then return false,reason end
     if command=='travel_move' then self.adventure.parties.data:Target(0);return self:Plan(self.cells[value],0)
     elseif command=='travel_pause' then self.data:SetPaused(not self.data.Paused)
+    elseif command=='travel_resume' then self.data:SetPaused(false)
+    elseif command=='travel_suspend' then self.data:SetPaused(true)
     elseif command=='travel_speed' then
         if value~=1 and value~=2 and value~=4 then return false,'无效时间流速' end
         self.data:SetSpeed(value)
@@ -78,8 +88,17 @@ function Travel:CreateStop(row)
     assert(stop.Id==#self.adventure.sites+1,'Travel site IDs must remain contiguous');self.adventure.sites[stop.Id]=site
     return site
 end
+function Travel:CreateWorldStop(q,r,encounterId)
+    local stop=self.data:AddWorldStop(q,r,0,encounterId)
+    local x,y,z=self.map:GetCellWorldPosition(q,r)
+    local site={id=stop.Id,eventId=0,q=q,r=r,x=x,y=y,z=z,travelStop=true,name=self.adventure.battle.encounters:Get(encounterId).name}
+    assert(stop.Id==#self.adventure.sites+1,'World site IDs must remain contiguous')
+    self.adventure.sites[stop.Id]=site
+    return site
+end
 function Travel:Trigger(row)
     local site=self:CreateStop(row)
+    self.adventure.specialEvents:Discovered(site)
     if row.encounterId==0 then return self.adventure:EnterSite(site.id) end
     return self:EnterBattle(site,row.encounterId)
 end
@@ -104,6 +123,7 @@ function Travel:Check()
         local allowed=#row.regionTypes==0
         for _,region in ipairs(row.regionTypes) do if region==kind then allowed=true;break end end
         if allowed and row.eventId>0 then allowed=self.adventure.events:CanVisit({id=#self.adventure.sites+1,eventId=row.eventId}) end
+        if allowed and row.eventId>0 then allowed=self.adventure.specialEvents:CanTrigger(row.eventId,cell) end
         if allowed and row.weight>0 then entries[#entries+1]=row;total=total+row.weight end
     end
     if total==0 then return false end
@@ -116,12 +136,16 @@ function Travel:Tick(dt)
         self.adventure.camp.data.IsOpen or self.adventure.context.services.UI.IsWorldPaused then return end
     local budget=dt*self.rule.minutesPerSecond*self.data.Speed
     while budget>0 and self.adventure.data.Phase=='map' and not self.data.Paused do
-        local moving=self.data.Active
+        local convoy=escort(self.adventure);local attached=convoy and convoy.data.AttachedId>0
+        local moving=self.data.Active and not attached
         local spent=moving and self.data:Step(math.min(budget,1)) or math.min(budget,1)
         assert(spent>0,'World clock failed to advance');budget=math.max(0,budget-spent)
+        self.adventure.fog:Update()
         self.adventure.narrative:AdvanceMinutes(spent)
         self.adventure.parties:SyncClock()
-        if self.adventure.parties:CheckContact() then return end
+        if attached then self.adventure.fog:Update() end
+        if self.adventure.data.Phase~='map' then return end
+        if not attached and self.adventure.parties:CheckContact() then return end
         if moving and self.data.Progress==0 then self.adventure.parties:ReplanPursuit() end
         if self.data.Paused then return end
         if moving and not self.data.Active then
@@ -133,8 +157,10 @@ function Travel:Tick(dt)
 end
 function Travel:Summary()
     local data=self.data;local target=data.TargetSiteId>0 and self.adventure.sites[data.TargetSiteId] or nil
+    local convoy=escort(self.adventure);local attached=convoy and convoy.data.AttachedId>0
+    if attached then local record=convoy.data:Find(convoy.data.AttachedId);target=self.adventure.sites[record.DestinationSiteId] end
     return {active=data.Active,paused=data.Paused,speed=data.Speed,remaining=data.RemainingMinutes,
-        destination=target and target.name or data.Active and '地图位置' or '原地待命',
+        destination=target and (attached and '护送 · ' or '')..target.name or data.Active and '地图位置' or '原地待命',
         terrain=self:Terrain(self.map:GetCell(data.Q,data.R)).name,message=data.Message}
 end
 function Travel:Snapshot()

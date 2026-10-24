@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "PassiveSkillTable",
-  "description": "天赋仅授予被动属性效果，不含主动技能。",
+  "description": "天赋授予被动属性加算或声明式免疫，不含主动技能。",
   "key": "id",
   "fields": [
     {
@@ -29,6 +29,24 @@
       "name": "attributeValues",
       "type": "int[]",
       "description": "对应每级加算数值"
+    },
+    {
+      "name": "immunityTags",
+      "type": "string[]",
+      "default": [],
+      "description": "获得任一阶时生效的免疫能力标记；例如disarm表示免疫缴械"
+    },
+    {
+      "name": "iconAttribute",
+      "type": "string",
+      "default": "",
+      "description": "复用GrowthAttributeTable.code对应图标；空时使用首个加算属性，纯免疫被动须显式配置"
+    },
+    {
+      "name": "triggerKind",
+      "type": "string",
+      "description": "已学被动的规则触发代码；空表示无触发",
+      "default": ""
     }
   ],
   "rows": [
@@ -176,6 +194,17 @@
       ]
     },
     {
+      "id": 14,
+      "name": "紧握武器",
+      "description": "牢牢握住武器，完全免疫缴械。已学习后持续生效。",
+      "attributeNames": [],
+      "attributeValues": [],
+      "immunityTags": [
+        "disarm"
+      ],
+      "iconAttribute": "strength"
+    },
+    {
       "id": 301,
       "name": "奥术兵装",
       "description": "智力 +1；允许使用要求此专精的武器触媒适配器。",
@@ -185,6 +214,66 @@
       "attributeValues": [
         1
       ]
+    },
+    {
+      "id": 1805,
+      "name": "残液回收",
+      "description": "每场首次蒸馏爆破成功消费敌方状态后，下次本人药剂技能 AP 减少 1，最低 1。",
+      "attributeNames": [],
+      "attributeValues": [],
+      "immunityTags": [],
+      "iconAttribute": "intellect",
+      "triggerKind": "recycle"
+    },
+    {
+      "id": 1815,
+      "name": "接句",
+      "description": "主要技能成功作用于施放前已有减益的敌人后获得余音，每轮一次。",
+      "attributeNames": [],
+      "attributeValues": [],
+      "immunityTags": [],
+      "iconAttribute": "charisma",
+      "triggerKind": "reply"
+    },
+    {
+      "id": 1825,
+      "name": "余恩",
+      "description": "正式战斗每轮首次由自己技能清除自身减益后，护卫至少为 4，持续至下回合开始。",
+      "attributeNames": [],
+      "attributeValues": [],
+      "immunityTags": [],
+      "iconAttribute": "intellect",
+      "triggerKind": "grace"
+    },
+    {
+      "id": 1835,
+      "name": "苦难研习",
+      "description": "回合开始有中毒、流血或虚弱时，本回合智力提高 2，多种状态不叠加。",
+      "attributeNames": [],
+      "attributeValues": [],
+      "immunityTags": [],
+      "iconAttribute": "intellect",
+      "triggerKind": "suffering"
+    },
+    {
+      "id": 1845,
+      "name": "留手",
+      "description": "直接武器命中施放前已有破绽的目标时，不磨损目标装备，自身武器仍磨损。",
+      "attributeNames": [],
+      "attributeValues": [],
+      "immunityTags": [],
+      "iconAttribute": "speed",
+      "triggerKind": "mercy"
+    },
+    {
+      "id": 1855,
+      "name": "嗅血",
+      "description": "绑定动物通过指令命中流血敌人时追加 3 点基础物理伤害，每条指令一次，正常计算防御。",
+      "attributeNames": [],
+      "attributeValues": [],
+      "immunityTags": [],
+      "iconAttribute": "animalAffinity",
+      "triggerKind": "scent_blood"
     }
   ]
 }

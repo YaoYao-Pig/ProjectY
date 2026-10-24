@@ -57,7 +57,7 @@ end end
 print('PASS 3- and 7-radius geometry boundaries remain connected at both supported peak heights')
 
 local height=require('Game.Battle.HeightAdvantage').New(config)
-local ranged={id=101,name='test ranged attack',target='enemy',range=3,hitChance=80,trajectory='sight'}
+local ranged={id=101,name='test ranged attack',target='enemy',range=3,minRange=0,fixedRange=false,hitChance=80,trajectory='sight'}
 local melee={target='enemy',range=1,hitChance=80}
 for level=0,4 do
     local origin,target={height=level,layer=0},{height=0,layer=0}

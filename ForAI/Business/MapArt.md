@@ -28,9 +28,11 @@
 
 ## 关键入口
 
+- [势力据点资源](../../Art/FactionLowPoly/README.md)：兽人木寨、哥布林营地、树精灵高树林居的单格模型；保留 Blender 源，FBX 与 14 个共享 URP 材质已导入，AdventureDemo.worldPartyBindings 保留原 7 项并追加 3 项。[实际同框预览](../../Art/FactionLowPoly/Previews/faction-sites-unity.png)已核对，未进入 Play。生态归属与玩法见[势力系统](Factions.md)。
+
 - [矿井地牢](Mine.md)：三层矿道及坍塌表现；[矿井资源清单](../../Art/AssetExpansion202610/Mine/README.md)记录入口、木支架、矿轨、矿车、矿簇与工作棚的来源和实测尺寸。资源 ID 900–905 已接入地图资源表。
 
-- [2026 年 10 月补充资产库](../../Art/AssetExpansion202610/README.md) / [可浏览档案](../../Art/AssetExpansion202610/gallery.html)：独立新增五生态 15 个六边地块、21 个生态装饰及 20 个地牢陈设；源、参考图、三视图和逐项审核均位于同目录。Unity 产物在 `Assets/DynamicAsset/AssetExpansion202610/`，未更改地图资源表或随机生成池；纹理接入限制见[地图材质](MapPresentation.md)。
+- [2026 年 10 月补充资产库](../../Art/AssetExpansion202610/README.md) / [可浏览档案](../../Art/AssetExpansion202610/gallery.html)：独立新增五生态 15 个六边地块、21 个生态装饰及 20 个地牢陈设；源、参考图、三视图和逐项审核均位于同目录。Unity 产物在 `Assets/DynamicAsset/AssetExpansion202610/`。其中 Terrain 的 15 款底块、21 款装饰已登记 MapAssetTable 1000–1035 并接入十一地貌随机开局，使用现有 Prefab；多材质地块保留原色槽，见[地图材质](MapPresentation.md)。其余该批地牢陈设与纹理仍按各自接入说明处理。
 - [地图环境装饰](MapDressing.md)：新增 24 类自然、街区、地牢物件的独立源目录、资源 ID、真实米制占地与配置生成入口。
 - [制作目录](../../Art/MapLowPoly/)：可编辑来源、暂存导出与预览。
 - [源场景](../../Art/MapLowPoly/Source/MapLowPoly.blend) / [资源清单](../../Art/MapLowPoly/asset_manifest.json)：模型尺寸、三角形、材质与导出设置。

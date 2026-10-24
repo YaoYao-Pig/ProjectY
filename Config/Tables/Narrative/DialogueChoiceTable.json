@@ -39,6 +39,16 @@
       "description": "选择时执行的动作",
       "ref": "NarrativeActionTable",
       "default": []
+    },
+    {
+      "name": "worldAction",
+      "type": "enum",
+      "values": [
+        "none",
+        "attack"
+      ],
+      "default": "none",
+      "description": "大地图对话的终止动作；attack 关闭会话后开战，不能与奖励动作混用"
     }
   ],
   "rows": [
@@ -1549,6 +1559,4523 @@
       "nextNodeId": 0,
       "actionIds": [],
       "hideWhenLocked": false
+    },
+    {
+      "id": 4000,
+      "text": "[动物亲和 4] 让它嗅到空手的气息，约定不再袭击旅人。",
+      "conditionId": 4003,
+      "actionIds": [
+        4000,
+        4001
+      ],
+      "nextNodeId": 4101,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4001,
+      "text": "支付 60 金币补偿旧日的伤害，换取停战。",
+      "conditionId": 4000,
+      "actionIds": [
+        4002,
+        4000,
+        4001
+      ],
+      "nextNodeId": 4101,
+      "worldAction": "none",
+      "hideWhenLocked": true
+    },
+    {
+      "id": 4002,
+      "text": "我们曾约定不再伤害路人。",
+      "conditionId": 4001,
+      "actionIds": [],
+      "nextNodeId": 4101,
+      "worldAction": "none",
+      "hideWhenLocked": true
+    },
+    {
+      "id": 4003,
+      "text": "愿这次约定长久。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 0,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4004,
+      "text": "关于你的传说……",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 4102,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4005,
+      "text": "拔出武器，迎战。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 0,
+      "worldAction": "attack",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4006,
+      "text": "先告辞。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 0,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4007,
+      "text": "继续交谈。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 4100,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4008,
+      "text": "关于你的传说……",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 4112,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4009,
+      "text": "我想与你交战。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 0,
+      "worldAction": "attack",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4010,
+      "text": "先告辞。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 0,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4011,
+      "text": "继续交谈。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 4110,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4012,
+      "text": "关于你的传说……",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 4122,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4013,
+      "text": "我想与你交战。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 0,
+      "worldAction": "attack",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4014,
+      "text": "先告辞。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 0,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4015,
+      "text": "继续交谈。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 4120,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4016,
+      "text": "[营造 4] 辨认共鸣裂隙，用正确的敲击节奏平息它。",
+      "conditionId": 4007,
+      "actionIds": [
+        4003,
+        4004
+      ],
+      "nextNodeId": 4131,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4017,
+      "text": "支付 90 金币补偿旧日的伤害，换取停战。",
+      "conditionId": 4004,
+      "actionIds": [
+        4005,
+        4003,
+        4004
+      ],
+      "nextNodeId": 4131,
+      "worldAction": "none",
+      "hideWhenLocked": true
+    },
+    {
+      "id": 4018,
+      "text": "我们曾约定不再伤害路人。",
+      "conditionId": 4005,
+      "actionIds": [],
+      "nextNodeId": 4131,
+      "worldAction": "none",
+      "hideWhenLocked": true
+    },
+    {
+      "id": 4019,
+      "text": "愿这次约定长久。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 0,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4020,
+      "text": "关于你的传说……",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 4132,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4021,
+      "text": "拔出武器，迎战。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 0,
+      "worldAction": "attack",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4022,
+      "text": "先告辞。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 0,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4023,
+      "text": "继续交谈。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 4130,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4024,
+      "text": "[魅力 5] 指出背弃他的不是路上的旅人，请他重新选择誓言。",
+      "conditionId": 4011,
+      "actionIds": [
+        4006,
+        4007
+      ],
+      "nextNodeId": 4141,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4025,
+      "text": "支付 60 金币补偿旧日的伤害，换取停战。",
+      "conditionId": 4008,
+      "actionIds": [
+        4008,
+        4006,
+        4007
+      ],
+      "nextNodeId": 4141,
+      "worldAction": "none",
+      "hideWhenLocked": true
+    },
+    {
+      "id": 4026,
+      "text": "我们曾约定不再伤害路人。",
+      "conditionId": 4009,
+      "actionIds": [],
+      "nextNodeId": 4141,
+      "worldAction": "none",
+      "hideWhenLocked": true
+    },
+    {
+      "id": 4027,
+      "text": "愿这次约定长久。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 0,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4028,
+      "text": "关于你的传说……",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 4142,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4029,
+      "text": "拔出武器，迎战。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 0,
+      "worldAction": "attack",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4030,
+      "text": "先告辞。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 0,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4031,
+      "text": "继续交谈。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 4140,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4032,
+      "text": "关于你的传说……",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 4152,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4033,
+      "text": "我想与你交战。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 0,
+      "worldAction": "attack",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4034,
+      "text": "先告辞。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 0,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4035,
+      "text": "继续交谈。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 4150,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4036,
+      "text": "我愿意听听你的委托。",
+      "conditionId": 4013,
+      "actionIds": [
+        4012
+      ],
+      "nextNodeId": 4113,
+      "worldAction": "none",
+      "hideWhenLocked": true
+    },
+    {
+      "id": 4037,
+      "text": "已经解决血月巨狼 · 裂喉的事了。",
+      "conditionId": 4017,
+      "actionIds": [
+        4013
+      ],
+      "nextNodeId": 4114,
+      "worldAction": "none",
+      "hideWhenLocked": true
+    },
+    {
+      "id": 4038,
+      "text": "领取委托谢礼。",
+      "conditionId": 4015,
+      "actionIds": [
+        4014
+      ],
+      "nextNodeId": 4115,
+      "worldAction": "none",
+      "hideWhenLocked": true
+    },
+    {
+      "id": 4039,
+      "text": "路上近来还好吗？",
+      "conditionId": 4016,
+      "actionIds": [],
+      "nextNodeId": 4115,
+      "worldAction": "none",
+      "hideWhenLocked": true
+    },
+    {
+      "id": 4040,
+      "text": "我会找到裂喉，让它停止袭击旅人。",
+      "conditionId": 4013,
+      "actionIds": [
+        4015
+      ],
+      "nextNodeId": 4110,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4041,
+      "text": "我再考虑一下。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 4110,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4042,
+      "text": "收下谢礼。",
+      "conditionId": 4015,
+      "actionIds": [
+        4016
+      ],
+      "nextNodeId": 4115,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4043,
+      "text": "稍后再领取。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 0,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4044,
+      "text": "愿道路平安。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 0,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4045,
+      "text": "我愿意听听你的委托。",
+      "conditionId": 4021,
+      "actionIds": [
+        4020
+      ],
+      "nextNodeId": 4123,
+      "worldAction": "none",
+      "hideWhenLocked": true
+    },
+    {
+      "id": 4046,
+      "text": "已经解决熔脉巨兽 · 余烬的事了。",
+      "conditionId": 4025,
+      "actionIds": [
+        4021
+      ],
+      "nextNodeId": 4124,
+      "worldAction": "none",
+      "hideWhenLocked": true
+    },
+    {
+      "id": 4047,
+      "text": "领取委托谢礼。",
+      "conditionId": 4023,
+      "actionIds": [
+        4022
+      ],
+      "nextNodeId": 4125,
+      "worldAction": "none",
+      "hideWhenLocked": true
+    },
+    {
+      "id": 4048,
+      "text": "路上近来还好吗？",
+      "conditionId": 4024,
+      "actionIds": [],
+      "nextNodeId": 4125,
+      "worldAction": "none",
+      "hideWhenLocked": true
+    },
+    {
+      "id": 4049,
+      "text": "我会去找余烬，让山路重新安静。",
+      "conditionId": 4021,
+      "actionIds": [
+        4023
+      ],
+      "nextNodeId": 4120,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4050,
+      "text": "我再考虑一下。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 4120,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4051,
+      "text": "收下谢礼。",
+      "conditionId": 4023,
+      "actionIds": [
+        4024
+      ],
+      "nextNodeId": 4125,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4052,
+      "text": "稍后再领取。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 0,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4053,
+      "text": "愿道路平安。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 0,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4054,
+      "text": "我愿意听听你的委托。",
+      "conditionId": 4029,
+      "actionIds": [
+        4028
+      ],
+      "nextNodeId": 4153,
+      "worldAction": "none",
+      "hideWhenLocked": true
+    },
+    {
+      "id": 4055,
+      "text": "已经解决叛誓剑士 · 维兰的事了。",
+      "conditionId": 4033,
+      "actionIds": [
+        4029
+      ],
+      "nextNodeId": 4154,
+      "worldAction": "none",
+      "hideWhenLocked": true
+    },
+    {
+      "id": 4056,
+      "text": "领取委托谢礼。",
+      "conditionId": 4031,
+      "actionIds": [
+        4030
+      ],
+      "nextNodeId": 4155,
+      "worldAction": "none",
+      "hideWhenLocked": true
+    },
+    {
+      "id": 4057,
+      "text": "路上近来还好吗？",
+      "conditionId": 4032,
+      "actionIds": [],
+      "nextNodeId": 4155,
+      "worldAction": "none",
+      "hideWhenLocked": true
+    },
+    {
+      "id": 4058,
+      "text": "我会阻止维兰伤害路人，也会尝试劝他回头。",
+      "conditionId": 4029,
+      "actionIds": [
+        4031
+      ],
+      "nextNodeId": 4150,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4059,
+      "text": "我再考虑一下。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 4150,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4060,
+      "text": "收下谢礼。",
+      "conditionId": 4031,
+      "actionIds": [
+        4032
+      ],
+      "nextNodeId": 4155,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4061,
+      "text": "稍后再领取。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 0,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 4062,
+      "text": "愿道路平安。",
+      "conditionId": 1,
+      "actionIds": [],
+      "nextNodeId": 0,
+      "worldAction": "none",
+      "hideWhenLocked": false
+    },
+    {
+      "id": 8000,
+      "text": "镇上还有几件事。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8001,
+      "text": "先谈别的。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 20,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8002,
+      "text": "回头再聊。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 0,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8003,
+      "text": "镇上还有几件事。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8004,
+      "text": "先谈别的。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 3000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8005,
+      "text": "回头再聊。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 0,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8006,
+      "text": "镇上还有几件事。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8007,
+      "text": "先谈别的。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 3001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8008,
+      "text": "回头再聊。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 0,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8009,
+      "text": "镇上还有几件事。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8010,
+      "text": "先谈别的。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 3002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8011,
+      "text": "回头再聊。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 0,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8012,
+      "text": "镇上还有几件事。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8013,
+      "text": "先谈别的。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 3003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8014,
+      "text": "回头再聊。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 0,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8015,
+      "text": "问问「名册上多出来的人」。",
+      "conditionId": 8011,
+      "hideWhenLocked": true,
+      "nextNodeId": 8005,
+      "actionIds": [
+        8002
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8016,
+      "text": "我去问问。",
+      "conditionId": 8012,
+      "hideWhenLocked": true,
+      "nextNodeId": 8006,
+      "actionIds": [
+        8003
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8017,
+      "text": "我去找人。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8018,
+      "text": "先让我想想。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8019,
+      "text": "艾达的更正申请还在吗？",
+      "conditionId": 8014,
+      "hideWhenLocked": true,
+      "nextNodeId": 8007,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8020,
+      "text": "先把应退的钱算给我看。",
+      "conditionId": 8016,
+      "hideWhenLocked": false,
+      "nextNodeId": 8008,
+      "actionIds": [
+        8005,
+        8004
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8021,
+      "text": "我记下了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8022,
+      "text": "[智力 8] 孩子的父亲确实死了，他的救济为什么也要退？",
+      "conditionId": 8018,
+      "hideWhenLocked": false,
+      "nextNodeId": 8009,
+      "actionIds": [
+        8005,
+        8004,
+        8006
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8023,
+      "text": "我记下了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8024,
+      "text": "我知道了。",
+      "conditionId": 8014,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [
+        8005,
+        8004,
+        8006
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8025,
+      "text": "「名册上多出来的人」，我想好了。",
+      "conditionId": 8015,
+      "hideWhenLocked": true,
+      "nextNodeId": 8011,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8026,
+      "text": "我还想再问几个人。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8027,
+      "text": "按实情更正。欠款记在艾达名下，孩子另立申请。",
+      "conditionId": 8021,
+      "hideWhenLocked": false,
+      "nextNodeId": 8012,
+      "actionIds": [
+        8009,
+        8007,
+        8008
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8028,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8029,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8030,
+      "text": "「名册上多出来的人」后来怎么样了？",
+      "conditionId": 8022,
+      "hideWhenLocked": true,
+      "nextNodeId": 8013,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8031,
+      "text": "暂时保留登记。先让她领到这个月的粮。",
+      "conditionId": 8021,
+      "hideWhenLocked": false,
+      "nextNodeId": 8014,
+      "actionIds": [
+        8012,
+        8010,
+        8011
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8032,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8033,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8034,
+      "text": "「名册上多出来的人」后来怎么样了？",
+      "conditionId": 8023,
+      "hideWhenLocked": true,
+      "nextNodeId": 8015,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8035,
+      "text": "把孩子的救济另外申请，艾达领过的那份申请免退。两张一起交。",
+      "conditionId": 8027,
+      "hideWhenLocked": false,
+      "nextNodeId": 8016,
+      "actionIds": [
+        8015,
+        8013,
+        8014
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8036,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8037,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8038,
+      "text": "「名册上多出来的人」后来怎么样了？",
+      "conditionId": 8028,
+      "hideWhenLocked": true,
+      "nextNodeId": 8017,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8039,
+      "text": "问莫琳：她来过几次？",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8018,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8040,
+      "text": "我记下了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8041,
+      "text": "问问「半枚铜扣」。",
+      "conditionId": 8041,
+      "hideWhenLocked": true,
+      "nextNodeId": 8019,
+      "actionIds": [
+        8016
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8042,
+      "text": "我去问问。",
+      "conditionId": 8042,
+      "hideWhenLocked": true,
+      "nextNodeId": 8020,
+      "actionIds": [
+        8017
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8043,
+      "text": "我去找人。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8044,
+      "text": "先让我想想。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8045,
+      "text": "失守那晚，你见过洛岑吗？",
+      "conditionId": 8044,
+      "hideWhenLocked": true,
+      "nextNodeId": 8021,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8046,
+      "text": "你愿意把这些话写下来吗？",
+      "conditionId": 8046,
+      "hideWhenLocked": false,
+      "nextNodeId": 8022,
+      "actionIds": [
+        8019,
+        8018
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8047,
+      "text": "我记下了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8048,
+      "text": "我知道了。",
+      "conditionId": 8044,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [
+        8019,
+        8018,
+        8020
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8049,
+      "text": "[侦察 4] 扣带左边有剪痕。你当时站在他后面？",
+      "conditionId": 8052,
+      "hideWhenLocked": false,
+      "nextNodeId": 8024,
+      "actionIds": [
+        8019,
+        8018,
+        8020
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8050,
+      "text": "我记下了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8051,
+      "text": "「半枚铜扣」，我想好了。",
+      "conditionId": 8045,
+      "hideWhenLocked": true,
+      "nextNodeId": 8025,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8052,
+      "text": "我还想再问几个人。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8053,
+      "text": "保留逃兵登记，把救人的证词附进去。",
+      "conditionId": 8053,
+      "hideWhenLocked": false,
+      "nextNodeId": 8026,
+      "actionIds": [
+        8022,
+        8007,
+        8021
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8054,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8055,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8056,
+      "text": "「半枚铜扣」后来怎么样了？",
+      "conditionId": 8054,
+      "hideWhenLocked": true,
+      "nextNodeId": 8027,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8057,
+      "text": "提交复核。你签字，承认当年没有查问后街。",
+      "conditionId": 8059,
+      "hideWhenLocked": false,
+      "nextNodeId": 8028,
+      "actionIds": [
+        8026,
+        8023,
+        8024,
+        8025
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8058,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8059,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8060,
+      "text": "「半枚铜扣」后来怎么样了？",
+      "conditionId": 8060,
+      "hideWhenLocked": true,
+      "nextNodeId": 8029,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8061,
+      "text": "先把遗物还给岑姨。她听过证词以后，再决定要不要申请重查。",
+      "conditionId": 8053,
+      "hideWhenLocked": false,
+      "nextNodeId": 8030,
+      "actionIds": [
+        8029,
+        8027,
+        8028
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8062,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8063,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8064,
+      "text": "「半枚铜扣」后来怎么样了？",
+      "conditionId": 8061,
+      "hideWhenLocked": true,
+      "nextNodeId": 8031,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8065,
+      "text": "问问「少一个人的工钱」。",
+      "conditionId": 8074,
+      "hideWhenLocked": true,
+      "nextNodeId": 8032,
+      "actionIds": [
+        8030
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8066,
+      "text": "我去问问。",
+      "conditionId": 8075,
+      "hideWhenLocked": true,
+      "nextNodeId": 8033,
+      "actionIds": [
+        8031
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8067,
+      "text": "我去找人。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8068,
+      "text": "先让我想想。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8069,
+      "text": "炉边第七个人做了多少天？",
+      "conditionId": 8077,
+      "hideWhenLocked": true,
+      "nextNodeId": 8034,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8070,
+      "text": "用这页饭账证明她的工日，十九天和三个晚上都算上。",
+      "conditionId": 8079,
+      "hideWhenLocked": false,
+      "nextNodeId": 8035,
+      "actionIds": [
+        8032
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8071,
+      "text": "我记下了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8072,
+      "text": "[巧匠 4] 补铸件不能按看炉子的工钱算。",
+      "conditionId": 8081,
+      "hideWhenLocked": false,
+      "nextNodeId": 8036,
+      "actionIds": [
+        8032,
+        8033
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8073,
+      "text": "我记下了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8074,
+      "text": "我知道了。",
+      "conditionId": 8077,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [
+        8032,
+        8034
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8075,
+      "text": "「少一个人的工钱」，我想好了。",
+      "conditionId": 8078,
+      "hideWhenLocked": true,
+      "nextNodeId": 8038,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8076,
+      "text": "我还想再问几个人。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8077,
+      "text": "用艾达的真名结算，补上三个晚上的工钱。",
+      "conditionId": 8084,
+      "hideWhenLocked": false,
+      "nextNodeId": 8039,
+      "actionIds": [
+        8037,
+        8035,
+        8036
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8078,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8079,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8080,
+      "text": "「少一个人的工钱」后来怎么样了？",
+      "conditionId": 8085,
+      "hideWhenLocked": true,
+      "nextNodeId": 8040,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8081,
+      "text": "让工人一起核对工日。你拿自己的那份钱作担保。",
+      "conditionId": 8086,
+      "hideWhenLocked": false,
+      "nextNodeId": 8041,
+      "actionIds": [
+        8041,
+        8038,
+        8039,
+        8040
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8082,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8083,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8084,
+      "text": "「少一个人的工钱」后来怎么样了？",
+      "conditionId": 8087,
+      "hideWhenLocked": true,
+      "nextNodeId": 8042,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8085,
+      "text": "先按莎娜的名字领出钱，私下交给艾达。",
+      "conditionId": 8086,
+      "hideWhenLocked": false,
+      "nextNodeId": 8043,
+      "actionIds": [
+        8044,
+        8042,
+        8043
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8086,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8087,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8088,
+      "text": "「少一个人的工钱」后来怎么样了？",
+      "conditionId": 8088,
+      "hideWhenLocked": true,
+      "nextNodeId": 8044,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8089,
+      "text": "问问「一封写得太好的情书」。",
+      "conditionId": 8100,
+      "hideWhenLocked": true,
+      "nextNodeId": 8045,
+      "actionIds": [
+        8045
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8090,
+      "text": "我去问问。",
+      "conditionId": 8101,
+      "hideWhenLocked": true,
+      "nextNodeId": 8046,
+      "actionIds": [
+        8046
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8091,
+      "text": "我去找人。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8092,
+      "text": "先让我想想。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8093,
+      "text": "两封信都写了“湖”，怎么还错得一模一样？",
+      "conditionId": 8103,
+      "hideWhenLocked": true,
+      "nextNodeId": 8047,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8094,
+      "text": "他们花钱请你代写，可信里的话也都是你编的。",
+      "conditionId": 8105,
+      "hideWhenLocked": false,
+      "nextNodeId": 8048,
+      "actionIds": [
+        8047
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8095,
+      "text": "我记下了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8096,
+      "text": "[魅力 5] 你也在等他们来，对吗？",
+      "conditionId": 8106,
+      "hideWhenLocked": false,
+      "nextNodeId": 8049,
+      "actionIds": [
+        8047,
+        8048
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8097,
+      "text": "我记下了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8098,
+      "text": "我知道了。",
+      "conditionId": 8103,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [
+        8047,
+        8048
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8099,
+      "text": "「一封写得太好的情书」，我想好了。",
+      "conditionId": 8104,
+      "hideWhenLocked": true,
+      "nextNodeId": 8051,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8100,
+      "text": "我还想再问几个人。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8101,
+      "text": "分别说明代写的经过。以后只记他们亲口说的话。",
+      "conditionId": 8108,
+      "hideWhenLocked": false,
+      "nextNodeId": 8052,
+      "actionIds": [
+        8050,
+        8049
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8102,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8103,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8104,
+      "text": "「一封写得太好的情书」后来怎么样了？",
+      "conditionId": 8109,
+      "hideWhenLocked": true,
+      "nextNodeId": 8053,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8105,
+      "text": "约他们和阿苇吃顿饭。各带一道菜，信先别寄。",
+      "conditionId": 8113,
+      "hideWhenLocked": false,
+      "nextNodeId": 8054,
+      "actionIds": [
+        8053,
+        8051,
+        8052
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8106,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8107,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8108,
+      "text": "「一封写得太好的情书」后来怎么样了？",
+      "conditionId": 8114,
+      "hideWhenLocked": true,
+      "nextNodeId": 8055,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8109,
+      "text": "告诉他们，这些信都是阿苇写的。以后署她的名字，问他们还愿不愿意收。",
+      "conditionId": 8108,
+      "hideWhenLocked": false,
+      "nextNodeId": 8056,
+      "actionIds": [
+        8054,
+        8028
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8110,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8111,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8112,
+      "text": "「一封写得太好的情书」后来怎么样了？",
+      "conditionId": 8115,
+      "hideWhenLocked": true,
+      "nextNodeId": 8057,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8113,
+      "text": "问问「谁家的好狗」。",
+      "conditionId": 8127,
+      "hideWhenLocked": true,
+      "nextNodeId": 8058,
+      "actionIds": [
+        8055
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8114,
+      "text": "我去问问。",
+      "conditionId": 8128,
+      "hideWhenLocked": true,
+      "nextNodeId": 8059,
+      "actionIds": [
+        8056
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8115,
+      "text": "我去找人。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8116,
+      "text": "先让我想想。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8117,
+      "text": "卫队要把巴豆带去哪儿？",
+      "conditionId": 8130,
+      "hideWhenLocked": true,
+      "nextNodeId": 8060,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8118,
+      "text": "它已经在孩子家住下了。你想领走，总得先跟孩子说清楚。",
+      "conditionId": 8132,
+      "hideWhenLocked": false,
+      "nextNodeId": 8061,
+      "actionIds": [
+        8057
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8119,
+      "text": "我记下了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8120,
+      "text": "[动物亲和 4] 它见到军服就坐起来，也可能是在等口令。",
+      "conditionId": 8134,
+      "hideWhenLocked": false,
+      "nextNodeId": 8062,
+      "actionIds": [
+        8057,
+        8058
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8121,
+      "text": "我记下了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8122,
+      "text": "我知道了。",
+      "conditionId": 8130,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [
+        8057,
+        8058
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8123,
+      "text": "「谁家的好狗」，我想好了。",
+      "conditionId": 8131,
+      "hideWhenLocked": true,
+      "nextNodeId": 8064,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8124,
+      "text": "我还想再问几个人。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8125,
+      "text": "留在孩子家。告诉卫队，它的左腿不适合跑旧驿道。",
+      "conditionId": 8139,
+      "hideWhenLocked": false,
+      "nextNodeId": 8065,
+      "actionIds": [
+        8059,
+        8052,
+        8021
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8126,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8127,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8128,
+      "text": "「谁家的好狗」后来怎么样了？",
+      "conditionId": 8140,
+      "hideWhenLocked": true,
+      "nextNodeId": 8066,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8129,
+      "text": "让卫队接走照料。伤腿不能上路，孩子可以去看它。",
+      "conditionId": 8139,
+      "hideWhenLocked": false,
+      "nextNodeId": 8067,
+      "actionIds": [
+        8062,
+        8060,
+        8061
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8130,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8131,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8132,
+      "text": "「谁家的好狗」后来怎么样了？",
+      "conditionId": 8141,
+      "hideWhenLocked": true,
+      "nextNodeId": 8068,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8133,
+      "text": "白天借给城内巡查，天黑前送回酒馆。",
+      "conditionId": 8146,
+      "hideWhenLocked": false,
+      "nextNodeId": 8069,
+      "actionIds": [
+        8064,
+        8063,
+        8060,
+        8028
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8134,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8135,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8136,
+      "text": "「谁家的好狗」后来怎么样了？",
+      "conditionId": 8147,
+      "hideWhenLocked": true,
+      "nextNodeId": 8070,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8137,
+      "text": "问问「关卡下的路费」。",
+      "conditionId": 8159,
+      "hideWhenLocked": true,
+      "nextNodeId": 8071,
+      "actionIds": [
+        8065
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8138,
+      "text": "我去问问。",
+      "conditionId": 8160,
+      "hideWhenLocked": true,
+      "nextNodeId": 8072,
+      "actionIds": [
+        8066
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8139,
+      "text": "我去找人。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8140,
+      "text": "先让我想想。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8141,
+      "text": "修桥费交给谁了？",
+      "conditionId": 8162,
+      "hideWhenLocked": true,
+      "nextNodeId": 8073,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8142,
+      "text": "把六次的日期和卫队回执一起给我。",
+      "conditionId": 8164,
+      "hideWhenLocked": false,
+      "nextNodeId": 8074,
+      "actionIds": [
+        8068,
+        8067
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8143,
+      "text": "我记下了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8144,
+      "text": "[智力 8] 六次遇劫都在交班时。把巡逻的时间拿来对一对。",
+      "conditionId": 8165,
+      "hideWhenLocked": false,
+      "nextNodeId": 8075,
+      "actionIds": [
+        8068,
+        8069
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8145,
+      "text": "我记下了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8146,
+      "text": "我知道了。",
+      "conditionId": 8162,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [
+        8068,
+        8069
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8147,
+      "text": "「关卡下的路费」，我想好了。",
+      "conditionId": 8163,
+      "hideWhenLocked": true,
+      "nextNodeId": 8077,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8148,
+      "text": "我还想再问几个人。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8149,
+      "text": "我们出城，处理两名废墟掠夺者。",
+      "conditionId": 8171,
+      "hideWhenLocked": true,
+      "nextNodeId": 8078,
+      "actionIds": [
+        8070
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8150,
+      "text": "回来再谈。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8151,
+      "text": "我出三十枚，这一趟先付钱。底单照实写。",
+      "conditionId": 8172,
+      "hideWhenLocked": false,
+      "nextNodeId": 8079,
+      "actionIds": [
+        8073,
+        8071,
+        8011,
+        8072
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8152,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8153,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8154,
+      "text": "「关卡下的路费」后来怎么样了？",
+      "conditionId": 8173,
+      "hideWhenLocked": true,
+      "nextNodeId": 8080,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8155,
+      "text": "两名废墟掠夺者已经解决。把新巡查表发下去。",
+      "conditionId": 8176,
+      "hideWhenLocked": false,
+      "nextNodeId": 8081,
+      "actionIds": [
+        8075,
+        8074,
+        8060
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8156,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8157,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8158,
+      "text": "「关卡下的路费」后来怎么样了？",
+      "conditionId": 8143,
+      "hideWhenLocked": true,
+      "nextNodeId": 8082,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8159,
+      "text": "把六次没派人护送的事一起上报，交班时也得留人巡查。",
+      "conditionId": 8181,
+      "hideWhenLocked": false,
+      "nextNodeId": 8083,
+      "actionIds": [
+        8076,
+        8007,
+        8024
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8160,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8161,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8162,
+      "text": "「关卡下的路费」后来怎么样了？",
+      "conditionId": 8144,
+      "hideWhenLocked": true,
+      "nextNodeId": 8084,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8163,
+      "text": "问问「门后的床」。",
+      "conditionId": 8193,
+      "hideWhenLocked": true,
+      "nextNodeId": 8085,
+      "actionIds": [
+        8077
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8164,
+      "text": "我去问问。",
+      "conditionId": 8194,
+      "hideWhenLocked": true,
+      "nextNodeId": 8086,
+      "actionIds": [
+        8078
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8165,
+      "text": "我去找人。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8166,
+      "text": "先让我想想。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8167,
+      "text": "那间房，到底算卧房还是通道？",
+      "conditionId": 8196,
+      "hideWhenLocked": true,
+      "nextNodeId": 8087,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8168,
+      "text": "把房租和开门的时辰写出来，交给她看。",
+      "conditionId": 8198,
+      "hideWhenLocked": false,
+      "nextNodeId": 8088,
+      "actionIds": [
+        8079
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8169,
+      "text": "我记下了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8170,
+      "text": "[巧匠 4] 把床移到里侧，加一道折屏，外面还能留出通道。",
+      "conditionId": 8199,
+      "hideWhenLocked": false,
+      "nextNodeId": 8089,
+      "actionIds": [
+        8079,
+        8080
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8171,
+      "text": "我记下了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8172,
+      "text": "这句话说得难听。房租和钥匙的事，我们照样要问。",
+      "conditionId": 8196,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [
+        8079,
+        8081,
+        8082
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8173,
+      "text": "「门后的床」，我想好了。",
+      "conditionId": 8197,
+      "hideWhenLocked": true,
+      "nextNodeId": 8091,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8174,
+      "text": "我还想再问几个人。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8175,
+      "text": "先加折屏，再请艾达试住。通道的宽度按图留足。",
+      "conditionId": 8202,
+      "hideWhenLocked": false,
+      "nextNodeId": 8092,
+      "actionIds": [
+        8084,
+        8035,
+        8083
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8176,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8177,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8178,
+      "text": "「门后的床」后来怎么样了？",
+      "conditionId": 8203,
+      "hideWhenLocked": true,
+      "nextNodeId": 8093,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8179,
+      "text": "大家签个约定：下工以后房间归住户，有火情时让人通行，房租减半。",
+      "conditionId": 8207,
+      "hideWhenLocked": false,
+      "nextNodeId": 8094,
+      "actionIds": [
+        8086,
+        8085,
+        8013,
+        8039
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8180,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8181,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8182,
+      "text": "「门后的床」后来怎么样了？",
+      "conditionId": 8025,
+      "hideWhenLocked": true,
+      "nextNodeId": 8095,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8183,
+      "text": "互助会先腾一间空房给母子，通道恢复使用。",
+      "conditionId": 8208,
+      "hideWhenLocked": false,
+      "nextNodeId": 8096,
+      "actionIds": [
+        8088,
+        8042,
+        8087
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8184,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8185,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8186,
+      "text": "「门后的床」后来怎么样了？",
+      "conditionId": 8209,
+      "hideWhenLocked": true,
+      "nextNodeId": 8097,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8187,
+      "text": "问问「多摆一只碗」。",
+      "conditionId": 8222,
+      "hideWhenLocked": true,
+      "nextNodeId": 8098,
+      "actionIds": [
+        8089
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8188,
+      "text": "我去问问。",
+      "conditionId": 8223,
+      "hideWhenLocked": true,
+      "nextNodeId": 8099,
+      "actionIds": [
+        8090
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8189,
+      "text": "我去找人。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8190,
+      "text": "先让我想想。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8191,
+      "text": "岑姨想请谁吃饭？",
+      "conditionId": 8225,
+      "hideWhenLocked": true,
+      "nextNodeId": 8100,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8192,
+      "text": "我把原话带回去，请阿苇再去问她。",
+      "conditionId": 8227,
+      "hideWhenLocked": false,
+      "nextNodeId": 8101,
+      "actionIds": [
+        8091
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8193,
+      "text": "我记下了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8194,
+      "text": "[厨艺 3] 甜汤是给洛岑做的。岑姨今年想换道自己爱吃的菜。",
+      "conditionId": 8229,
+      "hideWhenLocked": false,
+      "nextNodeId": 8102,
+      "actionIds": [
+        8091,
+        8092
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8195,
+      "text": "我记下了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8196,
+      "text": "我知道了。",
+      "conditionId": 8225,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [
+        8091,
+        8092
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8197,
+      "text": "「多摆一只碗」，我想好了。",
+      "conditionId": 8226,
+      "hideWhenLocked": true,
+      "nextNodeId": 8104,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8198,
+      "text": "我还想再问几个人。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8199,
+      "text": "留一小碗纪念洛岑，旁边再添座位。吃什么，请岑姨来定。",
+      "conditionId": 8232,
+      "hideWhenLocked": false,
+      "nextNodeId": 8105,
+      "actionIds": [
+        8093,
+        8028
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8200,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8201,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8202,
+      "text": "「多摆一只碗」后来怎么样了？",
+      "conditionId": 8233,
+      "hideWhenLocked": true,
+      "nextNodeId": 8106,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8203,
+      "text": "问问岑姨愿不愿意请大家一起吃，每个人带一道自己爱吃的菜。",
+      "conditionId": 8237,
+      "hideWhenLocked": false,
+      "nextNodeId": 8107,
+      "actionIds": [
+        8095,
+        8094,
+        8052,
+        8042
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8204,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8205,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8206,
+      "text": "「多摆一只碗」后来怎么样了？",
+      "conditionId": 8111,
+      "hideWhenLocked": true,
+      "nextNodeId": 8108,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8207,
+      "text": "把碗送还她，饭也送过去。今年让她在家吃。",
+      "conditionId": 8232,
+      "hideWhenLocked": false,
+      "nextNodeId": 8109,
+      "actionIds": [
+        8096,
+        8049
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8208,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8209,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8210,
+      "text": "「多摆一只碗」后来怎么样了？",
+      "conditionId": 8238,
+      "hideWhenLocked": true,
+      "nextNodeId": 8110,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8211,
+      "text": "问问「一首不准唱完的歌」。",
+      "conditionId": 8250,
+      "hideWhenLocked": true,
+      "nextNodeId": 8111,
+      "actionIds": [
+        8097
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8212,
+      "text": "我去问问。",
+      "conditionId": 8251,
+      "hideWhenLocked": true,
+      "nextNodeId": 8112,
+      "actionIds": [
+        8098
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8213,
+      "text": "我去找人。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8214,
+      "text": "先让我想想。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8215,
+      "text": "歌里偷靴子的队长是谁？",
+      "conditionId": 8253,
+      "hideWhenLocked": true,
+      "nextNodeId": 8113,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8216,
+      "text": "把各家唱的都留下，注明从谁那里听来的。",
+      "conditionId": 8255,
+      "hideWhenLocked": false,
+      "nextNodeId": 8114,
+      "actionIds": [
+        8099
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8217,
+      "text": "我记下了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8218,
+      "text": "[智力 8] 每一版都写清抄自谁家、什么时候开始唱。歌里唱的未必都是真的。",
+      "conditionId": 8256,
+      "hideWhenLocked": false,
+      "nextNodeId": 8115,
+      "actionIds": [
+        8099,
+        8100
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8219,
+      "text": "我记下了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8220,
+      "text": "我知道了。",
+      "conditionId": 8253,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [
+        8099,
+        8101
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8221,
+      "text": "「一首不准唱完的歌」，我想好了。",
+      "conditionId": 8254,
+      "hideWhenLocked": true,
+      "nextNodeId": 8117,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8222,
+      "text": "我还想再问几个人。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8223,
+      "text": "附上赫铎的证词，保留旧词，把靴子的去处写在旁边。",
+      "conditionId": 8259,
+      "hideWhenLocked": false,
+      "nextNodeId": 8118,
+      "actionIds": [
+        8103,
+        8102,
+        8027
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8224,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8225,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8226,
+      "text": "「一首不准唱完的歌」后来怎么样了？",
+      "conditionId": 8260,
+      "hideWhenLocked": true,
+      "nextNodeId": 8119,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8227,
+      "text": "印各家的版本，写明抄录人。最后一栏留给读者补。",
+      "conditionId": 8264,
+      "hideWhenLocked": false,
+      "nextNodeId": 8120,
+      "actionIds": [
+        8105,
+        8104,
+        8010
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8228,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8229,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8230,
+      "text": "「一首不准唱完的歌」后来怎么样了？",
+      "conditionId": 8205,
+      "hideWhenLocked": true,
+      "nextNodeId": 8121,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8231,
+      "text": "先印前三段。后半首的手稿留在驿站，愿意的人来查。",
+      "conditionId": 8265,
+      "hideWhenLocked": false,
+      "nextNodeId": 8122,
+      "actionIds": [
+        8107,
+        8027,
+        8106
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8232,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8233,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8234,
+      "text": "「一首不准唱完的歌」后来怎么样了？",
+      "conditionId": 8266,
+      "hideWhenLocked": true,
+      "nextNodeId": 8123,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8235,
+      "text": "问问「明天开门的人」。",
+      "conditionId": 8282,
+      "hideWhenLocked": true,
+      "nextNodeId": 8124,
+      "actionIds": [
+        8108
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8236,
+      "text": "我去问问。",
+      "conditionId": 8283,
+      "hideWhenLocked": true,
+      "nextNodeId": 8125,
+      "actionIds": [
+        8109
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8237,
+      "text": "我去找人。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8238,
+      "text": "先让我想想。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8239,
+      "text": "赫铎走后，工坊出了事，你找谁？",
+      "conditionId": 8285,
+      "hideWhenLocked": true,
+      "nextNodeId": 8126,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8240,
+      "text": "开门、记账、夜间报信，分别写清楚由谁负责。",
+      "conditionId": 8287,
+      "hideWhenLocked": false,
+      "nextNodeId": 8127,
+      "actionIds": [
+        8111,
+        8110
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8241,
+      "text": "我记下了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8242,
+      "text": "[魅力 5] 工人也能管事。问问他们谁愿意接，别只盯着赫铎。",
+      "conditionId": 8288,
+      "hideWhenLocked": false,
+      "nextNodeId": 8128,
+      "actionIds": [
+        8111,
+        8112
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8243,
+      "text": "我记下了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8244,
+      "text": "我知道了。",
+      "conditionId": 8285,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [
+        8111,
+        8112
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8245,
+      "text": "「明天开门的人」，我想好了。",
+      "conditionId": 8286,
+      "hideWhenLocked": true,
+      "nextNodeId": 8130,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8246,
+      "text": "我还想再问几个人。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8247,
+      "text": "请工人推举当班的人，共同核账；后门按住户约定使用。",
+      "conditionId": 8294,
+      "hideWhenLocked": false,
+      "nextNodeId": 8131,
+      "actionIds": [
+        8115,
+        8113,
+        8010,
+        8114
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8248,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8249,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8250,
+      "text": "「明天开门的人」后来怎么样了？",
+      "conditionId": 8295,
+      "hideWhenLocked": true,
+      "nextNodeId": 8132,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8251,
+      "text": "请艾达和一名老工人一起接手，账房的钥匙由他们分别保管。",
+      "conditionId": 8300,
+      "hideWhenLocked": false,
+      "nextNodeId": 8133,
+      "actionIds": [
+        8117,
+        8013,
+        8116
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8252,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8253,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8254,
+      "text": "「明天开门的人」后来怎么样了？",
+      "conditionId": 8301,
+      "hideWhenLocked": true,
+      "nextNodeId": 8134,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8255,
+      "text": "先交给老工头暂管，留够押金，欠哪些钱也写清楚。你回来后再商量。",
+      "conditionId": 8302,
+      "hideWhenLocked": false,
+      "nextNodeId": 8135,
+      "actionIds": [
+        8118,
+        8038
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 8256,
+      "text": "就这样办。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8257,
+      "text": "知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8258,
+      "text": "「明天开门的人」后来怎么样了？",
+      "conditionId": 8303,
+      "hideWhenLocked": true,
+      "nextNodeId": 8136,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8259,
+      "text": "艾达的实名领据，你留副本了吗？",
+      "conditionId": 8304,
+      "hideWhenLocked": true,
+      "nextNodeId": 8137,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8260,
+      "text": "这件事我记着。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8261,
+      "text": "工钱按假名领了，登记怎么办？",
+      "conditionId": 8305,
+      "hideWhenLocked": true,
+      "nextNodeId": 8138,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8262,
+      "text": "这件事我记着。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8263,
+      "text": "洛岑的事查过以后，你愿意把这次漏防也报上去了？",
+      "conditionId": 8306,
+      "hideWhenLocked": true,
+      "nextNodeId": 8139,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8264,
+      "text": "这件事我记着。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8265,
+      "text": "旧歌补上了靴子的去处。",
+      "conditionId": 8307,
+      "hideWhenLocked": true,
+      "nextNodeId": 8140,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8266,
+      "text": "这件事我记着。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8267,
+      "text": "代写情书的两个人能来合桌吗？",
+      "conditionId": 8309,
+      "hideWhenLocked": true,
+      "nextNodeId": 8141,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8268,
+      "text": "这件事我记着。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8269,
+      "text": "门的使用约定也像歌词一样，让说话的人签名。",
+      "conditionId": 8311,
+      "hideWhenLocked": true,
+      "nextNodeId": 8142,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8270,
+      "text": "这件事我记着。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8271,
+      "text": "你还介意那天同伴说的话？",
+      "conditionId": 8313,
+      "hideWhenLocked": true,
+      "nextNodeId": 8143,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8272,
+      "text": "这件事我记着。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8273,
+      "text": "三个夜晚的补铸工钱也写进清单。",
+      "conditionId": 8315,
+      "hideWhenLocked": true,
+      "nextNodeId": 8144,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8274,
+      "text": "这件事我记着。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8275,
+      "text": "那天说拿自己的份额担保，现在还算数吗？",
+      "conditionId": 8317,
+      "hideWhenLocked": true,
+      "nextNodeId": 8145,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8276,
+      "text": "这件事我记着。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8277,
+      "text": "巴豆只跟城内巡查，别忘了在新表上写明。",
+      "conditionId": 8319,
+      "hideWhenLocked": true,
+      "nextNodeId": 8146,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 8278,
+      "text": "这件事我记着。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10000,
+      "text": "我先走了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 0,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10001,
+      "text": "谈谈跟我们同行的事。",
+      "conditionId": 10000,
+      "hideWhenLocked": true,
+      "nextNodeId": 10001,
+      "actionIds": [
+        10000
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10002,
+      "text": "我去问清楚，再回来找你。",
+      "conditionId": 10006,
+      "hideWhenLocked": true,
+      "nextNodeId": 10000,
+      "actionIds": [
+        10001
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10003,
+      "text": "我再想想。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10004,
+      "text": "陶恩想补一份关于洛岑的证词。",
+      "conditionId": 10005,
+      "hideWhenLocked": true,
+      "nextNodeId": 10002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10005,
+      "text": "行李收好了？",
+      "conditionId": 10017,
+      "hideWhenLocked": true,
+      "nextNodeId": 10003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10006,
+      "text": "出发吧，跟我们同行。",
+      "conditionId": 10017,
+      "hideWhenLocked": false,
+      "nextNodeId": 0,
+      "actionIds": [
+        10004
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10007,
+      "text": "先在这里等我们。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10008,
+      "text": "我们来谈同行的条件。",
+      "conditionId": 10003,
+      "hideWhenLocked": true,
+      "nextNodeId": 10004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10009,
+      "text": "还有些事要问。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10010,
+      "text": "哪里能找到陶恩？",
+      "conditionId": 10019,
+      "hideWhenLocked": true,
+      "nextNodeId": 10005,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10011,
+      "text": "我知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10012,
+      "text": "把空表交给我。他自己来签。",
+      "conditionId": 10020,
+      "hideWhenLocked": false,
+      "nextNodeId": 10006,
+      "actionIds": [
+        10005
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10013,
+      "text": "我知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10014,
+      "text": "[魅力 5] 他怕来领证明的时候，你会当众追问那晚的事。",
+      "conditionId": 10022,
+      "hideWhenLocked": false,
+      "nextNodeId": 10007,
+      "actionIds": [
+        10005,
+        10006
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10015,
+      "text": "我知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10016,
+      "text": "把这些话带回去。",
+      "conditionId": 10005,
+      "hideWhenLocked": true,
+      "nextNodeId": 8004,
+      "actionIds": [
+        10005,
+        10006
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10017,
+      "text": "退伍证明可以领。那晚的事，你得亲自去说。说完再来找我们。",
+      "conditionId": 10027,
+      "hideWhenLocked": false,
+      "nextNodeId": 10009,
+      "actionIds": [
+        10007
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10018,
+      "text": "等我们准备好就出发。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10019,
+      "text": "塞维恩答应单独听你说。我们在外面等，你讲清楚以后再签字。",
+      "conditionId": 10029,
+      "hideWhenLocked": false,
+      "nextNodeId": 10010,
+      "actionIds": [
+        10008
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10020,
+      "text": "等我们准备好就出发。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10021,
+      "text": "已经提交洛岑的复核申请了。你去补上自己的证词，把那晚的事说清楚。",
+      "conditionId": 10031,
+      "hideWhenLocked": false,
+      "nextNodeId": 10011,
+      "actionIds": [
+        10009
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10022,
+      "text": "等我们准备好就出发。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10023,
+      "text": "我先走了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 0,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10024,
+      "text": "谈谈跟我们同行的事。",
+      "conditionId": 10033,
+      "hideWhenLocked": true,
+      "nextNodeId": 10013,
+      "actionIds": [
+        10010
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10025,
+      "text": "我去问清楚，再回来找你。",
+      "conditionId": 10039,
+      "hideWhenLocked": true,
+      "nextNodeId": 10012,
+      "actionIds": [
+        10011
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10026,
+      "text": "我再想想。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10012,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10027,
+      "text": "莎芙交给驿站的地图还在吗？",
+      "conditionId": 10038,
+      "hideWhenLocked": true,
+      "nextNodeId": 10014,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10028,
+      "text": "行李收好了？",
+      "conditionId": 10050,
+      "hideWhenLocked": true,
+      "nextNodeId": 10015,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10029,
+      "text": "出发吧，跟我们同行。",
+      "conditionId": 10050,
+      "hideWhenLocked": false,
+      "nextNodeId": 0,
+      "actionIds": [
+        10013
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10030,
+      "text": "先在这里等我们。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10012,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10031,
+      "text": "我们来谈同行的条件。",
+      "conditionId": 10036,
+      "hideWhenLocked": true,
+      "nextNodeId": 10016,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10032,
+      "text": "还有些事要问。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10012,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10033,
+      "text": "哪里能找到莎芙？",
+      "conditionId": 10052,
+      "hideWhenLocked": true,
+      "nextNodeId": 10017,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10034,
+      "text": "我知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10035,
+      "text": "借给过谁？把记得的名字写下来。",
+      "conditionId": 10053,
+      "hideWhenLocked": false,
+      "nextNodeId": 10018,
+      "actionIds": [
+        10014
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10036,
+      "text": "我知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10037,
+      "text": "[侦察 4] 这张图上多了午间停留的位置，莎芙原图没有。",
+      "conditionId": 10055,
+      "hideWhenLocked": false,
+      "nextNodeId": 10019,
+      "actionIds": [
+        10014,
+        10015
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10038,
+      "text": "我知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10039,
+      "text": "把这些话带回去。",
+      "conditionId": 10038,
+      "hideWhenLocked": true,
+      "nextNodeId": 8000,
+      "actionIds": [
+        10014,
+        10015
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10040,
+      "text": "书记承认把地图借给了别人。我们保留你的原图，每次改路都重新商量。",
+      "conditionId": 10058,
+      "hideWhenLocked": false,
+      "nextNodeId": 10021,
+      "actionIds": [
+        10016
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10041,
+      "text": "等我们准备好就出发。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10012,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10042,
+      "text": "原图和改过的图一起存档，你带一份副本跟我们走。",
+      "conditionId": 10060,
+      "hideWhenLocked": false,
+      "nextNodeId": 10022,
+      "actionIds": [
+        10017
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10043,
+      "text": "等我们准备好就出发。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10012,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10044,
+      "text": "那几次漏防已经查清，把地图也交上去。以后的交班时间别再公开了。",
+      "conditionId": 10064,
+      "hideWhenLocked": false,
+      "nextNodeId": 10023,
+      "actionIds": [
+        10018
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10045,
+      "text": "等我们准备好就出发。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10012,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10046,
+      "text": "我先走了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 0,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10047,
+      "text": "谈谈跟我们同行的事。",
+      "conditionId": 10065,
+      "hideWhenLocked": true,
+      "nextNodeId": 10025,
+      "actionIds": [
+        10019
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10048,
+      "text": "我去问清楚，再回来找你。",
+      "conditionId": 10071,
+      "hideWhenLocked": true,
+      "nextNodeId": 10024,
+      "actionIds": [
+        10020
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10049,
+      "text": "我再想想。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10024,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10050,
+      "text": "维珂的那批断件，账是怎么记的？",
+      "conditionId": 10070,
+      "hideWhenLocked": true,
+      "nextNodeId": 10026,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10051,
+      "text": "行李收好了？",
+      "conditionId": 10082,
+      "hideWhenLocked": true,
+      "nextNodeId": 10027,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10052,
+      "text": "出发吧，跟我们同行。",
+      "conditionId": 10082,
+      "hideWhenLocked": false,
+      "nextNodeId": 0,
+      "actionIds": [
+        10022
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10053,
+      "text": "先在这里等我们。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10024,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10054,
+      "text": "我们来谈同行的条件。",
+      "conditionId": 10068,
+      "hideWhenLocked": true,
+      "nextNodeId": 10028,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10055,
+      "text": "还有些事要问。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10024,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10056,
+      "text": "哪里能找到维珂？",
+      "conditionId": 10084,
+      "hideWhenLocked": true,
+      "nextNodeId": 10029,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10057,
+      "text": "我知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10058,
+      "text": "先把两批分开。铁料的损失由工坊承担。",
+      "conditionId": 10085,
+      "hideWhenLocked": false,
+      "nextNodeId": 10030,
+      "actionIds": [
+        10023
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10059,
+      "text": "我知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10060,
+      "text": "[巧匠 4] 看断口，这是铁料有问题的那一批，不能让维珂赔。",
+      "conditionId": 10087,
+      "hideWhenLocked": false,
+      "nextNodeId": 10031,
+      "actionIds": [
+        10023,
+        10024
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10061,
+      "text": "我知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10062,
+      "text": "把这些话带回去。",
+      "conditionId": 10070,
+      "hideWhenLocked": true,
+      "nextNodeId": 8002,
+      "actionIds": [
+        10023,
+        10024
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10063,
+      "text": "工坊退还铁料的钱，你把少做工序的那批重新做好。两边签字结清。",
+      "conditionId": 10090,
+      "hideWhenLocked": false,
+      "nextNodeId": 10033,
+      "actionIds": [
+        10025
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10064,
+      "text": "等我们准备好就出发。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10024,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10065,
+      "text": "带上两块断件，分别写清坏在哪里，留作出师的说明。",
+      "conditionId": 10092,
+      "hideWhenLocked": false,
+      "nextNodeId": 10034,
+      "actionIds": [
+        10026
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10066,
+      "text": "等我们准备好就出发。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10024,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10067,
+      "text": "工坊已经共同核过工钱。这一笔也请当班的人一起核对。",
+      "conditionId": 10094,
+      "hideWhenLocked": false,
+      "nextNodeId": 10035,
+      "actionIds": [
+        10027
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10068,
+      "text": "等我们准备好就出发。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10024,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10069,
+      "text": "我先走了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 0,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10070,
+      "text": "谈谈跟我们同行的事。",
+      "conditionId": 10095,
+      "hideWhenLocked": true,
+      "nextNodeId": 10037,
+      "actionIds": [
+        10028
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10071,
+      "text": "我去问清楚，再回来找你。",
+      "conditionId": 10101,
+      "hideWhenLocked": true,
+      "nextNodeId": 10036,
+      "actionIds": [
+        10029
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10072,
+      "text": "我再想想。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10036,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10073,
+      "text": "米蕾署着老师名字的药，还剩几瓶？",
+      "conditionId": 10100,
+      "hideWhenLocked": true,
+      "nextNodeId": 10038,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10074,
+      "text": "行李收好了？",
+      "conditionId": 10112,
+      "hideWhenLocked": true,
+      "nextNodeId": 10039,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10075,
+      "text": "出发吧，跟我们同行。",
+      "conditionId": 10112,
+      "hideWhenLocked": false,
+      "nextNodeId": 0,
+      "actionIds": [
+        10031
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10076,
+      "text": "先在这里等我们。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10036,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10077,
+      "text": "我们来谈同行的条件。",
+      "conditionId": 10098,
+      "hideWhenLocked": true,
+      "nextNodeId": 10040,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10078,
+      "text": "还有些事要问。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10036,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10079,
+      "text": "哪里能找到米蕾？",
+      "conditionId": 10114,
+      "hideWhenLocked": true,
+      "nextNodeId": 10041,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10080,
+      "text": "我知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10081,
+      "text": "留下的三瓶换标签，发出去的两瓶，照记录找到领药的人。",
+      "conditionId": 10115,
+      "hideWhenLocked": false,
+      "nextNodeId": 10042,
+      "actionIds": [
+        10032
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10082,
+      "text": "我知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10083,
+      "text": "[智力 8] 配方和剂量都有记录，把这些随新标签一起交给用药的人。",
+      "conditionId": 10117,
+      "hideWhenLocked": false,
+      "nextNodeId": 10043,
+      "actionIds": [
+        10032,
+        10033
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10084,
+      "text": "我知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10085,
+      "text": "把这些话带回去。",
+      "conditionId": 10100,
+      "hideWhenLocked": true,
+      "nextNodeId": 8001,
+      "actionIds": [
+        10032,
+        10033
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10086,
+      "text": "把用过老师名字的事告诉他们。我们遇到伤病，你治不了就直接说。",
+      "conditionId": 10120,
+      "hideWhenLocked": false,
+      "nextNodeId": 10045,
+      "actionIds": [
+        10034
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10087,
+      "text": "等我们准备好就出发。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10036,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10088,
+      "text": "把药方、剂量和配药的人都记下来。以后你就用自己的名字行医。",
+      "conditionId": 10122,
+      "hideWhenLocked": false,
+      "nextNodeId": 10046,
+      "actionIds": [
+        10035
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10089,
+      "text": "等我们准备好就出发。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10036,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10090,
+      "text": "岑姨能选自己爱吃的菜，用药的人也该知道药是谁配的。把实情告诉他们吧。",
+      "conditionId": 10127,
+      "hideWhenLocked": false,
+      "nextNodeId": 10047,
+      "actionIds": [
+        10036
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10091,
+      "text": "等我们准备好就出发。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10036,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10092,
+      "text": "我先走了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 0,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10093,
+      "text": "谈谈跟我们同行的事。",
+      "conditionId": 10128,
+      "hideWhenLocked": true,
+      "nextNodeId": 10049,
+      "actionIds": [
+        10037
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10094,
+      "text": "我去问清楚，再回来找你。",
+      "conditionId": 10134,
+      "hideWhenLocked": true,
+      "nextNodeId": 10048,
+      "actionIds": [
+        10038
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10095,
+      "text": "我再想想。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10048,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10096,
+      "text": "奥林究竟走过哪些地方？",
+      "conditionId": 10133,
+      "hideWhenLocked": true,
+      "nextNodeId": 10050,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10097,
+      "text": "行李收好了？",
+      "conditionId": 10145,
+      "hideWhenLocked": true,
+      "nextNodeId": 10051,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10098,
+      "text": "出发吧，跟我们同行。",
+      "conditionId": 10145,
+      "hideWhenLocked": false,
+      "nextNodeId": 0,
+      "actionIds": [
+        10040
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10099,
+      "text": "先在这里等我们。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10048,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10100,
+      "text": "我们来谈同行的条件。",
+      "conditionId": 10131,
+      "hideWhenLocked": true,
+      "nextNodeId": 10052,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10101,
+      "text": "还有些事要问。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10048,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10102,
+      "text": "哪里能找到奥林？",
+      "conditionId": 10147,
+      "hideWhenLocked": true,
+      "nextNodeId": 10053,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10103,
+      "text": "我知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10104,
+      "text": "说说他送老人回家的事，书上的就不用讲了。",
+      "conditionId": 10148,
+      "hideWhenLocked": false,
+      "nextNodeId": 10054,
+      "actionIds": [
+        10041
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10105,
+      "text": "我知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10106,
+      "text": "[魅力 5] 他买了干粮。这一次是真的想走。",
+      "conditionId": 10149,
+      "hideWhenLocked": false,
+      "nextNodeId": 10055,
+      "actionIds": [
+        10041,
+        10042
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10107,
+      "text": "我知道了。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10108,
+      "text": "把这些话带回去。",
+      "conditionId": 10133,
+      "hideWhenLocked": true,
+      "nextNodeId": 8003,
+      "actionIds": [
+        10041,
+        10042
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10109,
+      "text": "先去酒馆说清楚，那些远行故事是从书上看来的。你会射箭，也守过城门，这就够了。",
+      "conditionId": 10152,
+      "hideWhenLocked": false,
+      "nextNodeId": 10057,
+      "actionIds": [
+        10043
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10110,
+      "text": "等我们准备好就出发。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10048,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10111,
+      "text": "先走一天。问路和扎营你跟着学，不知道就直接问。",
+      "conditionId": 10154,
+      "hideWhenLocked": false,
+      "nextNodeId": 10058,
+      "actionIds": [
+        10044
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10112,
+      "text": "等我们准备好就出发。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10048,
+      "actionIds": [],
+      "worldAction": "none"
+    },
+    {
+      "id": 10113,
+      "text": "旧歌上写了是谁抄的，你讲游记也该说清是哪本书里的。",
+      "conditionId": 10156,
+      "hideWhenLocked": false,
+      "nextNodeId": 10059,
+      "actionIds": [
+        10045
+      ],
+      "worldAction": "none"
+    },
+    {
+      "id": 10114,
+      "text": "等我们准备好就出发。",
+      "conditionId": 1,
+      "hideWhenLocked": true,
+      "nextNodeId": 10048,
+      "actionIds": [],
+      "worldAction": "none"
     }
   ]
 }

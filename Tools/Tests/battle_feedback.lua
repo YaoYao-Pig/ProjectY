@@ -74,7 +74,7 @@ assert(rider.HP==20 and rider.MountedAnimal==nil,'Damage feedback does not trans
 
 -- Exercise the real synchronous shot loop with an intentional missed second bullet.
 local battle=require('Game.Battle.BattleSystem')()
-local skill={name='burst',target='enemy',shots=3,effectIds={1},maxTargets=1,action='main',cost=1,cooldownTurns=0,actionTemplate=2,hitChance=50,damageScale=1}
+local skill={id=8,name='burst',target='enemy',shots=3,effectIds={1},maxTargets=1,action='main',cost=1,cooldownTurns=0,actionTemplate=2,hitChance=50,damageScale=1}
 stats.animals={rule={tameSkillId=999},bySkill={}};stats.equipment={Consume=function()end}
 battle.stats=stats;battle.gameEffects=effects;battle.board={}
 function battle:CanUseSkill()return true end

@@ -1,0 +1,14 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaTrialGroundTableRow
+---@field id number 稳定配置 ID
+---@field encounterId number 固定三名对手及一名受审骑士的遭遇
+---@field groundSurfaceId number 比武场夯土地面
+---@field standSurfaceId number 三级观众台木板材质
+---@field judgeSurfaceId number 北侧审判席台基材质
+---@field standRise number 每排看台高度；不生成可行走楼层
+---@field fenceAssetId number 比武场护栏
+---@field benchAssetId number 观众木长凳
+---@field judgeAssetId number 审判长桌与座席
+---@field gateAssetId number 南北入口木门架
+---@field lampAssetId number 入口灯柱
+return {["name"]="MapAreaTrialGroundTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="encounterId",["type"]="int",["description"]="\229\155\186\229\174\154\228\184\137\229\144\141\229\175\185\230\137\139\229\143\138\228\184\128\229\144\141\229\143\151\229\174\161\233\170\145\229\163\171\231\154\132\233\129\173\233\129\135",["ref"]="CombatEncounterTable"},{["name"]="groundSurfaceId",["type"]="int",["description"]="\230\175\148\230\173\166\229\156\186\229\164\175\229\156\159\229\156\176\233\157\162",["ref"]="MapAreaSurfaceTable"},{["name"]="standSurfaceId",["type"]="int",["description"]="\228\184\137\231\186\167\232\167\130\228\188\151\229\143\176\230\156\168\230\157\191\230\157\144\232\180\168",["ref"]="MapAreaSurfaceTable"},{["name"]="judgeSurfaceId",["type"]="int",["description"]="\229\140\151\228\190\167\229\174\161\229\136\164\229\184\173\229\143\176\229\159\186\230\157\144\232\180\168",["ref"]="MapAreaSurfaceTable"},{["name"]="standRise",["type"]="float",["description"]="\230\175\143\230\142\146\231\156\139\229\143\176\233\171\152\229\186\166\239\188\155\228\184\141\231\148\159\230\136\144\229\143\175\232\161\140\232\181\176\230\165\188\229\177\130",["min"]=0.1,["max"]=0.75},{["name"]="fenceAssetId",["type"]="int",["description"]="\230\175\148\230\173\166\229\156\186\230\138\164\230\160\143",["ref"]="MapAssetTable"},{["name"]="benchAssetId",["type"]="int",["description"]="\232\167\130\228\188\151\230\156\168\233\149\191\229\135\179",["ref"]="MapAssetTable"},{["name"]="judgeAssetId",["type"]="int",["description"]="\229\174\161\229\136\164\233\149\191\230\161\140\228\184\142\229\186\167\229\184\173",["ref"]="MapAssetTable"},{["name"]="gateAssetId",["type"]="int",["description"]="\229\141\151\229\140\151\229\133\165\229\143\163\230\156\168\233\151\168\230\158\182",["ref"]="MapAssetTable"},{["name"]="lampAssetId",["type"]="int",["description"]="\229\133\165\229\143\163\231\129\175\230\159\177",["ref"]="MapAssetTable"}},["fingerprint"]="df9d95b0bfe947daa86d8c940fff936f58db27195e0157d476097177db8aa5b7"}

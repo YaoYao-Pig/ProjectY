@@ -94,9 +94,10 @@ CS = { UnityEngine = {
             instances[#instances + 1] = copy
             return copy
         end,
-        Destroy = function(obj) assert(not obj.destroyed, 'Double destroy'); obj.destroyed = true; destroyed = destroyed + 1 end,
     },
-} }
+}, ProjectY = { UI = { UIHost = {
+    DestroyObject = function(obj) assert(not obj.destroyed, 'Double destroy'); obj.destroyed = true; destroyed = destroyed + 1 end,
+} } } }
 local Base = require('UI.UIWidgetCtrl')
 local List = require('UI.UIScrollList')
 local function fixture(vertical)

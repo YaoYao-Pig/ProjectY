@@ -5,7 +5,8 @@ local Generator={}
 function Generator.Validate(row) assert(row.surfaceId>0,'Battlefield surface is required');Elevation.Validate(row) end
 function Generator.Generate(area,profile,random,config)
     local encounter=config:GetTable('CombatEncounterTable'):Get(assert(area.source.encounterId))
-    local board=require('Game.Battle.BattleBoard').Create(encounter.radius,area.seed,area.source.obstacleChance or encounter.obstacleChance)
+    local radius=area.source.factionConflict and math.max(7,encounter.radius) or encounter.radius
+    local board=require('Game.Battle.BattleBoard').Create(radius,area.seed,area.source.obstacleChance or encounter.obstacleChance)
     area.highland=Elevation.Apply(board,profile,random)
     area.name=encounter.name..' · 战场';area.width=board.radius*2+1;area.height=area.width
     area.cells={};area.cellsByKey={};area.props={};area.corridorRadius=0;area.encounterPlans={}
@@ -30,7 +31,9 @@ function Generator.Generate(area,profile,random,config)
     area.entryIndex=assert(area:Find(-board.radius,0)).index
     area.goalIndex=assert(area:Find(board.radius,0)).index
     area.rooms={{id=1,name='战场',tier=1,presetId=0,center=area:Find(0,0).index}}
-    local enemies=require('Game.Battle.BodyFootprints').Deploy(area,encounter,require('Game.Animals.AnimalRules').New(config))
-    area.encounterPlans[1]={id=1,encounterId=encounter.id,cells=enemies,team=2}
+    if not area.source.factionConflict then
+        local enemies=require('Game.Battle.BodyFootprints').Deploy(area,encounter,require('Game.Animals.AnimalRules').New(config))
+        area.encounterPlans[1]={id=1,encounterId=encounter.id,cells=enemies,team=2}
+    end
 end
 return Generator

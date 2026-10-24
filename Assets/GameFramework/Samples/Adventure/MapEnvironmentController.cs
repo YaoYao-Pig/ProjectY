@@ -121,10 +121,11 @@ namespace ProjectY.Samples
             var skyTint = Color.Lerp(Color.white, look.skyLightTint, daylight);
             sun.transform.rotation = Quaternion.Euler(12 + Mathf.Abs(altitude) * 58, Data.Azimuth + (altitude < 0 ? 180 : 0), 0);
             sun.color = Color.Lerp(a.SunColor, b.SunColor, t) * weatherTint;
-            sun.intensity = Mathf.Lerp(a.Sun, b.Sun, t) * weatherSun * Mathf.Lerp(1, Data.IndoorSun, indoors) * sunGain; sun.shadowStrength = weatherShadow;
-            RenderSettings.ambientSkyColor = Color.Lerp(Color.Lerp(a.Sky, b.Sky, t) * weatherTint * weatherAmbient * ambientGain * skyTint, Data.IndoorAmbient * .70f, indoors);
-            RenderSettings.ambientEquatorColor = Color.Lerp(Color.Lerp(a.Equator, b.Equator, t) * weatherTint * weatherAmbient * ambientGain, Data.IndoorAmbient * .62f, indoors);
-            RenderSettings.ambientGroundColor = Color.Lerp(Color.Lerp(a.Ground, b.Ground, t) * weatherTint * weatherAmbient * ambientGain, Data.IndoorAmbient * .4f, indoors);
+            sun.intensity = Mathf.Lerp(a.Sun, b.Sun, t) * weatherSun * Mathf.Lerp(1, Data.IndoorSun * look.indoorSunMultiplier, indoors) * sunGain; sun.shadowStrength = weatherShadow;
+            var indoorAmbient = Data.IndoorAmbient * look.indoorAmbientMultiplier * look.skyLightTint;
+            RenderSettings.ambientSkyColor = Color.Lerp(Color.Lerp(a.Sky, b.Sky, t) * weatherTint * weatherAmbient * ambientGain * skyTint, indoorAmbient * .70f, indoors);
+            RenderSettings.ambientEquatorColor = Color.Lerp(Color.Lerp(a.Equator, b.Equator, t) * weatherTint * weatherAmbient * ambientGain, indoorAmbient * .62f, indoors);
+            RenderSettings.ambientGroundColor = Color.Lerp(Color.Lerp(a.Ground, b.Ground, t) * weatherTint * weatherAmbient * ambientGain, indoorAmbient * .4f, indoors);
             RenderSettings.fog = true; RenderSettings.fogMode = FogMode.Linear; RenderSettings.fogColor = Color.Lerp(a.Fog, b.Fog, t) * weatherTint;
             camera.backgroundColor = RenderSettings.fogColor;
             RenderSettings.reflectionIntensity = look.reflectionIntensity * Mathf.Lerp(.3f, 1, daylight);
@@ -134,7 +135,7 @@ namespace ProjectY.Samples
             {
                 var id = layout.Cells[member.CellIndex].InteriorId;
                 if (id <= 0 || !lit.Add(id) || count == lamps.Length) continue;
-                var lamp = lamps[count++]; lamp.transform.position = anchors[id]; lamp.intensity = Data.LampIntensity * lampWeight; lamp.enabled = true;
+                var lamp = lamps[count++]; lamp.transform.position = anchors[id]; lamp.intensity = Data.LampIntensity * lampWeight * look.interiorLampMultiplier; lamp.enabled = true;
             }
             for (var i = count; i < lamps.Length; i++) lamps[i].enabled = false;
         }

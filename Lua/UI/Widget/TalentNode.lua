@@ -9,7 +9,7 @@ function Node:SetData(node,passive,actor,style,selected,available,action)
     self.view.Title.font,self.view.Rank.font=style.Font,style.Font
     self.view.Title.text=passive.name;self.view.Rank.text=rank>0 and (rank..' / '..node.maxRank) or ''
     style:PlaceNode(self.view.Root,node.x,node.y)
-    style:SetGlyph(self.view.Icon,passive.attributeNames[1])
+    style:SetGlyph(self.view.Icon,passive.iconAttribute~='' and passive.iconAttribute or passive.attributeNames[1])
     style:Tint(self.view.Background,rank>0 and '394D40' or (available and 'F4ECD7' or 'D5CDBA'))
     style:Tint(self.view.Icon,rank>0 and 'E8D3A7' or (available and '51462F' or '999483'))
     style:Tint(self.view.Ring,selected and '9E682E' or (rank>0 and '94753C' or (available and 'A49571' or 'C0B7A2')))

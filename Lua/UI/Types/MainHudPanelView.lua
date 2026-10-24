@@ -71,5 +71,14 @@
 ---@field HealthTipTitle CS.UnityEngine.UI.Text
 ---@field HealthTipBody CS.UnityEngine.UI.Text
 ---@field BattleFeedback CS.ProjectY.UI.BattleFeedbackSystem
+---@field TimeControls CS.UnityEngine.RectTransform
+---@field TimeStart CS.UnityEngine.UI.Button
+---@field TimeStartText CS.UnityEngine.UI.Text
+---@field TimePause CS.UnityEngine.UI.Button
+---@field TimePauseText CS.UnityEngine.UI.Text
+---@field TimeSpeed CS.UnityEngine.UI.Button
+---@field TimeSpeedText CS.UnityEngine.UI.Text
+---@field Follow CS.UnityEngine.UI.Button
+---@field FollowText CS.UnityEngine.UI.Text
 local View = {}
 return View

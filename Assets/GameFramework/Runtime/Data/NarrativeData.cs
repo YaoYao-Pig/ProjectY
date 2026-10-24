@@ -8,7 +8,7 @@ namespace ProjectY.Data
     [Serializable] internal sealed class NarrativeValueSave { public string key; public int value; }
     [Serializable] internal sealed class NarrativeProgressSave { public string kind, state; public int id; public IntEntry[] baseline; }
     [Serializable] internal sealed class NarrativeSave
-    { public double minutes; public NarrativeValueSave[] values; public IntEntry[] kills; public NarrativeProgressSave[] progress; }
+    { public double minutes; public NarrativeValueSave[] values; public IntEntry[] kills; public NarrativeProgressSave[] progress; public TownMissionSave townMissions; }
 
     [LuaCallCSharp]
     public sealed class NarrativeProgressData
@@ -27,7 +27,11 @@ namespace ProjectY.Data
         public string Speaker { get; }
         public string Text { get; }
         public bool IsChoice { get; }
-        internal DialogueLineData(string speaker, string text, bool choice) { Speaker = speaker; Text = text; IsChoice = choice; }
+        public int ActorId { get; }
+        public int InterjectionId { get; }
+        public string Cue { get; }
+        internal DialogueLineData(string speaker, string text, bool choice, int actorId = 0, int interjectionId = 0, string cue = "")
+        { Speaker = speaker; Text = text; IsChoice = choice; ActorId = actorId; InterjectionId = interjectionId; Cue = cue; }
     }
 
     /// <summary>任务进度、事实、NPC 关系与游戏时钟的唯一可变状态。对话会话不写入磁盘。</summary>
@@ -38,6 +42,9 @@ namespace ProjectY.Data
         private readonly Dictionary<int, int> kills = new Dictionary<int, int>();
         private readonly List<NarrativeProgressData> progress = new List<NarrativeProgressData>();
         private readonly List<DialogueLineData> lines = new List<DialogueLineData>();
+        private readonly HashSet<int> dialogueInterjections = new HashSet<int>();
+        public NarrativeData() { TownMissions = new TownMissionData(() => Revision++); }
+        public TownMissionData TownMissions { get; }
         public int Revision { get; private set; }
         public double Minutes { get; private set; }
         public int ProgressCount => progress.Count;
@@ -105,7 +112,7 @@ namespace ProjectY.Data
         {
             if (DialogueOpen || dialogue <= 0 || npc <= 0 || localNpc <= 0 || actor <= 0) throw new InvalidOperationException("Invalid dialogue session.");
             DialogueId = dialogue; DialogueNpcId = npc; DialogueLocalNpcId = localNpc; DialogueActorId = actor;
-            lines.Clear(); DialogueVersion++; Revision++;
+            lines.Clear(); dialogueInterjections.Clear(); DialogueVersion++; Revision++;
         }
         public void EnterDialogueNode(int node)
         {
@@ -117,18 +124,33 @@ namespace ProjectY.Data
             if (!DialogueOpen || string.IsNullOrEmpty(speaker) || string.IsNullOrEmpty(text)) throw new ArgumentException("Invalid dialogue line.");
             lines.Add(new DialogueLineData(speaker, text, choice)); Revision++;
         }
+        public bool HasDialogueInterjection(int id) => dialogueInterjections.Contains(id);
+        public void AddCompanionLine(int interjectionId, int actorId, string speaker, string cue, string text)
+        {
+            if (!DialogueOpen || interjectionId <= 0 || actorId <= 0 || string.IsNullOrWhiteSpace(speaker) ||
+                string.IsNullOrWhiteSpace(cue) || string.IsNullOrWhiteSpace(text) || dialogueInterjections.Contains(interjectionId))
+                throw new ArgumentException("Invalid companion dialogue line.");
+            lines.Add(new DialogueLineData(speaker, text, false, actorId, interjectionId, cue)); Revision++;
+        }
+        public void CompleteDialogueInterjection(int id)
+        {
+            if (!DialogueOpen || id <= 0 || !lines.Any(line => line.InterjectionId == id) || !dialogueInterjections.Add(id))
+                throw new InvalidOperationException("Interjection must be spoken once before completing.");
+            DialogueVersion++; Revision++;
+        }
         public void CloseDialogue()
         {
             DialogueId = DialogueNodeId = DialogueNpcId = DialogueLocalNpcId = DialogueActorId = 0;
-            lines.Clear(); DialogueVersion++; Revision++;
+            lines.Clear(); dialogueInterjections.Clear(); DialogueVersion++; Revision++;
         }
         public void Clear()
-        { values.Clear(); kills.Clear(); progress.Clear(); Minutes = 0; CloseDialogue(); }
+        { values.Clear(); kills.Clear(); progress.Clear(); TownMissions.Clear(); Minutes = 0; CloseDialogue(); }
         internal NarrativeSave Capture() => new NarrativeSave {
             minutes = Minutes, values = values.Select(p => new NarrativeValueSave { key = p.Key, value = p.Value }).ToArray(),
             kills = kills.Select(p => new IntEntry { id = p.Key, value = p.Value }).ToArray(),
             progress = progress.Select(p => new NarrativeProgressSave { kind = p.Kind, id = p.Id, state = p.State,
-                baseline = p.Baseline.Select(k => new IntEntry { id = k.Key, value = k.Value }).ToArray() }).ToArray() };
+                baseline = p.Baseline.Select(k => new IntEntry { id = k.Key, value = k.Value }).ToArray() }).ToArray(),
+            townMissions = TownMissions.Capture() };
         internal static NarrativeData Prepare(NarrativeSave save)
         {
             SaveCheck.Require(save != null && !double.IsNaN(save.minutes) && !double.IsInfinity(save.minutes) && save.minutes >= 0 && save.minutes <= 1000000000, "叙事时间");
@@ -147,6 +169,7 @@ namespace ProjectY.Data
                 { SaveCheck.Require(item != null && item.id > 0 && item.value >= 0 && result.kills.TryGetValue(item.id, out var total) && item.value <= total && !baseline.ContainsKey(item.id), "任务击杀起点"); baseline.Add(item.id, item.value); }
                 result.progress.Add(new NarrativeProgressData(row.kind, row.id, baseline) { State = row.state });
             }
+            result.TownMissions.TakePrepared(TownMissionData.Prepare(save.townMissions, (int)Math.Floor(save.minutes / 1440)));
             return result;
         }
         internal void TakePrepared(NarrativeData source)
@@ -155,6 +178,7 @@ namespace ProjectY.Data
             foreach (var value in source.values) values.Add(value.Key, value.Value);
             foreach (var kill in source.kills) kills.Add(kill.Key, kill.Value);
             foreach (var row in source.progress) progress.Add(new NarrativeProgressData(row.Kind, row.Id, row.Baseline) { State = row.State });
+            TownMissions.TakePrepared(source.TownMissions);
             Revision++;
         }
     }

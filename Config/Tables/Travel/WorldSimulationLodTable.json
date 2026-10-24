@@ -1,0 +1,20 @@
+{
+  "version": 1,
+  "name": "WorldSimulationLodTable",
+  "description": "主角距离驱动的三级世界模拟；外交仍使用同一权威关系表。",
+  "key": "id",
+  "fields": [
+    {"name":"id","type":"int","description":"规则ID","min":1},
+    {"name":"nearRadius","type":"int","description":"精细模拟半径（六边形格）","min":1},
+    {"name":"mediumRadius","type":"int","description":"批量模拟外半径（六边形格）","min":2},
+    {"name":"hysteresis","type":"int","description":"降级缓冲格数，避免边界抖动","min":0},
+    {"name":"mediumMinutes","type":"int","description":"中层批次间隔（游戏分钟）","min":2},
+    {"name":"farMinutes","type":"int","description":"远层结算间隔（游戏分钟）","min":3},
+    {"name":"coarseTravelMultiplier","type":"float","description":"摘要行程的距离耗时系数","min":1},
+    {"name":"farWinnerLoss","type":"float","description":"远方赢家伤损基数","min":0,"max":1},
+    {"name":"farLoserLoss","type":"float","description":"远方败方伤损基数","min":0,"max":1}
+  ],
+  "rows": [
+    {"id":1,"nearRadius":8,"mediumRadius":24,"hysteresis":2,"mediumMinutes":10,"farMinutes":60,"coarseTravelMultiplier":1.4,"farWinnerLoss":0.22,"farLoserLoss":0.85}
+  ]
+}

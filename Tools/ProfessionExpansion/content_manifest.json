@@ -1,0 +1,792 @@
+{
+  "version": 1,
+  "professions": [
+    {
+      "id": 6,
+      "code": "alchemist",
+      "skillIds": [
+        1801,
+        1802,
+        1803,
+        1804,
+        1806
+      ],
+      "passiveId": 1805,
+      "talentNodeId": 1805,
+      "treeId": 6
+    },
+    {
+      "id": 7,
+      "code": "bard",
+      "skillIds": [
+        1811,
+        1812,
+        1813,
+        1814,
+        1816
+      ],
+      "passiveId": 1815,
+      "talentNodeId": 1815,
+      "treeId": 7
+    },
+    {
+      "id": 8,
+      "code": "cleric",
+      "skillIds": [
+        1821,
+        1822,
+        1823,
+        1824,
+        1826
+      ],
+      "passiveId": 1825,
+      "talentNodeId": 1825,
+      "treeId": 8
+    },
+    {
+      "id": 9,
+      "code": "warlock",
+      "skillIds": [
+        1831,
+        1832,
+        1833,
+        1834,
+        1836
+      ],
+      "passiveId": 1835,
+      "talentNodeId": 1835,
+      "treeId": 9
+    },
+    {
+      "id": 10,
+      "code": "duelist",
+      "skillIds": [
+        1841,
+        1842,
+        1843,
+        1844,
+        1846
+      ],
+      "passiveId": 1845,
+      "talentNodeId": 1845,
+      "treeId": 10
+    },
+    {
+      "id": 11,
+      "code": "beastmaster",
+      "skillIds": [
+        1851,
+        1852,
+        1853,
+        1854,
+        1856,
+        201
+      ],
+      "passiveId": 1855,
+      "talentNodeId": 1855,
+      "treeId": 11
+    }
+  ],
+  "additionalSkillIds": [
+    1901,
+    1902,
+    1903,
+    1904,
+    1905,
+    1906,
+    1907,
+    1908,
+    1909,
+    1910
+  ],
+  "variants": {
+    "1861": 1801,
+    "1862": 1804,
+    "1863": 1834,
+    "1864": 1834,
+    "1865": 1905
+  },
+  "companionModeSkillId": 1867,
+  "materials": {
+    "water": 8013,
+    "poison": 8014,
+    "corrosive": 8015,
+    "explosive": 8016,
+    "curseCleanser": 8017,
+    "rope": 82,
+    "medical": 91
+  },
+  "buffs": {
+    "exposed": 12001,
+    "curse_mark": 12002,
+    "resonance": 12003,
+    "coating_water": 12004,
+    "coating_poison": 12005,
+    "opening": 12006,
+    "enchant_fire": 12007,
+    "enchant_water": 12008,
+    "ward": 12009,
+    "encore_discount": 12010,
+    "draw_discount": 12011,
+    "recycle_discount": 12012,
+    "weakness": 12013,
+    "corrosion": 12014,
+    "haste": 12015,
+    "slow": 12016,
+    "suffering": 12017,
+    "interpose": 12018,
+    "wet": 12019,
+    "blood_curse": 12020,
+    "burning": 12021,
+    "preparation_guard": 12022
+  },
+  "applyEffectRule": "Apply effect for each listed buff is buffId + 8000 (12001 -> 20001).",
+  "passiveTriggers": {
+    "1805": "recycle",
+    "1815": "reply",
+    "1825": "grace",
+    "1835": "suffering",
+    "1845": "mercy",
+    "1855": "scent_blood"
+  },
+  "weaponIds": [
+    8001,
+    8002,
+    8003,
+    8004,
+    8005,
+    8006,
+    8007,
+    8008,
+    8009,
+    8010,
+    8011,
+    8012
+  ],
+  "weaponModelKeys": [
+    "Profession_AlembicStaff",
+    "Profession_CausticInjector",
+    "Profession_ResonanceLute",
+    "Profession_MarchingLyre",
+    "Profession_MercyCenser",
+    "Profession_VigilMace",
+    "Profession_HexSpindle",
+    "Profession_BloodCovenKnife",
+    "Profession_SilverRapier",
+    "Profession_ParryingDagger",
+    "Profession_PackmasterCrook",
+    "Profession_FangBow"
+  ],
+  "modelDirectory": "Assets/DynamicAsset/ProfessionArsenal20261025/Models",
+  "duelEncounterId": 1801,
+  "curse": {
+    "itemId": 8008,
+    "triggerBuffId": 12020,
+    "applyEffectId": 20020,
+    "cleanseItemId": 8017
+  },
+  "configurationStatus": "source rows written; awaiting runtime and root export",
+  "combatRows": [
+    {
+      "id": 1801,
+      "mechanic": "coat",
+      "family": "potion",
+      "materialId": 8013,
+      "materialCount": 1,
+      "statusTag": "wet",
+      "applyEffectId": 20004,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1802,
+      "mechanic": "splash",
+      "family": "potion",
+      "materialId": 8013,
+      "materialCount": 1,
+      "statusTag": "",
+      "applyEffectId": 20019,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1803,
+      "mechanic": "splash",
+      "family": "potion",
+      "materialId": 8015,
+      "materialCount": 1,
+      "statusTag": "",
+      "applyEffectId": 0,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1804,
+      "mechanic": "distill",
+      "family": "potion",
+      "materialId": 8016,
+      "materialCount": 1,
+      "statusTag": "burning",
+      "applyEffectId": 0,
+      "bonusDamage": 6,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1811,
+      "mechanic": "beat",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 20003,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1813,
+      "mechanic": "beat",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "resonance",
+      "applyEffectId": 20001,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1814,
+      "mechanic": "encore",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "resonance",
+      "applyEffectId": 20010,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1821,
+      "mechanic": "cleanse_guard",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 20022,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1822,
+      "mechanic": "ward",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 20009,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1823,
+      "mechanic": "atonement",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 0,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1824,
+      "mechanic": "judgement",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "weakness",
+      "applyEffectId": 0,
+      "bonusDamage": 6,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1831,
+      "mechanic": "draw_mark",
+      "family": "curse",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 20011,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1832,
+      "mechanic": "curse_mark",
+      "family": "curse",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 20002,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1833,
+      "mechanic": "consume_damage",
+      "family": "curse",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "bleeding",
+      "applyEffectId": 0,
+      "bonusDamage": 6,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1834,
+      "mechanic": "transfer",
+      "family": "curse",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "poison",
+      "applyEffectId": 0,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1841,
+      "mechanic": "opening",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 20006,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1842,
+      "mechanic": "feint",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 20001,
+      "bonusDamage": 0,
+      "baseSkillId": 0,
+      "requiredEquipment": "melee"
+    },
+    {
+      "id": 1843,
+      "mechanic": "retreat",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 0,
+      "bonusDamage": 0,
+      "baseSkillId": 0,
+      "requiredEquipment": "melee"
+    },
+    {
+      "id": 1844,
+      "mechanic": "finisher",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "exposed",
+      "applyEffectId": 0,
+      "bonusDamage": 6,
+      "baseSkillId": 0,
+      "requiredEquipment": "melee"
+    },
+    {
+      "id": 1901,
+      "mechanic": "push",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 0,
+      "bonusDamage": 0,
+      "baseSkillId": 0,
+      "requiredEquipment": "shield"
+    },
+    {
+      "id": 1903,
+      "mechanic": "pull",
+      "family": "",
+      "materialId": 82,
+      "materialCount": 1,
+      "statusTag": "",
+      "applyEffectId": 0,
+      "bonusDamage": 0,
+      "baseSkillId": 0,
+      "requiredEquipment": "bow"
+    },
+    {
+      "id": 1904,
+      "mechanic": "retreat",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 0,
+      "bonusDamage": 0,
+      "baseSkillId": 0,
+      "requiredEquipment": "bow"
+    },
+    {
+      "id": 1905,
+      "mechanic": "enchant",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "burning",
+      "applyEffectId": 20007,
+      "bonusDamage": 0,
+      "baseSkillId": 0,
+      "requiredEquipment": "melee"
+    },
+    {
+      "id": 1906,
+      "mechanic": "consume_damage",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "wet",
+      "applyEffectId": 0,
+      "bonusDamage": 6,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1907,
+      "mechanic": "trap",
+      "family": "",
+      "materialId": 82,
+      "materialCount": 1,
+      "statusTag": "",
+      "applyEffectId": 20016,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1908,
+      "mechanic": "salvage",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 0,
+      "bonusDamage": 0,
+      "baseSkillId": 0,
+      "refundItemId": 81
+    },
+    {
+      "id": 1909,
+      "mechanic": "swap",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 0,
+      "bonusDamage": 0,
+      "baseSkillId": 0
+    },
+    {
+      "id": 1910,
+      "mechanic": "interpose",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "",
+      "applyEffectId": 20018,
+      "bonusDamage": 0,
+      "baseSkillId": 0,
+      "requiredEquipment": "shield"
+    },
+    {
+      "id": 1861,
+      "mechanic": "coat",
+      "family": "potion",
+      "materialId": 8014,
+      "materialCount": 1,
+      "statusTag": "poison",
+      "applyEffectId": 20005,
+      "bonusDamage": 0,
+      "baseSkillId": 1801
+    },
+    {
+      "id": 1862,
+      "mechanic": "distill",
+      "family": "potion",
+      "materialId": 8016,
+      "materialCount": 1,
+      "statusTag": "poison",
+      "applyEffectId": 0,
+      "bonusDamage": 3,
+      "baseSkillId": 1804
+    },
+    {
+      "id": 1863,
+      "mechanic": "transfer",
+      "family": "curse",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "bleeding",
+      "applyEffectId": 0,
+      "bonusDamage": 0,
+      "baseSkillId": 1834
+    },
+    {
+      "id": 1864,
+      "mechanic": "transfer",
+      "family": "curse",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "weakness",
+      "applyEffectId": 0,
+      "bonusDamage": 0,
+      "baseSkillId": 1834
+    },
+    {
+      "id": 1865,
+      "mechanic": "enchant",
+      "family": "",
+      "materialId": 0,
+      "materialCount": 0,
+      "statusTag": "wet",
+      "applyEffectId": 20008,
+      "bonusDamage": 0,
+      "baseSkillId": 1905,
+      "requiredEquipment": "melee"
+    }
+  ],
+  "statusRows": [
+    {
+      "id": 12001,
+      "mechanic": "exposed",
+      "amount": 2,
+      "applyEffectId": 20001
+    },
+    {
+      "id": 12002,
+      "mechanic": "curse_mark",
+      "amount": 30,
+      "applyEffectId": 20002
+    },
+    {
+      "id": 12003,
+      "mechanic": "resonance",
+      "amount": 1,
+      "applyEffectId": 20003
+    },
+    {
+      "id": 12004,
+      "mechanic": "coating_water",
+      "amount": 20019,
+      "applyEffectId": 20004
+    },
+    {
+      "id": 12005,
+      "mechanic": "coating_poison",
+      "amount": 803,
+      "applyEffectId": 20005
+    },
+    {
+      "id": 12006,
+      "mechanic": "opening",
+      "amount": 0,
+      "applyEffectId": 20006
+    },
+    {
+      "id": 12007,
+      "mechanic": "enchant_fire",
+      "amount": 20021,
+      "applyEffectId": 20007
+    },
+    {
+      "id": 12008,
+      "mechanic": "enchant_water",
+      "amount": 20019,
+      "applyEffectId": 20008
+    },
+    {
+      "id": 12009,
+      "mechanic": "ward",
+      "amount": 4,
+      "applyEffectId": 20009
+    },
+    {
+      "id": 12010,
+      "mechanic": "encore_discount",
+      "amount": 2,
+      "applyEffectId": 20010
+    },
+    {
+      "id": 12011,
+      "mechanic": "draw_discount",
+      "amount": 1,
+      "applyEffectId": 20011
+    },
+    {
+      "id": 12012,
+      "mechanic": "recycle_discount",
+      "amount": 1,
+      "applyEffectId": 20012
+    },
+    {
+      "id": 12018,
+      "mechanic": "interpose",
+      "amount": 0,
+      "applyEffectId": 20018
+    },
+    {
+      "id": 12022,
+      "mechanic": "guard_floor",
+      "amount": 3,
+      "applyEffectId": 20022
+    },
+    {
+      "id": 12017,
+      "mechanic": "suffering",
+      "amount": 2,
+      "applyEffectId": 20017
+    }
+  ],
+  "sourceTableNames": [
+    "BuffTable",
+    "CombatEffectTable",
+    "CombatEncounterTable",
+    "CombatSkillTable",
+    "EquipmentAssetTable",
+    "EquipmentGripTable",
+    "EquipmentHoldAdjustmentTable",
+    "EquipmentItemTable",
+    "EquipmentRequirementTable",
+    "EquipmentWeaponTable",
+    "PassiveSkillTable",
+    "ProfessionBeastTable",
+    "ProfessionCombatTable",
+    "ProfessionCurseTable",
+    "ProfessionDuelTable",
+    "ProfessionExplorationTable",
+    "ProfessionSkillTable",
+    "ProfessionStatusTable",
+    "ProfessionTable",
+    "ShopEntryTable",
+    "SkillAtlasTable",
+    "SkillCategoryTable",
+    "SkillDescriptionTable",
+    "SkillDisciplineTable",
+    "SkillIconRecipeTable",
+    "SkillTagTable",
+    "TalentNodeTable",
+    "TalentTreeTable",
+    "WorldTradePriceTable"
+  ],
+  "activeSkillIds": [
+    1801,
+    1802,
+    1803,
+    1804,
+    1811,
+    1812,
+    1813,
+    1814,
+    1821,
+    1822,
+    1823,
+    1824,
+    1831,
+    1832,
+    1833,
+    1834,
+    1841,
+    1842,
+    1843,
+    1844,
+    1851,
+    1852,
+    1853,
+    1854,
+    1901,
+    1902,
+    1903,
+    1904,
+    1905,
+    1906,
+    1907,
+    1908,
+    1909,
+    1910,
+    1861,
+    1862,
+    1863,
+    1864,
+    1865,
+    1806,
+    1816,
+    1826,
+    1836,
+    1846,
+    1856,
+    1867
+  ],
+  "beastRows": [
+    {
+      "id": 1851,
+      "kind": "scent",
+      "commandRange": 3,
+      "biteSkillId": 205,
+      "bleedEffectId": 802,
+      "passiveNodeId": 1855,
+      "bonusDamage": 3,
+      "bonusEffectId": 20209,
+      "description": "指定一名可见敌人为猎物，本人绑定动物首次成功攻击该目标时施加流血，本场一次。"
+    },
+    {
+      "id": 1852,
+      "kind": "move",
+      "commandRange": 3,
+      "biteSkillId": 205,
+      "bleedEffectId": 802,
+      "passiveNodeId": 1855,
+      "bonusDamage": 3,
+      "bonusEffectId": 20209,
+      "description": "令 3 格内本人绑定的可行动动物移动至选定相邻格，不攻击；每只动物每轮只能接受一次额外位移口令，并正常承担借机风险。"
+    },
+    {
+      "id": 1853,
+      "kind": "attack",
+      "commandRange": 3,
+      "biteSkillId": 205,
+      "bleedEffectId": 802,
+      "passiveNodeId": 1855,
+      "bonusDamage": 3,
+      "bonusEffectId": 20209,
+      "description": "用本人的主要行动指挥 3 格内绑定动物扑咬其相邻敌人；主人也相邻时命中施加流血。骑乘不能算双人夹击。"
+    },
+    {
+      "id": 1854,
+      "kind": "rescue",
+      "commandRange": 3,
+      "biteSkillId": 205,
+      "bleedEffectId": 802,
+      "passiveNodeId": 1855,
+      "bonusDamage": 3,
+      "bonusEffectId": 20209,
+      "description": "令 3 格内绑定动物将其相邻存活友军拖至选定合法相邻空格，最多 1 格；大型或重载目标拒绝，动物本轮不再接受攻击口令。"
+    },
+    {
+      "id": 1867,
+      "kind": "mode",
+      "commandRange": 3,
+      "biteSkillId": 205,
+      "bleedEffectId": 802,
+      "passiveNodeId": 1855,
+      "bonusDamage": 3,
+      "bonusEffectId": 20209,
+      "description": "将本人绑定的同一只真实动物切换为独立随行或骑乘；两个模式互斥，保留生命、伤势与死亡状态。"
+    }
+  ]
+}

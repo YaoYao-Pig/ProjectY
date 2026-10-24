@@ -73,6 +73,9 @@ namespace XLua.CSObjectWrap
             translator.DelayWrapLoader(typeof(ProjectY.UI.SkillAtlasView), ProjectYUISkillAtlasViewWrap.__Register);
         
         
+            translator.DelayWrapLoader(typeof(ProjectY.UI.SkillTooltipView), ProjectYUISkillTooltipViewWrap.__Register);
+        
+        
             translator.DelayWrapLoader(typeof(ProjectY.UI.StoryGrowthView), ProjectYUIStoryGrowthViewWrap.__Register);
         
         
@@ -94,6 +97,9 @@ namespace XLua.CSObjectWrap
             translator.DelayWrapLoader(typeof(ProjectY.Data.BattleData), ProjectYDataBattleDataWrap.__Register);
         
         
+            translator.DelayWrapLoader(typeof(ProjectY.Data.CharacterSaveService), ProjectYDataCharacterSaveServiceWrap.__Register);
+        
+        
             translator.DelayWrapLoader(typeof(ProjectY.Data.CampLevelData), ProjectYDataCampLevelDataWrap.__Register);
         
         
@@ -113,9 +119,6 @@ namespace XLua.CSObjectWrap
         
         
             translator.DelayWrapLoader(typeof(ProjectY.Data.PreparedCharacterSave), ProjectYDataPreparedCharacterSaveWrap.__Register);
-        
-        
-            translator.DelayWrapLoader(typeof(ProjectY.Data.CharacterSaveService), ProjectYDataCharacterSaveServiceWrap.__Register);
         
         
             translator.DelayWrapLoader(typeof(ProjectY.Data.CombatActorData), ProjectYDataCombatActorDataWrap.__Register);
@@ -154,6 +157,28 @@ namespace XLua.CSObjectWrap
             translator.DelayWrapLoader(typeof(ProjectY.Data.EquipmentMagazineData), ProjectYDataEquipmentMagazineDataWrap.__Register);
         
         
+            translator.DelayWrapLoader(typeof(ProjectY.Data.MapAreaData), ProjectYDataMapAreaDataWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(ProjectY.Data.MapAreaStateData), ProjectYDataMapAreaStateDataWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(ProjectY.Data.MapAreaNpcData), ProjectYDataMapAreaNpcDataWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(ProjectY.Data.MapAreaEncounterData), ProjectYDataMapAreaEncounterDataWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(ProjectY.Data.MapAreaLootData), ProjectYDataMapAreaLootDataWrap.__Register);
+        
+        
+            translator.DelayWrapLoader(typeof(ProjectY.Data.MapObstacleData), ProjectYDataMapObstacleDataWrap.__Register);
+        
+        }
+        
+        static void wrapInit1(LuaEnv luaenv, ObjectTranslator translator)
+        {
+        
             translator.DelayWrapLoader(typeof(ProjectY.Data.GameEffectInstanceData), ProjectYDataGameEffectInstanceDataWrap.__Register);
         
         
@@ -172,29 +197,7 @@ namespace XLua.CSObjectWrap
             translator.DelayWrapLoader(typeof(ProjectY.Data.LootSessionData), ProjectYDataLootSessionDataWrap.__Register);
         
         
-            translator.DelayWrapLoader(typeof(ProjectY.Data.MapAreaLootData), ProjectYDataMapAreaLootDataWrap.__Register);
-        
-        }
-        
-        static void wrapInit1(LuaEnv luaenv, ObjectTranslator translator)
-        {
-        
-            translator.DelayWrapLoader(typeof(ProjectY.Data.MapAreaEncounterData), ProjectYDataMapAreaEncounterDataWrap.__Register);
-        
-        
-            translator.DelayWrapLoader(typeof(ProjectY.Data.MapAreaNpcData), ProjectYDataMapAreaNpcDataWrap.__Register);
-        
-        
-            translator.DelayWrapLoader(typeof(ProjectY.Data.MapAreaStateData), ProjectYDataMapAreaStateDataWrap.__Register);
-        
-        
-            translator.DelayWrapLoader(typeof(ProjectY.Data.MapAreaData), ProjectYDataMapAreaDataWrap.__Register);
-        
-        
             translator.DelayWrapLoader(typeof(ProjectY.Data.MapObstacleRecord), ProjectYDataMapObstacleRecordWrap.__Register);
-        
-        
-            translator.DelayWrapLoader(typeof(ProjectY.Data.MapObstacleData), ProjectYDataMapObstacleDataWrap.__Register);
         
         
             translator.DelayWrapLoader(typeof(ProjectY.Data.NarrativeProgressData), ProjectYDataNarrativeProgressDataWrap.__Register);
@@ -328,13 +331,13 @@ namespace XLua.CSObjectWrap
         
             translator.DelayWrapLoader(typeof(UnityEngine.Events.UnityEvent<string>), UnityEngineEventsUnityEvent_1_SystemString_Wrap.__Register);
         
-        
-            translator.DelayWrapLoader(typeof(UnityEngine.Events.UnityEvent<int>), UnityEngineEventsUnityEvent_1_SystemInt32_Wrap.__Register);
-        
         }
         
         static void wrapInit2(LuaEnv luaenv, ObjectTranslator translator)
         {
+        
+            translator.DelayWrapLoader(typeof(UnityEngine.Events.UnityEvent<int>), UnityEngineEventsUnityEvent_1_SystemInt32_Wrap.__Register);
+        
         
             translator.DelayWrapLoader(typeof(UnityEngine.Events.UnityEvent<UnityEngine.Vector2>), UnityEngineEventsUnityEvent_1_UnityEngineVector2_Wrap.__Register);
         

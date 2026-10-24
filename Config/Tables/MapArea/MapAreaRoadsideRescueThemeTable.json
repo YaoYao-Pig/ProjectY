@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "name": "MapAreaRoadsideRescueThemeTable",
+  "description": "路边救援的陆地主题；固定单层地面，不生成水域或高差。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "regionType",
+      "type": "enum",
+      "description": "适用来源地貌",
+      "enumRef": "Map.E_MapRegion"
+    },
+    {
+      "name": "name",
+      "type": "string",
+      "description": "主题名称"
+    },
+    {
+      "name": "floorColor",
+      "type": "string",
+      "description": "基础地面色"
+    },
+    {
+      "name": "wallColor",
+      "type": "string",
+      "description": "基础边界色"
+    },
+    {
+      "name": "wallHeight",
+      "type": "float",
+      "description": "仅布景墙高",
+      "min": 0
+    },
+    {
+      "name": "heightNoise",
+      "type": "float",
+      "description": "路边战斗与后方藏身处保持平整",
+      "min": 0,
+      "max": 0
+    },
+    {
+      "name": "assetId",
+      "type": "int",
+      "description": "地表六边形模型",
+      "ref": "MapAssetTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "regionType": 1,
+      "name": "林缘拦截道",
+      "floorColor": "#74805a",
+      "wallColor": "#52644a",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 1
+    },
+    {
+      "id": 2,
+      "regionType": 2,
+      "name": "林缘拦截道",
+      "floorColor": "#74805a",
+      "wallColor": "#52644a",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 1
+    },
+    {
+      "id": 3,
+      "regionType": 3,
+      "name": "林缘拦截道",
+      "floorColor": "#74805a",
+      "wallColor": "#52644a",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 1
+    },
+    {
+      "id": 4,
+      "regionType": 4,
+      "name": "林缘拦截道",
+      "floorColor": "#74805a",
+      "wallColor": "#52644a",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 1
+    },
+    {
+      "id": 5,
+      "regionType": 5,
+      "name": "林缘拦截道",
+      "floorColor": "#74805a",
+      "wallColor": "#52644a",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 1
+    },
+    {
+      "id": 6,
+      "regionType": 6,
+      "name": "林缘拦截道",
+      "floorColor": "#74805a",
+      "wallColor": "#52644a",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 1
+    },
+    {
+      "id": 7,
+      "regionType": 7,
+      "name": "林缘拦截道",
+      "floorColor": "#74805a",
+      "wallColor": "#52644a",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 1
+    },
+    {
+      "id": 8,
+      "regionType": 8,
+      "name": "林缘拦截道",
+      "floorColor": "#74805a",
+      "wallColor": "#52644a",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 1
+    },
+    {
+      "id": 9,
+      "regionType": 9,
+      "name": "林缘拦截道",
+      "floorColor": "#74805a",
+      "wallColor": "#52644a",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 1
+    },
+    {
+      "id": 10,
+      "regionType": 10,
+      "name": "林缘拦截道",
+      "floorColor": "#74805a",
+      "wallColor": "#52644a",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 1
+    },
+    {
+      "id": 11,
+      "regionType": 11,
+      "name": "林缘拦截道",
+      "floorColor": "#74805a",
+      "wallColor": "#52644a",
+      "wallHeight": 0,
+      "heightNoise": 0,
+      "assetId": 1
+    }
+  ]
+}

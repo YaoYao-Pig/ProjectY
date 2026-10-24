@@ -27,10 +27,18 @@ namespace ProjectY.UI
         private Rect previousSafe;
         private bool layoutDirty=true;
         private RectTransform characterSkills;
+        private BattleHUDView battleHud;
+        private bool previousMenuOpen;
         public void SetCharacterSkillBar(RectTransform value) {characterSkills=value;layoutDirty=true;ApplyLayout();}
         public Font Font => font!=null?font:(font=Font.CreateDynamicFontFromOSFont(new[]{"Microsoft YaHei","PingFang SC","Noto Sans CJK SC","Arial"},16));
+        internal RectTransform PresentationRoot => layout.Root;
         public float WorldLeftInset => exploration&&navigation?Mathf.Min(Screen.width*.45f,526*layout.Canvas.rootCanvas.scaleFactor):0;
-        public void Prepare() {foreach(var text in layout.Labels) text.font=Font;ApplyLayout();}
+        public void Prepare()
+        {
+            battleHud=(BattleHUDView)GetComponent<LuaReference>().GetReference("BattleContent").Get("HUD");
+            foreach(var text in layout.Labels) text.font=Font;
+            layoutDirty=true;ApplyLayout();
+        }
         public void SetMode(bool explore,bool showNavigation)
         {
             layoutDirty|=exploration!=explore||navigation!=showNavigation;
@@ -43,11 +51,13 @@ namespace ProjectY.UI
         public void Untrack(UIFollower follower) {followers.Remove(follower);follower.Clear();}
         internal void TrackPoint(UIFollower follower,Camera camera,Vector3 point)
         {if(!followers.Contains(follower))followers.Add(follower);follower.BindPoint(camera,point,layout.Canvas);}
-        public void SetHealth(Image fill,float fraction) {fill.rectTransform.anchorMax=new Vector2(Mathf.Clamp01(fraction),1);}
+        public void SetHealth(Image fill,float fraction) {HealthBarAnimation.SetFraction(fill,fraction);}
         public void ApplyLayout()
         {
-            if(!layoutDirty&&previousSize==layout.Root.rect.size&&previousSafe==Screen.safeArea) return;
+            bool menuOpen=layout.Menu.gameObject.activeSelf;
+            if(!layoutDirty&&previousSize==layout.Root.rect.size&&previousSafe==Screen.safeArea&&previousMenuOpen==menuOpen) return;
             previousSize=layout.Root.rect.size;previousSafe=Screen.safeArea;layoutDirty=false;
+            previousMenuOpen=menuOpen;
             var screen=new Vector2(Mathf.Max(1,Screen.width),Mathf.Max(1,Screen.height));
             layout.Safe.anchorMin=Screen.safeArea.min/screen;layout.Safe.anchorMax=Screen.safeArea.max/screen;layout.Safe.offsetMin=layout.Safe.offsetMax=Vector2.zero;
             layout.Common.anchorMin=layout.Safe.anchorMin;layout.Common.anchorMax=layout.Safe.anchorMax;
@@ -66,9 +76,16 @@ namespace ProjectY.UI
             layout.Journal.gameObject.SetActive(exploration&&!narrow);
             Place(layout.Interaction,.5f,0,-210,172,420,100);
             Place(layout.Hint,.5f,1,-Mathf.Min(560,w-400)/2,-76,Mathf.Min(560,w-400),42);
-            Place(layout.Clock,1,1,-130,-18,112,112);
-            Place(layout.Rail,1,1,-112,-150,94,300);
-            Place(layout.Menu,1,1,-442,-148,314,Mathf.Min(410,h-172));
+            // When the menu is open, share the width reduction with the battle HUD
+            // instead of keeping a full-size menu beside tiny battle controls.
+            float commonScale=Mathf.Min(1,size.x/(menuOpen?1094:800),size.y/600);
+            if(commonScale<=0)return;
+            layout.Clock.localScale=layout.Rail.localScale=layout.Menu.localScale=Vector3.one*commonScale;
+            Place(layout.Clock,1,1,-130*commonScale,-18*commonScale,112,112);
+            // The coin label extends 22 units below the clock face.
+            Place(layout.Rail,1,1,-112*commonScale,-166*commonScale,94,310);
+            Place(layout.Menu,1,1,-442*commonScale,-166*commonScale,314,Mathf.Min(410,size.y/commonScale-184));
+            if(battleHud!=null)battleHud.SetRightInset((menuOpen?454:142)*commonScale);
         }
         private static void Place(RectTransform r,float ax,float ay,float x,float y,float w,float h)
         {r.anchorMin=r.anchorMax=new Vector2(ax,ay);r.pivot=new Vector2(0,ay);r.anchoredPosition=new Vector2(x,y);r.sizeDelta=new Vector2(w,h);}

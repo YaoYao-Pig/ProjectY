@@ -76,6 +76,13 @@
       "description": "图标包围盒留白倍率",
       "min": 1,
       "max": 2
+    },
+    {
+      "name": "visualEffectId",
+      "type": "int",
+      "description": "物品独立表现覆盖；0按VisualEffectItemCategoryTable.kind使用类别默认。非0必须存在于VisualEffectTable。",
+      "default": 0,
+      "min": 0
     }
   ],
   "rows": [
@@ -93,7 +100,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10020
     },
     {
       "id": 2,
@@ -109,7 +117,8 @@
         100,
         65
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10021
     },
     {
       "id": 11,
@@ -125,7 +134,8 @@
         25,
         0
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10016
     },
     {
       "id": 12,
@@ -141,7 +151,8 @@
         25,
         0
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10016
     },
     {
       "id": 21,
@@ -157,11 +168,12 @@
         25,
         0
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 0
     },
     {
       "id": 31,
-      "name": "巡猎弹药",
+      "name": "巡猎综合弹",
       "kind": "ammo",
       "assetId": 6,
       "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_31.png",
@@ -173,7 +185,8 @@
         25,
         0
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 0
     },
     {
       "id": 40,
@@ -189,7 +202,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10022
     },
     {
       "id": 41,
@@ -205,7 +219,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10022
     },
     {
       "id": 42,
@@ -221,7 +236,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10023
     },
     {
       "id": 43,
@@ -237,7 +253,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10023
     },
     {
       "id": 44,
@@ -253,7 +270,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10024
     },
     {
       "id": 45,
@@ -269,7 +287,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10024
     },
     {
       "id": 13,
@@ -285,7 +304,8 @@
         25,
         0
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 0
     },
     {
       "id": 51,
@@ -301,7 +321,8 @@
         155,
         0
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10030
     },
     {
       "id": 52,
@@ -317,7 +338,8 @@
         155,
         0
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10030
     },
     {
       "id": 53,
@@ -333,7 +355,8 @@
         155,
         0
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10032
     },
     {
       "id": 54,
@@ -349,7 +372,8 @@
         155,
         0
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10033
     },
     {
       "id": 55,
@@ -365,7 +389,8 @@
         155,
         0
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10030
     },
     {
       "id": 56,
@@ -381,7 +406,8 @@
         155,
         0
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10034
     },
     {
       "id": 57,
@@ -397,7 +423,8 @@
         155,
         0
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10031
     },
     {
       "id": 46,
@@ -413,7 +440,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10025
     },
     {
       "id": 70,
@@ -429,7 +457,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10026
     },
     {
       "id": 71,
@@ -445,7 +474,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10026
     },
     {
       "id": 72,
@@ -461,7 +491,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10026
     },
     {
       "id": 73,
@@ -477,7 +508,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10026
     },
     {
       "id": 74,
@@ -493,7 +525,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10026
     },
     {
       "id": 81,
@@ -509,7 +542,8 @@
         25,
         0
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10040
     },
     {
       "id": 82,
@@ -525,7 +559,8 @@
         25,
         0
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10041
     },
     {
       "id": 83,
@@ -541,7 +576,8 @@
         25,
         0
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10042
     },
     {
       "id": 91,
@@ -557,7 +593,8 @@
         25,
         0
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 701
     },
     {
       "id": 92,
@@ -573,7 +610,8 @@
         25,
         0
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 702
     },
     {
       "id": 93,
@@ -589,7 +627,8 @@
         25,
         0
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10016
     },
     {
       "id": 94,
@@ -605,7 +644,8 @@
         25,
         0
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10043
     },
     {
       "id": 501,
@@ -621,7 +661,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10016
     },
     {
       "id": 502,
@@ -637,7 +678,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10012
     },
     {
       "id": 503,
@@ -653,7 +695,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10013
     },
     {
       "id": 504,
@@ -669,7 +712,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10011
     },
     {
       "id": 505,
@@ -685,7 +729,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10014
     },
     {
       "id": 506,
@@ -701,7 +746,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10017
     },
     {
       "id": 507,
@@ -717,7 +763,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10016
     },
     {
       "id": 508,
@@ -733,7 +780,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10016
     },
     {
       "id": 509,
@@ -749,7 +797,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10016
     },
     {
       "id": 510,
@@ -765,7 +814,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10016
     },
     {
       "id": 511,
@@ -781,7 +831,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 512,
@@ -797,7 +848,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 513,
@@ -813,7 +865,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 514,
@@ -829,7 +882,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 515,
@@ -845,7 +899,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10016
     },
     {
       "id": 516,
@@ -861,7 +916,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 517,
@@ -877,7 +933,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 518,
@@ -893,7 +950,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 519,
@@ -909,7 +967,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10012
     },
     {
       "id": 520,
@@ -925,7 +984,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 521,
@@ -941,7 +1001,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 522,
@@ -957,7 +1018,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10017
     },
     {
       "id": 523,
@@ -973,7 +1035,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10012
     },
     {
       "id": 524,
@@ -989,7 +1052,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 525,
@@ -1005,7 +1069,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 526,
@@ -1021,7 +1086,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 527,
@@ -1037,7 +1103,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10016
     },
     {
       "id": 528,
@@ -1053,7 +1120,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10014
     },
     {
       "id": 529,
@@ -1069,7 +1137,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10016
     },
     {
       "id": 530,
@@ -1085,7 +1154,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10011
     },
     {
       "id": 601,
@@ -1101,7 +1171,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10011
     },
     {
       "id": 602,
@@ -1117,7 +1188,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10012
     },
     {
       "id": 603,
@@ -1133,7 +1205,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10015
     },
     {
       "id": 604,
@@ -1149,7 +1222,8 @@
         100,
         65
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10021
     },
     {
       "id": 605,
@@ -1165,7 +1239,8 @@
         100,
         65
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10031
     },
     {
       "id": 606,
@@ -1181,7 +1256,8 @@
         100,
         65
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10021
     },
     {
       "id": 607,
@@ -1197,7 +1273,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10016
     },
     {
       "id": 608,
@@ -1213,7 +1290,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10017
     },
     {
       "id": 609,
@@ -1229,7 +1307,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10015
     },
     {
       "id": 610,
@@ -1245,7 +1324,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10023
     },
     {
       "id": 611,
@@ -1261,7 +1341,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10023
     },
     {
       "id": 612,
@@ -1277,7 +1358,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10012
     },
     {
       "id": 613,
@@ -1293,7 +1375,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10024
     },
     {
       "id": 614,
@@ -1309,7 +1392,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10018
     },
     {
       "id": 615,
@@ -1325,7 +1409,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10017
     },
     {
       "id": 616,
@@ -1341,7 +1426,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10025
     },
     {
       "id": 617,
@@ -1357,7 +1443,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10025
     },
     {
       "id": 618,
@@ -1373,7 +1460,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10014
     },
     {
       "id": 619,
@@ -1389,7 +1477,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10012
     },
     {
       "id": 620,
@@ -1405,7 +1494,8 @@
         15,
         -18
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10026
     },
     {
       "id": 701,
@@ -1421,7 +1511,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10011
     },
     {
       "id": 702,
@@ -1437,7 +1528,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10012
     },
     {
       "id": 703,
@@ -1453,7 +1545,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10016
     },
     {
       "id": 704,
@@ -1469,7 +1562,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10015
     },
     {
       "id": 705,
@@ -1485,7 +1579,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10017
     },
     {
       "id": 706,
@@ -1501,7 +1596,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10015
     },
     {
       "id": 707,
@@ -1517,7 +1613,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10031
     },
     {
       "id": 708,
@@ -1533,7 +1630,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10015
     },
     {
       "id": 709,
@@ -1549,7 +1647,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10016
     },
     {
       "id": 710,
@@ -1565,7 +1664,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10017
     },
     {
       "id": 711,
@@ -1581,7 +1681,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10013
     },
     {
       "id": 712,
@@ -1597,7 +1698,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10015
     },
     {
       "id": 713,
@@ -1613,7 +1715,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10017
     },
     {
       "id": 714,
@@ -1629,7 +1732,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 715,
@@ -1645,7 +1749,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 716,
@@ -1661,7 +1766,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 717,
@@ -1677,7 +1783,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10015
     },
     {
       "id": 718,
@@ -1693,7 +1800,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 719,
@@ -1709,7 +1817,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10011
     },
     {
       "id": 720,
@@ -1725,7 +1834,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10014
     },
     {
       "id": 721,
@@ -1741,7 +1851,8 @@
         25,
         0
       ],
-      "iconPadding": 1.15
+      "iconPadding": 1.15,
+      "visualEffectId": 10016
     },
     {
       "id": 730,
@@ -1757,7 +1868,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 731,
@@ -1773,7 +1885,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10031
     },
     {
       "id": 732,
@@ -1789,7 +1902,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 733,
@@ -1805,7 +1919,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10017
     },
     {
       "id": 734,
@@ -1821,7 +1936,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 735,
@@ -1837,7 +1953,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 736,
@@ -1853,7 +1970,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 737,
@@ -1869,7 +1987,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 10011
     },
     {
       "id": 738,
@@ -1885,7 +2004,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 739,
@@ -1901,7 +2021,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 740,
@@ -1917,7 +2038,8 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     },
     {
       "id": 741,
@@ -1933,7 +2055,807 @@
         22,
         -10
       ],
-      "iconPadding": 1.18
+      "iconPadding": 1.18,
+      "visualEffectId": 0
+    },
+    {
+      "id": 742,
+      "name": "捕潮长枪",
+      "kind": "weapon",
+      "assetId": 742,
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_742.png",
+      "width": 1,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 10022
+    },
+    {
+      "id": 101,
+      "name": "练习铁剑",
+      "kind": "weapon",
+      "assetId": 13,
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_40.png",
+      "width": 1,
+      "height": 3,
+      "iconMode": "file",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 10022
+    },
+    {
+      "id": 102,
+      "name": "简易猎弓",
+      "kind": "weapon",
+      "assetId": 616,
+      "iconPath": "Assets/DynamicAsset/ArsenalExpansion202610/Icons/Item_616.png",
+      "width": 1,
+      "height": 4,
+      "iconMode": "file",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.18,
+      "visualEffectId": 10025
+    },
+    {
+      "id": 103,
+      "name": "学徒木杖",
+      "kind": "weapon",
+      "assetId": 1,
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_1.png",
+      "width": 1,
+      "height": 4,
+      "iconMode": "file",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 10020
+    },
+    {
+      "id": 104,
+      "name": "短柄手斧",
+      "kind": "weapon",
+      "assetId": 70,
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_70.png",
+      "width": 1,
+      "height": 3,
+      "iconMode": "file",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 10026
+    },
+    {
+      "id": 190,
+      "name": "抗感染药",
+      "kind": "consumable",
+      "assetId": 402,
+      "iconPath": "Assets/DynamicAsset/AssetExpansion202610/Items/Icons/AE_Item_VioletVigil.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "file",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 702
+    },
+    {
+      "id": 800,
+      "name": "风隼突击步枪",
+      "kind": "weapon",
+      "assetId": 800,
+      "iconPath": "Assets/DynamicAsset/FirearmsExpansion202610/Icons/Item_800.png",
+      "width": 2,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        100,
+        65
+      ],
+      "iconPadding": 1.18,
+      "visualEffectId": 10021
+    },
+    {
+      "id": 801,
+      "name": "铁雨突击步枪",
+      "kind": "weapon",
+      "assetId": 801,
+      "iconPath": "Assets/DynamicAsset/FirearmsExpansion202610/Icons/Item_801.png",
+      "width": 2,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        100,
+        65
+      ],
+      "iconPadding": 1.18,
+      "visualEffectId": 10021
+    },
+    {
+      "id": 802,
+      "name": "远望狙击枪",
+      "kind": "weapon",
+      "assetId": 802,
+      "iconPath": "Assets/DynamicAsset/FirearmsExpansion202610/Icons/Item_802.png",
+      "width": 2,
+      "height": 5,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        100,
+        65
+      ],
+      "iconPadding": 1.18,
+      "visualEffectId": 10021
+    },
+    {
+      "id": 803,
+      "name": "钟塔重型狙击枪",
+      "kind": "weapon",
+      "assetId": 803,
+      "iconPath": "Assets/DynamicAsset/FirearmsExpansion202610/Icons/Item_803.png",
+      "width": 2,
+      "height": 5,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        100,
+        65
+      ],
+      "iconPadding": 1.18,
+      "visualEffectId": 10021
+    },
+    {
+      "id": 804,
+      "name": "破门霰弹枪",
+      "kind": "weapon",
+      "assetId": 804,
+      "iconPath": "Assets/DynamicAsset/FirearmsExpansion202610/Icons/Item_804.png",
+      "width": 2,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        100,
+        65
+      ],
+      "iconPadding": 1.18,
+      "visualEffectId": 10021
+    },
+    {
+      "id": 805,
+      "name": "碎礁战斗霰弹枪",
+      "kind": "weapon",
+      "assetId": 805,
+      "iconPath": "Assets/DynamicAsset/FirearmsExpansion202610/Icons/Item_805.png",
+      "width": 2,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        100,
+        65
+      ],
+      "iconPadding": 1.18,
+      "visualEffectId": 10021
+    },
+    {
+      "id": 810,
+      "name": "铁雨弹匣 · 24发",
+      "kind": "magazine",
+      "assetId": 810,
+      "iconPath": "Assets/DynamicAsset/FirearmsExpansion202610/Icons/Item_810.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.18,
+      "visualEffectId": 0
+    },
+    {
+      "id": 811,
+      "name": "狙击弹匣 · 5发",
+      "kind": "magazine",
+      "assetId": 811,
+      "iconPath": "Assets/DynamicAsset/FirearmsExpansion202610/Icons/Item_811.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.18,
+      "visualEffectId": 0
+    },
+    {
+      "id": 812,
+      "name": "霰弹匣 · 6发",
+      "kind": "magazine",
+      "assetId": 812,
+      "iconPath": "Assets/DynamicAsset/FirearmsExpansion202610/Icons/Item_812.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.18,
+      "visualEffectId": 0
+    },
+    {
+      "id": 813,
+      "name": "鹰眼准镜",
+      "kind": "module",
+      "assetId": 813,
+      "iconPath": "Assets/DynamicAsset/FirearmsExpansion202610/Icons/Item_813.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.18,
+      "visualEffectId": 0
+    },
+    {
+      "id": 814,
+      "name": "长视狙击镜",
+      "kind": "module",
+      "assetId": 814,
+      "iconPath": "Assets/DynamicAsset/FirearmsExpansion202610/Icons/Item_814.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.18,
+      "visualEffectId": 0
+    },
+    {
+      "id": 815,
+      "name": "制退补偿器",
+      "kind": "module",
+      "assetId": 815,
+      "iconPath": "Assets/DynamicAsset/FirearmsExpansion202610/Icons/Item_815.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.18,
+      "visualEffectId": 0
+    },
+    {
+      "id": 816,
+      "name": "长膛枪口",
+      "kind": "module",
+      "assetId": 816,
+      "iconPath": "Assets/DynamicAsset/FirearmsExpansion202610/Icons/Item_816.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.18,
+      "visualEffectId": 0
+    },
+    {
+      "id": 817,
+      "name": "裂甲枪口",
+      "kind": "module",
+      "assetId": 817,
+      "iconPath": "Assets/DynamicAsset/FirearmsExpansion202610/Icons/Item_817.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.18,
+      "visualEffectId": 0
+    },
+    {
+      "id": 818,
+      "name": "贴腮稳定托",
+      "kind": "module",
+      "assetId": 818,
+      "iconPath": "Assets/DynamicAsset/FirearmsExpansion202610/Icons/Item_818.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.18,
+      "visualEffectId": 0
+    },
+    {
+      "id": 819,
+      "name": "复进缓冲托",
+      "kind": "module",
+      "assetId": 819,
+      "iconPath": "Assets/DynamicAsset/FirearmsExpansion202610/Icons/Item_819.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.18,
+      "visualEffectId": 0
+    },
+    {
+      "id": 820,
+      "name": "狙击综合弹",
+      "kind": "ammo",
+      "assetId": 820,
+      "iconPath": "Assets/DynamicAsset/FirearmsExpansion202610/Icons/Item_820.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.18,
+      "visualEffectId": 0
+    },
+    {
+      "id": 821,
+      "name": "霰弹综合弹",
+      "kind": "ammo",
+      "assetId": 821,
+      "iconPath": "Assets/DynamicAsset/FirearmsExpansion202610/Icons/Item_821.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "model",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.18,
+      "visualEffectId": 0
+    },
+    {
+      "id": 8001,
+      "name": "炼金蒸馏杖",
+      "kind": "weapon",
+      "assetId": 8001,
+      "iconPath": "Assets/DynamicAsset/ProfessionArsenal20261025/Icons/Item_8001.png",
+      "width": 1,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 10020
+    },
+    {
+      "id": 8002,
+      "name": "腐蚀注射剑",
+      "kind": "weapon",
+      "assetId": 8002,
+      "iconPath": "Assets/DynamicAsset/ProfessionArsenal20261025/Icons/Item_8002.png",
+      "width": 1,
+      "height": 3,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 10022
+    },
+    {
+      "id": 8003,
+      "name": "共鸣鲁特琴",
+      "kind": "weapon",
+      "assetId": 8003,
+      "iconPath": "Assets/DynamicAsset/ProfessionArsenal20261025/Icons/Item_8003.png",
+      "width": 2,
+      "height": 3,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 10020
+    },
+    {
+      "id": 8004,
+      "name": "行军七弦琴",
+      "kind": "weapon",
+      "assetId": 8004,
+      "iconPath": "Assets/DynamicAsset/ProfessionArsenal20261025/Icons/Item_8004.png",
+      "width": 2,
+      "height": 3,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 10020
+    },
+    {
+      "id": 8005,
+      "name": "慈悲香炉杖",
+      "kind": "weapon",
+      "assetId": 8005,
+      "iconPath": "Assets/DynamicAsset/ProfessionArsenal20261025/Icons/Item_8005.png",
+      "width": 1,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 10020
+    },
+    {
+      "id": 8006,
+      "name": "守夜祷锤",
+      "kind": "weapon",
+      "assetId": 8006,
+      "iconPath": "Assets/DynamicAsset/ProfessionArsenal20261025/Icons/Item_8006.png",
+      "width": 1,
+      "height": 3,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 10022
+    },
+    {
+      "id": 8007,
+      "name": "缚咒纺锤杖",
+      "kind": "weapon",
+      "assetId": 8007,
+      "iconPath": "Assets/DynamicAsset/ProfessionArsenal20261025/Icons/Item_8007.png",
+      "width": 1,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 10020
+    },
+    {
+      "id": 8008,
+      "name": "血契仪刀",
+      "kind": "weapon",
+      "assetId": 8008,
+      "iconPath": "Assets/DynamicAsset/ProfessionArsenal20261025/Icons/Item_8008.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 10022
+    },
+    {
+      "id": 8009,
+      "name": "银线刺剑",
+      "kind": "weapon",
+      "assetId": 8009,
+      "iconPath": "Assets/DynamicAsset/ProfessionArsenal20261025/Icons/Item_8009.png",
+      "width": 1,
+      "height": 3,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 10022
+    },
+    {
+      "id": 8010,
+      "name": "捕刃左手匕",
+      "kind": "weapon",
+      "assetId": 8010,
+      "iconPath": "Assets/DynamicAsset/ProfessionArsenal20261025/Icons/Item_8010.png",
+      "width": 1,
+      "height": 2,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 10022
+    },
+    {
+      "id": 8011,
+      "name": "驯群钩杖",
+      "kind": "weapon",
+      "assetId": 8011,
+      "iconPath": "Assets/DynamicAsset/ProfessionArsenal20261025/Icons/Item_8011.png",
+      "width": 1,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 10020
+    },
+    {
+      "id": 8012,
+      "name": "狼牙猎弓",
+      "kind": "weapon",
+      "assetId": 8012,
+      "iconPath": "Assets/DynamicAsset/ProfessionArsenal20261025/Icons/Item_8012.png",
+      "width": 1,
+      "height": 4,
+      "iconMode": "model",
+      "iconRotation": [
+        4,
+        15,
+        -18
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 10025
+    },
+    {
+      "id": 8013,
+      "name": "水剂",
+      "kind": "material",
+      "assetId": 402,
+      "iconPath": "Assets/DynamicAsset/AssetExpansion202610/Items/Icons/AE_Item_VioletVigil.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "file",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 702
+    },
+    {
+      "id": 8014,
+      "name": "毒剂",
+      "kind": "material",
+      "assetId": 402,
+      "iconPath": "Assets/DynamicAsset/AssetExpansion202610/Items/Icons/AE_Item_VioletVigil.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "file",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 702
+    },
+    {
+      "id": 8015,
+      "name": "腐蚀剂",
+      "kind": "material",
+      "assetId": 402,
+      "iconPath": "Assets/DynamicAsset/AssetExpansion202610/Items/Icons/AE_Item_VioletVigil.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "file",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 702
+    },
+    {
+      "id": 8016,
+      "name": "爆破剂",
+      "kind": "material",
+      "assetId": 402,
+      "iconPath": "Assets/DynamicAsset/AssetExpansion202610/Items/Icons/AE_Item_VioletVigil.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "file",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 702
+    },
+    {
+      "id": 8017,
+      "name": "净咒药剂",
+      "kind": "material",
+      "assetId": 402,
+      "iconPath": "Assets/DynamicAsset/AssetExpansion202610/Items/Icons/AE_Item_VioletVigil.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "file",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 702
+    },
+    {
+      "id": 822,
+      "name": "巡猎破甲弹",
+      "kind": "ammo",
+      "assetId": 6,
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_31.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "file",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 0
+    },
+    {
+      "id": 823,
+      "name": "巡猎肉弹",
+      "kind": "ammo",
+      "assetId": 6,
+      "iconPath": "Assets/DynamicAsset/EquipmentDemo/Icons/Item_31.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "file",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.15,
+      "visualEffectId": 0
+    },
+    {
+      "id": 824,
+      "name": "狙击破甲弹",
+      "kind": "ammo",
+      "assetId": 820,
+      "iconPath": "Assets/DynamicAsset/FirearmsExpansion202610/Icons/Item_820.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "file",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.18,
+      "visualEffectId": 0
+    },
+    {
+      "id": 825,
+      "name": "狙击肉弹",
+      "kind": "ammo",
+      "assetId": 820,
+      "iconPath": "Assets/DynamicAsset/FirearmsExpansion202610/Icons/Item_820.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "file",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.18,
+      "visualEffectId": 0
+    },
+    {
+      "id": 826,
+      "name": "霰弹破甲弹",
+      "kind": "ammo",
+      "assetId": 821,
+      "iconPath": "Assets/DynamicAsset/FirearmsExpansion202610/Icons/Item_821.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "file",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.18,
+      "visualEffectId": 0
+    },
+    {
+      "id": 827,
+      "name": "霰弹肉弹",
+      "kind": "ammo",
+      "assetId": 821,
+      "iconPath": "Assets/DynamicAsset/FirearmsExpansion202610/Icons/Item_821.png",
+      "width": 1,
+      "height": 1,
+      "iconMode": "file",
+      "iconRotation": [
+        8,
+        25,
+        0
+      ],
+      "iconPadding": 1.18,
+      "visualEffectId": 0
     }
   ]
 }

@@ -1,6 +1,6 @@
 ---
 name: lua-code-style
-description: Unity / Lua 框架与业务代码的开发、重构、评审和测试约束；涵盖 LuaReference 绑定、需求确认、失败暴露、性能、最小验证和子代理限制。
+description: Unity / Lua 框架与业务代码的开发、重构、评审和测试约束；涵盖 LuaReference 绑定、文案本地化、需求确认、失败暴露、性能、最小验证和子代理限制。
 ---
 
 # Lua 代码风格
@@ -9,6 +9,7 @@ description: Unity / Lua 框架与业务代码的开发、重构、评审和测�
 
 ## 开发
 
+- **文案本地化**：新增、修改或评审玩家可见文本前，必须读取项目[本地化约束](../../../ForAI/Framework/Localization.md)，按其中的文本来源和交付要求处理。检查范围包括业务返回给 UI 的原因和提示，不能只检查 UI 控制器；“临时文案”“Demo”也须遵守。具体接口与规则只维护在该文档。
 - **组件引用**：尽量避免业务 Lua 直接调用 GetComponent。需要 prefab 上的 UI 组件或对象时，复用 LuaReference 的 Key；缺绑定时使用 Unity MCP 完成绑定、保存 prefab，再用 self.view.Key。LuaReference 绑定 Component；需要 UI 对象时可绑定 RectTransform，再通过其 gameObject 访问。
 - 不用 Find、子节点索引或重复路径搜索绕过绑定。已有绑定直接使用，不为读取代码启动 Editor。确需新增绑定但 Unity MCP 不可用时，先说明缺少的能力，与用户沟通替代方式；不要擅自用临时 C#、手改 prefab YAML 或运行时搜索替代。
 - **高内聚、低耦合**：沿用项目的职责划分、命名、生命周期与所有权。先复用已有框架；避免业务侵入通用层、重复维护状态或为个别需求塞入特殊分支。

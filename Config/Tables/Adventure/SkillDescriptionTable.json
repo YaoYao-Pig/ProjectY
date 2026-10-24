@@ -1,0 +1,1121 @@
+{
+  "version": 1,
+  "name": "SkillDescriptionTable",
+  "description": "技能 Tooltip 的类别与效果正文；属性栏由当前有效技能提供，复用段落按配置顺序追加。每个 CombatSkill 必须有一行。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "技能 ID",
+      "ref": "CombatSkillTable"
+    },
+    {
+      "name": "tagIds",
+      "type": "string[]",
+      "description": "按显示顺序排列的类别标签",
+      "ref": "SkillTagTable"
+    },
+    {
+      "name": "body",
+      "type": "text",
+      "description": "效果正文，支持原生TMP term链接；属性数值优先由独立属性栏显示"
+    },
+    {
+      "name": "fragmentIds",
+      "type": "string[]",
+      "description": "按顺序追加的复用段落",
+      "ref": "SkillTipTextTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "近身攻击一名敌人。",
+      "fragmentIds": []
+    },
+    {
+      "id": 2,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "用弓箭攻击一名敌人。",
+      "fragmentIds": []
+    },
+    {
+      "id": 3,
+      "tagIds": [
+        "attack",
+        "spell"
+      ],
+      "body": "释放火花攻击一名敌人。",
+      "fragmentIds": [
+        "burning_40"
+      ]
+    },
+    {
+      "id": 4,
+      "tagIds": [
+        "support"
+      ],
+      "body": "",
+      "fragmentIds": [
+        "guard_three"
+      ]
+    },
+    {
+      "id": 5,
+      "tagIds": [
+        "spell",
+        "support",
+        "healing"
+      ],
+      "body": "恢复一名友军的生命。",
+      "fragmentIds": [
+        "regeneration_three"
+      ]
+    },
+    {
+      "id": 6,
+      "tagIds": [
+        "attack",
+        "spell"
+      ],
+      "body": "释放奥术能量攻击一名敌人。",
+      "fragmentIds": []
+    },
+    {
+      "id": 7,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "消耗1发弹药进行精准单发射击：基础命中95%，命中后35%概率造成2倍伤害。节省弹药，适合稳定点杀。",
+      "fragmentIds": []
+    },
+    {
+      "id": 8,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "消耗3发弹药连续射击3次：每发基础命中70%、暴击率10%、伤害80%。逐发独立判定命中、暴击与命中附加效果，以更多耗弹换取更高总伤害期望。",
+      "fragmentIds": []
+    },
+    {
+      "id": 9,
+      "tagIds": [
+        "support"
+      ],
+      "body": "将背包中子弹最多的兼容弹匣装入武器，保留旧弹匣剩余弹药。",
+      "fragmentIds": []
+    },
+    {
+      "id": 10,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "使用当前主手近战武器劈砍敌人。装备等级、属性需求和组件共同决定实际效果。",
+      "fragmentIds": []
+    },
+    {
+      "id": 11,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "以当前主手近战武器施展重劈。装备等级、属性需求和组件共同决定实际效果。",
+      "fragmentIds": []
+    },
+    {
+      "id": 12,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "挥动当前主手近战武器发动劈砍。装备等级、属性需求和组件共同决定实际效果。",
+      "fragmentIds": []
+    },
+    {
+      "id": 13,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "以副手单手武器进行次要攻击，应用副手武器倍率与属性要求。",
+      "fragmentIds": []
+    },
+    {
+      "id": 101,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "以加强的近身攻击打击一名敌人。",
+      "fragmentIds": []
+    },
+    {
+      "id": 102,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "发动强力近身斩击，攻击一名敌人。",
+      "fragmentIds": []
+    },
+    {
+      "id": 103,
+      "tagIds": [
+        "attack",
+        "spell"
+      ],
+      "body": "凝聚法力攻击一名敌人。",
+      "fragmentIds": []
+    },
+    {
+      "id": 104,
+      "tagIds": [
+        "attack",
+        "spell"
+      ],
+      "body": "释放强化火焰攻击一名敌人。",
+      "fragmentIds": [
+        "burning_40"
+      ]
+    },
+    {
+      "id": 105,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "以穿刺箭攻击一名敌人。",
+      "fragmentIds": [
+        "bleeding_35"
+      ]
+    },
+    {
+      "id": 106,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "射出强力箭矢攻击一名敌人。",
+      "fragmentIds": []
+    },
+    {
+      "id": 107,
+      "tagIds": [
+        "spell",
+        "support",
+        "healing"
+      ],
+      "body": "恢复一名友军的生命。",
+      "fragmentIds": [
+        "no_revive"
+      ]
+    },
+    {
+      "id": 108,
+      "tagIds": [
+        "support"
+      ],
+      "body": "",
+      "fragmentIds": [
+        "guard_three"
+      ]
+    },
+    {
+      "id": 201,
+      "tagIds": [
+        "animal"
+      ],
+      "body": "以动物亲和与魅力尝试驯服。探索中可驯服中立动物，战斗中可驯服敌对动物；敌对动物伤势越重越容易成功。",
+      "fragmentIds": []
+    },
+    {
+      "id": 202,
+      "tagIds": [
+        "attack",
+        "animal"
+      ],
+      "body": "骑马沿直线冲至目标前方并攻击；冲刺距离越长，伤害越高。",
+      "fragmentIds": []
+    },
+    {
+      "id": 203,
+      "tagIds": [
+        "attack",
+        "animal"
+      ],
+      "body": "骑鸡向前跃进一格并攻击相邻目标。",
+      "fragmentIds": []
+    },
+    {
+      "id": 204,
+      "tagIds": [
+        "animal"
+      ],
+      "body": "骑兔子跃向最多三格内的空地，可以越过低矮阻挡；落点必须可站立。",
+      "fragmentIds": []
+    },
+    {
+      "id": 205,
+      "tagIds": [
+        "attack",
+        "animal"
+      ],
+      "body": "动物的近身攻击。",
+      "fragmentIds": []
+    },
+    {
+      "id": 301,
+      "tagIds": [
+        "craft"
+      ],
+      "body": "消耗木料在相邻空格放置栅栏。阻挡通行，不阻挡射线，双方均可破坏。",
+      "fragmentIds": []
+    },
+    {
+      "id": 302,
+      "tagIds": [
+        "craft"
+      ],
+      "body": "消耗木料与铁件搭建木墙，阻挡通行与视线，双方均可破坏。",
+      "fragmentIds": []
+    },
+    {
+      "id": 303,
+      "tagIds": [
+        "craft"
+      ],
+      "body": "搭建可攀登的踏台。上下移动额外消耗 1 格移动距离，拆毁后回落原格。",
+      "fragmentIds": []
+    },
+    {
+      "id": 304,
+      "tagIds": [
+        "craft"
+      ],
+      "body": "搭建可攀登的高台。站立者对较低目标使用远程攻击时射程 +1；下方不可通行。",
+      "fragmentIds": []
+    },
+    {
+      "id": 305,
+      "tagIds": [
+        "craft"
+      ],
+      "body": "装备铲子，在相邻泥土或草地挖浅坑。进入坑格额外消耗 1 格移动距离。",
+      "fragmentIds": []
+    },
+    {
+      "id": 306,
+      "tagIds": [
+        "craft"
+      ],
+      "body": "装备铲子挖掘较深的单格壕沟。进入壕沟额外消耗 2 格移动距离。",
+      "fragmentIds": []
+    },
+    {
+      "id": 307,
+      "tagIds": [
+        "craft"
+      ],
+      "body": "攻击相邻工事，造成力量相关的结构伤害；拆毁高台时站立单位回落原格。",
+      "fragmentIds": []
+    },
+    {
+      "id": 401,
+      "tagIds": [
+        "support",
+        "preparation"
+      ],
+      "body": "力量提高2，持续至正式战斗中自己的首个回合结束。",
+      "fragmentIds": []
+    },
+    {
+      "id": 402,
+      "tagIds": [
+        "support",
+        "preparation"
+      ],
+      "body": "速度提高2，影响正式战斗的先手次序，持续至自己的首个回合结束。",
+      "fragmentIds": []
+    },
+    {
+      "id": 403,
+      "tagIds": [
+        "spell",
+        "support",
+        "preparation"
+      ],
+      "body": "凝聚法力，使受术者智力提高2，持续至其首个正式回合结束。",
+      "fragmentIds": []
+    },
+    {
+      "id": 404,
+      "tagIds": [
+        "support",
+        "preparation"
+      ],
+      "body": "防御提高2，持续至正式战斗中自己的首个回合结束。",
+      "fragmentIds": []
+    },
+    {
+      "id": 701,
+      "tagIds": [
+        "support",
+        "item"
+      ],
+      "body": "消耗一份急救包，恢复自身12点生命。",
+      "fragmentIds": []
+    },
+    {
+      "id": 702,
+      "tagIds": [
+        "support",
+        "item"
+      ],
+      "body": "消耗一份备战药剂，防御提高2，持续至自己的两个正式回合结束。",
+      "fragmentIds": []
+    },
+    {
+      "id": 501,
+      "tagIds": [
+        "physical",
+        "support",
+        "control"
+      ],
+      "body": "近身夺落对手主手（无主手则副手）武器。基础成功率30%，自身速度每比目标高1点增加2个百分点，低1点减少2个百分点；叠加装备与高地修正，最终限制在0%～100%。成功后武器和配件以原实例落地，双方均可拾回；不伤害护甲。",
+      "fragmentIds": []
+    },
+    {
+      "id": 502,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "寻找甲片缝隙，伤害较低但不磨损目标装备；命中后施加<link=\"term:bleeding\">流血</link>。",
+      "fragmentIds": []
+    },
+    {
+      "id": 503,
+      "tagIds": [
+        "support"
+      ],
+      "body": "空主手时花2AP拾起自己脚下或相邻格的一把可装备武器。保留原耐久、配件和弹匣。",
+      "fragmentIds": []
+    },
+    {
+      "id": 504,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "武器失去或破损时可用的近身攻击，伤害有限。",
+      "fragmentIds": []
+    },
+    {
+      "id": 505,
+      "tagIds": [
+        "spell",
+        "support",
+        "control"
+      ],
+      "body": "为一名敌人施加<link=\"term:poison\">中毒</link>。",
+      "fragmentIds": []
+    },
+    {
+      "id": 506,
+      "tagIds": [
+        "spell",
+        "support"
+      ],
+      "body": "为一名友军施加<link=\"term:wet\">潮湿</link>。",
+      "fragmentIds": []
+    },
+    {
+      "id": 507,
+      "tagIds": [
+        "spell",
+        "support"
+      ],
+      "body": "为一名友军施加<link=\"term:long_regeneration\">长效复苏</link>。",
+      "fragmentIds": []
+    },
+    {
+      "id": 508,
+      "tagIds": [
+        "spell",
+        "support"
+      ],
+      "body": "使受术者获得<link=\"term:blessing\">战场祝福</link>。",
+      "fragmentIds": []
+    },
+    {
+      "id": 509,
+      "tagIds": [
+        "attack",
+        "spell"
+      ],
+      "body": "投出火球攻击一名敌人。",
+      "fragmentIds": [
+        "burning_40"
+      ]
+    },
+    {
+      "id": 1601,
+      "tagIds": [
+        "attack",
+        "spell"
+      ],
+      "body": "命中造成水系伤害并施加3回合<link=\"term:wet\">潮湿</link>，扑灭<link=\"term:burning\">燃烧</link>。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1621,
+      "tagIds": [
+        "attack",
+        "spell"
+      ],
+      "body": "造成奥术伤害；<link=\"term:wet\">潮湿</link>目标额外受电伤并<link=\"term:staggered\">震晕</link>1回合，随后消耗<link=\"term:wet\">潮湿</link>。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1602,
+      "tagIds": [
+        "attack",
+        "spell"
+      ],
+      "body": "命中造成火焰伤害并<link=\"term:burning\">点燃</link>3回合；<link=\"term:wet\">潮湿</link>目标不能被<link=\"term:burning\">点燃</link>。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1622,
+      "tagIds": [
+        "attack",
+        "spell"
+      ],
+      "body": "造成火焰伤害；<link=\"term:burning\">燃烧</link>目标承受额外伤害，随后移除<link=\"term:burning\">燃烧</link>。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1603,
+      "tagIds": [
+        "spell",
+        "support",
+        "healing"
+      ],
+      "body": "<link=\"term:cleanse\">净化</link>一名友军的减益与控制状态，再恢复8+智力的生命。",
+      "fragmentIds": [
+        "no_revive"
+      ]
+    },
+    {
+      "id": 1604,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "消耗1发，伤害只计入目标60%防御；命中施加2回合<link=\"term:armor_break\">破甲</link>（防御-2）。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1605,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "连续射击2发，每发独立命中并造成较低伤害；每次命中令自身<link=\"term:guard\">护卫</link>提升至至少3点，不叠加。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1606,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "消耗2发弹药凝成一次射击；按目标已失生命的30%追加伤害，至多10点基础值。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1607,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "命中造成伤害，随后移除目标的增益状态。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1608,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "命中恢复自身4点生命，并有75%概率使目标<link=\"term:bleeding\">流血</link>；直接伤害较低且不磨损目标装备。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1609,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "命中敌人后，清除自身的减益和控制状态；未命中无<link=\"term:cleanse\">净化</link>。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1610,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "重击并令目标<link=\"term:weakness\">虚弱</link>2回合，力量降低3。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1611,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "攻击主目标及其1格内最多两名合法敌人；每名目标必须仍在自身1格射程与视线内。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1612,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "按自身已失生命的25%增加伤害，至多10点基础值；伤势越重威力越大。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1613,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "沉重一击：命中扣血后使目标身体甲、头盔、盾牌各损失30耐久，致死追加20；自身武器损耗3。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1614,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "命中施加2回合<link=\"term:slow\">迟缓</link>（速度-3）；若目标<link=\"term:wet\">潮湿</link>，额外<link=\"term:staggered\">震晕</link>1回合并消耗<link=\"term:wet\">潮湿</link>。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1615,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "命中判定成功后，先从<link=\"term:bleeding\">流血</link>目标汲取6点生命并追加6点基础伤害，再完成斩击，最后清除目标全部<link=\"term:bleeding\">流血</link>。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1616,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "命中施加2回合<link=\"term:slow\">迟缓</link>，速度降低3；不限制移动距离。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1617,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "射向主目标及其1格内另一名合法敌人，最多两目标；不磨损目标装备。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1618,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "命中施加<link=\"term:poison\">中毒</link>，可叠加到3层，持续4回合。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1623,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "命中<link=\"term:poison\">中毒</link>目标时追加7点基础伤害，随后清除目标全部<link=\"term:poison\">中毒</link>。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1619,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "命中判定成功后，先从<link=\"term:burning\">燃烧</link>目标提取热量，将自身<link=\"term:guard\">护卫</link>提升至至少4点并追加5点基础伤害，再完成劈砍并扑灭目标<link=\"term:burning\">燃烧</link>。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1620,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "寻脉打击无视目标防御（仍受<link=\"term:guard\">护卫</link>减免），扣血时破坏16装备耐久，致死追加8。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1624,
+      "tagIds": [
+        "spell",
+        "support"
+      ],
+      "body": "以次要行动施加<link=\"term:tracking\">追踪</link>，持续接收者自身3回合。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1625,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "双手前刺，只能攻击距离 2 格的目标；距离 1 格的贴身目标不可攻击。射程固定，不受高地或装备射程加成影响。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1630,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "近身打击一名敌人，额外提高35个百分点的创伤概率。部位血量越低越容易受创；部位归零后的下一次命中会导致永久致残。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1701,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "消耗1发狙击弹，在2—9格内进行单发狙击：基础命中95%、暴击率50%、伤害160%，暴击造成2倍伤害。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1702,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "消耗2发狙击弹进行一次贯甲射击，伤害只计入目标60%防御；基础命中90%、暴击率55%，命中施加2回合破甲。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1703,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "消耗1发霰弹，攻击主目标及其1格内最多2名其他敌人。每个目标独立判定80%基础命中与10%暴击；每目标100%伤害，射程3格。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1704,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "消耗2发霰弹，连续进行两次近距散射。每次最多3名相邻敌人，每目标逐发独立判定75%命中与10%暴击，每发85%伤害。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1801,
+      "tagIds": [
+        "preparation"
+      ],
+      "body": "消耗 1 份水剂，为下一次直接武器命中涂上水剂，施加潮湿 2 回合。首个正式回合结束失效；学习后同时可选毒剂。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1802,
+      "tagIds": [
+        "support"
+      ],
+      "body": "消耗 1 份水剂，使单个角色潮湿 2 回合并灭火；友方必定成功，敌方正常判命中。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1803,
+      "tagIds": [
+        "support"
+      ],
+      "body": "消耗 1 份腐蚀剂。命中施加一层中毒，并使防御降低 2、持续 2 回合；不直接扣血或磨损护甲。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1804,
+      "tagIds": [
+        "support"
+      ],
+      "body": "消耗 1 份爆破剂，造成 70% 基础伤害；命中燃烧目标时消费全部燃烧并追加 6 点伤害。学习后同时可选提炼中毒。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1811,
+      "tagIds": [
+        "preparation"
+      ],
+      "body": "给自己或一名友军一层余音，持续至其首个正式回合结束。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1812,
+      "tagIds": [
+        "support"
+      ],
+      "body": "自己或一名友军速度提高 2，持续 2 回合；按下一轮排序生效，不插队。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1813,
+      "tagIds": [
+        "support"
+      ],
+      "body": "使敌人力量降低 2，持续 2 回合；若自身有余音，命中后消费余音并额外制造破绽。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1814,
+      "tagIds": [
+        "support"
+      ],
+      "body": "消费自己或一名友军的余音，使其下一技能 AP 减少 2，最低 1，至下个回合结束有效；每人每轮至多受益一次，不刷新行动。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1821,
+      "tagIds": [
+        "preparation"
+      ],
+      "body": "清除自身中毒与流血，使护卫至少为 3，持续至首个正式回合结束；需要触媒，不治疗身体创伤。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1822,
+      "tagIds": [
+        "spell"
+      ],
+      "body": "给自己或友军护符，下次直接伤害减免 4 点后消失，最迟在接收者下个回合结束失效；同类不叠加。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1823,
+      "tagIds": [
+        "spell"
+      ],
+      "body": "清除一名存活友军的中毒与流血并治疗 6＋智力；施法者力量降低 2，持续 2 回合。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1824,
+      "tagIds": [
+        "spell"
+      ],
+      "body": "造成 90% 奥术伤害；自身施放前有虚弱时，命中后消费全部虚弱并追加 6 点伤害。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1831,
+      "tagIds": [
+        "preparation"
+      ],
+      "body": "下一次咒术技能 AP 减少 1，最低 1；首个正式回合结束前有效。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1832,
+      "tagIds": [
+        "spell"
+      ],
+      "body": "对敌人施加咒印：下一次直接伤害增加 30%，上限为目标最大生命的 10%，随后清除。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1833,
+      "tagIds": [
+        "spell"
+      ],
+      "body": "造成 80% 奥术伤害；命中流血目标追加 6 点，并消费其全部流血。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1834,
+      "tagIds": [
+        "spell"
+      ],
+      "body": "把自己一项中毒尝试移交给敌人，保留剩余时长与层数；成功施加后才移除自身状态，免疫目标不能接收。学习后也可选择流血或虚弱。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1841,
+      "tagIds": [
+        "preparation"
+      ],
+      "body": "下一次直接武器命中先施加破绽，再结算本击；首个正式回合结束失效。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1842,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "使用可用近战武器对相邻敌人制造破绽，无直接伤害；下一次直接武器命中按少 2 点防御结算并消费破绽。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1843,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "造成 80% 武器伤害，随后退至事先选定且更远离目标的相邻空格；不会重新开放普通移动。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1844,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "造成 110% 武器伤害；目标命中前已有破绽时追加 6 点伤害，破绽只消费一次；自身武器本次额外磨损 1。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1851,
+      "tagIds": [
+        "preparation"
+      ],
+      "body": "指定一名可见敌人为猎物，本人绑定动物首次成功攻击该目标时施加流血，本场一次。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1852,
+      "tagIds": [
+        "animal"
+      ],
+      "body": "令 3 格内本人绑定的可行动动物移动至选定相邻格，不攻击；每只动物每轮只能接受一次额外位移口令，并正常承担借机风险。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1853,
+      "tagIds": [
+        "animal"
+      ],
+      "body": "用本人的主要行动指挥 3 格内绑定动物扑咬其相邻敌人；主人也相邻时命中施加流血。骑乘不能算双人夹击。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1854,
+      "tagIds": [
+        "animal"
+      ],
+      "body": "令 3 格内绑定动物将其相邻存活友军拖至选定合法相邻空格，最多 1 格；大型或重载目标拒绝，动物本轮不再接受攻击口令。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1901,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "需要盾，造成 60% 武器伤害；命中沿远离自己的方向推动目标 1 格，无合法落点时只有伤害。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1902,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "造成 90% 武器伤害，命中使目标力量降低 2，持续 2 回合。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1903,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "需要弓及 1 份绳索，造成 60% 伤害，命中向自己拉动目标 1 格；无法拉动的体型仍受伤但不位移。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1904,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "需要弓，造成 80% 伤害，随后退至事先选定且更远离目标的相邻合法空格；不追加普通移动额度。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1905,
+      "tagIds": [
+        "spell"
+      ],
+      "body": "需触媒及可用近战武器；下一次直接近战命中改为火焰伤害并施加燃烧 2 回合，至下个回合结束有效。学习后也可选择水系。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1906,
+      "tagIds": [
+        "spell"
+      ],
+      "body": "造成 80% 奥术基础的闪电伤害；命中潮湿目标追加 6 点伤害并消费潮湿，不附带眩晕。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1907,
+      "tagIds": [
+        "support"
+      ],
+      "body": "消耗 1 份绳索在相邻空格放置公开的一次性绊索；首个地面单位进入时中止移动并速度降低 2、持续 2 回合，双方均可触发。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1908,
+      "tagIds": [
+        "support"
+      ],
+      "body": "拆除相邻己方且无人承载的工事，返还其实际木料投入的一半、向下取整；不返还绳索，不拆任务设施。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1909,
+      "tagIds": [
+        "support"
+      ],
+      "body": "与相邻同意且可移动的存活友军换位；双方完整占位均合法才成功，不重开普通移动。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1910,
+      "tagIds": [
+        "support"
+      ],
+      "body": "需要盾，守护相邻友军至自己下回合开始；若仍相邻，其下一次单目标直接攻击改由自己承受；不挡周期或范围伤害，不连锁转交。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1861,
+      "tagIds": [
+        "preparation"
+      ],
+      "body": "消耗 1 份毒剂，下一次直接武器命中施加一层中毒；首个正式回合结束失效。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1862,
+      "tagIds": [
+        "support"
+      ],
+      "body": "消耗 1 份爆破剂，造成 70% 基础伤害；命中后消费全部中毒，每层追加 3 点、最多 9 点伤害。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1863,
+      "tagIds": [
+        "spell"
+      ],
+      "body": "把自己一项流血移交给敌人，保留剩余时长与层数；成功施加后才移除自己对应状态。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1864,
+      "tagIds": [
+        "spell"
+      ],
+      "body": "把自己一项虚弱移交给敌人，保留剩余时长与层数；成功施加后才移除自己对应状态。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1865,
+      "tagIds": [
+        "spell"
+      ],
+      "body": "需触媒及可用近战武器；下一次直接近战命中改为水系伤害并施加潮湿 2 回合，至下个回合结束有效。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1806,
+      "tagIds": [
+        "exploration"
+      ],
+      "body": "采集一处相邻范围内尚未采过的有效蕨类植物，得到 1 份毒剂；同一真实实体只能采一次。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1816,
+      "tagIds": [
+        "exploration"
+      ],
+      "body": "在当地酒馆听取有来源、12 格以内的真实附近地点消息；每城镇每日一次，已知线索不重复授予。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1826,
+      "tagIds": [
+        "exploration"
+      ],
+      "body": "消耗 1 份急救包，为有可恢复伤势的队员缩短 6 小时恢复时间；每队员每日一次，不能再生永久缺失部位。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1836,
+      "tagIds": [
+        "exploration"
+      ],
+      "body": "识别持有诅咒物的真实触发条件与解除线索；已识别后再次使用，若携带净咒药剂则消耗 1 份净化该武器实例。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1846,
+      "tagIds": [
+        "exploration"
+      ],
+      "body": "在公会按约定请求一次单挑，每城镇每日一次；任一方生命低至 25% 时认输，保留真实伤势，胜利得 30 金币、失败付 15 金币。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1856,
+      "tagIds": [
+        "exploration"
+      ],
+      "body": "从附近真实动物足迹提取行动方向，记录带时间、有效 120 分钟的线索；不能定位世界上全部动物。",
+      "fragmentIds": []
+    },
+    {
+      "id": 1867,
+      "tagIds": [
+        "exploration"
+      ],
+      "body": "将本人绑定的同一只真实动物切换为独立随行或骑乘；两个模式互斥，保留生命、伤势与死亡状态。",
+      "fragmentIds": []
+    }
+  ]
+}

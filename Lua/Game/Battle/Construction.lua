@@ -84,7 +84,7 @@ function Construction:Apply(battle,skill,cell)
         -- 配置数组是只读代理；跨 xLua 边界前投影为实体数组，避免 raw length 为 0。
         local ids,counts={},{}
         for i,id in ipairs(row.itemIds) do ids[i]=id;counts[i]=row.itemCounts[i] end
-        self.data:Place(site,cell.index,row.id,hp,self.adventure.equipment.data,ids,counts)
+        CS.ProjectY.Data.ProfessionCombatState.PlaceConstruction(self.data,site,cell.index,row.id,hp,self.adventure.equipment.data,ids,counts,actor.Team)
         battle:Emit('construction',battle.stats:Template(actor).name..' · '..skill.name,actor.Id)
     end
 end
@@ -92,7 +92,7 @@ function Construction:RangeBonus(board,source,target,skill)
     return self:RangeBonusAt(board,source,board:Find(target.Q,target.R),skill)
 end
 function Construction:RangeBonusAt(board,source,targetCell,skill)
-    if skill.target~='enemy' or skill.range<=1 or not board.area or not board.area.constructionSite then return 0 end
+    if skill.target~='enemy' or skill.range<=1 or skill.fixedRange or not board.area or not board.area.constructionSite then return 0 end
     local origin=board:Find(source.Q,source.R);local record=self:Record(board.area.constructionSite,origin.index)
     if record and origin.height>targetCell.height+.1 then return self.definitions:Get(record.SkillId).rangeBonus end
     return 0

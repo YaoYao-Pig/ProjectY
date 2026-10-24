@@ -50,7 +50,8 @@ namespace ProjectY.Data
         public void Open() { if (IsOpen) throw new InvalidOperationException("Camp is already open."); IsOpen = true; Revision++; }
         public void Close() { if (IsOpen) { IsOpen = false; Revision++; } }
         public void Clear() { IsOpen = false; levels.Clear(); storage.Clear(); jobs.Clear(); Revision++; }
-        private string Session(int revision) => !IsOpen ? "请先打开营地" : revision != Revision ? "营地状态已变化，请重新选择" : "";
+        // 玩家失败原因返回 LuaTxt 语言键，由 CampModel 在显示边界解析。
+        private string Session(int revision) => !IsOpen ? "UICampText6" : revision != Revision ? "UICampText5" : "";
         private static bool ValidTime(double value) => !double.IsNaN(value) && !double.IsInfinity(value) && value >= 0 && value <= 1000000000;
         private static void CheckItems(int[] items, int[] counts)
         {
@@ -63,9 +64,9 @@ namespace ProjectY.Data
         {
             if (coins < 0) throw new ArgumentOutOfRangeException(nameof(coins));
             CheckItems(items, counts);
-            if (player.Coins < coins) return "金币不足";
+            if (player.Coins < coins) return "CampInsufficientCoins";
             for (int i = 0; i < items.Length; i++)
-                if ((long)Stored(items[i]) + equipment.CountItem(items[i]) < counts[i]) return "材料不足（先用仓库，再用背包）";
+                if ((long)Stored(items[i]) + equipment.CountItem(items[i]) < counts[i]) return "CampInsufficientMaterials";
             return "";
         }
         private void SpendMaterials(int[] items, int[] counts, EquipmentData equipment)
@@ -91,7 +92,7 @@ namespace ProjectY.Data
         {
             string reason = Session(revision); if (reason != "") return reason;
             if (facility < 1 || expectedLevel < 0) throw new ArgumentException("Invalid camp upgrade.");
-            if (GetLevel(facility) != expectedLevel) return "设施等级已变化";
+            if (GetLevel(facility) != expectedLevel) return "CampFacilityLevelChanged";
             reason = Cost(coins, items, counts, equipment, player); if (reason != "") return reason;
             SpendMaterials(items, counts, equipment);
             var row = levels.Find(value => value.FacilityId == facility);
@@ -105,8 +106,8 @@ namespace ProjectY.Data
             string reason = Session(revision); if (reason != "") return reason;
             if (facility < 1 || recipe < 1 || requiredLevel < 1 || !ValidTime(now) || duration <= 0 || !ValidTime(now + duration))
                 throw new ArgumentException("Invalid camp production.");
-            if (GetLevel(facility) < requiredLevel) return "设施等级不足";
-            if (JobFor(facility) != null) return "该设施仍有订单，请先领取产物";
+            if (GetLevel(facility) < requiredLevel) return "CampFacilityLevelInsufficient";
+            if (JobFor(facility) != null) return "CampFacilityBusy";
             reason = Cost(coins, items, counts, equipment, player); if (reason != "") return reason;
             SpendMaterials(items, counts, equipment);
             jobs.Add(new CampJobData { FacilityId = facility, RecipeId = recipe, StartedAt = now, ReadyAt = now + duration }); Revision++;
@@ -116,27 +117,36 @@ namespace ProjectY.Data
         {
             string reason = Session(revision); if (reason != "") return reason;
             var job = JobFor(facility);
-            if (job == null) return "该设施没有待领取订单";
+            if (job == null) return "UICampText12";
             if (!ValidTime(now)) throw new ArgumentOutOfRangeException(nameof(now));
-            if (now < job.ReadyAt) return "生产尚未完成";
+            if (now < job.ReadyAt) return "CampProductionPending";
             CheckItems(items, counts);
             if (items.Length == 0 || kinds == null || kinds.Length != items.Length) throw new ArgumentException("Invalid camp output.");
             for (int i = 0; i < items.Length; i++)
             {
-                if (!StackKind(kinds[i])) throw new ArgumentException("Camp production only supports stack items.");
-                if ((long)equipment.CountItem(items[i]) + counts[i] > int.MaxValue) return "物品数量已达上限";
+                bool stack = StackKind(kinds[i]);
+                if (!stack && kinds[i] != "weapon" && kinds[i] != "wearable") throw new ArgumentException("Unsupported camp output kind.");
+                if (stack && (long)equipment.CountItem(items[i]) + counts[i] > int.MaxValue) return "CampItemCountLimit";
             }
-            if (!equipment.CanGrant(items, counts, kinds)) return "背包空间不足，产物仍保留在设施中";
-            for (int i = 0; i < items.Length; i++) equipment.AddStack(items[i], counts[i]);
+            if (!equipment.CanGrant(items, counts, kinds)) return "UICampText31";
+            for (int i = 0; i < items.Length; i++)
+            {
+                if (StackKind(kinds[i])) equipment.AddStack(items[i], counts[i]);
+                else for (int count = 0; count < counts[i]; count++)
+                {
+                    if (kinds[i] == "weapon") equipment.AddWeapon(items[i]);
+                    else equipment.AddWearable(items[i]);
+                }
+            }
             jobs.Remove(job); Revision++; return "";
         }
         public static bool StackKind(string kind) => kind == "material" || kind == "ammo" || kind == "consumable" || kind == "rune" || kind == "module";
         public string Deposit(int item, int count, int capacity, int revision, EquipmentData equipment)
         {
             string reason = Session(revision); if (reason != "") return reason;
-            if (item < 1 || count < 1 || capacity < 0) return "无效存入数量";
-            if (equipment.CountItem(item) < count) return "背包物品数量不足";
-            if ((long)StoredTotal + count > capacity) return "营地仓库已满，请升级或取出物品";
+            if (item < 1 || count < 1 || capacity < 0) return "CampInvalidDeposit";
+            if (equipment.CountItem(item) < count) return "CampBackpackInsufficient";
+            if ((long)StoredTotal + count > capacity) return "CampWarehouseFull";
             equipment.ConsumeStack(item, count);
             var row = storage.Find(value => value.ItemId == item);
             if (row == null) { row = new CampStackData { ItemId = item }; storage.Add(row); }
@@ -145,17 +155,17 @@ namespace ProjectY.Data
         public string Withdraw(int item, int count, int revision, string kind, EquipmentData equipment)
         {
             string reason = Session(revision); if (reason != "") return reason;
-            if (item < 1 || count < 1 || !StackKind(kind)) return "无效取出物品或数量";
-            if (Stored(item) < count) return "仓库物品数量不足";
-            if ((long)equipment.CountItem(item) + count > int.MaxValue) return "物品数量已达上限";
-            if (!equipment.CanGrant(new[] { item }, new[] { count }, new[] { kind })) return "背包空间不足，物品仍保留在仓库中";
+            if (item < 1 || count < 1 || !StackKind(kind)) return "CampInvalidWithdrawal";
+            if (Stored(item) < count) return "CampWarehouseInsufficient";
+            if ((long)equipment.CountItem(item) + count > int.MaxValue) return "CampItemCountLimit";
+            if (!equipment.CanGrant(new[] { item }, new[] { count }, new[] { kind })) return "CampWithdrawBackpackFull";
             equipment.AddStack(item, count); RemoveStored(item, count); Revision++; return "";
         }
         public string Wait(int minutes, int revision, NarrativeData narrative)
         {
             string reason = Session(revision); if (reason != "") return reason;
-            if (minutes != 60 && minutes != 360 && minutes != 1440) return "无效等待时长";
-            if (!ValidTime(narrative.Minutes + minutes)) return "游戏时间已达上限";
+            if (minutes != 60 && minutes != 360 && minutes != 1440) return "CampInvalidWait";
+            if (!ValidTime(narrative.Minutes + minutes)) return "CampTimeLimit";
             narrative.AdvanceMinutes(minutes); Revision++; return "";
         }
         internal CampSave Capture() => new CampSave {

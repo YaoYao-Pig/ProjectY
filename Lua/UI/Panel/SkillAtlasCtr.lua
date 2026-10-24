@@ -1,3 +1,4 @@
+local LuaLanguage = require('Language')
 local Class=require('Core.Class')
 local Base=require('UI.UIPanelCtrl')
 local Atlas=Class('SkillAtlasCtr',Base)
@@ -32,7 +33,7 @@ function Atlas:OnShow(args)
     self.domains={};for _,row in ipairs(self.atlas.disciplines:All()) do self.domains[#self.domains+1]=row end
     table.sort(self.domains,function(a,b) return a.order<b.order end)
     assert(#self.domains<=6,'Skill atlas layout supports six primary domains')
-    self.view.CloseText.text=self.returnTo and '返回角色手记' or '关闭  Esc'
+    self.view.CloseText.text=self.returnTo and LuaLanguage.UISkillAtlasCloseTextText2 or LuaLanguage.UISkillAtlasCloseTextText
     self.view.Search.text='';self.view.SearchResults.gameObject:SetActive(false);self.view.Geometry:Dismiss();self:Refresh();self.view.Geometry:Focus(0,0)
 end
 function Atlas:Close()
@@ -60,7 +61,7 @@ function Atlas:Refresh()
     local rows=self.atlas:Categories(self.disciplineId)
     for i,row in ipairs(rows) do
         if not self.categories[i] then self.categories[i]=self:CreateWidget('SkillAtlasCategory',self.view.Categories) end
-        self.categories[i]:SetData(row.name,#self.atlas:Nodes(row.id)..' 项技艺',self.view.Style,row.id==self.categoryId,function()
+        self.categories[i]:SetData(row.name,string.format(LuaLanguage.UISkillAtlasText, (#self.atlas:Nodes(row.id))),self.view.Style,row.id==self.categoryId,function()
             self.categoryId=row.id;self.selectedId=nil;self.view.Geometry:Dismiss();self:Refresh();self.view.Geometry:Focus(0,0)
         end)
     end
@@ -74,7 +75,7 @@ function Atlas:Graph()
     for _,row in ipairs(rows) do visible[row.id]=row;width=math.max(width,row.x+100);height=math.max(height,row.y+90) end
     self.view.Graph.sizeDelta=CS.UnityEngine.Vector2(width,height)
     local category=self.atlas.categories:Get(self.categoryId)
-    self.view.TreeTitle.text=self.atlas.disciplines:Get(category.disciplineId).name..' / '..category.name..' · 图鉴'
+    self.view.TreeTitle.text=string.format(LuaLanguage.UISkillAtlasTreeTitleText, (self.atlas.disciplines:Get(category.disciplineId).name), (category.name))
     self.view.Empty.gameObject:SetActive(#rows==0)
     local edgeCount=0
     for _,row in ipairs(rows) do for _,id in ipairs(row.prerequisiteIds) do if visible[id] then
@@ -87,7 +88,7 @@ function Atlas:Graph()
     for i,row in ipairs(rows) do
         if not self.nodes[i] then self.nodes[i]=self:CreateWidget('SkillAtlasNode',self.view.Graph) end
         local state,label=self.atlas:State(row.id,self.actor,self.stats,self.owned)
-        if row.categoryId~=self.categoryId then label='关联 · '..self.atlas.categories:Get(row.categoryId).name end
+        if row.categoryId~=self.categoryId then label=string.format(LuaLanguage.UISkillAtlasLabel, (self.atlas.categories:Get(row.categoryId).name)) end
         self.nodes[i]:SetData(row,self.atlas.skills:Get(row.id),state,label,self.view.Style,self.view.Geometry,self.selectedId==row.id,
             not related or related[row.id],function(id,anchor)
                 if self.atlas.nodes:Get(id).categoryId~=self.categoryId then self:Jump(id) else self:Select(id,anchor) end
@@ -105,7 +106,7 @@ function Atlas:Tip()
     self.view.TipTitle.text=skill.name;self.view.TipPath.text=self.atlas:Path(id)
     self.view.TipDetail.text=detail;self.view.TipDetail.rectTransform.sizeDelta=CS.UnityEngine.Vector2(272,self.view.TipDetail.preferredHeight+6)
     self.view.TipBody.sizeDelta=CS.UnityEngine.Vector2(280,self.view.TipDetail.preferredHeight+12)
-    self.view.PrerequisiteTitle.text=#node.prerequisiteIds==0 and '无前置技能' or (node.prerequisiteMode=='all' and '前置：全部掌握' or '前置：任意掌握')
+    self.view.PrerequisiteTitle.text=#node.prerequisiteIds==0 and LuaLanguage.UISkillAtlasPrerequisiteTitleText3 or (node.prerequisiteMode=='all' and LuaLanguage.UISkillAtlasPrerequisiteTitleText2 or LuaLanguage.UISkillAtlasPrerequisiteTitleText)
     for i,other in ipairs(node.prerequisiteIds) do
         if not self.links[i] then self.links[i]=self:CreateWidget('SkillAtlasCategory',self.view.Prerequisites) end
         self.links[i]:SetData((self.owned[other] and '✓ ' or '○ ')..self.atlas.skills:Get(other).name,self.atlas:Path(other),self.view.Style,false,function() self:Jump(other) end)
@@ -122,7 +123,7 @@ function Atlas:Search()
     local query=self.view.Search.text:match('^%s*(.-)%s*$');local rows=self.atlas:Search(query)
     if query~='' then self.view.Geometry:Dismiss() end
     self.view.SearchResults.gameObject:SetActive(query~='')
-    self.view.SearchSummary.text=#rows..' 项匹配结果'
+    self.view.SearchSummary.text=string.format(LuaLanguage.UISkillAtlasSearchSummaryText, (#rows))
     for i,row in ipairs(rows) do
         if not self.results[i] then self.results[i]=self:CreateWidget('SkillAtlasCategory',self.view.Results) end
         self.results[i]:SetData(self.atlas.skills:Get(row.id).name,self.atlas:Path(row.id),self.view.Style,false,function() self:Jump(row.id) end)

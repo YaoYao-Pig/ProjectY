@@ -1,6 +1,8 @@
 local EmptyGrowth=assert(loadfile('Tools/Tests/growth_empty.lua'))()
 local Gear=assert(loadfile('Tools/Tests/equipment_read_fixture.lua'))()
 assert(loadfile('Tools/Tests/battle_movement_fixture.lua'))()
+-- These actors are healthy; only the native injury-state reads used by real stat rules are substituted.
+CS.ProjectY.Data.BodyHealth={Revision=function()return 0 end,Damage=function()return 0 end}
 -- 定向纯 Lua：真实地牢敌群部署、隔墙技能和战后散队收拢。
 package.path='Lua/?.lua;'..package.path
 local config=require('Config.ConfigSystem')()

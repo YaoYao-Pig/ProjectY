@@ -64,7 +64,7 @@ namespace ProjectY.UI
             // Attachments are added after instantiation, so update the complete renderer subtree.
             foreach(var node in weapon.GetComponentsInChildren<Transform>(true)) node.gameObject.layer=31;
             var bounds=new Bounds(weapon.transform.position,Vector3.zero);
-            foreach(var renderer in weapon.GetComponentsInChildren<Renderer>()) bounds.Encapsulate(renderer.bounds);
+            foreach(var renderer in weapon.GetComponentsInChildren<Renderer>()) if(!(renderer is ParticleSystemRenderer)) bounds.Encapsulate(renderer.bounds);
             weapon.transform.localPosition-=pivot.InverseTransformVector(bounds.center-pivot.position);
             RenderPreview();
         }
@@ -106,6 +106,8 @@ namespace ProjectY.UI
         public void RenderPreview()
         {
             if(weapon==null) return;
+            pivot.localRotation=Quaternion.Euler(tilt,yaw,0);
+            weapon.TickEffects(Time.unscaledDeltaTime);
             var rect=layout.Image.rectTransform.rect;
             int width=Mathf.Clamp(Mathf.RoundToInt(rect.width*1.5f),128,1600),height=Mathf.Clamp(Mathf.RoundToInt(rect.height*1.5f),128,1600);
             if(texture==null||texture.width!=width||texture.height!=height)

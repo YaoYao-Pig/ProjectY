@@ -1,0 +1,33 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class WorldFactionRuleTableRow
+---@field id number 规则 ID
+---@field hostileThreshold number hostileThreshold
+---@field alliedThreshold number alliedThreshold
+---@field thinkMinutes number thinkMinutes
+---@field raidAdvantage number raidAdvantage
+---@field siegeAdvantage number siegeAdvantage
+---@field maximumExpeditionMinutes number maximumExpeditionMinutes
+---@field distanceScale number distanceScale
+---@field rewardScale number rewardScale
+---@field reserveFraction number reserveFraction
+---@field switchMultiplier number switchMultiplier
+---@field roamRadius number roamRadius
+---@field siteSafeRadius number siteSafeRadius
+---@field siteSpacing number siteSpacing
+---@field siteSearchRadius number siteSearchRadius
+---@field retreatMinutes number retreatMinutes
+---@field occupationProtectionMinutes number 解放后的袭击保护分钟
+---@field recoveryInitial number recoveryInitial
+---@field recoveryMinutes number 解放后完全恢复所需游戏分钟
+---@field conflictMinimumMinutes number 交战最短游戏分钟
+---@field conflictMaximumMinutes number conflictMaximumMinutes
+---@field conflictTickMinutes number conflictTickMinutes
+---@field ruinMinutes number ruinMinutes
+---@field attrition number attrition
+---@field retreatHealth number retreatHealth
+---@field aidReputation number aidReputation
+---@field attackReputation number attackReputation
+---@field maximumRouteThreat number 路线威胁与自身战力的硬上限
+---@field minimumActionScore number 低于该效用时保持巡逻休整
+---@field reserveCapacity number 单个据点的补给储备上限
+return {["name"]="WorldFactionRuleTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\232\167\132\229\136\153 ID"},{["name"]="hostileThreshold",["type"]="int",["description"]="hostileThreshold"},{["name"]="alliedThreshold",["type"]="int",["description"]="alliedThreshold"},{["name"]="thinkMinutes",["type"]="int",["description"]="thinkMinutes"},{["name"]="raidAdvantage",["type"]="float",["description"]="raidAdvantage"},{["name"]="siegeAdvantage",["type"]="float",["description"]="siegeAdvantage"},{["name"]="maximumExpeditionMinutes",["type"]="int",["description"]="maximumExpeditionMinutes"},{["name"]="distanceScale",["type"]="int",["description"]="distanceScale"},{["name"]="rewardScale",["type"]="int",["description"]="rewardScale"},{["name"]="reserveFraction",["type"]="float",["description"]="reserveFraction"},{["name"]="switchMultiplier",["type"]="float",["description"]="switchMultiplier"},{["name"]="roamRadius",["type"]="int",["description"]="roamRadius"},{["name"]="siteSafeRadius",["type"]="int",["description"]="siteSafeRadius"},{["name"]="siteSpacing",["type"]="int",["description"]="siteSpacing"},{["name"]="siteSearchRadius",["type"]="int",["description"]="siteSearchRadius"},{["name"]="retreatMinutes",["type"]="int",["description"]="retreatMinutes"},{["name"]="occupationProtectionMinutes",["type"]="int",["description"]="\232\167\163\230\148\190\229\144\142\231\154\132\232\162\173\229\135\187\228\191\157\230\138\164\229\136\134\233\146\159"},{["name"]="recoveryInitial",["type"]="float",["description"]="recoveryInitial"},{["name"]="recoveryMinutes",["type"]="int",["description"]="\232\167\163\230\148\190\229\144\142\229\174\140\229\133\168\230\129\162\229\164\141\230\137\128\233\156\128\230\184\184\230\136\143\229\136\134\233\146\159"},{["name"]="conflictMinimumMinutes",["type"]="int",["description"]="\228\186\164\230\136\152\230\156\128\231\159\173\230\184\184\230\136\143\229\136\134\233\146\159"},{["name"]="conflictMaximumMinutes",["type"]="int",["description"]="conflictMaximumMinutes"},{["name"]="conflictTickMinutes",["type"]="int",["description"]="conflictTickMinutes"},{["name"]="ruinMinutes",["type"]="int",["description"]="ruinMinutes"},{["name"]="attrition",["type"]="float",["description"]="attrition"},{["name"]="retreatHealth",["type"]="float",["description"]="retreatHealth"},{["name"]="aidReputation",["type"]="int",["description"]="aidReputation"},{["name"]="attackReputation",["type"]="int",["description"]="attackReputation"},{["name"]="maximumRouteThreat",["type"]="float",["description"]="\232\183\175\231\186\191\229\168\129\232\131\129\228\184\142\232\135\170\232\186\171\230\136\152\229\138\155\231\154\132\231\161\172\228\184\138\233\153\144",["min"]=0},{["name"]="minimumActionScore",["type"]="float",["description"]="\228\189\142\228\186\142\232\175\165\230\149\136\231\148\168\230\151\182\228\191\157\230\140\129\229\183\161\233\128\187\228\188\145\230\149\180",["min"]=0},{["name"]="reserveCapacity",["type"]="int",["description"]="\229\141\149\228\184\170\230\141\174\231\130\185\231\154\132\232\161\165\231\187\153\229\130\168\229\164\135\228\184\138\233\153\144",["min"]=1}},["fingerprint"]="e37a72dd587f482ad73e5526fc751f4f94ef7afe4ac2d60e832aa4ef0ee02c9a"}

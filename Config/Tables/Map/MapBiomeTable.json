@@ -17,6 +17,13 @@
       "ref": "MapAssetTable"
     },
     {
+      "name": "terrainVariantAssetIds",
+      "type": "int[]",
+      "default": [],
+      "ref": "MapAssetTable",
+      "description": "可选地块模型池，按种子位置噪声成片抽取；空数组沿用 terrainAssetId"
+    },
+    {
       "name": "waterAssetId",
       "type": "int",
       "description": "水面模型",
@@ -243,6 +250,152 @@
       "shrubDensity": 0.012,
       "butterflyDensity": 0,
       "gnatDensity": 0
+    },
+    {
+      "id": 7,
+      "terrainAssetId": 1000,
+      "waterAssetId": 6,
+      "groundColor": "#666b46",
+      "decorationAssetIds": [
+        1015,
+        1016,
+        1017,
+        1018
+      ],
+      "decorationDensity": 0.32,
+      "decorationMaxSlope": 1.4,
+      "minScale": 0.7,
+      "maxScale": 1.15,
+      "groundTexture": "MapGround/Shore",
+      "textureWorldSize": 3.8,
+      "textureStrength": 0.18,
+      "windStrength": 0.7,
+      "groundcoverDensity": 0.2,
+      "shrubDensity": 0.03,
+      "butterflyDensity": 0,
+      "gnatDensity": 0.12,
+      "terrainVariantAssetIds": [
+        1000,
+        1001,
+        1002
+      ]
+    },
+    {
+      "id": 8,
+      "terrainAssetId": 1003,
+      "waterAssetId": 6,
+      "groundColor": "#414a40",
+      "decorationAssetIds": [
+        1019,
+        1020,
+        1021,
+        1022
+      ],
+      "decorationDensity": 0.62,
+      "decorationMaxSlope": 1.8,
+      "minScale": 0.7,
+      "maxScale": 1.15,
+      "groundTexture": "MapGround/Forest",
+      "textureWorldSize": 4.2,
+      "textureStrength": 0.18,
+      "windStrength": 1,
+      "groundcoverDensity": 0.15,
+      "shrubDensity": 0.025,
+      "butterflyDensity": 0,
+      "gnatDensity": 0.045,
+      "terrainVariantAssetIds": [
+        1003,
+        1004,
+        1005
+      ]
+    },
+    {
+      "id": 9,
+      "terrainAssetId": 1006,
+      "waterAssetId": 6,
+      "groundColor": "#554640",
+      "decorationAssetIds": [
+        1023,
+        1024,
+        1025,
+        1026
+      ],
+      "decorationDensity": 0.3,
+      "decorationMaxSlope": 2.8,
+      "minScale": 0.7,
+      "maxScale": 1.15,
+      "groundTexture": "MapGround/Rock",
+      "textureWorldSize": 5.5,
+      "textureStrength": 0.18,
+      "windStrength": 0,
+      "groundcoverDensity": 0,
+      "shrubDensity": 0,
+      "butterflyDensity": 0,
+      "gnatDensity": 0,
+      "terrainVariantAssetIds": [
+        1006,
+        1007,
+        1008
+      ]
+    },
+    {
+      "id": 10,
+      "terrainAssetId": 1009,
+      "waterAssetId": 6,
+      "groundColor": "#777164",
+      "decorationAssetIds": [
+        1027,
+        1028,
+        1029,
+        1030
+      ],
+      "decorationDensity": 0.28,
+      "decorationMaxSlope": 3.6,
+      "minScale": 0.7,
+      "maxScale": 1.15,
+      "groundTexture": "MapGround/Rock",
+      "textureWorldSize": 5.5,
+      "textureStrength": 0.18,
+      "windStrength": 0,
+      "groundcoverDensity": 0,
+      "shrubDensity": 0,
+      "butterflyDensity": 0,
+      "gnatDensity": 0,
+      "terrainVariantAssetIds": [
+        1009,
+        1010,
+        1011
+      ]
+    },
+    {
+      "id": 11,
+      "terrainAssetId": 1012,
+      "waterAssetId": 6,
+      "groundColor": "#8b8874",
+      "decorationAssetIds": [
+        1031,
+        1032,
+        1033,
+        1034,
+        1035
+      ],
+      "decorationDensity": 0.6,
+      "decorationMaxSlope": 1.8,
+      "minScale": 0.7,
+      "maxScale": 1.15,
+      "groundTexture": "MapGround/Forest",
+      "textureWorldSize": 4.2,
+      "textureStrength": 0.18,
+      "windStrength": 1,
+      "groundcoverDensity": 0.12,
+      "shrubDensity": 0.01,
+      "butterflyDensity": 0.015,
+      "gnatDensity": 0.075,
+      "terrainVariantAssetIds": [
+        1012,
+        1013,
+        1014
+      ]
     }
   ]
 }

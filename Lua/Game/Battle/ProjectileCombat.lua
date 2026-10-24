@@ -1,7 +1,15 @@
 -- Shared, read-only shot queries and per-projectile interception. Mutable health stays in C# Data.
 local Trajectory=require('Game.Battle.SkillTrajectory')
 local Instructions=require('Game.Battle.EffectInstructions')
+local VisualEffects=require('Game.Presentation.VisualEffects')
+local LuaLanguage=require('Language')
 local Shots={}
+local function needsHit(battle,source,skill,victim)
+    if skill.target=='enemy' then return true end
+    if skill.target~='any' or not victim then return false end
+    if battle.IsAllied then return not battle:IsAllied(source,victim)end
+    return source.Team~=victim.Team
+end
 function Shots.Profile(battle,source,skill,target,context,victim)
     local board=context and context.board or battle.board
     local origin=context and context.origin or assert(board:Find(source.Q,source.R))
@@ -10,14 +18,19 @@ function Shots.Profile(battle,source,skill,target,context,victim)
         occupied=context and context.occupied(victim) or battle:ShotOccupancy(source,victim)
     end
     local trace=Trajectory.Trace(board,origin,target,skill.trajectory,occupied,skill.guided)
-    local chance=skill.target=='enemy' and skill.hitChance or 100
-    if skill.target=='enemy' and (board.area or board.CanTrace) then chance=battle.stats.heightAdvantage:HitChance(origin,target,skill) end
+    local hostile=needsHit(battle,source,skill,victim)
+    local chance=hostile and skill.hitChance or 100
+    if hostile and (board.area or board.CanTrace) then chance=battle.stats.heightAdvantage:HitChance(origin,target,skill) end
     local reach=1;local friendly=false;local names={}
     for _,blocker in ipairs(trace.blockers)do
         local rule=battle.stats.projectileCover
         blocker.chance=blocker.kind=='actor' and rule.actorChance or rule.objectChance
         reach=reach*(1-blocker.chance/100)
-        if blocker.chance>0 and blocker.actor and blocker.actor.Team==source.Team then friendly=true end
+        if blocker.chance>0 and blocker.actor then
+            local inBattle=board==battle.board and battle.IsAllied
+            local allied=inBattle and battle:IsAllied(source,blocker.actor) or not inBattle and blocker.actor.Team==source.Team
+            if allied then friendly=true end
+        end
         names[#names+1]=blocker.actor and battle.stats:Template(blocker.actor).name or blocker.name or '障碍物'
     end
     local effective=trace.reachable and chance*reach or 0
@@ -55,23 +68,69 @@ function Shots.PrepareBlockers(battle,source,skill,profile)
     end
     return prepared
 end
-function Shots.Intercept(profile,roll)
+function Shots.Intercept(profile,roll,onCheck)
     assert(profile.reachable,'Cannot resolve a shot outside its valid geometry')
     for _,blocker in ipairs(profile.blockers)do
-        if blocker.chance==100 or blocker.chance>0 and roll()<blocker.chance then return blocker end
+        local value=blocker.chance>0 and blocker.chance<100 and roll() or nil
+        local passed=blocker.chance==100 or blocker.chance>0 and value<blocker.chance
+        if onCheck then onCheck(blocker,value,passed)end
+        if passed then return blocker end
     end
 end
-function Shots.Hit(profile,roll) return profile.baseHitChance==100 or roll()<profile.baseHitChance end
+function Shots.Hit(profile,roll,onCheck)
+    local value=profile.baseHitChance~=100 and roll() or nil
+    local passed=profile.baseHitChance==100 or value<profile.baseHitChance
+    if onCheck then onCheck(value,passed)end
+    return passed
+end
 function Shots.ApplyActor(battle,source,program,impact)
+    local professionSkill=program[1] and program[1].skill
+    local professionContext
+    if battle.professions and professionSkill then
+        local target=program[1].hitTarget or program[1].target
+        local actual=battle.professions:Redirect(source,professionSkill,target)
+        if actual~=target then
+            local redirected={}
+            for _,effect in ipairs(program)do
+                if effect.definition.kind=='profession' then local entry={};for k,v in pairs(effect)do entry[k]=v end;entry.target=actual;entry.hitTarget=actual;redirected[#redirected+1]=entry
+                else redirected[#redirected+1]=battle.gameEffects:Prepare(effect.definition.id,source,actual,professionSkill,effect.distance)end
+            end
+            program=redirected;target=actual
+        end
+        professionContext=battle.professions:BeforeHit(source,professionSkill,target)
+        impact.professionContext=professionContext
+    end
+    -- Resolve once per projectile/victim after a successful hit, never once per attached effect.
+    local skill
+    for _,effect in ipairs(program)do
+        if effect.definition.kind=='damage' and effect.definition.duration=='instant' and effect.target~=source and effect.target.HP>0 then
+            skill=effect.skill;break
+        end
+    end
+    if skill and skill.criticalChance>0 then
+        local value=skill.criticalChance<100 and battle.data:RollPercent() or nil
+        impact.critical=skill.criticalChance==100 or value<skill.criticalChance
+        if battle.checks then
+            battle.checks(source,program[1].hitTarget or program[1].target,skill,LuaLanguage.DiceCritical,skill.criticalChance,value,impact.critical,
+                {shot=impact.shot,successLabel=LuaLanguage.DiceCritical,failureLabel=LuaLanguage.DiceNormalHit})
+        end
+    end
     -- A successful hit authorizes all effects for this projectile, including source benefits after a lethal hit.
     for _,effect in ipairs(program)do
         if source.HP<=0 then break end
-        if effect.target.HP>0 then battle.gameEffects:ApplyPrepared(effect,impact) end
+        if effect.definition.kind=='profession' then -- The profession program owns this no-effect action.
+        elseif effect.target.HP>0 then battle.gameEffects:ApplyPrepared(effect,impact)
+        elseif effect.definition.kind=='apply_buff' then
+            battle.gameEffects:Report('effect_blocked',effect,{statusName=battle.stats.buffs:Get(effect.definition.buffId).name,reason='目标已倒地'})
+        end
     end
+    if professionContext then battle.professions:AfterHit(professionContext)end
+    if battle.beasts and professionSkill then battle.beasts:OnHit(source,program[1].hitTarget or program[1].target,professionSkill)end
 end
-function Shots.ApplyBlocker(battle,source,skill,blocker,prepared,impact,context)
+function Shots.ApplyBlocker(battle,source,skill,blocker,prepared,impact,context,visualSource)
     local name=blocker.actor and battle.stats:Template(blocker.actor).name or blocker.name or '障碍物'
-    battle:Emit('intercepted',skill.name..' 被 '..name..' 拦截',source.Id,blocker.actor and blocker.actor.Id)
+    battle:Emit('intercepted',skill.name..' 被 '..name..' 拦截',source.Id,blocker.actor and blocker.actor.Id,0,blocker.actor,false,
+        {actionName=skill.name,targetName=name,shot=impact and impact.shot})
     if blocker.kind=='actor' then
         Shots.ApplyActor(battle,source,assert(prepared[blocker.key],'Unprepared interception target'),impact)
     elseif blocker.kind=='container' then
@@ -86,8 +145,10 @@ function Shots.ApplyBlocker(battle,source,skill,blocker,prepared,impact,context)
             end
         end
     end
+    VisualEffects.Skill(battle,visualSource or source,skill,blocker.actor,impact and impact.shot,'hit',blocker.cell)
 end
 function Shots.PrepareProgram(battle,source,skill,program)
+    program.vfxSource=VisualEffects.Source(source)
     local groups,byId={},{}
     for _,effect in ipairs(program)do
         local victim=effect.hitTarget or effect.target;local group=byId[victim.Id]
@@ -109,7 +170,9 @@ function Shots.ApplyProgram(battle,source,skill,program,shot)
         if source.HP<=0 then break end
         local victim=group.victim
         if victim.HP>0 then
-            if skill.target~='enemy' then Shots.ApplyActor(battle,source,group.effects,{shot=shot})
+            if not needsHit(battle,source,skill,victim) then
+                Shots.ApplyActor(battle,source,group.effects,{shot=shot})
+                VisualEffects.Skill(battle,program.vfxSource,skill,victim,shot,'cast')
             else
                 local profile
                 if (skill.trajectory=='direct' or skill.trajectory=='lobbed') and not skill.guided then
@@ -120,10 +183,20 @@ function Shots.ApplyProgram(battle,source,skill,program,shot)
                     profile={reachable=true,blockers={},baseHitChance=chance}
                 end
                 local roll=function()return battle.data:RollPercent()end
-                local blocker=profile.reachable and Shots.Intercept(profile,roll)
-                if blocker then Shots.ApplyBlocker(battle,source,skill,blocker,assert(group.interceptions),{shot=shot})
-                elseif profile.reachable and Shots.Hit(profile,roll)then Shots.ApplyActor(battle,source,group.effects,{shot=shot})
-                else battle:Emit('miss',battle.stats:Template(source).name..' · '..skill.name..' 未命中 '..battle.stats:Template(victim).name,source.Id,victim.Id) end
+                local blocker=profile.reachable and Shots.Intercept(profile,roll,battle.checks and function(row,value,passed)
+                    battle.checks(source,row.actor,skill,'拦截',row.chance,value,passed,
+                        {targetName=row.actor and battle.stats:Template(row.actor).name or row.name,shot=shot,successLabel='拦截',failureLabel='穿过'})
+                end)
+                if blocker then Shots.ApplyBlocker(battle,source,skill,blocker,assert(group.interceptions),{shot=shot},nil,program.vfxSource)
+                elseif profile.reachable and Shots.Hit(profile,roll,battle.checks and function(value,passed)
+                    battle.checks(source,victim,skill,'命中',profile.baseHitChance,value,passed,{shot=shot,successLabel='命中',failureLabel='落空'})
+                end)then
+                    Shots.ApplyActor(battle,source,group.effects,{shot=shot})
+                    VisualEffects.Skill(battle,program.vfxSource,skill,victim,shot,'hit')
+                else
+                    battle:Emit('miss',battle.stats:Template(source).name..' · '..skill.name..' 未命中 '..battle.stats:Template(victim).name,source.Id,victim.Id,0,victim,false,{actionName=skill.name,shot=shot})
+                    VisualEffects.Skill(battle,program.vfxSource,skill,victim,shot,'miss')
+                end
             end
         end
     end

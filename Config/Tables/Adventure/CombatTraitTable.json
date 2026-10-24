@@ -1,7 +1,7 @@
 {
   "version": 1,
   "name": "CombatTraitTable",
-  "description": "事件获得的角色特质，属性修正参与敌我统一计算。",
+  "description": "角色特质：固定属性与命中效果参与敌我统一计算，传奇特质带专属战斗机制。",
   "key": "id",
   "fields": [
     {
@@ -31,6 +31,23 @@
       "description": "加算属性修正",
       "min": -100,
       "max": 100
+    },
+    {
+      "name": "rarity",
+      "type": "enum",
+      "values": [
+        "common",
+        "legendary"
+      ],
+      "description": "特质稀有度",
+      "default": "common"
+    },
+    {
+      "name": "onHitEffectIds",
+      "type": "int[]",
+      "description": "伤害攻击命中后按顺序执行的效果；敌我共用，不附加到防御或治疗",
+      "ref": "CombatEffectTable",
+      "default": []
     }
   ],
   "rows": [
@@ -75,6 +92,72 @@
       "description": "拒绝与同伴配合，防御 -2。真实战斗中被同伴危急救援后可以克服。",
       "attribute": "defense",
       "amount": -2
+    },
+    {
+      "id": 101,
+      "name": "血月獠牙",
+      "description": "力量 +2；伤害攻击命中后施加流血，可叠至3层。",
+      "attribute": "strength",
+      "amount": 2,
+      "rarity": "legendary",
+      "onHitEffectIds": [
+        1401
+      ]
+    },
+    {
+      "id": 102,
+      "name": "霜息",
+      "description": "速度 +2；伤害攻击命中后施加迟缓，目标速度降低3，持续2回合。",
+      "attribute": "speed",
+      "amount": 2,
+      "rarity": "legendary",
+      "onHitEffectIds": [
+        1402
+      ]
+    },
+    {
+      "id": 103,
+      "name": "磐心回响",
+      "description": "防御 +2；伤害攻击命中后自身获得3点护卫，不叠加。",
+      "attribute": "defense",
+      "amount": 2,
+      "rarity": "legendary",
+      "onHitEffectIds": [
+        1403
+      ]
+    },
+    {
+      "id": 104,
+      "name": "熔脉火种",
+      "description": "体质 +3；伤害攻击命中后施加燃烧，潮湿目标无法点燃。",
+      "attribute": "vitality",
+      "amount": 3,
+      "rarity": "legendary",
+      "onHitEffectIds": [
+        1404
+      ]
+    },
+    {
+      "id": 105,
+      "name": "断誓锋刃",
+      "description": "剑术 +3；伤害攻击命中后驱散目标当前增益，不能驱散固有特质。",
+      "attribute": "sword",
+      "amount": 3,
+      "rarity": "legendary",
+      "onHitEffectIds": [
+        1405
+      ]
+    },
+    {
+      "id": 106,
+      "name": "归途之息",
+      "description": "弓术 +3；伤害攻击命中后恢复自身4点生命，不复活。",
+      "attribute": "bow",
+      "amount": 3,
+      "rarity": "legendary",
+      "onHitEffectIds": [
+        1406
+      ]
     }
   ]
 }

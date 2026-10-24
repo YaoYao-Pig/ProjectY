@@ -140,7 +140,9 @@ function Obstacles:Resolve(action)
     end
     local area,state=self.areas:ActiveLayout(),self.areas.data.Active
     local random=Random((area.seed ~ rule.seedSalt ~ row.Id*104729 ~ (row.Attempts+1)*65537) & 0xffffffff)
-    local success=random:Integer(1,100)<= (tool and rule.toolChance or rule.manualChance)
+    local roll=random:Integer(1,100)
+    local chance=tool and rule.toolChance or rule.manualChance
+    local success=roll<=chance
     if success and rule.lootTableId~=0 then
         local ids,counts={},{}
         for i=0,row.ItemCount-1 do ids[#ids+1]=row:GetItemAt(i);counts[#counts+1]=row:GetCountAt(i) end
@@ -151,7 +153,8 @@ function Obstacles:Resolve(action)
     self.areas:SpendWorkRounds(rounds)
     local name=self.adventure.battle.stats:Template(worker).name
     return string.format('%s花费 %d 探索回合%s。%s',name,rounds,loss>0 and ('，损失 '..loss..' 生命') or '',
-        success and (rule.lootTableId~=0 and '已处理完毕，发现可搜刮的容器。' or '障碍已清除，道路恢复通行。') or '未能打开，箱子与内容保留，可以再次尝试。')
+        success and (rule.lootTableId~=0 and '已处理完毕，发现可搜刮的容器。' or '障碍已清除，道路恢复通行。') or '未能打开，箱子与内容保留，可以再次尝试。'),
+        chance>0 and chance<100 and require('Game.Presentation.DiceChecks').Percent(rule.name,roll,chance,success,'inclusive',1) or nil
 end
 function Obstacles:Snapshot()
     local state=self.areas.data.Active;local visible,result={},{ }

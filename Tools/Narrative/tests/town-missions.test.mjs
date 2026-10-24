@@ -1,0 +1,20 @@
+import test from 'node:test';
+import assert from 'node:assert/strict';
+import path from 'node:path';
+import {fileURLToPath} from 'node:url';
+import {snapshot,propose} from '../workspace.mjs';
+const root=path.resolve(path.dirname(fileURLToPath(import.meta.url)),'../../..');
+test('town mission template references and objective/reward contracts are reviewed before writing',()=>{
+  const state=snapshot(root);
+  const row=name=>structuredClone(state.tables.find(t=>t.name===name).rows[0]);
+  const edit=(table,changes)=>propose(root,{revision:state.revision,operations:[{op:'upsert',table,row:{...row(table),...changes}}]});
+  assert(state.graph.edges.some(e=>e.from==='TownMissionTable:1'&&e.to==='EquipmentItemTable:81'));
+  assert.throws(()=>edit('TownMissionTable',{itemId:40}),/material/);
+  assert.throws(()=>edit('TownMissionTable',{minCount:10,maxCount:1}),/objective range/);
+  assert.throws(()=>edit('TownMissionTable',{kind:'escort',itemId:0,minCount:2,maxCount:2}),/escort count/);
+  assert.throws(()=>edit('TownMissionTable',{kind:'clear',itemId:0,radius:0}),/radius/);
+  const forbidden=state.tables.find(t=>t.name==='NarrativeActionTable').rows.find(r=>r.kind==='accept_mission');
+  assert.throws(()=>edit('TownMissionTable',{actionIds:[forbidden.id]}),/reward/);
+  assert.throws(()=>edit('TownMissionSettingsTable',{maxOffers:6}),/daily count/);
+  assert(edit('TownMissionTable',{name:'A review-only commission'}).review.valid);
+});

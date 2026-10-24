@@ -1,0 +1,10 @@
+benchmark=world_lod seed=20261016 recipe=3 world_cells=10000 simulation_minutes=60 instrumentation=counter_only
+registry_init_ms=287.000 world_init_ms=10253.000 parties=45 sites=19
+simulation_ms=86.000 budget_ms=100 budget_status=PASS tick_p50_ms=1.000 tick_p95_ms=3.000 tick_max_ms=30.000
+initial_lod near=2 medium=6 far=37 final_lod near=2 medium=6 far=37
+party_updates near=60 medium=24 far=21 party_minutes near=60.000 medium=240.000 far=1260.000
+path_calls=0 think_calls=6 materialize_travel_calls=0
+area_generate init=0 simulation=0 near=0 medium=0 far=0
+conflict_updates near=0 medium=0 far=0 begin_detailed=0 begin_abstract=1
+snapshot_ms=23.000 paused_polls=30 unchanged=30 paused_ms=12.000 signature_lod=df11fc85
+Temporary save: C:\Users\yyz\AppData\Local\Temp\project-y-faction-integration-5216757a415447bf95a9c975114b9035.json

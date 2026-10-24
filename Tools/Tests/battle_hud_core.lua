@@ -43,8 +43,31 @@ battle.data.ActiveId=101;battle.data.TurnIndex=1
 view=build(battle,adventure);assert(not view.player and not view.moveAvailable and not view.skills[1].available and view.turns[1].active)
 print('PASS main-action, AP, range and enemy-turn gating through actual battle rules')
 local icons=config:GetTable('BattleIconTable')
-for _,skill in ipairs(battle.skills:All()) do assert(icons:Get(skill.iconId).spritePath=='') end
+local checkedIcons={}
+local function checkIcon(icon)
+    if checkedIcons[icon.id] then return end
+    checkedIcons[icon.id]=true
+    local path=icon.spritePath
+    assert(type(path)=='string','Battle icon path must be a string: '..icon.id)
+    if path=='' then return end
+    assert(path:sub(1,7)=='Assets/' and not path:find('\\',1,true),'Battle icon must be under Assets/: '..path)
+    for segment in path:gmatch('[^/]+') do assert(segment~='.' and segment~='..','Invalid battle icon path: '..path) end
+    local file=assert(io.open(path,'rb'),'Missing battle icon PNG: '..path)
+    local signature=file:read(8);file:close()
+    assert(signature=='\137PNG\r\n\26\n','Battle icon must be a PNG: '..path)
+end
+for _,skill in ipairs(battle.skills:All()) do checkIcon(icons:Get(skill.iconId)) end
+local recipes=config:GetTable('SkillIconRecipeTable')
+for _,recipe in ipairs(recipes:All()) do
+    local skill=battle.skills:Get(recipe.skillId)
+    local published=icons:Find(recipe.id)
+    if published then
+        assert(skill.iconId==recipe.id,'Published skill icon mapping differs from recipe: '..recipe.id)
+        assert(published.spritePath~='','Published skill icon has no PNG: '..recipe.id)
+        checkIcon(published)
+    end
+end
 local hud=config:GetTable('BattleHUDTable'):Get(1);assert(#hud.itemIconIds==4)
 for _,id in ipairs(hud.itemIconIds) do assert(icons:Get(id).spritePath=='') end
-print('PASS skill/icon references and four configurable empty item slots')
+print('PASS skill/icon references, published recipe PNGs and four configurable empty item slots')
 for _,path in ipairs({'Lua/UI/Panel/BattleHUDCtr.lua','Lua/UI/Widget/BattleAction.lua','Lua/UI/Widget/BattleUnit.lua','Lua/UI/BattleHUDBridge.lua'}) do assert(loadfile(path)) end

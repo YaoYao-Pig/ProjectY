@@ -19,7 +19,7 @@ namespace ProjectY.UI
         private Font font;
         private float width = 440;
         public Font Font => font;
-        public float PanelFraction => page.rect.width / ((RectTransform)transform).rect.width;
+        public float PanelFraction => (page.rect.width + Mathf.Max(0,-page.anchoredPosition.x)) / ((RectTransform)transform).rect.width;
         public void Prepare(Font value,float panelWidth)
         {
             if(value==null)throw new ArgumentException("Narrative UI requires a font.");
@@ -43,7 +43,7 @@ namespace ProjectY.UI
                 {
                     var height=Mathf.Min(242,Mathf.Max(110,root.height*.32f));
                     choices.sizeDelta=new Vector2(choices.sizeDelta.x,height);
-                    scroll.GetComponent<RectTransform>().offsetMin=new Vector2(14,height+72);
+                    ((RectTransform)scroll.transform).offsetMin=new Vector2(20,height+72);
                 }
             }
             else

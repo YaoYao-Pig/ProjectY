@@ -32,6 +32,13 @@ namespace ProjectY.UI
         private float shakeStrength = 1;
         private bool shaking;
         public Vector2 ScreenOffset { get; private set; }
+        public float BurstHitInterval => burstHitInterval;
+        private float playbackRate = 1;
+        internal void SetPlaybackRate(float rate)
+        {
+            playbackRate = rate;
+            foreach (var binding in bindings) binding.Bar.PlaybackRate = rate;
+        }
 
         public void QueueHealth(int actorId, int healthId, float fraction)
         {
@@ -90,11 +97,13 @@ namespace ProjectY.UI
             if (binding == null) { binding = new Binding { Bar = bar }; bindings.Add(binding); }
             if (binding.ActorId != actorId) { bar.Clear(); binding.ActorId = actorId; }
             bar.SetValue(healthId, fraction, 0);
+            bar.PlaybackRate = playbackRate;
         }
 
         public void UnbindHealth(HealthBarAnimation bar)
         {
             bindings.RemoveAll(item => item.Bar == bar);
+            bar.PlaybackRate = 1;
             bar.Clear();
         }
 
@@ -169,6 +178,7 @@ namespace ProjectY.UI
         }
         public void Clear()
         {
+            SetPlaybackRate(1);
             Skip();
             foreach (var binding in bindings) binding.Bar.Clear();
             bindings.Clear();
