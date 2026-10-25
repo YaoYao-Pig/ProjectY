@@ -70,23 +70,26 @@ function Save.Write(adventure)
     local ok,err=pcall(function() adventure.characterSaves:Save(adventure.data,adventure.player) end)
     return ok,ok and '' or tostring(err)
 end
-function Save.Read(adventure,saveId)
-    if adventure.parties.data.IsOpen then return false,'请先结束队伍交互再读取' end
-    if adventure.equipment.worldLoot.session.Active then return false,'请先关闭战利品窗口再读取' end
-    if adventure.camp.data.IsOpen then return false,'请先关闭营地再读取' end
-    if adventure.shop and adventure.shop.data.IsOpen then return false,'请先关闭商店再读取' end
-    if adventure.narrative and adventure.narrative.data.DialogueOpen then return false,'请先结束对话再读取' end
-    if adventure.data.Phase~='map' and adventure.data.Phase~='area' then return false,'只能在探索期间读取队伍' end
-    local ok,result=pcall(function()
-        local candidate=saveId and CS.ProjectY.Data.CampaignSaves.PrepareSelected(adventure.characterSaves,saveId,adventure.data.Equipment)
-            or adventure.characterSaves:Prepare(adventure.data.Equipment)
-        Save.Validate(adventure,candidate)
-        return {prepared=candidate,world=require('Game.Adventure.ExpeditionSave').Prepare(adventure,candidate)}
+function Save.Prepare(adventure,saveId,progress)
+    local reason=require('Game.Adventure.CampaignPreparation').Check(adventure);assert(not reason,reason)
+    local candidate=saveId and CS.ProjectY.Data.CampaignSaves.PrepareSelected(adventure.characterSaves,saveId,adventure.data.Equipment)
+        or adventure.characterSaves:Prepare(adventure.data.Equipment)
+    if progress then progress(.04,require('Language').CampaignLoadingValidate) end
+    Save.Validate(adventure,candidate)
+    local world=require('Game.Adventure.ExpeditionSave').Prepare(adventure,candidate,progress and function(value,stage)
+        progress(.08+value*.92,stage)
     end)
-    if not ok then return false,tostring(result) end
-    local prepared,world=result.prepared,result.world
+    return candidate,world
+end
+function Save.Commit(adventure,prepared,world)
+    local reason=require('Game.Adventure.CampaignPreparation').Check(adventure);assert(not reason,reason)
     adventure:RestorePrepared(prepared,world)
     if adventure.narrative then adventure.narrative.lastRevision=nil;adventure.narrative:Refresh() end
+end
+function Save.Read(adventure,saveId)
+    local ok,prepared,world=pcall(Save.Prepare,adventure,saveId)
+    if not ok then return false,tostring(prepared) end
+    Save.Commit(adventure,prepared,world)
     return true
 end
 return Save

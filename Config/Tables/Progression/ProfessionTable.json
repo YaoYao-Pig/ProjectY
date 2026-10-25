@@ -21,6 +21,11 @@
       "description": "职业说明"
     },
     {
+      "name": "iconPath",
+      "type": "string",
+      "description": "职业徽记 Sprite 资源路径"
+    },
+    {
       "name": "treeIds",
       "type": "int[]",
       "description": "加入职业后永久开放的被动树",
@@ -43,7 +48,8 @@
       ],
       "initialSkillIds": [
         401
-      ]
+      ],
+      "iconPath": "Assets/DynamicAsset/UI/Icons/Professions/profession-1.png"
     },
     {
       "id": 2,
@@ -54,7 +60,8 @@
       ],
       "initialSkillIds": [
         402
-      ]
+      ],
+      "iconPath": "Assets/DynamicAsset/UI/Icons/Professions/profession-2.png"
     },
     {
       "id": 3,
@@ -66,7 +73,8 @@
       ],
       "initialSkillIds": [
         403
-      ]
+      ],
+      "iconPath": "Assets/DynamicAsset/UI/Icons/Professions/profession-3.png"
     },
     {
       "id": 4,
@@ -77,7 +85,8 @@
       ],
       "initialSkillIds": [
         404
-      ]
+      ],
+      "iconPath": "Assets/DynamicAsset/UI/Icons/Professions/profession-4.png"
     },
     {
       "id": 5,
@@ -88,7 +97,8 @@
       ],
       "initialSkillIds": [
         401
-      ]
+      ],
+      "iconPath": "Assets/DynamicAsset/UI/Icons/Professions/profession-5.png"
     },
     {
       "id": 6,
@@ -100,7 +110,8 @@
       ],
       "initialSkillIds": [
         1801
-      ]
+      ],
+      "iconPath": "Assets/DynamicAsset/UI/Icons/Professions/profession-6.png"
     },
     {
       "id": 7,
@@ -112,7 +123,8 @@
       ],
       "initialSkillIds": [
         1811
-      ]
+      ],
+      "iconPath": "Assets/DynamicAsset/UI/Icons/Professions/profession-7.png"
     },
     {
       "id": 8,
@@ -124,7 +136,8 @@
       ],
       "initialSkillIds": [
         1821
-      ]
+      ],
+      "iconPath": "Assets/DynamicAsset/UI/Icons/Professions/profession-8.png"
     },
     {
       "id": 9,
@@ -136,7 +149,8 @@
       ],
       "initialSkillIds": [
         1831
-      ]
+      ],
+      "iconPath": "Assets/DynamicAsset/UI/Icons/Professions/profession-9.png"
     },
     {
       "id": 10,
@@ -148,7 +162,8 @@
       ],
       "initialSkillIds": [
         1841
-      ]
+      ],
+      "iconPath": "Assets/DynamicAsset/UI/Icons/Professions/profession-10.png"
     },
     {
       "id": 11,
@@ -160,7 +175,8 @@
       ],
       "initialSkillIds": [
         1851
-      ]
+      ],
+      "iconPath": "Assets/DynamicAsset/UI/Icons/Professions/profession-11.png"
     }
   ]
 }

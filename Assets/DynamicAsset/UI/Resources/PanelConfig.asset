@@ -650,3 +650,42 @@ MonoBehaviour:
     PauseWorldOnOpen: 1
     CloseOnSceneChange: 1
     Prefab: {fileID: 4702142645407304807, guid: 23bac0a6938692c41964747cf738f9d7, type: 3}
+  - Name: FactionNode
+    Module: Factions
+    Kind: 1
+    Layer: Popup
+    Modal: 0
+    ModalDimAlpha: 0.65
+    Cache: 1
+    CloseOnBack: 1
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 5308207071286165888, guid: 9760dc75971e52c4ba6b1eff45209458, type: 3}
+  - Name: FactionRelations
+    Module: Factions
+    Kind: 0
+    Layer: Popup
+    Modal: 1
+    ModalDimAlpha: 0.65
+    Cache: 1
+    CloseOnBack: 1
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 1
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 6527175804806766936, guid: b3859c37379065d43a983f55d47b6383, type: 3}
+  - Name: ProfessionNode
+    Module: Progression
+    Kind: 1
+    Layer: Main
+    Modal: 0
+    ModalDimAlpha: 0.65
+    Cache: 1
+    CloseOnBack: 1
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 8143830725738637885, guid: 5e2f74f372fecd14cad472460049fdd2, type: 3}

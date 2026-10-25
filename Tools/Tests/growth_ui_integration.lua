@@ -50,9 +50,9 @@ local ok,err=xpcall(function()
     end)
     test('talent nodes and edges use config positions; selection and investment reach real rules',function()
         panel.view.SkillsTab.onClick:Invoke()
-        assert(panel.skillMode=='profession' and not panel.view.GraphScroll.gameObject.activeSelf)
-        assert(panel.view.SkillRowsScroll.viewport.rect.width==570 and panel.view.SkillRowsScroll.viewport.rect.height==337)
-        panel.view.NextTree.onClick:Invoke();assert(#panel.nodes==9 and #panel.edges==11)
+        assert(panel.skillMode=='profession' and panel.view.GraphScroll.gameObject.activeSelf and #panel.courseNodes>0)
+        assert(panel.view.SkillRowsScroll.viewport.rect.width==267 and panel.view.SkillRowsScroll.viewport.rect.height==84)
+        panel.view.NextTree.onClick:Invoke();assert(#panel.nodes>0 and #panel.edges>0)
         assert(panel.view.GraphScroll.gameObject.activeSelf and panel.view.SkillRowsScroll.viewport.rect.width==267)
         panel.nodes[1].view.Button.onClick:Invoke();assert(panel.view.Invest.interactable)
         panel.view.Invest.onClick:Invoke();assert(data:GetPartyAt(0).Growth:GetRank(1)==1)
@@ -65,6 +65,19 @@ local ok,err=xpcall(function()
         panel=ui:Open('CharacterGrowth',{demo=adapter});panel.view.SkillsTab.onClick:Invoke()
         assert(actor.Growth.PendingCount==pending and actor.Growth.OfferCount==0)
         local function click(command,id)
+            if command=='choose_profession' then
+                panel.courseProfessionRoot.view.Button.onClick:Invoke()
+                for _,widget in ipairs(panel.professionNodes) do if widget.row and widget.row.id==0 then widget.view.Button.onClick:Invoke();return end end
+            elseif command=='growth_profession' then
+                for _,widget in ipairs(panel.professionNodes) do if widget.row and widget.row.id==id then
+                    widget.view.Button.onClick:Invoke();assert(panel.view.Invest.interactable);panel.view.Invest.onClick:Invoke();return
+                end end
+            end
+            if command=='select_course' then
+                for _,widget in ipairs(panel.courseNodes) do
+                    if widget.node and widget.node.id==id then widget.view.Button.onClick:Invoke();return end
+                end
+            end
             for _,widget in ipairs(panel.pools.SkillRows) do
                 if widget.row and widget.row.command==command and widget.row.id==id then assert(widget.view.Button.interactable);widget.view.Button.onClick:Invoke();return end
             end

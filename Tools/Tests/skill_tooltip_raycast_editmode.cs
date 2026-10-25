@@ -48,42 +48,39 @@ try
         pointer.pointerCurrentRaycast = hits.Count == 0 ? new UnityEngine.EventSystems.RaycastResult() : hits[0];
         if (sendEvents) dispatch.Invoke(module, new object[] { pointer, pointer.pointerCurrentRaycast.gameObject });
     };
-    var lastInside = typeof(ProjectY.UI.SkillTooltipView).GetField("lastPointerInside",
-        System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic);
-    System.Action expire = () => lastInside.SetValue(tip, Time.unscaledTime - 1f);
     System.Action<bool, string> check = (passed, message) => { if (!passed) throw new System.Exception(message); };
     var outside = new Vector2(-10, -10);
 
     render(); move(center(anchor), true);
     check(hover.Hovered, "Actual skill button raycast must enter its bound UIPointerState");
     tip.Begin("Hover regression", "<link=\"term:hit\">Hit</link> description"); tip.Show(anchor); render();
-    expire(); check(tip.KeepOpen(hover.Hovered), "A hovered button must retain the tooltip after a long hover");
+    check(tip.KeepOpen(hover.Hovered), "A hovered button must retain the tooltip after a long hover");
     move(outside, true);
     check(!hover.Hovered, "Real pointer exit must clear the skill button");
-    check(tip.KeepOpen(hover.Hovered), "Leaving the button must allow crossing the short gap");
+    check(!tip.KeepOpen(hover.Hovered), "Leaving the button must dismiss immediately");
     move(center(tip.EditorLayout.Body.rectTransform), true);
     check(pointer.pointerCurrentRaycast.gameObject == tip.EditorLayout.Body.gameObject, "Card text must participate in the actual raycast");
     check(tip.ContainsPointer(), "Entering a TMP child must hover the parent card");
-    expire(); check(tip.KeepOpen(hover.Hovered), "Card contents must retain the tooltip for term navigation");
+    check(tip.KeepOpen(hover.Hovered), "Card contents must retain the tooltip for term navigation");
     tip.Begin("Term", "Nested description"); tip.Show(anchor); render();
     move(center(tip.EditorLayout.Body.rectTransform), true);
     check(tip.ContainsPointer(), "Term navigation must keep hover inside the card");
     move(outside, true);
     check(!tip.ContainsPointer(), "Leaving actual card graphics must clear parent hover");
-    expire(); check(!tip.KeepOpen(hover.Hovered), "Leaving both actual button and card must expire");
+    check(!tip.KeepOpen(hover.Hovered), "Leaving both actual button and card must expire");
 
     // Input can update its hit before an exit callback reaches a cached controller (e.g. a changed UI hierarchy).
     move(center(anchor), true); check(hover.Hovered, "Button must re-enter");
     move(outside, false);
     check(!hover.Hovered, "A stale button enter must not retain hover after the current raycast moves outside");
-    expire(); check(!tip.KeepOpen(hover.Hovered), "A missed button exit must not keep renewing the card deadline");
+    check(!tip.KeepOpen(hover.Hovered), "A missed button exit must not keep renewing the card deadline");
     move(outside, true); move(center(tip.EditorLayout.Body.rectTransform), true);
     check(tip.ContainsPointer(), "Card must re-enter");
     move(outside, false);
     check(!tip.ContainsPointer(), "A stale card enter must not retain hover after the current raycast moves outside");
-    expire(); check(!tip.KeepOpen(false), "A missed card exit must not keep renewing its own deadline");
+    check(!tip.KeepOpen(false), "A missed card exit must not keep renewing its own deadline");
     move(outside, true); move(center(tip.EditorLayout.Body.rectTransform), true);
-    tip.Hide(); tip.Show(anchor); render(); expire();
+    tip.Hide(); tip.Show(anchor); render();
     check(!tip.ContainsPointer() && !tip.KeepOpen(false), "Cached reopen must require a new enter event");
     tip.Hide();
 }

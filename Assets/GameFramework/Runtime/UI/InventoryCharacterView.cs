@@ -29,10 +29,18 @@ namespace ProjectY.UI
         private RenderTexture texture;
         private float yaw=-15,zoom=1,fit=1.2f;
         private Vector3 focus=new Vector3(0,1.04f,0);
+        private BlockParticleEffects skillEffects;
+        private BlockEffectProfile skillProfile;
+        private int previewSkillId,previewShots,previewShot,previewTrail;
+        private float previewElapsed,previewImpact,previewScale;
+        private string previewTrajectory;
+        private bool previewSelf;
+        private const float PreviewShotInterval=.2f;
         public void Show(LuaTable snapshot)
         {
             var appearance=PawnAppearanceData.Read(snapshot);
             if(studio==null) CreateStudio();
+            StopSkillPreview();
             studio.SetActive(true);
             pawn.ApplyAppearance(appearance,Resolve);
             previewSkin.RefreshSources();
@@ -46,7 +54,46 @@ namespace ProjectY.UI
             focus=studio.transform.InverseTransformPoint(bounds.center);
             fit=Mathf.Max(1.2f,bounds.extents.y*1.16f,bounds.extents.x*1.1f);
             if(portraitMode){focus=studio.transform.InverseTransformPoint(pawn.HealthTarget.position);fit=.42f;}
-            RenderPreview();
+            using(var skill=snapshot.Get<LuaTable>("skillPreview"))
+                if(skill!=null) BeginSkillPreview(skill);
+            RenderPreview(0);
+        }
+        private void BeginSkillPreview(LuaTable skill)
+        {
+            if(portraitMode)throw new InvalidOperationException("HUD portraits do not support skill playback.");
+            previewSkillId=skill.Get<int>("id");previewShots=skill.Get<int>("shots");
+            if(previewSkillId<=0||previewShots<1)throw new InvalidOperationException("Invalid skill preview identity or shot count.");
+            using(var profile=skill.Get<LuaTable>("profile")) skillProfile=BlockEffectCatalog.ReadProfile(profile);
+            previewTrajectory=skill.Get<string>("trajectory");previewSelf=skill.Get<bool>("selfTarget");
+            if(previewTrajectory!="sight"&&previewTrajectory!="direct"&&previewTrajectory!="lobbed")
+                throw new InvalidOperationException("Invalid preview skill trajectory: "+previewTrajectory);
+            if(skillEffects==null)skillEffects=new BlockParticleEffects(pivot,31,true);
+            previewScale=Mathf.Min(1,.65f/Mathf.Max(.65f,skillProfile.Radius,skillProfile.Height));
+            previewImpact=pawn.PreviewAction(skill.Get<int>("actionTemplate"));
+            previewElapsed=0;previewShot=previewTrail=0;
+        }
+        private void StopSkillPreview()
+        {
+            if(skillProfile!=null&&pawn!=null)pawn.SkipPresentation();
+            skillEffects?.Clear();skillProfile=null;previewSkillId=0;
+        }
+        private void TickSkillPreview(float deltaTime)
+        {
+            skillEffects?.Tick(deltaTime);
+            if(skillProfile==null||deltaTime<=0)return;
+            previewElapsed+=deltaTime;
+            var origin=pawn.EquipmentSlotPosition("weapon");
+            var target=pawn.transform.TransformPoint(new Vector3(0,.95f,previewSelf?0:1.05f));
+            if(previewSelf)origin=target;
+            if(!previewSelf&&previewTrajectory!="sight")
+                while(previewTrail<previewShots&&previewElapsed>=Mathf.Max(0,previewImpact-.16f)+previewTrail*PreviewShotInterval)
+                {
+                    var trail=BlockEffectCatalog.Variant(skillProfile,previewTrajectory=="lobbed"?"arc":"beam",Mathf.Min(24,skillProfile.Count),.24f);
+                    skillEffects.Play(trail,origin,target,previewSkillId+previewTrail++,previewScale*.6f);
+                }
+            while(previewShot<previewShots&&previewElapsed>=previewImpact+previewShot*PreviewShotInterval)
+                skillEffects.Play(skillProfile,origin,target,previewSkillId+previewShot++,previewScale);
+            if(previewShot==previewShots&&!skillEffects.Busy&&!pawn.PresentationBusy){skillProfile=null;previewSkillId=0;}
         }
         private GameObject Resolve(PawnAppearanceData.Part part)
         {
@@ -87,13 +134,15 @@ namespace ProjectY.UI
         public void OnScroll(PointerEventData e) {zoom=Mathf.Clamp(zoom*Mathf.Exp(-e.scrollDelta.y*.08f),.75f,1.5f);}
         private void LateUpdate() {if(pawn!=null&&!portraitMode) RenderPreview();}
         public void RenderPreview()
+        { RenderPreview(Time.unscaledDeltaTime); }
+        private void RenderPreview(float deltaTime)
         {
             if(pawn==null) return;
             if(portraitMode)studio.SetActive(true);
             try
             {
                 pivot.localRotation=Quaternion.Euler(0,yaw,0);
-                pawn.TickPresentation(Time.unscaledDeltaTime);
+                pawn.TickPresentation(deltaTime);TickSkillPreview(deltaTime);
                 var size=image.rectTransform.rect.size;
                 int width=Mathf.Clamp(Mathf.RoundToInt(size.x*1.5f),128,1200),height=Mathf.Clamp(Mathf.RoundToInt(size.y*1.5f),128,1200);
                 if(texture==null||texture.width!=width||texture.height!=height)
@@ -130,6 +179,7 @@ namespace ProjectY.UI
         }
         public void ReleasePreview()
         {
+            StopSkillPreview();skillEffects?.Dispose();skillEffects=null;
             if(previewSkin!=null){previewSkin.Dispose();previewSkin=null;}
             ReleaseTexture();if(studio!=null) WeaponModelView.Remove(studio);
             studio=null;pawn=null;cameraView=null;assets.Clear();

@@ -1,4 +1,5 @@
 local Hex=require('Game.Map.HexGrid')
+local Discovery=require('Game.Adventure.FactionDiscovery')
 local Factions={};Factions.__index=Factions
 function Factions.New(adventure)
     return setmetatable({adventure=adventure,rules=require('Game.Adventure.FactionRules').New(adventure.config),
@@ -6,10 +7,15 @@ function Factions.New(adventure)
 end
 function Factions:Bind(map,sites)
     self.map=map;self.sites=sites
+    self.seenFogRevision,self.seenPartyRevision,self.seenClock=nil,nil,nil
+    self.seenArea,self.seenAreaRevision=nil,nil
     self:InvalidatePower()
     self.conflicts=require('Game.Adventure.WorldConflicts').New(self)
     for i=0,self.data.SiteCount-1 do self:ProjectSite(self.data:GetSiteAt(i)) end
 end
+function Factions:IsDiscovered(id) return Discovery.Known(self,id) end
+function Factions:ObserveWorld() Discovery.World(self) end
+function Factions:ObserveArea(layout,state) Discovery.Area(self,layout,state) end
 function Factions:Relation(a,b)
     local rep=0
     if a==0 or b==0 then rep=self.adventure.narrative.data:GetValue('reputation:'..(a==0 and b or a)) end

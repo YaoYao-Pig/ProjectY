@@ -1,5 +1,5 @@
 # 远征与角色存档
-关键词：开始菜单、StartMenu、加载游戏、多存档、CampaignSaves、存档列表、世界种子、地图规模、F5、legacy、保存远征、CharacterSave、v20、战争迷雾、LOD、势力、占领、解放、编制。
+关键词：开始菜单、StartMenu、世界名称、加载游戏、多存档、CampaignSaves、存档列表、世界种子、地图规模、F5、legacy、保存远征、CharacterSave、v24、战争迷雾、LOD、势力、占领、解放、编制。
 
 ## 文档目录
 正文：开始菜单与存档目录 / 保存范围 / 提交流程 / 验证；关键入口：状态 / 服务 / 菜单 / 桥接。
@@ -9,7 +9,8 @@
 - 宿主启动先显示 `StartMenu` 首页，不自动生成世界。新游戏页选择 `CampaignStartTable` 身世、uint种子0–4294967295与2500／10000／30000／100000格。首批12身世分别使用 AdventureDemo/EquipmentDemo 配方101–112；继承配方5的全部地貌随机池及剧情集市附近出生规则，三人队伍首位为领队，保留一格招募位。旧配方1–5不修改，旧档仍按保存的recipeId恢复。种子在UI和命令边界校验，原始文本不经有符号int参数截断；探索HUD可重新打开菜单或选档页。
 - `CampaignStarts.Get/List/Preview` 只解析配置：`id/name/description/adventureRecipeId/coins`；预览按真实开局包及角色默认装备汇总数量和自动装备者。菜单左侧滚动选择12身世，右侧展示背景、领队/同行、金币、装备/补给图标；选择与翻阅不发物品。当前身世不会自动赋予专属剧情或结局。
 - `CampaignMenu.NewGame(...,startId)` 经加载桥传到 `CampaignCreation.New`；省略ID仅为旧调用默认1，非法或不存在ID在建世界前拒绝。候选任务保留所选配置，Commit按对应配方创建队伍/实际库存，设置 `flag:campaign_start`，再按配置重置金币并保存独立新档。标记使用原叙事事实保存，配方ID和实际装备仍由原Data掌管；读档不重播初始化，不改变旧档缺少身世标记的兼容规则。
-- “创建世界并开始”通过[Loading](../Framework/Loading.md)分阶段准备世界与候选渲染，再提交会话及初始独立存档；按钮成功表示已受理加载。进度、文案轮换、失败与取消所有权见 Loading 模块；选档加载仍为原同步流程。
+- 新游戏页提供可选世界名称，`CampaignMenu.NewGame(...,startId,worldName)` 传至创建任务，提交新槽时由 `CampaignSaves.NewCampaign(service,worldName)` 去除首尾空白并持有。名称保存为现有文档中的可选 `worldName` 元数据，不改变版本或 GUID 路径；旧档缺字段、留空名称沿用默认标题。存档列表显示名称与本地保存时间并转义富文本；选档提交后再次保存保留该名称，准备失败不改变当前名称。
+- 创建与选档加载均通过[Loading](../Framework/Loading.md)分阶段准备世界与候选渲染，再提交会话及存档身份；按钮成功表示已受理加载。读档不创建新槽或重发开局物资；进度、失败返回页与取消所有权见 Loading 模块。
 - 菜单为Adventure模块的Popup模态Panel，打开时暂停世界、阻挡场景输入，不能用Back直接关闭首页；子页提供返回首页，有会话时首页/选档页显示返回游戏。NarrativeView 首页/选档页820×640、身世页1100×640，通过CampaignMenu.Font取得字体，不依赖MainHud；选择行复用NarrativeEntry，物资预览复用MissionReward，组件全部走LuaReference。
 - 每次从菜单成功创建世界后，才调用 `CampaignSaves.NewCampaign` 分配独立路径并保存初始远征；新文件为 `Application.persistentDataPath/Characters/Campaigns/<GUID N>.json`。F5及“保存远征”更新当前档，不覆盖其他远征。初始保存失败会明确提示“世界已创建但未保存”，当前新档身份仍可用F5重试；不能把仅分配ID当成写档成功。
 - `CampaignSaves.List` 从档案本身读取本地保存时间、种子、世界规模和“3名队员 · Lv1 / Lv2 / Lv3”摘要，按保存时间倒序排列，不另写索引。损坏JSON、未知版本、超限文件或无效摘要应逐项显示错误并禁用加载，不隐藏为“没有存档”；目录级读取失败显示错误。摘要可读不代表完整世界校验已通过，真正加载仍执行下述准备事务。
@@ -48,7 +49,7 @@
 - [世界队伍编制与序列化](../../Assets/GameFramework/Runtime/Data/WorldPartyData.cs) / [外交、据点、冲突与反射桥](../../Assets/GameFramework/Runtime/Data/WorldFactionData.cs) / [商人库存损毁标记](../../Assets/GameFramework/Runtime/Data/ShopData.cs)。[faction_data_editmode.cs](../../Tools/Tests/faction_data_editmode.cs)提供独立内存 Data 的引用恢复、旧编制接管和库存幂等检查；完整v16磁盘迁移与实机验收须另行执行，不能把脚本存在当作通过。
 - [远征 Data 序列化](../../Assets/GameFramework/Runtime/Data/ExpeditionSaveState.cs) / [地图预检与恢复](../../Lua/Game/Adventure/ExpeditionSave.lua)；[原生公开服务验收](../../Tools/Tests/campaign_save_integration.lua)由独立 Edit Mode LuaEnv 和临时路径运行，覆盖真实区域移动、敌掉落/领取、原装备存回阻挡箱、完整磁盘读写与损坏记录拒绝；不启动 Editor 或进入 Play。
 - [配置校验与读写命令](../../Lua/Game/Adventure/CharacterSave.lua) / [HUD](../../Lua/Game/Adventure/MainHudModel.lua) / [桥接](../../Lua/Game/Adventure/DemoBridge.lua)。
-- [StartMenuCtr.lua](../../Lua/UI/Panel/StartMenuCtr.lua) / [菜单打开桥](../../Lua/UI/CampaignMenuBridge.lua) / [CampaignMenu.cs](../../Assets/GameFramework/Samples/Adventure/CampaignMenu.cs) / [宿主](../../Assets/GameFramework/Samples/Adventure/AdventureRuntimeDemo.cs)：菜单输入、会话阻挡及开始/加载入口。[CampaignMenuAssets.cs](../../Assets/GameFramework/Editor/CampaignMenuAssets.cs)提供 `Project Y/远征/创建开始菜单`，只创建缺失资源。
+- [StartMenuCtr.lua](../../Lua/UI/Panel/StartMenuCtr.lua) / [菜单打开桥](../../Lua/UI/CampaignMenuBridge.lua) / [CampaignMenu.cs](../../Assets/GameFramework/Samples/Adventure/CampaignMenu.cs) / [宿主](../../Assets/GameFramework/Samples/Adventure/AdventureRuntimeDemo.cs)：菜单输入、会话阻挡及开始/加载入口。[CampaignMenuAssets.cs](../../Assets/GameFramework/Editor/CampaignMenuAssets.cs)提供 `Project Y/远征/创建开始菜单`，只创建缺失资源；`补齐世界名称输入` 定向保存名称组件、LuaReference 和语言绑定，保留身世预览。
 - [CampaignStartTable.json](../../Config/Tables/Adventure/CampaignStartTable.json) / [CampaignStarts.lua](../../Lua/Game/Adventure/CampaignStarts.lua)：身世源数据与预览；[start_origin_assets.cs](../../Tools/Tests/start_origin_assets.cs) 经 Unity MCP 在 Edit Mode 定向补齐开始菜单绑定并同步新物品图标，新建基础菜单后也使用此入口。
 - [campaign_starts.lua](../../Tools/Tests/campaign_starts.lua) 与 [start_profiles_config.lua](../../Tools/Tests/start_profiles_config.lua) 使用 `Tools/Tests/run_lua.py`，检查选择/预览/一次提交和12套配置；[start_origins_editmode.cs](../../Tools/Tests/start_origins_editmode.cs) 经 Unity MCP 执行 [菜单检查](../../Tools/Tests/start_menu_integration.lua) 与 [真实开场/存档检查](../../Tools/Tests/campaign_origin_integration.lua)，使用独立PreviewScene及系统临时存档，输出[选择页预览](../../Docs/Previews/Starts/selection.png)，不进入Play或访问用户存档。
 - [菜单原生检查](../../Tools/Tests/start_menu_editmode.cs)执行[实际UI测试](../../Tools/Tests/start_menu_integration.lua)，不创建真实世界或存档；[多档真实服务检查](../../Tools/Tests/campaign_slots_integration.lua)必须使用操作系统临时目录下未使用的显式保存路径，覆盖新档隔离、目录摘要、候选提交、当前档覆盖、坏档/路径拒绝与legacy。

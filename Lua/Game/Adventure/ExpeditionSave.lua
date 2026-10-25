@@ -1,5 +1,6 @@
 -- Rebuild immutable layouts and check the prepared C# records before replacing the active expedition.
 local Save={}
+local Language=require('Language')
 local function validateGround(rules,bridge,container)
     local function magazine(item)
         if not item then return end
@@ -25,11 +26,13 @@ local function validateGround(rules,bridge,container)
         if wearable then rules.wearables:Get(wearable.ItemId);rules.affixes:Of(wearable);assert(rules.items:Get(wearable.ItemId).kind=='wearable','存档容器防具类型无效') end
     end
 end
-function Save.Prepare(adventure,prepared)
+function Save.Prepare(adventure,prepared,progress)
     local bridge=CS.ProjectY.Data.ExpeditionPersistence
-    local world=adventure:BuildWorld(prepared.Seed,bridge.Recipe(prepared),bridge.Target(prepared)>0 and bridge.Target(prepared) or nil)
+    local world=adventure:BuildWorld(prepared.Seed,bridge.Recipe(prepared),bridge.Target(prepared)>0 and bridge.Target(prepared) or nil,
+        progress and function(value,stage) progress(value*.7,stage) end)
     world.layouts={};world.states={}
     if not bridge.HasWorld(prepared) then return world end
+    if progress then progress(.72,Language.CampaignLoadingWorldState) end
     adventure.fog:Prepare(world.map,prepared)
     local baseCount=#world.sites
     local travel=bridge.Travel(prepared)
@@ -68,6 +71,7 @@ function Save.Prepare(adventure,prepared)
                 adventure.equipment.rules.items:Get(item.ItemId);assert(adventure.parties.prices[item.ItemId],'存档货物没有价格')
             end
         end
+        if progress then progress(.72+.08*(i+1)/parties.Count,Language.CampaignLoadingWorldState) end
     end
     for i=0,factions.ConflictCount-1 do local conflict=factions:GetConflictAt(i)
         for j=0,conflict.PendingCargoCount-1 do
@@ -78,7 +82,9 @@ function Save.Prepare(adventure,prepared)
     end
     local npcs=adventure.narrative and require('Game.Narrative.NpcSystem').New(adventure.narrative)
     if npcs then npcs:BindWorld(world.sites) end
-    for i=0,bridge.AreaCount(prepared)-1 do
+    local areaCount=bridge.AreaCount(prepared)
+    if progress then progress(.8,Language.CampaignLoadingAreas) end
+    for i=0,areaCount-1 do
         local site=assert(world.sites[bridge.AreaSite(prepared,i)],'存档探索地点已不存在')
         local definition=bridge.AreaDefinition(prepared,i)
         local source,point=site.source,site.pointId
@@ -117,8 +123,10 @@ function Save.Prepare(adventure,prepared)
             validateGround(adventure.equipment.rules,bridge,loot)
         end
         world.layouts[site.id]=layout;world.states[site.id]=state
+        if progress then progress(.8+.19*(i+1)/areaCount,Language.CampaignLoadingAreas) end
     end
     adventure.narrative.townMissions:ValidateSaved(CS.ProjectY.Data.TownMissionData.Prepared(prepared),world,parties)
+    if progress then progress(1,Language.CampaignLoadingWorldState) end
     return world
 end
 function Save.BindLayouts(adventure,world)

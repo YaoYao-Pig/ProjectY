@@ -11,8 +11,12 @@ function GM:OnInit(context)
     self.skills=context.systems:Get('Config'):GetTable('CombatSkillTable')
     self.adventure=context.systems:Get('Adventure')
     self.npcs=require('Game.GM.NpcCommands').New(self.adventure,context.systems:Get('Narrative'))
+    self.kill=require('Game.GM.KillCommands').New(self.adventure)
+    self.dice=require('Game.GM.DiceCommands').New(CS.ProjectY.Data.ExpeditionPersistence.RandomSeed())
     self.commands={level_up={run=self.LevelUp,actor=true},grant_skill={run=self.GrantSkill,actor=true},
         reveal_world={run=self.RevealWorld},
+        kill_target={run=function(gm,id)return gm.kill:Execute(id)end},
+        roll_dice={run=function(gm,counts)return gm.dice:Roll(counts)end},
         goto_npc={run=function(gm,id)return gm.npcs:GoTo(id)end}}
 end
 function GM:Slot(slot)
@@ -54,5 +58,5 @@ function GM:RevealWorld()
     self.adventure.fog:RevealAll()
     return true,LuaLanguage.GMRevealWorldSuccess
 end
-function GM:OnShutdown() self.data=nil;self.growth=nil;self.skills=nil;self.commands=nil;self.npcs=nil;self.adventure=nil end
+function GM:OnShutdown() self.data=nil;self.growth=nil;self.skills=nil;self.commands=nil;self.npcs=nil;self.kill=nil;self.dice=nil;self.adventure=nil end
 return GM

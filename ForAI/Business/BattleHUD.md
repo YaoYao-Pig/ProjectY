@@ -17,7 +17,7 @@
 - 多方颜色由 `Battle:PresentationTeam` 投影：玩家与盟军绿色、主敌红色、独立第三方黄色（即使敌对），动物保持黄色。行动条、健康条、场景圈与日志使用同一显示编号；控制权仍只认玩家 side 1，绿色盟军自动行动，黄色第三方的可攻击性由实际关系查询决定。`AdventureRuntimeDemo` 自动推进所有非玩家 side。
 - 控制器的 `Battle.Changed` 订阅归 visibleScope，只标脏、下一 Tick 读取完整结果；显示选择状态来自 Demo 的 `BattleHUDRevision`。技能选择、移动、结束回合、自动/手动 AI 仍通过既有命令和权限检查。隐藏时释放订阅及工具提示；复用缓存不会重复绑定按钮。
 - `CombatSkillTable.iconId` 引用 [BattleIconTable](../../Config/Tables/Adventure/BattleIconTable.json)。每行 `spritePath` 可为空；非空必须是 `Assets/...` 下已导入为 Sprite 的资源。`BattleHUDTable` 的四个物品槽显示 `ConsumableTable` 的真实数量、消耗与可用性；按钮通过 `use_item` 命令自用，空位不可操作。当前最多配置四种战斗消耗品；[装备背包和 3D 改装](Equipment.md)使用独立的探索阶段面板。
-- 换图流程：编辑表 → `node Tools/ConfigEditor/exporter.mjs` → Edit Mode 菜单 `Project Y/UI/同步战斗图标引用`。资源工具把 Sprite 直接序列化到 BattleHUD Prefab，运行时按 ID/路径校验，不动态搜索或加载；空路径禁用 Icon Image，保留槽位边框与文字。Sprite 当前采用单 Sprite 资源路径，不按图集子资源名解析。
+- 换图流程：编辑表 → `node Tools/ConfigEditor/exporter.mjs` → Edit Mode 菜单 `Project Y/UI/同步战斗图标引用`。`BattleHUDAssets.CreateIconBindings` 统一校验并读取 Sprite，同步保存 BattleHUD 及已注册的角色手记/技能图鉴引用；运行时不动态搜索或加载。战斗 HUD 空路径禁用 Icon Image，保留槽位边框与文字；手记/图鉴的回退规则见[技能图标管线](../Tools/SkillIcons.md)。Sprite 当前采用单 Sprite 资源路径，不按图集子资源名解析。
 - 生成式技能图标使用[技能图标管线](../Tools/SkillIcons.md)：逐技能配方、统一低细节像素风格、原图与版本追溯，发布后回填上述配置；`Project Y/UI/导入技能图标并同步引用` 先设置 Sprite 导入参数，再复用图标引用同步。
 - 首次菜单 `Project Y/UI/创建战斗 HUD` 创建并注册四个 Prefab，同时导出 Lua View 提示；重复执行保留已有内容。可以直接编辑 `Assets/DynamicAsset/UI/Prefabs/Battle/` 的布局与样式；通用 PanelGenerator 不会重建其内容。
 - 行动顺序通过 [UIScrollList](../Framework/UIScrollList.md) 横向展示完整存活单位队列，支持拖拽、滚轮及底部滚动条；不足一屏时自动隐藏滚动条。`TurnList` 绑定列表 LuaReference，`TurnTemplate` 绑定禁用的 BattleTurn 模板。普通状态刷新只重绑可见项，保留浏览位置；角色、回合、阶段切换及缓存重开回到队首。Edit Mode 菜单 `Project Y/UI/同步战斗行动顺序滚动栏` 升级已有 Prefab 和导出绑定。最小回归为 `python Tools/Tests/run_lua.py Tools/Tests/battle_turn_scroll.lua`，涵盖完整队列、复用点击、位置保留及重开；通用滚动与尺寸检查见 UIScrollList。
@@ -26,6 +26,7 @@
 - `BattleLogPresentation.Set` 反射桥将格式化文本交给原生 View。`Logs` 是启用 rich text、14 号基础字号、自动换行及 ContentSizeFitter 的 Text，位于绑定的 `LogScroll` 内；Viewport、Mask、Scrollbar 及 `LogOpen/LogClose/LogTitle` 均持久序列化。展开默认定位最新记录；读者停在底部时跟随新增记录，向上翻阅时保留滚动偏移，不拉回底部。`Project Y/UI/同步战斗日志展开界面`（`BattleHUDAssets.SyncLogExpansion`）仅升级已有 BattleHUD Prefab 并导出绑定；本轮已保存迁移，MainHud 内嵌 BattleHUD 继承同一绑定。
 - 数字键1–4选择当前页技能；通常Enter结束己方回合，Esc取消技能并切回仍可用的移动模式，F定位战场。追踪多选期间，结束回合按钮改为“确认释放 已选/上限”，Enter同样只确认施放；移动按钮改为取消，Esc或再次点击当前技能清空选择。点击敌人切换入选，允许1至上限个不同目标，空列表不可确认；不自动补选。选择列表归Demo的临时表现状态，切换角色/回合/阶段、技能失效或离开战斗时清理，确认才向规则提交整组目标，不提前扣AP/弹药/CD。
 - 悬停目标使用规则快照中的 `targetPreviews` 展示实际目标命中率、拦截概率、遮挡数与友军风险，不能把“路径有遮挡”显示成必定不可攻击，也不能把追踪显示成必中。提示只读，不掷骰；没有额外的友伤确认弹窗。多选目标高亮保留，悬停明细与当前选择数量在既有Hint/Tooltip中显示；普通单目标仍点击即提交，转施后的any法术等待选择自己/队友/敌人。伤害及拦截契约见 [战斗](Battle.md)。
+- 选中技能时通过 `Battle:SkillRangeCells` 投影 `rangeCells`，场景与独立棋盘均以蓝色标明覆盖地格，合法目标保持金色、已选多目标保持青色。范围复用实际射程（含最小射程、高地/工事取大值、完整占地）、视线与弹道；有拦截风险的弹道仍可覆盖。地格技能复用合法落点，自身技能只显示自身占地；范围不代替AP或目标资格检查。取消、切回移动或换人后按当前快照重建。定向检查为 [skill_range_preview.lua](../../Tools/Tests/skill_range_preview.lua)。
 - 技能说明使用[结构化技能 Tips](SkillTips.md)：彩色标签、统一参数、TMP 术语导航及发现式协同遮罩；目标命中预览仍使用原 Tooltip。
 - 技能超过四个时分页，可悬停说明；头顶 GameEffect 的悬停由 MainHud 负责。不可用技能展示 AP、行动额度或目标原因；道具点击直接自用，满血治疗、AP不足与库存不足显示明确原因，道具无需数字快捷键。
 - `BattleAction` 复用原生 Button ColorTint 的 0.12 秒悬停/按压过渡；`UIPointerState` 继续提供禁用技能的原因提示。选中投影使用金棕底色、3 px 金框与顶部几何对勾，鼠标移出保持选中；数字快捷键与点击使用同一投影。不可用技能的文字/图标减淡，点击仍按真实 `row.available` 拒绝。只有存在性、可用性或选中状态变化才重写 ColorBlock，普通快照刷新不会重置悬停；隐藏清空视觉投影，缓存重开按当前选择恢复，Pointer 的 OnDisable 清除旧悬停。

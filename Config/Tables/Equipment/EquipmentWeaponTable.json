@@ -142,8 +142,8 @@
     {
       "name": "armorPenetration",
       "type": "float",
-      "description": "物理攻击基础穿甲率（百分比）；枪25、狙击35、霰弹15、弓15、剑20、巨剑与斧25、长枪35、杖10、其他15",
-      "default": 15,
+      "description": "物理攻击直接伤生命的伤害占比，非触发概率（百分比）；枪40、狙击50、霰弹30、弓30、剑35、巨剑与斧40、长枪50、杖25、其他30",
+      "default": 30,
       "min": 0,
       "max": 100
     },
@@ -196,7 +196,7 @@
         "staff"
       ],
       "catalystKind": "arcane",
-      "armorPenetration": 10,
+      "armorPenetration": 25,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -237,7 +237,7 @@
         "rifle"
       ],
       "catalystKind": "none",
-      "armorPenetration": 25,
+      "armorPenetration": 40,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -278,7 +278,7 @@
         "sword"
       ],
       "catalystKind": "none",
-      "armorPenetration": 20,
+      "armorPenetration": 35,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -319,7 +319,7 @@
         "sword"
       ],
       "catalystKind": "none",
-      "armorPenetration": 20,
+      "armorPenetration": 35,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -357,7 +357,7 @@
         "two_handed_sword"
       ],
       "catalystKind": "none",
-      "armorPenetration": 20,
+      "armorPenetration": 35,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -395,7 +395,7 @@
         "two_handed_sword"
       ],
       "catalystKind": "none",
-      "armorPenetration": 20,
+      "armorPenetration": 35,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -435,7 +435,7 @@
         "greatsword"
       ],
       "catalystKind": "none",
-      "armorPenetration": 25,
+      "armorPenetration": 40,
       "armorDamageMultiplier": 1.2
     },
     {
@@ -478,7 +478,7 @@
       "onHitEffectIds": [
         806
       ],
-      "armorPenetration": 25,
+      "armorPenetration": 40,
       "armorDamageMultiplier": 1.2
     },
     {
@@ -516,7 +516,7 @@
         "bow"
       ],
       "catalystKind": "none",
-      "armorPenetration": 15,
+      "armorPenetration": 30,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -554,7 +554,7 @@
         "axe"
       ],
       "catalystKind": "none",
-      "armorPenetration": 25,
+      "armorPenetration": 40,
       "armorDamageMultiplier": 1.2
     },
     {
@@ -592,7 +592,7 @@
         "axe"
       ],
       "catalystKind": "none",
-      "armorPenetration": 25,
+      "armorPenetration": 40,
       "armorDamageMultiplier": 1.2
     },
     {
@@ -630,7 +630,7 @@
         "pickaxe"
       ],
       "catalystKind": "none",
-      "armorPenetration": 15,
+      "armorPenetration": 30,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -668,7 +668,7 @@
         "shovel"
       ],
       "catalystKind": "none",
-      "armorPenetration": 15,
+      "armorPenetration": 30,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -706,7 +706,7 @@
         "crowbar"
       ],
       "catalystKind": "none",
-      "armorPenetration": 15,
+      "armorPenetration": 30,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -748,7 +748,7 @@
       "catalystKind": "arcane",
       "onHitEffectIds": [],
       "description": "专属技：潮湿铺垫与导电终结两段法术；消耗潮湿换取伤害与一回合眩晕。",
-      "armorPenetration": 10,
+      "armorPenetration": 25,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -790,7 +790,7 @@
       "catalystKind": "arcane",
       "onHitEffectIds": [],
       "description": "专属技：先点燃再引爆燃烧；引爆会消耗持续伤害，不是白送额外伤害。",
-      "armorPenetration": 10,
+      "armorPenetration": 25,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -831,7 +831,7 @@
       "catalystKind": "arcane",
       "onHitEffectIds": [],
       "description": "专属技：专属友军净化治疗；基础奥术攻击保留。",
-      "armorPenetration": 10,
+      "armorPenetration": 25,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -875,7 +875,7 @@
       "catalystKind": "none",
       "onHitEffectIds": [],
       "description": "专属技：定点破甲射击降低目标防御，随后队友可利用弱点。",
-      "armorPenetration": 25,
+      "armorPenetration": 40,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -919,7 +919,7 @@
       "catalystKind": "none",
       "onHitEffectIds": [],
       "description": "专属技：双发压制并获得护卫；用两发弹药换防守稳定性。",
-      "armorPenetration": 25,
+      "armorPenetration": 40,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -963,7 +963,7 @@
       "catalystKind": "none",
       "onHitEffectIds": [],
       "description": "专属技：高弹耗终结弹按目标已失生命增伤，有额外冷却。",
-      "armorPenetration": 25,
+      "armorPenetration": 40,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -1005,7 +1005,7 @@
       "catalystKind": "none",
       "onHitEffectIds": [],
       "description": "专属技：命中后驱散敌方增益；伤害略低，面向强化敌人。",
-      "armorPenetration": 20,
+      "armorPenetration": 35,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -1047,7 +1047,7 @@
       "catalystKind": "none",
       "onHitEffectIds": [],
       "description": "专属技：专属采血命中恢复自身4生命，并有75%概率流血；用较弱直伤换持续续航。",
-      "armorPenetration": 20,
+      "armorPenetration": 35,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -1089,7 +1089,7 @@
       "catalystKind": "none",
       "onHitEffectIds": [],
       "description": "专属技：攻击成功后清除自身减益，必须命中才能自救。",
-      "armorPenetration": 20,
+      "armorPenetration": 35,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -1130,7 +1130,7 @@
       "catalystKind": "none",
       "onHitEffectIds": [],
       "description": "专属技：重斩附加虚弱，降低敌方力量而非只增加伤害。",
-      "armorPenetration": 20,
+      "armorPenetration": 35,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -1171,7 +1171,7 @@
       "catalystKind": "none",
       "onHitEffectIds": [],
       "description": "专属技：扇扫最多三个近邻目标，单体威力较低。",
-      "armorPenetration": 20,
+      "armorPenetration": 35,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -1212,7 +1212,7 @@
       "catalystKind": "none",
       "onHitEffectIds": [],
       "description": "专属技：失血越多斩击越强；强化有上限，不提供无条件优势。",
-      "armorPenetration": 20,
+      "armorPenetration": 35,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -1255,7 +1255,7 @@
       "catalystKind": "none",
       "onHitEffectIds": [],
       "description": "专属技：高耐久破坏重击，用低命中和武器磨损换装备破坏。",
-      "armorPenetration": 25,
+      "armorPenetration": 40,
       "armorDamageMultiplier": 1.2
     },
     {
@@ -1298,7 +1298,7 @@
       "catalystKind": "none",
       "onHitEffectIds": [],
       "description": "专属技：命中施加寒滞；潮湿目标额外被眩晕且潮湿被消耗。",
-      "armorPenetration": 25,
+      "armorPenetration": 40,
       "armorDamageMultiplier": 1.2
     },
     {
@@ -1341,7 +1341,7 @@
       "catalystKind": "none",
       "onHitEffectIds": [],
       "description": "专属技：收割流血目标的状态，追加伤害并治疗自己。",
-      "armorPenetration": 25,
+      "armorPenetration": 40,
       "armorDamageMultiplier": 1.2
     },
     {
@@ -1382,7 +1382,7 @@
       "catalystKind": "none",
       "onHitEffectIds": [],
       "description": "专属技：带线箭附加迟缓，降低目标速度并改变后续回合排序。",
-      "armorPenetration": 15,
+      "armorPenetration": 30,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -1423,7 +1423,7 @@
       "catalystKind": "none",
       "onHitEffectIds": [],
       "description": "专属技：分羽箭对两个邻近目标精准射击，保持敌装不受额外磨损。",
-      "armorPenetration": 15,
+      "armorPenetration": 30,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -1465,7 +1465,7 @@
       "catalystKind": "none",
       "onHitEffectIds": [],
       "description": "专属技：毒箭铺垫与萃毒终结，终结消耗中毒并追加伤害。",
-      "armorPenetration": 15,
+      "armorPenetration": 30,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -1506,7 +1506,7 @@
       "catalystKind": "none",
       "onHitEffectIds": [],
       "description": "专属技：仍可伐木清障；回火劈砍从燃烧目标提取热量并扑灭火焰。",
-      "armorPenetration": 25,
+      "armorPenetration": 40,
       "armorDamageMultiplier": 1.2
     },
     {
@@ -1547,7 +1547,7 @@
       "catalystKind": "none",
       "onHitEffectIds": [],
       "description": "专属技：仍可清理石障；寻脉打击无视目标防御（护卫仍减免），并破坏护甲耐久。",
-      "armorPenetration": 15,
+      "armorPenetration": 30,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -1582,7 +1582,7 @@
       ],
       "catalystKind": "none",
       "description": "双手长枪。只能刺击距离恰好 2 格的目标，无法攻击贴身目标；高地不会延长枪杆的触及距离。",
-      "armorPenetration": 35,
+      "armorPenetration": 50,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -1618,7 +1618,7 @@
       "catalystKind": "none",
       "onHitEffectIds": [],
       "description": "入门用的朴素铁剑，重量轻、容易上手；只提供基础斩击，无改装槽。",
-      "armorPenetration": 20,
+      "armorPenetration": 35,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -1654,7 +1654,7 @@
       "catalystKind": "none",
       "onHitEffectIds": [],
       "description": "初学猎人随身携带的轻弓，只提供基础射击；无改装槽，后续可更换更好的弓。",
-      "armorPenetration": 15,
+      "armorPenetration": 30,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -1690,7 +1690,7 @@
       "catalystKind": "arcane",
       "onHitEffectIds": [],
       "description": "学徒使用的基础奥术触媒，可发射奥术飞矢并施放已掌握的法术；不附赠高阶法术，无改装槽。",
-      "armorPenetration": 10,
+      "armorPenetration": 25,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -1726,7 +1726,7 @@
       "catalystKind": "none",
       "onHitEffectIds": [],
       "description": "便于携带的入门手斧，可近身斩击或砍伐木质障碍；无改装槽。",
-      "armorPenetration": 25,
+      "armorPenetration": 40,
       "armorDamageMultiplier": 1.2
     },
     {
@@ -1769,7 +1769,7 @@
       "catalystKind": "none",
       "description": "轻型突击步枪，精准单发与三连射兼备。使用巡猎12发弹匣及巡猎弹药。",
       "onHitEffectIds": [],
-      "armorPenetration": 25,
+      "armorPenetration": 40,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -1812,7 +1812,7 @@
       "catalystKind": "none",
       "description": "重型持续火力步枪，使用专属24发弹匣与巡猎弹药，可连续完成8轮三连射；不兼容巡猎12发弹匣。",
       "onHitEffectIds": [],
-      "armorPenetration": 25,
+      "armorPenetration": 40,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -1854,7 +1854,7 @@
       "catalystKind": "none",
       "description": "远程高命中、高暴击的栓动狙击枪，相邻1格无法射击。使用5发狙击弹匣和狙击弹药。",
       "onHitEffectIds": [],
-      "armorPenetration": 35,
+      "armorPenetration": 50,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -1897,7 +1897,7 @@
       "catalystKind": "none",
       "description": "长枪管重型狙击枪，可使用贯甲射击对付重甲。使用5发狙击弹匣，贯甲一次消耗2发。",
       "onHitEffectIds": [],
-      "armorPenetration": 35,
+      "armorPenetration": 50,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -1939,7 +1939,7 @@
       "catalystKind": "none",
       "description": "短管近战散射枪，1发霰弹最多命中3名相邻敌人。使用6发霰弹匣和霰弹弹药。",
       "onHitEffectIds": [],
-      "armorPenetration": 15,
+      "armorPenetration": 30,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -1982,7 +1982,7 @@
       "catalystKind": "none",
       "description": "强化型战斗霰弹枪，可双发连续散射。使用6发霰弹匣；每轮重霰双发消耗2发。",
       "onHitEffectIds": [],
-      "armorPenetration": 15,
+      "armorPenetration": 30,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -2020,7 +2020,7 @@
         20019
       ],
       "description": "奥术触媒；直接命中使目标潮湿 2 回合，可为导流术铺垫。",
-      "armorPenetration": 10,
+      "armorPenetration": 25,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -2058,7 +2058,7 @@
         803
       ],
       "description": "单手奥术触媒，直接命中施加一层中毒；可与盾牌共持。",
-      "armorPenetration": 20,
+      "armorPenetration": 35,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -2094,7 +2094,7 @@
       "catalystKind": "arcane",
       "onHitEffectIds": [],
       "description": "以琴颈引导奥术飞矢的双手乐器触媒；职业演奏本身不强制装备乐器。",
-      "armorPenetration": 10,
+      "armorPenetration": 25,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -2130,7 +2130,7 @@
       "catalystKind": "arcane",
       "onHitEffectIds": [],
       "description": "轻巧的双手乐器触媒，较低智力门槛；职业演奏本身不强制装备乐器。",
-      "armorPenetration": 10,
+      "armorPenetration": 25,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -2166,7 +2166,7 @@
       "catalystKind": "arcane",
       "onHitEffectIds": [],
       "description": "双手奥术触媒，可施放已掌握的神官、咒术与其他奥术技能。",
-      "armorPenetration": 10,
+      "armorPenetration": 25,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -2202,7 +2202,7 @@
       "catalystKind": "arcane",
       "onHitEffectIds": [],
       "description": "可与盾牌共持的单手奥术触媒，为护卫与祷言保留同一套装备。",
-      "armorPenetration": 20,
+      "armorPenetration": 35,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -2238,7 +2238,7 @@
       "catalystKind": "arcane",
       "onHitEffectIds": [],
       "description": "较高智力要求的双手触媒，强化通过本杖结算的直接伤害。",
-      "armorPenetration": 10,
+      "armorPenetration": 25,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -2276,7 +2276,7 @@
         802
       ],
       "description": "直接命中施加流血的单手触媒；首次装备未净化实例会触发血契诅咒，可由识咒揭示并解除。",
-      "armorPenetration": 20,
+      "armorPenetration": 35,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -2312,7 +2312,7 @@
       "catalystKind": "none",
       "onHitEffectIds": [],
       "description": "轻量单手刺剑，速度要求较高；可配合佯攻、牵步刺与留手。",
-      "armorPenetration": 20,
+      "armorPenetration": 35,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -2348,7 +2348,7 @@
       "catalystKind": "none",
       "onHitEffectIds": [],
       "description": "可作主手或副手的短匕；副手斩击沿用独立费用和 70% 基础伤害。",
-      "armorPenetration": 20,
+      "armorPenetration": 35,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -2384,7 +2384,7 @@
       "catalystKind": "arcane",
       "onHitEffectIds": [],
       "description": "带钩的双手奥术触媒，可同时研习兽群指令与咒术，指令仍消耗主人行动。",
-      "armorPenetration": 10,
+      "armorPenetration": 25,
       "armorDamageMultiplier": 1.0
     },
     {
@@ -2422,7 +2422,7 @@
         802
       ],
       "description": "直接命中施加流血的双手猎弓，为动物嗅血与蚀命提供伤口。",
-      "armorPenetration": 15,
+      "armorPenetration": 30,
       "armorDamageMultiplier": 1.0
     }
   ]

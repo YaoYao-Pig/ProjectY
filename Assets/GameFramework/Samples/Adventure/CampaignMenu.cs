@@ -14,6 +14,7 @@ namespace ProjectY.Samples
         public static ProjectY.Data.SaveCatalogEntry[] Saves(AdventureRuntimeDemo demo) => demo.CampaignSaves();
         public static bool NewGame(AdventureRuntimeDemo demo,string seedText,int size) => demo.CreateCampaign(seedText,size);
         public static bool NewGame(AdventureRuntimeDemo demo,string seedText,int size,int startId) => demo.CreateCampaign(seedText,size,startId);
+        public static bool NewGame(AdventureRuntimeDemo demo,string seedText,int size,int startId,string worldName) => demo.CreateCampaign(seedText,size,startId,worldName);
         public static bool Load(AdventureRuntimeDemo demo,string id) => demo.LoadCampaign(id);
         public static void OnOpen(AdventureRuntimeDemo demo) => demo.SetCampaignMenuOpen(true);
         public static void OnClose(AdventureRuntimeDemo demo) => demo.SetCampaignMenuOpen(false);
@@ -38,20 +39,20 @@ namespace ProjectY.Samples
             return (ProjectY.Data.SaveCatalogEntry[])values[0];
         }
         internal bool CreateCampaign(string seedText,int size) => CreateCampaign(seedText,size,1);
-        internal bool CreateCampaign(string seedText,int size,int startId)
+        internal bool CreateCampaign(string seedText,int size,int startId,string worldName = "")
         {
             uint seed;
             if(!uint.TryParse(seedText,NumberStyles.None,CultureInfo.InvariantCulture,out seed))
-            {campaignMenuError="种子请输入 0 至 4294967295 的整数，或点击随机。";return false;}
+            {campaignMenuError=ProjectY.UI.LuaLanguage.Get("UIStartMenuHintText");return false;}
             if(size!=2500 && size!=10000 && size!=30000 && size!=100000)
-            {campaignMenuError="请选择有效的世界大小。";return false;}
+            {campaignMenuError=ProjectY.UI.LuaLanguage.Get("CampaignInvalidSize");return false;}
             if(startId<=0){campaignMenuError=ProjectY.UI.LuaLanguage.Get("StartOriginInvalid");return false;}
-            return BeginCampaignLoading(seed.ToString(CultureInfo.InvariantCulture),size,startId);
+            return BeginCampaignLoading("begin",seed.ToString(CultureInfo.InvariantCulture),size,startId,worldName);
         }
         internal bool LoadCampaign(string id)
         {
-            if(string.IsNullOrEmpty(id)){campaignMenuError="请先选择存档。";return false;}
-            return BuildExpedition("menu_load",0,id);
+            if(string.IsNullOrEmpty(id)){campaignMenuError=ProjectY.UI.LuaLanguage.Get("CampaignSelectSave");return false;}
+            return BeginCampaignLoading("begin_load",id);
         }
     }
 }

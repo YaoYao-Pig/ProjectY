@@ -36,6 +36,7 @@ namespace ProjectY.Samples
             public string Name, Description, Action;
             public bool ManualTargets, Guided, NeedsLanding;
             public int[] Targets, TargetCells, ContainerTargets;
+            public int[] RangeCells = Array.Empty<int>();
             public TargetPreview[] TargetPreviews;
             public LandingOption[] LandingOptions=Array.Empty<LandingOption>();
         }
@@ -157,7 +158,7 @@ namespace ProjectY.Samples
                 Reason = row.Get<string>("reason"), Available = row.Get<bool>("available") }),
             Skills = Rows(root, "skills", row => new Skill { Id = row.Get<int>("id"), Cost = row.Get<int>("cost"), Name = row.Get<string>("name"),
                 Action = row.Get<string>("action"), Description = row.Get<string>("description"), Targets = Values<int>(row, "targets"),
-                TargetCells = Values<int>(row,"targetCells"),ContainerTargets=Values<int>(row,"containerTargets"),
+                TargetCells = Values<int>(row,"targetCells"),ContainerTargets=Values<int>(row,"containerTargets"),RangeCells=Values<int>(row,"rangeCells"),
                 ManualTargets=row.Get<bool>("manualTargets"),MaxTargets=row.Get<int>("maxTargets"),Guided=row.Get<bool>("guided"),
                 NeedsLanding=row.Get<bool>("needsLanding"),
                 LandingOptions=Rows(row,"landingOptions",option=>new LandingOption { TargetId=option.Get<int>("targetId"),Cells=Rows(option,"cells",ReadCell) }),

@@ -253,6 +253,20 @@
   },
   {
     "prefab": "Assets/DynamicAsset/UI/Prefabs/Adventure/StartMenuPanel.prefab",
+    "node": "Page/NewPage/WorldNameLabel",
+    "type": "Text",
+    "text": "世界名称",
+    "id": "CampaignWorldName"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Adventure/StartMenuPanel.prefab",
+    "node": "Page/NewPage/WorldName/Placeholder",
+    "type": "Text",
+    "text": "输入世界名称（可选）",
+    "id": "CampaignWorldNamePlaceholder"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Adventure/StartMenuPanel.prefab",
     "node": "Page/NewPage/SeedLabel",
     "type": "Text",
     "text": "世界种子",
@@ -820,6 +834,20 @@
   },
   {
     "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/KillTarget/Text",
+    "type": "Text",
+    "text": "秒杀",
+    "id": "UIGMKillTargetText"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/KillTargetHint",
+    "type": "Text",
+    "text": "点选一个敌人或动物。\nEsc／右键取消。",
+    "id": "UIGMKillTargetHint"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
     "node": "Frame/NpcTitle",
     "type": "Text",
     "text": "查找 NPC · 名称 / ID",
@@ -887,223 +915,6 @@
     "type": "Text",
     "text": "效",
     "id": "UIStatusEffectWidgetGlyph"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Exploration/Safe/Header/Location",
-    "type": "Text",
-    "text": "边境远征",
-    "id": "UIMainHudTitle17"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Exploration/Safe/Navigation/NavigationTitle",
-    "type": "Text",
-    "text": "目的地",
-    "id": "UIMainHudPanelExplorationSafeNavigationNavigationTitle"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Exploration/Safe/Journal/JournalTitle",
-    "type": "Text",
-    "text": "旅 途 见 闻",
-    "id": "UIMainHudPanelExplorationSafeJournalJournalTitle"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Exploration/Safe/Interaction/Interact/Label",
-    "type": "Text",
-    "text": "交互  E",
-    "id": "UIMainHudPanelExplorationSafeInteractionInteractLabel"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Exploration/Safe/CharacterSkills/SkillActor",
-    "type": "Text",
-    "text": "选择队员 · 生活技能",
-    "id": "UIMainHudPanelExplorationSafeCharacterSkillsSkillActor"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Exploration/Safe/CharacterSkills/CancelSkill/Label",
-    "type": "Text",
-    "text": "取消  Esc",
-    "id": "UIMainHudPanelExplorationSafeCharacterSkillsCancelSkillLabel"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Exploration/Safe/CharacterSkills/SkillEmpty",
-    "type": "Text",
-    "text": "点击下方队员卡片进行选择",
-    "id": "UIMainHudPanelExplorationSafeCharacterSkillsSkillEmpty"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Exploration/Safe/CharacterSkills/SkillHint",
-    "type": "Text",
-    "text": "生活技能 · 悬停查看说明",
-    "id": "UIMainHudSkillHintText"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "BattleContent/SafeArea/CombatLog/LogTitle",
-    "type": "Text",
-    "text": "战斗记录 · 点击展开",
-    "id": "BattleLogCollapsedTitle"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "BattleContent/SafeArea/CombatLog/LogClose/Label",
-    "type": "Text",
-    "text": "收起",
-    "id": "UIBattleHUDPanelSafeAreaCombatLogLogCloseLabel"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "BattleContent/SafeArea/SkillTip/Back/Label",
-    "type": "TextMeshProUGUI",
-    "text": "‹ 返回",
-    "id": "UIBattleHUDPanelSafeAreaSkillTipBackLabel"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "BattleContent/SafeArea/SkillTip/Scroll/Viewport/Content/StatsTitle",
-    "type": "TextMeshProUGUI",
-    "text": "技能参数",
-    "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentStatsTitle"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "BattleContent/SafeArea/SkillTip/Scroll/Viewport/Content/SynergyTitle",
-    "type": "TextMeshProUGUI",
-    "text": "协同效应",
-    "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentSynergyTitle"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "BattleContent/SafeArea/SkillTip/Scroll/Viewport/Content/Synergies/SynergyTemplate/UndiscoveredMask/Unknown",
-    "type": "TextMeshProUGUI",
-    "text": "尚未发现",
-    "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentSynergiesSynergyTemplateUndiscoveredMaskUnknown"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "BattleContent/SafeArea/SkillTip/Scroll/Viewport/Content/Synergies/SynergyTemplate/UndiscoveredMask/UnlockHint",
-    "type": "TextMeshProUGUI",
-    "text": "首次成功装配对应符文组合后解锁",
-    "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentSynergiesSynergyTemplateUndiscoveredMaskUnlockHint"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Common/EntryRail/MenuToggle/MenuToggleText",
-    "type": "Text",
-    "text": "菜单",
-    "id": "UIMainHudPanelCommonEntryRailMenuToggleMenuToggleText"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Common/EntryRail/Missions/MissionsText",
-    "type": "Text",
-    "text": "任务",
-    "id": "UIMainHudPanelCommonEntryRailMissionsMissionsText"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Common/EntryRail/Inventory/Label",
-    "type": "Text",
-    "text": "背包  I",
-    "id": "UIMainHudPanelCommonEntryRailInventoryLabel"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Common/EntryRail/NavigationToggle/Label",
-    "type": "Text",
-    "text": "地图",
-    "id": "UIMainHudPanelCommonEntryRailNavigationToggleLabel"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Common/Menu/MenuTitle",
-    "type": "Text",
-    "text": "旅途菜单",
-    "id": "UIMainHudPanelCommonMenuMenuTitle"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Common/Menu/Growth/Label",
-    "type": "Text",
-    "text": "手记 C",
-    "id": "UIMainHudPanelCommonMenuGrowthLabel"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Common/Menu/Focus/Label",
-    "type": "Text",
-    "text": "全图  F",
-    "id": "UIMainHudPanelCommonMenuFocusLabel"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Common/Menu/Environment/Label",
-    "type": "Text",
-    "text": "画面",
-    "id": "UIMainHudPanelCommonMenuEnvironmentLabel"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Common/Menu/Leave/Label",
-    "type": "Text",
-    "text": "返回大地图",
-    "id": "UIMainHudPanelCommonMenuLeaveLabel"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Common/Menu/Stop/Label",
-    "type": "Text",
-    "text": "停止  Space",
-    "id": "UIMainHudPanelCommonMenuStopLabel"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Common/Menu/CameraMode/Label",
-    "type": "Text",
-    "text": "切换视角  V",
-    "id": "UIMainHudPanelCommonMenuCameraModeLabel"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Common/Menu/Restart/Label",
-    "type": "Text",
-    "text": "新的远征",
-    "id": "UIMainHudPanelCommonMenuRestartLabel"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Common/WorldControls/TimeControls/TimeStart/Label",
-    "type": "Text",
-    "text": "开始",
-    "id": "UIMainHudPanelCommonWorldControlsTimeControlsTimeStartLabel"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Common/WorldControls/TimeControls/TimePause/Label",
-    "type": "Text",
-    "text": "暂停",
-    "id": "UIMainHudPanelCommonWorldControlsTimeControlsTimePauseLabel"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Common/WorldControls/TimeControls/TimeSpeed/Label",
-    "type": "Text",
-    "text": "速度 1×",
-    "id": "UIMainHudPanelCommonWorldControlsTimeControlsTimeSpeedLabel"
-  },
-  {
-    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
-    "node": "Common/WorldControls/Follow/Label",
-    "type": "Text",
-    "text": "回到小队",
-    "id": "UIMainHudPanelCommonWorldControlsFollowLabel"
   },
   {
     "prefab": "Assets/DynamicAsset/UI/Prefabs/Narrative/DialoguePanel.prefab",
@@ -1433,5 +1244,509 @@
     "type": "Text",
     "text": "使用药物治疗",
     "id": "BodyDiseaseTreat"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Exploration/Safe/Header/Location",
+    "type": "Text",
+    "text": "边境远征",
+    "id": "UIMainHudTitle17"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Exploration/Safe/Navigation/NavigationTitle",
+    "type": "Text",
+    "text": "目的地",
+    "id": "UIMainHudPanelExplorationSafeNavigationNavigationTitle"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Exploration/Safe/Journal/JournalTitle",
+    "type": "Text",
+    "text": "旅 途 见 闻",
+    "id": "UIMainHudPanelExplorationSafeJournalJournalTitle"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Exploration/Safe/Interaction/Interact/Label",
+    "type": "Text",
+    "text": "交互  E",
+    "id": "UIMainHudPanelExplorationSafeInteractionInteractLabel"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Exploration/Safe/CharacterSkills/SkillActor",
+    "type": "Text",
+    "text": "选择队员 · 生活技能",
+    "id": "UIMainHudPanelExplorationSafeCharacterSkillsSkillActor"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Exploration/Safe/CharacterSkills/CancelSkill/Label",
+    "type": "Text",
+    "text": "取消  Esc",
+    "id": "UIMainHudPanelExplorationSafeCharacterSkillsCancelSkillLabel"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Exploration/Safe/CharacterSkills/SkillEmpty",
+    "type": "Text",
+    "text": "点击下方队员卡片进行选择",
+    "id": "UIMainHudPanelExplorationSafeCharacterSkillsSkillEmpty"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Exploration/Safe/CharacterSkills/SkillHint",
+    "type": "Text",
+    "text": "生活技能 · 悬停查看说明",
+    "id": "UIMainHudSkillHintText"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "BattleContent/SafeArea/CombatLog/LogTitle",
+    "type": "Text",
+    "text": "战斗记录 · 点击展开",
+    "id": "BattleLogCollapsedTitle"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "BattleContent/SafeArea/CombatLog/LogClose/Label",
+    "type": "Text",
+    "text": "收起",
+    "id": "UIBattleHUDPanelSafeAreaCombatLogLogCloseLabel"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "BattleContent/SafeArea/SkillTip/Back/Label",
+    "type": "TextMeshProUGUI",
+    "text": "‹ 返回",
+    "id": "UIBattleHUDPanelSafeAreaSkillTipBackLabel"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "BattleContent/SafeArea/SkillTip/Scroll/Viewport/Content/StatsTitle",
+    "type": "TextMeshProUGUI",
+    "text": "技能参数",
+    "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentStatsTitle"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "BattleContent/SafeArea/SkillTip/Scroll/Viewport/Content/SynergyTitle",
+    "type": "TextMeshProUGUI",
+    "text": "协同效应",
+    "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentSynergyTitle"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "BattleContent/SafeArea/SkillTip/Scroll/Viewport/Content/Synergies/SynergyTemplate/UndiscoveredMask/Unknown",
+    "type": "TextMeshProUGUI",
+    "text": "尚未发现",
+    "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentSynergiesSynergyTemplateUndiscoveredMaskUnknown"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "BattleContent/SafeArea/SkillTip/Scroll/Viewport/Content/Synergies/SynergyTemplate/UndiscoveredMask/UnlockHint",
+    "type": "TextMeshProUGUI",
+    "text": "首次成功装配对应符文组合后解锁",
+    "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentSynergiesSynergyTemplateUndiscoveredMaskUnlockHint"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Common/EntryRail/MenuToggle/MenuToggleText",
+    "type": "Text",
+    "text": "菜单",
+    "id": "UIMainHudPanelCommonEntryRailMenuToggleMenuToggleText"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Common/EntryRail/Missions/MissionsText",
+    "type": "Text",
+    "text": "任务",
+    "id": "UIMainHudPanelCommonEntryRailMissionsMissionsText"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Common/Menu/MenuTitle",
+    "type": "Text",
+    "text": "旅途菜单",
+    "id": "UIMainHudPanelCommonMenuMenuTitle"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Common/Menu/Focus/Label",
+    "type": "Text",
+    "text": "全图  F",
+    "id": "UIMainHudPanelCommonMenuFocusLabel"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Common/Menu/Environment/Label",
+    "type": "Text",
+    "text": "画面",
+    "id": "UIMainHudPanelCommonMenuEnvironmentLabel"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Common/Menu/Leave/Label",
+    "type": "Text",
+    "text": "返回大地图",
+    "id": "UIMainHudPanelCommonMenuLeaveLabel"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Common/Menu/Stop/Label",
+    "type": "Text",
+    "text": "停止  Space",
+    "id": "UIMainHudPanelCommonMenuStopLabel"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Common/Menu/CameraMode/Label",
+    "type": "Text",
+    "text": "切换视角  V",
+    "id": "UIMainHudPanelCommonMenuCameraModeLabel"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Common/Menu/Restart/Label",
+    "type": "Text",
+    "text": "新的远征",
+    "id": "UIMainHudPanelCommonMenuRestartLabel"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Common/WorldControls/TimeControls/TimeStart/Label",
+    "type": "Text",
+    "text": "开始",
+    "id": "UIMainHudPanelCommonWorldControlsTimeControlsTimeStartLabel"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Common/WorldControls/TimeControls/TimePause/Label",
+    "type": "Text",
+    "text": "暂停",
+    "id": "UIMainHudPanelCommonWorldControlsTimeControlsTimePauseLabel"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Common/WorldControls/TimeControls/TimeSpeed/Label",
+    "type": "Text",
+    "text": "速度 1×",
+    "id": "UIMainHudPanelCommonWorldControlsTimeControlsTimeSpeedLabel"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Common/WorldControls/Follow/Label",
+    "type": "Text",
+    "text": "回到小队",
+    "id": "UIMainHudPanelCommonWorldControlsFollowLabel"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Common/EntryRail/Factions/FactionsText",
+    "type": "Text",
+    "text": "势力",
+    "id": "UIFactionEntry"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Common/EntryRail/Growth/Label",
+    "type": "Text",
+    "text": "养成",
+    "id": "UIMainHudGrowthTextText"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Common/EntryRail/Inventory/Label",
+    "type": "Text",
+    "text": "背包",
+    "id": "UIMainHudPanelCommonEntryRailInventoryLabel"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Factions/FactionRelationsPanel.prefab",
+    "node": "Page/Title",
+    "type": "Text",
+    "text": "势力关系",
+    "id": "UIFactionTitle"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Factions/FactionRelationsPanel.prefab",
+    "node": "Page/Subtitle",
+    "type": "Text",
+    "text": "选择势力，查看它与世界各方的关系",
+    "id": "UIFactionSubtitle"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Factions/FactionRelationsPanel.prefab",
+    "node": "Page/Home/HomeText",
+    "type": "Text",
+    "text": "回到我的小队",
+    "id": "UIFactionHome"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Factions/FactionRelationsPanel.prefab",
+    "node": "Page/Close/CloseText",
+    "type": "Text",
+    "text": "关闭  Esc",
+    "id": "UIFactionClose"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Factions/FactionRelationsPanel.prefab",
+    "node": "Page/GraphScroll/Viewport/Graph/RootCard/RootName",
+    "type": "Text",
+    "text": "我的小队",
+    "id": "UIFactionPlayer"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Factions/FactionRelationsPanel.prefab",
+    "node": "Page/GraphScroll/Viewport/Graph/RootCard/RootDetail",
+    "type": "Text",
+    "text": "当前查看的势力",
+    "id": "UIFactionRoot"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Factions/FactionRelationsPanel.prefab",
+    "node": "Page/GraphScroll/Viewport/Graph/Branch1/Group1",
+    "type": "Text",
+    "text": "同盟",
+    "id": "UIFactionAllied"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Factions/FactionRelationsPanel.prefab",
+    "node": "Page/GraphScroll/Viewport/Graph/Empty1",
+    "type": "Text",
+    "text": "暂无此类关系",
+    "id": "UIFactionEmpty"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Factions/FactionRelationsPanel.prefab",
+    "node": "Page/GraphScroll/Viewport/Graph/Branch2/Group2",
+    "type": "Text",
+    "text": "中立",
+    "id": "UIFactionNeutral"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Factions/FactionRelationsPanel.prefab",
+    "node": "Page/GraphScroll/Viewport/Graph/Empty2",
+    "type": "Text",
+    "text": "暂无此类关系",
+    "id": "UIFactionEmpty"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Factions/FactionRelationsPanel.prefab",
+    "node": "Page/GraphScroll/Viewport/Graph/Branch3/Group3",
+    "type": "Text",
+    "text": "敌对",
+    "id": "UIFactionHostile"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Factions/FactionRelationsPanel.prefab",
+    "node": "Page/GraphScroll/Viewport/Graph/Empty3",
+    "type": "Text",
+    "text": "暂无此类关系",
+    "id": "UIFactionEmpty"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Factions/FactionRelationsPanel.prefab",
+    "node": "Page/Help",
+    "type": "Text",
+    "text": "首次进入视野后揭示势力 · 点击已发现势力切换视角 · 滚动查看分枝 · 同盟关系不传递",
+    "id": "UIFactionHelp"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Factions/FactionRelationsPanel.prefab",
+    "node": "Page/GraphScroll/Viewport/Graph/UnknownTitle",
+    "type": "Text",
+    "text": "未发现势力",
+    "id": "UIFactionUnknownTitle"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceOpen/DiceOpenText",
+    "type": "Text",
+    "text": "投骰子",
+    "id": "GMDiceOpen"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/DiceTitle",
+    "type": "Text",
+    "text": "骰子组合",
+    "id": "GMDiceTitle"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/DiceHelp",
+    "type": "Text",
+    "text": "可混合选择，合计 1～6 颗。\nD10 为 0～9；D100 为百分比十位骰（00、10…90）。",
+    "id": "GMDiceHelp"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/DiceBack/DiceBackText",
+    "type": "Text",
+    "text": "返回 GM",
+    "id": "GMDiceBack"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/DiceClear/DiceClearText",
+    "type": "Text",
+    "text": "清空组合",
+    "id": "GMDiceClear"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/DiceThrow/DiceThrowText",
+    "type": "Text",
+    "text": "开始投掷",
+    "id": "GMDiceThrow"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/RowD4/DiceD4Label",
+    "type": "Text",
+    "text": "D4 · 1～4",
+    "id": "GMDiceD4Label"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/RowD4/DiceD4Minus/DiceD4MinusText",
+    "type": "Text",
+    "text": "−",
+    "id": "GMDiceRemove"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/RowD4/DiceD4Plus/DiceD4PlusText",
+    "type": "Text",
+    "text": "+",
+    "id": "GMDiceAdd"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/RowD6/DiceD6Label",
+    "type": "Text",
+    "text": "D6 · 1～6",
+    "id": "GMDiceD6Label"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/RowD6/DiceD6Minus/DiceD6MinusText",
+    "type": "Text",
+    "text": "−",
+    "id": "GMDiceRemove"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/RowD6/DiceD6Plus/DiceD6PlusText",
+    "type": "Text",
+    "text": "+",
+    "id": "GMDiceAdd"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/RowD8/DiceD8Label",
+    "type": "Text",
+    "text": "D8 · 1～8",
+    "id": "GMDiceD8Label"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/RowD8/DiceD8Minus/DiceD8MinusText",
+    "type": "Text",
+    "text": "−",
+    "id": "GMDiceRemove"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/RowD8/DiceD8Plus/DiceD8PlusText",
+    "type": "Text",
+    "text": "+",
+    "id": "GMDiceAdd"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/RowD10/DiceD10Label",
+    "type": "Text",
+    "text": "D10 · 0～9",
+    "id": "GMDiceD10Label"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/RowD10/DiceD10Minus/DiceD10MinusText",
+    "type": "Text",
+    "text": "−",
+    "id": "GMDiceRemove"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/RowD10/DiceD10Plus/DiceD10PlusText",
+    "type": "Text",
+    "text": "+",
+    "id": "GMDiceAdd"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/RowD12/DiceD12Label",
+    "type": "Text",
+    "text": "D12 · 1～12",
+    "id": "GMDiceD12Label"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/RowD12/DiceD12Minus/DiceD12MinusText",
+    "type": "Text",
+    "text": "−",
+    "id": "GMDiceRemove"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/RowD12/DiceD12Plus/DiceD12PlusText",
+    "type": "Text",
+    "text": "+",
+    "id": "GMDiceAdd"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/RowD20/DiceD20Label",
+    "type": "Text",
+    "text": "D20 · 1～20",
+    "id": "GMDiceD20Label"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/RowD20/DiceD20Minus/DiceD20MinusText",
+    "type": "Text",
+    "text": "−",
+    "id": "GMDiceRemove"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/RowD20/DiceD20Plus/DiceD20PlusText",
+    "type": "Text",
+    "text": "+",
+    "id": "GMDiceAdd"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/RowD100/DiceD100Label",
+    "type": "Text",
+    "text": "D100 · 00～90",
+    "id": "GMDiceD100Label"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/RowD100/DiceD100Minus/DiceD100MinusText",
+    "type": "Text",
+    "text": "−",
+    "id": "GMDiceRemove"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/DiceSettings/RowD100/DiceD100Plus/DiceD100PlusText",
+    "type": "Text",
+    "text": "+",
+    "id": "GMDiceAdd"
   }
 ]

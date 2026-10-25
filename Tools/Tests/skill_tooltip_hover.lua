@@ -22,7 +22,7 @@ function bridge.KeepOpen(_,anchorHovered)
     samples=samples+1
     if not view.gameObject.activeSelf then return false end
     if anchorHovered or cardHovered then lastInside=time;return true end
-    return time-lastInside<=.4
+    return false
 end
 CS={ProjectY={UI={SkillTooltipPresentation=bridge},Samples={BattleTargetSelection={
     PreviewTitle=function()return ''end,PreviewBody=function()return ''end
@@ -44,9 +44,9 @@ first.hovered=true;hud:Tick()
 assert(view.gameObject.activeSelf and hud.lastTooltip==first and #presenter.stack==1)
 local previousSamples=samples
 time=2;hud:Tick()
-assert(samples>previousSamples,'Anchor hover must update the close deadline on every HUD Tick')
+assert(samples>previousSamples,'Anchor hover must be sampled on every HUD Tick')
 first.hovered=false;time=2.1;hud:Tick()
-assert(view.gameObject.activeSelf,'A long skill hover must still allow crossing the gap')
+assert(not view.gameObject.activeSelf,'Leaving a long skill hover must dismiss immediately')
 time=2.5;hud:Tick()
 assert(not view.gameObject.activeSelf and hud.lastTooltip==nil and #presenter.stack==0,
     'Moving to empty game space must close the card and navigation')
@@ -56,7 +56,7 @@ first.hovered=false;cardHovered=true;time=3.2;hud:Tick()
 queued='term:hit';hud:Tick()
 assert(#presenter.stack==2,'Card hover must allow terminology navigation')
 time=5;hud:Tick();assert(view.gameObject.activeSelf and #presenter.stack==2)
-cardHovered=false;time=5.1;hud:Tick();assert(view.gameObject.activeSelf)
+cardHovered=false;time=5.1;hud:Tick();assert(not view.gameObject.activeSelf)
 time=5.5;hud:Tick()
 assert(not view.gameObject.activeSelf and #presenter.stack==0,'Leaving a terminology card must close it')
 
@@ -70,4 +70,4 @@ assert(not view.gameObject.activeSelf and #presenter.stack==0,'Modal blocking mu
 hud.view.Group.interactable=true;hud:Tick();assert(view.gameObject.activeSelf)
 hud:OnHide()
 assert(not view.gameObject.activeSelf and hud.lastTooltip==nil and #presenter.stack==0)
-print('PASS HUD hover expiry, long-hover gap, term card exit, skill/item switching, modal blocking and hide')
+print('PASS HUD immediate exit, long hover, term card exit, skill/item switching, modal blocking and hide')

@@ -16,6 +16,71 @@ namespace ProjectY.Editor
         private static readonly Color Gold=new Color(.88f,.75f,.50f);
         private static readonly Color Muted=new Color(.60f,.70f,.65f);
 
+        [MenuItem("Project Y/远征/补齐世界名称输入")]
+        public static void UpgradeWorldName()
+        {
+            if(EditorApplication.isPlayingOrWillChangePlaymode || EditorApplication.isCompiling)
+                throw new InvalidOperationException("World name binding requires idle Edit Mode.");
+            var entry=AssetDatabase.LoadAssetAtPath<PanelConfig>(PanelConfig.AssetPath).Get("StartMenu");
+            var root=PrefabUtility.LoadPrefabContents(entry.PrefabPath);
+            try
+            {
+                ConfigureWorldName(root);
+                var reference=root.GetComponent<LuaReference>();reference.ValidateBindings();
+                LuaViewHints.Register(typeof(NarrativeView),"CS.ProjectY.UI.NarrativeView");
+                LuaViewHints.Export(reference,entry.ViewType);
+                PrefabUtility.SaveAsPrefabAsset(root,entry.PrefabPath);
+            }
+            finally {PrefabUtility.UnloadPrefabContents(root);}
+        }
+
+        // Editor-only upgrade; preserves the opening selector, previews and existing bindings.
+        public static void ConfigureWorldName(GameObject root)
+        {
+            var reference=root.GetComponent<LuaReference>();var fresh=(RectTransform)reference.Get("NewPage");
+            InputField field=null;
+            foreach(var binding in reference.GetEditorBindings())if(binding.Key=="WorldName")field=(InputField)binding.Target;
+            Text label;
+            if(field==null)
+            {
+                label=Label("WorldNameLabel",fresh,LuaLanguage.Get("CampaignWorldName"),16,Gold);
+                var rect=Node("WorldName",fresh);var background=Paint(rect,new Color(.035f,.055f,.045f));
+                var text=Label("Text",rect,"",21,Paper);Stretch(text.rectTransform,14,4,14,4);text.alignment=TextAnchor.MiddleLeft;
+                var placeholder=Label("Placeholder",rect,LuaLanguage.Get("CampaignWorldNamePlaceholder"),16,Muted);
+                Stretch(placeholder.rectTransform,14,4,14,4);placeholder.alignment=TextAnchor.MiddleLeft;
+                field=rect.gameObject.AddComponent<InputField>();field.targetGraphic=background;
+                field.textComponent=text;field.placeholder=placeholder;field.lineType=InputField.LineType.SingleLine;
+                Bind(root,"WorldName",field);
+                var texts=new List<LuaReference.LocalizedText>(reference.GetEditorLocalizations());
+                texts.Add(new LuaReference.LocalizedText(label,"CampaignWorldName"));
+                texts.Add(new LuaReference.LocalizedText(placeholder,"CampaignWorldNamePlaceholder"));
+                reference.SetEditorLocalizations(texts.ToArray());
+            }
+            else label=fresh.Find("WorldNameLabel").GetComponent<Text>();
+            if(fresh.sizeDelta.x>=1000)
+            {
+                Place(label.rectTransform,0,0,360,24);Place((RectTransform)field.transform,0,27,360,42);
+                Place((RectTransform)fresh.Find("SeedLabel"),380,0,332,24);
+                Place((RectTransform)reference.Get("Seed").transform,380,27,220,42);
+                Place((RectTransform)reference.Get("RandomSeed").transform,612,27,100,42);
+                Place((RectTransform)fresh.Find("SizeLabel"),732,0,296,24);
+                Place((RectTransform)reference.Get("Size").transform,732,27,296,42);
+                Place((RectTransform)reference.Get("Size").transform.Find("Arrow"),256,6,28,30);
+            }
+            else
+            {
+                Place(label.rectTransform,0,0,748,24);Place((RectTransform)field.transform,0,27,748,42);
+                Place((RectTransform)fresh.Find("SeedLabel"),0,90,748,24);
+                Place((RectTransform)reference.Get("Seed").transform,0,117,560,48);
+                Place((RectTransform)reference.Get("RandomSeed").transform,578,117,170,48);
+                Place((RectTransform)fresh.Find("SizeLabel"),0,188,748,24);
+                Place((RectTransform)reference.Get("Size").transform,0,215,748,48);
+                fresh.Find("SeedHint").gameObject.SetActive(false);fresh.Find("SizeHint").gameObject.SetActive(false);
+            }
+            root.GetComponent<NarrativeView>().SetEditorBindings((RectTransform)fresh.parent,
+                (ScrollRect)reference.Get("SaveScroll"),root.GetComponentsInChildren<Text>(true),false);
+        }
+
         [MenuItem("Project Y/远征/创建开始菜单")]
         public static void Create()
         {
@@ -31,7 +96,7 @@ namespace ProjectY.Editor
             var root=new GameObject(entry.PrefabName,typeof(RectTransform),typeof(LuaReference),typeof(LuaPanel));
             try
             {
-                Build(root);root.GetComponent<LuaReference>().ValidateBindings();
+                Build(root);ConfigureWorldName(root);root.GetComponent<LuaReference>().ValidateBindings();
                 entry.Prefab=PrefabUtility.SaveAsPrefabAsset(root,entry.PrefabPath);EditorUtility.SetDirty(config);
                 LuaViewHints.Export(root.GetComponent<LuaReference>(),entry.ViewType);
                 AssetDatabase.SaveAssets();Debug.Log("开始菜单、显式绑定与Panel注册已保存。");

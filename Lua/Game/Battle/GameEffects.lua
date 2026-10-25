@@ -135,11 +135,13 @@ function Effects:ApplyPrepared(plan,impact,periodic)
     if target.HP<=0 then return false,'目标已倒地' end
     if not Instructions.Allowed(self.stats.buffs,plan.hitTarget or target,row,plan.source)then return true end
     if row.chance<100 or row.kind=='apply_buff' then
-        local roll=row.chance>0 and row.chance<100 and assert(self.roll,'Probabilistic effects need an explicit random stream')() or nil
-        local passed=row.chance==100 or row.chance>0 and roll<row.chance
+        local roll=row.chance>0 and row.chance<100 and (assert(self.roll,'Probabilistic effects need an explicit random stream')()+1) or nil
+        local threshold=100-row.chance
+        local passed=row.chance==100 or row.chance>0 and roll>threshold
         local name=row.kind=='apply_buff' and self.stats.buffs:Get(row.buffId).name or row.name
         self:Report('check',plan,{checkName=string.format(LuaLanguage.DiceEffectTrigger,name),chance=row.chance,roll=roll,passed=passed,
-            successLabel='触发',failureLabel='未触发',shot=impact and impact.shot})
+            rollConvention='inclusive',rollComparison='greater',threshold=threshold,
+            successLabel=LuaLanguage.EffectTriggered,failureLabel=LuaLanguage.EffectNotTriggered,shot=impact and impact.shot})
         if not passed then return true end
     end
     if row.kind=='apply_buff' then return self.buffEffects:Apply(plan,impact)end
@@ -244,10 +246,14 @@ function Effects:Rows(target)
     local rows={}
     for i=0,target.Effects.Count-1 do
         local instance=target.Effects:GetAt(i);local row=self:Definition(instance.EffectId)
-        local remaining=instance.Remaining;local unit='回合';local timer=remaining<0 and '∞' or tostring(remaining)
-        if row.clock=='minutes' then remaining=math.max(0,math.ceil(CS.ProjectY.Data.GameBuffState.ExpiresAt(instance)-assert(self.minutes)()));unit='分钟';timer=remaining..'m' end
+        local remaining=instance.Remaining;local duration=LuaLanguage.EffectRemainingTurns;local timer=remaining<0 and '∞' or tostring(remaining)
+        if row.clock=='minutes' then
+            remaining=math.max(0,math.ceil(CS.ProjectY.Data.GameBuffState.ExpiresAt(instance)-assert(self.minutes)()))
+            duration=LuaLanguage.EffectRemainingMinutes;timer=string.format(LuaLanguage.EffectMinuteTimer,remaining)
+        end
+        local remainingText=remaining<0 and LuaLanguage.EffectIndefinite or string.format(duration,remaining)
         rows[#rows+1]={id=instance.Id,name=row.name,description=row.description,iconId=row.iconId,color=row.color,stacks=instance.Stacks,remaining=remaining,timerText=timer,
-            body=row.description..'\n来源：'..instance.SourceName..' · '..instance.Stacks..' 层 · '..(remaining<0 and '持续生效' or ('剩余 '..remaining..' '..unit))}
+            body=string.format(LuaLanguage.EffectTooltipBody,row.description,instance.SourceName,instance.Stacks,remainingText)}
     end
     return rows
 end

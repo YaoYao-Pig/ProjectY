@@ -1,0 +1,32 @@
+---@meta
+-- Generated from LuaReference. Do not edit; never require this file.
+---@class FactionRelationsPanelView
+---@field Root CS.UnityEngine.RectTransform
+---@field Canvas CS.UnityEngine.Canvas
+---@field Panel CS.ProjectY.UI.LuaPanel
+---@field Page CS.UnityEngine.RectTransform
+---@field Title CS.UnityEngine.UI.Text
+---@field Subtitle CS.UnityEngine.UI.Text
+---@field Home CS.UnityEngine.UI.Button
+---@field HomeText CS.UnityEngine.UI.Text
+---@field Close CS.UnityEngine.UI.Button
+---@field CloseText CS.UnityEngine.UI.Text
+---@field Description CS.UnityEngine.UI.Text
+---@field Graph CS.UnityEngine.RectTransform
+---@field GraphScroll CS.UnityEngine.UI.ScrollRect
+---@field RootName CS.UnityEngine.UI.Text
+---@field RootDetail CS.UnityEngine.UI.Text
+---@field Allied CS.UnityEngine.UI.Image
+---@field Group1 CS.UnityEngine.UI.Text
+---@field Empty1 CS.UnityEngine.UI.Text
+---@field Neutral CS.UnityEngine.UI.Image
+---@field Group2 CS.UnityEngine.UI.Text
+---@field Empty2 CS.UnityEngine.UI.Text
+---@field Hostile CS.UnityEngine.UI.Image
+---@field Group3 CS.UnityEngine.UI.Text
+---@field Empty3 CS.UnityEngine.UI.Text
+---@field Help CS.UnityEngine.UI.Text
+---@field Style CS.ProjectY.UI.StoryGrowthView
+---@field UnknownTitle CS.UnityEngine.UI.Text
+local View = {}
+return View

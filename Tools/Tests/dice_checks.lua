@@ -25,6 +25,8 @@ assert(not pcall(Checks.Percent,'错误精度',24.99,25,true,'exclusive',1))
 assert(not pcall(Checks.Percent,'越界',100,25,false,'exclusive',1))
 assert(not Checks.FromBattleEvent({kind='damage'}))
 assert(not Checks.FromBattleEvent({kind='check',impact={chance=100,passed=true}}))
+local high=Checks.FromBattleEvent({kind='check',impact={checkName='Burn',roll=89,chance=60,passed=true,threshold=40,rollComparison='greater',rollConvention='inclusive'}})
+assert(high.passed and high.reading=='89' and high.detail:find('40',1,true) and high.detail:find('60%',1,true))
 local row=Checks.FromBattleEvent({kind='check',impact={checkName='祝福触发',roll=72,chance=50,passed=false}})
 assert(value(row)==72 and not row.passed)
 -- Drive the real controller's button callbacks: queued checks must not be overwritten or revealed early.
@@ -39,7 +41,7 @@ function renderer:Reveal()self.Settled=true end
 function renderer:Advance()end
 function renderer:Release()self.Settled=false end
 local reveal={gameObject={SetActive=function()end}}
-local ctrl=setmetatable({view={Dice=renderer,Title={},Detail={},Result={},Continue={},Reveal=reveal}}, {__index=Dice})
+local ctrl=setmetatable({view={Dice=renderer,Title={},Detail={},Result={fontSize=30},Continue={},Reveal=reveal}}, {__index=Dice})
 function ctrl:Listen(button,fn)buttons[button]=fn end
 function ctrl:Close()closed=closed+1;self:OnHide()end
 ctrl:Bind();ctrl:OnShow({check=row})
@@ -53,6 +55,13 @@ buttons[ctrl.view.Continue]()
 assert(#presented==2 and ctrl.view.Title.text=='第二次' and ctrl.view.Result.text=='')
 buttons[ctrl.view.Reveal]();buttons[ctrl.view.Continue]()
 assert(closed==1 and ctrl.queue==nil and not renderer.Settled)
+local ok,freeRoll=require('Game.GM.DiceCommands').New(7):Roll({D6=2,D20=1});assert(ok)
+ctrl:OnShow({check=freeRoll});assert(ctrl.view.Result.text=='' and ctrl.view.Result.fontSize==20)
+ctrl:Enqueue(Checks.Percent('回到检定',20,50,true,'inclusive'))
+buttons[ctrl.view.Reveal]();assert(ctrl.view.Result.text==freeRoll.reading)
+buttons[ctrl.view.Continue]();assert(ctrl.view.Result.fontSize==30 and ctrl.view.Result.text=='')
+buttons[ctrl.view.Reveal]();assert(ctrl.view.Result.text:find(require('Language').DiceSuccess,1,true))
+buttons[ctrl.view.Continue]();assert(closed==2)
 for _,path in ipairs({'Lua/UI/Panel/DiceRollCtr.lua','Lua/UI/Panel/MainHudCtr.lua','Lua/Game/Adventure/EventSystem.lua',
     'Lua/Game/MapArea/ObstacleInteractions.lua','Lua/Game/MapArea/MapAreaSystem.lua'})do assert(loadfile(path))end
 print('PASS percentile boundaries, 00/100 convention, hundredth precision, guaranteed-effect filtering, reveal/queue/close lifecycle and Lua syntax')

@@ -352,6 +352,7 @@ function AreaSystem:RevealBattle(battle)
         if not seen[index] then seen[index]=true;cells[#cells+1]=index end
     end end
     state:Reveal(cells)
+    if self.factions then self.factions:ObserveArea(area,state) end
 end
 function AreaSystem:RestoreAfterBattle(battle)
     if battle.data.Winner~='victory' then self.data.Active:RetreatToEntry(self:ActiveLayout().entryIndex);return end
@@ -364,6 +365,7 @@ function AreaSystem:RevealSquad(layout,state)
         if state.VisibleCount~=#layout.cells then
             local all={};for i=1,#layout.cells do all[i]=i end;state:Reveal(all)
         end
+        if self.factions then self.factions:ObserveArea(layout,state) end
         return
     end
     local cells,seen={},{}
@@ -374,6 +376,7 @@ function AreaSystem:RevealSquad(layout,state)
         if not seen[index] then seen[index]=true;cells[#cells+1]=index end
     end end
     state:Reveal(cells)
+    if self.factions then self.factions:ObserveArea(layout,state) end
 end
 function AreaSystem:ActiveLayout() return assert(self.layouts[self.data.ActiveSiteId],'No active MapArea layout') end
 function AreaSystem:MoveTo(q,r,settle)
@@ -569,6 +572,7 @@ function AreaSystem:Tick(dt)
     if self.adventure.Phase~='area' then return end
     require('Game.MapArea.TownResidents').Tick(layout,state,dt)
     if self.narrative then self.narrative.npcs:Tick(layout,state,dt) end
+    if self.factions then self.factions:ObserveArea(layout,state) end
 end
 function AreaSystem:Clear() self.layouts={};self.data:Clear();if self.obstacles then self.obstacles.data:Clear() end end
 -- 后续遭遇从当前区域裁取同坐标战场，不另随机一张竞技场，不移动或替换原地形。

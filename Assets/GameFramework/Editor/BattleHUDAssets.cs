@@ -66,6 +66,21 @@ namespace ProjectY.Editor
         public static void SyncIcons()
         {
             RequireEditMode();
+            var icons = CreateIconBindings();
+            var entry = PanelAssets.LoadOrCreate().Get("BattleHUD");
+            var root = PrefabUtility.LoadPrefabContents(entry.PrefabPath);
+            try
+            {
+                root.GetComponent<BattleHUDView>().SetEditorIcons(icons);
+                PrefabUtility.SaveAsPrefabAsset(root, entry.PrefabPath);
+            }
+            finally { PrefabUtility.UnloadPrefabContents(root); }
+            CharacterJournalAssets.SyncSkillIcons(icons);
+            AssetDatabase.SaveAssets();
+        }
+        public static BattleHUDView.IconEntry[] CreateIconBindings()
+        {
+            RequireEditMode();
             var rows = JsonUtility.FromJson<IconTable>(File.ReadAllText("Config/Tables/Adventure/BattleIconTable.json")).rows;
             var icons = new BattleHUDView.IconEntry[rows.Length];
             var ids = new HashSet<int>();
@@ -77,15 +92,7 @@ namespace ProjectY.Editor
                 if (row.spritePath != "" && sprite == null) throw new InvalidOperationException("Battle icon must reference a Sprite asset: " + row.spritePath);
                 icons[i] = new BattleHUDView.IconEntry { Id = row.id, Path = row.spritePath, Sprite = sprite };
             }
-            var entry = PanelAssets.LoadOrCreate().Get("BattleHUD");
-            var root = PrefabUtility.LoadPrefabContents(entry.PrefabPath);
-            try
-            {
-                root.GetComponent<BattleHUDView>().SetEditorIcons(icons);
-                PrefabUtility.SaveAsPrefabAsset(root, entry.PrefabPath);
-            }
-            finally { PrefabUtility.UnloadPrefabContents(root); }
-            AssetDatabase.SaveAssets();
+            return icons;
         }
         [MenuItem("Project Y/UI/同步战斗技能悬停与选中反馈")]
         public static void SyncActionFeedback()

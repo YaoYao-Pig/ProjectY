@@ -22,7 +22,10 @@ function HUD:Bind()
     self:Listen(self.view.Inventory,function() self.demo:OpenEquipment() end)
     self.view.GrowthText.text=LuaLanguage.UIMainHudGrowthTextText
     self:Listen(self.view.Growth,function() self.demo:OpenGrowth() end)
-    self:Listen(self.view.NavigationToggle,function() self.navigation=not self.navigation;self:Refresh() end)
+    self:Listen(self.view.Factions,function()
+        self.menuOpen=false;self:Refresh()
+        self.context.systems:Get('UI'):Open('FactionRelations',{})
+    end)
     self:Listen(self.view.Focus,function() self.demo:FitMap() end)
     self:Listen(self.view.Follow,function() self.demo:SendCommand('hud_follow') end)
     self:Listen(self.view.TimeStart,function() self.demo:SendCommand('travel_resume') end)
@@ -86,7 +89,7 @@ function HUD:Refresh()
         self.view.TimeSpeedText.text=string.format(LuaLanguage.UIMainHudTimeSpeedTextText, (model.timeControl.speed))
     end
     self.view.Inventory.interactable=exploring;self.view.Missions.interactable=exploring;self.view.Growth.interactable=exploring
-    self.view.NavigationToggle.gameObject:SetActive(not battle)
+    self.view.Factions.interactable=exploring
     self.view.Location.text=model.title;self.view.Subtitle.text=model.subtitle;self.view.Coins.text=string.format(LuaLanguage.UIMainHudCoinsText, (model.coins))
     self.view.NavigationTitle.text=model.phase=='map' and LuaLanguage.UIMainHudNavigationTitleText2 or LuaLanguage.UIMainHudNavigationTitleText
     self.view.Leave.gameObject:SetActive(model.phase=='area');self.view.Stop.gameObject:SetActive(model.phase=='area')
@@ -178,6 +181,10 @@ function HUD:Tick()
     self.view.HealthTooltip.gameObject:SetActive(hovered~=nil)
     if hovered and (self.healthHover~=hovered or self.healthTooltipRow~=hovered.row) then
         self.view.HealthTipTitle.text=hovered.row.name;self.view.HealthTipBody.text=hovered.row.body
+        self.view.HealthTipBody.fontSize=14;self.view.HealthTipBody.lineSpacing=1.15
+        local height=self.view.HealthTipBody.preferredHeight
+        self.view.HealthTipBody.rectTransform.sizeDelta=CS.UnityEngine.Vector2(328,height)
+        self.view.HealthTooltip.sizeDelta=CS.UnityEngine.Vector2(360,54+height)
     end
     self.healthHover=hovered;self.healthTooltipRow=hovered and hovered.row
 end

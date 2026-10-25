@@ -93,6 +93,15 @@ namespace ProjectY.Samples
         }
         public void Interact(bool talking)
         { EnsureReady(); interaction = talking ? "Talk" : "Interact"; }
+        public float PreviewAction(int templateId,Vector3 target)
+        {
+            EnsureReady();
+            var action=settings.GetAction(templateId);
+            Skip();facing=target;
+            if(string.IsNullOrEmpty(action.State))return 0;
+            pending.Enqueue(new CombatActorData.PresentationAction {TemplateId=templateId,Shots=1});
+            return action.Duration*action.Impact/settings.PresentationSpeed;
+        }
         public void Capture(AdventureViewData.Actor actor, Vector3 target, float impactDelay)
         {
             EnsureReady();

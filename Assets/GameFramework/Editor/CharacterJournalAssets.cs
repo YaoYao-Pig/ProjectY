@@ -22,6 +22,8 @@ namespace ProjectY.Editor
         [Serializable] private sealed class Passive { public string[] attributeNames; public string iconAttribute; }
         [Serializable] private sealed class Parts { public Part[] rows; }
         [Serializable] private sealed class Part { public int id;public string prefabPath; }
+        [Serializable] private sealed class Professions { public ProfessionIcon[] rows; }
+        [Serializable] private sealed class ProfessionIcon { public int id;public string iconPath; }
         [MenuItem("Project Y/UI/重建角色手记布局")]
         public static void Rebuild()
         {
@@ -40,7 +42,7 @@ namespace ProjectY.Editor
         public static void SyncGlyphs()
         {
             if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("请在 Edit Mode 同步角色手记图标。");
-            var glyphs=CreateGlyphBindings();var config=PanelAssets.LoadOrCreate();
+            var glyphs=CreateGlyphBindings();var skillArt=CreateSkillArtBindings();var config=PanelAssets.LoadOrCreate();
             config.Get("CharacterGrowth");
             foreach(var name in new[]{"CharacterGrowth","SkillAtlas"})
             {
@@ -51,7 +53,7 @@ namespace ProjectY.Editor
                 try
                 {
                     var style=(StoryGrowthView)root.GetComponent<LuaReference>().Get("Style");
-                    style.SetJournalTheme(glyphs);PrefabUtility.SaveAsPrefabAsset(root,entry.PrefabPath);
+                    style.SetJournalTheme(glyphs);BindSkillArt(root,skillArt);PrefabUtility.SaveAsPrefabAsset(root,entry.PrefabPath);
                 }
                 finally{PrefabUtility.UnloadPrefabContents(root);}
             }
@@ -63,6 +65,75 @@ namespace ProjectY.Editor
             if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("请在 Edit Mode 生成属性图标绑定。");
             PrepareSprites();
             return codes.Select(code=>new StoryGrowthView.GlyphEntry{Code=code,Sprite=sprites[code]}).ToArray();
+        }
+        public static StoryGrowthView.ArtEntry[] CreateSkillArtBindings()
+        {
+            return SkillArt(BattleHUDAssets.CreateIconBindings());
+        }
+        private static StoryGrowthView.ArtEntry[] SkillArt(BattleHUDView.IconEntry[] icons)
+        {
+            var art=icons.Where(icon=>icon.Path!="").GroupBy(icon=>icon.Path,StringComparer.Ordinal)
+                .Select(group=>new StoryGrowthView.ArtEntry{Path=group.Key,Sprite=group.First().Sprite}).ToList();
+            foreach(var profession in JsonUtility.FromJson<Professions>(File.ReadAllText("Config/Tables/Progression/ProfessionTable.json")).rows)
+            {
+                var sprite=AssetDatabase.LoadAssetAtPath<Sprite>(profession.iconPath);
+                if(sprite==null)throw new InvalidOperationException("Missing profession icon Sprite: "+profession.id+" / "+profession.iconPath);
+                art.Add(new StoryGrowthView.ArtEntry{Path=profession.iconPath,Sprite=sprite});
+            }
+            return art.ToArray();
+        }
+        [MenuItem("Project Y/UI/同步职业徽记与节点")]
+        public static void SyncProfessionNodes()
+        {
+            if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Profession UI synchronization requires Edit Mode.");
+            foreach(var profession in JsonUtility.FromJson<Professions>(File.ReadAllText("Config/Tables/Progression/ProfessionTable.json")).rows)
+            {
+                AssetDatabase.ImportAsset(profession.iconPath,ImportAssetOptions.ForceSynchronousImport);
+                var importer=AssetImporter.GetAtPath(profession.iconPath) as TextureImporter;
+                if(importer==null)throw new InvalidOperationException("Missing profession icon texture: "+profession.iconPath);
+                importer.textureType=TextureImporterType.Sprite;importer.spriteImportMode=SpriteImportMode.Single;
+                importer.alphaIsTransparency=true;importer.mipmapEnabled=false;importer.filterMode=FilterMode.Bilinear;
+                importer.textureCompression=TextureImporterCompression.Uncompressed;importer.maxTextureSize=256;importer.SaveAndReimport();
+            }
+            var entry=PanelAssets.LoadOrCreate().Entries.Find(value=>value.Name=="ProfessionNode");
+            if(entry==null)entry=PanelAssets.Save(new PanelDefinition{Name="ProfessionNode",Module="Progression",Kind=UIKind.Widget,Layer="Main",Cache=true},null);
+            PanelAssets.Generate(entry);var root=PrefabUtility.LoadPrefabContents(entry.PrefabPath);
+            try
+            {
+                if(root.transform.childCount==0)ProfessionNode(root);
+                root.GetComponent<LuaReference>().ValidateBindings();PrefabUtility.SaveAsPrefabAsset(root,entry.PrefabPath);
+                LuaViewHints.Export(root.GetComponent<LuaReference>(),entry.ViewType);
+            }
+            finally{PrefabUtility.UnloadPrefabContents(root);}
+            SyncSkillIcons(BattleHUDAssets.CreateIconBindings());AssetDatabase.SaveAssets();
+        }
+        private static void ProfessionNode(GameObject root)
+        {
+            var rect=(RectTransform)root.transform;rect.sizeDelta=new Vector2(144,132);
+            Bind(root,"Border",Paint(rect,Gold,true));
+            var background=Paint(Rect("Background",rect,2,2,140,128),Ink,true);Bind(root,"Background",background);
+            var button=root.AddComponent<Button>();button.targetGraphic=background;button.navigation=new Navigation{mode=Navigation.Mode.None};Bind(root,"Button",button);
+            var icon=Paint(Rect("Icon",rect,32,6,80,80),Color.white);icon.preserveAspect=true;Bind(root,"Icon",icon);
+            var title=Label("Title",rect,"",4,88,136,24,16,Paper);title.alignment=TextAnchor.MiddleCenter;Bind(root,"Title",title);
+            var state=Label("State",rect,"",4,113,136,17,11,new Color(.78f,.70f,.53f));state.alignment=TextAnchor.MiddleCenter;Bind(root,"State",state);
+            var plus=Label("Plus",rect,"+",32,6,80,80,54,new Color(.82f,.69f,.43f));plus.alignment=TextAnchor.MiddleCenter;Bind(root,"Plus",plus);
+        }
+        private static void BindSkillArt(GameObject root,StoryGrowthView.ArtEntry[] icons)
+        {
+            var reference=root.GetComponent<LuaReference>();
+            ((StoryGrowthView)reference.Get("Style")).SetEditorBindings(root.GetComponentsInChildren<Text>(true),icons,(RectTransform)reference.Get("Page"));
+        }
+        public static void SyncSkillIcons(BattleHUDView.IconEntry[] icons)
+        {
+            if(EditorApplication.isPlayingOrWillChangePlaymode)throw new InvalidOperationException("Skill icon binding requires Edit Mode.");
+            var art=SkillArt(icons);var config=PanelAssets.LoadOrCreate();
+            foreach(var entry in config.Entries.Where(value=>value.Name=="CharacterGrowth"||value.Name=="SkillAtlas"))
+            {
+                if(entry.Prefab==null)throw new InvalidOperationException("Missing journal Prefab: "+entry.Name);
+                var root=PrefabUtility.LoadPrefabContents(entry.PrefabPath);
+                try{BindSkillArt(root,art);PrefabUtility.SaveAsPrefabAsset(root,entry.PrefabPath);}
+                finally{PrefabUtility.UnloadPrefabContents(root);}
+            }
         }
         private static string[] ReadGlyphCodes()
         {
@@ -191,7 +262,7 @@ namespace ProjectY.Editor
             Button(root,"PreviousHistory",history,"上一页",674,0,94,30);Button(root,"NextHistory",history,"下一页",781,0,94,30);
             Scroll(root,"HistoryRows",history,0,49,878,328);
             Bind(root,"Hint",Label("Hint",page,"",294,618,878,22,12,Muted));
-            style.SetEditorBindings(root.GetComponentsInChildren<Text>(true),Array.Empty<StoryGrowthView.ArtEntry>(),page);
+            style.SetEditorBindings(root.GetComponentsInChildren<Text>(true),CreateSkillArtBindings(),page);
             style.SetJournalTheme(codes.Select(code=>new StoryGrowthView.GlyphEntry {Code=code,Sprite=sprites[code]}).ToArray());
         }
         private static Button RootButton(GameObject root,float w,float h,Color color)

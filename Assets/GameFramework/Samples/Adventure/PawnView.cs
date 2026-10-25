@@ -87,6 +87,8 @@ namespace ProjectY.Samples
         { if (animated) animationView.Tick(deltaTime, speed, transform); equipmentView?.TickEffects(deltaTime); }
         public void SkipPresentation() { if (animated) animationView.Skip(); }
         public void PlayInteraction(bool talking) {if(animated) animationView.Interact(talking);}
+        public float PreviewAction(int templateId)
+        { return animated ? animationView.PreviewAction(templateId,transform.position+transform.forward) : 0; }
 
         public void ApplyAppearance(PawnAppearanceData appearance, Func<PawnAppearanceData.Part, GameObject> resolve)
         {

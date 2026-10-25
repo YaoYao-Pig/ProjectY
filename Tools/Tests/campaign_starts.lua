@@ -77,7 +77,7 @@ CS = {ProjectY={Data={
         assert(current.flags['flag:campaign_start'] ~= nil, 'Player change listeners must see the opening identity')
         player.Coins = coins
     end},
-    CampaignSaves={NewCampaign=function(saves) saves.id = 'new-slot' end},
+    CampaignSaves={NewCampaign=function(saves, worldName) saves.id = 'new-slot'; saves.worldName = worldName end},
 }}}
 package.loaded['Game.Map.MapRenderSnapshot'] = function(map) return map end
 package.loaded['Game.Presentation.VisualEffects'] = {Clear=function() clearCount = clearCount + 1 end}
@@ -104,13 +104,14 @@ test('preparation remains isolated; commit uses selected recipe and coins and sa
     for _,id in ipairs({1,2}) do
         current = adventureFixture()
         local profile = Starts.Get(config, id)
-        local job = Creation.New(current, '4294967295', 2500, id)
+        local job = Creation.New(current, '4294967295', 2500, id, '晨风群岛')
         assert(job.recipeId == profile.adventureRecipeId and current.buildCount == 0)
         local map = prepare(job)
         assert(map.recipeId == profile.adventureRecipeId and current.player.Coins == 777 and current.startCount == 0)
         assert(current.characterSaves.id == 'old-slot' and current.flags['flag:campaign_start'] == 88)
         local beforeSave, beforeClear = saveCount, clearCount
         local result = Creation.Commit(job)
+        assert(current.characterSaves.worldName == '晨风群岛')
         assert(result.recipeId == profile.adventureRecipeId and result.coins == profile.coins and result.startId == id)
         assert(current.saved.startId == id and current.saved.coins == profile.coins and current.saved.recipeId == profile.adventureRecipeId)
         rejects(function() Creation.Commit(job) end)
@@ -147,13 +148,14 @@ test('loading bridge forwards selection, rejects invalid begin and releases canc
     rejects(function() bridge('step', 1) end)
     bridge('release', 2)
     assert(current.startCount == 0 and current.player.Coins == 777 and current.flags['flag:campaign_start'] == 88)
-    bridge('begin', 3, '42', 2500, 2)
+    bridge('begin', 3, '42', 2500, 2, '桥接世界')
     while true do local done = bridge('step', 3); if done then break end end
     local state = bridge('commit', 3); assert(state.recipeId == 102 and state.startId == 2 and state.coins == 25)
+    assert(current.characterSaves.worldName == '桥接世界')
     rejects(function() bridge('commit', 3) end); bridge('release', 3)
     bridge('begin', 4, '42', 2500)
     while true do local done = bridge('step', 4); if done then break end end
-    assert(bridge('commit', 4).startId == 1); bridge('release', 4)
+    assert(bridge('commit', 4).startId == 1 and current.characterSaves.worldName == ''); bridge('release', 4)
 end)
 
 test('every exported opening resolves its actual party, supplies and automatic equipment', function()

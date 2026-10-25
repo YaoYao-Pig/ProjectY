@@ -2,6 +2,7 @@ local LuaLanguage = require('Language')
 local Class=require('Core.Class')
 local Base=require('UI.UIPanelCtrl')
 local Widgets=require('UI.GrowthWidgets')
+local ProfessionTree=require('UI.ProfessionTree')
 local Growth=Class('CharacterGrowthCtr',Base)
 local function place(rect,x,y,width,height)
     rect.anchoredPosition=CS.UnityEngine.Vector2(x,-y);rect.sizeDelta=CS.UnityEngine.Vector2(width,height)
@@ -10,41 +11,71 @@ function Growth:Bind()
     self.system=self.context.systems:Get('Growth');self.rules=self.system.rules;self.stats=self.system.stats
     self.appearance=require('Game.Adventure.PawnAppearance').New(self.context.systems:Get('Config'))
     self.view.Style:Prepare();self.nodes,self.edges={},{}
+    self.courseNodes,self.courseEdges,self.courseHeaders={},{},{}
+    self.professionNodes,self.professionEdges,self.professionHeaders={},{},{}
     self:Listen(self.view.Close,function() self:Close() end)
     self:Listen(self.view.Atlas,function()
         local demo=self.demo;local resume={actorIndex=self.actorIndex,tab=self.tab,skillMode=self.skillMode,
-            treeIndex=self.treeIndex,selectedNode=self.selectedNode,selectedCourse=self.selectedCourse}
+            treeIndex=self.treeIndex,selectedNode=self.selectedNode,selectedCourse=self.selectedCourse,
+            professionPage=self.professionPage,selectedProfession=self.selectedProfession}
         self:Close();self.context.systems:Get('UI'):Open('SkillAtlas',{demo=demo,actorIndex=resume.actorIndex,returnTo=resume})
     end)
     for i=1,4 do self:Listen(self.view['Party'..i],function()
-        self.actorIndex=i-1;self.historyPage=1;self.selectedNode=nil;self.selectedCourse=nil;self.treeIndex=nil;self.choosingProfession=false;self:Refresh()
+        self.actorIndex=i-1;self.historyPage=1;self.selectedNode=nil;self.selectedCourse=nil;self.selectedProfession=nil;self.treeIndex=nil;self:Refresh();self:ResetGraph()
     end) end
-    for _,key in ipairs({'Overview','Skills','History'}) do self:Listen(self.view[key..'Tab'],function() self.tab=key;self:Refresh() end) end
-    self:Listen(self.view.PreviousTree,function() self.skillMode='profession';self:Refresh();self.view.SkillRowsScroll.verticalNormalizedPosition=1 end)
-    self:Listen(self.view.NextTree,function() self.skillMode='talent';self:Refresh();self.view.SkillRowsScroll.verticalNormalizedPosition=1 end)
+    for _,key in ipairs({'Overview','Skills','History'}) do self:Listen(self.view[key..'Tab'],function()
+        self.tab=key;self:Refresh();if key=='Skills' then self:ResetGraph() end
+    end) end
+    self:Listen(self.view.PreviousTree,function() self.skillMode='profession';self:SetProfessionPage('courses') end)
+    self:Listen(self.view.NextTree,function() self.skillMode='talent';self:Refresh();self:ResetGraph();self.view.SkillRowsScroll.verticalNormalizedPosition=1 end)
     self:Listen(self.view.PreviousHistory,function() self.historyPage=self.historyPage-1;self:Refresh() end)
     self:Listen(self.view.NextHistory,function() self.historyPage=self.historyPage+1;self:Refresh() end)
     self:Listen(self.view.Invest,function()
         if self.skillMode=='talent' and self.selectedNode then self:Command('growth_talent',self.selectedNode)
-        elseif self.skillMode=='profession' and not self.choosingProfession and self.selectedCourse then self:Command('growth_skill',self.selectedCourse) end
+        elseif self.skillMode=='profession' then
+            if self.professionPage=='grid' and self.selectedProfession then self:Command('growth_profession',self.selectedProfession)
+            elseif self.professionPage=='tree' then self:SetProfessionPage('grid')
+            elseif self.professionPage=='courses' and self.selectedCourse then self:Command('growth_skill',self.selectedCourse) end
+        end
     end)
     self.view.OverviewTabText.text=LuaLanguage.UICharacterGrowthOverviewTabTextText;self.view.SkillsTabText.text=LuaLanguage.UICharacterGrowthSkillsTabTextText;self.view.HistoryTabText.text=LuaLanguage.UICharacterGrowthHistoryTabTextText
     self.view.AtlasText.text=LuaLanguage.UICharacterGrowthAtlasTextText;self.view.PreviousTreeText.text=LuaLanguage.UICharacterGrowthPreviousTreeTextText;self.view.NextTreeText.text=LuaLanguage.UICharacterGrowthNextTreeTextText
     place(self.view.PreviousTree.transform,0,0,126,29);place(self.view.NextTree.transform,136,0,126,29)
+    place(self.view.PreviousTreeText.rectTransform,8,0,110,29);place(self.view.NextTreeText.rectTransform,8,0,110,29)
     place(self.view.TreeTitle.rectTransform,278,0,292,29)
+end
+function Growth:ResetGraph()
+    self.view.GraphScroll:StopMovement();self.view.Graph.anchoredPosition=CS.UnityEngine.Vector2(math.min(0,(570-self.view.Graph.sizeDelta.x)/2),0)
 end
 function Growth:OnShow(args)
     self.demo=assert(args.demo);self.demo:SetGrowthOpen(true)
     self.actorIndex,self.treeIndex,self.historyPage,self.tab,self.selectedNode=args.actorIndex or 0,args.treeIndex,1,args.tab or 'Overview',args.selectedNode
     self.skillMode,self.selectedCourse=args.skillMode or 'profession',args.selectedCourse
-    self.choosingProfession=false
-    self:Refresh()
+    self.professionPage,self.selectedProfession=args.professionPage or 'courses',args.selectedProfession
+    self.choosingProfession=self.professionPage~='courses';self.previewSkill=nil
+    self:Refresh();self:ResetGraph()
     self.view.SkillRowsScroll.verticalNormalizedPosition=1
+end
+function Growth:SetProfessionPage(page)
+    assert(page=='courses' or page=='tree' or page=='grid','Invalid profession page')
+    self.professionPage=page;self.choosingProfession=page~='courses';self.selectedProfession=nil
+    self:Refresh();self:ResetGraph();self.view.SkillRowsScroll.verticalNormalizedPosition=1
+end
+function Growth:OpenProfession(id)
+    assert(self.actor.Growth:HasProfession(id),'Profession must be joined before opening its branch')
+    if self.actor.Growth.CurrentProfessionId==id then self:SetProfessionPage('courses')
+    else self:Command('growth_profession',id) end
+end
+function Growth:SelectCourse(id)
+    self.selectedCourse=id;self.previewSkill=id;self:Refresh()
 end
 function Growth:Command(command,id)
     self.demo:SendCommand(command,self.actor.Id,id)
-    if command=='growth_profession' then self.treeIndex=nil;self.selectedNode=nil;self.selectedCourse=nil end
-    if self.visible then self:Refresh() end
+    if command=='growth_profession' and self.actor.Growth.CurrentProfessionId==id then
+        self.treeIndex=nil;self.selectedNode=nil;self.selectedCourse=nil;self.selectedProfession=nil
+        self.professionPage='courses';self.choosingProfession=false
+    end
+    if self.visible then self:Refresh();if command=='growth_profession' then self:ResetGraph() end end
 end
 function Growth:Refresh()
     local data=self.system.data
@@ -63,14 +94,22 @@ function Growth:Refresh()
     self.view.HeroExperience.text=nextLevel and (string.format(LuaLanguage.UICharacterGrowthHeroExperienceText2, (growth.Experience), (nextLevel.experience))) or LuaLanguage.UICharacterGrowthHeroExperienceText
     self.view.ExperienceFill.sizeDelta=CS.UnityEngine.Vector2(210*(nextLevel and math.min(1,growth.Experience/nextLevel.experience) or 1),3)
     self.view.Summary.text=string.format(LuaLanguage.UICharacterGrowthSummaryText, (growth.AttributePoints), (growth.TalentPoints), (growth.PendingCount), (growth.LockedPotential))
-    self.view.Character:Show(self.appearance:Template(actor.TemplateId,self.stats.equipment:ActorVisual(actor)))
+    local appearance=self.appearance:Template(actor.TemplateId,self.stats.equipment:ActorVisual(actor))
+    if self.previewSkill then
+        local id=self.previewSkill;local skill=self.context.systems:Get('Battle'):Skill(actor,id)
+        local effects=self.context.systems:Get('Config'):GetTable('VisualEffectTable')
+        appearance.skillPreview={id=id,actionTemplate=skill.actionTemplate,shots=skill.shots,trajectory=skill.trajectory,
+            selfTarget=skill.target=='self',profile=effects:Get(self.rules.skills:Get(id).visualEffectId)}
+        self.previewSkill=nil
+    end
+    self.view.Character:Show(appearance)
     for _,key in ipairs({'Overview','Skills','History'}) do
         self.view[key].gameObject:SetActive(self.tab==key);self.view.Style:Highlight(self.view[key..'Tab'],self.tab==key)
         self.view[key..'TabText'].color=self.tab==key and CS.UnityEngine.Color(.91,.87,.77,1) or CS.UnityEngine.Color(.20,.24,.21,1)
     end
     if self.tab=='Overview' then self:Overview() elseif self.tab=='Skills' then self:Skills() else self:History() end
     local hints={Overview=LuaLanguage.UICharacterGrowthOverview,
-        Skills=self.skillMode=='talent' and LuaLanguage.UICharacterGrowthSkills2 or LuaLanguage.UICharacterGrowthSkills,
+        Skills=self.skillMode=='talent' and LuaLanguage.UICharacterGrowthSkills2 or (self.professionPage=='tree' and LuaLanguage.GrowthProfessionTreeHint or (self.professionPage=='grid' and LuaLanguage.GrowthProfessionGridHint or LuaLanguage.UICharacterGrowthSkills)),
         History=LuaLanguage.UICharacterGrowthHistory}
     self.view.Hint.text=self.demo.LastError~='' and self.demo.LastError or hints[self.tab]
     self.revision,self.count,self.socialRevision=growth.Revision,data.JournalCount,data.PartyBonds.Revision
@@ -94,17 +133,36 @@ function Growth:Overview()
 end
 function Growth:Skills()
     local passive=self.skillMode=='talent'
+    self.choosingProfession=self.professionPage~='courses'
+    local chooser=not passive and self.choosingProfession
     self.view.Style:Highlight(self.view.PreviousTree,not passive);self.view.Style:Highlight(self.view.NextTree,passive)
     self.view.PreviousTreeText.color=not passive and CS.UnityEngine.Color(.91,.87,.77,1) or CS.UnityEngine.Color(.20,.24,.21,1)
     self.view.NextTreeText.color=passive and CS.UnityEngine.Color(.91,.87,.77,1) or CS.UnityEngine.Color(.20,.24,.21,1)
-    self.view.GraphScroll.gameObject:SetActive(passive);self.view.SkillTitle.gameObject:SetActive(passive)
+    self.view.GraphScroll.gameObject:SetActive(true);self.view.GraphScroll.horizontal=not chooser;self.view.SkillTitle.gameObject:SetActive(passive)
+    if passive or chooser then
+        for _,widget in ipairs(self.courseNodes) do widget:SetSkillData(nil) end
+        for _,widget in ipairs(self.courseEdges) do widget:SetBranch(nil) end
+        for _,widget in ipairs(self.courseHeaders) do widget:SetData(nil) end
+        if self.courseProfessionRoot then self.courseProfessionRoot:SetData(nil) end
+    end
+    if not chooser then
+        for _,widget in ipairs(self.professionNodes) do widget:SetData(nil) end
+        for _,widget in ipairs(self.professionEdges) do widget:SetBranch(nil) end
+        for _,widget in ipairs(self.professionHeaders) do widget:SetData(nil) end
+    end
+    if not passive then
+        for _,widget in ipairs(self.nodes) do widget:SetData(nil) end
+        for _,widget in ipairs(self.edges) do widget:SetData(nil) end
+    end
     local scroll=self.view.SkillRowsScroll
-    place(scroll.transform,passive and 607 or 0,passive and 207 or 40,passive and 267 or 570,passive and 170 or 337)
-    place(scroll.viewport,0,0,passive and 267 or 570,passive and 170 or 337)
-    self.view.SkillRows.sizeDelta=CS.UnityEngine.Vector2(passive and 267 or 570,self.view.SkillRows.sizeDelta.y)
-    place(self.view.TalentDetail.rectTransform,607,39,268,passive and 68 or 255)
-    place(self.view.Invest.transform,607,passive and 116 or 332,267,35)
-    if passive then self:Talents() else self:Courses() end
+    scroll.gameObject:SetActive(not chooser)
+    local x,y,width,height=607,293,267,84
+    if passive then y,height=207,170 elseif chooser then x,y,width,height=0,40,570,337 end
+    place(scroll.transform,x,y,width,height);place(scroll.viewport,0,0,width,height)
+    self.view.SkillRows.sizeDelta=CS.UnityEngine.Vector2(width,self.view.SkillRows.sizeDelta.y)
+    place(self.view.TalentDetail.rectTransform,607,39,268,passive and 68 or (chooser and 255 or 194))
+    place(self.view.Invest.transform,607,passive and 116 or (chooser and 332 or 243),267,35)
+    if passive then self:Talents() elseif chooser then self:ProfessionBrowser() else self:Courses() end
 end
 function Growth:Talents()
     local actor=self.actor;local all=self.rules.trees:All()
@@ -151,37 +209,23 @@ function Growth:Courses()
     local professions=self.rules.professions
     local current=professions.professions:Get(growth.CurrentProfessionId)
     self.view.TreeTitle.text=string.format(LuaLanguage.UICharacterGrowthTreeTitleText, (current.name), (growth.PendingCount))
-    rows[#rows+1]={command='choose_profession',title=self.choosingProfession and LuaLanguage.UICharacterGrowthTitle8 or LuaLanguage.UICharacterGrowthTitle7,
-        body=LuaLanguage.UICharacterGrowthBody6,color='354739'}
-    if self.choosingProfession then
-    self.view.TalentName.text=LuaLanguage.UICharacterGrowthTalentNameText3;self.view.TalentDetail.text=LuaLanguage.UICharacterGrowthTalentDetailText4
-    self.view.Invest.interactable=false;self.view.InvestText.text=LuaLanguage.UICharacterGrowthInvestTextText6
-    for _,profession in ipairs(professions.professions:All()) do
-        local selected=profession.id==growth.CurrentProfessionId
-        rows[#rows+1]={id=profession.id,command='growth_profession',title=(selected and LuaLanguage.UICharacterGrowthTitle6 or LuaLanguage.UICharacterGrowthTitle5)..profession.name,
-            body=string.format(LuaLanguage.UICharacterGrowthBody5, (profession.description)),available=not selected,color='354739'}
-    end
-    else
-    local courses={}
-    for _,course in ipairs(professions.courses:All()) do if course.professionId==growth.CurrentProfessionId then
-        local row=self.rules.skills:Get(course.skillId);local available,reason=professions:CanLearn(actor,row.id,self.stats,self.rules.atlas)
-        local owned=growth:HasSkill(row.id)
-        for _,id in ipairs(self.stats:Template(actor).skillIds) do if id==row.id then owned=true end end
-        courses[#courses+1]={id=row.id,command='select_course',title=(owned and LuaLanguage.UICharacterGrowthTitle4 or (available and LuaLanguage.UICharacterGrowthTitle3 or LuaLanguage.UICharacterGrowthTitle2))..row.name,
-            body=(row.skillKind=='preparation' and LuaLanguage.UICharacterGrowthBody4 or LuaLanguage.UICharacterGrowthBody3)..reason..'\n'..row.description,
-            order=owned and 3 or (available and 1 or 2),color=available and '805723' or '354739'}
-    end end
-    table.sort(courses,function(a,b) return a.order==b.order and a.id<b.id or a.order<b.order end)
-    for _,row in ipairs(courses) do rows[#rows+1]=row end
-    local shown={};for _,row in ipairs(courses) do shown[row.id]=true end
+    self.courseTree=ProfessionTree.Build(professions,self.rules.atlas,growth.CurrentProfessionId)
+    local shown=self.courseTree.byId
     local owned=self.rules.atlas:Owned(actor,self.stats)
     for _,id in ipairs(self.stats.equipment:SkillIds(actor,self.stats:Template(actor))) do if not shown[id] then
         local row=self.rules.skills:Get(id);local _,source=self.rules.atlas:State(id,actor,self.stats,owned)
         rows[#rows+1]={id=id,command='select_course',title=source..' · '..row.name,body=row.description,color='354739'}
     end
     end
-    local found=false;for _,row in ipairs(rows) do if row.command=='select_course' and row.id==self.selectedCourse then found=true end end
-    if not found then self.selectedCourse=rows[2] and rows[2].id end
+    local found=shown[self.selectedCourse]~=nil;for _,row in ipairs(rows) do if row.command=='select_course' and row.id==self.selectedCourse then found=true end end
+    if not found then
+        self.selectedCourse=nil
+        for _,node in ipairs(self.courseTree.nodes) do
+            if node.course and professions:CanLearn(actor,node.id,self.stats,self.rules.atlas) then self.selectedCourse=node.id;break end
+        end
+        if not self.selectedCourse then self.selectedCourse=self.courseTree.nodes[1] and self.courseTree.nodes[1].id or (rows[1] and rows[1].id) end
+    end
+    self:CourseGraph(owned)
     for _,row in ipairs(rows) do if row.command=='select_course' and row.id==self.selectedCourse then row.title='› '..row.title end end
     if self.selectedCourse then
         local skill=self.rules.skills:Get(self.selectedCourse);local available,reason=professions:CanLearn(actor,skill.id,self.stats,self.rules.atlas)
@@ -189,17 +233,122 @@ function Growth:Courses()
         local kind=skill.skillKind=='preparation' and LuaLanguage.UICharacterGrowthKind2 or LuaLanguage.UICharacterGrowthKind
         local condition=self.rules.atlas:EquipmentCondition(skill,actor,self.stats)
         self.view.TalentDetail.text=string.format(LuaLanguage.UICharacterGrowthTalentDetailText3, (kind), (reason), (skill.description), (condition and '\n\n'..condition or ''))
+        local node=self.rules.atlas.nodes:Get(skill.id)
+        if #node.prerequisiteIds>0 then
+            local names={};for _,id in ipairs(node.prerequisiteIds) do names[#names+1]=self.rules.skills:Get(id).name end
+            local title=node.prerequisiteMode=='all' and LuaLanguage.UISkillAtlasPrerequisiteTitleText2 or LuaLanguage.UISkillAtlasPrerequisiteTitleText
+            self.view.TalentDetail.text=self.view.TalentDetail.text..'\n\n'..title..'\n'..table.concat(names,' / ')
+        end
         self.view.Invest.interactable=available;self.view.InvestText.text=available and LuaLanguage.UICharacterGrowthInvestTextText5 or (growth:HasSkill(skill.id) and LuaLanguage.UICharacterGrowthInvestTextText4 or LuaLanguage.UICharacterGrowthInvestTextText3)
     else
         self.view.TalentName.text=LuaLanguage.UICharacterGrowthTalentNameText2;self.view.TalentDetail.text=LuaLanguage.UICharacterGrowthTalentDetailText2
         self.view.Invest.interactable=false;self.view.InvestText.text=LuaLanguage.UICharacterGrowthInvestTextText2
     end
-    end
     Widgets.Rows(self,'SkillRows','JournalSkill',rows,function(row)
-        if row.command=='choose_profession' then self.choosingProfession=not self.choosingProfession;self:Refresh();self.view.SkillRowsScroll.verticalNormalizedPosition=1
-        elseif row.command=='select_course' then self.selectedCourse=row.id;self:Refresh()
-        elseif row.command then self.choosingProfession=false;self:Command(row.command,row.id) end
+        if row.command=='select_course' then self:SelectCourse(row.id) end
     end)
+end
+function Growth:ProfessionBrowser()
+    local growth=self.actor.Growth;local all=self.rules.professions.professions:All();local grid=self.professionPage=='grid'
+    local rows={}
+    if grid then
+        for _,profession in ipairs(all) do if not growth:HasProfession(profession.id) then rows[#rows+1]=profession end end
+        if self.selectedProfession and growth:HasProfession(self.selectedProfession) then self.selectedProfession=nil end
+    else
+        for i=0,growth.ProfessionCount-1 do rows[#rows+1]=self.rules.professions.professions:Get(growth:GetProfessionAt(i)) end
+        if growth.ProfessionCount<#all then rows[#rows+1]={id=0,name=LuaLanguage.GrowthAddProfession} end
+    end
+    self.view.TreeTitle.text=grid and LuaLanguage.GrowthChooseProfession or string.format(LuaLanguage.GrowthProfessionTreeTitle,growth.ProfessionCount)
+    local headers={
+        {title=grid and LuaLanguage.GrowthBackProfessionTree or LuaLanguage.GrowthBackSkillTree,detail='',x=68,y=26,width=124,action=function()self:SetProfessionPage(grid and 'tree' or 'courses')end},
+    }
+    if not grid then headers[2]={title=self.view.Title.text,detail=string.format(LuaLanguage.GrowthStudyingProfession,self.rules.professions.professions:Get(growth.CurrentProfessionId).name),x=285,y=26,width=170} end
+    for i,row in ipairs(headers) do
+        if not self.professionHeaders[i] then self.professionHeaders[i]=self:CreateWidget('SkillAtlasCategory',self.view.Graph) end
+        local widget=self.professionHeaders[i];widget:SetData(row.title,row.detail,self.view.Style,i==2,row.action)
+        widget.view.Button.enabled=row.action~=nil
+        local rect=widget.view.Root;rect.anchorMin,rect.anchorMax=CS.UnityEngine.Vector2(0,1),CS.UnityEngine.Vector2(0,1);rect.pivot=CS.UnityEngine.Vector2(.5,.5)
+        place(rect,row.x,row.y,row.width,row.detail=='' and 44 or 54)
+        widget.view.Detail.gameObject:SetActive(row.detail~='')
+        place(widget.view.Title.rectTransform,8,0,-16,row.detail=='' and 44 or 28)
+        widget.view.Title.alignment=CS.UnityEngine.TextAnchor.MiddleCenter
+    end
+    for i=#headers+1,#self.professionHeaders do self.professionHeaders[i]:SetData(nil) end
+    local edges={};local firstY=grid and 124 or 156;local step=grid and 148 or 166
+    for i,profession in ipairs(rows) do
+        local rowIndex=math.floor((i-1)/3);local columns=math.min(3,#rows-rowIndex*3)
+        local x=285+((i-1)%3-(columns-1)/2)*180;local y=firstY+rowIndex*step
+        local row={id=profession.id,name=profession.name,iconPath=profession.iconPath,x=x,y=y}
+        if not self.professionNodes[i] then self.professionNodes[i]=self:CreateWidget('ProfessionNode',self.view.Graph) end
+        local selected=grid and self.selectedProfession==row.id or (not grid and growth.CurrentProfessionId==row.id)
+        local label=row.id==0 and LuaLanguage.GrowthChooseNewProfession or (grid and LuaLanguage.GrowthAvailableProfession or (selected and LuaLanguage.GrowthCurrentProfession or LuaLanguage.GrowthJoinedProfession))
+        self.professionNodes[i]:SetData(row,self.view.Style,selected,label,function(id)
+            if id==0 then self:SetProfessionPage('grid')
+            elseif grid then self.selectedProfession=id;self:Refresh()
+            else self:OpenProfession(id) end
+        end)
+        if not grid then
+            local branchStart=#rows<=3 and 285-(columns-1)*90 or 14
+            edges[#edges+1]={from={x=branchStart,y=y-80},to={x=x,y=y-80}}
+            edges[#edges+1]={from={x=x,y=y-80},to={x=x,y=y-66}}
+        end
+    end
+    for i=#rows+1,#self.professionNodes do self.professionNodes[i]:SetData(nil) end
+    if not grid and #rows>0 then
+        edges[#edges+1]={from={x=285,y=53},to={x=285,y=76}}
+        if #rows>3 then
+            edges[#edges+1]={from={x=14,y=76},to={x=285,y=76}}
+            edges[#edges+1]={from={x=14,y=76},to={x=14,y=76+math.floor((#rows-1)/3)*step}}
+        end
+    end
+    for i,row in ipairs(edges) do
+        if not self.professionEdges[i] then self.professionEdges[i]=self:CreateWidget('TalentEdge',self.view.Graph) end
+        self.professionEdges[i]:SetBranch(row.from,row.to,self.view.Style,false,false);self.professionEdges[i].view.Root:SetAsFirstSibling()
+    end
+    for i=#edges+1,#self.professionEdges do self.professionEdges[i]:SetBranch(nil) end
+    self.view.Graph.sizeDelta=CS.UnityEngine.Vector2(570,math.max(342,firstY+math.floor(math.max(0,#rows-1)/3)*step+82))
+    local selected=grid and self.selectedProfession and self.rules.professions.professions:Get(self.selectedProfession)
+    self.view.TalentName.text=selected and selected.name or (grid and LuaLanguage.GrowthChooseProfession or LuaLanguage.GrowthProfessionOverview)
+    self.view.TalentDetail.text=selected and string.format(LuaLanguage.GrowthJoinProfessionDetail,selected.description) or (grid and (#rows==0 and LuaLanguage.GrowthAllProfessionsJoined or LuaLanguage.GrowthProfessionGridDetail) or LuaLanguage.GrowthProfessionTreeDetail)
+    self.view.Invest.interactable=grid and self.selectedProfession~=nil or (not grid and growth.ProfessionCount<#all)
+    self.view.InvestText.text=grid and LuaLanguage.GrowthJoinProfession or LuaLanguage.GrowthAddProfession
+end
+function Growth:CourseGraph(owned)
+    local tree=self.courseTree;local style=self.view.Style
+    self.view.Graph.sizeDelta=CS.UnityEngine.Vector2(tree.width,tree.height)
+    local profession=tree.headers[1];profession.iconPath=self.rules.professions.professions:Get(profession.id).iconPath
+    if not self.courseProfessionRoot then self.courseProfessionRoot=self:CreateWidget('ProfessionNode',self.view.Graph) end
+    self.courseProfessionRoot:SetData(profession,style,true,'',function()self:SetProfessionPage('tree')end,true)
+    for i=2,#tree.headers do
+        local row=tree.headers[i];local index=i-1
+        if not self.courseHeaders[index] then self.courseHeaders[index]=self:CreateWidget('SkillAtlasCategory',self.view.Graph) end
+        local widget=self.courseHeaders[index]
+        widget:SetData(row.name,'',style,false,nil)
+        widget.view.Button.enabled=false
+        local rect=widget.view.Root;rect.anchorMin,rect.anchorMax=CS.UnityEngine.Vector2(0,1),CS.UnityEngine.Vector2(0,1)
+        rect.pivot=CS.UnityEngine.Vector2(.5,.5);rect.anchoredPosition=CS.UnityEngine.Vector2(row.x,-row.y);rect.sizeDelta=CS.UnityEngine.Vector2(132,44)
+        place(widget.view.Title.rectTransform,8,0,-16,44);widget.view.Title.alignment=CS.UnityEngine.TextAnchor.MiddleCenter
+        widget.view.Detail.gameObject:SetActive(false)
+    end
+    for i=#tree.headers,#self.courseHeaders do self.courseHeaders[i]:SetData(nil) end
+    for i,row in ipairs(tree.edges) do
+        if not self.courseEdges[i] then self.courseEdges[i]=self:CreateWidget('TalentEdge',self.view.Graph) end
+        local widget=self.courseEdges[i]
+        widget:SetBranch(row.from,row.to,style,row.fromId~=nil and owned[row.fromId] and owned[row.toId] or false,row.fromId~=nil)
+        widget.view.Root:SetAsFirstSibling()
+    end
+    for i=#tree.edges+1,#self.courseEdges do self.courseEdges[i]:SetBranch(nil) end
+    for i,node in ipairs(tree.nodes) do
+        if not self.courseNodes[i] then self.courseNodes[i]=self:CreateWidget('TalentNode',self.view.Graph) end
+        local state,label=self.rules.atlas:State(node.id,self.actor,self.stats,owned)
+        if not owned[node.id] and node.course then
+            local available=self.rules.professions:CanLearn(self.actor,node.id,self.stats,self.rules.atlas)
+            label=available and LuaLanguage.GrowthCourseAvailable or (state=='eligible' and LuaLanguage.GrowthCourseNoOpportunity or LuaLanguage.GrowthCourseLocked)
+            state=available and 'eligible' or 'locked'
+        elseif not owned[node.id] then label=LuaLanguage.GrowthCourseOtherProfession end
+        self.courseNodes[i]:SetSkillData(node,self.rules.skills:Get(node.id),state,label,style,self.selectedCourse==node.id,function(id) self:SelectCourse(id) end)
+    end
+    for i=#tree.nodes+1,#self.courseNodes do self.courseNodes[i]:SetSkillData(nil) end
 end
 function Growth:History()
     local all=self.system.chronicle:Rows(self.actor.Id);local pages=math.max(1,math.ceil(#all/8))
@@ -212,5 +361,5 @@ function Growth:History()
     Widgets.Rows(self,'HistoryRows','JournalEntry',rows)
 end
 function Growth:Tick() if self.revision~=self.actor.Growth.Revision or self.count~=self.system.data.JournalCount or self.socialRevision~=self.system.data.PartyBonds.Revision then self:Refresh() end end
-function Growth:OnHide() self.view.Character:ReleasePreview();if self.demo then self.demo:SetGrowthOpen(false);self.demo=nil end end
+function Growth:OnHide() self.previewSkill=nil;self.view.Character:ReleasePreview();if self.demo then self.demo:SetGrowthOpen(false);self.demo=nil end end
 return Growth

@@ -10,10 +10,11 @@
 | 设计盘点、玩法差距、未实现、待办、职业划分、自由转职、跨职业学习、主动选学、触媒、专精、战前部署、准备技能、部署道具、直射、抛射、开发顺序 | [玩法设计与实现差距清单](../Docs/GameplayGapAudit.md)（2026-10-11 盘点，2026-10-13 补充职业、触媒与战前部署设计；含未来方案，不替代模块当前契约） |
 | 职业触媒部署验收、联合存档、基础玩法迭代、Play 验收、准备道具 | [基础玩法迭代验收](../Docs/GameplayFoundationIteration.md)（已执行范围与复验入口） |
 | 新职业、技能扩展、兼职联动、炼金师、吟游诗人、神官、咒术师、决斗家、驯兽师 | [职业战斗契约](Business/ProfessionCombat.md)、[职业探索与单挑](Business/ProfessionExploration.md)、[设计依据](../Docs/ProfessionExpansionDesign.md)；动物指令见动物模块 |
+| 内容接入复盘、启动报错、缺交易价格、独立特效重复、挂点数量不一致、共享Prefab、防回归 | [内容接入报错复盘](../Docs/ContentIntegrationErrorsPostmortem.md)（2026-10-25三项错误的原因、修复证据与验证缺口） |
 | 营地关系战利品验收、技能图标异常、入口整理、v6验收、待同步资源 | [营地／关系／战利品迭代](../Docs/GameplayExpansionIteration.md)（源码与数据层结果，原生资源及本轮实机验收尚未完成） |
 | LuaConsole、Python、运行时注入、执行片段、调试控制台 | [LuaConsole](Tools/LuaConsole.md) |
 | 3C、相机、镜头、拖拽、平移、旋转、缩放、角色跟随、StrategyCameraRig | [俯视镜头与操控](Business/CameraControls.md) |
-| GM、GMSystem、GM 面板、F8、指定槽位升级、按技能 ID 获取技能、查找 NPC、NPC 搜索、传送定位、开全图、全图视野 | [GM 调试系统](Tools/GM.md) |
+| GM、GMSystem、GM 面板、F8、指定槽位升级、按技能 ID 获取技能、查找 NPC、NPC 搜索、传送定位、开全图、全图视野、秒杀、点选目标、投骰子、骰子组合 | [GM 调试系统](Tools/GM.md) |
 | Blender、MCP、建模、FBX、贴图、材质、模型导入、Prefab | [Blender 资源管线](Tools/Blender.md) |
 | 大地图美术、low-poly、低多边形、模型风格、地块模型、民居模型、中世纪城堡、森林树、雪松、地牢模型、七格平台、MapLowPoly | [地图模型资源](Business/MapArt.md) |
 | 事件插图、剧情配图、冒险者插画、平涂、细线、漫画、去脏纹理、插画风格 | [事件插画风格 Skill](../.agents/skills/event-illustration-style/SKILL.md) |
@@ -21,7 +22,7 @@
 | 启动、LuaSystem、注册、Tick、require、Lua 文件、构建、xLua 桥接、退出 | [运行时](Framework/Runtime.md) |
 | URP、渲染管线、后处理、像素风、PixelArt、色阶、抖色、奇幻光影、MedievalFantasy、WarmFantasy、丁达尔、光束、天空、薄雾、体积光、HDR、F9、风格切换、SSAO、Bloom、阴影、材质迁移、离屏相机 | [渲染管线](Framework/Rendering.md) |
 | Panel、Widget、MVC、LuaReference、UIRoot、WorldUIRoot、WorldUI、AnimationWrap、UI 动效、按名称播放、暂停、场景切换 | [UI](Framework/UI.md) |
-| Loading、Loding、加载界面、进度条、创建世界加载、建议、骚话、随机文案 | [Loading](Framework/Loading.md) |
+| Loading、Loding、加载界面、进度条、创建世界加载、加载世界、读档进度、建议、骚话、随机文案 | [Loading](Framework/Loading.md) |
 | UIScrollList、无限滚动、虚拟列表、ScrollRect、CellTemplate、多模板、可变尺寸、列表复用 | [UIScrollList](Framework/UIScrollList.md) |
 | JSON 表、导表、二进制、读表、公式、枚举、常量、Catalog、C# 查表、_Gen、生成目录、产物迁移 | [配置管线](Framework/Config.md) |
 | Condition、条件组合、all、any、not、前置、后置、条件类型扩展 | [共享条件](Framework/Condition.md) |
@@ -48,13 +49,13 @@
 | 工具性武器、武器标签、斧子、镐子、铲子、撬棍、清障、石堆、木箱、土堆、开锁 | [工具武器与临时障碍](Business/ToolWeapons.md) |
 | 商队、游荡敌人、追击、强盗、巨狼、岩石巨兽、队伍棋子、旗帜、双向交易、WorldParties | [大地图可见队伍](Business/WorldParties.md) |
 | 传奇生物、传奇人类、传奇特性、固定具名、友好生物、战前交流、和解、传奇委托、LegendaryEncounter | [传奇生物与具名人物](Business/Legends.md) |
-| 势力、组织关系、外交、实力、兽人劫掠、树精灵、据点攻陷、解放、恢复、三方混战、黄色第三方 | [势力关系与大地图冲突](Business/Factions.md) |
+| 势力、组织关系、关系树、势力 UI、势力发现、首次目击、未知势力、外交、实力、兽人劫掠、树精灵、据点攻陷、解放、恢复、三方混战、黄色第三方 | [势力关系与大地图冲突](Business/Factions.md) |
 | 关系LOD、模拟LOD、渲染LOD、三级分级、100ms、相机外实例、视锥、模型池、摘要行程、远方结算 | [世界模拟与渲染 LOD](Business/WorldLOD.md) |
 | 战争迷雾、雾 Shader、流动雾、WorldFog、大地图探索、已探索灰色、探索存档 | [世界探索与战争迷雾](Business/WorldFog.md) |
 | 大地图旅行、行军、路线、改路、旅行暂停、倍速、沿途事件、随机遇敌、随机战场、WorldTravel | [大地图旅行与随机遭遇](Business/WorldTravel.md) |
 | Adventure、探索事件、触发路径、设施交易、配件获取、选择、条件、营地、远征 Demo、战斗结算 | [探索事件与远征](Business/Adventure.md) |
 | 特殊事件、骑士审判、神秘逃兵、比武审判、城镇周边、专属事件地图、支援盟军、受伤入队、定时恢复 | [特殊事件与招募](Business/SpecialEvents.md) |
-| Growth、养成、升级、经验、属性加点、被动、网状天赋、技能池、潜力、经历、特质标签、CharacterGrowth、技艺图谱、技能浏览、两级分类、SkillAtlas、技能前置、技能 Tips | [角色养成与经历](Business/Progression.md) |
+| Growth、养成、升级、经验、属性加点、被动、网状天赋、技能池、潜力、经历、特质标签、CharacterGrowth、职业徽记、兼职网格、技艺图谱、技能浏览、两级分类、SkillAtlas、技能前置、技能 Tips | [角色养成与经历](Business/Progression.md) |
 | 动物、动物亲和、魅力、驯服、中立、黄色框、坐骑、亲密度、骑兵、冲击、飞扑、跳跃、森林小地图、哥布林刷新 | [森林动物与骑乘](Business/Animals.md) |
 | 主角小队、战棋棋子、人物模型、圆形底座、模块化装备、武器挂点、PawnLowPoly | [小队棋子资源](Business/PawnArt.md) |
 | 动画、动作、骨骼、Humanoid、Avatar、蒙皮、Quaternius、UAL、双手握点、倒地 | [棋子动画](Business/PawnAnimation.md) |
@@ -63,7 +64,7 @@
 | 角色样貌、二次元、杏仁眼、发束、头脸、网格破面、拓扑更新 | [角色定制](Business/PawnCustomization.md) |
 | 建筑优化、木筋房、风车、磨坊、谷仓、麦田、稻草人、TownStylized | [城镇建筑美术](Business/TownArt.md) |
 | 所有建筑可进入、装饰建筑、住宅室内、多门、门楼塔房、TownOpenBuildings | [城镇街区与漫游](Business/TownArea.md) |
-| 开始菜单、StartMenu、开场身世、12种开场、CampaignStart、基础武器、开局物资、种子输入、世界大小、多存档、选择存档、继续游戏、保存远征、随机开局、探索存档、角色存档、保存队伍、读取队伍、背包存档、磁盘保存 | [远征与角色存档](Business/CharacterSave.md) |
+| 开始菜单、StartMenu、世界命名、世界名称、开场身世、12种开场、CampaignStart、基础武器、开局物资、种子输入、世界大小、多存档、选择存档、继续游戏、保存远征、随机开局、探索存档、角色存档、保存队伍、读取队伍、背包存档、磁盘保存 | [远征与角色存档](Business/CharacterSave.md) |
 | 攻击模组、剑盾、共持、双持、枪型、offset、Vector3、武器握点、武器朝向、旋转修正、持握组合 | [持武模组与握点](Business/EquipmentMotion.md) |
 | 角色工坊、角色网页、Character Lab、真实 Unity 资源、随机预览、握点编辑、offset 可视化、自动保存、4177 | [角色网页预览](Tools/CharacterPreview.md) |
 | 城镇小地图、走格子、点击移动、高位跟随、二楼、楼梯、楼板剖切、逛街、居民、工匠、巡游、酒馆、铁匠铺、商店、公会、广场、露天摊位、山城、联排、台地、台阶、坡道、上下层道路、街桥、连续室内、真实比例、米制、屋顶隐藏、面包房、药草铺、礼拜堂、仓库、马厩、瞭望塔、TownExpansionLowPoly、TownInteriorLowPoly、TownLowPoly | [城镇街区与漫游](Business/TownArea.md) |

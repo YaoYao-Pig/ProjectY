@@ -84,7 +84,7 @@ namespace ProjectY.Editor
             var rule=Paint(Rect("GoldRule",header,0,0,1248,2),Gold).rectTransform;rule.anchorMax=new Vector2(1,1);rule.sizeDelta=new Vector2(0,2);
             Bind(root,"Location",Label("Location",header,"边境远征",18,9,360,26,22,Gold));Bind(root,"Subtitle",Label("Subtitle",header,"",18,37,460,22,13,Muted));
             var coins=Label("Coins",header,"",-570,15,116,34,16,Gold);coins.rectTransform.anchorMin=coins.rectTransform.anchorMax=new Vector2(1,1);Bind(root,"Coins",coins);
-            var keys=new[]{"NavigationToggle","Inventory","Growth","Focus","Environment"};var captions=new[]{"地点 / 行动","背包  I","角色手记  C","全图  F","画面"};
+            var keys=new[]{"Inventory","Growth","Focus","Environment"};var captions=new[]{LuaLanguage.Get("UIMainHudPanelCommonEntryRailInventoryLabel"),LuaLanguage.Get("UIMainHudGrowthTextText"),LuaLanguage.Get("UIMainHudPanelCommonMenuFocusLabel"),LuaLanguage.Get("UIMainHudPanelCommonMenuEnvironmentLabel")};
             for(int i=0;i<keys.Length;i++) {var button=Button(root,keys[i],header,captions[i],-440+i*86,16,80,34);var rect=(RectTransform)button.transform;rect.anchorMin=rect.anchorMax=new Vector2(1,1);}
             var navigation=Rect("Navigation",safe,16,96,294,508);Paint(navigation,Ink,true);
             Bind(root,"NavigationTitle",Label("NavigationTitle",navigation,"目的地",14,12,266,27,17,Gold));

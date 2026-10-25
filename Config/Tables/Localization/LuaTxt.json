@@ -414,8 +414,8 @@
     },
     {
       "id": "UICharacterGrowthSkills",
-      "txt": "选择课程查看详情，再点击学习；转职免费，已学能力保留。技能图鉴可查看全部前置。",
-      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:73"
+      "txt": "拖动查看分支，点击技能预览释放；点击职业徽记进入职业树与兼职选择。",
+      "desc": "职业技能树操作提示"
     },
     {
       "id": "UICharacterGrowthSkills2",
@@ -519,8 +519,8 @@
     },
     {
       "id": "UICharacterGrowthTalentDetailText3",
-      "txt": "%s · %s\n\n%s%s\n\n详细效果与前置可在技能图鉴中查看。",
-      "desc": "Lua/UI/Panel/CharacterGrowthCtr.lua:191；%s1=kind，%s2=reason，%s3=skill.description，%s4=condition and '\\n\\n'..condition or ''"
+      "txt": "%s · %s\n\n%s%s",
+      "desc": "职业技能详情；%s1=技能种类，%s2=学习状态，%s3=技能说明，%s4=触媒条件"
     },
     {
       "id": "UICharacterGrowthKind",
@@ -979,8 +979,8 @@
     },
     {
       "id": "UIMainHudGrowthTextText",
-      "txt": "角色养成",
-      "desc": "Lua/UI/Panel/MainHudCtr.lua:22"
+      "txt": "养成",
+      "desc": "主 HUD 常驻养成入口"
     },
     {
       "id": "UIMainHudSkillHintText",
@@ -3159,7 +3159,7 @@
     },
     {
       "id": "UIMainHudPanelCommonEntryRailInventoryLabel",
-      "txt": "背包  I",
+      "txt": "背包",
       "desc": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/EntryRail/Inventory/Label"
     },
     {
@@ -4364,12 +4364,12 @@
     },
     {
       "id": "EquipmentWeaponArmor",
-      "txt": "基础穿甲 %g%% · 甲伤 ×%.2f",
+      "txt": "直接伤生命 %g%% · 甲伤 ×%.2f",
       "desc": "武器属性：基础穿甲百分比、甲伤倍率"
     },
     {
       "id": "EquipmentArmorRule",
-      "txt": "穿甲部分绕过护甲，其余先伤甲；破甲后的剩余伤害伤生命。护甲耐久归零后不会掉落。",
+      "txt": "每次命中按穿甲比例分成肉体伤害和护甲伤害，穿甲不是概率；正数肉伤最低1点。破甲后的剩余伤害溢出生命，护甲耐久归零后不会掉落。",
       "desc": "装备详情中的承伤与战利品规则"
     },
     {
@@ -4446,6 +4446,561 @@
       "id": "UIGMRevealWorldHint",
       "txt": "大地图持续全亮，远处敌人可见。重新开局或读档后需再次开启。",
       "desc": "GM 面板开全图作用范围与生命周期说明"
+    },
+    {
+      "id": "UIGMKillTargetText",
+      "txt": "秒杀",
+      "desc": "GM 面板秒杀按钮；点击后选择场景中的一个目标"
+    },
+    {
+      "id": "UIGMKillTargetHint",
+      "txt": "点选一个敌人或动物。\nEsc／右键取消。",
+      "desc": "GM 面板秒杀使用说明"
+    },
+    {
+      "id": "GMKillPickHint",
+      "txt": "秒杀：点选一个敌人或动物 · Esc／右键取消",
+      "desc": "场景点选秒杀目标时的提示"
+    },
+    {
+      "id": "GMKillRequiresScene",
+      "txt": "请先进入战斗或小地图，再选择秒杀目标。",
+      "desc": "GM 秒杀：当前阶段没有可点选目标"
+    },
+    {
+      "id": "GMKillDialogueOpen",
+      "txt": "请先结束当前对话，再选择秒杀目标。",
+      "desc": "GM 秒杀：对话期间禁止操作"
+    },
+    {
+      "id": "GMKillInvalidTarget",
+      "txt": "请选择当前场景中的敌人或动物。",
+      "desc": "GM 秒杀：空白、无效 ID 或场景外目标"
+    },
+    {
+      "id": "GMKillProtectedTarget",
+      "txt": "秒杀仅适用于敌人和野生动物，不能选择队友、盟友或已驯服动物。",
+      "desc": "GM 秒杀：拒绝不在范围内的单位"
+    },
+    {
+      "id": "GMKillAlreadyDefeated",
+      "txt": "这个目标已经倒地。",
+      "desc": "GM 秒杀：重复操作不再触发伤亡或奖励"
+    },
+    {
+      "id": "GMKillBattleEnded",
+      "txt": "战斗已经结束，请等待结算。",
+      "desc": "GM 秒杀：结束的战斗不再接收目标"
+    },
+    {
+      "id": "GMKillSuccess",
+      "txt": "已秒杀「%s」。",
+      "desc": "GM 秒杀成功；%s=目标名称"
+    },
+    {
+      "id": "GMKillSource",
+      "txt": "GM 秒杀",
+      "desc": "GM 致死伤害日志的来源及动作名称"
+    },
+    {
+      "id": "EffectTriggered",
+      "txt": "触发",
+      "desc": "附加效果检定成功"
+    },
+    {
+      "id": "EffectNotTriggered",
+      "txt": "未触发",
+      "desc": "附加效果检定失败"
+    },
+    {
+      "id": "BattleCheckGreater",
+      "txt": " · 掷值 > %g 成功（成功率 %g%%）",
+      "desc": "附加效果高点数检定：门槛、成功率"
+    },
+    {
+      "id": "BattleCheckRoll",
+      "txt": " · 掷出 %g/100",
+      "desc": "已结算的1至100掷值"
+    },
+    {
+      "id": "DiceRequirementGreater",
+      "txt": "掷值大于 %g 成功 · 成功率 %g%%",
+      "desc": "骰子展示：高点数成功门槛、成功率"
+    },
+    {
+      "id": "EffectTooltipBody",
+      "txt": "%s\n\n来源  %s\n层数  %d\n持续  %s",
+      "desc": "状态说明：效果、来源名、层数、剩余时间"
+    },
+    {
+      "id": "EffectRemainingTurns",
+      "txt": "剩余 %d 回合",
+      "desc": "状态剩余回合"
+    },
+    {
+      "id": "EffectRemainingMinutes",
+      "txt": "剩余 %d 分钟",
+      "desc": "状态剩余游戏分钟"
+    },
+    {
+      "id": "EffectIndefinite",
+      "txt": "持续生效",
+      "desc": "无期限状态"
+    },
+    {
+      "id": "EffectMinuteTimer",
+      "txt": "%dm",
+      "desc": "状态图标的分钟倒计时"
+    },
+    {
+      "id": "GrowthCourseAvailable",
+      "txt": "可学习",
+      "desc": "职业树节点：可消耗学习机会"
+    },
+    {
+      "id": "GrowthCourseLocked",
+      "txt": "条件不足",
+      "desc": "职业树节点：学习条件未满足"
+    },
+    {
+      "id": "GrowthCourseNoOpportunity",
+      "txt": "机会不足",
+      "desc": "职业树节点：条件满足但没有学习机会"
+    },
+    {
+      "id": "GrowthCourseOtherProfession",
+      "txt": "其他职业",
+      "desc": "职业树节点：跨职业的前置技能"
+    },
+    {
+      "id": "UIFactionEntry",
+      "txt": "势力",
+      "desc": "主 HUD 势力关系入口"
+    },
+    {
+      "id": "UIFactionTitle",
+      "txt": "势力关系",
+      "desc": "势力关系树标题"
+    },
+    {
+      "id": "UIFactionSubtitle",
+      "txt": "选择势力，查看它与世界各方的关系",
+      "desc": "势力关系树说明"
+    },
+    {
+      "id": "UIFactionPlayer",
+      "txt": "我的小队",
+      "desc": "势力关系树玩家节点"
+    },
+    {
+      "id": "UIFactionPlayerDescription",
+      "txt": "小队与各方的关系会随声望和旅途中的选择改变。",
+      "desc": "玩家根节点说明"
+    },
+    {
+      "id": "UIFactionRoot",
+      "txt": "当前查看的势力",
+      "desc": "关系树根节点标识"
+    },
+    {
+      "id": "UIFactionHome",
+      "txt": "回到我的小队",
+      "desc": "关系树重置根节点按钮"
+    },
+    {
+      "id": "UIFactionClose",
+      "txt": "关闭  Esc",
+      "desc": "势力关系树关闭按钮"
+    },
+    {
+      "id": "UIFactionAllied",
+      "txt": "同盟",
+      "desc": "直接外交关系"
+    },
+    {
+      "id": "UIFactionNeutral",
+      "txt": "中立",
+      "desc": "直接外交关系"
+    },
+    {
+      "id": "UIFactionHostile",
+      "txt": "敌对",
+      "desc": "直接外交关系"
+    },
+    {
+      "id": "UIFactionGroupCount",
+      "txt": "%s · %d",
+      "desc": "关系分枝标题：关系、数量"
+    },
+    {
+      "id": "UIFactionRelationValue",
+      "txt": "%s    %+d",
+      "desc": "势力节点：关系、当前关系值"
+    },
+    {
+      "id": "UIFactionEmpty",
+      "txt": "暂无此类关系",
+      "desc": "空关系分枝提示"
+    },
+    {
+      "id": "UIFactionHelp",
+      "txt": "首次进入视野后揭示势力 · 点击已发现势力切换视角 · 滚动查看分枝 · 同盟关系不传递",
+      "desc": "关系树底部操作提示"
+    },
+    {
+      "id": "CampaignWorldName",
+      "txt": "世界名称",
+      "desc": "创建世界页的名称输入标签"
+    },
+    {
+      "id": "CampaignWorldNamePlaceholder",
+      "txt": "输入世界名称（可选）",
+      "desc": "创建世界页的名称输入提示，留空沿用默认存档标题"
+    },
+    {
+      "id": "CampaignNamedSave",
+      "txt": "%s · %s",
+      "desc": "具名存档标题；%s1=玩家输入的世界名称，%s2=本地保存时间"
+    },
+    {
+      "id": "CampaignUnnamedSave",
+      "txt": "远征 · %s",
+      "desc": "无名称存档标题；%s=本地保存时间"
+    },
+    {
+      "id": "CampaignLegacySave",
+      "txt": "旧版存档 · %s",
+      "desc": "无名称旧版存档标题；%s=本地保存时间"
+    },
+    {
+      "id": "CampaignInvalidSize",
+      "txt": "请选择有效的世界大小。",
+      "desc": "创建世界的规模校验提示"
+    },
+    {
+      "id": "CampaignSelectSave",
+      "txt": "请先选择存档。",
+      "desc": "加载世界时未指定存档的提示"
+    },
+    {
+      "id": "CampaignFinishEvent",
+      "txt": "请先结束当前事件或战斗。",
+      "desc": "创建或加载世界前的会话状态校验"
+    },
+    {
+      "id": "CampaignCloseParty",
+      "txt": "请先结束队伍交互。",
+      "desc": "创建或加载世界前的队伍交互校验"
+    },
+    {
+      "id": "CampaignCloseCamp",
+      "txt": "请先关闭营地面板。",
+      "desc": "创建或加载世界前的营地校验"
+    },
+    {
+      "id": "CampaignCloseShop",
+      "txt": "请先关闭商店。",
+      "desc": "创建或加载世界前的商店校验"
+    },
+    {
+      "id": "CampaignCloseDialogue",
+      "txt": "请先结束对话。",
+      "desc": "创建或加载世界前的对话校验"
+    },
+    {
+      "id": "CampaignCloseLoot",
+      "txt": "请先关闭战利品窗口。",
+      "desc": "创建或加载世界前的战利品校验"
+    },
+    {
+      "id": "CampaignInitialSaveFailed",
+      "txt": "世界已创建，但初始存档未保存：%s",
+      "desc": "初始保存失败提示；%s=保存错误"
+    },
+    {
+      "id": "CampaignLoadingBusy",
+      "txt": "世界正在加载，请稍候。",
+      "desc": "重复开始加载时的提示"
+    },
+    {
+      "id": "CampaignLoadingLoadTitle",
+      "txt": "加载世界",
+      "desc": "读档 loading 标题"
+    },
+    {
+      "id": "CampaignLoadingRead",
+      "txt": "读取远征存档",
+      "desc": "读档 loading 阶段"
+    },
+    {
+      "id": "CampaignLoadingValidate",
+      "txt": "校验队伍与物品",
+      "desc": "读档 loading 阶段"
+    },
+    {
+      "id": "CampaignLoadingWorldState",
+      "txt": "校验世界探索记录",
+      "desc": "读档 loading 阶段"
+    },
+    {
+      "id": "CampaignLoadingAreas",
+      "txt": "恢复已探索区域",
+      "desc": "读档 loading 阶段"
+    },
+    {
+      "id": "CampaignLoadingSnapshot",
+      "txt": "准备地图显示数据",
+      "desc": "创建和加载世界的 loading 阶段"
+    },
+    {
+      "id": "CampaignLoadingResources",
+      "txt": "准备地图资源",
+      "desc": "创建和加载世界的 loading 阶段"
+    },
+    {
+      "id": "CampaignLoadingRender",
+      "txt": "构建地图显示",
+      "desc": "创建和加载世界的 loading 阶段"
+    },
+    {
+      "id": "CampaignLoadingCreate",
+      "txt": "建立队伍并保存新远征",
+      "desc": "创建世界的提交阶段"
+    },
+    {
+      "id": "CampaignLoadingRestore",
+      "txt": "恢复远征与队伍",
+      "desc": "加载世界的提交阶段"
+    },
+    {
+      "id": "CampaignLoadingReady",
+      "txt": "世界已就绪",
+      "desc": "loading 完成阶段"
+    },
+    {
+      "id": "CampaignLoadingAssetMismatch",
+      "txt": "地图资源绑定不一致：{0}",
+      "desc": "C# 地图候选构建失败提示；{0}=地图资源 ID"
+    },
+    {
+      "id": "UIFactionUnknownName",
+      "txt": "？？？",
+      "desc": "从未进入视野的势力名称占位"
+    },
+    {
+      "id": "UIFactionUnknownHint",
+      "txt": "尚未进入视野",
+      "desc": "未发现势力不显示关系，也不可切换视角"
+    },
+    {
+      "id": "UIFactionUnknownTitle",
+      "txt": "未发现势力",
+      "desc": "关系树未知区域的预览标题"
+    },
+    {
+      "id": "UIFactionUnknownCount",
+      "txt": "未发现势力 · %d",
+      "desc": "未知势力区域标题与数量"
+    },
+    {
+      "id": "GMDiceOpen",
+      "txt": "投骰子",
+      "desc": "GM 面板打开骰子组合页"
+    },
+    {
+      "id": "GMDiceTitle",
+      "txt": "骰子组合",
+      "desc": "GM 骰子组合页标题"
+    },
+    {
+      "id": "GMDiceHelp",
+      "txt": "可混合选择，合计 1～6 颗。\nD10 为 0～9；D100 为百分比十位骰（00、10…90）。",
+      "desc": "GM 骰子选择数量与特殊面值说明"
+    },
+    {
+      "id": "GMDiceSelectedCount",
+      "txt": "已选 %d / %d 颗",
+      "desc": "GM 骰子数量；%d1=已选数量，%d2=最大数量"
+    },
+    {
+      "id": "GMDiceBack",
+      "txt": "返回 GM",
+      "desc": "GM 骰子组合页返回按钮"
+    },
+    {
+      "id": "GMDiceClear",
+      "txt": "清空组合",
+      "desc": "GM 骰子组合页清空按钮"
+    },
+    {
+      "id": "GMDiceThrow",
+      "txt": "开始投掷",
+      "desc": "GM 骰子组合页投掷按钮"
+    },
+    {
+      "id": "GMDiceAdd",
+      "txt": "+",
+      "desc": "GM 骰子数量增加按钮"
+    },
+    {
+      "id": "GMDiceRemove",
+      "txt": "−",
+      "desc": "GM 骰子数量减少按钮"
+    },
+    {
+      "id": "GMDiceD4Label",
+      "txt": "D4 · 1～4",
+      "desc": "GM 四面骰选择标签"
+    },
+    {
+      "id": "GMDiceD6Label",
+      "txt": "D6 · 1～6",
+      "desc": "GM 六面骰选择标签"
+    },
+    {
+      "id": "GMDiceD8Label",
+      "txt": "D8 · 1～8",
+      "desc": "GM 八面骰选择标签"
+    },
+    {
+      "id": "GMDiceD10Label",
+      "txt": "D10 · 0～9",
+      "desc": "GM 十面骰选择标签"
+    },
+    {
+      "id": "GMDiceD12Label",
+      "txt": "D12 · 1～12",
+      "desc": "GM 十二面骰选择标签"
+    },
+    {
+      "id": "GMDiceD20Label",
+      "txt": "D20 · 1～20",
+      "desc": "GM 二十面骰选择标签"
+    },
+    {
+      "id": "GMDiceD100Label",
+      "txt": "D100 · 00～90",
+      "desc": "GM 百分比十位骰选择标签"
+    },
+    {
+      "id": "GMDiceInvalidCombination",
+      "txt": "骰子组合无效，请使用支持的骰子和非负整数数量。",
+      "desc": "GM 投骰子参数校验失败"
+    },
+    {
+      "id": "GMDiceCountRequired",
+      "txt": "请选择 1～%d 颗骰子。",
+      "desc": "GM 骰子数量范围；%d=最大数量"
+    },
+    {
+      "id": "GMDiceRollBusy",
+      "txt": "请先完成当前投掷，再投下一组骰子。",
+      "desc": "GM 拒绝在演出进行时重复提交"
+    },
+    {
+      "id": "GMDiceRollTitle",
+      "txt": "GM · 自由投骰",
+      "desc": "GM 投掷演出标题"
+    },
+    {
+      "id": "GMDiceCombination",
+      "txt": "组合：%s",
+      "desc": "GM 投掷演出说明；%s=数量与骰型组合"
+    },
+    {
+      "id": "GMDiceRollResult",
+      "txt": "%s\n合计：%d",
+      "desc": "GM 自由投骰结果；%s=逐颗点数，%d=面值总和"
+    },
+    {
+      "id": "GrowthProfessionOverview",
+      "txt": "职业之路",
+      "desc": "已加入职业树标题"
+    },
+    {
+      "id": "GrowthProfessionTreeTitle",
+      "txt": "职业之路 · %d 个职业",
+      "desc": "职业树概况；%d=已加入职业数"
+    },
+    {
+      "id": "GrowthChooseProfession",
+      "txt": "选择兼职职业",
+      "desc": "兼职网格标题"
+    },
+    {
+      "id": "GrowthAddProfession",
+      "txt": "添加兼职",
+      "desc": "打开未加入职业的网格"
+    },
+    {
+      "id": "GrowthChooseNewProfession",
+      "txt": "选择新职业",
+      "desc": "添加兼职节点说明"
+    },
+    {
+      "id": "GrowthAvailableProfession",
+      "txt": "尚未加入",
+      "desc": "兼职网格节点状态"
+    },
+    {
+      "id": "GrowthCurrentProfession",
+      "txt": "当前研习",
+      "desc": "当前职业徽记状态"
+    },
+    {
+      "id": "GrowthJoinedProfession",
+      "txt": "已加入",
+      "desc": "已加入但未在研习的职业状态"
+    },
+    {
+      "id": "GrowthBackProfessionTree",
+      "txt": "‹ 返回职业树",
+      "desc": "从兼职网格返回职业树"
+    },
+    {
+      "id": "GrowthBackSkillTree",
+      "txt": "‹ 返回技能树",
+      "desc": "从职业树返回当前技能树"
+    },
+    {
+      "id": "GrowthStudyingProfession",
+      "txt": "当前研习：%s",
+      "desc": "职业树根说明；%s=职业名称"
+    },
+    {
+      "id": "GrowthJoinProfession",
+      "txt": "加入并研习",
+      "desc": "确认加入选中的兼职职业"
+    },
+    {
+      "id": "GrowthJoinProfessionDetail",
+      "txt": "%s\n\n加入后开放该职业的技能目录与被动树。已学能力永久保留，加入不消耗学习机会，也不赠送初始技能。",
+      "desc": "兼职说明；%s=职业配置说明"
+    },
+    {
+      "id": "GrowthProfessionGridDetail",
+      "txt": "选择一枚职业徽记查看介绍，再点击“加入并研习”。",
+      "desc": "网格尚未选中职业的说明"
+    },
+    {
+      "id": "GrowthProfessionTreeDetail",
+      "txt": "点击已加入的职业进入它的技能树。\n\n不同职业共用角色等级与成长资源，已学能力保留。通过“添加兼职”加入新的职业。",
+      "desc": "已加入职业树说明"
+    },
+    {
+      "id": "GrowthAllProfessionsJoined",
+      "txt": "已加入全部职业，可从职业树切换当前研习职业。",
+      "desc": "所有职业均已加入时的说明"
+    },
+    {
+      "id": "GrowthProfessionTreeHint",
+      "txt": "点击职业徽记切换研习并打开技能树；“添加兼职”可选择新职业。",
+      "desc": "职业树操作提示"
+    },
+    {
+      "id": "GrowthProfessionGridHint",
+      "txt": "点选职业查看介绍，确认加入后开始研习；已有技能和天赋保留。",
+      "desc": "兼职网格操作提示"
     }
   ]
 }

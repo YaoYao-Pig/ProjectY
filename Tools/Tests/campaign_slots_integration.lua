@@ -17,7 +17,9 @@ local ok,err=xpcall(function()
     local adventure=registry:Get('Adventure');adventure:Start(815)
     local data,player,inventory=adventure.data,adventure.player,adventure.equipment.data
     local rules=require('Game.Adventure.CharacterSave')
-    service:Save(data,player);local legacyBytes=disk.ReadAllText(legacyFile)
+    service:Save(data,player)
+    local legacyBytes,replaced=disk.ReadAllText(legacyFile):gsub('"worldName":"",','',1)
+    assert(replaced==1);disk.WriteAllText(legacyFile,legacyBytes) -- Pre-feature save with no name field.
     local slotA,slotB,fileA,fileB,bytesA,bytesB,coinsA
     local function entries()
         local list=bridge.List(service);local byId={}
@@ -25,7 +27,7 @@ local ok,err=xpcall(function()
         return byId,list.Length
     end
     test('new campaigns allocate independent paths without creating files or touching legacy',function()
-        slotA=bridge.NewCampaign(service);fileA=service.FilePath
+        slotA=bridge.NewCampaign(service,'  晨风 "群岛" <b>  ');fileA=service.FilePath
         assert(#slotA==32 and bridge.CurrentId(service)==slotA and not disk.Exists(fileA) and not service.HasSave)
         local before,count=entries();assert(count==1 and before.legacy and not before[slotA])
         assert(disk.ReadAllText(legacyFile)==legacyBytes)
@@ -47,6 +49,7 @@ local ok,err=xpcall(function()
             assert(row.Legacy==(id=='legacy'))
         end
         assert(bridge.CurrentId(service)==slotB,'Listing must not select another slot')
+        assert(byId[slotA].WorldName=='晨风 "群岛" <b>' and byId[slotB].WorldName=='' and byId.legacy.WorldName=='')
     end)
     test('a cold inventory prepares a selected save before any new campaign is started',function()
         local coldData=CS.ProjectY.Data.AdventureData()
@@ -79,6 +82,7 @@ local ok,err=xpcall(function()
         assert(disk.ReadAllText(fileA)~=bytesA and disk.ReadAllText(fileA..'.bak')==bytesA)
         assert(disk.ReadAllText(fileB)==bytesB and disk.ReadAllText(legacyFile)==legacyBytes)
         local prepared=service:Prepare(inventory);assert(prepared.Coins==player.Coins)
+        assert(entries()[slotA].WorldName=='晨风 "群岛" <b>','Loading and saving must retain the selected world name')
     end)
     test('bad and future-version files remain visible while opaque IDs cannot escape the slot directory',function()
         local directory=path.GetDirectoryName(fileA)
@@ -102,7 +106,8 @@ local ok,err=xpcall(function()
         assert(bridge.CurrentId(service)=='legacy' and service.FilePath==legacyFile and player.Coins==coinsA)
         service:Save(data,player)
         assert(disk.Exists(legacyFile..'.bak') and disk.ReadAllText(fileB)==bytesB)
-        local text=disk.ReadAllText(legacyFile);assert(text:find('"version":14',1,true),'Multi-slot catalog must retain the current world save schema')
+        local text=disk.ReadAllText(legacyFile);assert(text:find('"version":24',1,true),'Multi-slot catalog must retain the current world save schema')
+        assert(entries().legacy.WorldName=='','Loading unnamed legacy data must clear the prior named session')
     end)
 end,debug.traceback)
 if listener then Services.Player:RemoveChangedListener(listener)end

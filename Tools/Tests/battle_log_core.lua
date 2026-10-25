@@ -45,6 +45,9 @@ CS={ProjectY={Data={GameBuffState={Configure=function(row,ids,amounts,expiry,nex
     row.ids={table.unpack(ids)};row.amounts={table.unpack(amounts)};row.expiry=expiry;row.nextTick=nextTick
 end,Amount=function(row,id)for i,v in ipairs(row.ids)do if v==id then return row.amounts[i]end end;error('Missing fixture amount')end}}}}
 local stats=require('Game.Battle.CombatStats')(config)
+-- Isolate chance reporting from the separate body-location random stream.
+stats.injuries.ApplyAttribute=function(_,_,_,value)return value end
+stats.injuries.DamageHit=function(_,_,target,_,amount)return target:Damage(amount)end
 local EmptyGrowth=assert(loadfile('Tools/Tests/growth_empty.lua'))()
 local function actor(id,hp)
     local row={Id=id,TemplateId=id==1 and 1 or 4,Team=id==1 and 1 or 2,HP=hp or 50,MaxHP=50,Guard=3,TraitCount=0,Growth=EmptyGrowth(),Effects=collection()}
@@ -59,13 +62,16 @@ local effects=require('Game.Battle.GameEffects').New(stats,definitions,function(
     events[#events+1]={kind=kind,sourceId=sourceId,targetId=targetId,amount=amount,target=target,impact=impact}
 end,{roll=function()draws=draws+1;return nextDraw end,minutes=function()return 0 end,
     report=function(kind,plan,details)reports[#reports+1]={kind=kind,plan=plan,details=details}end})
-local skill={name='<Fireball>',damageScale=1,proficiency='intellect'}
+local skill={name='<Fireball>',damageScale=1,proficiency='intellect',criticalChance=0}
 for _,value in ipairs({0,39,40,99})do
     local target=actor(2);reports={};events={};draws=0;nextDraw=value
     effects:ApplyPrepared(effects:Prepare(804,source,target,skill),{shot=2})
     assert(draws==1 and #reports==1,'Observation changed the number of chance draws')
-    local report=reports[1];local passed=value<40
-    assert(report.kind=='check' and report.details.chance==40 and report.details.roll==value and report.details.passed==passed)
+    local report=reports[1];local passed=value+1>40
+    assert(report.kind=='check' and report.details.chance==60 and report.details.roll==value+1 and report.details.passed==passed)
+    assert(report.details.threshold==40 and report.details.rollComparison=='greater' and report.details.rollConvention=='inclusive')
+    local formatted=Log.Format('check','unused',sourceView,targetView,0,report.details)
+    assert(formatted:find('＞ 40',1,true) and formatted:find('60%',1,true) and formatted:find((value+1)..'/100',1,true))
     assert(report.details.actionName=='<Fireball>' and report.details.sourceName==stats:Template(source).name and report.details.shot==2)
     assert((target.Effects:Find(10004)~=nil)==passed and #events==(passed and 1 or 0),'Trigger report disagrees with application')
 end
@@ -78,10 +84,10 @@ effects.definitions=realDefinitions
 reports={};events={};draws=0;effects:Apply(1307,source,actor(2))
 assert(draws==0 and #reports==1 and reports[1].details.chance==100 and reports[1].details.roll==nil and reports[1].details.passed)
 assert(events[1].kind=='effect_added' and events[1].impact.durationTurns==3)
-print('PASS actual 40% trigger draws 0/39/40/99, deterministic 0/100 cases and successful status duration metadata')
+print('PASS actual high-roll 60% trigger at faces 1/40/41/100, deterministic 0/100 cases and successful status duration metadata')
 
 local wet=actor(2);effects:Apply(1302,source,wet)
-reports={};events={};draws=0;nextDraw=39;effects:ApplyPrepared(effects:Prepare(804,source,wet,skill),{shot=3})
+reports={};events={};draws=0;nextDraw=88;effects:ApplyPrepared(effects:Prepare(804,source,wet,skill),{shot=3})
 assert(draws==1 and #reports==2 and reports[1].kind=='check' and reports[1].details.passed)
 assert(reports[2].kind=='effect_blocked' and reports[2].details.statusName==stats.buffs:Get(10004).name)
 assert(reports[2].details.reason:find(stats.buffs:Get(10005).name,1,true) and reports[2].details.actionName=='<Fireball>')

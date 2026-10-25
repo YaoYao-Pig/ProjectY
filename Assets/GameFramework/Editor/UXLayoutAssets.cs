@@ -75,9 +75,9 @@ namespace ProjectY.Editor
             var style=root.GetComponent<MainHudView>();var serialized=new SerializedObject(style);var layout=serialized.FindProperty("layout");
             var common=(RectTransform)layout.FindPropertyRelative("Common").objectReferenceValue;
             var tooltip=Node("HealthTooltip",common);tooltip.anchorMin=tooltip.anchorMax=new Vector2(.5f,0);tooltip.pivot=new Vector2(.5f,0);
-            tooltip.anchoredPosition=new Vector2(0,180);tooltip.sizeDelta=new Vector2(360,130);Paint(tooltip,Ink);Bind(root,"HealthTooltip",tooltip);
-            Label(root,"HealthTipTitle",tooltip,"",12,6,336,26,17).color=Gold;
-            var body=Label(root,"HealthTipBody",tooltip,"",12,36,336,86,13);body.alignment=TextAnchor.UpperLeft;
+            tooltip.anchoredPosition=new Vector2(0,180);tooltip.sizeDelta=new Vector2(360,160);Paint(tooltip,new Color(.055f,.08f,.07f,.99f));Bind(root,"HealthTooltip",tooltip);
+            Label(root,"HealthTipTitle",tooltip,"",16,10,328,26,18).color=Gold;
+            var body=Label(root,"HealthTipBody",tooltip,"",16,42,328,106,14);body.alignment=TextAnchor.UpperLeft;body.lineSpacing=1.15f;
             tooltip.gameObject.SetActive(false);
             var labels=root.GetComponentsInChildren<Text>(true);var array=layout.FindPropertyRelative("Labels");array.arraySize=labels.Length;
             for(int i=0;i<labels.Length;i++)array.GetArrayElementAtIndex(i).objectReferenceValue=labels[i];serialized.ApplyModifiedPropertiesWithoutUndo();
@@ -246,13 +246,23 @@ namespace ProjectY.Editor
             var common=Node("Common",root.transform);Stretch(common);common.SetAsLastSibling();
             var rail=Node("EntryRail",common);Box(rail,0,0,94,300);
             var menu=Node("Menu",common);Box(menu,0,0,314,410);Paint(menu,Ink,true);Bind(root,"Menu",menu);
-            Button(root,"MenuToggle",rail,"菜单",0,0,94,54);Button(root,"Missions",rail,"任务",0,68,94,54);
-            MoveButton(root,"Inventory",rail,0,136,94,54);MoveButton(root,"NavigationToggle",rail,0,204,94,54);
-            reference.GetText("NavigationToggleText").text="地图";
+            MoveButton(root,"Inventory",rail,0,0,94,52);MoveButton(root,"Growth",rail,0,62,94,52);
+            Button(root,"Missions",rail,LuaLanguage.Get("UIMainHudPanelCommonEntryRailMissionsMissionsText"),0,124,94,52);
+            Button(root,"Factions",rail,LuaLanguage.Get("UIFactionEntry"),0,186,94,52);
+            Button(root,"MenuToggle",rail,LuaLanguage.Get("UIMainHudPanelCommonEntryRailMenuToggleMenuToggleText"),0,256,94,52);
+            var railKeys=new[]{"Inventory","Growth","Missions","Factions","MenuToggle"};
+            for(int i=0;i<railKeys.Length;i++)reference.GetButton(railKeys[i]).transform.SetSiblingIndex(i);
+            var localized=reference.GetEditorLocalizations().ToList();
+            foreach(var pair in new[]{new[]{"InventoryText","UIMainHudPanelCommonEntryRailInventoryLabel"},new[]{"GrowthText","UIMainHudGrowthTextText"},new[]{"FactionsText","UIFactionEntry"}})
+            {
+                var target=reference.GetText(pair[0]);target.text=LuaLanguage.Get(pair[1]);
+                localized.RemoveAll(entry=>entry.Target==target);localized.Add(new LuaReference.LocalizedText(target,pair[1]));
+            }
+            reference.SetEditorLocalizations(localized.ToArray());
             Label(root,"MenuTitle",menu,"旅途菜单",16,8,280,26,19).color=Gold;
-            MoveButton(root,"Growth",menu,14,46,138,34);MoveButton(root,"Focus",menu,162,46,138,34);
-            MoveButton(root,"Environment",menu,14,88,138,34);MoveButton(root,"GM",menu,162,88,138,34);
-            MoveButton(root,"Leave",menu,14,130,138,34);MoveButton(root,"Stop",menu,162,130,138,34);
+            MoveButton(root,"Focus",menu,14,46,138,34);MoveButton(root,"Environment",menu,162,46,138,34);
+            MoveButton(root,"Leave",menu,14,88,138,34);MoveButton(root,"Stop",menu,162,88,138,34);
+            MoveButton(root,"GM",menu,14,130,138,34);
             MoveButton(root,"CameraMode",menu,14,172,138,34);MoveButton(root,"Restart",menu,14,172,138,34);
             Scroll(root,"MenuRows",menu,9,214,296,180);
             var clock=Node("Clock",common);Box(clock,0,0,112,112);var clockImage=Paint(clock,Ink);

@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using UnityEngine;
 using XLua;
+using LuaLanguage = ProjectY.UI.LuaLanguage;
 
 namespace ProjectY.Samples
 {
@@ -12,16 +13,19 @@ namespace ProjectY.Samples
         private IEnumerator campaignLoading;
         private int loadingToken;
         private bool campaignLoadingCommitted;
+        private string campaignLoadingPage;
 
-        private bool BeginCampaignLoading(string seedText, int size, int startId)
+        private bool BeginCampaignLoading(string command, string argument, int size = 0, int startId = 0, string worldName = "")
         {
-            if (campaignLoading != null) { campaignMenuError = "世界正在加载，请稍候。"; return false; }
+            if (campaignLoading != null) { campaignMenuError = LuaLanguage.Get("CampaignLoadingBusy"); return false; }
+            campaignLoadingPage = command == "begin_load" ? "load" : "new";
             try
             {
-                loadingToken = Convert.ToInt32(bootstrap.CallModule(LoadingBridge, "begin", "创建世界", font)[0]);
-                bootstrap.CallModule(CampaignLoadingBridge, "begin", loadingToken, seedText, size, startId);
+                loadingToken = Convert.ToInt32(bootstrap.CallModule(LoadingBridge, "begin",
+                    LuaLanguage.Get(campaignLoadingPage == "load" ? "CampaignLoadingLoadTitle" : "UIStartMenuTitleText2"), font)[0]);
+                bootstrap.CallModule(CampaignLoadingBridge, command, loadingToken, argument, size, startId, worldName);
                 campaignLoadingCommitted = false;
-                campaignLoading = CreateCampaignFrames();
+                campaignLoading = CampaignLoadingFrames();
                 return true;
             }
             catch (Exception error)
@@ -38,7 +42,7 @@ namespace ProjectY.Samples
 
         // Advanced once per Update even while the modal panel pauses world time.
         // All returned Lua handles are consumed and disposed in the same step.
-        private IEnumerator CreateCampaignFrames()
+        private IEnumerator CampaignLoadingFrames()
         {
             yield return null; // Let the initial loading screen reach a rendered frame.
             MapPreviewData map;
@@ -53,7 +57,7 @@ namespace ProjectY.Samples
                 ReportLoading(Convert.ToSingle(values[1]), (string)values[2]);
                 yield return null;
             }
-            ReportLoading(.65f, "准备地图资源");
+            ReportLoading(.65f, LuaLanguage.Get("CampaignLoadingResources"));
             yield return null;
             MapPreviewRenderer candidate = new MapPreviewRenderer(previewShader, transform);
             try
@@ -61,16 +65,16 @@ namespace ProjectY.Samples
                 candidate.SetVisible(false);
                 foreach (var progress in candidate.BuildIncremental(map, asset => {
                     if (!assets.TryGetValue(asset.Id, out var binding) || binding.path != asset.Path || binding.prefab == null)
-                        throw new InvalidOperationException("地图资源绑定不一致：" + asset.Id);
+                        throw new InvalidOperationException(LuaLanguage.Format("CampaignLoadingAssetMismatch", asset.Id));
                     return binding.prefab;
                 }))
                 {
-                    ReportLoading(.65f + progress * .28f, "构建地图显示");
+                    ReportLoading(.65f + progress * .28f, LuaLanguage.Get("CampaignLoadingRender"));
                     yield return null;
                 }
-                ReportLoading(.94f, "建立队伍并保存新远征");
+                ReportLoading(.94f, LuaLanguage.Get(campaignLoadingPage == "load" ? "CampaignLoadingRestore" : "CampaignLoadingCreate"));
                 yield return null;
-                // Candidate layout and renderer are ready. Commit live Data only now.
+                // Candidate layout and renderer are ready. Commit live Data and save identity only now.
                 campaignLoadingCommitted = true;
                 AdventureViewData next;
                 using (var state = (LuaTable)bootstrap.CallModule(CampaignLoadingBridge, "commit", loadingToken)[0])
@@ -90,7 +94,7 @@ namespace ProjectY.Samples
                 displayedTravel = view.Travel.Position; followTravel = false;
                 fatalError = null; campaignMenuError = "";
                 FitMap(); cameraRig.Snap(); cameraDragButton = -1;
-                ReportLoading(1, "世界已就绪");
+                ReportLoading(1, LuaLanguage.Get("CampaignLoadingReady"));
                 yield return null; // Present 100% before releasing the modal input blocker.
             }
             finally { candidate?.Dispose(); }
@@ -107,7 +111,7 @@ namespace ProjectY.Samples
             if (campaignLoadingCommitted) fatalError = failure.Message;
             campaignMenuError = failure.Message;
             Debug.LogException(failure, this);
-            bootstrap.CallModule("UI.CampaignMenuBridge", this, "new", failure.Message);
+            bootstrap.CallModule("UI.CampaignMenuBridge", this, campaignLoadingPage, failure.Message);
         }
 
         private void EndCampaignLoading()

@@ -9,8 +9,6 @@
 ---@field Location CS.UnityEngine.UI.Text
 ---@field Subtitle CS.UnityEngine.UI.Text
 ---@field Coins CS.UnityEngine.UI.Text
----@field NavigationToggle CS.UnityEngine.UI.Button
----@field NavigationToggleText CS.UnityEngine.UI.Text
 ---@field Inventory CS.UnityEngine.UI.Button
 ---@field InventoryText CS.UnityEngine.UI.Text
 ---@field Growth CS.UnityEngine.UI.Button
@@ -80,5 +78,7 @@
 ---@field TimeSpeedText CS.UnityEngine.UI.Text
 ---@field Follow CS.UnityEngine.UI.Button
 ---@field FollowText CS.UnityEngine.UI.Text
+---@field Factions CS.UnityEngine.UI.Button
+---@field FactionsText CS.UnityEngine.UI.Text
 local View = {}
 return View

@@ -17,6 +17,7 @@
 - 武器本体、已安装组件、穿戴物通过 `EquipmentRules` 的显示 DTO 携带同源 profile，模型与已有显式挂点持有 `EquipmentEffectDisplay`。展示采用低频、小规模脉冲，跟随武器/骨骼变换；场景、背包、工坊复用。粒子不参与角色拾取及预览模型 bounds。HUD 肖像仍按外观变化渲染，不为粒子增加持续截图。
 - `BlockParticleEffects` 使用真实立方体 Mesh、HDR 顶点色和 Resources 中的 URP Shader；硬面明暗保留轮廓，不使用柔边圆粒子。颜色乘数超过 1 的魔法可进入现有世界 Bloom；不额外创建 Volume 或改风格参数，相关契约见[渲染管线](../Framework/Rendering.md)。背包、工坊与独立特效预览使用原 Renderer 1，不启用世界 Bloom。
 - 粒子仅由宿主 `Tick` 推进；世界使用缩放时间，预览使用独立时间，暂停不自动推进。空格跳过战斗表现清理待播和活动世界粒子；场景/对象销毁释放。mesh/material 全实例引用计数共享，系统槽复用；单事件最多 64、每实例最多 1024、全局最多 4096 活粒子，超预算只降低表现。装备与场景粒子使用独立随机源。
+- 角色手记选中技能时，由 `InventoryCharacterView` 持有独立 `BlockParticleEffects`，直接复制技能 profile，在动作命中时播放，直射/抛射复用 beam/arc 轨迹、多发间隔 .2 秒；不读取或写入世界事件队列。图片窗口内按 profile 尺寸缩放表现，旋转跟随预览模型，使用未缩放时间，所以手记暂停世界时仍播放。重复点击替换旧播放、关闭释放；具体快照与验证入口见[角色养成](Progression.md)。
 - 菜单 `Project Y/特效/方块特效预览` 从原表列出全部效果，支持选取、重播、暂停、循环、缩放、重读与打开配置。它使用独立 PreviewScene 和 URP 渲染请求，不修改场景或保存资源。
 - 最小检查：`python -B Tools/Tests/run_lua.py Tools/Tests/visual_effect_catalog.lua` 验证覆盖、唯一配置、分类继承、错误暴露及新增资源 `.meta` 的 32 位十六进制 GUID/Importer；错误 GUID 会使 Unity 忽略 Shader，导致 Resources 加载失败。`visual_effect_events.lua` 验证真实结算路由、逐发/拦截/失败、位移前坐标、拾取提交与楼层；`equipment_workbench_preview.lua` 回归真实装备预览查询。初次接入的这些检查及一次离线 C# 编译已通过；后续已修正 Shader 的无效 GUID，尚未完成实际 Shader/Bloom 视觉验收。
 

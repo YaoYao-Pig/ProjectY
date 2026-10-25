@@ -23,15 +23,15 @@
 - `InteractionPrompt.Find` 是附近交互的共同查询，按道路可达距离和稳定优先级选择 NPC、设施、容器或障碍；物体头顶 `HudInteraction` 与 `area_interact_nearest`（E 键）使用同一结果。附近目标只显示头顶提示，不再同时投影为底部交互卡片；已打开的设施等交互仍可显示详情与关闭入口。头顶提示在已交互或战斗中隐藏。`InteractionPromptBridge.Track → MainHudView.TrackPoint` 将只读场景位置交给 UIFollower，在相机更新后投影、缩放和淡出；不查找运行时子节点。
 - `Project Y/UI/同步物体交互按键提示` 已生成并保存 HudInteraction Prefab、PanelConfig 及 Root/Key/Label/Follower 绑定。Widget 归 MainHud 生命周期，提示不拦截鼠标；城镇取消第三人称切换按钮，与其他小地图共用格子移动。
 - 状态获得通知通过 `StatusFeedback.Queue` 进入现有头顶弹字池，沿用命中时序，以每角色独立队列显示名称、层数和配置颜色，不触发伤害数字或震屏。`DamageNumberAnimation.statusInterval/statusFontSize` 控制间隔/字号；状态文字位于伤害数字上方，暂停/跳过/角色复用时与原动画共同处理。状态规则见 [GameEffect](GameEffects.md)。
-- 大地图导航复用现有行按钮显示[旅行](WorldTravel.md)目的地、地形、预计分钟、暂停/继续及 1/2/4 倍速；`hud_follow` 在大地图定位旅行小队，在局部地图仍按原规则跟随。地点命令先旅行，到达后进入；无需新增 Prefab 绑定。
-- 大地图底部的独立“营地”按钮调用 `camp_open`，复用已序列化的 `Restart/RestartText` 绑定。菜单通过既有动态行提供四档规模的新游戏、继续游戏、保存远征和火炬开关，分别走明确命令；流程与存档范围见[远征](Adventure.md)和[存档](CharacterSave.md)。顶部“角色养成”负责学习与加点，队员卡显示当前等级；“技能图鉴 · 浏览”只查询技能。营地面板资源接入见[营地](Camp.md)。
-- 导航增加[任务与同行者](Narrative.md)入口；正式远征采用三人开局，NPC 好感/阵营/日程及任务进度由 MissionJournal 展示。近距离同优先级时具名 NPC 交谈优先于设施；招募队员显示其 NPC 名称。
+- 常驻栏从上到下为“背包／养成／任务／势力”，底部另放“菜单”；“地图”按钮及 `NavigationToggle` 绑定已移除，旧导航面板保持收起。地图地点仍通过场景点选旅行，到达后进入；`hud_follow`、开始/暂停和倍速沿用独立按钮。
+- “营地”调用 `camp_open`，复用 `Restart/RestartText` 绑定。菜单保留存读档、图鉴、火炬、区域操作、画面及调试等入口；“养成”移至常驻栏，负责学习与加点。队员卡显示当前等级，“技能图鉴 · 浏览”只查询技能。具体流程见[远征](Adventure.md)、[存档](CharacterSave.md)和[营地](Camp.md)。
+- 常驻“任务”打开 [MissionJournal](Narrative.md)，展示 NPC 好感、阵营、日程与任务进度；“势力”打开独立[关系树](Factions.md)。正式远征采用三人开局；近距离同优先级时具名 NPC 交谈优先于设施，招募队员显示其 NPC 名称。
 - 点击 `HudParty` 队员卡选择角色，`CharacterSkill` Widget 显示其实际拥有且带 `life` 标签的技能；空技能、不可用原因、双用途标签和当前目标选择都有独立投影。点击技能后点击场景目标使用，Esc 或取消按钮退出选择；自己为目标的技能可直接释放。生活技能每页四格，上一页/下一页切换；换角色重置页码。选择状态保存在 Demo，切换角色或阶段清除目标选择。
 - `CombatSkillTable.contexts` 是独立使用场景数组，允许 `{life,battle}`；驯服同时出现在生活栏与战斗栏。`CharacterSkills` 负责所有权、场景、目标、可用性与命令分派，生活效果通过 `Register` 接入处理器，战斗效果复用原 BattleCommand。栏位布局不写死驯服 ID，为以后展示其他技能保留同一查询/执行接口。
 - 技能栏制作脚本为 `Art/ForestAnimals/Scripts/create_skill_hud.cs`，经 Unity MCP 创建 Prefab、登记 Widget、绑定 LuaReference 并导出提示；不调用会全局 Refresh 的 PanelAssets.Generate。`MainHudView.SetCharacterSkillBar` 接收显式绑定的容器统一布局。
 - 场景中的单位目标优先用 `PawnView.Raycast` 和队伍/动物显示器的实际模型包围盒拾取，未命中模型才按完整占地回退；不把模型头部下方投射到的另一块地格当作目标。拾取只遍历已显示且存活的棋子，外观变化时重建 Renderer 缓存，移动时读取当前世界包围盒。探索的自动 `snapshot` 只刷新状态，保留上一次命令提示；明确的新命令或阶段切换会更新提示。最小检查为 Unity MCP 执行 [animal_targeting.cs](../../Tools/Tests/animal_targeting.cs)，复现并覆盖三种动物的多角度模型点击、隐藏目标和提示保留。
-- 探索组包含导航、左侧队伍头像/生命/AP、底部技能、交互和日志；右侧公共入口栏与时钟在战斗中保留，菜单收纳养成、存读档、区域操作与调试入口。背包和任务在战斗中禁用；导航含“定位小队并跟随”显示命令，日志显示最近两条摘要，完整文本留在经历。战斗组复用嵌套的原 BattleHUD Prefab 与 `BattleHUDContent` Widget 控制器。原 `BattleHUDCtr` 仅保留独立检查入口。主 HUD 将父 CanvasGroup 的输入状态传给战斗内容，模态窗口仍可阻断快捷键。
-- `MainHudView` 负责布局、字体和屏幕血条注册，不将血条堆叠到离角色更远的位置。`Prepare` 通过既有 `BattleContent` / `HUD` 引用取得嵌套战斗视图；按右侧时钟、入口栏和菜单的占用给 [BattleHUD](BattleHUD.md) 预留宽度，菜单显隐及窗口变化都会重新布局。公共栏随较小窗口等比缩放，金币文字与首个菜单按钮保留间距。可收起导航；C# 世界相机按导航实际像素宽度留出视口。小窗口隐藏常驻日志，完整经历仍可在角色手记查看。队伍头像复用 InventoryCharacterView 的按需肖像模式，基于头部挂点取景，仅外观变化时渲染；隐藏释放预览，重开重新生成。
+- 探索组包含左侧队伍头像/生命/AP、底部技能、交互和日志；右侧公共入口栏与时钟在战斗中保留，背包、养成、任务和势力在战斗中禁用。日志显示最近两条摘要，完整文本留在经历。战斗组复用嵌套的原 BattleHUD Prefab 与 `BattleHUDContent` Widget 控制器。原 `BattleHUDCtr` 仅保留独立检查入口。主 HUD 将父 CanvasGroup 的输入状态传给战斗内容，模态窗口仍可阻断快捷键。
+- `MainHudView` 负责布局、字体和屏幕血条注册，不将血条堆叠到离角色更远的位置。`Prepare` 通过既有 `BattleContent` / `HUD` 引用取得嵌套战斗视图；按右侧时钟、入口栏和菜单的占用给 [BattleHUD](BattleHUD.md) 预留宽度，菜单显隐及窗口变化都会重新布局。公共栏随较小窗口等比缩放，金币文字与首个菜单按钮保留间距。导航收起时不占用世界相机左侧视口。小窗口隐藏常驻日志，完整经历仍可在角色手记查看。队伍头像复用 InventoryCharacterView 的按需肖像模式，基于头部挂点取景，仅外观变化时渲染；隐藏释放预览，重开重新生成。
 - `HudHealth` 在战斗和森林探索中显示脚下同心圆：外圈红色 HP、内圈蓝色 AP，取消头顶姓名栏和矩形底板；阵营保留小标记，其他探索区域沿用队伍卡。身份列表仍与 Demo 已应用的显示快照交叉匹配，雾外敌人不创建 UI。`HealthFootTarget` 从已有棋子渲染器返回根 Transform，`HealthRingRadius` 按实际占地计算半径；多格单位按占地中心与外缘扩大。`HudHealth.IsWorldUI` 使 Widget 由 UIHost 放入独立 WorldUIRoot；Prefab 自带 World Space Canvas，使用 UI/Default 的世界深度测试，角色和不透明场景物体能遮挡圆环。`UIFollower.groundPlane` 将圆环按实际世界半径平放在脚下 .035 米处，支持透视/正交、相机旋转、背面/裁面/视口隐藏，不改变角色位置。
 - `HealthRingMesh` 为普通 Image 生成中空圆环，Filled Image 的 `fillAmount` 作为 HP/AP 比例。`HealthBarAnimation` 与 `MainHudView.SetHealth` 同时支持 Filled 圆环和既有矩形队伍条。`ArcText.worldBillboard` 将字形中心放在地面圆弧上，并抬高半个字高；完整字形朝向相机，保留黑色 Outline，不随地面俯角压扁。世界模式根节点为 128×128，世界缩放由半径决定；状态格子浮于前侧并朝向相机，增减效果不改变圆环中心。
 - 伤害/状态飘字通过已绑定的 `DamageFollower` 跟随原 `HealthTarget` 的 head 挂点，位置独立于脚下圈；飘字在同一世界 Canvas 中朝向相机，UIFollower 补偿父节点缩放并维持屏幕字号。Lua 同时注册/注销两处跟随，Retire 保留头部和脚下的最后位置，隐藏/复用清理原反馈。
@@ -51,7 +51,7 @@
 - 资源菜单 `Project Y/UI/创建 MainHud 与跟随血条` 创建 Prefab 和 LuaReference 绑定，重复执行保留手工布局。嵌套 BattleHUD 保持 Prefab 关联，但根节点必须显式设为单位缩放和零旋转：它作为 Widget 嵌入，不执行独立 LuaPanel.Initialize 的归一化。图标和基础布局继续由原资源同步工具维护。
 - 最小检查：`Project Y/UI/验证 MainHud 与 UIFollower` 在独立 PreviewScene 验证导航、生命更新、战斗命令、缓存重开、战斗内容非零缩放、相机旋转/任意锚点的精确投影，以及重叠目标不会被移位，并输出 map/area/battle 三组截图。必须检查实际可见性，不能仅用 Lua visible 标记代替。此检查不进入 Play。基础战斗规则仍用 `battle_hud_core.lua`。
 
-- 本次 UX 的增量迁移入口为 `Project Y/UI/应用 UX 布局`，通过 Unity MCP 调用 [UXLayoutAssets](../../Assets/GameFramework/Editor/UXLayoutAssets.cs)，保存现有 Prefab、LuaReference 和 View 提示，不进入 Play。
+- 当前入口资源使用 [build_faction_ui.cs](../../Tools/UI/build_faction_ui.cs) 经 Unity MCP `execute_code` 定向同步，保存 MainHud、势力 UI、LuaReference、本地化清单和 View 提示。[MainHudAssets](../../Assets/GameFramework/Editor/MainHudAssets.cs) 与 `Project Y/UI/应用 UX 布局` 的 [UXLayoutAssets](../../Assets/GameFramework/Editor/UXLayoutAssets.cs) 已同步新入口，重建不会再引用或恢复 `NavigationToggle`。本轮在已有非 Play Editor 主动请求一次编译，并在 Prefab 副本调用编译后的 BuildMain 验证入口顺序及移除结果，不保存验证副本或切换 Play。
 
 - 最小圆环检查：`Project Y/UI/验证脚下 HP AP 圆环` 在已有 Editor 的 Edit Mode / PreviewScene 中验证已保存绑定、真实 HudHealth Lua 刷新/隐藏/重开、HP/AP 比例、双挂点、相机旋转/缩放/渐隐、死亡保留与受伤缓降，并覆盖 1/3/6/7 个状态的外弧排列、朝向、溢出及 HP 间距；还在相同场景下对比不透明遮挡物开启前后的圆环像素，确认真实深度遮挡，输出带状态图标的 `Docs/Previews/GroundHealth-WorldSpace.png`。不进入 Play。
 

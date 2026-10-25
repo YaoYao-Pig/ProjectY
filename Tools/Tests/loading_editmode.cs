@@ -10,7 +10,7 @@ var temporary = System.IO.Path.Combine(System.IO.Path.GetTempPath(), "project-y-
 System.IO.Directory.CreateDirectory(temporary);
 UnityEngine.Debug.Log("Loading validation temporary directory: " + temporary);
 ProjectY.UI.UIHost host = null; UnityEngine.Font font = null;
-int checkpoints = 0, renderSteps = 0;
+int checkpoints = 0, renderSteps = 0, restoreCheckpoints = 0;
 try
 {
     var root = new UnityEngine.GameObject("Loading isolated validation");
@@ -42,6 +42,20 @@ try
                 if (previous != 1 || renderSteps < 10 || renderer.Bounds.size.sqrMagnitude <= 0) throw new System.Exception("Renderer did not complete");
                 using (var state = (XLua.LuaTable)lua.DoString("return CommitLoadingFixture()")[0]) ProjectY.Samples.AdventureViewData.Read(state);
             }
+            using (var data = (XLua.LuaTable)lua.DoString("return PrepareRestorationFixture()")[0])
+                map = ProjectY.Samples.MapPreviewData.Read(data);
+            using (var fixture = lua.Global.Get<XLua.LuaTable>("LoadingFixture")) restoreCheckpoints = fixture.Get<int>("restoreSteps");
+            using (var renderer = new ProjectY.Samples.MapPreviewRenderer(shader, root.transform))
+            {
+                renderer.SetVisible(false);
+                foreach (var value in renderer.BuildIncremental(map, asset => UnityEditor.AssetDatabase.LoadAssetAtPath<UnityEngine.GameObject>(asset.Path)))
+                    if (value < 0 || value > 1) throw new System.Exception("Invalid restore rendering progress");
+                using (var state = (XLua.LuaTable)lua.DoString("return CommitRestorationFixture()")[0])
+                {
+                    var view=ProjectY.Samples.AdventureViewData.Read(state);
+                    if(view.Area==null)throw new System.Exception("Saved local area was not restored");
+                }
+            }
         }
         finally
         {
@@ -60,4 +74,4 @@ finally
 }
 if (UnityEngine.SceneManagement.SceneManager.GetActiveScene() != original || original.isDirty != dirty)
     throw new System.Exception("Loading validation changed the user's scene");
-return new { passed = true, realPrefab = true, cells = 2500, checkpoints, renderSteps, initialSave = true, playMode = false, temporary };
+return new { passed = true, realPrefab = true, cells = 2500, checkpoints, renderSteps, restoreCheckpoints, namedSave = true, restoredArea = true, playMode = false, temporary };

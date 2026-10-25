@@ -12,6 +12,7 @@
 - 玩家界面只显示 `DiceRequirement` 的“要求：%s”，不附加算法/读法解释。要求、位数、检定结果、按钮与检定标题前缀均走 [Language/LuaTxt](../Framework/Localization.md)，固定按钮由 Prefab 的语言绑定初始化。
 - `AdventureEvents.CheckResolved` 发布探索结果；探索驯服发布到同一入口。`MainHudCtr` 在可见生命周期订阅它，并从已有 Battle.Changed 中仅收集非 battle 阶段的概率效果检定。`DiceRollCtr` 顺序展示同一次操作产生的多个请求，快速揭晓只结束当前演出，不重抽结果、不重做结算。
 - `DiceRoll` 使用既有 UI 框架的 Overlay 模态窗口与世界暂停租约，不允许 Back 关闭；支持快速揭晓、结果后继续、缓存重开与换场景释放。UI 引用全部由保存的 LuaReference 获取。
+- [GM 自由投骰](../Tools/GM.md) 使用 `kind='roll'` 的已抽取请求，包含 `dice/detail/reading`，不需要 `passed`，结果仅展示逐颗面值与合计。普通检定仍要求布尔 `passed` 并显示成功/失败；同一缓存窗口切换两种请求时恢复各自的结果字号。GM 使用独立随机序列，View 和快速揭晓均不能重抽。
 - `DiceRollView` 以独立 PhysicsScene 预计算真实刚体轨迹，再用未缩放时间播放，带短拖尾、碰撞光环与结果光环。用多面体旋转对称性调整数字朝向，保持整个碰撞轮廓和轨迹不变，确保最终上方面值对应已结算结果；不是用物理重新决定业务成败。投掷最多六颗。
 - 离屏相机使用项目 URP 预览 Renderer，通过透明 RawImage 叠加。相机、刚体、材质实例、RenderTexture 和临时物理场景均归 View；Hide/Dispose 释放。结果稳定后停止重复离屏渲染，尺寸变化时重建目标。
 - `Project Y/UI/同步实体检定骰子` 通过 Unity API 导入模型、合并视觉网格、提取独立碰撞网格及面值标记，创建材质、Catalog 和可编辑 Panel；重跑保留已编辑 UI 布局。未来调整布局或绑定需通过 Unity API/MCP 保存，不手改 YAML。

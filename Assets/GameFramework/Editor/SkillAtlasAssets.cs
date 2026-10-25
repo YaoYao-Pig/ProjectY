@@ -38,7 +38,7 @@ namespace ProjectY.Editor
                     var style=root.GetComponent<StoryGrowthView>();
                     style.SetJournalTheme(CharacterJournalAssets.CreateGlyphBindings());
                     var page=(RectTransform)root.GetComponent<LuaReference>().GetEditorBindings().Single(row=>row.Key=="Page").Target;
-                    style.SetEditorBindings(root.GetComponentsInChildren<Text>(true),Array.Empty<StoryGrowthView.ArtEntry>(),page);
+                    style.SetEditorBindings(root.GetComponentsInChildren<Text>(true),CharacterJournalAssets.CreateSkillArtBindings(),page);
                 }
                 root.GetComponent<LuaReference>().ValidateBindings();PrefabUtility.SaveAsPrefabAsset(root,entry.PrefabPath);
                 LuaViewHints.Export(root.GetComponent<LuaReference>(),entry.ViewType);

@@ -12,6 +12,7 @@ namespace ProjectY.Data
     public sealed class PreparedCharacterSave
     {
         internal CharacterSaveService SourceService; internal string SourceSlotId;
+        internal string WorldName;
         internal CombatActorData[] Actors; internal bool Consumed; internal ShopData Shops;
         internal CampData Camp; internal ChronicleEntryData[] Journal;
         internal ExpeditionSave Expedition; internal MapAreaStateData[] PreparedAreas;
@@ -35,6 +36,7 @@ namespace ProjectY.Data
     {
         private readonly string legacyPath, campaignDirectory;
         private string currentSlotId = "legacy";
+        private string currentWorldName = "";
         private readonly CharacterAppearanceService appearances;
         public string FilePath => SlotPath(currentSlotId);
         public bool HasSave { get; private set; }
@@ -58,7 +60,7 @@ namespace ProjectY.Data
             var expedition=ExpeditionPersistence.Capture(adventure);
             if(expedition!=null)foreach(var area in expedition.areas)foreach(var group in area.encounters)foreach(var actor in group.actors)actorIds.Add(actor.id);
             if(expedition!=null)foreach(var party in expedition.parties.parties)foreach(var actor in party.members)actorIds.Add(actor.id);
-            var document = new CharacterSaveDocument { version = expedition==null?23:24, savedAt = DateTime.UtcNow.ToString("o"), seed = adventure.Seed,
+            var document = new CharacterSaveDocument { version = expedition==null?23:24, savedAt = DateTime.UtcNow.ToString("o"), worldName = currentWorldName, seed = adventure.Seed,
                 coins = player.Coins, playerLevel = player.Level, actors = Enumerable.Range(0, adventure.PartyCount).Select(i => adventure.GetPartyAt(i).CaptureSave()).ToArray(), equipment = adventure.Equipment.CaptureSave(actorIds), narrative = adventure.Narrative.Capture(), shops = adventure.Shops.Capture(),
                 camp=adventure.Camp.Capture(),partyStory=adventure.PartyBonds.Capture(),journal=adventure.CaptureJournal(),expedition=expedition,skillSynergies=adventure.SynergyDiscovery.Capture() };
             PrepareDocument(document, adventure.Equipment); // Reject incomplete state before touching a prior save.
@@ -176,6 +178,7 @@ namespace ProjectY.Data
                 previousMinutes = entry.Minutes;
             }
             var result = new PreparedCharacterSave { Actors = prepared, Seed = document.seed, Coins = document.coins, PlayerLevel = document.playerLevel,
+                WorldName = (document.worldName ?? "").Trim(),
                 Narrative = narrative, LegacyNarrative = document.version == 1, LegacyProfessions = document.version < 5,
                 Shops = ShopData.Prepare(document.version >= 4 ? document.shops : Array.Empty<ShopStockSave>()),
                 Camp=CampData.Prepare(document.camp),PartyBonds=PartyStoryData.Prepare(document.partyStory,ids),Journal=journal,SynergyDiscovery=synergies };
@@ -213,6 +216,7 @@ namespace ProjectY.Data
             adventure.SynergyDiscovery.TakePrepared(prepared.SynergyDiscovery);
             prepared.Consumed = true;
             currentSlotId=prepared.SourceSlotId;HasSave=File.Exists(FilePath);
+            currentWorldName=prepared.WorldName;
             Status = prepared.Expedition!=null ? "已继续远征 · 探索、战利品与剧情已恢复" : "已导入队伍 · 该存档未记录地图，已开始新地图";
             // This is the only externally observable notification. Publish after every subsystem is committed.
             player.RestoreProfile(prepared.Coins, prepared.PlayerLevel);

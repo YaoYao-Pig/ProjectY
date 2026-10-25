@@ -144,6 +144,7 @@ function Travel:Tick(dt)
         self.adventure.narrative:AdvanceMinutes(spent)
         self.adventure.parties:SyncClock()
         if attached then self.adventure.fog:Update() end
+        self.adventure.factions:ObserveWorld()
         if self.adventure.data.Phase~='map' then return end
         if not attached and self.adventure.parties:CheckContact() then return end
         if moving and self.data.Progress==0 then self.adventure.parties:ReplanPursuit() end

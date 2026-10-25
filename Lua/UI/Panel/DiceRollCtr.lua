@@ -3,6 +3,7 @@ local Class=require('Core.Class')
 local Base=require('UI.UIPanelCtrl')
 local Dice=Class('DiceRollCtr',Base)
 function Dice:Bind()
+    self.resultFontSize=self.view.Result.fontSize
     self:Listen(self.view.Reveal,function() self.view.Dice:Reveal();self:Result() end)
     self:Listen(self.view.Continue,function()
         if not self.view.Dice.Settled then return end
@@ -18,6 +19,7 @@ function Dice:Start(check)
     self.check=check;self.shown=false;self.sequence=self.sequence+1
     self.view.Title.text=check.title
     self.view.Detail.text=check.detail
+    self.view.Result.fontSize=check.kind=='roll' and math.min(self.resultFontSize,20) or self.resultFontSize
     self.view.Result.text='';self.view.Continue.interactable=false
     self.view.Reveal.gameObject:SetActive(true)
     self.view.Dice:Prepare()
@@ -28,8 +30,13 @@ end
 function Dice:Result()
     if self.shown or not self.view.Dice.Settled then return end
     self.shown=true
-    self.view.Result.text='<color='..(self.check.passed and '#79E6C3' or '#ED897C')..'>'..
-        self.check.reading..'  ·  '..(self.check.passed and LuaLanguage.DiceSuccess or LuaLanguage.DiceFailure)..'</color>'
+    if self.check.kind=='roll' then
+        self.view.Result.text=self.check.reading
+    else
+        assert(type(self.check.passed)=='boolean','A settled check needs a boolean outcome')
+        self.view.Result.text='<color='..(self.check.passed and '#79E6C3' or '#ED897C')..'>'..
+            self.check.reading..'  ·  '..(self.check.passed and LuaLanguage.DiceSuccess or LuaLanguage.DiceFailure)..'</color>'
+    end
     self.view.Continue.interactable=true;self.view.Reveal.gameObject:SetActive(false)
 end
 function Dice:Tick(_,unscaledDt) self.view.Dice:Advance(unscaledDt);self:Result() end

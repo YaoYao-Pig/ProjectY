@@ -20,6 +20,16 @@ local health,details=Armor.Split(17,3,profile(30,.4,1.3))
 assert(health==12 and details.damage==3)
 health,details=Armor.Split(1,10,profile(0,.1,1))
 assert(health==0 and details.damage==1,'Positive armor damage must not round to permanent immunity')
+for _,p in ipairs({25,30,35,40,50})do
+    health,details=Armor.Split(2,100,profile(p,1,1))
+    assert(health==1 and details.damage>=1,'A positive flesh share must hurt through intact armor')
+end
+health=Armor.Split(0,100,profile(35,1,1));assert(health==0,'Zero damage must remain zero')
+health=Armor.Split(2,100,profile(35,1,0));assert(health==0,'Zero flesh multiplier must remain zero')
+for damage=1,20 do
+    health,details=Armor.Split(damage,100,profile(35,1,1))
+    assert(health>=1 and health+details.damage==damage,'Unit multipliers must distribute, not duplicate or discard, whole damage points')
+end
 assert(not pcall(function()Armor.Split(10,100,{armorPenetration=30})end),'A partial production profile must fail visibly')
 print('PASS armor split: penetration, armor/flesh multipliers, no armor, overflow, preservation and integer rounding')
 

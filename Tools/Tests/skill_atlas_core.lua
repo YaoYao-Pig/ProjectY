@@ -13,23 +13,38 @@ for _,id in ipairs({401,402,403,404,701,702}) do
     assert(atlas.skills:Get(id).proficiency=='','Regression must cover skills without damage proficiency')
     assert(glyphs[atlas.nodes:Get(id).glyphCode])
 end
--- Exercise the actual widget boundary: glyph selection must not depend on damage proficiency.
+-- Exercise the actual widget boundary: published artwork wins, with explicit glyphs for empty paths.
 local savedCS=CS
 CS={UnityEngine={Color=function(...) return {...} end}}
 local widget=require('UI.Widget.SkillAtlasNode')
 local view={Root={gameObject={SetActive=function() end}},Title={},State={},Icon={},Background={},Border={},Group={}}
-local glyphCount=0
-local style={SetGlyph=function(_,_,code) assert(glyphs[code],'Widget requested an absent journal glyph: '..tostring(code));glyphCount=glyphCount+1 end,Tint=function() end}
+local glyphCount,artCount=0,0
+local icons=config:GetTable('BattleIconTable')
+local style={
+    SetGlyph=function(_,image,code) assert(glyphs[code],'Widget requested an absent journal glyph: '..tostring(code));image.sprite=code;glyphCount=glyphCount+1 end,
+    SetArt=function(_,image,path) image.sprite=path;image.enabled=true;artCount=artCount+1 end,
+    Tint=function(_,image,color) image.color=color end,
+}
 for _,node in ipairs(atlas.nodes:All()) do
-    widget.SetData({view=view},node,atlas.skills:Get(node.id),'eligible','',style,{Place=function() end},false,true,function() end)
+    local skill=atlas.skills:Get(node.id)
+    local path=icons:Get(skill.iconId).spritePath
+    widget.SetData({view=view,icons=icons},node,skill,'eligible','',style,{Place=function() end},false,true,function() end)
+    assert(view.Icon.sprite==(path~='' and path or node.glyphCode))
+    assert(view.Icon.color==(path~='' and 'FFFFFF' or '62583F'))
+    assert(view.Icon.enabled and view.Icon.preserveAspect)
 end
-assert(glyphCount==atlas.nodes.Count)
+assert(glyphCount+artCount==atlas.nodes.Count and artCount>0)
+print('PASS atlas widget icon projections: '..artCount..' artwork, '..glyphCount..' glyph fallback')
 CS=savedCS
 assert(atlas:Path(304)=='营造 / 架设')
 assert(#atlas:Categories(1)>=6 and #atlas:Nodes(31)==3)
 assert(atlas:Search('高台')[1].id==304)
-assert(#atlas:Search('枪械')==3 and #atlas:Search('  ')==0)
-local shields=atlas:Nodes(13);assert(#shields==2 and atlas.nodes:Get(shields[1].id).categoryId~=13)
+local firearms={};for _,node in ipairs(atlas:Search('枪械')) do firearms[node.id]=true end
+-- New skills extend the catalog; the original firearm entries must remain searchable.
+for _,id in ipairs({7,8,9}) do assert(firearms[id],'Missing firearm search result: '..id) end
+assert(#atlas:Search('  ')==0)
+local shields={};for _,node in ipairs(atlas:Nodes(13)) do shields[node.id]=node end
+for _,id in ipairs({4,108}) do assert(shields[id]==atlas.nodes:Get(id) and shields[id].categoryId~=13) end
 assert(not atlas:Prerequisites(304,{}) and atlas:Prerequisites(304,{[303]=true}))
 local related=atlas:Related(303);assert(related[303] and related[304] and not related[301])
 local replacement={}

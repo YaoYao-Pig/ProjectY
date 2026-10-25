@@ -45,6 +45,7 @@ try{
     var style=root.GetComponent<ProjectY.UI.NarrativeView>();style.SetEditorBindings(page,(UnityEngine.UI.ScrollRect)reference.Get("SaveScroll"),root.GetComponentsInChildren<UnityEngine.UI.Text>(true),false);
     var so=new UnityEditor.SerializedObject(style);so.FindProperty("richFont").objectReferenceValue=font;var labels=root.GetComponentsInChildren<ProjectY.UI.UITxt>(true);var array=so.FindProperty("richLabels");array.arraySize=labels.Length;
     for(int i=0;i<labels.Length;i++)array.GetArrayElementAtIndex(i).objectReferenceValue=labels[i];so.ApplyModifiedPropertiesWithoutUndo();
+    ProjectY.Editor.CampaignMenuAssets.ConfigureWorldName(root);
     reference.ValidateBindings();ProjectY.Editor.LuaViewHints.Register(typeof(ProjectY.UI.NarrativeView),"CS.ProjectY.UI.NarrativeView");ProjectY.Editor.LuaViewHints.Export(reference,"StartMenuPanelView");
     UnityEditor.PrefabUtility.SaveAsPrefabAsset(root,entry.PrefabPath);
 }finally{UnityEditor.PrefabUtility.UnloadPrefabContents(root);}

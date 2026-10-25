@@ -417,6 +417,32 @@ function Battle:TryItem(itemId)
     self:Emit('item_used',self.stats:Template(source).name..' 使用 '..self.stats.equipment.items:Get(itemId).name,source.Id)
     return true
 end
+function Battle:SkillRange(source,targetCell,skill)
+    local bonus=self.construction and self.construction:RangeBonusAt(self.board,source,targetCell,skill) or 0
+    if self.board.area then
+        bonus=math.max(bonus,self.stats.heightAdvantage:RangeBonus(self.board:Find(source.Q,source.R),targetCell,skill))
+    end
+    return skill.range+bonus
+end
+-- Spatial coverage only. Target allegiance, action budget and occupancy are checked on submission.
+function Battle:SkillRangeCells(skillId)
+    local source=self:Active();local skill=self:Skill(source,skillId)
+    if skill.target=='cell' then return self:SkillCells(skillId) end
+    local origins=assert(self.stats.animals:Cells(source,self.board))
+    if skill.target=='self' then return origins end
+    local origin=assert(self.board:Find(source.Q,source.R));local result={}
+    for _,cell in ipairs(self.board.cells) do
+        if not cell.blocked and (cell.layer or 0)==(origin.layer or 0) then
+            local distance=math.huge
+            for _,part in ipairs(origins)do distance=math.min(distance,Hex.Distance(part.q,part.r,cell.q,cell.r))end
+            if distance>=skill.minRange and distance<=self:SkillRange(source,cell,skill)
+                and Trajectory.CanReach(self.board,origin,cell,skill.trajectory,nil,skill.guided) then
+                result[#result+1]=cell
+            end
+        end
+    end
+    return result
+end
 function Battle:CanUseSkill(skillId, targetId)
     local ok,reason=self:SkillBudget(skillId)
     if not ok then return false,reason end
@@ -440,11 +466,9 @@ function Battle:CanUseSkill(skillId, targetId)
     if skill.target == 'self' and target.Id ~= source.Id then return false, '只能对自己使用' end
     if skill.target == 'enemy' and not self:IsHostile(source,target) then return false, '请选择敌人' end
     if skill.target == 'ally' and not self:IsAllied(source,target) then return false, '请选择友军' end
-    local rangeBonus=self.construction and self.construction:RangeBonus(self.board,source,target,skill) or 0
-    if self.board.area then rangeBonus=math.max(rangeBonus,self.stats.heightAdvantage:RangeBonus(self.board:Find(source.Q,source.R),self.board:Find(target.Q,target.R),skill)) end
     local distance=self.stats.animals:Distance(source,target,self.board)
     if distance<skill.minRange then return false,'目标距离过近（至少 '..skill.minRange..' 格）' end
-    if distance>skill.range+rangeBonus then return false,'目标超出射程' end
+    if distance>self:SkillRange(source,assert(self.board:Find(target.Q,target.R)),skill) then return false,'目标超出射程' end
     if skillId==self.stats.animals.rule.tameSkillId then
         local tame,why=self.stats.animals:CanTame(source,target);if not tame then return false,why end
         local occupied=self:Occupied(source.Id)

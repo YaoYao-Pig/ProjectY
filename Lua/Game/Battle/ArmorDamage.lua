@@ -12,7 +12,8 @@ function Armor.Split(damage,current,skill,preserve)
     local penetration,armorScale,fleshScale=skill.armorPenetration,skill.armorDamageMultiplier,skill.fleshDamageMultiplier
     assert(finite(penetration) and penetration>=0 and penetration<=100,'Invalid weapon armor penetration')
     assert(finite(armorScale) and armorScale>=0 and finite(fleshScale) and fleshScale>=0,'Invalid weapon damage multipliers')
-    local penetrating=damage*penetration/100
+    -- Allocate whole damage points before splitting so a one-point hit cannot damage both pools.
+    local penetrating=damage>0 and penetration>0 and math.max(1,math.floor(damage*penetration/100+0.000000001)) or 0
     local protected=damage-penetrating
     local absorbed,wear=0,0
     if not preserve and current>0 then
@@ -23,7 +24,8 @@ function Armor.Split(damage,current,skill,preserve)
         end
     end
     local overflow=protected-absorbed
-    local health=math.floor((penetrating+overflow)*fleshScale+0.000000001)
+    local flesh=(penetrating+overflow)*fleshScale
+    local health=flesh>0 and math.max(1,math.floor(flesh+0.000000001)) or 0
     assert(health<=1000000,'Armor-adjusted health damage exceeds bounds')
     return health,{before=current,after=current-wear,damage=wear,absorbed=absorbed,penetrating=penetrating,
         overflow=overflow,preserved=preserve==true}

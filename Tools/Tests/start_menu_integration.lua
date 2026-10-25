@@ -6,15 +6,15 @@ registry:Register('UI',require('UI.UISystem'),{'Config'})
 local Menu=require('UI.Panel.StartMenuCtr');local originalBind=Menu.Bind
 local demo={session=false,opened=0,closed=0,random=0,created=0,loaded=0,error='',succeed=false}
 local saves={Length=3,
-    [0]={Id='alpha',SavedAt='2026-10-20 09:10:11',Seed=4294967295,TargetCells=10000,RecipeId=3,PartyCount=3,PartySummary='3名队员 · Lv1 / Lv2 / Lv3',CanLoad=true,Error='',Legacy=false,HasWorld=true},
-    [1]={Id='legacy',SavedAt='2026-10-19 20:10:11',Seed=0,TargetCells=0,PartyCount=2,PartySummary='2名队员 · Lv1 / Lv1',CanLoad=true,Error='',Legacy=true,HasWorld=false},
-    [2]={Id='bad',SavedAt='2026-10-18 08:10:11',Seed=0,TargetCells=0,PartyCount=0,PartySummary='无法读取队伍',CanLoad=false,Error='损坏档错误：<bad>',Legacy=false,HasWorld=false}}
+    [0]={Id='alpha',WorldName='晨风 <b>群岛</b>',SavedAt='2026-10-20 09:10:11',Seed=4294967295,TargetCells=10000,RecipeId=3,PartyCount=3,PartySummary='3名队员 · Lv1 / Lv2 / Lv3',CanLoad=true,Error='',Legacy=false,HasWorld=true},
+    [1]={Id='legacy',WorldName='',SavedAt='2026-10-19 20:10:11',Seed=0,TargetCells=0,PartyCount=2,PartySummary='2名队员 · Lv1 / Lv1',CanLoad=true,Error='',Legacy=true,HasWorld=false},
+    [2]={Id='bad',WorldName='',SavedAt='2026-10-18 08:10:11',Seed=0,TargetCells=0,PartyCount=0,PartySummary='无法读取队伍',CanLoad=false,Error='损坏档错误：<bad>',Legacy=false,HasWorld=false}}
 local failList=false
 local adapter={Font=function(value)assert(value==demo);return MenuFixtureFont end,
     HasSession=function(value)assert(value==demo);return value.session end,
     RandomSeed=function()demo.random=demo.random+1;return '4294967295'end,
     Saves=function(value)assert(value==demo);if failList then error('测试目录不可读')end;return saves end,
-    NewGame=function(value,seed,size,startId)assert(value==demo);value.created=value.created+1;value.seed=seed;value.size=size;value.startId=startId;value.error='测试生成失败';return value.succeed end,
+    NewGame=function(value,seed,size,startId,worldName)assert(value==demo);value.created=value.created+1;value.seed=seed;value.size=size;value.startId=startId;value.worldName=worldName;value.error='测试生成失败';return value.succeed end,
     Load=function(value,id)assert(value==demo);value.loaded=value.loaded+1;value.id=id;value.error='测试读取失败';return value.succeed end,
     LastError=function(value)return value.error end,
     OnOpen=function(value)value.opened=value.opened+1 end,OnClose=function(value)value.closed=value.closed+1 end}
@@ -44,6 +44,8 @@ local ok,err=xpcall(function()
             end
         end
         menu.startRows[4].view.Button.onClick:Invoke();assert(menu.view.StartParty.DefaultText:find('洛恩',1,true))
+        assert(menu.view.WorldName.text=='')
+        menu.view.WorldName.text='晨风群岛'
         if CaptureStartMenu then CaptureStartMenu() end
         for _,value in ipairs({'','-1','4294967296'})do
             menu.view.Seed.text=value;menu:ValidateSeed();assert(not menu.view.Create.interactable)
@@ -54,14 +56,16 @@ local ok,err=xpcall(function()
         for index,size in ipairs({2500,10000,30000,100000})do
             menu.view.Size.value=index-1;menu.view.Create.onClick:Invoke()
             assert(demo.seed=='4294967295' and demo.size==size and demo.startId==4 and ui:IsOpen('StartMenu'))
+            assert(demo.worldName=='晨风群岛')
             assert(menu.view.Hint.text=='测试生成失败')
         end
-        demo.succeed=true;menu.view.Create.onClick:Invoke()
+        demo.succeed=true;menu.view.WorldName.text='';menu.view.Create.onClick:Invoke();assert(demo.worldName=='')
         assert(not ui:IsOpen('StartMenu') and not Services.UI.IsWorldPaused and demo.closed==1)
     end)
     demo.succeed=false;menu=ui:Open('StartMenu',{demo=demo,mode='load'})
     test('scroll list shows readable save metadata and disables corrupt entries',function()
         assert(menu.mode=='load' and #menu.rows==3 and not menu.view.Empty.gameObject.activeSelf)
+        assert(menu.rows[1].view.Title.DefaultText==require('UI.RichText').Escape('晨风 <b>群岛</b> · 2026-10-20 09:10:11'))
         assert(menu.rows[1].view.Body.DefaultText:find('4294967295',1,true))
         assert(menu.rows[1].view.Body.DefaultText:find('10000 格',1,true) and menu.rows[1].view.Body.DefaultText:find('3名队员',1,true))
         assert(menu.rows[2].view.Title.DefaultText:find('旧版存档',1,true))

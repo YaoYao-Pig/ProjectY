@@ -4115,48 +4115,276 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   illustrations:
-  - Path: Assets/DynamicAsset/UI/Art/Story/Wayfarers.png
-    Sprite: {fileID: 21300000, guid: 8f1f4ef07d5197745a55a6f95c06b687, type: 3}
-  - Path: Assets/DynamicAsset/UI/Art/Story/Expansion202610/dew_herb_garden.png
-    Sprite: {fileID: 21300000, guid: ee864fb528bb131408f343bf15cfcb5a, type: 3}
-  - Path: Assets/DynamicAsset/UI/Art/Story/Expansion202610/woodpecker_storehouse.png
-    Sprite: {fileID: 21300000, guid: 243f17de49072fe4c9decc9783247e65, type: 3}
-  - Path: Assets/DynamicAsset/UI/Art/Story/Expansion202610/raven_change.png
-    Sprite: {fileID: 21300000, guid: 8183a82da84d72b48b3c382e87942aa8, type: 3}
-  - Path: Assets/DynamicAsset/UI/Art/Story/Expansion202610/mist_boundary_stone.png
-    Sprite: {fileID: 21300000, guid: 92ddb583554b25249b44344131fb4dd9, type: 3}
-  - Path: Assets/DynamicAsset/UI/Art/Story/Expansion202610/hot_stone_flatbread.png
-    Sprite: {fileID: 21300000, guid: aed05d3ea260db849859fd04a452161e, type: 3}
-  - Path: Assets/DynamicAsset/UI/Art/Story/Expansion202610/thunder_glass.png
-    Sprite: {fileID: 21300000, guid: 27d99a1a318a71048a7282eb1b27a57e, type: 3}
-  - Path: Assets/DynamicAsset/UI/Art/Story/Expansion202610/abandoned_astrolabe.png
-    Sprite: {fileID: 21300000, guid: 88388d3e0e557c847bcd19e9ec95c2b1, type: 3}
-  - Path: Assets/DynamicAsset/UI/Art/Story/Expansion202610/traveling_kite.png
-    Sprite: {fileID: 21300000, guid: a0ce77988e9abc647ba1046e115b9383, type: 3}
-  - Path: Assets/DynamicAsset/UI/Art/Story/Expansion202610/double_toll_bridge.png
-    Sprite: {fileID: 21300000, guid: 37e0ec2c9f16e8141b20b40d409b132c, type: 3}
-  - Path: Assets/DynamicAsset/UI/Art/Story/Expansion202610/treetop_courier.png
-    Sprite: {fileID: 21300000, guid: 5b2a5b618ca579445857fb676c7a4add, type: 3}
-  - Path: Assets/DynamicAsset/UI/Art/Story/Expansion202610/nameless_grave.png
-    Sprite: {fileID: 21300000, guid: 8de8672a59606444db422891bf71ca3c, type: 3}
-  - Path: Assets/DynamicAsset/UI/Art/Story/Expansion202610/three_shadow_lock.png
-    Sprite: {fileID: 21300000, guid: d49dc4a1fac14014a9ef147f57791b91, type: 3}
-  - Path: Assets/DynamicAsset/UI/Art/Story/Expansion202610/silent_avalanche_pass.png
-    Sprite: {fileID: 21300000, guid: 3f47f14ee9f039944b8268008cd19b64, type: 3}
-  - Path: Assets/DynamicAsset/UI/Art/Story/Expansion202610/goblin_soup_ransom.png
-    Sprite: {fileID: 21300000, guid: b1a0261b3135fd9429644f1fba0a7d89, type: 3}
-  - Path: Assets/DynamicAsset/UI/Art/Story/Expansion202610/veteran_falling_lesson.png
-    Sprite: {fileID: 21300000, guid: 5977d7b3395b3c547ae7d55c99b2f1c1, type: 3}
-  - Path: Assets/DynamicAsset/UI/Art/Story/Expansion202610/flooded_kiln.png
-    Sprite: {fileID: 21300000, guid: 09b71ea2c63cc3b42853ea3f56c7b02c, type: 3}
-  - Path: Assets/DynamicAsset/UI/Art/Story/Expansion202610/second_stretcher.png
-    Sprite: {fileID: 21300000, guid: 06d2dc332146451498fd893d21c56755, type: 3}
-  - Path: Assets/DynamicAsset/UI/Art/Story/Expansion202610/empty_campfire_seat.png
-    Sprite: {fileID: 21300000, guid: 5492be6041707164ebb268c4a9039d36, type: 3}
-  - Path: Assets/DynamicAsset/UI/Art/Story/Expansion202610/fallen_star_and_sheep.png
-    Sprite: {fileID: 21300000, guid: 999ad05d539017c48a3022e675bc5d80, type: 3}
-  - Path: Assets/DynamicAsset/UI/Art/Story/Expansion202610/snowbound_market.png
-    Sprite: {fileID: 21300000, guid: 8b839df6c28b6f248b6ddf0608b6eae1, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/slash-v1.png
+    Sprite: {fileID: 21300000, guid: 4bbb91bf6172f89449f98fd68fe7c41b, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/shoot-v1.png
+    Sprite: {fileID: 21300000, guid: addf32985d584124c86ba4baacd35677, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/spark-v1.png
+    Sprite: {fileID: 21300000, guid: 25caee75ee6193a43806dbfb2cacf44c, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/defend-v1.png
+    Sprite: {fileID: 21300000, guid: 647c1f2ae7940804ca837092e5fc5d7b, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/heal-v1.png
+    Sprite: {fileID: 21300000, guid: d97ef7ca070988e4585562357cf2f6a8, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/arcane-bolt-v1.png
+    Sprite: {fileID: 21300000, guid: 8f7a5a744c73d2a43adc43c63dd106ce, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/furnace-detonation-v1.png
+    Sprite: {fileID: 21300000, guid: e1f88bf278304ee45976e0aac471ac2e, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/cleansing-branch-v1.png
+    Sprite: {fileID: 21300000, guid: 4ae8fd9e853498f41b88271881deb631, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/reload-v1.png
+    Sprite: {fileID: 21300000, guid: b4550d8d7e9783b44a25f27f9a1bfd6d, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/simple-step-v1.png
+    Sprite: {fileID: 21300000, guid: 8e2d35a0fab063d408e678d9ce9b71a9, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/shooting-platform-v1.png
+    Sprite: {fileID: 21300000, guid: d7d6b53de3731284ba2e068f04a8a75a, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/dig-shallow-pit-v1.png
+    Sprite: {fileID: 21300000, guid: 0dbbebbd99eee2542aad4457c8ab4072, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/dig-trench-v1.png
+    Sprite: {fileID: 21300000, guid: 1a2acc08f74fcc143ae8895fcd55d343, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/armor-piercing-shot-v1.png
+    Sprite: {fileID: 21300000, guid: 19eb64847aa51fa44b7bca1158e08d1c, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/single-shot-v1.png
+    Sprite: {fileID: 21300000, guid: c408ab50e2e12fe479165cacbedda8c9, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/burst-fire-v1.png
+    Sprite: {fileID: 21300000, guid: cdf4f53fed32bfb489c7ed14787df5fc, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/pendulum-double-shot-v1.png
+    Sprite: {fileID: 21300000, guid: ad9d6ed15230dd749af9896663d10e5a, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/dusk-finisher-v1.png
+    Sprite: {fileID: 21300000, guid: 3e60a18021024604fa5571a87ed727c4, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/one-handed-slash-v1.png
+    Sprite: {fileID: 21300000, guid: f6d6673355cb2324da99948f1f24d84e, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/greatsword-cleave-v1.png
+    Sprite: {fileID: 21300000, guid: 91758c2dd1e95774e8c94bec2512060d, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/demolish-v1.png
+    Sprite: {fileID: 21300000, guid: dd25aa02e1e527b459b17d5a338d47a2, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/battle-spirit-v1.png
+    Sprite: {fileID: 21300000, guid: 0aadd987aa9353e48a9b5a0a1c8e8e0e, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/giant-blade-cleave-v1.png
+    Sprite: {fileID: 21300000, guid: c387846d3112bf1478e3a8fc9b11a3d1, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/vigilance-v1.png
+    Sprite: {fileID: 21300000, guid: e133bf1fdcc485448bcd91085a078793, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/arcane-focus-v1.png
+    Sprite: {fileID: 21300000, guid: 281dceb5ce228db46a6cc85da8413922, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/ritual-spellbreak-v1.png
+    Sprite: {fileID: 21300000, guid: cc1e47497459a1642adb3a366588d5b1, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/redline-bloodletting-v1.png
+    Sprite: {fileID: 21300000, guid: 9caa26ca462a3b846ba40e279bf92bac, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/guard-break-v1.png
+    Sprite: {fileID: 21300000, guid: 7b8839fdb855ceb4f934d0995255e056, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/temporary-reinforcement-v1.png
+    Sprite: {fileID: 21300000, guid: 271a1095cb27cb34c93ba3d6f346b9b2, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/use-first-aid-kit-v1.png
+    Sprite: {fileID: 21300000, guid: 65431662b73c20b4aa446ce2c443e264, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/drink-battle-potion-v1.png
+    Sprite: {fileID: 21300000, guid: 71725c1692393d94785678164afa5845, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/thorn-crown-absolution-v1.png
+    Sprite: {fileID: 21300000, guid: ad3a51d91bd73e2458fd953f98ca9e23, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/line-cleaver-v1.png
+    Sprite: {fileID: 21300000, guid: 2a8aac49c327b5c4e81353fb719761ba, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/focused-light-v1.png
+    Sprite: {fileID: 21300000, guid: 2bff3cee56769114387dd8ac4a9e0abd, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/pick-up-weapon-v1.png
+    Sprite: {fileID: 21300000, guid: 47d941fea7836264fbf298841ad6210d, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/offhand-slash-v1.png
+    Sprite: {fileID: 21300000, guid: a29bd5ec989ab75439addab155800eac, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/starfire-v1.png
+    Sprite: {fileID: 21300000, guid: a12c26de6eba5a24fa48f1b2bf5d5ee5, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/leaf-piercing-arrow-v1.png
+    Sprite: {fileID: 21300000, guid: 335806bd4dfaf1b4ca97d7ed63be2f94, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/wind-piercing-arrow-v1.png
+    Sprite: {fileID: 21300000, guid: 19f9efead429f764aa4d744806a9f91d, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/disarm-v1.png
+    Sprite: {fileID: 21300000, guid: c89dc0cff4b3a5f4d81976a3f39dc614, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/precision-thrust-v1.png
+    Sprite: {fileID: 21300000, guid: b2893fff56f3fc44fad0a657d7bf4fd2, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/unarmed-strike-v1.png
+    Sprite: {fileID: 21300000, guid: 3033c720beac34e47a069b892fe60431, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/patrol-fan-sweep-v1.png
+    Sprite: {fileID: 21300000, guid: a81ae50f6941d5f4d916e6071959e5bd, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/field-aid-v1.png
+    Sprite: {fileID: 21300000, guid: d580bee8b154b24489eac89e8b5855a9, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/steady-stance-v1.png
+    Sprite: {fileID: 21300000, guid: 5dd3b47af84dc534bbc2cb03c88f9523, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/poison-mist-v1.png
+    Sprite: {fileID: 21300000, guid: 44473af9edc320849829a6cb15f3cffe, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/soothing-water-v1.png
+    Sprite: {fileID: 21300000, guid: c9bf3a3239d22c745b3ead37e3b34571, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/last-candle-oath-v1.png
+    Sprite: {fileID: 21300000, guid: c4826c2c4fa853a4ab9df19f1463fc23, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/tame-v1.png
+    Sprite: {fileID: 21300000, guid: 7f3baaf9433b3b840aa7201d2fd94f8d, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/mounted-charge-v1.png
+    Sprite: {fileID: 21300000, guid: 124f12ccebb05c649b3c536903ec591c, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/frost-bell-strike-v1.png
+    Sprite: {fileID: 21300000, guid: d4f43efffc371e741881897cc5fac9dd, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/crimson-siphon-v1.png
+    Sprite: {fileID: 21300000, guid: 8fa7892046fb58949adc61dfd9939b43, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/lasting-renewal-v1.png
+    Sprite: {fileID: 21300000, guid: f4f51ff41caa51c41982558fbbcf3e1b, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/battle-prayer-v1.png
+    Sprite: {fileID: 21300000, guid: 3c0c4d278eeea4a4e9cbea04df8c2153, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/crushing-edge-v1.png
+    Sprite: {fileID: 21300000, guid: df39597a8f0dd064bb7bd7e04a2547ff, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/wall-breaker-v1.png
+    Sprite: {fileID: 21300000, guid: 385594dff6283984c9ed2f720b5e609f, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/chicken-pounce-v1.png
+    Sprite: {fileID: 21300000, guid: 2b25dcc74c5c03f4e9d251bcf0b606ad, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/rabbit-jump-v1.png
+    Sprite: {fileID: 21300000, guid: d12295655d78c03449087e4f1afa2d5d, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/fireball-v1.png
+    Sprite: {fileID: 21300000, guid: 0b936188dc422eb4b84dfc4439e33bb5, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/tide-bolt-v1.png
+    Sprite: {fileID: 21300000, guid: 12c5f853aa8c4e9498f875de0a049187, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/web-snare-arrow-v1.png
+    Sprite: {fileID: 21300000, guid: 2d2970f108a961d46b5ad312a335cd35, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/egret-split-feather-v1.png
+    Sprite: {fileID: 21300000, guid: 0889239206bf03d48bcfc1a7f5490386, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/animal-bite-v1.png
+    Sprite: {fileID: 21300000, guid: 7d9fbc7173a19ea4cb663afd90cb8161, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/simple-fence-v1.png
+    Sprite: {fileID: 21300000, guid: efddbf5b898bc8e43a930c74fd7d4b92, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/conductive-judgment-v1.png
+    Sprite: {fileID: 21300000, guid: 126768bffafecde418592ba760aa35cf, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/kindle-furnace-v1.png
+    Sprite: {fileID: 21300000, guid: fd94a0c1199fbc54eb96252eaf57ffd7, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/grave-poison-arrow-v1.png
+    Sprite: {fileID: 21300000, guid: 3699dce32439a8f45a2381fc282c19cb, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/distilled-poison-finisher-v1.png
+    Sprite: {fileID: 21300000, guid: 399e197eba6b11041915fe0359e3269b, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/kiln-temper-v1.png
+    Sprite: {fileID: 21300000, guid: 99b0c7b102a5a894ea3cdee2da2a1d92, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/tracking-spell-v1.png
+    Sprite: {fileID: 21300000, guid: 36f9d814375b5854e9912916bbeac843, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/spear-thrust-v1.png
+    Sprite: {fileID: 21300000, guid: 1e7860bd343982c499d4fe0a697f32c5, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/wooden-wall-v1.png
+    Sprite: {fileID: 21300000, guid: c5852bc1220b9744e89936186394da9f, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/fault-seeking-strike-v1.png
+    Sprite: {fileID: 21300000, guid: 33143fbd07f91764d8592b66c4d7fa0b, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/trauma-strike-v1.png
+    Sprite: {fileID: 21300000, guid: bfa2eed74539d624b9906bd891b360f7, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/sniper-shot-v1.png
+    Sprite: {fileID: 21300000, guid: 118570b6f2d382942b3225018e297ad5, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/trace-hex-seal-v1.png
+    Sprite: {fileID: 21300000, guid: 6264d73d514d0074da4caffcaf2f5e4a, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/branded-curse-v1.png
+    Sprite: {fileID: 21300000, guid: a423e0647c392cd47a9d168d5a0903d8, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/conductive-channel-v1.png
+    Sprite: {fileID: 21300000, guid: 250e4957184a4bd46980d20e1d1ad2f5, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/trip-rope-v1.png
+    Sprite: {fileID: 21300000, guid: 941134f6c80cb854f88842b331c65270, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/armor-piercing-sniper-v1.png
+    Sprite: {fileID: 21300000, guid: b5aef5d2f6d4d9e46aa22b8ddd33587b, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/close-shotgun-blast-v1.png
+    Sprite: {fileID: 21300000, guid: a90f656bda7be3146be9bb95a1b357a2, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/life-corrosion-v1.png
+    Sprite: {fileID: 21300000, guid: 2cc8da0450b192a419e543905f0a1d73, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/transfer-poison-v1.png
+    Sprite: {fileID: 21300000, guid: 954836aab1d64724e96c10c0596eb4d2, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/emergency-salvage-v1.png
+    Sprite: {fileID: 21300000, guid: 4775c473c50d095409e7fd468e4bf1f6, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/guard-swap-v1.png
+    Sprite: {fileID: 21300000, guid: 6397554c63208c945a0a3f268e398c9f, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/heavy-double-shotgun-v1.png
+    Sprite: {fileID: 21300000, guid: 6c90b47ee42995a4db4dd0027f0cc205, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/water-reagent-coating-v1.png
+    Sprite: {fileID: 21300000, guid: 1a4b01af9bf47254489b754aa4c214fb, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/read-opening-v1.png
+    Sprite: {fileID: 21300000, guid: e3f4427daa0dda043a8a6e66ff76859d, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/feint-opening-v1.png
+    Sprite: {fileID: 21300000, guid: dbf6bd84b40395240a1cb932f4d1ea9d, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/oath-intercept-v1.png
+    Sprite: {fileID: 21300000, guid: 13ef57871419b1d41ad74208a583cdae, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/prepare-poison-reagent-v1.png
+    Sprite: {fileID: 21300000, guid: 7aaec3de4478e354e8a433bfc5512634, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/splash-water-bottle-v1.png
+    Sprite: {fileID: 21300000, guid: 1cd0ed46248dc2a40b53b078f976fe9c, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/corrosive-reagent-v1.png
+    Sprite: {fileID: 21300000, guid: ff576cb93ade95441a3d823a8ed6ca8e, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/retreating-stab-v1.png
+    Sprite: {fileID: 21300000, guid: d9a6c5b5f04ede044bcff8e3d512f024, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/opening-finisher-v1.png
+    Sprite: {fileID: 21300000, guid: 635638e5972f89a40b2ee641af825072, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/distilled-poison-blast-v1.png
+    Sprite: {fileID: 21300000, guid: c554f7b0af79089429d18f2e143c59dd, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/transfer-bleeding-v1.png
+    Sprite: {fileID: 21300000, guid: b596833e35b32094399103232867f510, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/distilled-flame-detonation-v1.png
+    Sprite: {fileID: 21300000, guid: 91684971f5f7bdd4c9dad7700cf319a0, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/opening-beat-v1.png
+    Sprite: {fileID: 21300000, guid: 9553332e52dc5e4449357a5e3e1feed2, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/familiar-scent-v1.png
+    Sprite: {fileID: 21300000, guid: 77b59585667d983479835a5a6e1f2b91, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/drive-command-v1.png
+    Sprite: {fileID: 21300000, guid: a241a6e11bf71684e9ce9c402ff06714, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/transfer-weakness-v1.png
+    Sprite: {fileID: 21300000, guid: bba8c6c5fb955104f893aafb143a5437, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/water-enchanted-blade-v1.png
+    Sprite: {fileID: 21300000, guid: f46d2795f25fd3e4880d1160e05307be, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/shoulder-to-shoulder-march-v1.png
+    Sprite: {fileID: 21300000, guid: 1d4c6da9784827b49b5901f401c16b66, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/discordant-note-v1.png
+    Sprite: {fileID: 21300000, guid: b7894f4a971c0814ab6a5f92f0f9af85, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/wild-poison-extraction-v1.png
+    Sprite: {fileID: 21300000, guid: f95d083453c78114882480d8f452387f, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/tavern-rumors-v1.png
+    Sprite: {fileID: 21300000, guid: 0dcd7e4f3db48da48969bb70f39316f4, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/flanking-command-v1.png
+    Sprite: {fileID: 21300000, guid: 386b7027ae53818479fa57f161b6d551, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/rescue-drag-v1.png
+    Sprite: {fileID: 21300000, guid: 32217bab42e532a4b9b69e1e9d65aa9a, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/field-injury-care-v1.png
+    Sprite: {fileID: 21300000, guid: 3dbddbfb9db705b48a67d529c4943377, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/read-curse-v1.png
+    Sprite: {fileID: 21300000, guid: 4593e7e1b6f770b4bbdb24b43185d92e, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/encore-v1.png
+    Sprite: {fileID: 21300000, guid: fa4fcfe9af93b8b41b83e4d762d3ad4a, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/purifying-prayer-v1.png
+    Sprite: {fileID: 21300000, guid: 5c23d8b67a972554b93908ee94b08b94, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/burden-bearing-heal-v1.png
+    Sprite: {fileID: 21300000, guid: 0bd90cfbf499926408e7acfee349dfb0, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/suppressing-strike-v1.png
+    Sprite: {fileID: 21300000, guid: a9ee46b032f46da49ae919827b6416a2, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/formal-duel-v1.png
+    Sprite: {fileID: 21300000, guid: 9b3607ea7360a064ba1562ed113b63ff, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/follow-animal-tracks-v1.png
+    Sprite: {fileID: 21300000, guid: 25b75b3bbe196fa4b920a09b7dc3cca6, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/atonement-judgment-v1.png
+    Sprite: {fileID: 21300000, guid: 94359e80fc22594479c523517504d3fe, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/shield-push-v1.png
+    Sprite: {fileID: 21300000, guid: 2af9395accb036f46a99796f8f909c1e, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/tether-arrow-v1.png
+    Sprite: {fileID: 21300000, guid: 8a6feda7ae893b249ac0dad92d11781f, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/companion-mount-switch-v1.png
+    Sprite: {fileID: 21300000, guid: 3672e098daaa3c74cbe501b252b04e23, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/retreating-shot-v1.png
+    Sprite: {fileID: 21300000, guid: bfba9534e2b344945871218d341f461c, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/flame-imbued-blade-v1.png
+    Sprite: {fileID: 21300000, guid: 24b5d78eb7953fa47a2a1ee40b9db0a2, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Skills/life-ward-prayer-v1.png
+    Sprite: {fileID: 21300000, guid: 84d594d40836bc049875d7bf4373fde8, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Professions/profession-1.png
+    Sprite: {fileID: 21300000, guid: 5f04cf95a6fb91c4caf08690a647f0d3, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Professions/profession-2.png
+    Sprite: {fileID: 21300000, guid: df2d6de352f796042a1d5a9dc31fc91c, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Professions/profession-3.png
+    Sprite: {fileID: 21300000, guid: a2fd3dd033587ff47a4cd1a442bdd811, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Professions/profession-4.png
+    Sprite: {fileID: 21300000, guid: aaa689ecbb6a63242961d304a7c05244, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Professions/profession-5.png
+    Sprite: {fileID: 21300000, guid: 5a3aa1cabdbd5f14b981ab71e781d9a6, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Professions/profession-6.png
+    Sprite: {fileID: 21300000, guid: 9a0b97490643a324bbcc62b1ad95a45a, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Professions/profession-7.png
+    Sprite: {fileID: 21300000, guid: d56c626588f09c745bff2c8885b2db1c, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Professions/profession-8.png
+    Sprite: {fileID: 21300000, guid: a7b6c3b7f6f68e941aaf87a3765b7c8f, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Professions/profession-9.png
+    Sprite: {fileID: 21300000, guid: f0b1fbd33954b50409ad29964be4a7a4, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Professions/profession-10.png
+    Sprite: {fileID: 21300000, guid: 04812b615c4b33a4f85ace1d1c9ca920, type: 3}
+  - Path: Assets/DynamicAsset/UI/Icons/Professions/profession-11.png
+    Sprite: {fileID: 21300000, guid: f1b56da4d3a0236499747bb2e54404c1, type: 3}
   labels:
   - {fileID: 2088954664829096059}
   - {fileID: 7811285624193840746}

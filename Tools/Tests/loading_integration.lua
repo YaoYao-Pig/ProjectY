@@ -14,7 +14,7 @@ assert(ctrl.view.Percent.text=='25%' and math.abs(ctrl.view.Progress.value-.25)<
 loading:Finish(id);assert(not Services.UI.IsWorldPaused)
 id=loading:Begin('创建世界',LoadingFixtureFont)
 assert(ui.panels.Loading.ctrl==ctrl and ctrl.view.Percent.text=='0%','Cached screen must reset')
-bridge('begin',id,'42',2500)
+bridge('begin',id,'42',2500,1,'  晨风群岛  ')
 local initialId=CS.ProjectY.Data.CampaignSaves.CurrentId(adventure.characterSaves)
 local steps=0
 local render
@@ -36,6 +36,43 @@ function CommitLoadingFixture()
     assert(not pcall(bridge,'commit',id),'Duplicate commit was accepted')
     loading:Report(id,1,'世界已就绪');ctrl:Tick(0,0)
     assert(ctrl.view.Percent.text=='100%')
+    return state
+end
+local restoreId,otherId,oldMap,restoredArea
+function PrepareRestorationFixture()
+    bridge('release',id);loading:Finish(id)
+    local saves=CS.ProjectY.Data.CampaignSaves
+    restoreId=saves.CurrentId(adventure.characterSaves)
+    local site
+    for _,value in ipairs(adventure.sites) do if value.areaConfigId then site=value;break end end
+    assert(site,'Fixture requires a local area')
+    assert(adventure:EnterSite(site.id));assert(adventure.data.Phase=='area')
+    restoredArea=adventure.data.Areas.ActiveSiteId
+    assert(require('Game.Adventure.CharacterSave').Write(adventure))
+    otherId=saves.NewCampaign(adventure.characterSaves,'Another world')
+    assert(require('Game.Adventure.CharacterSave').Write(adventure))
+    oldMap=adventure.map
+    id=loading:Begin('加载世界',LoadingFixtureFont);bridge('begin_load',id,restoreId)
+    local loadSteps=0
+    while true do
+        local done,value,stage=bridge('step',id);loadSteps=loadSteps+1
+        assert(adventure.map==oldMap and saves.CurrentId(adventure.characterSaves)==otherId,'Read preparation changed the live session')
+        if done then LoadingFixture.restoreSteps=loadSteps;assert(loadSteps>10);return value end
+        loading:Report(id,value,stage);ctrl:Tick(0,1/60)
+    end
+end
+function CommitRestorationFixture()
+    loading:Report(id,.94,'恢复远征与队伍')
+    local state=bridge('commit',id)
+    local saves=CS.ProjectY.Data.CampaignSaves
+    assert(saves.CurrentId(adventure.characterSaves)==restoreId and adventure.map~=oldMap)
+    assert(adventure.data.Phase=='area' and adventure.data.Areas.ActiveSiteId==restoredArea)
+    assert(require('Game.Adventure.CharacterSave').Write(adventure))
+    local entries=saves.List(adventure.characterSaves);local names={}
+    for i=0,entries.Length-1 do names[entries[i].Id]=entries[i].WorldName end
+    assert(entries.Length==2 and names[restoreId]=='晨风群岛' and names[otherId]=='Another world')
+    assert(not pcall(bridge,'commit',id),'Duplicate restore commit was accepted')
+    loading:Report(id,1,'世界已就绪');ctrl:Tick(0,0);assert(ctrl.view.Percent.text=='100%')
     return state
 end
 function CloseLoadingFixture()

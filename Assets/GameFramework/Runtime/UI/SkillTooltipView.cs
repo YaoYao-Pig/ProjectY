@@ -35,8 +35,7 @@ namespace ProjectY.UI
         private bool bound, dirty, pointerInside;
         private PointerEventData pointer;
         private Vector2 previousBounds;
-        private float lastPointerInside;
-        private const float Inset = 18, Edge = 10, Gap = 8;
+        private const float Inset = 18, Edge = 10, Gap = 0;
         private static readonly Color Muted = new Color(.60f, .66f, .68f);
         private static readonly Color Paper = new Color(.89f, .92f, .92f);
         private static readonly Color Active = new Color(.53f, .86f, .70f);
@@ -150,7 +149,6 @@ namespace ProjectY.UI
             layout.Root.SetAsLastSibling();
             if (changed) RebuildLayout();
             Position();
-            if (opening) lastPointerInside = Time.unscaledTime;
             if (opening || changed)
             {
                 layout.Scroll.StopMovement();
@@ -182,27 +180,20 @@ namespace ProjectY.UI
         public bool KeepOpen(bool anchorHovered)
         {
             if (!Visible || anchor == null || !anchor.gameObject.activeInHierarchy) return false;
-            if (ContainsPointer() || anchorHovered)
-            {
-                lastPointerInside = Time.unscaledTime;
-                return true;
-            }
-            // Crossing the eight-pixel anchor/card gap must not close a clickable tooltip.
-            return Time.unscaledTime - lastPointerInside <= .4f;
+            // Card and anchor touch, so terminology remains reachable without a close delay.
+            return ContainsPointer() || anchorHovered;
         }
 
         public void OnPointerEnter(PointerEventData data)
         {
             pointer = data;
             pointerInside = true;
-            lastPointerInside = Time.unscaledTime;
         }
 
         public void OnPointerExit(PointerEventData data)
         {
             pointer = null;
             pointerInside = false;
-            lastPointerInside = Time.unscaledTime;
         }
 
         public string TakeLink() => links.Count == 0 ? "" : links.Dequeue();
@@ -231,7 +222,6 @@ namespace ProjectY.UI
             int index = TMP_TextUtilities.FindIntersectingLink(text, position, camera);
             if (index < 0) return false;
             links.Enqueue(text.textInfo.linkInfo[index].GetLinkID());
-            lastPointerInside = Time.unscaledTime;
             return true;
         }
 

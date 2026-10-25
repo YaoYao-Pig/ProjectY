@@ -17,6 +17,11 @@ function Log.Format(kind,message,source,target,amount,details)
     local prefix=(who and who..' ' or '')..(d.actionName and action(d.actionName)..' ' or '')..(whom and '→ '..whom..'  ' or '')
     if kind=='check' then
         local chance=assert(d.chance,'Check log needs its actual threshold')
+        if d.rollComparison=='greater' then
+            local text=prefix..paint(assert(d.checkName),color.check)..note(string.format(LuaLanguage.BattleCheckGreater,d.threshold,chance))
+            if d.roll~=nil then text=text..value(string.format(LuaLanguage.BattleCheckRoll,d.roll)) end
+            return text..'  '..paint(d.passed and d.successLabel or d.failureLabel,d.passed and color.good or color.bad)
+        end
         local text=prefix..paint(d.checkName or '判定',color.check)..' '..value(number(chance)..'/100',color.check)..note(' ('..number(chance)..'%)')
         if d.baseChance and d.baseChance~=chance then text=text..note(' · 基础 '..number(d.baseChance)..'/100')end
         if d.roll~=nil then text=text..note(' · 掷值 ')..value(number(d.roll)..'/100') end

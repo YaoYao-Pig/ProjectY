@@ -26,6 +26,8 @@ function Checks.FromBattleEvent(event)
     if event.kind~='check' then return end
     local data=assert(event.impact,'Check requires settled metadata')
     if data.roll==nil then return end -- Guaranteed effects have no die roll.
-    return Checks.Percent(data.checkName,data.roll,data.chance,data.passed,'exclusive',1)
+    local result=Checks.Percent(data.checkName,data.roll,data.chance,data.passed,data.rollConvention or 'exclusive',1)
+    if data.rollComparison=='greater' then result.detail=string.format(LuaLanguage.DiceRequirementGreater,data.threshold,data.chance) end
+    return result
 end
 return Checks

@@ -1,10 +1,15 @@
 # 势力关系与大地图冲突
-关键词：势力、组织、外交、关系、合作、敌对、实力、兽人、哥布林、树精灵、劫掠、据点、占领、解放、恢复、三方混战、黄色第三方。
+关键词：势力、组织、外交、关系树、势力 UI、合作、敌对、实力、兽人、哥布林、树精灵、劫掠、据点、占领、解放、恢复、三方混战、黄色第三方。
 
 ## 文档目录
 正文：关系与战略 / 战场与据点 / 持久化与表现 / 验证；关键入口：规则、数据、配置、模型。
 
 ## 正文
+
+- MainHud 的“势力”入口打开 `FactionRelations` 模态窗口，暂停世界；默认以玩家小队为根，已发现势力按直接同盟／中立／敌对关系分枝。未知势力统一在灰色区域显示“？？？”，不投影名称、说明、关系值或外交分组，也不能切换根节点；点击已发现势力切换视角，“回到我的小队”重置，Esc/关闭退出。树枝不代表上下级或同盟传递。
+- [FactionDiscovery](../../Lua/Game/Adventure/FactionDiscovery.lua) 将首次目击保存为 `NarrativeData` 的 `faction_seen:<id>=1`，随既有叙事事实存读及新远征清空。大地图只记录当前可见的有效移动队、据点原属和占据势力；小地图记录当前可见且在场的具名 NPC，以及关联世界队伍的可见存活成员。仅 Known 的地块不解锁，身处局部地图不从大地图视野继续发现；初始位置、旅行每个时间子步、区域揭示和 NPC 移动均接入观察，不能把发现写在 UI 查询或快照中。观察缓存按世界视野/队伍版本/时间及区域版本失效，换世界/读档清空缓存。旧存档缺少该事实时从当前可见目标重新积累，不推测历史目击。
+- [FactionTree](../../Lua/UI/FactionTree.lua) 只读配置、发现事实、外交覆盖及玩家声望，复用 `FactionRules.Value` 和 `WorldFactions.Relation`；不持有外交状态，不改写存档。所有已发现政策身份均可作为根，包括独立传奇个体。窗口在打开及切换视角时重建投影，动态节点和 `TalentEdge` 连线池由控制器生命周期管理。
+- 关系树资源与入口增量同步由 [build_faction_ui.cs](../../Tools/UI/build_faction_ui.cs) 经 Unity MCP `execute_code` 执行，创建缺失的 Panel/Widget、保存 LuaReference、本地化清单与 View 提示；已有关系树布局保留。脚本复用现有组件，不触发全局 Refresh、项目编译或 Play 切换。
 
 - 世界现按[三级 LOD](WorldLOD.md)调度：近层精算，中层批量推进，远层直接结算；本页的关系、占领和资源契约保持不变。v18 增加调度与未物化战场持久化，完整规则和性能预算以 LOD 文档为准。
 
@@ -25,6 +30,7 @@
 
 ## 验证
 
+- UI 最小检查：`python -B Tools/Tests/run_lua.py Tools/Tests/faction_tree.lua` 对真实导出配置检查遮蔽、已发现视角、双向关系、覆盖值、声望与几何边界；[faction_discovery.lua](../../Tools/Tests/faction_discovery.lua) 检查当前视野、已知灰雾、移动队/据点/NPC、离开视野保留与旅行中间步目击。[faction_tree_ui.lua](../../Tools/Tests/faction_tree_ui.lua) 用独立 LuaEnv 和保存的 Prefab 副本检查未知按钮禁用、重新打开后的揭示、切换、池复用及滚动复位；工厂与截图回调由 MCP 内存代码提供。另经内存代码验证真实 NarrativeData Capture→JSON→Prepare 保留发现、旧记录缺失为未知、新远征 Clear 清除发现。原生预览：[部分发现](../../Docs/Previews/Factions/faction-relations-discovery.png)、[全部发现的玩家视角](../../Docs/Previews/Factions/faction-relations-player.png)、[铁牙战团](../../Docs/Previews/Factions/faction-relations-orcs.png)。未启动或重启 Play，未执行完整实机流程。
 - 原生 Lua：`python -B Tools/Tests/run_lua.py Tools/Tests/factions_core.lua`、`faction_services.lua`、`battle_sides.lua`；对应外交、战略、后台生命周期、服务恢复及多方战斗。相关回归按改动选 `world_parties_core.lua`、`world_travel_core.lua`，不全量运行。
 - `faction_data_editmode.cs` 为现有 Editor 的内存代码体，覆盖真实 Data、引用/随机流与存档拒绝、货物转移、商店幂等，不打开场景或用户存档。
 - `factions_editmode.cs` 在独立 PreviewScene/LuaEnv 与临时存档运行 `factions_integration.lua`，覆盖真实生成、后台伤亡、援助/三方战斗、NPC 攻陷、玩家解放与远征存读；结果写 `Art/FactionLowPoly/Integration/gameplay-validation.txt`。不进入 Play。
@@ -32,6 +38,7 @@
 
 ## 关键入口
 
+- [势力界面控制器](../../Lua/UI/Panel/FactionRelationsCtr.lua) / [势力节点](../../Lua/UI/Widget/FactionNode.lua) / [界面资源](../../Assets/DynamicAsset/UI/Prefabs/Factions/)；主入口由 [MainHud](MainHud.md) 管理。
 - [外交与评分](../../Lua/Game/Adventure/FactionRules.lua) / [战略与恢复](../../Lua/Game/Adventure/WorldFactions.lua) / [冲突与介入](../../Lua/Game/Adventure/WorldConflicts.lua) / [队伍移动与交互](../../Lua/Game/Adventure/WorldParties.lua)。
 - [势力 Data](../../Assets/GameFramework/Runtime/Data/WorldFactionData.cs) / [队伍与编制](../../Assets/GameFramework/Runtime/Data/WorldPartyData.cs) / [完整远征持久化](../../Assets/GameFramework/Runtime/Data/ExpeditionSaveState.cs)。
 - [势力配置](../../Config/Tables/Travel/WorldFactionTable.json) / [初始外交](../../Config/Tables/Travel/WorldFactionRelationTable.json) / [数值规则](../../Config/Tables/Travel/WorldFactionRuleTable.json)。

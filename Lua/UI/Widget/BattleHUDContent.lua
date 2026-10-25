@@ -160,7 +160,7 @@ function HUD:Tick()
         self.lastTooltip=hovered
         self.skillTip:Show(hovered.row,self.context.services.Adventure,hovered.view.Root)
     end
-    -- Sample anchor hover every frame so leaving starts from the latest hovered frame.
+    -- Sample both surfaces every frame; leaving them dismisses the card immediately.
     local keepTip=self.skillTip:KeepOpen(hovered~=nil)
     if keepTip then
         self.lastTargetTooltip=nil;self.view.Tooltip.gameObject:SetActive(false)

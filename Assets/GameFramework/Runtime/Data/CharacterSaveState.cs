@@ -32,7 +32,7 @@ namespace ProjectY.Data
     [Serializable] internal sealed class EquipmentSave
     { public int width, height, nextId, nextPileId=1; public IntEntry[] stacks; public InventoryPileSave[] piles=Array.Empty<InventoryPileSave>(); public WeaponSave[] weapons; public MagazineSave[] magazines; public WearableSave[] wearables; public PlacementSave[] placements; }
     [Serializable] internal sealed class CharacterSaveDocument
-    { public int version, coins, playerLevel; public uint seed; public string savedAt; public ActorSave[] actors; public EquipmentSave equipment; public NarrativeSave narrative; public ShopStockSave[] shops; public CampSave camp; public PartyStorySave partyStory; public ChronicleSave[] journal; public ExpeditionSave expedition; public SkillSynergyDiscoverySave skillSynergies; }
+    { public int version, coins, playerLevel; public uint seed; public string savedAt, worldName; public ActorSave[] actors; public EquipmentSave equipment; public NarrativeSave narrative; public ShopStockSave[] shops; public CampSave camp; public PartyStorySave partyStory; public ChronicleSave[] journal; public ExpeditionSave expedition; public SkillSynergyDiscoverySave skillSynergies; }
 
     internal static class SaveCheck
     {

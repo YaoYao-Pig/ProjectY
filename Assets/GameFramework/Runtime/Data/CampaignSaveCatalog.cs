@@ -12,6 +12,7 @@ namespace ProjectY.Data
     public sealed class SaveCatalogEntry
     {
         public string Id { get; internal set; }
+        public string WorldName { get; internal set; }
         public string SavedAt { get; internal set; }
         public string SavedAtUtc { get; internal set; }
         public uint Seed { get; internal set; }
@@ -32,7 +33,7 @@ namespace ProjectY.Data
     [Serializable] internal sealed class CatalogExpedition { public int recipeId,targetCells; }
     [Serializable] internal sealed class CatalogDocument
     {
-        public int version; public uint seed; public string savedAt;
+        public int version; public uint seed; public string savedAt, worldName;
         public CatalogActor[] actors; public CatalogExpedition expedition;
     }
 
@@ -48,12 +49,13 @@ namespace ProjectY.Data
             return Path.Combine(campaignDirectory,id+".json");
         }
 
-        internal string NewCampaignSlot()
+        internal string NewCampaignSlot(string worldName)
         {
             string id;
             do { id=Guid.NewGuid().ToString("N"); }
             while(File.Exists(SlotPath(id)) || File.Exists(SlotPath(id)+".tmp") || File.Exists(SlotPath(id)+".bak"));
             currentSlotId=id;HasSave=false;Status="新远征已创建，尚未保存";
+            currentWorldName=(worldName ?? "").Trim();
             return id;
         }
 
@@ -83,7 +85,7 @@ namespace ProjectY.Data
 
         private static SaveCatalogEntry ReadEntry(string id,string path)
         {
-            var entry=new SaveCatalogEntry {Id=id,Legacy=id=="legacy",SavedAt="时间未知",SavedAtUtc="",
+            var entry=new SaveCatalogEntry {Id=id,WorldName="",Legacy=id=="legacy",SavedAt="时间未知",SavedAtUtc="",
                 PartySummary="无法读取队伍",Error="",CanLoad=false};
             try
             {
@@ -98,6 +100,7 @@ namespace ProjectY.Data
                     document.actors.Select(actor=>actor.id).Distinct().Count()!=document.actors.Length)
                     throw new InvalidDataException("存档队伍摘要无效。");
                 entry.Seed=document.seed;
+                entry.WorldName=(document.worldName ?? "").Trim();
                 entry.HasWorld=document.version==9 || document.version==11 || document.version==12 || document.version==14 || document.version==16 || document.version==18 || document.version==20 || document.version==22 || document.version==24;
                 if(entry.HasWorld)
                 {
@@ -121,7 +124,8 @@ namespace ProjectY.Data
     /// <summary>Reflection-only bridge; existing generated CharacterSaveService APIs stay intact.</summary>
     public static class CampaignSaves
     {
-        public static string NewCampaign(CharacterSaveService service) => Service(service).NewCampaignSlot();
+        public static string NewCampaign(CharacterSaveService service) => NewCampaign(service, "");
+        public static string NewCampaign(CharacterSaveService service,string worldName) => Service(service).NewCampaignSlot(worldName);
         public static SaveCatalogEntry[] List(CharacterSaveService service) => Service(service).Catalog();
         public static PreparedCharacterSave PrepareSelected(CharacterSaveService service,string id,EquipmentData current)
             => Service(service).PrepareSlot(id,current);

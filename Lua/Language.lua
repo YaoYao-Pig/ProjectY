@@ -133,7 +133,29 @@ local defaults = {
     UICharacterGrowthSkillsTabTextText = "职业与天赋", -- Lua/UI/Panel/CharacterGrowthCtr.lua:31
     UICharacterGrowthOverviewTabTextText = "属性加点", -- Lua/UI/Panel/CharacterGrowthCtr.lua:31
     UICharacterGrowthHistory = "每段经历记录发生日期、地点与同行者。", -- Lua/UI/Panel/CharacterGrowthCtr.lua:74
-    UICharacterGrowthSkills = "选择课程查看详情，再点击学习；转职免费，已学能力保留。技能图鉴可查看全部前置。", -- Lua/UI/Panel/CharacterGrowthCtr.lua:73
+    UICharacterGrowthSkills = "拖动查看分支，点击技能预览释放；点击职业徽记进入职业树与兼职选择。", -- 职业技能树操作提示
+    GrowthProfessionOverview = "职业之路", -- 已加入职业树标题
+    GrowthProfessionTreeTitle = "职业之路 · %d 个职业", -- 职业树概况；%d=已加入职业数
+    GrowthChooseProfession = "选择兼职职业", -- 兼职网格标题
+    GrowthAddProfession = "添加兼职", -- 打开未加入职业的网格
+    GrowthChooseNewProfession = "选择新职业", -- 添加兼职节点说明
+    GrowthAvailableProfession = "尚未加入", -- 兼职网格节点状态
+    GrowthCurrentProfession = "当前研习", -- 当前职业徽记状态
+    GrowthJoinedProfession = "已加入", -- 已加入但未在研习的职业状态
+    GrowthBackProfessionTree = "‹ 返回职业树", -- 从兼职网格返回职业树
+    GrowthBackSkillTree = "‹ 返回技能树", -- 从职业树返回当前技能树
+    GrowthStudyingProfession = "当前研习：%s", -- 职业树根说明；%s=职业名称
+    GrowthJoinProfession = "加入并研习", -- 确认加入选中的兼职职业
+    GrowthJoinProfessionDetail = "%s\n\n加入后开放该职业的技能目录与被动树。已学能力永久保留，加入不消耗学习机会，也不赠送初始技能。", -- 兼职说明；%s=职业配置说明
+    GrowthProfessionGridDetail = "选择一枚职业徽记查看介绍，再点击“加入并研习”。", -- 网格尚未选中职业的说明
+    GrowthProfessionTreeDetail = "点击已加入的职业进入它的技能树。\n\n不同职业共用角色等级与成长资源，已学能力保留。通过“添加兼职”加入新的职业。", -- 已加入职业树说明
+    GrowthAllProfessionsJoined = "已加入全部职业，可从职业树切换当前研习职业。", -- 所有职业均已加入时的说明
+    GrowthProfessionTreeHint = "点击职业徽记切换研习并打开技能树；“添加兼职”可选择新职业。", -- 职业树操作提示
+    GrowthProfessionGridHint = "点选职业查看介绍，确认加入后开始研习；已有技能和天赋保留。", -- 兼职网格操作提示
+    GrowthCourseAvailable = "可学习", -- 职业树节点：可消耗学习机会
+    GrowthCourseLocked = "条件不足", -- 职业树节点：学习条件未满足
+    GrowthCourseNoOpportunity = "机会不足", -- 职业树节点：条件满足但没有学习机会
+    GrowthCourseOtherProfession = "其他职业", -- 职业树节点：跨职业的前置技能
     UICharacterGrowthSkills2 = "被动天赋消耗天赋点；右侧目录切换天赋树，选中节点后投入。", -- Lua/UI/Panel/CharacterGrowthCtr.lua:73
     UICharacterGrowthOverview = "属性点用于 + 加点；旅途印记中可查看特质、关系和荣誉。", -- Lua/UI/Panel/CharacterGrowthCtr.lua:72
     UICharacterGrowthSummaryText = "属性点 %s  /  天赋点 %s  /  学习机会 %s  /  潜力 %s", -- Lua/UI/Panel/CharacterGrowthCtr.lua:65；%s1=growth.AttributePoints，%s2=growth.TalentPoints，%s3=growth.PendingCount，%s4=growth.LockedPotential
@@ -154,7 +176,7 @@ local defaults = {
     UICharacterGrowthInvestTextText3 = "暂不可学习", -- Lua/UI/Panel/CharacterGrowthCtr.lua:192
     UICharacterGrowthInvestTextText4 = "已经掌握", -- Lua/UI/Panel/CharacterGrowthCtr.lua:192
     UICharacterGrowthInvestTextText5 = "学习 · 消耗 1 次机会", -- Lua/UI/Panel/CharacterGrowthCtr.lua:192
-    UICharacterGrowthTalentDetailText3 = "%s · %s\n\n%s%s\n\n详细效果与前置可在技能图鉴中查看。", -- Lua/UI/Panel/CharacterGrowthCtr.lua:191；%s1=kind，%s2=reason，%s3=skill.description，%s4=condition and '\n\n'..condition or ''
+    UICharacterGrowthTalentDetailText3 = "%s · %s\n\n%s%s", -- 职业技能详情；%s1=技能种类，%s2=学习状态，%s3=技能说明，%s4=触媒条件
     UICharacterGrowthKind = "主动技能", -- Lua/UI/Panel/CharacterGrowthCtr.lua:189
     UICharacterGrowthKind2 = "战前准备技能", -- Lua/UI/Panel/CharacterGrowthCtr.lua:189
     UICharacterGrowthBody3 = "主动技能 · ", -- Lua/UI/Panel/CharacterGrowthCtr.lua:171
@@ -222,6 +244,39 @@ local defaults = {
     GMRevealWorldSuccess = "已开启全图视野：大地图持续全亮，远处敌人可见。", -- GM 开全图：命令与面板的成功反馈
     UIGMRevealWorldText = "开全图", -- GM 面板开全图按钮
     UIGMRevealWorldHint = "大地图持续全亮，远处敌人可见。重新开局或读档后需再次开启。", -- GM 面板开全图作用范围与生命周期说明
+    UIGMKillTargetText = "秒杀", -- GM 面板秒杀按钮；点击后选择场景中的一个目标
+    UIGMKillTargetHint = "点选一个敌人或动物。\nEsc／右键取消。", -- GM 面板秒杀使用说明
+    GMKillPickHint = "秒杀：点选一个敌人或动物 · Esc／右键取消", -- 场景点选秒杀目标时的提示
+    GMKillRequiresScene = "请先进入战斗或小地图，再选择秒杀目标。", -- GM 秒杀：当前阶段没有可点选目标
+    GMKillDialogueOpen = "请先结束当前对话，再选择秒杀目标。", -- GM 秒杀：对话期间禁止操作
+    GMKillInvalidTarget = "请选择当前场景中的敌人或动物。", -- GM 秒杀：空白、无效 ID 或场景外目标
+    GMKillProtectedTarget = "秒杀仅适用于敌人和野生动物，不能选择队友、盟友或已驯服动物。", -- GM 秒杀：拒绝不在范围内的单位
+    GMKillAlreadyDefeated = "这个目标已经倒地。", -- GM 秒杀：重复操作不再触发伤亡或奖励
+    GMKillBattleEnded = "战斗已经结束，请等待结算。", -- GM 秒杀：结束的战斗不再接收目标
+    GMKillSuccess = "已秒杀「%s」。", -- GM 秒杀成功；%s=目标名称
+    GMKillSource = "GM 秒杀", -- GM 致死伤害日志的来源及动作名称
+    GMDiceOpen = "投骰子", -- GM 面板打开骰子组合页
+    GMDiceTitle = "骰子组合", -- GM 骰子组合页标题
+    GMDiceHelp = "可混合选择，合计 1～6 颗。\nD10 为 0～9；D100 为百分比十位骰（00、10…90）。", -- GM 骰子选择数量与特殊面值说明
+    GMDiceSelectedCount = "已选 %d / %d 颗", -- GM 骰子数量；%d1=已选数量，%d2=最大数量
+    GMDiceBack = "返回 GM", -- GM 骰子组合页返回按钮
+    GMDiceClear = "清空组合", -- GM 骰子组合页清空按钮
+    GMDiceThrow = "开始投掷", -- GM 骰子组合页投掷按钮
+    GMDiceAdd = "+", -- GM 骰子数量增加按钮
+    GMDiceRemove = "−", -- GM 骰子数量减少按钮
+    GMDiceD4Label = "D4 · 1～4", -- GM 四面骰选择标签
+    GMDiceD6Label = "D6 · 1～6", -- GM 六面骰选择标签
+    GMDiceD8Label = "D8 · 1～8", -- GM 八面骰选择标签
+    GMDiceD10Label = "D10 · 0～9", -- GM 十面骰选择标签
+    GMDiceD12Label = "D12 · 1～12", -- GM 十二面骰选择标签
+    GMDiceD20Label = "D20 · 1～20", -- GM 二十面骰选择标签
+    GMDiceD100Label = "D100 · 00～90", -- GM 百分比十位骰选择标签
+    GMDiceInvalidCombination = "骰子组合无效，请使用支持的骰子和非负整数数量。", -- GM 投骰子参数校验失败
+    GMDiceCountRequired = "请选择 1～%d 颗骰子。", -- GM 骰子数量范围；%d=最大数量
+    GMDiceRollBusy = "请先完成当前投掷，再投下一组骰子。", -- GM 拒绝在演出进行时重复提交
+    GMDiceRollTitle = "GM · 自由投骰", -- GM 投掷演出标题
+    GMDiceCombination = "组合：%s", -- GM 投掷演出说明；%s=数量与骰型组合
+    GMDiceRollResult = "%s\n合计：%d", -- GM 自由投骰结果；%s=逐颗点数，%d=面值总和
     UIInventoryMessage = "已取消移动，物品保留原位", -- Lua/UI/Panel/InventoryCtr.lua:14
     UIInventoryMessage2 = "拖动收纳  ·  拖动时 R 旋转 / 右键取消  ·  拖到装备槽穿戴", -- Lua/UI/Panel/InventoryCtr.lua:50
     UIInventoryMessage3 = "已保存收纳与装备变更", -- Lua/UI/Panel/InventoryCtr.lua:58
@@ -250,7 +305,26 @@ local defaults = {
     UILootReason = "已整理背包", -- Lua/UI/Panel/LootCtr.lua:88
     UILootReason2 = "已收入背包：%s", -- Lua/UI/Panel/LootCtr.lua:85；%s1=reason
     UIMainHudRestartTextText = "营地", -- Lua/UI/Panel/MainHudCtr.lua:37
-    UIMainHudGrowthTextText = "角色养成", -- Lua/UI/Panel/MainHudCtr.lua:22
+    UIMainHudGrowthTextText = "养成", -- 主 HUD 常驻养成入口
+    UIFactionEntry = "势力", -- 主 HUD 势力关系入口
+    UIFactionTitle = "势力关系", -- 势力关系树标题
+    UIFactionSubtitle = "选择势力，查看它与世界各方的关系", -- 势力关系树说明
+    UIFactionPlayer = "我的小队", -- 势力关系树玩家节点
+    UIFactionPlayerDescription = "小队与各方的关系会随声望和旅途中的选择改变。", -- 玩家根节点说明
+    UIFactionRoot = "当前查看的势力", -- 关系树根节点标识
+    UIFactionHome = "回到我的小队", -- 关系树重置根节点按钮
+    UIFactionClose = "关闭  Esc", -- 势力关系树关闭按钮
+    UIFactionAllied = "同盟", -- 直接外交关系
+    UIFactionNeutral = "中立", -- 直接外交关系
+    UIFactionHostile = "敌对", -- 直接外交关系
+    UIFactionGroupCount = "%s · %d", -- 关系分枝标题：关系、数量
+    UIFactionRelationValue = "%s    %+d", -- 势力节点：关系、当前关系值
+    UIFactionEmpty = "暂无此类关系", -- 空关系分枝提示
+    UIFactionUnknownName = "？？？", -- 从未进入视野的势力名称占位
+    UIFactionUnknownHint = "尚未进入视野", -- 未发现势力不显示关系，也不可切换视角
+    UIFactionUnknownTitle = "未发现势力", -- 关系树未知区域的预览标题
+    UIFactionUnknownCount = "未发现势力 · %d", -- 未知势力区域标题与数量
+    UIFactionHelp = "首次进入视野后揭示势力 · 点击已发现势力切换视角 · 滚动查看分枝 · 同盟关系不传递", -- 关系树底部操作提示
     UIMainHudSkillHintText = "生活技能 · 悬停查看说明", -- Lua/UI/Panel/MainHudCtr.lua:140
     UIMainHudSkillHintText2 = "点击场景中的目标释放技能 · Esc 取消", -- Lua/UI/Panel/MainHudCtr.lua:140
     UIMainHudSkillEmptyText = "点击左侧队员卡片进行选择", -- Lua/UI/Panel/MainHudCtr.lua:137
@@ -331,6 +405,33 @@ local defaults = {
     UIStartMenuTitle2 = "旧版存档 · ", -- Lua/UI/Panel/StartMenuCtr.lua:76
     UIStartMenuEmptyText = "还没有存档\n从“开始游戏”创建第一段旅程", -- Lua/UI/Panel/StartMenuCtr.lua:71
     UIStartMenuEmptyText2 = "无法读取存档列表", -- Lua/UI/Panel/StartMenuCtr.lua:67
+    CampaignWorldName = "世界名称", -- 创建世界页的名称输入标签
+    CampaignWorldNamePlaceholder = "输入世界名称（可选）", -- 创建世界页的名称输入提示，留空沿用默认存档标题
+    CampaignNamedSave = "%s · %s", -- 具名存档标题；%s1=玩家输入的世界名称，%s2=本地保存时间
+    CampaignUnnamedSave = "远征 · %s", -- 无名称存档标题；%s=本地保存时间
+    CampaignLegacySave = "旧版存档 · %s", -- 无名称旧版存档标题；%s=本地保存时间
+    CampaignInvalidSize = "请选择有效的世界大小。", -- 创建世界的规模校验提示
+    CampaignSelectSave = "请先选择存档。", -- 加载世界时未指定存档的提示
+    CampaignFinishEvent = "请先结束当前事件或战斗。", -- 创建或加载世界前的会话状态校验
+    CampaignCloseParty = "请先结束队伍交互。", -- 创建或加载世界前的队伍交互校验
+    CampaignCloseCamp = "请先关闭营地面板。", -- 创建或加载世界前的营地校验
+    CampaignCloseShop = "请先关闭商店。", -- 创建或加载世界前的商店校验
+    CampaignCloseDialogue = "请先结束对话。", -- 创建或加载世界前的对话校验
+    CampaignCloseLoot = "请先关闭战利品窗口。", -- 创建或加载世界前的战利品校验
+    CampaignInitialSaveFailed = "世界已创建，但初始存档未保存：%s", -- 初始保存失败提示；%s=保存错误
+    CampaignLoadingBusy = "世界正在加载，请稍候。", -- 重复开始加载时的提示
+    CampaignLoadingLoadTitle = "加载世界", -- 读档 loading 标题
+    CampaignLoadingRead = "读取远征存档", -- 读档 loading 阶段
+    CampaignLoadingValidate = "校验队伍与物品", -- 读档 loading 阶段
+    CampaignLoadingWorldState = "校验世界探索记录", -- 读档 loading 阶段
+    CampaignLoadingAreas = "恢复已探索区域", -- 读档 loading 阶段
+    CampaignLoadingSnapshot = "准备地图显示数据", -- 创建和加载世界的 loading 阶段
+    CampaignLoadingResources = "准备地图资源", -- 创建和加载世界的 loading 阶段
+    CampaignLoadingRender = "构建地图显示", -- 创建和加载世界的 loading 阶段
+    CampaignLoadingCreate = "建立队伍并保存新远征", -- 创建世界的提交阶段
+    CampaignLoadingRestore = "恢复远征与队伍", -- 加载世界的提交阶段
+    CampaignLoadingReady = "世界已就绪", -- loading 完成阶段
+    CampaignLoadingAssetMismatch = "地图资源绑定不一致：{0}", -- C# 地图候选构建失败提示；{0}=地图资源 ID
     UIStoryEventRewardsRewards1 = "可能唤醒潜力", -- Lua/UI/Panel/StoryEventCtr.lua:31
     UIStoryEventRewardsRewards12 = "开启新的天赋道路", -- Lua/UI/Panel/StoryEventCtr.lua:30
     UIStoryEventRewardsRewards13 = "经验 +%s", -- Lua/UI/Panel/StoryEventCtr.lua:29；%s1=row.experience
@@ -690,7 +791,7 @@ local defaults = {
     UIMainHudPanelExplorationSafeCharacterSkillsSkillEmpty = "点击下方队员卡片进行选择", -- Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Exploration/Safe/CharacterSkills/SkillEmpty
     UIMainHudPanelCommonEntryRailMenuToggleMenuToggleText = "菜单", -- Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/EntryRail/MenuToggle/MenuToggleText
     UIMainHudPanelCommonEntryRailMissionsMissionsText = "任务", -- Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/EntryRail/Missions/MissionsText
-    UIMainHudPanelCommonEntryRailInventoryLabel = "背包  I", -- Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/EntryRail/Inventory/Label
+    UIMainHudPanelCommonEntryRailInventoryLabel = "背包", -- Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/EntryRail/Inventory/Label
     UIMainHudPanelCommonEntryRailNavigationToggleLabel = "地图", -- Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/EntryRail/NavigationToggle/Label
     UIMainHudPanelCommonMenuMenuTitle = "旅途菜单", -- Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/Menu/MenuTitle
     UIMainHudPanelCommonMenuGrowthLabel = "手记 C", -- Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab / Common/Menu/Growth/Label
@@ -874,8 +975,8 @@ local defaults = {
     AmmoSelectMagazine = "请选择随身携带的弹匣", -- 工坊要求队员或背包中的弹匣
     EquipmentAmmoStats = "肉伤 ×%.2f · 甲伤 ×%.2f · 穿甲 %+g 个百分点", -- 弹药说明：肉伤倍率、甲伤倍率、穿甲百分点修正
     EquipmentMagazineSummary = "%s · %d/%d 发", -- 弹匣说明：实际弹药名、余弹、容量
-    EquipmentWeaponArmor = "基础穿甲 %g%% · 甲伤 ×%.2f", -- 武器属性：基础穿甲百分比、甲伤倍率
-    EquipmentArmorRule = "穿甲部分绕过护甲，其余先伤甲；破甲后的剩余伤害伤生命。护甲耐久归零后不会掉落。", -- 装备详情中的承伤与战利品规则
+    EquipmentWeaponArmor = "直接伤生命 %g%% · 甲伤 ×%.2f", -- 武器属性：基础穿甲百分比、甲伤倍率
+    EquipmentArmorRule = "每次命中按穿甲比例分成肉体伤害和护甲伤害，穿甲不是概率；正数肉伤最低1点。破甲后的剩余伤害溢出生命，护甲耐久归零后不会掉落。", -- 装备详情中的承伤与战利品规则
     WorkbenchMagazineName = "%s #%d", -- 工坊弹匣标题：弹匣物品名、实例编号
     WorkbenchMagazineSelect = "%s · %s · 点击选择装填", -- 工坊弹匣条目：弹种余弹说明、备用或已装入状态
     WorkbenchAmmoTitle = "装填弹匣 #%d · 选择弹种", -- 工坊弹种选项标题：弹匣实例编号
@@ -887,6 +988,16 @@ local defaults = {
     BattleArmorResult = " · %s耐久 %g→%g（甲伤 %g；吸收 %g；穿透 %g；溢出 %g）", -- 战斗实际护甲结算：部位名、原耐久、剩余耐久、甲伤、吸收、穿透、溢出
     BattleArmorBroken = " · 护甲已打烂，无法掉落", -- 战斗中护甲耐久归零的战利品提示
     BattleArmorPreserved = " · 本次未损伤护甲", -- 保甲攻击的实际结算提示
+    EffectTriggered = "触发", -- 附加效果检定成功
+    EffectNotTriggered = "未触发", -- 附加效果检定失败
+    BattleCheckGreater = " · 掷值 > %g 成功（成功率 %g%%）", -- 附加效果高点数检定：门槛、成功率
+    BattleCheckRoll = " · 掷出 %g/100", -- 已结算的1至100掷值
+    DiceRequirementGreater = "掷值大于 %g 成功 · 成功率 %g%%", -- 骰子展示：高点数成功门槛、成功率
+    EffectTooltipBody = "%s\n\n来源  %s\n层数  %d\n持续  %s", -- 状态说明：效果、来源名、层数、剩余时间
+    EffectRemainingTurns = "剩余 %d 回合", -- 状态剩余回合
+    EffectRemainingMinutes = "剩余 %d 分钟", -- 状态剩余游戏分钟
+    EffectIndefinite = "持续生效", -- 无期限状态
+    EffectMinuteTimer = "%dm", -- 状态图标的分钟倒计时
 -- @localization-end
 }
 return require('Config.LanguageProxy').Create(defaults)

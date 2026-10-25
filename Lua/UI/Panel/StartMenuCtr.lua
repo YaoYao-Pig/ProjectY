@@ -22,7 +22,7 @@ function Menu:Bind()
     self:Listen(self.view.RandomSeed,function()self.view.Seed.text=self.bridge.RandomSeed();self:ValidateSeed()end)
     self:Listen(self.view.Create,function()
         if not self:ValidateSeed() then return end
-        self:Complete(self.bridge.NewGame(self.demo,self.view.Seed.text,assert(sizes[self.view.Size.value+1],'Unknown world size'),self.selectedStart))
+        self:Complete(self.bridge.NewGame(self.demo,self.view.Seed.text,assert(sizes[self.view.Size.value+1],'Unknown world size'),self.selectedStart,self.view.WorldName.text))
     end)
     local changed=function()if self.mode=='new' then self:ValidateSeed()end end
     self.view.Seed.onValueChanged:AddListener(changed)
@@ -104,7 +104,8 @@ function Menu:RefreshSaves()
     for i=1,count do
         local saved=saves[i-1];local id=saved.Id
         if not self.rows[i] then self.rows[i]=self:CreateWidget('NarrativeEntry',self.view.SaveContent) end
-        local title=(saved.Legacy and LuaLanguage.UIStartMenuTitle2 or LuaLanguage.UIStartMenuTitle)..saved.SavedAt
+        local title=saved.WorldName~='' and string.format(LuaLanguage.CampaignNamedSave,saved.WorldName,saved.SavedAt)
+            or string.format(saved.Legacy and LuaLanguage.CampaignLegacySave or LuaLanguage.CampaignUnnamedSave,saved.SavedAt)
         local size=saved.HasWorld and (saved.TargetCells>0 and (string.format(LuaLanguage.UIStartMenuSize3, (saved.TargetCells))) or LuaLanguage.UIStartMenuSize2) or LuaLanguage.UIStartMenuSize
         local body=string.format(LuaLanguage.UIStartMenuBody, (tostring(saved.Seed)), (size), (saved.PartySummary))
         if not saved.CanLoad then body=body..'\n'..saved.Error end

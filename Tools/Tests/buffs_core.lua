@@ -23,8 +23,12 @@ function state.EffectAt(row,i)return row.ids[i+1]end
 function state.ExpiresAt(row)return row.expiry end
 function state.NextTickAt(row)return row.nextTick end
 function state.AdvanceTick(row,period)row.nextTick=row.nextTick+period end
-CS={ProjectY={Data={GameBuffState=state}}}
+CS={ProjectY={Data={GameBuffState=state,AnimalCompanionState={Bound=function()end}}}}
 local stats=require('Game.Battle.CombatStats')(config)
+-- This fixture covers effect lifetimes; body injury state is exercised by armor_damage_core.
+stats.injuries.ApplyAttribute=function(_,_,_,value)return value end
+stats.injuries.ValidateSaved=function()end
+stats.injuries.DamageHit=function(_,_,target,_,amount)return target:Damage(amount)end
 local EmptyGrowth=assert(loadfile('Tools/Tests/growth_empty.lua'))()
 local function actor(id)
     local a={Id=id,TemplateId=1,Team=1,TraitCount=0,Effects=collection(),Growth=EmptyGrowth()}
@@ -35,7 +39,7 @@ local function actor(id)
     function a:BeginTurn(ap)self.AP=ap;self.MainUsed=false;self.Moved=false end
     return a
 end
-local events={};local now,roll=120,0
+local events={};local now,roll=120,99
 local effects=require('Game.Battle.GameEffects').New(stats,config:GetTable('CombatEffectTable'),function(kind,_,_,target,_,_,_,impact)
     events[#events+1]={kind=kind,target=target,impact=impact}
 end,{roll=function()return roll end,minutes=function()return now end})
@@ -61,9 +65,9 @@ for _,sample in ipairs({{802,10002,'#FF3B42'},{803,10003,'#6FCF45'},{804,10004,'
 end
 print('PASS bleeding/poison/burning ticks carry distinct configured damage colors')
 
-target=actor(4);roll=99;local count=#events;effects:Apply(804,source,target)
+target=actor(4);roll=0;local count=#events;effects:Apply(804,source,target)
 assert(target.Effects.Count==0 and #events==count,'Failed proc must not emit a status popup')
-roll=0;effects:Apply(804,source,target);assert(target.Effects:Find(10004))
+roll=99;effects:Apply(804,source,target);assert(target.Effects:Find(10004))
 effects:Apply(805,source,target);assert(not target.Effects:Find(10004) and target.Effects:Find(10005))
 count=#events;effects:Apply(804,source,target);assert(not target.Effects:Find(10004) and #events==count)
 local metadata=events[#events].impact;assert(metadata.statusName=='潮湿' and metadata.color=='#74CBE8' and metadata.stacks==1)
@@ -73,6 +77,7 @@ print('PASS configured wet/burning exclusion, proc failure and successful-applic
 target=actor(5);effects:Apply(806,source,target)
 local skipped,normal=0,0
 local battle=setmetatable({data={Phase='combat',SelectTurn=function()end},stats=stats,gameEffects=effects,
+    professions={BeginTurn=function()end},beasts={BeginTurn=function()end},
     Active=function()return target end,CheckWinner=function()return false end,
     Emit=function(_,kind)if kind=='turn_skipped' then skipped=skipped+1 elseif kind=='turn_started' then normal=normal+1 end end,
     EndTurn=function()effects:TickActor(target,'turn_end');return true end},{__index=require('Game.Battle.BattleSystem')})

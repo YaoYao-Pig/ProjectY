@@ -49,6 +49,7 @@ namespace ProjectY.Samples
         public void OpenGM()
         {
             if(equipmentOpen || growthOpen || storyOpen || view==null || pendingExitView!=null)return;
+            CancelGMKillSelection();
             bootstrap.CallModule("UI.AdventureUIBridge","gm",this);
         }
         private MainHudView mainHud;
@@ -284,6 +285,8 @@ namespace ProjectY.Samples
         {
             if (campaignLoading != null) return;
             if (fatalError != null) return;
+            if(command=="gm_begin_kill"){BeginGMKillSelection();return;}
+            if(gmKillSelecting && command!="gm_kill_target" && command!="snapshot" && command!="hud_follow")CancelGMKillSelection();
             if(command=="campaign_menu" || command=="campaign_load_menu" || command=="campaign_continue" || command=="load_characters")
             {OpenCampaignMenu(command=="campaign_menu"?"home":"load");return;}
             if(command=="hud_missions"){bootstrap.CallModule("UI.AdventureUIBridge","missions",this);return;}
@@ -339,6 +342,7 @@ namespace ProjectY.Samples
         private void SetView(AdventureViewData value, bool exitPresentationComplete = false)
         {
             bool wasBattle = view?.Phase == "battle";
+            if(value.Phase!=view?.Phase)CancelGMKillSelection();
             if(value.Phase!=view?.Phase || !Array.Exists(value.Party,actor=>actor.Id==selectedCharacter))
             {selectedCharacterSkill=0;characterSkillTarget=null;}
             if(!Array.Exists(value.Party,actor=>actor.Id==selectedCharacter))selectedCharacter=0;
@@ -492,14 +496,16 @@ namespace ProjectY.Samples
             if (view == null || fatalError != null || campaignMenuOpen) return;
             if(Input.GetKeyDown(KeyCode.F8))OpenGM();
             if(gmOpen)return;
+            if(gmKillSelecting && (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1)))
+            {CancelGMKillSelection();return;}
             if(Input.GetKeyDown(KeyCode.C)) OpenGrowth();
-            if(growthOpen || storyOpen) return;
+            if(growthOpen || storyOpen) {CancelGMKillSelection();return;}
             if(dialogueCamera!=null && dialogueCamera.Active)return;
             if(Input.GetKeyDown(KeyCode.I))
             {
                 if(equipmentOpen) bootstrap.CallModule("UI.EquipmentUIBridge","close");else OpenEquipment();
             }
-            if(equipmentOpen) return;
+            if(equipmentOpen) {CancelGMKillSelection();return;}
             if(Input.GetKeyDown(KeyCode.T))SendCommand("torch_toggle");
             if(Input.GetKeyDown(KeyCode.F5))SendCommand("save_characters");
             float presentationDelta = battleCinematic != null ? battleCinematic.Advance(Time.deltaTime) : Time.deltaTime;
@@ -541,6 +547,7 @@ namespace ProjectY.Samples
                 if(view.Phase=="area" && Input.GetKeyDown(KeyCode.E)) SendCommand("area_interact_nearest");
                 if(view.Phase=="area" && Input.GetKeyDown(KeyCode.Escape) && view.Area.InteractionKind!=0) SendCommand("area_close");
             }
+            if(gmKillSelecting){UpdateGMKillSelection();return;}
             if (view.Phase == "battle" && !AnimationBusy && pendingExitView == null && view.Active.Team != 1 && autoAI && Time.unscaledTime >= nextAI)
             {
                 SendCommand("ai"); nextAI = Time.unscaledTime + .8f;
@@ -739,6 +746,7 @@ namespace ProjectY.Samples
                 }
             }
             if(showEnvironment) DrawEnvironmentWindow();
+            DrawGMKillSelection();
         }
         internal bool TryInteractionPoint(int kind,int id,int cellIndex,out Vector3 point)
         {
@@ -796,6 +804,8 @@ namespace ProjectY.Samples
                     || !IsChoosingBattleLanding && (moveSelected && Array.Exists(view.Reachable, next => next.Q == cell.Q && next.R == cell.R)
                     || chosen!=null && Array.IndexOf(chosen.TargetCells,cell.CellIndex+1)>=0));
                 var color = cell.Blocked ? new Color(.12f, .15f, .17f) : reachable ? new Color(.19f, .39f, .34f) : new Color(.18f, .23f, .25f);
+                if (!cell.Blocked && !reachable && view.Active.Team==1 && !IsChoosingBattleLanding && chosen!=null
+                    && Array.IndexOf(chosen.RangeCells,cell.CellIndex+1)>=0) color=new Color(.27f,.38f,.57f);
                 Fill(rect, new Color(.08f, .12f, .14f), hexTexture);
                 var inner = new Rect(rect.x + 2, rect.y + 2, rect.width - 4, rect.height - 4); Fill(inner, color, hexTexture);
                 if (cell.Blocked) GUI.Label(rect, "◆", tokenStyle);
@@ -815,9 +825,10 @@ namespace ProjectY.Samples
             var hovered=hoveredCell==null?null:Array.Find(view.Units,actor=>actor.HP>0 && Array.IndexOf(actor.OccupiedCells,hoveredCell.CellIndex)>=0);
             SetBattleTargetHover(EventSystem.current!=null && EventSystem.current.IsPointerOverGameObject()?0:(hovered?.Id ?? 0));
             SetBattleCellHover(EventSystem.current!=null && EventSystem.current.IsPointerOverGameObject()?null:hoveredCell);
-            if (clicked != null && view.Active.Team == 1 && (EventSystem.current == null || !EventSystem.current.IsPointerOverGameObject()))
+            if (clicked != null && (gmKillSelecting || view.Active.Team == 1) && (EventSystem.current == null || !EventSystem.current.IsPointerOverGameObject()))
             {
                 Event.current.Use();
+                if(gmKillSelecting){TryGMKillTarget(hovered==null?0:hovered.Id);return;}
                 if(IsChoosingBattleLanding)ChooseBattleLanding(clicked.Q,clicked.R);
                 else if (moveSelected) SendCommand("move", clicked.Q, clicked.R);
                 else

@@ -24,6 +24,7 @@ namespace ProjectY.Samples
         private readonly HashSet<int> alliedCells = new HashSet<int>();
         private readonly HashSet<int> moves = new HashSet<int>();
         private readonly HashSet<int> targets = new HashSet<int>();
+        private readonly HashSet<int> rangeCells = new HashSet<int>();
         private readonly HashSet<int> selectedTargets = new HashSet<int>();
         public AreaCombatRenderer(Transform parent, PawnView prefab, Shader shader, Func<PawnAppearanceData.Part, GameObject> resolve)
         {
@@ -134,11 +135,12 @@ namespace ProjectY.Samples
                     :neutralCells.Contains(cell)?new Color(.96f,.78f,.22f):new Color(.85f, .27f, .2f));
                 return;
             }
-            moves.Clear(); targets.Clear();selectedTargets.Clear();
+            moves.Clear(); targets.Clear();selectedTargets.Clear();rangeCells.Clear();
             if (view.Active.Team == 1)
             {
                 if (moving) foreach (var cell in view.Reachable) moves.Add(cell.CellIndex);
                 var skill = Array.Find(view.Skills, row => row.Id == skillId);
+                if (skill != null && landingCells==null) foreach (var index in skill.RangeCells) rangeCells.Add(index-1);
                 if (skill != null && landingCells==null) foreach (var id in skill.Targets)
                     foreach(var cell in Array.Find(view.Units, actor => actor.Id == id).OccupiedCells) targets.Add(cell);
                 foreach(var id in chosenTargets)
@@ -155,6 +157,7 @@ namespace ProjectY.Samples
                 if (neutralCells.Contains(index)) color = new Color(.96f,.78f,.22f);
                 if (alliedCells.Contains(index)) color = new Color(.24f,.76f,.51f);
                 if (moves.Contains(index)) color = new Color(.24f, .76f, .51f);
+                if (rangeCells.Contains(index)) color = new Color(.48f, .64f, .94f);
                 if (targets.Contains(index)) color = new Color(.97f, .76f, .43f);
                 if (selectedTargets.Contains(index)) color = new Color(.31f, .91f, .83f);
                 if (view.Active.CellIndex == index) color = Color.white;

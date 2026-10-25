@@ -130,6 +130,7 @@ function Adventure:Start(seed,recipeId,targetCells,preparedWorld)
         if off then self.professionExploration:OnEquip(actor,off)end
     end
     self.parties:Initialize()
+    self.factions:ObserveWorld()
     for i=0,self.data.PartyCount-1 do self.growth:RecordJoined(self.data:GetPartyAt(i),'营地') end
 end
 function Adventure:RestorePrepared(prepared,world)
@@ -147,6 +148,7 @@ function Adventure:RestorePrepared(prepared,world)
     self.fog:Update()
     require('Game.Adventure.ExpeditionSave').RestoreLayouts(self,world)
     self.parties:Initialize()
+    self.factions:ObserveWorld()
 end
 function Adventure:Visit(siteId)
     return self.travel:Visit(siteId)
@@ -344,7 +346,7 @@ function Adventure:BattleCommand(command, a, b)
     return ok, reason
 end
 function Adventure:Tick(dt)
-    if self.map then self.parties:SyncClock();self.travel:Tick(dt) end
+    if self.map then self.parties:SyncClock();self.factions:ObserveWorld();self.travel:Tick(dt) end
     if self.equipment.worldLoot.session.Active then return end
     if self.data.Phase=='battle' and self.data.Battle.Winner~='' then self:SettleBattle();return end
     if self.data.Phase~='area' then return end
@@ -458,6 +460,8 @@ function Adventure:Snapshot()
                 end end
                 local targetCells={}
                 for _,cell in ipairs(self.battle:SkillCells(id)) do targetCells[#targetCells+1]=cell.index or 0 end
+                local rangeCells={}
+                for _,cell in ipairs(self.battle:SkillRangeCells(id)) do rangeCells[#rangeCells+1]=assert(cell.index) end
                 local needsLanding=self.battle:NeedsSkillLanding(id)
                 local landingOptions={}
                 if needsLanding then
@@ -468,7 +472,7 @@ function Adventure:Snapshot()
                     end
                 end
                 result.skills[#result.skills + 1] = {id = id, name = skill.name, description = skill.description,
-                    cost = skill.cost, action = skill.action, targets = targets,targetCells=targetCells,
+                    cost = skill.cost, action = skill.action, targets = targets,targetCells=targetCells,rangeCells=rangeCells,
                     manualTargets=skill.manualTargets,maxTargets=skill.maxTargets,guided=skill.guided,targetPreviews=previews,
                     needsLanding=needsLanding,landingOptions=landingOptions,
                     containerTargets=self.containerCombat:Targets(self.battle:Active(),id,self.battle)}

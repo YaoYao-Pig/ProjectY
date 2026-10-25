@@ -6,7 +6,7 @@ var entry=config.Get("StartMenu");entry.Validate(true);
 if(entry.Module!="Adventure" || entry.Kind!=ProjectY.UI.UIKind.Panel || entry.Layer!="Popup" || !entry.Modal || !entry.PauseWorldOnOpen || entry.CloseOnBack)
     throw new System.Exception("StartMenu registry flags are invalid");
 var reference=entry.Prefab.GetComponent<ProjectY.UI.LuaReference>();
-foreach(var key in new[]{"Root","Style","Title","Caption","Hint","HomePage","NewPage","LoadPage","Start","Load","Back","Resume","Create","RandomSeed","Seed","Size","SaveContent","SaveScroll","Empty"})
+foreach(var key in new[]{"Root","Style","Title","Caption","Hint","HomePage","NewPage","LoadPage","Start","Load","Back","Resume","Create","RandomSeed","Seed","WorldName","Size","SaveContent","SaveScroll","Empty"})
     if(reference.Get(key)==null)throw new System.Exception("Missing StartMenu binding: "+key);
 var originalScene=UnityEngine.SceneManagement.SceneManager.GetActiveScene();var originalDirty=originalScene.isDirty;
 var scene=UnityEditor.SceneManagement.EditorSceneManager.NewPreviewScene();
