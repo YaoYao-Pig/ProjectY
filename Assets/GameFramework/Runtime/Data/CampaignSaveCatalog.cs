@@ -94,14 +94,14 @@ namespace ProjectY.Data
                 SetTime(entry,new DateTimeOffset(file.LastWriteTimeUtc));
                 if(file.Length<=0 || file.Length>32*1024*1024)throw new InvalidDataException("存档大小无效（上限32 MiB）。");
                 var document=JsonUtility.FromJson<CatalogDocument>(File.ReadAllText(path,Encoding.UTF8));
-                if(document==null || document.version<1 || document.version>24)throw new InvalidDataException("不支持的存档版本。");
+                if(document==null || document.version<1 || document.version>26)throw new InvalidDataException("不支持的存档版本。");
                 if(document.actors==null || document.actors.Length<1 || document.actors.Length>4 ||
                     document.actors.Any(actor=>actor==null || actor.id<=0 || actor.growth==null || actor.growth.level<1) ||
                     document.actors.Select(actor=>actor.id).Distinct().Count()!=document.actors.Length)
                     throw new InvalidDataException("存档队伍摘要无效。");
                 entry.Seed=document.seed;
                 entry.WorldName=(document.worldName ?? "").Trim();
-                entry.HasWorld=document.version==9 || document.version==11 || document.version==12 || document.version==14 || document.version==16 || document.version==18 || document.version==20 || document.version==22 || document.version==24;
+                entry.HasWorld=document.version==9 || document.version==11 || document.version==12 || document.version==14 || document.version==16 || document.version==18 || document.version==20 || document.version==22 || document.version==24 || document.version==26;
                 if(entry.HasWorld)
                 {
                     if(document.expedition==null || document.expedition.recipeId<1 || document.expedition.targetCells<0 || document.expedition.targetCells>100000)

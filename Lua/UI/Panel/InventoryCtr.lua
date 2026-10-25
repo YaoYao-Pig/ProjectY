@@ -6,6 +6,7 @@ local Text=require('Game.Equipment.EquipmentPresentation')
 local Inventory=Class('InventoryCtr',Panel)
 function Inventory:Bind()
     self.system=self.context.systems:Get('Equipment');self.stats=self.context.systems:Get('Battle').stats
+    self.terms=require('UI.EquipmentTermPresenter').New(self.view,self.system.config)
     self.model=Model.New(self.system,self.stats);self.view.Inventory:Prepare()
     self.appearance=require('Game.Adventure.PawnAppearance').New(self.system.config)
     self.health=require('UI.BodyHealthPresenter').New(self)
@@ -50,7 +51,7 @@ function Inventory:OnShow(args)
     self.demo=assert(args.demo);self.demo:SetEquipmentOpen(true)
     self.actorId=self.system.adventure:GetPartyAt(0).Id;self.selected=''
     self.message=LuaLanguage.UIInventoryMessage2
-    self.view.Inventory:Prepare();self:Refresh()
+    self.view.Inventory:Prepare();self:Refresh();self.terms:Reset()
 end
 function Inventory:Selected()
     for _,row in ipairs(self.rows) do if row.key==self.selected then return row end end
@@ -81,6 +82,7 @@ function Inventory:Refresh()
     local occupied=0;for i=0,data.Grid.Count-1 do local p=data.Grid:GetAt(i);occupied=occupied+p.Width*p.Height end
     self.view.Capacity.text=string.format(LuaLanguage.UIInventoryCapacityText,data.Grid.Width,data.Grid.Height,occupied,data.Grid.Width*data.Grid.Height-occupied)
     self.view.ItemName.text=selected and selected.displayName or LuaLanguage.UIInventoryItemNameText
+    self.view.DetailsRarityFrame:Configure(selected~=nil and selected.legendary,selected and selected.rarityColor or '',true)
     self.view.ItemDetail.text=selected and (selected.detail..'\n\n'..Text.Note(string.format(LuaLanguage.UIInventoryItemDetailText6,selected.width,selected.height,selected.count))..'\n'..
         Text.Note(selected.slot~='' and (string.format(LuaLanguage.UIInventoryItemDetailText5, (Model.slotNames[selected.slot]))) or selected.compatible~='' and LuaLanguage.UIInventoryItemDetailText4 or LuaLanguage.UIInventoryItemDetailText3)) or
         Text.Heading(LuaLanguage.UIInventoryItemDetailText2)..'\n\n'..Text.Note(LuaLanguage.UIInventoryItemDetailText)
@@ -97,10 +99,13 @@ function Inventory:Refresh()
     self.view.Status.text=self.message;self.revision=data.Revision
 end
 function Inventory:Tick()
+    require('UI.EquipmentRarity').Tick()
     local actor=assert(self.system:Actor(self.actorId))
     if self.revision~=self.system.data.Revision or self.health.revision~=CS.ProjectY.Data.BodyHealth.Revision(actor) or self.health.effectRevision~=actor.Effects.Revision then self:Refresh() end
+    self.terms:Tick()
 end
 function Inventory:OnHide()
+    self.terms:Reset()
     self.health:Hide()
     self.view.Inventory:CancelDrag()
     self.view.Character:ReleasePreview()

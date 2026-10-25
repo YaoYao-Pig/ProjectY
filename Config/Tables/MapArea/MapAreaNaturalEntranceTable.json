@@ -1,0 +1,60 @@
+{
+  "version": 1,
+  "name": "MapAreaNaturalEntranceTable",
+  "description": "独立自然地形入口与首次进入消耗；已进入记录保存固定绳索。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "配置ID",
+      "min": 1
+    },
+    {
+      "name": "regionType",
+      "type": "enum",
+      "description": "目标地貌",
+      "enumRef": "Map.E_MapRegion"
+    },
+    {
+      "name": "kind",
+      "type": "string",
+      "description": "生成器入口标记"
+    },
+    {
+      "name": "areaId",
+      "type": "int",
+      "description": "探索小地图",
+      "ref": "MapAreaTable"
+    },
+    {
+      "name": "itemId",
+      "type": "int",
+      "description": "首次进入所需物品，0表示免费"
+    },
+    {
+      "name": "itemCount",
+      "type": "int",
+      "description": "首次进入消耗数量",
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "regionType": 12,
+      "kind": "HighMountain",
+      "areaId": 70,
+      "itemId": 0,
+      "itemCount": 0
+    },
+    {
+      "id": 2,
+      "regionType": 13,
+      "kind": "Canyon",
+      "areaId": 71,
+      "itemId": 82,
+      "itemCount": 1
+    }
+  ]
+}

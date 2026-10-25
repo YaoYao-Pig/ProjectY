@@ -7,6 +7,7 @@ local Text=require('Game.Equipment.EquipmentPresentation')
 local Loot=Class('LootCtr',Panel)
 function Loot:Bind()
     self.adventure=self.context.systems:Get('Adventure');self.equipment=self.adventure.equipment
+    self.terms=require('UI.EquipmentTermPresenter').New(self.view,self.equipment.config)
     self.worldLoot=self.equipment.worldLoot;self.session=self.worldLoot.session
     self.bagModel=BagModel.New(self.equipment,self.adventure.battle.stats);self.lootModel=LootModel.New(self.worldLoot)
     local function command(action)
@@ -42,7 +43,7 @@ function Loot:OnShow(args)
     for i=0,self.session.ContainerCount-1 do local container=self.session:GetContainerAt(i);add(container.Id,container.Name) end
     self.view.Sources:SetValueWithoutNotify(selected);self.view.Sources:RefreshShownValue()
     self.view.Sources.interactable=self.session.ContainerCount>1;self.updatingSources=false
-    self:RefreshBag();self:RefreshLoot();self:Details()
+    self:RefreshBag();self:RefreshLoot();self:Details();self.terms:Reset()
 end
 function Loot:RefreshBag()
     local rows={}
@@ -68,6 +69,7 @@ function Loot:Details()
         for _,row in ipairs(rows) do if row.key==self.selected and row.count>0 then selected=row end end
     end
     self.view.ItemName.text=selected and selected.displayName or LuaLanguage.UILootItemNameText
+    self.view.DetailsRarityFrame:Configure(selected~=nil and selected.legendary,selected and selected.rarityColor or '',true)
     self.view.ItemDetail.text=selected and (selected.revealed==false and Text.Note(selected.detail) or selected.detail..'\n\n'..Text.Note(string.format(LuaLanguage.UIInventoryItemDetailText6,selected.width,selected.height,selected.count))) or Text.Note(LuaLanguage.UILootItemDetailText)
     if self.detailsKey~=self.selected then self.view.ItemDetail.rectTransform.anchoredPosition=CS.UnityEngine.Vector2.zero;self.detailsKey=self.selected end
     self.view.Status.text=self.message
@@ -93,6 +95,7 @@ function Loot:Command(action)
     if ok then self.demo:SendCommand('snapshot') end
 end
 function Loot:Tick(_,unscaledDt)
+    require('UI.EquipmentRarity').Tick()
     if not self.session.Active then self:Close();return end
     local searching=self.lootModel:Searching()
     if searching then
@@ -101,8 +104,10 @@ function Loot:Tick(_,unscaledDt)
         if not searching.Revealed then self.view.Loot:SearchProgress(searching.Key,searching.Progress) end
     end
     if self.bagRevision~=self.equipment.data.Revision then self:RefreshBag();self:Details() end
+    self.terms:Tick()
 end
 function Loot:OnHide()
+    self.terms:Reset()
     self.view.Loot:CancelDrag()
     self.adventure:CloseLoot()
     local demo=self.demo;self.demo=nil

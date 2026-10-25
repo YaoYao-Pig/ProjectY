@@ -95,15 +95,21 @@ namespace ProjectY.Samples
             foreach (var batch in focusedBatches) batch.Properties.SetVectorArray("_Color", batch.Colors);
             if (focusedRoadVertices.Count > 0) { Array.Copy(originalRoadVertices, focusRoadVertices, originalRoadVertices.Length); roadMesh.vertices = focusRoadVertices; roadMesh.RecalculateBounds(); }
             focusedInstances.Clear(); focusedBatches.Clear(); focusedCells.Clear(); focusedRoadVertices.Clear(); focusAmount = 0;
+            var hasBounds = false;
             if (cells != null) foreach (var cell in cells)
             {
                 if (!focusedCells.Add(cell)) continue;
                 var entries = instancesByCell[cell];
-                if (entries == null) throw new InvalidOperationException("World site has no rendered ground.");
-                foreach (var entry in entries)
+                if (mountainSurface.TryGetCellBounds(cell, out var mountainBounds))
+                {
+                    if (!hasBounds) { focusBounds = mountainBounds; hasBounds = true; }
+                    else focusBounds.Encapsulate(mountainBounds);
+                }
+                else if (entries == null) throw new InvalidOperationException("World site has no rendered ground.");
+                if (entries != null) foreach (var entry in entries)
                 {
                     var bounds = InstanceBounds(entry.Batch.Mesh.bounds, entry.Batch.Matrices[entry.Index]);
-                    if (focusedInstances.Count == 0) focusBounds = bounds; else focusBounds.Encapsulate(bounds);
+                    if (!hasBounds) { focusBounds = bounds; hasBounds = true; } else focusBounds.Encapsulate(bounds);
                     focusedInstances.Add(new FocusInstance { Batch = entry.Batch, Index = entry.Index,
                         Matrix = entry.Batch.Matrices[entry.Index], Color = entry.Batch.Colors[entry.Index] });
                     focusedBatches.Add(entry.Batch);
@@ -113,6 +119,7 @@ namespace ProjectY.Samples
                 if (roadVerticesByCell.TryGetValue(cell, out var vertices)) focusedRoadVertices.AddRange(vertices);
             }
             natureRenderer.SetFocusCells(focusedCells);
+            mountainSurface.SetFocusCells(focusedCells);
         }
         private void CacheFocusRoadVertices()
         {
@@ -127,7 +134,7 @@ namespace ProjectY.Samples
         }
         internal void TickFocus(float deltaTime)
         {
-            if (focusedInstances.Count == 0 || focusAmount >= 1) return;
+            if (focusedCells.Count == 0 || focusAmount >= 1) return;
             focusMaskDirty = true;
             focusAmount = Mathf.MoveTowards(focusAmount, 1, deltaTime / .16f);
             var lift = focusRadius * .24f * Mathf.SmoothStep(0, 1, focusAmount);
@@ -143,6 +150,7 @@ namespace ProjectY.Samples
             foreach (var index in focusedRoadVertices) focusRoadVertices[index] = originalRoadVertices[index] + Vector3.up * lift;
             if (focusedRoadVertices.Count > 0) { roadMesh.vertices = focusRoadVertices; roadMesh.RecalculateBounds(); }
             natureRenderer.SetFocusLift(lift);
+            mountainSurface.SetFocusLift(lift, focusAmount);
         }
         internal void RenderFocusMask(Camera camera, SceneFocusMask mask)
         {
@@ -159,17 +167,21 @@ namespace ProjectY.Samples
                 foreach (var group in chunk.Groups)
                     for (var offset = 0; offset < group.Entries.Count; offset += 1023)
                     {
-                        var count = Mathf.Min(1023, group.Entries.Count - offset);
-                        for (var i = 0; i < count; i++)
+                        var limit = Mathf.Min(1023, group.Entries.Count - offset); var count = 0;
+                        for (var i = 0; i < limit; i++)
                         {
-                            var entry = group.Entries[offset + i]; maskMatrices[i] = entry.Batch.Matrices[entry.Index];
-                            maskFlags[i] = entry.Batch.FocusFlags == null ? Vector4.zero : entry.Batch.FocusFlags[entry.Index];
+                            var entry = group.Entries[offset + i];
+                            if (!IsWorldCellKnown(entry.Batch.CellIndices[entry.Index])) continue;
+                            maskMatrices[count] = entry.Batch.Matrices[entry.Index];
+                            maskFlags[count] = entry.Batch.FocusFlags == null ? Vector4.zero : entry.Batch.FocusFlags[entry.Index]; count++;
                         }
+                        if (count == 0) continue;
                         maskProperties.SetVectorArray("_SiteMask", maskFlags);
                         commands.DrawMeshInstanced(group.Mesh, group.Submesh, mask.SilhouetteMaterial, 0, maskMatrices, count, maskProperties);
                         maskInstanceCount += count;
                     }
             }
+            maskInstanceCount += mountainSurface.DrawFocusMask(commands, mask.SilhouetteMaterial, maskPlanes);
             mask.End(.34f * focusAmount);
             focusMaskDirty = false; maskView = view; maskProjection = projection; maskViewport = viewport;
         }

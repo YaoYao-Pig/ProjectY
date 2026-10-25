@@ -1,4 +1,5 @@
 -- Read-only combat geometry rules. Natural terrain and construction use the same final cell heights.
+local LuaLanguage=require('Language')
 local Height={};Height.__index=Height
 function Height.New(config)
     local rule=config:GetTable('HeightAdvantageTable'):Get(1)
@@ -15,14 +16,18 @@ function Height:RangeBonus(origin,target,skill)
     return self:Levels(origin,target)*self.rule.rangePerLevel
 end
 function Height:HitChance(origin,target,skill)
-    local bonus=skill.target=='enemy' and self:Levels(origin,target)*self.rule.hitPerLevel or 0
+    local bonus=skill.target=='enemy' and skill.proficiency~='bow' and self:Levels(origin,target)*self.rule.hitPerLevel or 0
     return math.min(100,skill.hitChance+bonus)
+end
+function Height:AdvantageSources(origin,target,skill)
+    if skill.target=='enemy' and skill.proficiency=='bow' and self:Levels(origin,target)>0 then return {'high_ground'} end
 end
 function Height:Description(skill)
     if skill.target~='enemy' then return '' end
     local rule=self.rule
-    local text=string.format('高打低：每高 %.1f 米命中 +%d 个百分点，最多 +%d',rule.heightPerLevel,rule.hitPerLevel,rule.hitPerLevel*rule.maxLevels)
-    if skill.range>1 and not skill.fixedRange then text=text..string.format('；远程射程每级 +%d 格，最多 +%d 格',rule.rangePerLevel,rule.rangePerLevel*rule.maxLevels) end
-    return text..'（按当前目标高差计算）'
+    local text=skill.proficiency=='bow' and string.format(LuaLanguage.HeightAdvantageBow,rule.heightPerLevel) or
+        string.format(LuaLanguage.HeightAdvantageHit,rule.heightPerLevel,rule.hitPerLevel,rule.hitPerLevel*rule.maxLevels)
+    if skill.range>1 and not skill.fixedRange then text=string.format(LuaLanguage.HeightAdvantageRange,text,rule.rangePerLevel,rule.rangePerLevel*rule.maxLevels) end
+    return string.format(LuaLanguage.HeightAdvantageTarget,text)
 end
 return Height

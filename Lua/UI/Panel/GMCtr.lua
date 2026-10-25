@@ -8,8 +8,9 @@ function Panel:Bind()
     self:Listen(self.view.Close,function()self:Close()end)
     self:Listen(self.view.LevelUp,function()self:Execute('level_up')end)
     self:Listen(self.view.GrantSkill,function()self:Execute('grant_skill')end)
-    self:Listen(self.view.RevealWorld,function()self:RevealWorld()end)
+    self:Listen(self.view.RevealWorld,function()self:ToggleWorldVision()end)
     self:Listen(self.view.KillTarget,function()self:BeginKillTarget()end)
+    self:Listen(self.view.NoRandomEncounters,function()self:ToggleNoRandomEncounters()end)
     self.diceCounts={D6=1}
     self:Listen(self.view.DiceOpen,function()self.view.DiceSettings.gameObject:SetActive(true);self:RefreshDice()end)
     self:Listen(self.view.DiceBack,function()self.view.DiceSettings.gameObject:SetActive(false)end)
@@ -27,6 +28,9 @@ function Panel:OnShow(args)
     self.font=font
     for _,key in ipairs({'Title','Description','SlotLabel','SkillLabel','Target','SkillName','Result','LevelUpText','GrantSkillText','CloseText','SlotText','SkillText','NpcTitle','NpcSearchText','NpcHint','NpcCount','RevealWorldText','RevealWorldHint','KillTargetText','KillTargetHint'}) do self.view[key].font=font end
     for _,key in ipairs({'DiceOpenText','DiceTitle','DiceHelp','DiceTotal','DiceError','DiceBackText','DiceClearText','DiceThrowText'})do self.view[key].font=font end
+    self.view.NoRandomEncountersText.font=font;self.view.NoRandomEncountersHint.font=font
+    self:RefreshNoRandomEncounters()
+    self:RefreshWorldVision()
     for _,kind in ipairs(self.gm.dice.Kinds)do
         for _,suffix in ipairs({'Label','MinusText','Count','PlusText'})do self.view['Dice'..kind..suffix].font=font end
     end
@@ -55,6 +59,8 @@ function Panel:Execute(command)
     self:Refresh()
 end
 function Panel:Tick()
+    if self.fullVision~=self.gm.adventure.fog.fullVision then self:RefreshWorldVision()end
+    if self.noRandomEncounters~=self.gm.adventure.travel.randomEncountersDisabled then self:RefreshNoRandomEncounters()end
     if self.dicePlaying and not self.context.systems:Get('UI'):IsOpen('DiceRoll') then
         self.dicePlaying=false;self.view.Frame.gameObject:SetActive(true);self:RefreshDice()
     end
@@ -80,12 +86,18 @@ function Panel:GoToNpc(id)
     self.view.Result.text=errorText and errorText~='' and errorText or (string.format(LuaLanguage.UIGMResultText5, (self.gm.npcs.story.rules.npcs:Get(id).name)))
     self:RefreshNpcs()
 end
-function Panel:RevealWorld()
+function Panel:RefreshWorldVision()
+    self.fullVision=self.gm.adventure.fog.fullVision
+    self.view.RevealWorldText.text=self.fullVision and LuaLanguage.UIGMRevealWorldOnText or LuaLanguage.UIGMRevealWorldText
+end
+function Panel:ToggleWorldVision()
+    local enabled=not self.gm.adventure.fog.fullVision
     local previous=self.demo.BattleHUDRevision
-    self.demo:SendCommand('gm_reveal_world',0,0)
+    self.demo:SendCommand(enabled and 'gm_reveal_world' or 'gm_restore_world_vision',0,0)
     if self.demo.BattleHUDRevision==previous then self.view.Result.text=LuaLanguage.UIGMResultText3;return end
     local errorText=self.demo.LastError
-    self.view.Result.text=errorText and errorText~='' and errorText or LuaLanguage.GMRevealWorldSuccess
+    self.view.Result.text=errorText and errorText~='' and errorText or (enabled and LuaLanguage.GMRevealWorldSuccess or LuaLanguage.GMWorldVisionRestored)
+    self:RefreshWorldVision()
 end
 function Panel:BeginKillTarget()
     local previous=self.demo.BattleHUDRevision
@@ -94,6 +106,20 @@ function Panel:BeginKillTarget()
     local errorText=self.demo.LastError
     if errorText and errorText~='' then self.view.Result.text=errorText;return end
     self:Close()
+end
+function Panel:RefreshNoRandomEncounters()
+    self.noRandomEncounters=self.gm.adventure.travel.randomEncountersDisabled
+    self.view.NoRandomEncountersText.text=self.noRandomEncounters and LuaLanguage.GMNoRandomEncountersOn or LuaLanguage.GMNoRandomEncountersOff
+end
+function Panel:ToggleNoRandomEncounters()
+    local value=self.gm.adventure.travel.randomEncountersDisabled and 0 or 1
+    local previous=self.demo.BattleHUDRevision
+    self.demo:SendCommand('gm_no_random_encounters',value,0)
+    if self.demo.BattleHUDRevision==previous then self.view.Result.text=LuaLanguage.UIGMResultText3;return end
+    local errorText=self.demo.LastError
+    self.view.Result.text=errorText and errorText~='' and errorText or
+        (value==1 and LuaLanguage.GMNoRandomEncountersEnabled or LuaLanguage.GMNoRandomEncountersDisabled)
+    self:RefreshNoRandomEncounters()
 end
 function Panel:DiceCount()
     local count=0;for _,kind in ipairs(self.gm.dice.Kinds)do count=count+(self.diceCounts[kind] or 0)end

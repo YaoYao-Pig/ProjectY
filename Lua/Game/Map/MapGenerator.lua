@@ -7,6 +7,7 @@ local TerrainBlend = require('Game.Map.TerrainBlend')
 local Infrastructure = require('Game.Map.MapInfrastructure')
 local Hydrology = require('Game.Map.MapHydrology')
 local Visuals = require('Game.Map.MapVisuals')
+local Landforms = require('Game.Map.MapLandforms')
 local Generator = Class('MapGenerator')
 
 local function finite(value, label)
@@ -48,6 +49,7 @@ function Draft:ctor(generator, random)
     self.blendWidth = generator.blendWidth
     self.infrastructure = generator.infrastructure
     self.hydrology = generator.hydrology; self.visuals = generator.visuals; self.waterSites = generator.waterSites
+    self.wonders = generator.wonders; self.atmosphere = generator.atmosphere; self.config = generator.config
     self.terrain = {}; self.frontier = {}; self.frontierByKey = {}
     self.enemyConfigs = generator.enemyConfigs; self.buildingConfigs = generator.buildingConfigs
     for regionType in pairs(generator.regionTypes) do self.map.regionsByType[regionType] = {} end
@@ -148,6 +150,8 @@ function Draft:AddRegion(config, q, r, sizeX, sizeY, instanceType, footprint, co
         self.enemyConfigs[config.MapRegion], self.buildingConfigs[config.MapRegion])
     map.regions[region.instanceId] = region
     region.centerQ = q + footprint.centerQ; region.centerR = r + footprint.centerR
+    region.generationVersion = map.generationVersion; region.hexRadius = map.hexRadius
+    if convert.PrepareRegion then convert:PrepareRegion(config,region,self.random,footprint,q,r) end
     self.terrain[region.instanceId] = { config = config, region = region, convert = convert }
     local instances = map.regionsByType[config.MapRegion]
     instances[#instances + 1] = region
@@ -190,12 +194,19 @@ function Draft:Build(progress)
         progress and function(value) progress(.4 + value * .15, '融合地貌') end)
     if progress then progress(.55, '开辟河流与湖泊') end
     self.hydrology:Build(map)
+    if map.generationVersion >= 7 then Landforms.Build(map, self.terrain, self.random, self.noiseScale) end
     if progress then progress(.65, '铺设城镇与道路') end
     self.infrastructure:Build(map)
+    if map.generationVersion >= 7 then
+        self.wonders:Build(map)
+        Landforms.BuildEntrances(map)
+    end
     if progress then progress(.8, '布置地表与植被') end
     self.visuals:Build(map)
+    if map.generationVersion >= 7 then self.atmosphere:Build(map) end
     if progress then progress(.87, '布置水上遗址') end
     self.waterSites:Build(map)
+    if map.generationVersion>=9 then require('Game.Map.MapDocks').Build(map,self.config) end
     if progress then progress(.9, '整理区域边界') end
     for index, cell in ipairs(map.cells) do
         for direction = 1, 6 do
@@ -274,6 +285,8 @@ function Generator:ctor(config)
     self.hydrology = Hydrology(config)
     self.visuals = Visuals(config, self.regionTypes)
     self.waterSites = require('Game.Map.MapWaterSites')(config)
+    self.wonders = require('Game.Map.MapWonders')(config)
+    self.atmosphere = require('Game.Map.MapAtmosphere')(config)
 end
 -- 地貌扩展点：每种枚举分别绑定生成转换器与查询实例类。
 function Generator:RegisterRegion(regionType, convertType, instanceType)
@@ -282,7 +295,8 @@ function Generator:RegisterRegion(regionType, convertType, instanceType)
     assert(type(convertType.Generate) == 'function' and type(instanceType.GetCells) == 'function', 'Invalid region implementation')
     self.registrations[regionType] = { convert = convertType(), instance = instanceType }
 end
-local function generate(self, seed, regionIds, targetCells, progress, seededRegions)
+local function generate(self, seed, regionIds, targetCells, progress, seededRegions, generationVersion)
+    assert(generationVersion == 5 or generationVersion == 6 or generationVersion == 7 or generationVersion == 8 or generationVersion == 9 or generationVersion == 10, 'Unsupported map generation version')
     local random = Random(seed)
     if targetCells ~= nil then
         positiveInteger(targetCells, 'Target cells')
@@ -299,6 +313,7 @@ local function generate(self, seed, regionIds, targetCells, progress, seededRegi
     local rows = {}
     for i, id in ipairs(regionIds) do
         local row = self.regionTable:Get(id)
+        assert(generationVersion >= 7 or row.MapRegion <= 11, 'Legacy map recipes cannot use new landforms')
         assert(self.registrations[row.MapRegion], 'Missing converter for region type ' .. tostring(row.MapRegion))
         self.registrations[row.MapRegion].convert:ValidateConfig(row)
         rows[i] = row
@@ -308,7 +323,7 @@ local function generate(self, seed, regionIds, targetCells, progress, seededRegi
     draft.map.targetCells = targetCells
     -- 区块抽取使用独立随机流，不依赖轮廓、贴合尝试次数或进度回调。
     local selectionRandom = seededRegions and Random(random.seed ~ 0x5245474e)
-    if seededRegions then draft.map.generationVersion = 6 end
+    draft.map.generationVersion = generationVersion
     local index = 1
     -- 固定配方保持原顺序；随机模式每轮洗牌，未遍历完配置前不重复抽取。
     while targetCells and #draft.map.cells < targetCells or not targetCells and index <= #rows do
@@ -333,15 +348,18 @@ local function generate(self, seed, regionIds, targetCells, progress, seededRegi
     return draft:Build(progress)
 end
 -- regionIds 为有序、连续的配置 ID 数组；重复 ID 表示生成多个独立实例。
-function Generator:Generate(seed, regionIds, targetCells, progress)
-    return generate(self, seed, regionIds, targetCells, progress, false)
+function Generator:Generate(seed, regionIds, targetCells, progress, generationVersion)
+    return generate(self, seed, regionIds, targetCells, progress, false, generationVersion or 10)
 end
 -- 全部区域配置自动进入候选池；先按 ID 排序，保证配表行序不影响同种子结果。
-function Generator:GenerateSeeded(seed, targetCells, progress, regionIds)
+function Generator:GenerateSeeded(seed, targetCells, progress, regionIds, generationVersion)
+    generationVersion = generationVersion or 10
     if regionIds == nil then
         regionIds = {}
-        for _, row in ipairs(self.regionTable:All()) do regionIds[#regionIds + 1] = row.id end
+        for _, row in ipairs(self.regionTable:All()) do
+            if generationVersion >= 7 or row.MapRegion <= 11 then regionIds[#regionIds + 1] = row.id end
+        end
     end
-    return generate(self, seed, regionIds, targetCells, progress, true)
+    return generate(self, seed, regionIds, targetCells, progress, true, generationVersion)
 end
 return Generator

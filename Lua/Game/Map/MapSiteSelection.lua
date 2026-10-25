@@ -87,7 +87,7 @@ function Selection:Analyze(profile)
                     local other = map.cellsByKey[Hex.Key(cell.q+q,cell.r+r)]
                     if other then
                         count=count+1; sum=sum+other.height; sumSquares=sumSquares+other.height*other.height
-                        if not other.waterLevel and slopes[other] <= profile.accessMaxStep then buildable=buildable+1 end
+                        if not other.waterLevel and not other.worldTravelBlocked and slopes[other] <= profile.accessMaxStep then buildable=buildable+1 end
                     end
                 end
             end
@@ -102,7 +102,7 @@ function Selection:Analyze(profile)
         for _, cell in ipairs(map.cells) do if cell.flowTo then incoming[cell.flowTo]=(incoming[cell.flowTo] or 0)+1 end end
         for _, cell in ipairs(map.cells) do
             if cell.waterLevel then wet[#wet+1]=cell
-            else
+            elseif not cell.worldTravelBlocked then
                 for _, other in ipairs(graph.neighbors[cell]) do
                     if other.waterLevel and math.abs(cell.height-other.waterLevel) <= profile.shoreAccessMaxDrop then
                         shores[#shores+1]=cell; break
@@ -113,7 +113,7 @@ function Selection:Analyze(profile)
         end
         water = {clearance=graph:HexDistances(wet,profile.distanceCap), junction=graph:HexDistances(junctions,profile.distanceCap),
             access=graph:Distances(shores,function(a,b)
-                if b.waterLevel then return nil end
+                if b.waterLevel or a.worldTravelBlocked or b.worldTravelBlocked then return nil end
                 local step=math.abs(a.height-b.height)
                 if step <= profile.accessMaxStep then return 1+step*profile.accessSlopeCost end
             end,profile.distanceCap)}

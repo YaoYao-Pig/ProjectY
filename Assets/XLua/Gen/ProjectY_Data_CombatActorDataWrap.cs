@@ -21,8 +21,15 @@ namespace XLua.CSObjectWrap
         {
 			ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
 			System.Type type = typeof(ProjectY.Data.CombatActorData);
-			Utils.BeginObjectRegister(type, L, translator, 0, 28, 28, 0);
+			Utils.BeginObjectRegister(type, L, translator, 0, 35, 33, 0);
 			
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetInitialAttributeNameAt", _m_GetInitialAttributeNameAt);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetInitialAttribute", _m_GetInitialAttribute);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "HasProfessionAttributes", _m_HasProfessionAttributes);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetProfessionAttribute", _m_GetProfessionAttribute);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetProfessionAttributeProfessionAt", _m_GetProfessionAttributeProfessionAt);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetProfessionAttributeCount", _m_GetProfessionAttributeCount);
+			Utils.RegisterFunc(L, Utils.METHOD_IDX, "GetProfessionAttributeNameAt", _m_GetProfessionAttributeNameAt);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "InitializeAnimal", _m_InitializeAnimal);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "RollAnimalPercent", _m_RollAnimalPercent);
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "DelayTaming", _m_DelayTaming);
@@ -53,7 +60,12 @@ namespace XLua.CSObjectWrap
 			Utils.RegisterFunc(L, Utils.METHOD_IDX, "Restore", _m_Restore);
 			
 			
-			Utils.RegisterFunc(L, Utils.GETTER_IDX, "CustomizationJson", _g_get_CustomizationJson);
+			Utils.RegisterFunc(L, Utils.GETTER_IDX, "InitialAttributesAssigned", _g_get_InitialAttributesAssigned);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "HasInitialAttributes", _g_get_HasInitialAttributes);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "InitialProfessionId", _g_get_InitialProfessionId);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "InitialAttributeCount", _g_get_InitialAttributeCount);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "ProfessionAttributeSetCount", _g_get_ProfessionAttributeSetCount);
+            Utils.RegisterFunc(L, Utils.GETTER_IDX, "CustomizationJson", _g_get_CustomizationJson);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "AnimalSpeciesId", _g_get_AnimalSpeciesId);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "AnimalOwnerId", _g_get_AnimalOwnerId);
             Utils.RegisterFunc(L, Utils.GETTER_IDX, "AnimalBond", _g_get_AnimalBond);
@@ -128,6 +140,211 @@ namespace XLua.CSObjectWrap
         
         
         
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_GetInitialAttributeNameAt(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.CombatActorData gen_to_be_invoked = (ProjectY.Data.CombatActorData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _index = LuaAPI.xlua_tointeger(L, 2);
+                    
+                        var gen_ret = gen_to_be_invoked.GetInitialAttributeNameAt( _index );
+                        LuaAPI.lua_pushstring(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_GetInitialAttribute(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.CombatActorData gen_to_be_invoked = (ProjectY.Data.CombatActorData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    string _name = LuaAPI.lua_tostring(L, 2);
+                    
+                        var gen_ret = gen_to_be_invoked.GetInitialAttribute( _name );
+                        LuaAPI.xlua_pushinteger(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_HasProfessionAttributes(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.CombatActorData gen_to_be_invoked = (ProjectY.Data.CombatActorData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _professionId = LuaAPI.xlua_tointeger(L, 2);
+                    
+                        var gen_ret = gen_to_be_invoked.HasProfessionAttributes( _professionId );
+                        LuaAPI.lua_pushboolean(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_GetProfessionAttribute(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.CombatActorData gen_to_be_invoked = (ProjectY.Data.CombatActorData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _professionId = LuaAPI.xlua_tointeger(L, 2);
+                    string _name = LuaAPI.lua_tostring(L, 3);
+                    
+                        var gen_ret = gen_to_be_invoked.GetProfessionAttribute( _professionId, _name );
+                        LuaAPI.xlua_pushinteger(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_GetProfessionAttributeProfessionAt(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.CombatActorData gen_to_be_invoked = (ProjectY.Data.CombatActorData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _index = LuaAPI.xlua_tointeger(L, 2);
+                    
+                        var gen_ret = gen_to_be_invoked.GetProfessionAttributeProfessionAt( _index );
+                        LuaAPI.xlua_pushinteger(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_GetProfessionAttributeCount(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.CombatActorData gen_to_be_invoked = (ProjectY.Data.CombatActorData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _professionId = LuaAPI.xlua_tointeger(L, 2);
+                    
+                        var gen_ret = gen_to_be_invoked.GetProfessionAttributeCount( _professionId );
+                        LuaAPI.xlua_pushinteger(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _m_GetProfessionAttributeNameAt(RealStatePtr L)
+        {
+		    try {
+            
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+            
+            
+                ProjectY.Data.CombatActorData gen_to_be_invoked = (ProjectY.Data.CombatActorData)translator.FastGetCSObj(L, 1);
+            
+            
+                
+                {
+                    int _professionId = LuaAPI.xlua_tointeger(L, 2);
+                    int _index = LuaAPI.xlua_tointeger(L, 3);
+                    
+                        var gen_ret = gen_to_be_invoked.GetProfessionAttributeNameAt( _professionId, _index );
+                        LuaAPI.lua_pushstring(L, gen_ret);
+                    
+                    
+                    
+                    return 1;
+                }
+                
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            
+        }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _m_InitializeAnimal(RealStatePtr L)
@@ -931,6 +1148,76 @@ namespace XLua.CSObjectWrap
         
         
         
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_InitialAttributesAssigned(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.CombatActorData gen_to_be_invoked = (ProjectY.Data.CombatActorData)translator.FastGetCSObj(L, 1);
+                LuaAPI.lua_pushboolean(L, gen_to_be_invoked.InitialAttributesAssigned);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_HasInitialAttributes(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.CombatActorData gen_to_be_invoked = (ProjectY.Data.CombatActorData)translator.FastGetCSObj(L, 1);
+                LuaAPI.lua_pushboolean(L, gen_to_be_invoked.HasInitialAttributes);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_InitialProfessionId(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.CombatActorData gen_to_be_invoked = (ProjectY.Data.CombatActorData)translator.FastGetCSObj(L, 1);
+                LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.InitialProfessionId);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_InitialAttributeCount(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.CombatActorData gen_to_be_invoked = (ProjectY.Data.CombatActorData)translator.FastGetCSObj(L, 1);
+                LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.InitialAttributeCount);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
+        
+        [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
+        static int _g_get_ProfessionAttributeSetCount(RealStatePtr L)
+        {
+		    try {
+                ObjectTranslator translator = ObjectTranslatorPool.Instance.Find(L);
+			
+                ProjectY.Data.CombatActorData gen_to_be_invoked = (ProjectY.Data.CombatActorData)translator.FastGetCSObj(L, 1);
+                LuaAPI.xlua_pushinteger(L, gen_to_be_invoked.ProfessionAttributeSetCount);
+            } catch(System.Exception gen_e) {
+                return LuaAPI.luaL_error(L, "c# exception:" + gen_e);
+            }
+            return 1;
+        }
         
         [MonoPInvokeCallbackAttribute(typeof(LuaCSFunction))]
         static int _g_get_CustomizationJson(RealStatePtr L)

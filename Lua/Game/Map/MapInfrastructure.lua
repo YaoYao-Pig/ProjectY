@@ -30,7 +30,7 @@ end
 local function relief(cells)
     local minimum, maximum = math.huge, -math.huge
     for _, cell in ipairs(cells) do
-        if cell.waterLevel then return nil end
+        if cell.waterLevel or cell.worldTravelBlocked then return nil end
         minimum = math.min(minimum, cell.height); maximum = math.max(maximum, cell.height)
     end
     return maximum - minimum, maximum
@@ -68,7 +68,7 @@ function Infrastructure:ctor(config, regionTypes)
     assert(total <= 18, 'Town maxCount total exceeds the generation budget of 18')
 end
 function Infrastructure:EdgeCost(a, b)
-    if a.waterLevel or b.waterLevel or a.buildingId or b.buildingId then return nil end
+    if a.waterLevel or b.waterLevel or a.buildingId or b.buildingId or a.worldTravelBlocked or b.worldTravelBlocked then return nil end
     local step = math.abs(a.height - b.height)
     if step > self.maxStep then return nil end
     -- 优先复用已铺设的路段，避免每一对城镇都产生互不相干的平行道路。
@@ -80,7 +80,8 @@ function Infrastructure:PlanTown(map, finder, random, row, center)
     if row.generateStreets then occupied[center] = true end
     for _, cell in ipairs(map.regions[center.regionId].cells) do
         local span = distance(center, cell)
-        if span >= (row.generateStreets and 2 or 0) and span <= row.radius and not cell.waterLevel and not cell.townId then
+        if span >= (row.generateStreets and 2 or 0) and span <= row.radius and not cell.waterLevel
+            and not cell.worldTravelBlocked and not cell.townId then
             candidates[#candidates + 1] = { cell = cell, score = span + random:Noise(cell.q, cell.r, 1, 8101) * 2 }
         end
     end
@@ -121,7 +122,8 @@ function Infrastructure:PlanTown(map, finder, random, row, center)
                 for _, entry in ipairs(entries) do
                     if not row.generateStreets then
                         -- 偏远地点只需要实际干燥入口，不从中心铺街，更不参加城际道路。
-                        if not entry.waterLevel and not entry.buildingId and not occupied[entry] and #entry.roadIds == 0 then path = {entry} end
+                        if not entry.waterLevel and not entry.worldTravelBlocked and not entry.buildingId
+                            and not occupied[entry] and #entry.roadIds == 0 then path = {entry} end
                     else path = finder:FindPath(center, entry, function(a, b)
                         if plot[b] or (occupied[b] and b ~= center) or b.regionId ~= center.regionId
                             or distance(center, b) > row.radius then return nil end
@@ -172,6 +174,7 @@ function Infrastructure:PlaceTowns(map, finder, random, stage)
                 local metrics=selection:Metrics(cell,profile,terrain,water)
                 local score, reason=selection:Evaluate(profile,metrics)
                 if cell.waterLevel then score=nil; reason='water' end
+                if cell.worldTravelBlocked then score=nil; reason='landform' end
                 if not contains(row.regions,map.regions[cell.regionId].regionType) then score=nil; reason='region' end
                 -- 被同一硬规则排除的格子共享只读评分记录，避免大地图复制数十万张空评分表。
                 if score == nil then
@@ -225,7 +228,7 @@ function Infrastructure:PlaceTowns(map, finder, random, stage)
                     map.towns[town.id] = town
                     local region = map.regions[regionId]; region.towns[#region.towns + 1] = town
                     for _, cell in ipairs(region.cells) do
-                        if distance(center, cell) <= row.radius and not cell.waterLevel then cell.townId = town.id end
+                        if distance(center, cell) <= row.radius and not cell.waterLevel and not cell.worldTravelBlocked then cell.townId = town.id end
                     end
                     for _, plan in ipairs(plans) do
                         local building = { id = #map.buildings + 1, configId = plan.config.id, name = plan.config.name,

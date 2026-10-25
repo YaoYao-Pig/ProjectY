@@ -159,9 +159,16 @@ test('joined branches retain previous professions and exclude them from the add 
     panel.courseProfessionRoot.action();chooseProfession(0)
     local available=0
     for _,widget in ipairs(panel.professionNodes)do
-        if widget.row then assert(not state:HasProfession(widget.row.id));available=available+1 end
+        if widget.row then
+            assert(not state:HasProfession(widget.row.id) and not rules.professions.professions:Get(widget.row.id).baseProfession)
+            available=available+1
+        end
     end
-    assert(available==rules.professions.professions.Count-state.ProfessionCount)
+    local expected=0
+    for _,profession in ipairs(rules.professions.professions:All())do
+        if not profession.baseProfession and not state:HasProfession(profession.id)then expected=expected+1 end
+    end
+    assert(available==expected and expected==9)
     panel.view.NextTree.onClick:Invoke();hidden(panel.professionNodes);hidden(panel.professionEdges);hidden(panel.professionHeaders)
     panel.view.PreviousTree.onClick:Invoke();assert(panel.professionPage=='courses');hidden(panel.professionNodes)
 end)
@@ -178,7 +185,9 @@ test('candidate selection is reset on actor change and cached show returns to co
     local before=#commands;openGrid();chooseProfession(2)
     panel.view.Party1.onClick:Invoke()
     assert(panel.actor==actor and panel.professionPage=='grid' and panel.selectedProfession==nil and not panel.view.Invest.interactable)
-    for _,widget in ipairs(panel.professionNodes)do if widget.row then assert(not actor.Growth:HasProfession(widget.row.id))end end
+    for _,widget in ipairs(panel.professionNodes)do if widget.row then
+        assert(not actor.Growth:HasProfession(widget.row.id) and not rules.professions.professions:Get(widget.row.id).baseProfession)
+    end end
     assert(#commands==before)
     panel:OnShow({demo=demo,tab='Skills',actorIndex=1})
     assert(panel.actor==other and panel.professionPage=='courses' and panel.selectedProfession==nil)

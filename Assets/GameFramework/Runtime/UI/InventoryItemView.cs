@@ -26,6 +26,7 @@ namespace ProjectY.UI
         [SerializeField] private Image background, icon;
         [SerializeField] private Text title, amount;
         [SerializeField] private LootSearchGraphic searchRing;
+        [SerializeField] private EquipmentRarityFrame rarityFrame;
         private IInventoryItemOwner owner;
         internal InventoryPanelView.Item Item { get; private set; }
         internal RectTransform Rect => rect;
@@ -37,12 +38,15 @@ namespace ProjectY.UI
             title.resizeTextForBestFit=true;title.resizeTextMinSize=11;title.resizeTextMaxSize=title.fontSize;
             background.color=selected?new Color(.34f,.32f,.21f):item.Kind=="wearable"?new Color(.17f,.23f,.26f):item.Kind=="weapon"?new Color(.23f,.24f,.19f):new Color(.18f,.21f,.18f);
             icon.sprite=sprite;icon.enabled=sprite!=null;icon.color=Color.white;
+            if(rarityFrame==null)throw new System.InvalidOperationException("Inventory item rarity frame binding is missing.");
+            rarityFrame.Configure(item.Legendary,item.RarityColor,selected);
             if(searchRing!=null) searchRing.gameObject.SetActive(false);
         }
         internal void SearchState(bool revealed,bool searching,float progress)
         {
             searchRing.gameObject.SetActive(!revealed && searching);
             if(revealed) return;
+            rarityFrame.gameObject.SetActive(false);
             title.text=LuaLanguage.Get(searching?"InventorySearching":"InventoryUnsearched");
             amount.text=searching?Mathf.FloorToInt(progress*100)+"%":"";
             icon.color=new Color(.015f,.023f,.027f,1);
@@ -75,6 +79,7 @@ namespace ProjectY.UI
         public void Bind(RectTransform root,Image bg,Image itemIcon,Text label,Text count)
         {rect=root;background=bg;icon=itemIcon;title=label;amount=count;}
         public void BindSearch(LootSearchGraphic ring) {searchRing=ring;}
+        public void BindRarity(EquipmentRarityFrame frame) {rarityFrame=frame;}
 #endif
     }
 }

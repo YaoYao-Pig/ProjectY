@@ -13,6 +13,7 @@ camera.orthographic=true;camera.orthographicSize=360;camera.cullingMask=1<<31;ca
 camera.nearClipPlane=.1f;camera.farClipPlane=100;camera.targetTexture=target;
 ProjectY.Rendering.UrpCameraRendering.ConfigurePreview(camera);
 var path="Art/Dice/UnityPreview/Overlay";System.IO.Directory.CreateDirectory(path);
+var handfulPath="Art/Dice/UnityPreview/Handful";System.IO.Directory.CreateDirectory(handfulPath);
 System.Action<string> capture=file=>
 {
     foreach(var item in root.GetComponentsInChildren<Transform>(true))item.gameObject.layer=31;
@@ -41,10 +42,10 @@ DiceController=DiceUI:Open('DiceRoll',{check=Checks.Percent('清理阻路石堆'
 assert(DiceHost.IsWorldPaused and not DiceUI:Back())
 DiceController:Enqueue(Checks.Percent('驯服山地鹿',62.37,50,false,'exclusive',100))
 ");
-            for(int frame=0;frame<40;frame++)
+            for(int frame=0;frame<60;frame++)
             {
-                lua.DoString("DiceUI:Tick(0,.075)");
-                if(frame%2==0)capture(path+"/roll-"+(frame/2).ToString("D2")+".png");
+                lua.DoString("DiceUI:Tick(0,.05)");
+                capture(path+"/roll-"+frame.ToString("D2")+".png");
             }
             capture(path+"/success.png");
             lua.DoString(@"
@@ -65,6 +66,18 @@ assert(DiceHost.IsWorldPaused)
 DiceUI:OnSceneChanged()
 assert(not DiceUI:IsOpen('DiceRoll') and not DiceHost.IsWorldPaused)
 ");
+            lua.DoString(@"
+local ok,request=require('Game.GM.DiceCommands').New(20261025):Roll({D4=1,D6=1,D8=1,D10=1,D12=1,D20=1})
+assert(ok)
+DiceController=DiceUI:Open('DiceRoll',{check=request})
+");
+            for(int frame=0;frame<60;frame++)
+            {
+                lua.DoString("DiceUI:Tick(0,.05)");
+                capture(handfulPath+"/roll-"+frame.ToString("D2")+".png");
+            }
+            capture(handfulPath+"/settled.png");
+            lua.DoString("assert(DiceController.view.Dice.Settled);DiceController.view.Continue.onClick:Invoke();assert(not DiceHost.IsWorldPaused)");
             if(Time.timeScale!=previousTime)throw new System.Exception("Pause lease did not restore timeScale.");
         }
         finally{lua.DoString("if DiceUI then DiceUI:OnShutdown() end; DiceController=nil; DiceUI=nil; DiceHost=nil");lua.FullGc();}

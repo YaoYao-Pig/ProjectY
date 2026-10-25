@@ -7,7 +7,7 @@
 ## 正文
 
 - MainHud 的“势力”入口打开 `FactionRelations` 模态窗口，暂停世界；默认以玩家小队为根，已发现势力按直接同盟／中立／敌对关系分枝。未知势力统一在灰色区域显示“？？？”，不投影名称、说明、关系值或外交分组，也不能切换根节点；点击已发现势力切换视角，“回到我的小队”重置，Esc/关闭退出。树枝不代表上下级或同盟传递。
-- [FactionDiscovery](../../Lua/Game/Adventure/FactionDiscovery.lua) 将首次目击保存为 `NarrativeData` 的 `faction_seen:<id>=1`，随既有叙事事实存读及新远征清空。大地图只记录当前可见的有效移动队、据点原属和占据势力；小地图记录当前可见且在场的具名 NPC，以及关联世界队伍的可见存活成员。仅 Known 的地块不解锁，身处局部地图不从大地图视野继续发现；初始位置、旅行每个时间子步、区域揭示和 NPC 移动均接入观察，不能把发现写在 UI 查询或快照中。观察缓存按世界视野/队伍版本/时间及区域版本失效，换世界/读档清空缓存。旧存档缺少该事实时从当前可见目标重新积累，不推测历史目击。
+- [FactionDiscovery](../../Lua/Game/Adventure/FactionDiscovery.lua) 将首次目击保存为 `NarrativeData` 的 `faction_seen:<id>=1`，随既有叙事事实存读及新远征清空；`NarrativeSave.Validate` 校验真实势力ID与值1，定向回归见 [narrative_save_fact_types.lua](../../Tools/Tests/narrative_save_fact_types.lua)。大地图只记录当前可见的有效移动队、据点原属和占据势力；小地图记录当前可见且在场的具名 NPC，以及关联世界队伍的可见存活成员。仅 Known 的地块不解锁，身处局部地图不从大地图视野继续发现；初始位置、旅行每个时间子步、区域揭示和 NPC 移动均接入观察，不能把发现写在 UI 查询或快照中。观察缓存按世界视野/队伍版本/时间及区域版本失效，换世界/读档清空缓存。旧存档缺少该事实时从当前可见目标重新积累，不推测历史目击。
 - [FactionTree](../../Lua/UI/FactionTree.lua) 只读配置、发现事实、外交覆盖及玩家声望，复用 `FactionRules.Value` 和 `WorldFactions.Relation`；不持有外交状态，不改写存档。所有已发现政策身份均可作为根，包括独立传奇个体。窗口在打开及切换视角时重建投影，动态节点和 `TalentEdge` 连线池由控制器生命周期管理。
 - 关系树资源与入口增量同步由 [build_faction_ui.cs](../../Tools/UI/build_faction_ui.cs) 经 Unity MCP `execute_code` 执行，创建缺失的 Panel/Widget、保存 LuaReference、本地化清单与 View 提示；已有关系树布局保留。脚本复用现有组件，不触发全局 Refresh、项目编译或 Play 切换。
 

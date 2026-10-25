@@ -11,7 +11,7 @@ local function pausedState(adventure)
     if data.Phase~='map' or not travel.Paused then return nil end
     local narrative,factions=adventure.narrative.data,adventure.factions.data
     local state=requiredFields(adventure.map,data,travel.Revision,adventure.parties.data.Revision,adventure.parties.data.Clock,
-        data.Equipment.Revision,narrative.Revision,narrative.Minutes,factions.Revision,
+        data.Equipment.Revision,adventure.water.data.Revision,narrative.Revision,narrative.Minutes,factions.Revision,
         adventure.player.Coins,adventure.player.Level,data.JournalCount,data.ResultText,data.PartyCount,
         adventure.characterSaves.Status or '',adventure.characterSaves.HasSave,adventure.battle.vfxSequence or 0)
     local function actorState(actor)
@@ -86,7 +86,7 @@ return function(command, a, b, c)
         local snapshot=adventure:Snapshot();snapshot.error=ok and '' or reason
         return adventure:MapSnapshot(),snapshot
     end
-    if command == 'area_layout' then return require('Main'):Get('MapArea'):LayoutSnapshot() end
+    if command == 'area_layout' then return require('Main'):Get('MapArea'):LayoutSnapshot(adventure.water) end
     if command == 'area_state' then return adventure.data.Areas.Active end
     if command == 'presentation' then return require('Game.Rendering.MapPresentation').Snapshot(require('Main'):Get('Config')) end
     local previousArea=adventure.data.Areas.ActiveSiteId
@@ -100,6 +100,7 @@ return function(command, a, b, c)
     elseif command == 'camp_deposit' then ok,reason=adventure.camp:Deposit(a,b,c)
     elseif command == 'camp_withdraw' then ok,reason=adventure.camp:Withdraw(a,b,c)
     elseif command == 'camp_wait' then ok,reason=adventure.camp:Wait(a,b)
+    elseif command:sub(1,6)=='water_' then ok,reason=adventure.water:Command(command,a,b)
     elseif command:sub(1,6)=='world_' then ok,reason=adventure.parties:Command(command,a,b,c)
     elseif command == 'shop_open' then ok,reason=adventure.shop:Open(a,b)
     elseif command == 'shop_buy' then ok,reason=adventure.shop:Buy(a,b,c)
@@ -133,6 +134,7 @@ return function(command, a, b, c)
     local snapshot = adventure:Snapshot()
     snapshot.unchanged=false
     snapshot.visualEffects=require('Game.Presentation.VisualEffects').Drain(adventure.battle)
+    snapshot.audioEvents=require('Game.Presentation.AudioEvents').Drain(adventure.battle)
     snapshot.gmTeleport=command=='gm_goto_npc' and (ok or previousArea~=adventure.data.Areas.ActiveSiteId)
     snapshot.error = ok and '' or reason
     pausedPoll=pausedState(adventure)

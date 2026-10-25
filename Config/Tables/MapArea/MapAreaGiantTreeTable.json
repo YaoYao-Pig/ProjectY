@@ -1,0 +1,117 @@
+{
+  "version": 1,
+  "name": "MapAreaGiantTreeTable",
+  "description": "世界巨树的局部根区；只展示粗根、树干基部弧壁及普通树尺度参照。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "maxWalkRise",
+      "type": "float",
+      "description": "相邻可走地面最大中心高差（米）",
+      "min": 0.1,
+      "max": 2
+    },
+    {
+      "name": "trailRadius",
+      "type": "int",
+      "description": "连续步道的六角净空半径",
+      "min": 1,
+      "max": 3
+    },
+    {
+      "name": "minWalkableCells",
+      "type": "int",
+      "description": "入口连通探索地格下限",
+      "min": 50
+    },
+    {
+      "name": "rockSurfaceId",
+      "type": "int",
+      "description": "陡壁岩石材质",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "trailSurfaceId",
+      "type": "int",
+      "description": "可行走步道材质",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "rootHeight",
+      "type": "float",
+      "description": "隆起树根的地表高差（米）",
+      "min": 6
+    },
+    {
+      "name": "trunkHeight",
+      "type": "float",
+      "description": "局部基部模型高度（米）；模型不含树冠",
+      "min": 30
+    },
+    {
+      "name": "rootAssetId",
+      "type": "int",
+      "description": "4×4×12米局部粗根模型",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "trunkAssetId",
+      "type": "int",
+      "description": "30×35×8米树干基部弧壁模型",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "rootSurfaceId",
+      "type": "int",
+      "description": "根区土壤材质",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "groundSurfaceId",
+      "type": "int",
+      "description": "林间苔草材质",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "treeAssetId",
+      "type": "int",
+      "description": "普通尺度树木模型",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "entryName",
+      "type": "text",
+      "description": "根间入口名称"
+    },
+    {
+      "name": "rootName",
+      "type": "text",
+      "description": "树干基部目标名称"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "maxWalkRise": 1.35,
+      "trailRadius": 1,
+      "minWalkableCells": 250,
+      "rockSurfaceId": 13,
+      "trailSurfaceId": 3,
+      "rootHeight": 8,
+      "trunkHeight": 35,
+      "rootAssetId": 1107,
+      "trunkAssetId": 1108,
+      "rootSurfaceId": 202,
+      "groundSurfaceId": 201,
+      "treeAssetId": 201,
+      "entryName": "巨树根间林地",
+      "rootName": "巨树基部"
+    }
+  ]
+}

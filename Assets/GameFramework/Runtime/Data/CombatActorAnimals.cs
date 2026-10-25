@@ -4,7 +4,11 @@ using XLua;
 namespace ProjectY.Data
 {
     [Serializable] internal sealed class AnimalMountSave
-    { public int id,templateId,speciesId,hp,maxHP,bond,layer;public uint random;public GameEffectSave[] effects;public bool companion;public BodyInjurySave[] injuries; }
+    {
+        public int id,templateId,speciesId,hp,maxHP,bond,layer,detailsVersion,speechModifier;
+        public uint random;public GameEffectSave[] effects;public bool companion,speechPending;public BodyInjurySave[] injuries;
+        public int[] traits;public InitialAttributesSave initialAttributes;public ProfessionAttributesSave[] professionAttributes;
+    }
     public sealed partial class CombatActorData
     {
         public int AnimalSpeciesId { get; private set; }
@@ -13,6 +17,9 @@ namespace ProjectY.Data
         public int TameRetryTurns { get; private set; }
         private CombatActorData boundAnimal;
         private bool animalCompanion;
+        private bool legacyMountDetails,legacyMountBody;
+        internal bool AnimalSpeechPending;
+        internal int AnimalSpeechModifier;
         internal bool IndependentAnimal { get; private set; }
         internal int CompanionLayer { get; private set; }
         internal CombatActorData BoundAnimal => boundAnimal;
@@ -92,19 +99,38 @@ namespace ProjectY.Data
         {
             var animal=boundAnimal;
             return animal==null?null:new AnimalMountSave {id=animal.Id,templateId=animal.TemplateId,speciesId=animal.AnimalSpeciesId,
-                hp=animal.HP,maxHP=animal.MaxHP,bond=animal.AnimalBond,random=animal.animalRandom,effects=animal.Effects.Capture(),companion=animalCompanion,injuries=animal.CaptureBody(),layer=animal.CompanionLayer};
+                hp=animal.HP,maxHP=animal.MaxHP,bond=animal.AnimalBond,random=animal.animalRandom,effects=animal.Effects.Capture(),companion=animalCompanion,injuries=animal.CaptureBody(),layer=animal.CompanionLayer,
+                detailsVersion=1,traits=animal.traits.ToArray(),initialAttributes=animal.CaptureInitialAttributes(),professionAttributes=animal.CaptureProfessionAttributes(),
+                speechPending=animal.AnimalSpeechPending,speechModifier=animal.AnimalSpeechModifier};
         }
         internal void RestoreMount(AnimalMountSave row)
         {
             if(row==null)return; // 旧存档及未骑乘角色没有坐骑记录。
-            SaveCheck.Require(row.id>0 && row.templateId>0 && row.speciesId>0 && row.hp>0 && row.hp<=row.maxHP &&
+            SaveCheck.Require(row.id>0 && row.id!=Id && row.templateId>0 && row.speciesId>0 && row.hp>0 && row.hp<=row.maxHP &&
                 row.maxHP<=1000000 && row.bond>=0 && row.random!=0 && row.layer>=0,"坐骑状态");
+            SaveCheck.Require(row.detailsVersion==0 || row.detailsVersion==1,ProjectY.UI.LuaLanguage.Get("AnimalMountSaveDetails"));
+            AnimalSpeechState.ValidateSaved(row.speciesId,row.speechPending,row.speechModifier);
             var animal=new CombatActorData(row.id,row.templateId);
             animal.InitializeAnimal(row.speciesId,row.random);animal.MaxHP=row.maxHP;animal.HP=row.hp;
+            legacyMountDetails=row.detailsVersion==0;
+            if(legacyMountDetails)
+            {
+                animal.RestoreInitialAttributes(InitialAttributesSave.Template());
+                animal.RestoreProfessionAttributes(Array.Empty<ProfessionAttributesSave>());
+            }
+            else
+            {
+                SaveCheck.PositiveIds(row.traits,ProjectY.UI.LuaLanguage.Get("AnimalMountSaveDetails"));
+                animal.traits.AddRange(row.traits);
+                animal.RestoreInitialAttributes(row.initialAttributes);
+                animal.RestoreProfessionAttributes(row.professionAttributes);
+            }
             animal.Effects.Restore(row.effects);
             // Legacy mount records did not contain body data; their HP was restored above.
+            legacyMountBody=row.injuries==null;
             if(row.injuries!=null)animal.RestoreBody(row.injuries);
             animal.AnimalBond=row.bond;animal.AnimalOwnerId=Id;MountedAnimal=animal;
+            animal.AnimalSpeechPending=row.speechPending;animal.AnimalSpeechModifier=row.speechModifier;
             animalCompanion=row.companion;animal.IndependentAnimal=row.companion;animal.CompanionLayer=row.layer;
         }
     }

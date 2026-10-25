@@ -36,7 +36,7 @@ namespace ProjectY.Data
 
     /// <summary>任务进度、事实、NPC 关系与游戏时钟的唯一可变状态。对话会话不写入磁盘。</summary>
     [LuaCallCSharp]
-    public sealed class NarrativeData
+    public sealed partial class NarrativeData
     {
         private readonly Dictionary<string, int> values = new Dictionary<string, int>();
         private readonly Dictionary<int, int> kills = new Dictionary<int, int>();
@@ -140,6 +140,7 @@ namespace ProjectY.Data
         }
         public void CloseDialogue()
         {
+            ClearAnimalSpeech();
             DialogueId = DialogueNodeId = DialogueNpcId = DialogueLocalNpcId = DialogueActorId = 0;
             lines.Clear(); dialogueInterjections.Clear(); DialogueVersion++; Revision++;
         }

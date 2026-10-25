@@ -22,6 +22,7 @@ namespace ProjectY.Samples
             public Vector3 FollowPoint;
         }
         private readonly MainHudView hud;
+        private readonly Toggle siteTags;
         private readonly MapPreviewRenderer renderer;
         private readonly MapPreviewData map;
         private readonly WorldSiteLayout layout;
@@ -32,6 +33,7 @@ namespace ProjectY.Samples
         private readonly List<int> retired = new List<int>();
         private int hovered, revision;
         private bool farView;
+        private bool labelsEnabled;
         private AdventureViewData.Site[] lastSites;
         private bool pickDirty = true;
         private Vector2 pickMouse;
@@ -41,6 +43,8 @@ namespace ProjectY.Samples
         internal WorldSiteView(MainHudView owner, MapPreviewData data, MapPreviewRenderer mapRenderer)
         {
             hud = owner; map = data; renderer = mapRenderer; layout = new WorldSiteLayout(map);
+            siteTags = hud.GetComponent<LuaReference>().GetToggle("SiteTags");
+            labelsEnabled = siteTags.isOn;
             var prefab = Resources.Load<LuaReference>("UI/WorldSiteOverlay");
             if (prefab == null) throw new InvalidOperationException("WorldSiteOverlay prefab is missing; synchronize world-site UI assets.");
             root = Object.Instantiate(prefab, hud.PresentationRoot, false); root.transform.SetAsFirstSibling();
@@ -74,11 +78,13 @@ namespace ProjectY.Samples
             if (!changed) return;
             sitesByCell.Clear();
             // Point events remain selectable when they share a town's territory.
+            foreach (var tag in tags.Values) if (tag.Site.WorldRegionId > 0) foreach (var cell in tag.Cells) sitesByCell[cell] = tag;
             foreach (var tag in tags.Values) if (tag.Site.WorldTownId > 0) foreach (var cell in tag.Cells) sitesByCell[cell] = tag;
-            foreach (var tag in tags.Values) if (tag.Site.WorldTownId == 0) foreach (var cell in tag.Cells) sitesByCell[cell] = tag;
+            foreach (var tag in tags.Values) if (tag.Site.WorldTownId == 0 && tag.Site.WorldRegionId == 0) foreach (var cell in tag.Cells) sitesByCell[cell] = tag;
         }
         internal AdventureViewData.Site Pick(Camera camera, Vector2 mouse)
         {
+            if (labelsEnabled != siteTags.isOn) { labelsEnabled = siteTags.isOn; pickDirty = true; }
             if (!camera.pixelRect.Contains(mouse)) return null;
             var view = camera.worldToCameraMatrix; var projection = camera.projectionMatrix; var viewport = camera.pixelRect;
             if (!pickDirty && mouse == pickMouse && view == pickView && projection == pickProjection && viewport == pickViewport &&
@@ -92,14 +98,18 @@ namespace ProjectY.Samples
             Tag label = null; var nearest = float.PositiveInfinity;
             foreach (var tag in tags.Values)
             {
+                // A toggle can change before Tick has hidden last frame's distant labels.
+                if (!siteTags.isOn && tag.Site.Id != hovered) continue;
                 if (!tag.Rect.gameObject.activeInHierarchy || !tag.Follower.ProjectedVisible ||
                     !RectTransformUtility.RectangleContainsScreenPoint(tag.Rect, mouse)) continue;
                 if (tag.Follower.Depth < nearest) { label = tag; nearest = tag.Follower.Depth; }
             }
             if (label != null) return label.Site;
             var ray = camera.ScreenPointToRay(mouse); var cell = layout.Pick(ray, out var distance);
+            if(renderer.PickMountainSurface(ray,out var mountainCell,out var mountainDistance) && mountainDistance<distance)
+            {cell=mountainCell;distance=mountainDistance;}
             if (renderer.PickBuilding(ray, out var buildingCell, out var buildingDistance) && buildingDistance < distance) cell = buildingCell;
-            return sitesByCell.TryGetValue(cell, out var site) ? site.Site : null;
+            return cell>=0 && renderer.IsWorldCellKnown(cell) && sitesByCell.TryGetValue(cell, out var site) ? site.Site : null;
         }
         internal void Tick(Camera camera, bool pointerEnabled, Vector2 mouse, float deltaTime)
         {
@@ -114,7 +124,7 @@ namespace ProjectY.Samples
             foreach (var tag in tags.Values)
             {
                 var selected = tag.Site.Id == hovered;
-                var visible = farView || selected;
+                var visible = (siteTags.isOn && farView) || selected;
                 if (tag.Rect.gameObject.activeSelf != visible) { tag.Rect.gameObject.SetActive(visible); pickDirty = true; }
                 if (!tag.Rect.gameObject.activeSelf) continue;
                 tag.Background.color = selected ? new Color(.22f, .17f, .08f, .97f) : new Color(.055f, .075f, .085f, .92f);

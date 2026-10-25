@@ -1,0 +1,128 @@
+{
+  "version": 1,
+  "source": "Approved title / narrative / utility typography",
+  "prefabRoot": "Assets/DynamicAsset/UI/Prefabs/",
+  "roles": {
+    "Adventure/CharacterGrowthPanel": {
+      "title": [
+        "Page/BookTitle",
+        "Page/Hero/Title",
+        "Page/Overview/AttributesHeading",
+        "Page/Overview/TraitsHeading",
+        "Page/Skills/TalentName"
+      ]
+    },
+    "Adventure/StoryEventPanel": {
+      "title": [
+        "Page/Title"
+      ],
+      "body": [
+        "Page/Description"
+      ]
+    },
+    "Adventure/StoryChoiceWidget": {
+      "body": [
+        "Title"
+      ]
+    },
+    "Adventure/StartMenuPanel": {
+      "title": [
+        "Page/Title",
+        "Page/NewPage/StartDetailScroll/Viewport/StartDetail/StartName",
+        "Page/NewPage/StartDetailScroll/Viewport/StartDetail/StartKitTitle"
+      ],
+      "body": [
+        "Page/NewPage/StartDetailScroll/Viewport/StartDetail/StartDescription"
+      ]
+    },
+    "Narrative/MissionJournalPanel": {
+      "title": [
+        "Page/Title",
+        "Page/Scroll/Viewport/Content/DetailTitle",
+        "Page/Scroll/Viewport/Content/RewardTitle"
+      ],
+      "body": [
+        "Page/Scroll/Viewport/Content/Description"
+      ]
+    },
+    "Narrative/DialoguePanel": {
+      "title": [
+        "Page/Title"
+      ]
+    },
+    "Narrative/DialogueEntryWidget": {
+      "title": [
+        "Title"
+      ],
+      "body": [
+        "Body"
+      ]
+    },
+    "Narrative/NarrativeEntryWidget": {
+      "title": [
+        "Title"
+      ]
+    },
+    "Narrative/MissionSettlementPanel": {
+      "title": [
+        "Page/Title",
+        "Page/MissionName"
+      ]
+    },
+    "Equipment/InventoryPanel": {
+      "title": [
+        "Frame/Heading",
+        "Frame/Details/ItemName",
+        "Frame/Equipment/HealthOverlay/HealthHeading",
+        "Frame/Equipment/HealthOverlay/HealthPartName"
+      ]
+    },
+    "Equipment/EquipmentWorkbenchPanel": {
+      "title": [
+        "SafeArea/Heading",
+        "SafeArea/Preview/WeaponTitle"
+      ]
+    },
+    "Equipment/LootPanel": {
+      "title": [
+        "Frame/Title",
+        "Frame/Bag/BagTitle",
+        "Frame/Loot/LootTitle",
+        "Frame/Loot/ItemName"
+      ]
+    },
+    "Factions/FactionRelationsPanel": {
+      "title": [
+        "Page/Title",
+        "Page/GraphScroll/Viewport/Graph/RootCard/RootName"
+      ]
+    },
+    "Progression/SkillAtlasPanel": {
+      "title": [
+        "Page/Title",
+        "Page/TreeTitle",
+        "Page/Popup/TipTitle"
+      ]
+    },
+    "Camp/CampPanel": {
+      "title": [
+        "Page/Title"
+      ]
+    },
+    "Shop/ShopPanel": {
+      "title": [
+        "Page/Title"
+      ]
+    },
+    "WorldParty/WorldPartyPanel": {
+      "title": [
+        "Page/Title"
+      ]
+    },
+    "Presentation/DiceRollPanel": {
+      "title": [
+        "Title"
+      ]
+    }
+  }
+}

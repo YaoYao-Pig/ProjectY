@@ -6,10 +6,12 @@ namespace ProjectY.Data
 {
     [Serializable] internal sealed class ExpeditionSave
     {
-        public int recipeId, targetCells, activeSite;
+        public int recipeId, targetCells, activeSite, generationVersion;
         public int[] visited; public string[] triggers;
         public AreaSave[] areas; public TravelSave travel; public WorldPartiesSave parties;
         public WorldFogSave worldFog;
+        public WaterTravelSave waterTravel;
+        [NonSerialized] internal WaterTravelData preparedWater;
         public ConstructionSave[] constructions; public ObstacleSiteSave[] obstacles;
     }
     [Serializable] internal sealed class AreaSave
@@ -25,8 +27,8 @@ namespace ProjectY.Data
     [Serializable] internal sealed class EnemySave
     {
         public int id, template, hp, maxHP, team, q, r, species, owner, bond, retry;
-        public uint random; public bool drop; public string appearance;
-        public int[] traits; public GameEffectSave[] effects; public BodyInjurySave[] injuries;
+        public uint random; public bool drop,speechPending; public int speechModifier; public string appearance;
+        public int[] traits; public InitialAttributesSave initialAttributes; public ProfessionAttributesSave[] professionAttributes; public GameEffectSave[] effects; public BodyInjurySave[] injuries;
     }
     [Serializable] internal sealed class ContainerSave
     {
@@ -47,7 +49,7 @@ namespace ProjectY.Data
     }
     [Serializable] internal sealed class TravelStepSave { public int q, r; public double minutes; }
     [Serializable] internal sealed class TravelStopSave { public int id, q, r, eventId, encounter; }
-    [Serializable] internal sealed class ConstructionSave { public int site, cell, skill, hp, maximum, ownerTeam; public bool removed; public int[] paidMaterialIds,paidMaterialCounts; }
+    [Serializable] internal sealed class ConstructionSave { public int site, cell, skill, hp, maximum, ownerTeam, ownerActorId; public bool removed; public int[] paidMaterialIds,paidMaterialCounts; }
     [Serializable] internal sealed class ObstacleSiteSave { public int site; public ObstacleSave[] rows; }
     [Serializable] internal sealed class ObstacleSave { public int rule, attempts; public bool blocks, cleared; public int[] cells, items, counts; }
 
@@ -63,6 +65,13 @@ namespace ProjectY.Data
         }
         public static void Definition(MapAreaStateData area,int definition) { if(definition<1)throw new ArgumentOutOfRangeException(nameof(definition));area.SavedDefinition=definition; }
         public static int Recipe(PreparedCharacterSave save) => save.Expedition?.recipeId ?? 1;
+        // Missing field is a pre-landform save. Its shuffled candidate pool remains the original eleven biomes.
+        public static int Generation(PreparedCharacterSave save) => save.Expedition == null || save.Expedition.generationVersion == 0 ? 6 : save.Expedition.generationVersion;
+        public static void SetGeneration(AdventureData adventure, int version)
+        {
+            if (version < 5 || version > 10) throw new ArgumentOutOfRangeException(nameof(version));
+            adventure.ExpeditionGeneration = version;
+        }
         public static int Target(PreparedCharacterSave save) => save.Expedition?.targetCells ?? 0;
         public static int AreaCount(PreparedCharacterSave save) => save.Expedition?.areas.Length ?? 0;
         public static int AreaSite(PreparedCharacterSave save,int index) => save.Expedition.areas[index].site;
@@ -86,14 +95,15 @@ namespace ProjectY.Data
         internal static ExpeditionSave Capture(AdventureData adventure)
         {
             if(adventure.ExpeditionConstruction==null || adventure.ExpeditionObstacles==null)return null;
-            return new ExpeditionSave { recipeId=adventure.ExpeditionRecipe,targetCells=adventure.ExpeditionTarget,
+            return new ExpeditionSave { recipeId=adventure.ExpeditionRecipe,targetCells=adventure.ExpeditionTarget,generationVersion=adventure.ExpeditionGeneration,
                 activeSite=adventure.Areas.ActiveSiteId,visited=adventure.CaptureVisited(),triggers=adventure.CaptureTriggers(),
-                areas=adventure.Areas.Capture(),travel=adventure.Travel.Capture(),parties=adventure.WorldParties.Capture(),worldFog=adventure.WorldExploration.Capture(),
+                areas=adventure.Areas.Capture(),travel=adventure.Travel.Capture(),parties=adventure.WorldParties.Capture(),worldFog=adventure.WorldExploration.Capture(),waterTravel=adventure.WaterTravel.Capture(),
                 constructions=adventure.ExpeditionConstruction.Capture(),obstacles=adventure.ExpeditionObstacles.Capture() };
         }
         internal static void Prepare(PreparedCharacterSave prepared, ExpeditionSave saved, EquipmentData definitions, CharacterAppearanceService appearances, HashSet<int> owners)
         {
             SaveCheck.Require(saved!=null && saved.recipeId>0 && saved.targetCells>=0 && saved.targetCells<=100000,"远征参数");
+            SaveCheck.Require(saved.generationVersion==0 || saved.generationVersion>=5 && saved.generationVersion<=10,"地图生成版本");
             SaveCheck.PositiveIds(saved.visited,"访问地点");SaveCheck.Rows(saved.triggers,100000,"故事触发");
             SaveCheck.Require(saved.triggers.All(s=>!string.IsNullOrEmpty(s)) && saved.triggers.Distinct().Count()==saved.triggers.Length,"重复故事触发");
             var rows=SaveCheck.Rows(saved.areas,10000,"探索地点");
@@ -101,21 +111,62 @@ namespace ProjectY.Data
             prepared.PreparedWorldParties=WorldPartiesData.Prepare(saved.parties,definitions,itemIds,appearances,owners);
             var attachedParties=new HashSet<int>();
             prepared.PreparedAreas=rows.Select(row=>MapAreaStateData.Prepare(row,definitions,appearances,owners,itemIds,prepared.PreparedWorldParties,attachedParties)).ToArray();
-            foreach(var area in prepared.PreparedAreas)for(int i=0;i<area.EncounterCount;i++)for(int j=0;j<area.GetEncounterAt(i).EnemyCount;j++)
-            {
-                var animal=area.GetEncounterAt(i).GetEnemyAt(j);if(animal.AnimalOwnerId==0)continue;
-                var rider=prepared.Actors?.FirstOrDefault(a=>a.Id==animal.AnimalOwnerId);
-                SaveCheck.Require(rider!=null,"驯服动物的主人不在队伍");
-                if(rider.BoundAnimal?.Id==animal.Id)rider.ReconnectMount(animal);
-            }
+            ReconnectAnimals(prepared,owners);
             foreach(var row in rows)SaveCheck.Require(sites.Add(row.site),"重复探索地点");
             SaveCheck.Require(saved.activeSite==0 || sites.Contains(saved.activeSite),"活动地点");
             prepared.PreparedTravel=WorldTravelData.Prepare(saved.travel);
+            SaveCheck.Require(saved.generationVersion<9 || saved.waterTravel!=null,ProjectY.UI.LuaLanguage.Get("WaterSaveInvalid"));
+            saved.preparedWater=WaterTravelData.Prepare(saved.waterTravel,prepared.PreparedTravel);
             prepared.PreparedWorldFog=WorldMapExplorationData.Prepare(saved.worldFog);
             prepared.PreparedWorldParties.ValidateWorldReferences(saved.travel.firstStop,checked(saved.travel.firstStop+saved.travel.stops.Length-1),sites);
             prepared.PreparedConstruction=ConstructionData.Prepare(saved.constructions,prepared.PreparedAreas);
             prepared.PreparedObstacles=MapObstacleData.Prepare(saved.obstacles,prepared.PreparedAreas);
             prepared.Expedition=saved;
+        }
+        private static void ReconnectAnimals(PreparedCharacterSave prepared,HashSet<int> owners)
+        {
+            var worldActors=new Dictionary<int,CombatActorData>();
+            Action<CombatActorData> remember=actor=>
+            {
+                if(worldActors.TryGetValue(actor.Id,out var previous))
+                    SaveCheck.Require(ReferenceEquals(previous,actor),ProjectY.UI.LuaLanguage.Get("AnimalMountWorldReference"));
+                else worldActors.Add(actor.Id,actor);
+            };
+            for(int i=0;i<prepared.PreparedWorldParties.Count;i++)
+            {
+                var party=prepared.PreparedWorldParties.GetAt(i);
+                for(int j=0;j<party.MemberCount;j++)remember(party.GetMemberAt(j));
+            }
+            foreach(var area in prepared.PreparedAreas)for(int i=0;i<area.EncounterCount;i++)
+            {
+                var group=area.GetEncounterAt(i);
+                for(int j=0;j<group.EnemyCount;j++)remember(group.GetEnemyAt(j));
+            }
+            var riders=prepared.Actors.ToDictionary(actor=>actor.Id);
+            foreach(var animal in worldActors.Values)
+            {
+                if(animal.AnimalOwnerId==0)continue;
+                SaveCheck.Require(riders.TryGetValue(animal.AnimalOwnerId,out var rider),ProjectY.UI.LuaLanguage.Get("AnimalMountOwnerReference"));
+                // A dead former companion remains in its original roster after its owner releases it.
+                if(animal.HP==0)
+                {
+                    SaveCheck.Require(rider.BoundAnimal?.Id!=animal.Id,ProjectY.UI.LuaLanguage.Get("AnimalMountOwnerReference"));
+                    continue;
+                }
+                SaveCheck.Require(rider.BoundAnimal?.Id==animal.Id,ProjectY.UI.LuaLanguage.Get("AnimalMountOwnerReference"));
+                rider.ReconnectMount(animal);
+            }
+            var mountIds=new HashSet<int>();
+            foreach(var rider in prepared.Actors)
+            {
+                var animal=rider.BoundAnimal;if(animal==null)continue;
+                SaveCheck.Require(mountIds.Add(animal.Id),ProjectY.UI.LuaLanguage.Get("AnimalMountOwnerReference"));
+                if(worldActors.TryGetValue(animal.Id,out var original))
+                    SaveCheck.Require(ReferenceEquals(animal,original),ProjectY.UI.LuaLanguage.Get("AnimalMountWorldReference"));
+                else
+                    // A companion imported with a character-only save has no original world roster.
+                    SaveCheck.Require(owners.Add(animal.Id),ProjectY.UI.LuaLanguage.Get("AnimalMountWorldReference"));
+            }
         }
         internal static void Apply(PreparedCharacterSave prepared,AdventureData adventure)
         {
@@ -123,6 +174,7 @@ namespace ProjectY.Data
             var saved=prepared.Expedition;
             adventure.Areas.TakePrepared(prepared.PreparedAreas,saved.activeSite);
             adventure.Travel.TakePrepared(prepared.PreparedTravel);
+            adventure.WaterTravel.TakePrepared(saved.preparedWater);
             adventure.WorldExploration.TakePrepared(prepared.PreparedWorldFog);
             adventure.WorldParties.TakePrepared(prepared.PreparedWorldParties);
             adventure.ExpeditionConstruction.TakePrepared(prepared.PreparedConstruction);
@@ -164,7 +216,7 @@ namespace ProjectY.Data
     }
     public sealed partial class AdventureData
     {
-        internal int ExpeditionRecipe=1, ExpeditionTarget;
+        internal int ExpeditionRecipe=1, ExpeditionTarget, ExpeditionGeneration=8;
         internal ConstructionData ExpeditionConstruction; internal MapObstacleData ExpeditionObstacles;
         internal int[] CaptureVisited()=>visited.OrderBy(x=>x).ToArray();
         internal string[] CaptureTriggers()=>storyTriggers.OrderBy(x=>x,StringComparer.Ordinal).ToArray();
@@ -247,17 +299,66 @@ namespace ProjectY.Data
     public sealed partial class CombatActorData
     {
         internal void ReconnectMount(CombatActorData animal)
-        {SaveCheck.Require(BoundAnimal!=null && BoundAnimal.TemplateId==animal.TemplateId && BoundAnimal.HP==animal.HP && BoundAnimal.MaxHP==animal.MaxHP,"坐骑与探索动物不一致");animal.CompanionLayer=BoundAnimal.CompanionLayer;boundAnimal=animal;animal.IndependentAnimal=animalCompanion;}
+        {
+            var mount=BoundAnimal;
+            SaveCheck.Require(mount!=null && mount.Id==animal.Id && mount.TemplateId==animal.TemplateId && mount.AnimalSpeciesId==animal.AnimalSpeciesId &&
+                animal.AnimalOwnerId==Id && animal.Team==1 && mount.HP==animal.HP && mount.MaxHP==animal.MaxHP &&
+                mount.AnimalBond==animal.AnimalBond && mount.animalRandom==animal.animalRandom &&
+                mount.AnimalSpeechPending==animal.AnimalSpeechPending && mount.AnimalSpeechModifier==animal.AnimalSpeechModifier &&
+                MountDetailsMatch(mount,animal,legacyMountDetails,legacyMountBody),ProjectY.UI.LuaLanguage.Get("AnimalMountWorldReference"));
+            animal.CompanionLayer=mount.CompanionLayer;boundAnimal=animal;animal.IndependentAnimal=animalCompanion;
+            legacyMountDetails=legacyMountBody=false;
+        }
+        private static bool MountDetailsMatch(CombatActorData mount,CombatActorData animal,bool legacyDetails,bool legacyBody)
+        {
+            if(!legacyDetails)
+            {
+                if(mount.traits.Count!=animal.traits.Count || mount.traits.Any(trait=>!animal.traits.Contains(trait)) ||
+                    mount.InitialProfessionId!=animal.InitialProfessionId || mount.initialAttributes.Count!=animal.initialAttributes.Count ||
+                    mount.professionAttributeSets.Count!=animal.professionAttributeSets.Count)return false;
+                foreach(var pair in mount.initialAttributes)
+                    if(!animal.initialAttributes.TryGetValue(pair.Key,out var initialValue) || initialValue!=pair.Value)return false;
+                foreach(var pair in mount.professionAttributeSets)
+                {
+                    if(!animal.professionAttributeSets.TryGetValue(pair.Key,out var other) || pair.Value.Values.Count!=other.Values.Count)return false;
+                    foreach(var entry in pair.Value.Values)
+                        if(!other.Values.TryGetValue(entry.Key,out var professionValue) || professionValue!=entry.Value)return false;
+                }
+            }
+            if(!legacyBody)for(int i=0;i<mount.BodyInjuries.Length;i++)
+            {
+                var first=mount.BodyInjuries[i];var second=animal.BodyInjuries[i];
+                if(first.damage!=second.damage || first.kind!=second.kind || first.health!=second.health || first.maximum!=second.maximum ||
+                    first.permanent!=second.permanent || first.recoveryAmount!=second.recoveryAmount || first.recoveryAt!=second.recoveryAt)return false;
+            }
+            if(mount.Effects.Count!=animal.Effects.Count)return false;
+            for(int i=0;i<mount.Effects.Count;i++)
+            {
+                var first=mount.Effects.GetAt(i);var second=animal.Effects.GetAt(i);
+                if(first.Id!=second.Id || first.EffectId!=second.EffectId || first.SourceId!=second.SourceId || first.SourceName!=second.SourceName ||
+                    first.Amount!=second.Amount || first.Remaining!=second.Remaining || first.Elapsed!=second.Elapsed || first.Stacks!=second.Stacks ||
+                    first.ExpiresAt!=second.ExpiresAt || first.NextTickAt!=second.NextTickAt ||
+                    !first.SnapshotIds.SequenceEqual(second.SnapshotIds) || !first.SnapshotAmounts.SequenceEqual(second.SnapshotAmounts))return false;
+            }
+            return true;
+        }
         internal EnemySave CaptureEnemy()=>new EnemySave{id=Id,template=TemplateId,hp=HP,maxHP=MaxHP,team=Team,q=Q,r=R,
             species=AnimalSpeciesId,owner=AnimalOwnerId,bond=AnimalBond,retry=TameRetryTurns,random=animalRandom,drop=DropResolved,
-            appearance=CustomizationJson,traits=traits.ToArray(),effects=Effects.Capture(),injuries=CaptureBody()};
+            speechPending=AnimalSpeechPending,speechModifier=AnimalSpeechModifier,
+            appearance=CustomizationJson,traits=traits.ToArray(),initialAttributes=CaptureInitialAttributes(),professionAttributes=CaptureProfessionAttributes(),effects=Effects.Capture(),injuries=CaptureBody()};
         internal static CombatActorData PrepareEnemy(EnemySave row,CharacterAppearanceService appearances,HashSet<int> owners)
         {
             SaveCheck.Require(row!=null && row.id>0 && owners.Add(row.id) && row.template>0 && row.maxHP>0 && row.maxHP<=1000000 && row.hp>=0 && row.hp<=row.maxHP &&
                 row.team>=0 && row.team<=64 && row.species>=0 && row.owner>=0 && row.bond>=0 && row.retry>=0 && (row.species==0?row.random==0:row.random!=0) && (!row.drop || row.hp==0),"探索敌人");
+            SaveCheck.Require((row.species>0 || row.owner==0 && row.bond==0 && row.retry==0) &&
+                (row.owner==0 || row.species>0 && row.team==1 && row.retry==0 && !row.drop),ProjectY.UI.LuaLanguage.Get("AnimalMountOwnerReference"));
+            AnimalSpeechState.ValidateSaved(row.species,row.speechPending,row.speechModifier);
             SaveCheck.PositiveIds(row.traits,"敌人特质");
             var actor=new CombatActorData(row.id,row.template){MaxHP=row.maxHP,HP=row.hp,Team=row.team,Q=row.q,R=row.r,
-                AnimalSpeciesId=row.species,AnimalOwnerId=row.owner,AnimalBond=row.bond,TameRetryTurns=row.retry,animalRandom=row.random,DropResolved=row.drop};
+                AnimalSpeciesId=row.species,AnimalOwnerId=row.owner,AnimalBond=row.bond,TameRetryTurns=row.retry,animalRandom=row.random,DropResolved=row.drop,
+                AnimalSpeechPending=row.speechPending,AnimalSpeechModifier=row.speechModifier};
+            actor.RestoreInitialAttributes(row.initialAttributes);
+            actor.RestoreProfessionAttributes(row.professionAttributes);
             actor.traits.AddRange(row.traits);actor.Effects.Restore(row.effects);actor.RestoreBody(row.injuries);
             if(row.species==0 && !string.IsNullOrEmpty(row.appearance))appearances.Apply(actor,row.appearance);
             return actor;
@@ -363,17 +464,17 @@ namespace ProjectY.Data
     }
     public sealed partial class ConstructionData
     {
-        internal ConstructionSave[] Capture()=>records.Select(r=>new ConstructionSave{site=r.SiteId,cell=r.CellIndex,skill=r.SkillId,hp=r.HP,maximum=r.MaxHP,removed=r.Removed,ownerTeam=r.OwnerTeam,paidMaterialIds=(int[])r.PaidMaterialIds.Clone(),paidMaterialCounts=(int[])r.PaidMaterialCounts.Clone()}).ToArray();
+        internal ConstructionSave[] Capture()=>records.Select(r=>new ConstructionSave{site=r.SiteId,cell=r.CellIndex,skill=r.SkillId,hp=r.HP,maximum=r.MaxHP,removed=r.Removed,ownerTeam=r.OwnerTeam,ownerActorId=r.OwnerActorId,paidMaterialIds=(int[])r.PaidMaterialIds.Clone(),paidMaterialCounts=(int[])r.PaidMaterialCounts.Clone()}).ToArray();
         internal static ConstructionData Prepare(ConstructionSave[] saved,MapAreaStateData[] areas)
         {
             var next=new ConstructionData();foreach(var row in SaveCheck.Rows(saved,100000,"工事"))
             {SaveCheck.Require(row!=null && row.skill>0 && row.cell>0 && areas.Any(a=>a.SiteId==row.site && row.cell<=a.CellCount) && row.maximum>=0 && row.hp>=0 && row.hp<=row.maximum,"工事状态");
                 var record=new ConstructionRecord(next.records.Count+1,row.site,row.cell,row.skill,row.maximum){HP=row.hp,Removed=row.removed};next.records.Add(record);
                 // Old saves did not record investment. They cannot manufacture a refund from today's configuration.
-                SaveCheck.Require(row.ownerTeam>=0&&row.ownerTeam<=64,"工事所有者");
+                SaveCheck.Require(row.ownerTeam>=0&&row.ownerTeam<=64&&row.ownerActorId>=0,"工事所有者");
                 var paidIds=row.paidMaterialIds??Array.Empty<int>();var paidCounts=row.paidMaterialCounts??Array.Empty<int>();
                 SaveCheck.Require(paidIds.Length==paidCounts.Length&&paidIds.Length<=64&&paidIds.Distinct().Count()==paidIds.Length&&paidIds.All(x=>x>0)&&paidCounts.All(x=>x>0),"工事实际投入");
-                record.OwnerTeam=row.ownerTeam;record.PaidMaterialIds=(int[])paidIds.Clone();record.PaidMaterialCounts=(int[])paidCounts.Clone();
+                record.OwnerTeam=row.ownerTeam;record.OwnerActorId=row.ownerActorId;record.PaidMaterialIds=(int[])paidIds.Clone();record.PaidMaterialCounts=(int[])paidCounts.Clone();
                 if(!row.removed){SaveCheck.Require(!next.active.ContainsKey(Key(row.site,row.cell)),"重叠工事");next.active.Add(Key(row.site,row.cell),record);}}
             return next;
         }

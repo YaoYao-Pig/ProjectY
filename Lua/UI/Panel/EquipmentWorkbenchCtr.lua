@@ -6,6 +6,7 @@ local Workbench=Class('EquipmentWorkbenchCtr',Panel)
 local SocketCapacity=4
 function Workbench:Bind()
     self.system=self.context.systems:Get('Equipment');self.rules=self.system.rules
+    self.terms=require('UI.EquipmentTermPresenter').New(self.view,self.system.config)
     self.stats=self.context.systems:Get('Battle').stats
     self.view.Workbench:Prepare();self.inventory={};self.options={};self.tags={}
     self:Listen(self.view.CategoryPrevious,function() self:ChangeCategory(-1) end)
@@ -36,7 +37,7 @@ function Workbench:OnShow(args)
     for i=0,self.system.data.WeaponCount-1 do local weapon=self.system.data:GetWeaponAt(i);if self.system:IsCarriedWeapon(weapon) then self.weaponId=weapon.Id;break end end
     assert(self.weaponId~=0,'Open the workbench only while carrying a weapon')
     self.socketId=0;self.categoryIndex=0;self.fillMagazineId=nil;self.fillAmmoItemId=nil;self.message=LuaLanguage.UIEquipmentWorkbenchMessage
-    self.view.Workbench:Prepare();self:Refresh()
+    self.view.Workbench:Prepare();self:Refresh();self.terms:Reset()
 end
 function Workbench:ChangeCategory(step)
     self.fillMagazineId=nil;self.fillAmmoItemId=nil
@@ -89,6 +90,8 @@ function Workbench:Refresh()
         end
     end
     self.view.Title.text=Text.Name(self.rules,weapon)
+    local legendary=self.rules.affixes:Legendary(weapon)
+    self.view.DetailsRarityFrame:Configure(legendary~=nil,legendary and legendary.color or '',true)
     local tags=self.rules:WeaponTags(weapon.ItemId)
     for i=1,math.max(#self.tags,#tags) do
         if not self.tags[i] then
@@ -194,7 +197,19 @@ function Workbench:Refresh()
     self.view.Fill.gameObject:SetActive(filling~=nil or definition.kind=='gun')
     self.view.Fill.interactable=filling~=nil and (filling.Rounds<filling.Capacity or filling.AmmoItemId~=self.fillAmmoItemId)
         and data:CountItem(self.fillAmmoItemId)>0
-    local lines={Text.Attributes(self.rules,weapon),Text.Affix(self.rules,weapon),Text.Condition(self.rules,weapon)}
+    -- Resolve the selected inventory weapon without mutating the actor's real loadout.
+    local previewRules=self.rules:PreviewWeapon(weapon)
+    local descriptions=require('Game.Presentation.EquipmentDescriptionModel').For(self.system.config)
+    local granted={};for _,id in ipairs(descriptions:GrantedSkills(weapon.ItemId))do granted[id]=true end
+    local function resolve(id)
+        local skill=previewRules:Skill(actor,id,self.stats)
+        if skill.catalystKind~='none'then
+            local allowed,reason=previewRules:CheckSkillEquipment(actor,skill,self.stats)
+            if not allowed then skill.equipmentDescriptionReason=reason end
+        end
+        return skill
+    end
+    local lines={Text.Abilities(self.rules,weapon,resolve),Text.Attributes(self.rules,weapon),Text.Affix(self.rules,weapon),Text.Condition(self.rules,weapon)}
     if slot and slot.kind~='magazine' and current~=0 then
         lines[#lines+1]=Text.Heading(LuaLanguage.UIEquipmentWorkbenchLinesLines14)..'\n'..Text.Paint(self.rules.runes:Get(current).description,Text.colors.label,13)
     end
@@ -204,25 +219,15 @@ function Workbench:Refresh()
             Text.Paint(string.format(LuaLanguage.WorkbenchAmmoSelected,self.rules.ammunition:Get(self.fillAmmoItemId).name,data:CountItem(self.fillAmmoItemId)),Text.colors.accent,12)..'\n'..
             Text.Ammunition(self.rules,self.fillAmmoItemId)
     end
-    lines[#lines+1]=Text.Heading(LuaLanguage.UIEquipmentWorkbenchLinesLines1)
-    -- Preview a selected inventory weapon without mutating actor ownership.
-    local previewRules=self.rules:PreviewWeapon(weapon)
+    local otherHeading=false
     for _,id in ipairs(previewRules:SkillIds(actor,self.stats:Template(actor))) do
-        local skill=previewRules:Skill(actor,id,self.stats)
-        local effects={};local damage=false
-        for _,effectId in ipairs(skill.effectIds) do
-            if self.rules.effects:Get(effectId).kind=='damage' then damage=true end
+        if not granted[id]then
+            if not otherHeading then lines[#lines+1]=Text.Heading(LuaLanguage.EquipmentOtherSkills);otherHeading=true end
+            lines[#lines+1]=Text.Skill(self.rules,resolve(id))
         end
-        if damage then effects[#effects+1]=Text.Paint(string.format(LuaLanguage.UIEquipmentWorkbenchEffectsEffects14,skill.hitChance,skill.damageScale),Text.colors.value,13) end
-        effects[#effects+1]=Text.Note(string.format(LuaLanguage.UIEquipmentWorkbenchEffectsEffects13,skill.range,skill.maxTargets,skill.cooldownTurns))
-        if skill.catalystKind~='none' then
-            local allowed,reason=previewRules:CheckSkillEquipment(actor,skill,self.stats)
-            effects[#effects+1]=Text.Paint(allowed and LuaLanguage.UIEquipmentWorkbenchEffectsEffects12 or reason,allowed and Text.colors.positive or Text.colors.negative,11)
-        end
-        if skill.ammoPerShot>0 then effects[#effects+1]=Text.Note(string.format(LuaLanguage.UIEquipmentWorkbenchEffectsEffects1, (skill.shots*skill.ammoPerShot))) end
-        lines[#lines+1]=Text.Paint(skill.name,Text.colors.value,15)..'  '..Text.Note(skill.cost..' AP')..'\n'..Text.Paint(skill.description,Text.colors.label,12)..'\n'..table.concat(effects,'\n')
     end
     self.view.Stats.text=table.concat(lines,'\n\n')
 end
-function Workbench:OnHide() self.view.Workbench:ReleasePreview();self.demo:SetEquipmentOpen(false);self.demo=nil end
+function Workbench:OnHide() self.terms:Reset();self.view.Workbench:ReleasePreview();self.demo:SetEquipmentOpen(false);self.demo=nil end
+function Workbench:Tick() require('UI.EquipmentRarity').Tick();self.terms:Tick() end
 return Workbench

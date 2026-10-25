@@ -31,6 +31,14 @@
       "type": "int",
       "description": "新建远征时一次性设置的开局金币",
       "min": 0
+    },
+    {
+      "name": "initialProfessionId",
+      "type": "int",
+      "ref": "ProfessionTable",
+      "default": 12,
+      "description": "领队初始职业；普通同行为农民，特殊开局显式覆盖",
+      "min": 1
     }
   ],
   "rows": [
@@ -39,84 +47,96 @@
       "name": "退伍步卒",
       "description": "最后一笔军饷换成了旅费，旧皮帽里还缝着磨褪色的军团布条。你带着一把练习铁剑，与两名同路人来到城外，先靠接些短工养活自己。",
       "adventureRecipeId": 101,
-      "coins": 60
+      "coins": 60,
+      "initialProfessionId": 1
     },
     {
       "id": 2,
       "name": "林地猎户",
       "description": "熟悉的猎路被新修的围栏截断，家中挂肉的木架已经空了好些天。你背上猎弓和卷好的麻绳，带着两名伙伴离开林缘，手斧仍别在行囊一侧。",
       "adventureRecipeId": 102,
-      "coins": 35
+      "coins": 35,
+      "initialProfessionId": 2
     },
     {
       "id": 3,
       "name": "被逐学徒",
       "description": "离开师门时，你只来得及带走木杖、两瓶备战药剂和一枚散射符文。木杖没有安装符文的槽位，那块石头暂时只能包在旧手帕里；两名同行者陪你在城外落了脚。",
       "adventureRecipeId": 103,
-      "coins": 20
+      "coins": 20,
+      "initialProfessionId": 3
     },
     {
       "id": 4,
       "name": "巡回修补匠",
       "description": "补锅、修轮、换门栓，你的手艺曾换来一路的饭食和屋檐。如今老推车散了架，你把能用的木料和铁件收进背包，带着手斧与铁铲跟两名伙伴继续赶路。",
       "adventureRecipeId": 104,
-      "coins": 45
+      "coins": 45,
+      "initialProfessionId": 4
     },
     {
       "id": 5,
       "name": "破产商队随员",
       "description": "商队解散那天，掌柜用最后一袋零钱结清了工钱，账簿却留在空车上。你收起惯用的撬棍和捆货绳，约上两名同行者，暂住在下一座城的门外。",
       "adventureRecipeId": 105,
-      "coins": 90
+      "coins": 90,
+      "initialProfessionId": 12
     },
     {
       "id": 6,
       "name": "山矿逃生者",
       "description": "塌方后，你沿着越来越细的风声爬出了矿道，手上的煤灰洗了几遍也没掉。矿镐、几把火炬和口袋里的铁件还在；你与两名过路人结伴，先到城里找一张安稳的床。",
       "adventureRecipeId": 106,
-      "coins": 15
+      "coins": 15,
+      "initialProfessionId": 12
     },
     {
       "id": 7,
       "name": "流亡贵族",
       "description": "家族宅邸的大门封上了蜡印，你把旧姓藏起来，用剩下的盘缠换了旅行装束。皮帽和皮靴还算体面，佩剑却只是一把练习用铁剑，两名同行者陪你走到陌生城镇。",
       "adventureRecipeId": 107,
-      "coins": 120
+      "coins": 120,
+      "initialProfessionId": 13
     },
     {
       "id": 8,
       "name": "废墟寻路人",
       "description": "你习惯在废墙上留下粉笔记号，也习惯先用绳子试一试脚下的石板。最近一次寻路没有找到值钱东西，背包里只剩撬棍、火炬和药包，你与两名伙伴回到城边休整。",
       "adventureRecipeId": 108,
-      "coins": 25
+      "coins": 25,
+      "initialProfessionId": 12
     },
     {
       "id": 9,
       "name": "战地医师",
       "description": "营地撤走时，你把没用完的药包一只只收进挎袋，连缝针的布套也没落下。现在身边只剩两名同行者，木杖支着疲惫的腿，一整包急救物资比钱袋沉得多。",
       "adventureRecipeId": 109,
-      "coins": 30
+      "coins": 30,
+      "initialProfessionId": 12
     },
     {
       "id": 10,
       "name": "河岸摆渡人",
       "description": "涨水冲走了渡棚，你在下游捡回几段木料和惯用的粗麻绳。船暂时修不起来，便带着短柄手斧，与两名原本要过河的旅人一起往城里走。",
       "adventureRecipeId": 110,
-      "coins": 45
+      "coins": 45,
+      "initialProfessionId": 12
     },
     {
       "id": 11,
       "name": "拾荒流民",
       "description": "行囊里的每块木料和铁件都是从路边捡来的，钱袋轻得听不见响。你和两名同样无处落脚的旅人分着用药包，靠手斧、撬棍和一点余钱挨到了城门外。",
       "adventureRecipeId": 111,
-      "coins": 8
+      "coins": 8,
+      "initialProfessionId": 12
     },
     {
       "id": 12,
       "name": "巡夜学徒",
       "description": "你做过一段巡夜的学徒，知道火炬快烧尽时会先发出怎样的噼啪声。离开旧哨所后，你仍把备用火炬和药剂装得齐齐整整，和两名伙伴在天黑前赶到城外。",
       "adventureRecipeId": 112,
-      "coins": 45
+      "coins": 45,
+      "initialProfessionId": 12
     }
   ]
 }

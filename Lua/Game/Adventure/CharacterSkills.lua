@@ -80,7 +80,7 @@ function Skills:CanUse(actorId,skillId,targetId)
         end
         return battle:CanUseSkill(skillId,targetId)
     end
-    if self.adventure.data.Phase~='area' then return false,'进入小地图后使用' end
+    if self.adventure.data.Phase~='area' and not (self.adventure.data.Phase=='map' and not skill.affectsContainers and self:Handler(skill).MapTargets) then return false,'进入小地图后使用' end
     local battle=self.adventure.battle
     local allowed,reason=battle.stats.equipment:CheckSkillEquipment(actor,battle:Skill(actor,skillId),battle.stats)
     if not allowed then return false,reason end
@@ -106,6 +106,9 @@ function Skills:Rows(actorId,context)
             local targets={}
             if context=='life' and self.adventure.data.Phase=='area' then
                 targets=skill.affectsContainers and self.adventure.containerCombat:Targets(actor,id) or self:Handler(skill).Targets(actor)
+            elseif context=='life' and self.adventure.data.Phase=='map' and not skill.affectsContainers then
+                local handler=self:Handler(skill)
+                if handler.MapTargets then targets=handler.MapTargets(actor)end
             elseif context=='battle' then
                 if skill.target=='cell' then for _,cell in ipairs(self.adventure.battle:SkillCells(id)) do targets[#targets+1]=cell.index end
                 else for _,unit in ipairs(self.adventure.battle:Units()) do targets[#targets+1]=unit.Id end end
@@ -122,7 +125,7 @@ function Skills:Rows(actorId,context)
             local description=skill.description
             if skill.trajectory~='sight' then description=description..'\n'..require('Game.Battle.SkillTrajectory').Description(skill.trajectory) end
             rows[#rows+1]={id=id,name=skill.name,description=description,contexts=table.concat(labels,' + '),
-                target=context=='life' and skill.affectsContainers and 'container' or skill.target=='self' and 'self' or skill.target=='cell' and 'cell' or 'unit',available=available,reason=reason}
+                target=context=='life' and self.adventure.data.Phase=='map' and #targets>0 and 'self' or context=='life' and skill.affectsContainers and 'container' or skill.target=='self' and 'self' or skill.target=='cell' and 'cell' or 'unit',available=available,reason=reason}
         end
     end
     return rows

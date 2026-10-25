@@ -372,6 +372,7 @@ namespace ProjectY.Editor
             var title=Text("Title",r,"",13);Stretch(title.rectTransform,50,34,8,9);
             var detail=Text("Detail",r,"",11);Stretch(detail.rectTransform,50,5,8,35);detail.color=new Color(.56f,.65f,.59f);
             Bind(root,new List<LuaReference.Entry> {Ref("Button",button),Ref("Icon",icon),Ref("Title",title),Ref("Detail",detail),Ref("Selected",selected),Ref("Group",root.GetComponent<CanvasGroup>())});
+            LegendaryEquipmentUIAssets.BindRow(root);
         }
         private static void BuildPanel(GameObject root,EquipmentAssetCatalog catalog)
         {
@@ -402,6 +403,7 @@ namespace ProjectY.Editor
             var status=Text("Status",footer,"",12);Stretch(status.rectTransform,390,0,0,0);status.alignment=TextAnchor.MiddleLeft;refs.Add(Ref("Status",status));
             var view=root.AddComponent<EquipmentWorkbenchView>();view.Bind(new EquipmentWorkbenchView.Layout {Root=rect,Safe=safe,Inventory=inventory,Preview=preview,Details=details,Actors=actors,Footer=footer,Image=raw,Sockets=socketRects,Labels=root.GetComponentsInChildren<Text>(true),ActorGrid=grid,Equip=(RectTransform)equip.transform,Unequip=(RectTransform)unequip.transform,Status=status.rectTransform,Heading=heading.rectTransform,Close=closeRect},catalog);
             refs.Add(Ref("Workbench",view));Bind(root,refs);
+            LegendaryEquipmentUIAssets.BindPanel(root,"Title");
         }
     }
 }

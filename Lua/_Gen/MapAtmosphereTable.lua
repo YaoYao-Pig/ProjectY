@@ -1,0 +1,13 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAtmosphereTableRow
+---@field id number 配置ID
+---@field regionType 1|2|3|4|5|6|7|8|9|10|11|12|13 目标地貌
+---@field minPeakHeight number 峰顶最低海拔
+---@field minRelief number 最小相对高差
+---@field altitudeFraction number 相对山脚至峰顶的云带高度
+---@field spacing number 云团采样间距（格）
+---@field width number 云团宽（格半径）
+---@field height number 云带厚度（格半径）
+---@field opacity number 云团透明度
+---@field drift number 横向漂移幅度（格半径）
+return {["name"]="MapAtmosphereTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\233\133\141\231\189\174ID",["min"]=1},{["name"]="regionType",["type"]="enum",["description"]="\231\155\174\230\160\135\229\156\176\232\178\140",["enumRef"]="Map.E_MapRegion",["enumType"]="int",["values"]={1,2,3,4,5,6,7,8,9,10,11,12,13}},{["name"]="minPeakHeight",["type"]="float",["description"]="\229\179\176\233\161\182\230\156\128\228\189\142\230\181\183\230\139\148"},{["name"]="minRelief",["type"]="float",["description"]="\230\156\128\229\176\143\231\155\184\229\175\185\233\171\152\229\183\174",["min"]=0},{["name"]="altitudeFraction",["type"]="float",["description"]="\231\155\184\229\175\185\229\177\177\232\132\154\232\135\179\229\179\176\233\161\182\231\154\132\228\186\145\229\184\166\233\171\152\229\186\166",["min"]=0.01,["max"]=0.99},{["name"]="spacing",["type"]="int",["description"]="\228\186\145\229\155\162\233\135\135\230\160\183\233\151\180\232\183\157\239\188\136\230\160\188\239\188\137",["min"]=1},{["name"]="width",["type"]="float",["description"]="\228\186\145\229\155\162\229\174\189\239\188\136\230\160\188\229\141\138\229\190\132\239\188\137",["min"]=1},{["name"]="height",["type"]="float",["description"]="\228\186\145\229\184\166\229\142\154\229\186\166\239\188\136\230\160\188\229\141\138\229\190\132\239\188\137",["min"]=0.1},{["name"]="opacity",["type"]="float",["description"]="\228\186\145\229\155\162\233\128\143\230\152\142\229\186\166",["min"]=0,["max"]=1},{["name"]="drift",["type"]="float",["description"]="\230\168\170\229\144\145\230\188\130\231\167\187\229\185\133\229\186\166\239\188\136\230\160\188\229\141\138\229\190\132\239\188\137",["min"]=0}},["fingerprint"]="a93cadceed145c124ba686cc6155d1234aee87129f7f972f3b4a2220ef9d23b6"}

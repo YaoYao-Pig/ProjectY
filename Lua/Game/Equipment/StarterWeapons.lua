@@ -14,7 +14,8 @@ function Starter.Plan(recipe,data,party,rules,stats,loadouts)
         assert(#loadouts:Items(unitId)==0,'Recipe and character initial equipment overlap')
         assert(not data:Equipped(actor.Id) and not data:Offhand(actor.Id) and not data:Worn(actor.Id,'offhand'),'Starter hands must be empty')
         local itemId=recipe.equipWeaponIds[i];rules.weapons:Get(itemId)
-        local allowed,reason=rules:CanEquip(actor,itemId,stats);assert(allowed,reason)
+        -- Birth attributes may be below the requirement: starter grants keep the item,
+        -- while normal skill projection applies the existing missing-attribute penalties.
         local weapon
         for j=0,data.WeaponCount-1 do
             local candidate=data:GetWeaponAt(j)

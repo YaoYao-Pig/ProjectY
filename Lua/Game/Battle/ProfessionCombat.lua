@@ -148,6 +148,7 @@ function Rules:ConsumeEquipment(source,skill)
     else equipment:Consume(source,skill)end
 end
 function Rules:Commit(source,skill)
+    if self.battle.legendary then self.battle.legendary:Commit(source,skill)end
     local row=self.rows:Find(skill.id)
     if row and row.materialId>0 then self.battle.stats.equipment.data:ConsumeStack(row.materialId,row.materialCount)end
     for _,id in ipairs(skill.professionDiscounts or {})do if exists(source,id)then self.battle.gameEffects:Remove(source,id)end end
@@ -197,7 +198,10 @@ function Rules:ClearInterpose(actor)
         if oath and oath.SourceId==actor.Id then self.battle.gameEffects:Remove(target,oath.Id)end
     end
 end
-function Rules:OnDefeated(actor)self:ClearInterpose(actor)end
+function Rules:OnDefeated(actor)
+    self:ClearInterpose(actor)
+    if self.battle.legendary then self.battle.legendary:OnDefeated(actor)end
+end
 function Rules:OnCleansed(source,target,count)
     if source==target and count>0 and self.battle.data.Phase=='combat' and self:HasPassive(source,'grace') and state().Once(source,'grace_round',self.battle.data.Round)then source:SetGuard(4)end
 end
@@ -220,6 +224,7 @@ function Rules:BeforeHit(source,skill,target)
     local direct=false;for _,id in ipairs(skill.effectIds)do local effect=self.battle.effects:Get(id);if effect.kind=='damage' and effect.recipient=='target' and effect.duration=='instant' then direct=true end end
     context.weapon=direct and (skill.skillGroup=='weapon' or skill.skillGroup=='slash')
     context.exposed=self:Status(target,'exposed')
+    context.hadExposure=context.exposed~=nil
     if context.weapon then
         local opening=self:Status(source,'opening')
         if opening then
@@ -253,6 +258,7 @@ function Rules:BeforeHit(source,skill,target)
             if #context.sourceConsume>0 then context.bonus=row.bonusDamage end
         elseif row.mechanic=='finisher' and context.exposed then context.bonus=row.bonusDamage end
     end
+    if self.battle.legendary then self.battle.legendary:BeforeHit(context)end
     return context
 end
 function Rules:Damage(context,plan,amount,values)
@@ -268,13 +274,19 @@ function Rules:Damage(context,plan,amount,values)
     local fixed=math.max(0,context.bonus-math.max(0,values.defense-(context.defenseReduction or 0))-values.guard)
     local extra=fixed+math.max(0,improved-base)
     if context.curse then extra=extra+math.min(math.floor(base*self.byMechanic.curse_mark.amount/100),math.floor(context.target.MaxHP*.1))end
-    amount=base+math.min(math.floor(base*.5),extra)
+    extra=extra+math.floor(base*(context.legendaryBonus or 0)/100)
+    local applied=math.min(math.floor(base*.5),extra)
+    context.conditionalBudget=math.max(0,math.floor(base*.5)-applied)
+    amount=base+applied
     if immune then amount=0 end
     return amount
 end
 function Rules:Mitigate(target,amount,impact)
     local ward,status=self:Status(target,'ward')
-    if ward then amount=math.max(0,amount-status.amount);self.battle.gameEffects:Remove(target,ward.Id)end
+    local reduction=ward and status.amount or 0
+    if ward then self.battle.gameEffects:Remove(target,ward.Id)end
+    if self.battle.legendary then return self.battle.legendary:Mitigate(target,amount,impact,reduction)end
+    amount=math.max(0,amount-reduction)
     return amount
 end
 function Rules:AfterHit(context)
@@ -289,7 +301,7 @@ function Rules:AfterHit(context)
             end
         end
         if context.curse then self:RemoveInstances(target,{context.curse})end
-        self:RemoveInstances(target,context.consume)
+        context.legendaryConsumed=self:RemoveInstances(target,context.consume)
         local cleared=self:RemoveInstances(source,context.sourceConsume);self:OnCleansed(source,source,cleared)
         if source.HP>0 and row and row.mechanic=='distill' and #context.consume>0 and self.battle:IsHostile(source,target) and self.battle.data.Phase=='combat'
             and self:HasPassive(source,'recycle') and state().Once(source,'recycle_encounter',1)then self:ApplyStatus(source,source,'recycle_discount')end
@@ -342,6 +354,7 @@ function Rules:AfterHit(context)
     end
     if source.HP>0 and skill.action=='main' and not skill.professionReaction and context.hadDebuff and self.battle:IsHostile(source,target) and self.battle.data.Phase=='combat'
         and self:HasPassive(source,'reply') and state().Once(source,'reply_round',self.battle.data.Round)then self:ApplyStatus(source,source,'resonance',true)end
+    if self.battle.legendary then self.battle.legendary:AfterHit(context)end
 end
 function Rules:CanStep(actor,cell,occupied,forced)
     if not cell or not forced and self.battle.stats.buffs:Skipping(actor)then return false end
@@ -395,7 +408,8 @@ function Rules:Move(actor,cell)
     state().Move(actor,cell.q,cell.r);self:OnMoved(actor)
     self.battle:Emit('moved',string.format(L.ProfessionSkillMove,self.battle.stats:Template(actor).name),actor.Id)
 end
-function Rules:OnMoved(actor)
+function Rules:OnMoved(actor,tracked)
+    if self.battle.legendary and not tracked then self.battle.legendary:UntrackedMovement(actor)end
     for _,cell in ipairs(self.battle.stats.animals:Cells(actor,self.battle.board))do
         local trap=state().Trap(self.battle.data,cell.q,cell.r)
         if trap then

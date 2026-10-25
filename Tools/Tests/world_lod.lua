@@ -15,7 +15,7 @@ local lodRule={nearRadius=8,mediumRadius=24,hysteresis=2,mediumMinutes=10,farMin
 local settings={roamRadius=10,siteSearchRadius=30,minimumActionScore=.04,reserveFraction=.4,thinkMinutes=30,reserveCapacity=1000,
     retreatMinutes=360,conflictMinimumMinutes=45,conflictMaximumMinutes=150,conflictTickMinutes=10,ruinMinutes=1440,attrition=.09,retreatHealth=.25}
 local function unit(hp)
-    return {HP=hp or 100,MaxHP=100,Damage=function(self,n)self.HP=math.max(0,self.HP-n)end,
+    return {HP=hp or 100,MaxHP=100,AnimalOwnerId=0,Damage=function(self,n)self.HP=math.max(0,self.HP-n)end,
         Restore=function(self)self.HP=self.MaxHP end,Deploy=function()error('Resolved conflict must never redeploy actors')end}
 end
 local function party(id,q,role)

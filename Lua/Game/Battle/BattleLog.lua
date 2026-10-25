@@ -17,6 +17,12 @@ function Log.Format(kind,message,source,target,amount,details)
     local prefix=(who and who..' ' or '')..(d.actionName and action(d.actionName)..' ' or '')..(whom and '→ '..whom..'  ' or '')
     if kind=='check' then
         local chance=assert(d.chance,'Check log needs its actual threshold')
+        if d.check then
+            local checks=require('Game.Presentation.DiceChecks')
+            local text=prefix..paint(assert(d.checkName),color.check)..note(string.format(LuaLanguage.AdvantageLogDetail,
+                checks.SourceText(d.check.advantageSources),d.check.threshold,d.check.effectiveChance))
+            return text..value(checks.Reading(d.check))..'  '..paint(d.passed and d.successLabel or d.failureLabel,d.passed and color.good or color.bad)
+        end
         if d.rollComparison=='greater' then
             local text=prefix..paint(assert(d.checkName),color.check)..note(string.format(LuaLanguage.BattleCheckGreater,d.threshold,chance))
             if d.roll~=nil then text=text..value(string.format(LuaLanguage.BattleCheckRoll,d.roll)) end

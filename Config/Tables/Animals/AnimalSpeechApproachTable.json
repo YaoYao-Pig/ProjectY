@@ -1,0 +1,97 @@
+{
+  "version": 1,
+  "name": "AnimalSpeechApproachTable",
+  "description": "动物交谈的沟通方式；一次沟通结果全队共享，成功赋予下一次驯服优势（判定两次取最高值），失败保留概率惩罚；尝试后消耗且不叠加。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定沟通方式 ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "沟通方式名称"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "沟通方式说明"
+    },
+    {
+      "name": "successText",
+      "type": "text",
+      "description": "检定成功反馈"
+    },
+    {
+      "name": "failureText",
+      "type": "text",
+      "description": "检定失败反馈"
+    },
+    {
+      "name": "chanceBonus",
+      "type": "int",
+      "description": "沟通成功率修正"
+    },
+    {
+      "name": "hostileBonus",
+      "type": "int",
+      "description": "对敌对动物的额外沟通成功率修正"
+    },
+    {
+      "name": "friendlyBonus",
+      "type": "int",
+      "description": "对友好动物的额外沟通成功率修正"
+    },
+    {
+      "name": "successModifier",
+      "type": "int",
+      "description": "沟通成功的持久结果标记；正值赋予下一次驯服优势，不再增加基础概率"
+    },
+    {
+      "name": "failureModifier",
+      "type": "int",
+      "description": "沟通失败后的下一次驯服概率修正"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "温言安抚",
+      "description": "放缓动作，安抚它的警惕。沟通成功率提高10个百分点；成功使下一次驯服拥有优势（判定两次取最高值），失败使下一次驯服率降低10个百分点。",
+      "successText": "它放下了些许戒备，愿意听你继续说下去。",
+      "failureText": "它误解了你的安抚，变得更加警惕。",
+      "chanceBonus": 10,
+      "hostileBonus": 0,
+      "friendlyBonus": 0,
+      "successModifier": 15,
+      "failureModifier": -10
+    },
+    {
+      "id": 2,
+      "name": "许诺伙伴",
+      "description": "许诺并肩同行、彼此照料。对友好动物的沟通成功率提高10个百分点；成功使下一次驯服拥有优势（判定两次取最高值），失败使下一次驯服率降低15个百分点。",
+      "successText": "它认真听完了你的承诺，流露出同行的意愿。",
+      "failureText": "它并不相信这份承诺，收起了原本的好奇。",
+      "chanceBonus": 0,
+      "hostileBonus": 0,
+      "friendlyBonus": 10,
+      "successModifier": 25,
+      "failureModifier": -15
+    },
+    {
+      "id": 3,
+      "name": "展示威严",
+      "description": "以坚定的姿态争取它的认可。沟通成功率降低10个百分点，对敌对动物额外提高10个百分点；成功使下一次驯服拥有优势（判定两次取最高值），失败使下一次驯服率降低25个百分点。",
+      "successText": "它认可了你的胆量，暂时收敛了抗拒。",
+      "failureText": "它将你的姿态视为挑衅，发出了愤怒的警告。",
+      "chanceBonus": -10,
+      "hostileBonus": 10,
+      "friendlyBonus": 0,
+      "successModifier": 35,
+      "failureModifier": -25
+    }
+  ]
+}

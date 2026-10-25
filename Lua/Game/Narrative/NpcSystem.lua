@@ -117,8 +117,6 @@ function Npcs:PrepareRecruit(id)
     local actor = story.adventure.data:PrepareRecruitActor(actorId,definition.actorTemplateId)
     story.adventure.characterAppearances:Party(actor,story.adventure.data.Seed)
     story.adventure.growth:PrepareActor(actor)
-    local allowed,reason=story.adventure.equipment.initialLoadouts:Validate(actor)
-    if not allowed then return nil,reason end
     actor:SetMaxHP(story.adventure.battle.stats:MaximumHP(actor)); actor:Restore()
     return {npcId=id,actorId=actorId,actor=actor}
 end

@@ -10,6 +10,9 @@ namespace ProjectY.Editor
 {
     public static class WorldFogHudAssets
     {
+        [MenuItem("Project Y/UI/同步大地图地点标签开关")]
+        public static void SyncSiteTags() => Sync();
+
         [MenuItem("Project Y/UI/同步大地图时间与小队定位按钮")]
         public static void Sync()
         {
@@ -32,8 +35,9 @@ namespace ProjectY.Editor
                     Button("TimePause","暂停",clock,70,62,bindings);
                     Button("TimeSpeed","速度 1×",clock,140,104,bindings);
                     Button("Follow","回到小队",controls,252,104,bindings);
-                    reference.SetEditorBindings(bindings.ToArray());
                 }
+                BuildSiteTags(reference,bindings);
+                reference.SetEditorBindings(bindings.ToArray());
                 var labels=fields.FindProperty("layout.Labels");var texts=root.GetComponentsInChildren<Text>(true);
                 labels.arraySize=texts.Length;
                 for(int i=0;i<texts.Length;i++)labels.GetArrayElementAtIndex(i).objectReferenceValue=texts[i];
@@ -41,6 +45,26 @@ namespace ProjectY.Editor
                 PrefabUtility.SaveAsPrefabAsset(root,entry.PrefabPath);LuaViewHints.Export(reference,entry.ViewType);
             }
             finally{PrefabUtility.UnloadPrefabContents(root);}
+        }
+        private static void BuildSiteTags(LuaReference reference,List<LuaReference.Entry> bindings)
+        {
+            if(bindings.Any(item=>item.Key=="SiteTags"))return;
+            var follow=(Button)bindings.Single(item=>item.Key=="Follow").Target;
+            var copy=UnityEngine.Object.Instantiate(follow.gameObject,follow.transform.parent,false);
+            copy.name="SiteTags";
+            var rect=(RectTransform)copy.transform;
+            rect.anchoredPosition=((RectTransform)follow.transform).anchoredPosition+new Vector2(0,-50);
+            var button=copy.GetComponent<Button>();var image=button.targetGraphic;var colors=button.colors;
+            UnityEngine.Object.DestroyImmediate(button);
+            var toggle=copy.AddComponent<Toggle>();toggle.targetGraphic=image;toggle.colors=colors;
+            toggle.navigation=new Navigation {mode=Navigation.Mode.None};toggle.isOn=true;
+            var label=copy.GetComponentInChildren<Text>(true);
+            label.text=LuaLanguage.Get("UIMainHudHideSiteTags");
+            bindings.Add(new LuaReference.Entry("SiteTags",toggle));
+            bindings.Add(new LuaReference.Entry("SiteTagsText",label));
+            var localized=reference.GetEditorLocalizations().ToList();
+            localized.Add(new LuaReference.LocalizedText(label,"UIMainHudHideSiteTags"));
+            reference.SetEditorLocalizations(localized.ToArray());
         }
         private static RectTransform Rect(string name,Transform parent,float x,float y,float width,float height)
         {

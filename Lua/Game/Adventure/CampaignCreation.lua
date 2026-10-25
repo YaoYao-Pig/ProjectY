@@ -27,7 +27,7 @@ function Creation.Commit(job)
     local adventure = job.adventure
     local reason = Creation.Check(adventure); assert(not reason, reason)
     job.committed = true
-    adventure:Start(job.seed, job.recipeId, job.size, job.world)
+    adventure:Start(job.seed, job.recipeId, job.size, job.world,job.profile.initialProfessionId)
     require('Game.Presentation.VisualEffects').Clear(adventure.battle)
     adventure.narrative.data:SetValue('flag:campaign_start', job.profile.id)
     CS.ProjectY.Data.ExpeditionPersistence.ResetProfile(adventure.player, job.profile.coins)

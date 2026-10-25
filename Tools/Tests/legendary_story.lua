@@ -7,6 +7,30 @@ config:OnInit({services={ReadConfig=function(_,name)
 end}})
 local Rules=require('Game.Narrative.NarrativeRules')
 local Actions=require('Game.Narrative.NarrativeActions')
+local speechState={}
+function speechState.Target(data)return data.speechAnimal end
+function speechState.Context(data)return data.speechContext end
+function speechState.PartyId(data)return data.speechParty or 0 end
+function speechState.Understood(data)return data.speechUnderstood==true end
+function speechState.Bind(data,animal,party,context,understood)
+    assert(data.DialogueOpen and not data.speechAnimal)
+    data.speechAnimal=animal;data.speechParty=party;data.speechContext=context;data.speechUnderstood=understood
+    data.DialogueVersion=data.DialogueVersion+1
+end
+function speechState.Understand(data,actorId)
+    assert(data.DialogueOpen and data.speechAnimal and not data.speechUnderstood)
+    data.speechUnderstood=true;data.DialogueActorId=actorId;data.DialogueVersion=data.DialogueVersion+1
+end
+function speechState.Pending(animal)return animal.speechPending==true end
+function speechState.Modifier(animal)return animal.speechModifier or 0 end
+CS={ProjectY={Data={AnimalSpeechState=speechState,AnimalCompanionState={Bound=function(actor)return actor.MountedAnimal end},BodyHealth={
+    Revision=function()return 0 end,MaximumHP=function()return 10 end,HP=function()return 10 end,
+    Damage=function()return 0 end,Permanent=function()return false end}}}}
+CS.ProjectY.Data.EquipmentAffixData={Of=function()return 1 end}
+CS.ProjectY.Data.EquipmentConditionData={Of=function()return {Broken=false,Efficiency=1}end}
+CS.ProjectY.Data.ProfessionCombatState={
+    Mark=function(actor,key)return actor.marks and actor.marks[key] or 0 end,
+    SetMark=function(actor,key,value)actor.marks=actor.marks or {};actor.marks[key]=value end}
 local function copy(values)local result={};for k,v in pairs(values)do result[k]=v end;return result end
 local function fixture()
     local data={Revision=0,Minutes=600,DialogueOpen=false,DialogueVersion=0,values={},progress={},kills={}}
@@ -21,13 +45,17 @@ local function fixture()
     function data:BeginDialogue(id,npc)local old=self.DialogueOpen;assert(not old);self.DialogueOpen=true;self.DialogueId=id;self.DialogueNpcId=npc;self.DialogueVersion=self.DialogueVersion+1 end
     function data:EnterDialogueNode(id)self.DialogueNodeId=id;self.DialogueVersion=self.DialogueVersion+1 end
     function data:AddDialogueLine()end
-    function data:CloseDialogue()self.DialogueOpen=false;self.DialogueVersion=self.DialogueVersion+1 end
+    function data:CloseDialogue()self.DialogueOpen=false;self.DialogueVersion=self.DialogueVersion+1;self.speechAnimal=nil;self.speechParty=nil;self.speechContext=nil;self.speechUnderstood=false end
     local actors={}
     for id=1,3 do
         local growth={Initialized=true,Experience=0,Level=1,AttributePoints=0,TalentPoints=0,opportunities=0,total=0}
         function growth:AddExperience(amount)self.Experience=self.Experience+amount;self.total=self.total+amount end
         function growth:AdvanceLevel(cost,attributes,talents,learn)self.Experience=self.Experience-cost;self.Level=self.Level+1;self.AttributePoints=self.AttributePoints+attributes;self.TalentPoints=self.TalentPoints+talents;if learn then self.opportunities=self.opportunities+1 end end
-        actors[id]={Id=id,TemplateId=id,HP=10,Growth=growth,attributes={}}
+        growth.TalentCount=0;growth.SkillCount=id==3 and 1 or 0
+        function growth:GetAttribute()return 0 end
+        function growth:GetSkillAt(index)assert(index==0);return 206 end
+        actors[id]={Id=id,TemplateId=id,Team=1,HP=10,Growth=growth,attributes={},HasInitialAttributes=true,TraitCount=0,Effects={Count=0}}
+        actors[id].GetInitialAttribute=function(self,name)return self.attributes[name] or 0 end
     end
     local inventory={Revision=0,Grid={Count=0},items={}}
     function inventory:CountItem(id)return self.items[id] or 0 end
@@ -67,6 +95,20 @@ end
 local function worldFixture()
     local f=fixture();local story,data=f.story,f.data;local adventure=story.adventure
     adventure.config=config;adventure.narrative=story;adventure.data.Phase='map'
+    local battle=require('Game.Battle.BattleSystem')()
+    battle.stats=require('Game.Battle.CombatStats')(config)
+    battle.skills=config:GetTable('CombatSkillTable');battle.effects=config:GetTable('CombatEffectTable')
+    local catalyst={Id=1,ItemId=battle.stats.equipment:TemplateLoadout(3),GetRune=function()return 0 end}
+    f.inventory.WearableCount=0
+    function f.inventory:Equipped(actorId)return actorId==3 and catalyst or nil end
+    function f.inventory:Offhand()return nil end
+    function f.inventory:Worn()return nil end
+    battle.stats.equipment.data=f.inventory
+    battle.professions=require('Game.Battle.ProfessionCombat').New(config,battle)
+    battle.beasts=require('Game.Battle.ProfessionBeasts').New(config,battle)
+    battle.legendary=require('Game.Battle.LegendaryEquipment').New(config,battle)
+    adventure.battle=battle
+    adventure.characterSkills=require('Game.Adventure.CharacterSkills').New(adventure)
     adventure.events={LivingParty=function()return f.actors end}
     adventure.travel={data={SetPaused=function(_,value)f.paused=value end}}
     local parties=setmetatable({adventure=adventure,definitions=config:GetTable('WorldPartyTable'),rule=config:GetTable('WorldPartyRuleTable'):Get(1)},require('Game.Adventure.WorldParties'))
@@ -78,11 +120,15 @@ local function worldFixture()
     function world:Close()self.IsOpen=false;self.ContactId=0 end
     function world:ReleaseParty(id,defeated,safe)local party=assert(self:Find(id));party.Defeated=defeated;party.SafeUntil=safe end
     for _,legend in ipairs(config:GetTable('LegendaryEncounterTable'):All())do
-        world.rows[#world.rows+1]={Id=1000+legend.id,DefinitionId=legend.id,FactionId=legend.id,Defeated=false,BattleSiteId=0,SafeUntil=0,Role='wildlife',Travel={Q=20,R=0}}
+        local template=config:GetTable('NpcTable'):Get(legend.npcId).actorTemplateId
+        local species=battle.stats.animals.byUnit[template]
+        local member={Id=2000+legend.id,TemplateId=template,HP=100,MaxHP=100,Team=2,AnimalOwnerId=0,TameRetryTurns=0,AnimalSpeciesId=species and species.id or 0}
+        world.rows[#world.rows+1]={Id=1000+legend.id,DefinitionId=legend.id,FactionId=legend.id,Defeated=false,BattleSiteId=0,SafeUntil=0,Role='wildlife',Travel={Q=20,R=0},MemberCount=1,GetMemberAt=function(_,index)assert(index==0);return member end}
     end
     world.Count=#world.rows;parties.data=world;adventure.parties=parties
     parties.Near=function(_,party)return f.nearId==party.Id end
     parties.legends=require('Game.Adventure.LegendaryEncounters').New(parties)
+    adventure.animalSpeech=require('Game.Animals.AnimalSpeech').New(story)
     local factionRules=require('Game.Adventure.FactionRules').New(config)
     adventure.factions={Relation=function(_,a,b)return factionRules:Relation(a,b,nil,data:GetValue('reputation:'..b))end,
         data={FindConflict=function()end},conflicts={Attack=function(_,party)
@@ -90,14 +136,28 @@ local function worldFixture()
         end}}
     local begin=data.BeginDialogue
     function data:BeginDialogue(id,npc,localId,actor)begin(self,id,npc);self.DialogueLocalNpcId=localId;self.DialogueActorId=actor end
-    function f:open(definition)
+    function f:translate()
+        assert(adventure.animalSpeech:Active() and not adventure.animalSpeech:HasStory())
+        local ok,reason=story.dialogue:Choose(-100000000-self.actors[3].Id,data.DialogueVersion)
+        assert(ok,tostring(reason));assert(adventure.animalSpeech:HasStory())
+    end
+    function f:open(definition,untranslated)
         self.nearId=1000+definition;world:Target(self.nearId)
         assert(parties:CheckContact() and data.DialogueOpen and not world.IsOpen and self.paused)
+        if adventure.animalSpeech:Active() and not untranslated then self:translate()end
     end
     return f,parties
 end
-local f,p=worldFixture();f:open(11)
+local f,p=worldFixture();f:open(11,true)
 assert(not f.attacks,'Hostile legend must talk before fighting')
+for _,row in ipairs(f.story.dialogue:Choices())do assert(row.id<0,'Untranslated animal dialogue cannot expose narrative choices')end
+local ordinary=f.story.rules.nodes:Get(f.data.DialogueNodeId).choiceIds[1]
+local allowed,reason=f.story.dialogue:Choose(ordinary,f.data.DialogueVersion)
+assert(not allowed and reason==require('Language').AnimalSpeechNotUnderstood)
+f:translate()
+local recruits=require('Game.Narrative.NpcSystem').New(f.story)
+local recruitOk,recruitError=pcall(recruits.PrepareRecruit,recruits,401)
+assert(not recruitOk and tostring(recruitError):find('NPC cannot join the party',1,true),'Generic animal identity cannot use human recruitment')
 local choices=f.story.dialogue:Choices();local locked
 for _,row in ipairs(choices)do if row.text:find('[动物亲和',1,true)then locked=row end end
 assert(locked and not locked.available)

@@ -1,0 +1,191 @@
+{
+  "version": 1,
+  "name": "MapAreaHighMountainTable",
+  "description": "真实高差高山；多峰脊线、盘山步道、积雪及不可通行的高山水盆。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "maxWalkRise",
+      "type": "float",
+      "description": "相邻可走地面最大中心高差（米）",
+      "min": 0.1,
+      "max": 2
+    },
+    {
+      "name": "trailRadius",
+      "type": "int",
+      "description": "连续步道的六角净空半径",
+      "min": 1,
+      "max": 3
+    },
+    {
+      "name": "minWalkableCells",
+      "type": "int",
+      "description": "入口连通探索地格下限",
+      "min": 50
+    },
+    {
+      "name": "rockSurfaceId",
+      "type": "int",
+      "description": "陡壁岩石材质",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "trailSurfaceId",
+      "type": "int",
+      "description": "可行走步道材质",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "summitHeight",
+      "type": "float",
+      "description": "盘山步道顶端相对入口的高差（米）",
+      "min": 35
+    },
+    {
+      "name": "ridgeRelief",
+      "type": "float",
+      "description": "侧峰与碎脊附加高差（米）",
+      "min": 10
+    },
+    {
+      "name": "switchbacks",
+      "type": "int",
+      "description": "盘山主路线折返次数",
+      "min": 4,
+      "max": 7
+    },
+    {
+      "name": "lakeRadius",
+      "type": "float",
+      "description": "高山湖盆六角尺度",
+      "min": 2,
+      "max": 5
+    },
+    {
+      "name": "waterSurfaceId",
+      "type": "int",
+      "description": "湖面材质",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "snowSurfaceId",
+      "type": "int",
+      "description": "高处积雪材质",
+      "ref": "MapAreaSurfaceTable"
+    },
+    {
+      "name": "rockAssetId",
+      "type": "int",
+      "description": "碎裂山岩模型",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "pineAssetId",
+      "type": "int",
+      "description": "低海拔普通松树",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "landmarkName",
+      "type": "text",
+      "description": "盘山台地名称"
+    },
+    {
+      "name": "ascentHeight",
+      "type": "float",
+      "description": "v2入口到最高峰的真实高差（米）",
+      "default": 48,
+      "min": 35
+    },
+    {
+      "name": "ascentPlatforms",
+      "type": "int",
+      "description": "v2主路中间转向平台数，不含入口与山顶",
+      "default": 4,
+      "min": 4,
+      "max": 5
+    },
+    {
+      "name": "ascentPlatformRadius",
+      "type": "int",
+      "description": "v2转向平台的净空半径（格）",
+      "default": 2,
+      "min": 2,
+      "max": 3
+    },
+    {
+      "name": "ascentTrailRadius",
+      "type": "int",
+      "description": "v2步道净空半径（格），固定三格宽",
+      "default": 1,
+      "min": 1,
+      "max": 1
+    },
+    {
+      "name": "ascentMaxGrade",
+      "type": "float",
+      "description": "v2步道最大上升米数/水平米数",
+      "default": 0.32,
+      "min": 0.1,
+      "max": 0.4
+    },
+    {
+      "name": "ascentShoulderCells",
+      "type": "float",
+      "description": "v2道路外侧地形过渡宽度（格）",
+      "default": 4,
+      "min": 3,
+      "max": 8
+    },
+    {
+      "name": "ascentDetailHeight",
+      "type": "float",
+      "description": "v2远离主路的地表细节振幅（米）",
+      "default": 0.85,
+      "min": 0,
+      "max": 2
+    },
+    {
+      "name": "ascentLakeRadius",
+      "type": "float",
+      "description": "v2第二级平台外侧湖盆半径（格）",
+      "default": 2.6,
+      "min": 2,
+      "max": 3.5
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "maxWalkRise": 1.35,
+      "trailRadius": 1,
+      "minWalkableCells": 250,
+      "rockSurfaceId": 13,
+      "trailSurfaceId": 3,
+      "summitHeight": 46,
+      "ridgeRelief": 24,
+      "switchbacks": 5,
+      "lakeRadius": 3.5,
+      "waterSurfaceId": 40,
+      "snowSurfaceId": 12,
+      "rockAssetId": 1100,
+      "pineAssetId": 202,
+      "landmarkName": "高山台地",
+      "ascentHeight": 48,
+      "ascentPlatforms": 4,
+      "ascentPlatformRadius": 2,
+      "ascentTrailRadius": 1,
+      "ascentMaxGrade": 0.32,
+      "ascentShoulderCells": 4,
+      "ascentDetailHeight": 0.85,
+      "ascentLakeRadius": 2.6
+    }
+  ]
+}

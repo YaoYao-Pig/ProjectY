@@ -9,5 +9,6 @@
 ---@field Selected CS.UnityEngine.RectTransform
 ---@field Group CS.UnityEngine.CanvasGroup
 ---@field Layout CS.UnityEngine.Component
+---@field RarityFrame CS.ProjectY.UI.EquipmentRarityFrame
 local View = {}
 return View

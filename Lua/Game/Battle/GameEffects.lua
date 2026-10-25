@@ -117,6 +117,7 @@ function Effects:Execute(row,target,amount,sourceId,sourceName,label,source,atta
         amount=assert(self.stats.equipment:Loaded(self.stats.equipment:Weapon(assert(source))),'Reload has no loaded magazine').Rounds
     else error('Unsupported periodic execution: '..row.kind) end
     impact.hpAfter=health.HP;impact.maxHP=health.MaxHP
+    if self.legendary then self.legendary:Resolved(source,target,row,amount,impact,skill,periodic)end
     local verb=({damage='伤害',heal='治疗',guard='防御',reload='装入子弹',remove_buffs='清除状态'})[row.kind]
     self:Notify(row.kind,sourceName..' · '..(label~='' and label or verb)..' → '..self.stats:Template(target).name..'（'..verb..' '..amount..'）',sourceId,target,amount,attackHit,impact)
     if impact.injury then
@@ -187,6 +188,7 @@ function Effects:Remove(target,id)
     assert(instance,'Unknown active effect instance: '..id)
     local row=self:Definition(instance.EffectId)
     target.Effects:Remove(id)
+    if self.legendary then self.legendary:OnStatusRemoved(target,instance)end
     if row.kind=='modifier' or row.kind=='buff' and #row.modifierEffectIds>0 then target:SetMaxHP(self.stats:MaximumHP(target)) end
     self:Notify('effect_removed',self.stats:Template(target).name..' · '..row.name..' 结束',instance.SourceId,target,0,false,
         {statusName=row.name,color=row.color,sourceName=instance.SourceName})

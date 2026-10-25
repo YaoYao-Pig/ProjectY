@@ -1,0 +1,517 @@
+{
+  "version": 1,
+  "name": "LegendaryEquipmentTable",
+  "description": "具名传奇装备：固定身份、战斗机制与每世界唯一投放；任务绑定预留。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "ref": "EquipmentItemTable",
+      "description": "具名传奇装备物品身份"
+    },
+    {
+      "name": "kind",
+      "type": "string",
+      "description": "稳定战斗机制标识；不使用翻译名称分支"
+    },
+    {
+      "name": "professionId",
+      "type": "int",
+      "default": 0,
+      "description": "设计归属职业；0为通用装备，不限制实际装备资格"
+    },
+    {
+      "name": "skillIds",
+      "type": "int[]",
+      "ref": "CombatSkillTable",
+      "description": "装备在有效主手或副手盾位提供的传奇技能"
+    },
+    {
+      "name": "effectIds",
+      "type": "int[]",
+      "ref": "CombatEffectTable",
+      "description": "机制使用的有序状态动作；顺序见传奇规则"
+    },
+    {
+      "name": "values",
+      "type": "float[]",
+      "description": "机制参数；顺序见LegendaryEquipment规则与制作清单"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "固有机制、主动能力与限制"
+    },
+    {
+      "name": "lore",
+      "type": "text",
+      "description": "物品背景短句；不是任务定义"
+    },
+    {
+      "name": "color",
+      "type": "string",
+      "default": "#F0C56F",
+      "description": "具名传奇显示色，与普通品质词缀独立"
+    },
+    {
+      "name": "fixedAffixId",
+      "type": "int",
+      "ref": "EquipmentAffixTable",
+      "default": 1,
+      "description": "固定实体品质；不叠加随机传奇词缀"
+    },
+    {
+      "name": "acquisitionKind",
+      "type": "enum",
+      "values": [
+        "reserved",
+        "actor",
+        "dungeon"
+      ],
+      "description": "预留任务、真实敌装或副本固定容器"
+    },
+    {
+      "name": "sourceUnitId",
+      "type": "int",
+      "default": 0,
+      "description": "actor来源角色模板；其他类型为0"
+    },
+    {
+      "name": "sourceAreaId",
+      "type": "int",
+      "default": 0,
+      "description": "dungeon首选地图模板；其他类型为0"
+    },
+    {
+      "name": "fallbackAreaIds",
+      "type": "int[]",
+      "default": [],
+      "description": "世界不存在首选模板时的顺序备用模板"
+    },
+    {
+      "name": "sourceLootTableId",
+      "type": "int",
+      "default": 0,
+      "description": "副本固定容器表；预留任务为0"
+    },
+    {
+      "name": "acquisitionDescription",
+      "type": "text",
+      "default": "",
+      "description": "已接入的获取说明；任务明确显示预留"
+    }
+  ],
+  "rows": [
+    {
+      "id": 9001,
+      "kind": "bulwark",
+      "professionId": 1,
+      "skillIds": [
+        2201
+      ],
+      "effectIds": [],
+      "values": [
+        2,
+        4
+      ],
+      "description": "孤身成阵：邻接至少两名敌人时，每轮首个本武器主要命中使护卫至少为4。破阵斩造成125%伤害并尝试推远一格。",
+      "lore": "他们没有留下城门，只留下了最后抵住城门的东西。",
+      "color": "#F0C56F",
+      "fixedAffixId": 1,
+      "acquisitionKind": "actor",
+      "sourceUnitId": 705,
+      "sourceAreaId": 0,
+      "sourceLootTableId": 0,
+      "fallbackAreaIds": [],
+      "acquisitionDescription": "由叛誓剑士·维兰持有，可在战斗中缴械或击败后拾取原武器。"
+    },
+    {
+      "id": 9002,
+      "kind": "hunt",
+      "professionId": 2,
+      "skillIds": [
+        2202
+      ],
+      "effectIds": [],
+      "values": [
+        2,
+        15,
+        2
+      ],
+      "description": "行猎：本回合普通移动至少两格后，首次主要弓击命中提高15个百分点。留踪箭射程2至6格，射击后后撤最多两格。",
+      "lore": "风换了方向，她也换了一条归路。",
+      "color": "#F0C56F",
+      "fixedAffixId": 1,
+      "acquisitionKind": "dungeon",
+      "sourceUnitId": 0,
+      "sourceAreaId": 70,
+      "sourceLootTableId": 9102,
+      "fallbackAreaIds": [
+        20,
+        1,
+        50,
+        40
+      ],
+      "acquisitionDescription": "在云脊高山探索封存箱；每个世界仅有一处，缺少此地貌时由实际存在的备用副本承接。"
+    },
+    {
+      "id": 9003,
+      "kind": "theorem",
+      "professionId": 3,
+      "skillIds": [
+        2203,
+        2223
+      ],
+      "effectIds": [
+        23001
+      ],
+      "values": [
+        3,
+        15
+      ],
+      "description": "异相演算：成功主要伤害法术的类型发生变化时积累折光，最多三层。验算终章消耗全部折光，每层增加15%伤害。",
+      "lore": "下一位，请继续。",
+      "color": "#F0C56F",
+      "fixedAffixId": 1,
+      "acquisitionKind": "dungeon",
+      "sourceUnitId": 0,
+      "sourceAreaId": 1,
+      "sourceLootTableId": 9103,
+      "fallbackAreaIds": [
+        50,
+        40,
+        20
+      ],
+      "acquisitionDescription": "在古代地下迷宫探索封存箱；每个世界仅有一处，缺少此地貌时由实际存在的备用副本承接。"
+    },
+    {
+      "id": 9004,
+      "kind": "carpenter",
+      "professionId": 4,
+      "skillIds": [
+        2204
+      ],
+      "effectIds": [],
+      "values": [
+        50
+      ],
+      "description": "知其接缝：对合法可破坏工事与障碍的结构伤害增加50%。活榫迁筑可将两格内本人建造的栅栏或木墙平移一格，保留耐久与材料记录。",
+      "lore": "会砌墙的人很多，知道哪面墙该挪的人很少。",
+      "color": "#F0C56F",
+      "fixedAffixId": 1,
+      "acquisitionKind": "dungeon",
+      "sourceUnitId": 0,
+      "sourceAreaId": 50,
+      "sourceLootTableId": 9104,
+      "fallbackAreaIds": [
+        1,
+        40,
+        20
+      ],
+      "acquisitionDescription": "在废弃矿井地牢探索封存箱；每个世界仅有一处，缺少此地貌时由实际存在的备用副本承接。"
+    },
+    {
+      "id": 9005,
+      "kind": "oath",
+      "professionId": 5,
+      "skillIds": [
+        2205
+      ],
+      "effectIds": [
+        23002
+      ],
+      "values": [
+        20,
+        4
+      ],
+      "description": "誓有回声：承誓实际代受生命伤害后，下次本剑主要命中伤害增加20%，每轮一次。守门誓要求盾牌，保护相邻友军并使自身护卫至少为4。",
+      "lore": "誓言不因说出它的人倒下而结束。",
+      "color": "#F0C56F",
+      "fixedAffixId": 1,
+      "acquisitionKind": "reserved",
+      "sourceUnitId": 0,
+      "sourceAreaId": 0,
+      "sourceLootTableId": 0,
+      "fallbackAreaIds": [],
+      "acquisitionDescription": "特殊任务获取；任务与奖励绑定预留。"
+    },
+    {
+      "id": 9006,
+      "kind": "distill",
+      "professionId": 6,
+      "skillIds": [
+        2206,
+        2226
+      ],
+      "effectIds": [
+        23003,
+        23004
+      ],
+      "values": [
+        2
+      ],
+      "description": "留一滴：本人为造成伤害而消耗敌人燃烧或中毒后保留一份残样，每场最多两次。回注消耗对应残样重施两回合燃烧或一层中毒，不返还试剂。",
+      "lore": "别把所有东西都倒进去。",
+      "color": "#F0C56F",
+      "fixedAffixId": 1,
+      "acquisitionKind": "dungeon",
+      "sourceUnitId": 0,
+      "sourceAreaId": 40,
+      "sourceLootTableId": 9106,
+      "fallbackAreaIds": [
+        50,
+        1,
+        20
+      ],
+      "acquisitionDescription": "在暮潮号沉船遗址探索封存箱；每个世界仅有一处，缺少此地貌时由实际存在的备用副本承接。"
+    },
+    {
+      "id": 9007,
+      "kind": "chorus",
+      "professionId": 7,
+      "skillIds": [
+        2207
+      ],
+      "effectIds": [
+        23005
+      ],
+      "values": [
+        2
+      ],
+      "description": "返场：本人使用安可或破音实际消费余音后积累一层返场，每轮一次、最多两层。众人接唱消耗两层，为至多两名友方各赋一层余音。",
+      "lore": "最后一节，从来不是由一个人唱完的。",
+      "color": "#F0C56F",
+      "fixedAffixId": 1,
+      "acquisitionKind": "reserved",
+      "sourceUnitId": 0,
+      "sourceAreaId": 0,
+      "sourceLootTableId": 0,
+      "fallbackAreaIds": [],
+      "acquisitionDescription": "特殊任务获取；任务与奖励绑定预留。"
+    },
+    {
+      "id": 9008,
+      "kind": "dawn",
+      "professionId": 8,
+      "skillIds": [
+        2208
+      ],
+      "effectIds": [],
+      "values": [
+        50,
+        6
+      ],
+      "description": "施恩成壁：每轮首次主动治疗其他友军后，以实际治疗总量的50%提升自身护卫，向下取整、上限6。交还黎明消耗自身全部虚弱，治疗至多两名存活伤者。",
+      "lore": "每一道金色裂缝，都记着一位等到天亮的人。",
+      "color": "#F0C56F",
+      "fixedAffixId": 1,
+      "acquisitionKind": "reserved",
+      "sourceUnitId": 0,
+      "sourceAreaId": 0,
+      "sourceLootTableId": 0,
+      "fallbackAreaIds": [],
+      "acquisitionDescription": "特殊任务获取；任务与奖励绑定预留。"
+    },
+    {
+      "id": 9009,
+      "kind": "debt",
+      "professionId": 9,
+      "skillIds": [
+        2209
+      ],
+      "effectIds": [
+        23006,
+        23019
+      ],
+      "values": [
+        50,
+        10,
+        1
+      ],
+      "description": "痛知：自身中毒、流血或虚弱时，连带契约射程增加一格。共债连接两名敌人，首次直接失血后向另一方结算一次受防护限制的连带伤害。",
+      "lore": "名字可以划掉，欠下的痛苦却需要有人终结。",
+      "color": "#F0C56F",
+      "fixedAffixId": 1,
+      "acquisitionKind": "dungeon",
+      "sourceUnitId": 0,
+      "sourceAreaId": 71,
+      "sourceLootTableId": 9109,
+      "fallbackAreaIds": [
+        50,
+        1,
+        40,
+        20
+      ],
+      "acquisitionDescription": "在幽深峡谷探索封存箱；每个世界仅有一处，缺少此地貌时由实际存在的备用副本承接。"
+    },
+    {
+      "id": 9010,
+      "kind": "duel",
+      "professionId": 10,
+      "skillIds": [
+        2210
+      ],
+      "effectIds": [
+        23007
+      ],
+      "values": [
+        50
+      ],
+      "description": "留名不留痕：本剑命中已有破绽的目标时不磨损其装备。先请使下一次相邻直接近战命中伤害减半，并为攻击者施加破绽；不自动反击。",
+      "lore": "现在，你知道何时该停了。",
+      "color": "#F0C56F",
+      "fixedAffixId": 1,
+      "acquisitionKind": "dungeon",
+      "sourceUnitId": 0,
+      "sourceAreaId": 1,
+      "sourceLootTableId": 9110,
+      "fallbackAreaIds": [
+        50,
+        40,
+        20
+      ],
+      "acquisitionDescription": "在古代地下迷宫探索封存箱；每个世界仅有一处，缺少此地貌时由实际存在的备用副本承接。"
+    },
+    {
+      "id": 9011,
+      "kind": "beast",
+      "professionId": 11,
+      "skillIds": [
+        2211
+      ],
+      "effectIds": [],
+      "values": [
+        1,
+        4,
+        2,
+        80
+      ],
+      "description": "闻铃知意：本人独立动物的口令距离增加一格。并肩追猎以主人的主要行动指挥动物移动最多两格后进行80%伤害的扑咬，仍受借机、机关与指令额度限制。",
+      "lore": "铃声只告诉伙伴：我在这里。",
+      "color": "#F0C56F",
+      "fixedAffixId": 1,
+      "acquisitionKind": "dungeon",
+      "sourceUnitId": 0,
+      "sourceAreaId": 72,
+      "sourceLootTableId": 9111,
+      "fallbackAreaIds": [
+        20,
+        1,
+        50,
+        40
+      ],
+      "acquisitionDescription": "在巨树根境探索封存箱；每个世界仅有一处，缺少此地貌时由实际存在的备用副本承接。"
+    },
+    {
+      "id": 9012,
+      "kind": "harvest",
+      "professionId": 12,
+      "skillIds": [
+        2212
+      ],
+      "effectIds": [
+        23008
+      ],
+      "values": [
+        20
+      ],
+      "description": "穷人的力气：每轮首个本武器主要命中最大生命高于自身的敌人时伤害增加20%。伏穗攻击至多三名相邻敌人，各造成70%伤害并降低力量2。",
+      "lore": "这一袋不下锅。明年还要播种。",
+      "color": "#F0C56F",
+      "fixedAffixId": 1,
+      "acquisitionKind": "dungeon",
+      "sourceUnitId": 0,
+      "sourceAreaId": 20,
+      "sourceLootTableId": 9112,
+      "fallbackAreaIds": [
+        1,
+        50,
+        40
+      ],
+      "acquisitionDescription": "在幽叶森林探索封存箱；每个世界仅有一处，缺少此地貌时由实际存在的备用副本承接。"
+    },
+    {
+      "id": 9013,
+      "kind": "banner",
+      "professionId": 13,
+      "skillIds": [
+        2213
+      ],
+      "effectIds": [
+        23009
+      ],
+      "values": [
+        10,
+        10
+      ],
+      "description": "旗在前：身旁有存活友军时本剑命中提高10个百分点。以我为旗令至多两名友军向自己移动一格，并提高其下一次主要攻击命中10个百分点，不赠送行动。",
+      "lore": "剪去家徽之后，旗仍然有人愿意追随。",
+      "color": "#F0C56F",
+      "fixedAffixId": 1,
+      "acquisitionKind": "reserved",
+      "sourceUnitId": 0,
+      "sourceAreaId": 0,
+      "sourceLootTableId": 0,
+      "fallbackAreaIds": [],
+      "acquisitionDescription": "特殊任务获取；任务与奖励绑定预留。"
+    },
+    {
+      "id": 9014,
+      "kind": "homecoming",
+      "professionId": 0,
+      "skillIds": [
+        2214
+      ],
+      "effectIds": [
+        23010
+      ],
+      "values": [
+        4,
+        6
+      ],
+      "description": "有人在身后：承誓实际代受生命伤害后，为原受保护者提供下一次直接伤害减免4的护符，每轮一次。护送之誓保护相邻友军并使自身护卫至少为6。",
+      "lore": "上面的名字，都已经到家了。",
+      "color": "#F0C56F",
+      "fixedAffixId": 1,
+      "acquisitionKind": "reserved",
+      "sourceUnitId": 0,
+      "sourceAreaId": 0,
+      "sourceLootTableId": 0,
+      "fallbackAreaIds": [],
+      "acquisitionDescription": "特殊任务获取；任务与奖励绑定预留。"
+    },
+    {
+      "id": 9015,
+      "kind": "lance",
+      "professionId": 0,
+      "skillIds": [
+        2215
+      ],
+      "effectIds": [
+        23011
+      ],
+      "values": [
+        3,
+        10,
+        2,
+        4,
+        2
+      ],
+      "description": "一往无前：连续直线实际前进每格积累一层冲势，最多三层、每层使下一次主要枪击增伤10%，转向清零。骑枪仅攻击第二格；骑乘时可直线冲锋两至四格后突刺。",
+      "lore": "王冠碎了，最后一场比武才真正开始。",
+      "color": "#F0C56F",
+      "fixedAffixId": 1,
+      "acquisitionKind": "dungeon",
+      "sourceUnitId": 0,
+      "sourceAreaId": 40,
+      "sourceLootTableId": 9115,
+      "fallbackAreaIds": [
+        1,
+        50,
+        20
+      ],
+      "acquisitionDescription": "在暮潮号沉船遗址探索封存箱；每个世界仅有一处，缺少此地貌时由实际存在的备用副本承接。"
+    }
+  ]
+}

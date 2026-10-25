@@ -2,33 +2,80 @@ local Hex=require('Game.Map.HexGrid')
 local Generator=require('Game.Loot.ChestGenerator')
 local Loot={};Loot.__index=Loot
 function Loot.New(config,equipment)
+    assert(equipment.acquisition,'Loot requires the named-legendary issuance rules')
     return setmetatable({equipment=equipment,rules=require('Game.Loot.LootRules').New(config),
         session=CS.ProjectY.Data.LootSessionData(),
         chestRules=config:GetTable('MapAreaChestRuleTable'),legacy=config:GetTable('EquipmentDemoTable'):Get(1)},Loot)
 end
 function Loot:Add(state,index,containerId,seed,enemyDrop,name,plan,keepEmpty)
+    if not self.equipment.acquisition:AllowsContainer(containerId,state) then return false end
     local row=self.rules.containers:Get(containerId)
     local ids,counts=self.rules:Roll(containerId,seed,plan and plan.poolOverrideId)
     if enemyDrop and #ids==0 and not keepEmpty then return false end
-    state:AddLoot(index,containerId,name or row.name,ids,counts,enemyDrop)
-    if plan then
+    local migrating=state.LootInitialized and plan and self.equipment.acquisition.byContainer[containerId]
+    if migrating then
+        local cells={};for i,cell in ipairs(plan.cells) do cells[i]=cell end
+        CS.ProjectY.Data.LegendaryAcquisitionState.AppendContainer(state,self.equipment.adventure.Narrative,index,containerId,
+            migrating.id,name or row.name,row.maxDurability,row.interaction=='break',plan.unlockEncounterId,plan.rotation,cells)
+    else state:AddLoot(index,containerId,name or row.name,ids,counts,enemyDrop) end
+    if plan and not migrating then
         local cells={};for i,cell in ipairs(plan.cells) do cells[i]=cell end
         CS.ProjectY.Data.ContainerState.Initialize(state,state.LootCount,row.maxDurability,row.interaction=='break',plan.unlockEncounterId,plan.rotation,cells)
     end
     self:Prepare(state:GetLootAt(state.LootCount-1))
+    self.equipment.acquisition:RecordContainer(containerId,state)
     return true
 end
 function Loot:Initialize(areas)
     local area,state=areas:ActiveLayout(),areas.data.Active
+    local changed=false
     if not state.LootInitialized then
         for _,plan in ipairs(area.containerPlans) do
             self:Add(state,plan.cellIndex,plan.lootTableId,plan.seed,false,nil,plan)
         end
         state:CompleteLootInitialization()
+        changed=true
+    else
+        for _,plan in ipairs(area.containerPlans) do
+            if self.equipment.acquisition.byContainer[plan.lootTableId] and self.equipment.acquisition:AllowsContainer(plan.lootTableId,state) then
+                local actual=self:LegendaryMigrationPlan(area,state,plan,areas)
+                self:Add(state,actual.cellIndex,actual.lootTableId,actual.seed,false,nil,actual)
+                changed=true
+            end
+        end
     end
-    if not area.containerState then
+    if changed or not area.containerState then
         areas.layouts[state.SiteId]=require('Game.Loot.ContainerTerrain').Wrap(area,self,state)
     end
+end
+function Loot:LegendaryMigrationPlan(area,state,plan,areas)
+    local occupied={}
+    for i=0,state.LootCount-1 do local physical=self:Physical(state:GetLootAt(i))
+        for j=0,physical.CellCount-1 do occupied[physical:GetCellAt(j)]=true end
+    end
+    local animals=self.equipment.context.systems:Get('Battle').stats.animals
+    for i=0,state.MemberCount-1 do
+        local cell=area.cells[state:GetMemberCellAt(i)]
+        local actor=areas:PartyActor(state:GetMemberIdAt(i))
+        for _,part in ipairs(assert(animals:Cells(actor,area,cell.q,cell.r,cell.layer))) do occupied[part.index]=true end
+    end
+    for i=0,state.NpcCount-1 do local npc=state:GetNpcAt(i);if npc.Present then occupied[npc.CellIndex]=true end end
+    for i=0,state.EncounterCount-1 do local group=state:GetEncounterAt(i)
+        for j=0,group.EnemyCount-1 do local actor=group:GetEnemyAt(j)
+            if actor.HP>0 and actor.AnimalOwnerId==0 then
+                for _,cell in ipairs(assert(animals:Cells(actor,area))) do occupied[cell.index]=true end
+            end
+        end
+    end
+    for _,prop in ipairs(area.props) do for _,index in ipairs(prop.cells) do occupied[index]=true end end
+    local clear=true
+    for _,index in ipairs(plan.cells) do if occupied[index] or area.cells[index].blocked then clear=false;break end end
+    if clear then return plan end
+    local rule
+    for _,candidate in ipairs(self.chestRules:All()) do
+        if candidate.lootTableId==plan.lootTableId and candidate.areaId==area.configId then rule=candidate;break end
+    end
+    return assert(Generator.Plan(area,{assert(rule,'Missing legendary migration placement rule')},occupied,self.rules.containers)[1])
 end
 function Loot:Physical(container) return CS.ProjectY.Data.ContainerState.Of(container) end
 function Loot:Find(areas,id)
@@ -228,7 +275,8 @@ function Loot:Put(areas,key,x,y,rotated)
     return true,'已存入容器：'..name
 end
 function Loot:Snapshot(areas)
-    local state,area=areas.data.Active,areas:ActiveLayout();local visible,result={},{}
+    local state,area=areas.data.Active,areas:ActiveLayout();local visible,result,plans={},{},{}
+    for _,plan in ipairs(area.containerPlans) do plans[plan.cellIndex]=plan end
     for i=0,state.VisibleCount-1 do visible[state:GetVisibleAt(i)]=true end
     for i=0,state.LootCount-1 do local container=state:GetLootAt(i);local row=self.rules.containers:Get(container.TableId)
         if not container.ContentsReady then self:Contents(container) end
@@ -248,7 +296,9 @@ function Loot:Snapshot(areas)
             end
         end
         if shown and assetId>0 and (not container.Looted or row.kind=='chest' and not physical.Destroyed or row.brokenAssetId>0) then
-            local plan=area.containerPlans[i+1];local prop=plan and plan.prop
+            local plan=plans[container.CellIndex]
+            if plan and plan.lootTableId~=container.TableId then plan=nil end
+            local prop=plan and plan.prop
             local items={}
             if row.displayContents~='none' and not physical.Destroyed then
                 for j=0,container.ItemCount-1 do if container:GetCountAt(j)>0 then

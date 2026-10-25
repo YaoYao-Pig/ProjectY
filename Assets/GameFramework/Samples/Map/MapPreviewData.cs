@@ -10,7 +10,8 @@ namespace ProjectY.Samples
         public sealed class Asset { public int Id; public string Path, TintMaterial; public float ReferenceHeight; }
         public sealed class Cell
         {
-            public int Q, R, TownId;
+            public int Q, R, TownId, RegionId;
+            public float[] SurfaceCorners, SurfaceEdgeBottoms;
             public Vector3 Position; public Color Color; public bool HasWater, IsRiver; public float WaterLevel, WaterDepth;
             public int TerrainAssetId, WaterAssetId, RiverId; public int FlowTo = -1; public int[] Neighbors;
             public int SurfaceA, SurfaceB; public float SurfaceBlend;
@@ -18,13 +19,14 @@ namespace ProjectY.Samples
         public sealed class Surface
         {
             public int Id; public string GroundTexture; public Color Color;
-            public float TextureWorldSize, TextureStrength, WindStrength;
+            public float TextureWorldSize, TextureStrength, WindStrength, CliffTintStrength;
         }
         public sealed class Cover
         {
             public int Cell, Kind; public float OffsetX, OffsetZ, Scale, Yaw, Phase;
         }
-        public sealed class Decoration { public int Cell, AssetId; public float Scale, Yaw, Height; }
+        public sealed class Decoration { public int Cell, AssetId; public float Scale, Yaw, Height; public bool Wonder; }
+        public sealed class Cloud { public Vector3 Position; public float Width, Height, Opacity, Phase, Drift; }
         public sealed class Waterfall { public int From, To; public float Drop; }
         public sealed class Town { public string Name; public int Center; public Color GroundColor; }
         public sealed class Building
@@ -43,6 +45,7 @@ namespace ProjectY.Samples
         public Waterfall[] Waterfalls;
         public Surface[] Surfaces;
         public Cover[] Groundcover;
+        public Cloud[] Clouds = Array.Empty<Cloud>();
         public float Radius;
         public int RegionCount, GenerationVersion, RiverCount;
         public uint Seed;
@@ -80,7 +83,17 @@ namespace ProjectY.Samples
             Color color;
             using (var rgb = row.Get<LuaTable>("groundColor"))
                 color = new Color(rgb.Get<int, float>(1), rgb.Get<int, float>(2), rgb.Get<int, float>(3), 1);
+            float[] corners=null;
+            using(var values=row.Get<LuaTable>("surfaceCorners"))
+            {
+                if(values!=null && values.Length>0)
+                {
+                    if(values.Length!=6)throw new InvalidOperationException("World terrain surface requires six corners.");
+                    corners=new float[6];for(int i=0;i<6;i++)corners[i]=values.Get<int,float>(i+1);
+                }
+            }
             return new Cell { Q = row.Get<int>("q"), R = row.Get<int>("r"), TownId = row.Get<int>("townId"),
+                RegionId=row.Get<int>("regionId"),SurfaceCorners=corners,
                 Position = new Vector3(row.Get<float>("x"), row.Get<float>("y"), row.Get<float>("z")),
                 HasWater = row.Get<bool>("hasWater"), WaterLevel = row.Get<float>("waterLevel"), Color = color,
                 IsRiver = row.Get<bool>("isRiver"), RiverId = row.Get<int>("riverId"),
@@ -117,7 +130,11 @@ namespace ProjectY.Samples
                     Surfaces = ReadArray(root, "surfaces", row => new Surface {
                         Id = row.Get<int>("id"), GroundTexture = row.Get<string>("groundTexture"),
                         Color = ParseColor(row.Get<string>("groundColor")), TextureWorldSize = row.Get<float>("textureWorldSize"),
-                        TextureStrength = row.Get<float>("textureStrength"), WindStrength = row.Get<float>("windStrength") }),
+                        TextureStrength = row.Get<float>("textureStrength"), WindStrength = row.Get<float>("windStrength"), CliffTintStrength = row.Get<float>("cliffTintStrength") }),
+                    Clouds = ReadArray(root, "clouds", row => new Cloud {
+                        Position = new Vector3(row.Get<float>("x"), row.Get<float>("y"), row.Get<float>("z")),
+                        Width = row.Get<float>("width"), Height = row.Get<float>("height"), Opacity = row.Get<float>("opacity"),
+                        Phase = row.Get<float>("phase"), Drift = row.Get<float>("drift") }),
                     Groundcover = ReadArray(root, "groundcover", row => new Cover {
                         Cell = row.Get<int>("cell") - 1, Kind = row.Get<int>("kind"), OffsetX = row.Get<float>("offsetX"),
                         OffsetZ = row.Get<float>("offsetZ"), Scale = row.Get<float>("scale"), Yaw = row.Get<float>("yaw"), Phase = row.Get<float>("phase") }),
@@ -125,7 +142,7 @@ namespace ProjectY.Samples
                         Path = row.Get<string>("prefabPath"), ReferenceHeight = row.Get<float>("referenceHeight"),
                         TintMaterial = row.Get<string>("tintMaterial") }),
                     Decorations = ReadArray(root, "decorations", row => new Decoration { Cell = row.Get<int>("cell") - 1,
-                        AssetId = row.Get<int>("assetId"), Scale = row.Get<float>("scale"), Yaw = row.Get<float>("yaw"), Height = row.Get<float>("height") }),
+                        AssetId = row.Get<int>("assetId"), Scale = row.Get<float>("scale"), Yaw = row.Get<float>("yaw"), Height = row.Get<float>("height"), Wonder = row.Get<bool>("wonder") }),
                     Waterfalls = ReadArray(root, "waterfalls", row => new Waterfall { From = row.Get<int>("from") - 1,
                         To = row.Get<int>("to") - 1, Drop = row.Get<float>("drop") }),
                     Cells = ReadArray(root, "cells", ReadCell),

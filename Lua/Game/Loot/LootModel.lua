@@ -30,7 +30,9 @@ function Model:Rows()
             name=self.rules.affixes:Name(entry);displayName=Text.Name(self.rules,entry)
             detail=Text.Details(self.rules,entry)..'\n\n'..Text.Note(string.format(LuaLanguage.UILootDetail, (source.Name)))
         end
+        local legendary=known and self.rules.affixes:Legendary(entry.ItemId) or nil
         rows[#rows+1]={key=entry.Key,itemId=entry.ItemId,kind=item.kind,name=known and name or LuaLanguage.UILootDisplayName,displayName=known and displayName or LuaLanguage.UILootDisplayName,
+            legendary=legendary~=nil,rarityColor=legendary and legendary.color or '',
             detail=detail,iconPath=item.iconPath,count=entry.Count,
             slot='',compatible='',equipMask=0,width=item.width,height=item.height,displayWidth=displayWidth,displayHeight=displayHeight,
             x=rowX,y=rowY,rotated=rotated,revealed=known}

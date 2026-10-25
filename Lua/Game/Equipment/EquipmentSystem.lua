@@ -8,7 +8,8 @@ function Equipment:OnInit(context)
     self.synergies=require('Game.Equipment.SkillSynergies').New(self.config)
     self.rules.affixes:Define(self.data)
     self.rules.ammunition:Define(self.data)
-    self.initialLoadouts=require('Game.Equipment.InitialLoadout').New(self.config,self.rules,function() return self.context.systems:Get('Battle').stats end)
+    self.initialLoadouts=require('Game.Equipment.InitialLoadout').New(self.config,self.rules)
+    self.acquisition=require('Game.Equipment.LegendaryAcquisition').New(self.config,self)
     self.recipe=self.config:GetTable('EquipmentDemoTable'):Get(1)
     -- The start menu can load a save before Start grants a new campaign's items.
     self.data.Grid:Configure(self.recipe.bagWidth,self.recipe.bagHeight)
@@ -17,11 +18,15 @@ function Equipment:OnInit(context)
     for _,item in ipairs(self.rules.items:All()) do self.data.Grid:Define(item.id,item.width,item.height) end
 end
 function Equipment:CanGrant(ids,counts)
+    local allowed,reason=self.acquisition:CanGrant(ids,counts)
+    if not allowed then return false,reason end
     local kinds,items,amounts={},{},{}
     for i,id in ipairs(ids) do kinds[i]=self.rules.items:Get(id).kind;items[i]=id;amounts[i]=counts[i] end
     return self.data:CanGrant(items,amounts,kinds)
 end
 function Equipment:Grant(itemId,count)
+    local allowed,reason=self.acquisition:CanGrant({itemId},{count})
+    if not allowed then return false,reason end
     if not self:CanGrant({itemId},{count}) then return false,'背包空间不足，请先整理背包' end
     local item=self.rules.items:Get(itemId)
     if item.kind=='weapon' then for i=1,count do self.data:AddWeapon(itemId) end
@@ -30,6 +35,7 @@ function Equipment:Grant(itemId,count)
         for i=1,count do self.data:AddMagazine(itemId,row.ammoItemId,row.capacity,row.spawnRounds) end
     elseif item.kind=='wearable' then for i=1,count do self.data:AddWearable(itemId) end
     else self.data:AddStack(itemId,count) end
+    self.acquisition:Record({itemId})
     return true
 end
 function Equipment:Start(recipeId)
@@ -44,7 +50,6 @@ function Equipment:StartPartyLoadouts()
     local ids,counts={},{}
     for i=0,self.adventure.PartyCount-1 do
         local actor=self.adventure:GetPartyAt(i)
-        assert(self.initialLoadouts:Validate(actor))
         local items=self.initialLoadouts:Items(actor.TemplateId)
         for _,id in ipairs(items) do ids[#ids+1]=id;counts[#counts+1]=1 end
     end
@@ -70,7 +75,7 @@ function Equipment:IsCarriedMagazine(magazine)
 end
 function Equipment:InitializeEnemy(actor)
     for _,id in ipairs(self.rules.units:Get(actor.TemplateId).traitIds) do actor:AddTrait(id) end
-    self.initialLoadouts:ApplyEnemy(self.data,actor)
+    self.initialLoadouts:ApplyEnemy(self.data,actor,self.acquisition)
 end
 function Equipment:TreatDisease(actorId,diseaseId)
     local Language=require('Language')

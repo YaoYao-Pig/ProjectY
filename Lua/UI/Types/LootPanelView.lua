@@ -11,11 +11,14 @@
 ---@field SearchStatus CS.UnityEngine.UI.Text
 ---@field Empty CS.UnityEngine.UI.Text
 ---@field ItemName CS.UnityEngine.UI.Text
----@field ItemDetail CS.UnityEngine.UI.Text
+---@field ItemDetail CS.TMPro.TextMeshProUGUI
 ---@field Status CS.UnityEngine.UI.Text
 ---@field Inventory CS.ProjectY.UI.InventoryPanelView
 ---@field Loot CS.ProjectY.UI.LootPanelView
 ---@field SelectedIcon CS.UnityEngine.UI.Image
 ---@field Sources CS.UnityEngine.UI.Dropdown
+---@field DetailsRarityFrame CS.UnityEngine.Component
+---@field DescriptionLinks CS.ProjectY.UI.TMPTermLinkView
+---@field EquipmentTermTip CS.ProjectY.UI.SkillTooltipView
 local View = {}
 return View

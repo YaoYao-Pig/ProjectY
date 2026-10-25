@@ -1,0 +1,185 @@
+{
+  "version": 1,
+  "name": "MapAreaHighMountainThemeTable",
+  "description": "独立自然地形主题；覆盖所有入口边界地貌。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定配置 ID",
+      "min": 1
+    },
+    {
+      "name": "regionType",
+      "type": "enum",
+      "description": "入口大地图地貌",
+      "enumRef": "Map.E_MapRegion"
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "玩家可见环境主题名称"
+    },
+    {
+      "name": "floorColor",
+      "type": "string",
+      "description": "地表基础色 #RRGGBB"
+    },
+    {
+      "name": "wallColor",
+      "type": "string",
+      "description": "地形基部色 #RRGGBB"
+    },
+    {
+      "name": "wallHeight",
+      "type": "float",
+      "description": "非地表网格柱的基础高度",
+      "min": 0.1
+    },
+    {
+      "name": "heightNoise",
+      "type": "float",
+      "description": "未设定地形高度时的噪声",
+      "min": 0
+    },
+    {
+      "name": "assetId",
+      "type": "int",
+      "description": "六角地形基础柱模型",
+      "ref": "MapAssetTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "regionType": 1,
+      "name": "云脊高山",
+      "floorColor": "#8C969B",
+      "wallColor": "#657078",
+      "wallHeight": 0.5,
+      "heightNoise": 0,
+      "assetId": 204
+    },
+    {
+      "id": 2,
+      "regionType": 2,
+      "name": "云脊高山",
+      "floorColor": "#8C969B",
+      "wallColor": "#657078",
+      "wallHeight": 0.5,
+      "heightNoise": 0,
+      "assetId": 204
+    },
+    {
+      "id": 3,
+      "regionType": 3,
+      "name": "云脊高山",
+      "floorColor": "#8C969B",
+      "wallColor": "#657078",
+      "wallHeight": 0.5,
+      "heightNoise": 0,
+      "assetId": 204
+    },
+    {
+      "id": 4,
+      "regionType": 4,
+      "name": "云脊高山",
+      "floorColor": "#8C969B",
+      "wallColor": "#657078",
+      "wallHeight": 0.5,
+      "heightNoise": 0,
+      "assetId": 204
+    },
+    {
+      "id": 5,
+      "regionType": 5,
+      "name": "云脊高山",
+      "floorColor": "#8C969B",
+      "wallColor": "#657078",
+      "wallHeight": 0.5,
+      "heightNoise": 0,
+      "assetId": 204
+    },
+    {
+      "id": 6,
+      "regionType": 6,
+      "name": "云脊高山",
+      "floorColor": "#8C969B",
+      "wallColor": "#657078",
+      "wallHeight": 0.5,
+      "heightNoise": 0,
+      "assetId": 204
+    },
+    {
+      "id": 7,
+      "regionType": 7,
+      "name": "云脊高山",
+      "floorColor": "#8C969B",
+      "wallColor": "#657078",
+      "wallHeight": 0.5,
+      "heightNoise": 0,
+      "assetId": 204
+    },
+    {
+      "id": 8,
+      "regionType": 8,
+      "name": "云脊高山",
+      "floorColor": "#8C969B",
+      "wallColor": "#657078",
+      "wallHeight": 0.5,
+      "heightNoise": 0,
+      "assetId": 204
+    },
+    {
+      "id": 9,
+      "regionType": 9,
+      "name": "云脊高山",
+      "floorColor": "#8C969B",
+      "wallColor": "#657078",
+      "wallHeight": 0.5,
+      "heightNoise": 0,
+      "assetId": 204
+    },
+    {
+      "id": 10,
+      "regionType": 10,
+      "name": "云脊高山",
+      "floorColor": "#8C969B",
+      "wallColor": "#657078",
+      "wallHeight": 0.5,
+      "heightNoise": 0,
+      "assetId": 204
+    },
+    {
+      "id": 11,
+      "regionType": 11,
+      "name": "云脊高山",
+      "floorColor": "#8C969B",
+      "wallColor": "#657078",
+      "wallHeight": 0.5,
+      "heightNoise": 0,
+      "assetId": 204
+    },
+    {
+      "id": 12,
+      "regionType": 12,
+      "name": "云脊高山",
+      "floorColor": "#8C969B",
+      "wallColor": "#657078",
+      "wallHeight": 0.5,
+      "heightNoise": 0,
+      "assetId": 204
+    },
+    {
+      "id": 13,
+      "regionType": 13,
+      "name": "云脊高山",
+      "floorColor": "#8C969B",
+      "wallColor": "#657078",
+      "wallHeight": 0.5,
+      "heightNoise": 0,
+      "assetId": 204
+    }
+  ]
+}

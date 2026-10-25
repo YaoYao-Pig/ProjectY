@@ -6,6 +6,7 @@
 
 ## 正文
 
+- `NpcTable.locationKind=animal` 是 `AnimalSpeechRuleTable` 指定的普通动物对话配置容器，不安置到城镇、不招募为人类队员；真实目标和施法者由 `NarrativeData` 的动物会话状态持有。传奇动物沿用 `world_party` 的稳定 NPC 身份，但在未理解语言时禁止剧情选项和插话；关闭会话清除理解。详见[动物交谈与驯服](Animals.md)。
 - `NpcTable.locationKind=event` 的角色来源与同实例招募见 [特殊事件与骑士审判](SpecialEvents.md)；不使用城镇安置/日程，也不重复创建装备。
 
 - `NpcTable.locationKind` 区分城镇身份与 `world_party` 传奇身份；后者通过大地图队伍接触进入对话，不要求城镇安置/日程，也不使用城镇镜头。`DialogueChoiceTable.worldAction` 的开战出口及双路线委托见[传奇生物与具名人物](Legends.md)。

@@ -27,7 +27,8 @@ function Groundcover.Build(map)
             phase = random:Noise(cell.q, cell.r, 1, channel + 61) * math.pi * 2 }
     end
     for _, cell in ipairs(map.cells) do
-        if not cell.waterLevel and not cell.buildingId and not cell.townId and #cell.roadIds == 0 then
+        if not cell.waterLevel and not cell.buildingId and not cell.townId and not cell.wonderId
+            and not cell.worldTravelBlocked and #cell.roadIds == 0 then
             local underTree, blocked = false, false
             if cell.decorationId then
                 local decoration = assert(map.decorations[cell.decorationId], 'Missing groundcover obstacle decoration')

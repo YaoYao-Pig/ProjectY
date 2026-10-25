@@ -8,6 +8,11 @@
 
 ## 正文
 
+- `LegendaryEquipmentTable` 的具名传奇按物品 ID 与普通随机品质分开。`LegendaryAcquisition` 将 `flag:legendary_equipment_issued_<id>=1` 和实际来源 `flag:legendary_equipment_site_<id>` 保存在原 `NarrativeData`；计数属于世界，武器离手、出售、损毁和换装均不重新投放。`reserved` 没有自动来源或占位任务奖励；`actor` 只通过指定角色的原始装具创建，缴械/死亡继续搬运同一实体；随机掉落池、商店、营地量产和开局包不能包含具名传奇。
+- `dungeon` 为一个专属固定内容箱：根据完整世界地点列表，在 `sourceAreaId` 的实际地点中按种子选一处；只有该世界完全没有主类型，才按 `fallbackAreaIds` 顺序选择。先访问备用地点不会抢先投放。其余地点跳过实际容器创建，不生成空传奇箱；所有候选类型都不存在时保留未投放，不虚构地点。已选来源及已发放事实随原存档保存，读档不重选或重发。
+- 旧档已初始化区域重进时，仅在缺已投放事实且属于选中地点时，通过 `LegendaryAcquisitionState.AppendContainer` 追加新专属箱。保留全部旧箱、尸体、原实例及搜索进度；若原计划格已被旧物、人物或工事占用，重新选择同配置范围内合法格。已有传奇敌人的装备与生死不改写，不复活已死维兰。箱体表现按实际格与容器定义匹配计划，不依赖静态计划与动态列表的下标一致。
+- 获取定向检查：`python -B Tools/Tests/run_lua.py Tools/Tests/legendary_acquisition_core.lua` 检查选址、唯一发放、容量失败、旧区追加与存档身份；`legendary_acquisition_config.lua` 检查真实导出来源及七类地图的容器计划。`Tools/Tests/legendary_acquisition_data.ps1 -AssemblyPath <已编译程序集>` 检查真实容器追加、原实例双向转移和原序列化，不编译、不启动 Editor/Play、不读写玩家存档。
+
 - 正式远征的基础开局见[装备配方](Equipment.md)。地牢/森林箱分别保底少量木料，另抽装具、配件、药品或火炬；陶罐与桌面使用独立生活补给池 7，不混入宝箱的进阶装备。守卫宝库池 5 固定按权重抽两次，包含骑士剑、进阶双手剑、戒指、步枪等，重复命中仍按原规则合并数量。敌人保持原实例装备掉落，额外池仅提供材料、药品和弹药。`campaign_equipment.lua` 对正式起始包及 128 个种子的补给/宝库结果做定向检查。
 
 - [持续 GameEffect](GameEffects.md) 在探索中造成的死亡，经 `GenerateActorDrops / MapLoot:ActorDrops` 复用同一套掉落规则与 DropResolved 标记；战斗结算的 `EnemyDrops` 也委托此入口。
@@ -40,6 +45,7 @@
 
 ## 关键入口
 
+- [具名传奇来源规则](../../Lua/Game/Equipment/LegendaryAcquisition.lua) / [旧区追加桥](../../Assets/GameFramework/Runtime/Data/LegendaryAcquisitionState.cs) / [来源配置](../../Config/Tables/Equipment/LegendaryEquipmentTable.json)：固定来源、每世界唯一及原存档事实。
 - [LootRules](../../Lua/Game/Loot/LootRules.lua) / [ChestGenerator](../../Lua/Game/Loot/ChestGenerator.lua) / [MapLoot](../../Lua/Game/Loot/MapLoot.lua)。
 - [生成阶段](../../Lua/Game/Loot/ContainerLayout.lua) / [动态阻挡](../../Lua/Game/Loot/ContainerTerrain.lua) / [容器攻击](../../Lua/Game/Loot/ContainerCombat.lua) / [耐久状态](../../Assets/GameFramework/Runtime/Data/ContainerState.cs) / [示例配表](../../Tools/Loot/configure_containers.py)。
 - [掉落源表](../../Config/Tables/Loot/) / [容器表现](../../Config/Tables/Equipment/EquipmentLootTable.json) / [配表制作脚本](../../Tools/Loot/configure_loot.py)。

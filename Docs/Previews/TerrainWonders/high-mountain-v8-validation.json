@@ -1,0 +1,61 @@
+{
+  "date": "2026-10-25",
+  "worldGenerationVersion": 8,
+  "highMountainAreaVersion": 2,
+  "designReferences": [
+    {
+      "title": "Feature based terrain generation using diffusion equation",
+      "year": 2010,
+      "url": "https://onlinelibrary.wiley.com/doi/10.1111/j.1467-8659.2010.01806.x",
+      "usedFor": "Feature/elevation constraints, bounded smoothing; not a complete multigrid GPU implementation."
+    },
+    {
+      "title": "Terrain Generation Using Procedural Models Based on Hydrology",
+      "year": 2013,
+      "url": "https://www.cs.purdue.edu/cgvlab/www/publications/Genevaux13ToG/",
+      "usedFor": "Organized ridge/valley networks; not full geological erosion simulation."
+    },
+    {
+      "title": "Procedural Generation of Roads",
+      "year": 2010,
+      "url": "https://perso.liris.cnrs.fr/eric.galin/Articles/2010-roads.pdf",
+      "usedFor": "Slope/turn-aware route design; implemented as constrained ascent stages using the existing hex navigation."
+    }
+  ],
+  "behavior": {
+    "worldSelection": "Known mountain region cells resolve to one site; party walks to the reachable foot entry before entering.",
+    "terrain": "Final user-selected style: flat-topped hex columns, 1m terrace levels, ridge/valley structure and controlled adjacent height changes. No continuous mountain shell is emitted.",
+    "ascent": "Flat hex platforms; entry, four rising platforms, summit; 48m net gain; bidirectional path; no descent or cross-switchback shortcut.",
+    "legacy": "Explicit v7 keeps original mountain terrain and area generation."
+  },
+  "checks": [
+    "map_alpine_canyon.lua PASS including v7 fingerprint 1314487183",
+    "map_seeded.lua PASS",
+    "high_mountain_ascent.lua PASS for 4 seeds",
+    "maparea_alpine_canyon.lua PASS for 9 cases",
+    "natural_entrances.lua PASS",
+    "mountain_site_discovery.lua PASS",
+    "ui_localization_sources.mjs PASS",
+    "map_mountain_surface.cs PASS for the earlier continuous prototype; final mountains use the existing hex-column renderer",
+    "natural_entry_state.cs PASS including map versions 6/7/8",
+    "world_sites_editmode.cs PASS",
+    "terrain_wonders_preview.cs PASS after final hex-style revision: actual 6000-cell world, no world surfaceCorners, no high-mountain area surface meshes, three area renderers"
+  ],
+  "unity": {
+    "initialCompile": "Failed because new MapMountainSurface.cs existed on disk but was not indexed by AssetDatabase.",
+    "additionalCompile": "User explicitly approved targeted script import and one additional compile; completed with no console errors.",
+    "playModeEntered": false,
+    "fullBuildRun": false,
+    "finalHexStyleChangeRequiredCompilation": false
+  },
+  "previews": {
+    "world": "world-high-mountain.png",
+    "terrainOnly": "world-high-mountain-terrain-only.png",
+    "legacyReference": "world-high-mountain-v7-reference.png",
+    "ascent": "area-HighMountain.png"
+  },
+  "limits": [
+    "No Play Mode walkthrough or full project test suite.",
+    "New mountain topology applies to generation version 8 worlds; saved version 7 layouts remain unchanged."
+  ]
+}

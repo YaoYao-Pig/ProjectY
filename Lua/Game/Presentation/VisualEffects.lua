@@ -33,5 +33,6 @@ function Effects.Drain(battle)
 end
 function Effects.Clear(battle)
     battle.vfxEvents=nil;battle.vfxSequence=0
+    require('Game.Presentation.AudioEvents').Clear(battle)
 end
 return Effects

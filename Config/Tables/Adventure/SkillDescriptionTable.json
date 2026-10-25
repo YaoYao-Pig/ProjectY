@@ -236,7 +236,7 @@
       "tagIds": [
         "animal"
       ],
-      "body": "以动物亲和与魅力尝试驯服。探索中可驯服中立动物，战斗中可驯服敌对动物；敌对动物伤势越重越容易成功。",
+      "body": "以动物亲和与魅力尝试驯服。探索中可驯服中立动物，战斗中可驯服敌对动物；敌对动物伤势越重越容易成功。先通过动物交谈术成功沟通，可使下一次驯服该动物获得<link=\"term:advantage\">优势判定</link>。",
       "fragmentIds": []
     },
     {
@@ -1115,6 +1115,192 @@
         "exploration"
       ],
       "body": "将本人绑定的同一只真实动物切换为独立随行或骑乘；两个模式互斥，保留生命、伤势与死亡状态。",
+      "fragmentIds": []
+    },
+    {
+      "id": 206,
+      "tagIds": [
+        "spell",
+        "support"
+      ],
+      "body": "需要奥术触媒，在本次接触期间理解目标动物的语言。施法后选择沟通方式并投百分骰，成功使下一次驯服该动物获得<link=\"term:advantage\">优势判定</link>，失败降低下一次驯服率；每次驯服前最多沟通一次，结果全队共享且不叠加，驯服尝试后消耗。传奇动物更难沟通。",
+      "fragmentIds": []
+    },
+    {
+      "id": 2201,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "造成<b><color=#E9C580>125%</color></b>武器伤害；命中后尝试将目标推远<b><color=#E9C580>1 格</color></b>。目标占地过大或没有合法落点时，保留攻击伤害。",
+      "fragmentIds": []
+    },
+    {
+      "id": 2202,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "向基础射程<b><color=#E9C580>2–6 格</color></b>的目标发射<link=\"term:lobbed\">抛射</link>箭，造成<b><color=#E9C580>110%</color></b>伤害。随后沿预先选择的合法路径后撤至多<b><color=#E9C580>2 格</color></b>，终点须比起点更远离目标。\n未命中仍后撤；这种<link=\"term:skill_movement\">技能位移</link>不触发借机攻击，但可被机关中止。",
+      "fragmentIds": []
+    },
+    {
+      "id": 2203,
+      "tagIds": [
+        "attack",
+        "spell"
+      ],
+      "body": "消耗全部<link=\"term:refraction\">折光</link>，以<link=\"term:direct\">直射</link>造成基础<b><color=#E9C580>100%</color></b>奥术伤害，每层折光增伤<b><color=#E9C580>15%</color></b>，受<link=\"term:conditional_bonus\">条件增伤上限</link>约束。\n施放即消耗层数，未命中不返还；此技能不积累折光，与火焰变体共用<link=\"term:cooldown\">冷却</link>。",
+      "fragmentIds": []
+    },
+    {
+      "id": 2223,
+      "tagIds": [
+        "attack",
+        "spell"
+      ],
+      "body": "消耗全部<link=\"term:refraction\">折光</link>，以<link=\"term:direct\">直射</link>造成基础<b><color=#E9C580>100%</color></b>火焰伤害，每层折光增伤<b><color=#E9C580>15%</color></b>，受<link=\"term:conditional_bonus\">条件增伤上限</link>约束。\n不附加燃烧。施放即消耗层数，未命中不返还；此技能不积累折光，与奥术变体共用冷却。",
+      "fragmentIds": []
+    },
+    {
+      "id": 2204,
+      "tagIds": [
+        "craft",
+        "support"
+      ],
+      "body": "先选择<b><color=#E9C580>2 格</color></b>内本人建造的栅栏或木墙，再选择其相邻合法空格，将整座工事平移一格。\n保留原耐久、材料投入和工事身份，不返还材料；不能搬动他人的工事、踏台、高台或任务设施。",
+      "fragmentIds": []
+    },
+    {
+      "id": 2205,
+      "tagIds": [
+        "support"
+      ],
+      "body": "需要一面未损毁的盾牌。为相邻的其他存活友军施加<link=\"term:interpose\">承誓</link>，并使自身<link=\"term:guard\">护卫</link>提升至至少<b><color=#E9C580>4</color></b>。\n保护至自己下回合开始；承誓只转移一次符合条件的直接命中。",
+      "fragmentIds": []
+    },
+    {
+      "id": 2206,
+      "tagIds": [
+        "spell",
+        "control"
+      ],
+      "body": "消耗火焰<link=\"term:sample\">残样</link>，以<link=\"term:lobbed\">抛射</link>命中后施加<b><color=#E9C580>2 回合</color></b><link=\"term:burning\">燃烧</link>。\n不返还试剂；潮湿与状态免疫照常生效。与中毒回注共用冷却，合法施放时消耗残样，未命中不返还。",
+      "fragmentIds": []
+    },
+    {
+      "id": 2226,
+      "tagIds": [
+        "spell",
+        "control"
+      ],
+      "body": "消耗中毒<link=\"term:sample\">残样</link>，以<link=\"term:lobbed\">抛射</link>命中后施加<b><color=#E9C580>1 层</color></b>、持续<b><color=#E9C580>2 回合</color></b>的回注中毒。\n不返还试剂；状态免疫照常生效。与燃烧回注共用冷却，合法施放时消耗残样，未命中不返还。",
+      "fragmentIds": []
+    },
+    {
+      "id": 2207,
+      "tagIds": [
+        "support"
+      ],
+      "body": "消耗<b><color=#E9C580>2 层</color></b><link=\"term:reprise\">返场</link>，为三格内至多<b><color=#E9C580>2 名</color></b>友方各赋予<b><color=#E9C580>1 层</color></b><link=\"term:resonance\">余音</link>，保留至各接收者下回合结束。\n可以选择自己；不产生新返场，不恢复主要行动。安可仍受同一接收者每轮一次的限制。",
+      "fragmentIds": []
+    },
+    {
+      "id": 2208,
+      "tagIds": [
+        "spell",
+        "healing"
+      ],
+      "body": "要求自身至少有一项<link=\"term:weakness\">虚弱</link>。提交施法时清除自身全部虚弱，为三格内至多<b><color=#E9C580>2 名</color></b>存活且仍有可恢复生命的友方，各恢复<b><color=#E9C580>4＋智力</color></b>点生命。\n可以选择自己；固有的施恩成壁只计算对其他友军的<link=\"term:actual_healing\">实际治疗</link>。",
+      "fragmentIds": [
+        "no_revive"
+      ]
+    },
+    {
+      "id": 2209,
+      "tagIds": [
+        "support",
+        "control"
+      ],
+      "body": "选择两名不同、可见且在射程内的敌人，分别判定是否成功施加<link=\"term:shared_debt\">共债</link>；只有两者都成功时才建立连接。\n连接持续至施法者下回合结束；首次实际直接失血后触发一次连带伤害并解除。重新施放会替换所选目标原有的共债。",
+      "fragmentIds": []
+    },
+    {
+      "id": 2210,
+      "tagIds": [
+        "support"
+      ],
+      "body": "进入防护架势，至自己下回合开始。下一次被相邻敌人的直接武器攻击命中时，伤害减少<b><color=#E9C580>50%</color></b>，并为仍存活的攻击者施加<link=\"term:exposed\">破绽</link>。\n触发后架势消失；不自动反击，不由周期伤害触发。",
+      "fragmentIds": []
+    },
+    {
+      "id": 2211,
+      "tagIds": [
+        "animal",
+        "attack"
+      ],
+      "body": "以主人的<link=\"term:main_action\">主要行动</link>指挥<b><color=#E9C580>4 格</color></b>内的独立绑定动物：沿合法路径移动至多<b><color=#E9C580>2 格</color></b>，再扑咬其相邻敌人，造成动物扑咬伤害的<b><color=#E9C580>80%</color></b>。\n动物占用本轮额外位移及攻击口令；途中保留借机攻击和机关风险。若动物被击倒、移动中止或不能到达攻击位置，则不再扑咬，已花AP不返还。界面的7格范围仅用于选取潜在敌人。",
+      "fragmentIds": []
+    },
+    {
+      "id": 2212,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "选择至多<b><color=#E9C580>3 名</color></b>相邻敌人，各造成<b><color=#E9C580>70%</color></b>武器伤害。每名被命中的目标力量降低<b><color=#E9C580>2</color></b>，持续至该目标下回合结束；同名减力不叠加。\n每名目标分别判定命中。",
+      "fragmentIds": []
+    },
+    {
+      "id": 2213,
+      "tagIds": [
+        "support"
+      ],
+      "body": "选择三格内至多<b><color=#E9C580>2 名</color></b>其他友军，让其向自己<link=\"term:skill_movement\">技能移动</link><b><color=#E9C580>1 格</color></b>，并赋予鼓舞：下一次主要伤害攻击命中率提高<b><color=#E9C580>10 个百分点</color></b>，至其下回合结束失效。\n所有落点须事先合法；移动不触发借机攻击，不恢复普通移动或行动额度。鼓舞在攻击施放时消耗，未命中不保留。",
+      "fragmentIds": []
+    },
+    {
+      "id": 2214,
+      "tagIds": [
+        "support"
+      ],
+      "body": "为相邻的其他存活友军施加<link=\"term:interpose\">承誓</link>，并使自身<link=\"term:guard\">护卫</link>提升至至少<b><color=#E9C580>6</color></b>，持续至自己下回合开始。\n同类保护不叠加；承誓不会连锁转交，也不保护周期或范围伤害。",
+      "fragmentIds": []
+    },
+    {
+      "id": 2215,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "要求骑乘。沿预选合法直线实际前进<b><color=#E9C580>2–4 格</color></b>，停在与目标相距<b><color=#E9C580>2 格</color></b>的位置，再突刺并尝试将目标推远<b><color=#E9C580>1 格</color></b>。\n实际前进可积累<link=\"term:momentum\">冲势</link>，突刺消耗全部冲势。冲锋开始时保留借机风险，途中机关可以中止移动；中途失去坐骑、被阻断或目标倒下时不继续攻击，已花AP不返还。",
+      "fragmentIds": []
+    },
+    {
+      "id": 2235,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "以主手骑枪攻击恰好<b><color=#E9C580>第 2 格</color></b>的敌人；徒步也能使用。相邻<b><color=#E9C580>1 格</color></b>处于<link=\"term:min_range\">近身盲区</link>，不能选作目标。\n这是固定射程，不受普通射程加成扩展；施放时消耗现有<link=\"term:momentum\">冲势</link>。",
+      "fragmentIds": []
+    },
+    {
+      "id": 2236,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "使用副手骑枪攻击恰好<b><color=#E9C580>第 2 格</color></b>的敌人，造成<b><color=#E9C580>70%</color></b>武器伤害。相邻目标处于<link=\"term:min_range\">近身盲区</link>。\n属于<link=\"term:secondary_action\">次要行动</link>，不触发本枪的传奇固有机制。",
+      "fragmentIds": []
+    },
+    {
+      "id": 2237,
+      "tagIds": [
+        "attack",
+        "physical"
+      ],
+      "body": "使用坚固的琴框敲击一名相邻敌人，造成<b><color=#E9C580>100%</color></b>武器伤害。\n这次攻击本身不会生成余音或返场。",
       "fragmentIds": []
     }
   ]

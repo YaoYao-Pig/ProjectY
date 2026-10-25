@@ -10,5 +10,7 @@
 ---@field Amount CS.ProjectY.UI.UITxt
 ---@field Note CS.ProjectY.UI.UITxt
 ---@field Style CS.ProjectY.UI.NarrativeView
+---@field Background CS.UnityEngine.UI.Image
+---@field Badge CS.UnityEngine.UI.Image
 local View = {}
 return View

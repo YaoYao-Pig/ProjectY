@@ -46,10 +46,12 @@ namespace ProjectY.Editor
                 {
                     lua.Global.Set("diceView",view);
                     lua.DoString("diceView:Prepare(); diceView:AddDie('D20',20); diceView:AddDie('D10',8); diceView:AddDie('D4',4); diceView:AddDie('D6',6); diceView:AddDie('D8',8); diceView:AddDie('D12',12); diceView:Throw(20261024)");
+                    ValidateThrow(view);
                     var targets=new[]{20,8,4,6,8,12};
                     for(int frame=0;frame<40;frame++)
                     {
                         view.Advance(.075f);
+                        if(frame==5)ValidateFlightTime(view,.45f);
                         if(frame%2==0)Save(image.texture as RenderTexture,output+"/roll-"+(frame/2).ToString("D2")+".png");
                     }
                     if(!view.Settled||view.SampleCount<90)throw new InvalidOperationException("Dice trajectory did not settle.");
@@ -66,7 +68,40 @@ namespace ProjectY.Editor
             var definition=PanelAssets.LoadOrCreate().Get("DiceRoll");definition.Validate(true);
             if(!definition.Modal||!definition.PauseWorldOnOpen||definition.Layer!="Overlay"||definition.CloseOnBack)
                 throw new InvalidOperationException("Dice UI input/pause contract is incorrect.");
-            Debug.Log("PASS dice meshes/symmetries, physical trajectories, all seven die readings, xLua calls, skip/reopen, stage cleanup and Overlay bindings. Previews: "+output);
+            Debug.Log("PASS dice meshes/symmetries, compact launch, forward flight at physical speed, all seven die readings, xLua calls, skip/reopen, stage cleanup and Overlay bindings. Previews: "+output);
+        }
+        private static object Field(object target,string name)
+        {
+            var field=target.GetType().GetField(name,System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            if(field==null)throw new InvalidOperationException("Missing dice validation field: "+name);
+            return field.GetValue(target);
+        }
+        private static void ValidateThrow(DiceRollView view)
+        {
+            var dice=(System.Collections.IList)Field(view,"dice");
+            var camera=(Camera)Field(view,"cameraView");
+            float minX=float.MaxValue,maxX=float.MinValue;
+            foreach(var die in dice)
+            {
+                var positions=(System.Collections.Generic.List<Vector3>)Field(die,"Positions");
+                var start=positions[0];var end=positions[positions.Count-1];
+                minX=Mathf.Min(minX,start.x);maxX=Mathf.Max(maxX,start.x);
+                if(end.x-start.x<6)throw new InvalidOperationException("Dice need a forward throw, not an in-place spin.");
+                int contact=(int)Field(die,"FirstContactSample"),release=(int)Field(die,"ReleaseSample");
+                if(contact<=release+4)throw new InvalidOperationException("Dice did not fly before landing.");
+                if(camera.WorldToViewportPoint(start).x>.15f)throw new InvalidOperationException("Dice must enter from the side of the composition.");
+            }
+            if(maxX-minX>.4f)throw new InvalidOperationException("Dice are spread across the table before the throw.");
+        }
+        private static void ValidateFlightTime(DiceRollView view,float seconds)
+        {
+            foreach(var die in (System.Collections.IList)Field(view,"dice"))
+            {
+                var positions=(System.Collections.Generic.List<Vector3>)Field(die,"Positions");
+                var body=(Rigidbody)Field(die,"Body");
+                if(Vector3.Distance(body.transform.position,positions[Mathf.RoundToInt(seconds*60)])>.01f)
+                    throw new InvalidOperationException("Initial flight was compressed with the settling tail.");
+            }
         }
         private static void Save(RenderTexture texture,string path)
         {

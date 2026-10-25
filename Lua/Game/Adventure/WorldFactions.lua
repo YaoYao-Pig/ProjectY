@@ -37,7 +37,9 @@ function Factions:Power(party)
     self.powerCache=self.powerCache or {}
     if self.powerCache[party.Id] then return self.powerCache[party.Id] end
     local value=0
-    for i=0,party.MemberCount-1 do value=value+self.rules:Power(party:GetMemberAt(i),self.adventure.battle.stats) end
+    for i=0,party.MemberCount-1 do local actor=party:GetMemberAt(i)
+        if actor.AnimalOwnerId==0 then value=value+self.rules:Power(actor,self.adventure.battle.stats) end
+    end
     self.powerCache[party.Id]=value
     return value
 end
@@ -65,11 +67,24 @@ function Factions:Strength(id)
     return self.strengthCache[id] or 0
 end
 function Factions:PrepareRoster(party,encounterId,count)
-    if party.MemberCount>0 then return end
+    local animals=self.adventure.battle.stats.animals
+    local function initializeAnimal(actor)
+        local species=animals.byUnit[actor.TemplateId]
+        if species and actor.AnimalSpeciesId==0 then
+            actor:InitializeAnimal(species.id,(self.adventure.data.Seed ~ actor.Id)&0xffffffff)
+        end
+    end
+    if party.MemberCount>0 then
+        -- Existing legendary actors keep their identity, injuries, traits and death state.
+        for i=0,party.MemberCount-1 do initializeAnimal(party:GetMemberAt(i)) end
+        return
+    end
     local adventure=self.adventure;local encounter=adventure.battle.encounters:Get(encounterId)
     local appearance=adventure.characterAppearances:Group(encounter.appearancePoolId,(adventure.data.Seed ~ party.Id*65537)&0xffffffff)
     for i,template in ipairs(encounter.enemyIds) do if not count or i<=count then
         local actor=party:AddMember(template)
+        initializeAnimal(actor)
+        adventure.battle.stats.birth:Initialize(actor,adventure.data.Seed)
         if not adventure.battle.stats.animals:IsStaticBody(actor) then adventure.characterAppearances:Assign(actor,appearance) end
         adventure.equipment:InitializeEnemy(actor)
         actor:SetMaxHP(adventure.battle.stats:MaximumHP(actor));actor:Restore()
@@ -193,7 +208,8 @@ function Factions:Think(party,minute)
         local defense=self:Power(defender)*(siege and self.rules.policies:Get(target.FactionId).defenseMultiplier or 1)
         local required=siege and self.rules.settings.siegeAdvantage or self.rules.settings.raidAdvantage
         if power/math.max(1,defense)<required then return end
-        local path=parties:Path(self.map:GetCell(travel.Q,travel.R),self.map:GetCell(point.q,point.r))
+        -- LOD catch-up can stop mid-edge; Plan preserves that edge and continues from its destination.
+        local path=parties:Path(self.map:GetCell(travel.AnchorQ,travel.AnchorR),self.map:GetCell(point.q,point.r))
         if not path then return end
         local minutes,threat=0,0;for i=2,#path do
             minutes=minutes+self.adventure.travel:Cost(path[i-1],path[i])/definition.speed
@@ -269,7 +285,7 @@ function Factions:Recover(minute,selectedSites)
                     end
                     if remaining>0 and guard.BattleSiteId==0 and minute>=guard.SafeUntil then
                         for j=0,guard.MemberCount-1 do local actor=guard:GetMemberAt(j)
-                            if remaining>0 and actor.HP<actor.MaxHP then
+                            if remaining>0 and actor.AnimalOwnerId==0 and actor.HP<actor.MaxHP then
                                 local needed=site.Reserve>=policy.recruitCost and 1 or policy.income>0 and math.max(1,math.ceil((policy.recruitCost-site.Reserve)/policy.income)) or math.huge
                                 if needed>remaining then break end
                                 site:AddReserve(math.max(0,math.min(policy.income*needed,self.rules.settings.reserveCapacity-site.Reserve)))

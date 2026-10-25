@@ -15,9 +15,15 @@ function Text.Signed(label,value,suffix)
     return Text.Value(label,string.format('%+g',value)..(suffix or ''),value<0 and Text.colors.negative or Text.colors.positive)
 end
 function Text.Name(rules,item)
-    return Text.Paint('● '..rules.affixes:Name(item),rules.affixes:Color(item))
+    local legendary=rules.affixes:Legendary(item)
+    return Text.Paint((legendary and '◆ ' or '● ')..rules.affixes:Name(item),legendary and legendary.color or rules.affixes:Color(item))
 end
 function Text.Affix(rules,item)
+    local legendary=rules.affixes:Legendary(item)
+    if legendary then
+        return table.concat({Text.Paint(LuaLanguage.LegendaryIdentity,legendary.color,14),Text.Note(LuaLanguage.LegendaryUniqueNote),
+            Text.Paint(legendary.lore,Text.colors.value,13),Text.Heading(LuaLanguage.LegendaryAcquisition),Text.Note(legendary.acquisitionDescription)},'\n')
+    end
     local row=rules.affixes:Of(item);local lines={Text.Heading(LuaLanguage.UIEquipmentPresentationLines)..'  '..Text.Paint(row.name,rules.affixes:Color(item),12)}
     if row.damageMultiplier~=1 then lines[#lines+1]=Text.Signed(LuaLanguage.UIEquipmentPresentationLinesLines14,math.floor((row.damageMultiplier-1)*100+.5),'%') end
     if row.hitBonus~=0 then lines[#lines+1]=Text.Signed(LuaLanguage.UIEquipmentPresentationLinesLines13,row.hitBonus,LuaLanguage.UIEquipmentPresentationLinesLines12) end
@@ -55,7 +61,6 @@ function Text.Attributes(rules,item)
     local lines={Text.Heading(LuaLanguage.UIEquipmentPresentationLines4)};local definition=rules.items:Get(item.ItemId)
     if definition.kind=='weapon' then
         local weapon=rules.weapons:Get(item.ItemId)
-        if weapon.description~='' then lines[#lines+1]=Text.Paint(weapon.description,Text.colors.label,12) end
         lines[#lines+1]=Text.Value(LuaLanguage.UISkillTipText12,string.format('× %.2f',weapon.damageMultiplier*rules.affixes:Of(item).damageMultiplier*rules:Condition(item).Efficiency))
         lines[#lines+1]=Text.Note(string.format(LuaLanguage.EquipmentWeaponArmor,weapon.armorPenetration,weapon.armorDamageMultiplier))
         lines[#lines+1]=Text.Note(LuaLanguage.EquipmentArmorRule)
@@ -67,6 +72,12 @@ function Text.Attributes(rules,item)
     if #lines==1 then lines[#lines+1]=Text.Note(LuaLanguage.UIEquipmentPresentationLinesLines110) end
     lines[#lines+1]=Text.Note(LuaLanguage.UIEquipmentPresentationLinesLines19)
     return table.concat(lines,'\n')
+end
+function Text.Abilities(rules,item,resolve)
+    return require('Game.Presentation.EquipmentDescriptionModel').For(rules.visualEffectConfig):Equipment(item.ItemId,resolve)
+end
+function Text.Skill(rules,skill)
+    return require('Game.Presentation.EquipmentDescriptionModel').For(rules.visualEffectConfig):Skill(skill)
 end
 function Text.AmmoStats(rules,itemId)
     local ammo=rules.ammunition:Get(itemId)
@@ -91,7 +102,7 @@ function Text.Details(rules,item,actor,stats)
         local slots={head=LuaLanguage.UIEquipmentPresentationHead,body=LuaLanguage.UIEquipmentPresentationBody,legs=LuaLanguage.UIEquipmentPresentationLegs,feet=LuaLanguage.UIEquipmentPresentationFeet,offhand=LuaLanguage.UIEquipmentPresentationOffhand,ring=LuaLanguage.UIEquipmentPresentationRing}
         category=assert(slots[rules.wearables:Get(item.ItemId).slot])
     end
-    return table.concat({Text.Note(category),Text.Attributes(rules,item),Text.Affix(rules,item),Text.Condition(rules,item),Text.Requirements(rules,item,actor,stats)},'\n\n')
+    return table.concat({Text.Note(category),Text.Abilities(rules,item),Text.Attributes(rules,item),Text.Affix(rules,item),Text.Condition(rules,item),Text.Requirements(rules,item,actor,stats)},'\n\n')
 end
 function Text.Attachment(rules,itemId)
     local row=rules.runes:Get(itemId)

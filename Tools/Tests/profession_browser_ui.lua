@@ -11,9 +11,9 @@ local ok,err=xpcall(function()
     local ui,growth,adventure=registry:Get('UI'),registry:Get('Growth'),registry:Get('Adventure')
     local data=Services.Adventure;data:Reset(922)
     local actors={}
-    for i,templateId in ipairs({1,3}) do
-        local actor=data:AddPartyActor(i,templateId)
-        adventure.characterAppearances:Party(actor,922);growth:Initialize(actor);actors[i]=actor
+    for i,row in ipairs({{template=1,profession=1},{template=3,profession=3},{template=1,profession=12},{template=3,profession=13}}) do
+        local actor=data:AddPartyActor(i,row.template)
+        adventure.characterAppearances:Party(actor,922);growth:PrepareActor(actor,row.profession);actors[i]=actor
     end
     adventure.equipment:Start();adventure.equipment:StartPartyLoadouts()
     for _,actor in ipairs(actors) do actor:SetMaxHP(growth.stats:MaximumHP(actor));actor:Restore() end
@@ -116,11 +116,13 @@ local ok,err=xpcall(function()
     local function assertGridMembership(target)
         local shown={}
         for _,widget in ipairs(activeProfessionRows()) do
-            assert(widget.row.id>0 and not target.Growth:HasProfession(widget.row.id),'Grid contains an already joined profession')
+            assert(widget.row.id>0 and not professions:Get(widget.row.id).baseProfession and not target.Growth:HasProfession(widget.row.id),
+                'Grid contains an already joined or creation-only base profession')
             assert(not shown[widget.row.id],'Grid repeats a profession');shown[widget.row.id]=true
         end
         for _,profession in ipairs(professions:All()) do
-            assert((shown[profession.id]==true)==not target.Growth:HasProfession(profession.id),'Grid omitted an available profession')
+            local available=not profession.baseProfession and not target.Growth:HasProfession(profession.id)
+            assert((shown[profession.id]==true)==available,'Grid availability differs from the profession rules')
         end
     end
     local function assertCourses(id)
@@ -129,7 +131,7 @@ local ok,err=xpcall(function()
         hiddenBrowser()
     end
     test('course root opens joined-profession branches without a gameplay command',function()
-        assert(professions.Count==11,'The fixture must cover all eleven configured professions')
+        assert(professions.Count==13,'The fixture must cover all thirteen configured professions')
         assert(actor.Growth.CurrentProfessionId==1 and actor.Growth.ProfessionCount==1)
         assertCourses(1);icon(panel.courseProfessionRoot)
         local before=snapshot(actor);click(panel.courseProfessionRoot)
@@ -141,13 +143,13 @@ local ok,err=xpcall(function()
         assert(panel.courseProfessionRoot.row==nil and not panel.courseProfessionRoot.view.Root.gameObject.activeSelf)
         CaptureProfessionBrowser(panel.reference,'profession-browser-tree')
     end)
-    test('add opens a non-overlapping three-column grid with eleven distinct profession icons',function()
+    test('add opens a non-overlapping three-column grid with eleven distinct addable-profession icons',function()
         local before=snapshot(actor);click(professionNode(0))
         assert(panel.professionPage=='grid' and panel.selectedProfession==nil and not panel.view.Invest.interactable)
         assert(#gridLayout()==10);assertGridMembership(actor)
         assert(snapshot(actor)==before and #adapter.commands==0)
         local count=0;for _ in pairs(seenIcons) do count=count+1 end
-        assert(count==11,'Course root plus unjoined grid must render all eleven profession icons')
+        assert(count==11,'Course root plus unjoined grid must render all eleven non-base profession icons')
         CaptureProfessionBrowser(panel.reference,'profession-browser-grid')
     end)
     test('candidate selection only previews details and back navigation cancels selection',function()
@@ -216,6 +218,20 @@ local ok,err=xpcall(function()
         assert(panel.actor==actor and panel.selectedProfession==nil);assertCourses(1)
         assert(actor.Growth:HasSkill(learnedSkill) and actor.Growth.PendingCount==pendingAfterLearning and #adapter.commands==3)
         panel.view.Close.onClick:Invoke();assert(not adapter.growthOpen and not Services.UI.IsWorldPaused)
+    end)
+    test('creation-only farmer and noble roots complete thirteen distinct icons without entering the add grid',function()
+        for index,id in ipairs({12,13}) do
+            panel=ui:Open('CharacterGrowth',{demo=adapter,tab='Skills',actorIndex=index+1})
+            assert(panel.actor==actors[index+2] and panel.actor.Growth.CurrentProfessionId==id and professions:Get(id).baseProfession)
+            assertCourses(id);icon(panel.courseProfessionRoot)
+            assert(#panel.courseTree.nodes==0,'Base professions must not acquire placeholder courses')
+            click(panel.courseProfessionRoot);assert(professionNode(id) and professionNode(0))
+            click(professionNode(0));assert(#gridLayout()==11);assertGridMembership(panel.actor)
+            assert(#adapter.commands==3,'Inspecting a birth profession issued a gameplay command')
+            panel.view.Close.onClick:Invoke();assert(not adapter.growthOpen and not Services.UI.IsWorldPaused)
+        end
+        local count=0;for _ in pairs(seenIcons) do count=count+1 end
+        assert(count==13,'Every configured profession must have its own rendered Sprite')
     end)
 end,debug.traceback)
 if not ok then CloseProfessionBrowserPreview();error(err,0) end

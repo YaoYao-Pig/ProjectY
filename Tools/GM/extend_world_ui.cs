@@ -20,6 +20,8 @@ try{
   bindings.Add(new ProjectY.UI.LuaReference.Entry("RevealWorldHint",hint));texts.Add(new ProjectY.UI.LuaReference.LocalizedText(hint,"UIGMRevealWorldHint"));
  }
  reference.SetEditorBindings(bindings.ToArray());reference.SetEditorLocalizations(texts.ToArray());reference.ValidateBindings();
+ reference.GetText("RevealWorldText").text=ProjectY.UI.LuaLanguage.Get("UIGMRevealWorldText");
+ reference.GetText("RevealWorldHint").text=ProjectY.UI.LuaLanguage.Get("UIGMRevealWorldHint");
  UnityEditor.PrefabUtility.SaveAsPrefabAsset(root,entry.PrefabPath);ProjectY.Editor.LuaViewHints.Export(reference,entry.ViewType);
 }finally{UnityEditor.PrefabUtility.UnloadPrefabContents(root);}
 return entry.PrefabPath;

@@ -5,5 +5,8 @@
 ---@field Button CS.UnityEngine.UI.Button
 ---@field Title CS.UnityEngine.UI.Text
 ---@field Body CS.UnityEngine.UI.Text
+---@field Skin CS.ProjectY.UI.LuaReference
+---@field Layout CS.UnityEngine.UI.VerticalLayoutGroup
+---@field Sizing CS.UnityEngine.UI.LayoutElement
 local View = {}
 return View

@@ -1,13 +1,13 @@
 {
   "version": 1,
   "name": "HeightAdvantageTable",
-  "description": "敌方攻击的高地命中与远程射程；天然地表及营造使用最终站立面高度，不增加伤害。",
+  "description": "敌方攻击的高地收益；弓系达到一级高差时命中两次取最高，其他攻击增加命中百分点；远程射程另算，天然地表及营造使用最终站立面高度，不增加伤害。",
   "key": "id",
   "fields": [
     {"name":"id","type":"int","min":1,"description":"规则 ID"},
     {"name":"heightPerLevel","type":"float","min":0.1,"description":"每级有效高差（米）"},
     {"name":"maxLevels","type":"int","min":1,"max":6,"description":"最多计算的高差级数"},
-    {"name":"hitPerLevel","type":"int","min":0,"max":25,"description":"每级增加命中百分点；最终命中不超过100"},
+    {"name":"hitPerLevel","type":"int","min":0,"max":25,"description":"非弓系攻击每级增加命中百分点；最终命中不超过100；弓系使用优势判定"},
     {"name":"rangePerLevel","type":"int","min":0,"max":3,"description":"远程敌方技能每级增加射程格数"}
   ],
   "rows": [{"id":1,"heightPerLevel":1,"maxLevels":3,"hitPerLevel":5,"rangePerLevel":1}]

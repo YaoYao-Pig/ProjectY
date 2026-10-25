@@ -73,7 +73,7 @@ test('occupied services stay blocked and liberation recovery is time based',func
 end)
 
 local function actor(hp)
-    return {HP=hp or 100,MaxHP=100,Damage=function(self,n)self.HP=math.max(0,self.HP-n)end,
+    return {HP=hp or 100,MaxHP=100,AnimalOwnerId=0,Damage=function(self,n)self.HP=math.max(0,self.HP-n)end,
         Restore=function()error('Unexpected healing or roster reset')end}
 end
 local function party(id,faction,q,role)
@@ -142,6 +142,49 @@ test('a guarded, supplied raider can choose a weaker reachable hostile site',fun
     local f,a,_,_,p=strategy();f:Think(a,100);equal(a.Mission,'raid');equal(a.TargetSiteId,12)
     equal(p.pathCalls,1,'The selected candidate must not search again while applying its route')
     equal(p.appliedPath,p.lastPath,'ApplyRoute must receive the exact candidate path')
+end)
+
+test('LOD promotion replans raids and interceptions from the unfinished edge destination',function()
+    local LOD=require('Game.Adventure.WorldLOD');local Hex=require('Game.Map.HexGrid')
+    for _,kind in ipairs({'raid','intercept'}) do
+        for _,targetQ in ipairs({5,3,1}) do
+            local f,a,_,target,p=strategy();local travel=a.Travel
+            f.sites[12].q=targetQ;target.Travel.Q=targetQ;target.Travel.AnchorQ=targetQ
+            if kind=='intercept' then target.Role='caravan';f.data.SiteCount=1 end
+            f.adventure.factions=f;f.adventure.travel.data={AnchorQ=0,AnchorR=0}
+            travel.Active=true;local advances,plans=0,0
+            function travel:AdvanceRoute(minutes)
+                equal(minutes,5);advances=advances+1
+                -- Catch-up ends halfway through the existing (2,0) -> (3,0) edge.
+                self.AnchorQ=3;self.Progress=.5
+            end
+            function travel:Plan(qs,rs,costs,site)
+                plans=plans+1;equal(site,0)
+                local q,r=self.AnchorQ,self.AnchorR
+                for i=1,#qs do
+                    equal(Hex.Distance(q,r,qs[i],rs[i]),1,'New steps must be adjacent to the preserved edge')
+                    assert(costs[i]>0 and costs[i]<math.huge,'New steps must have a finite positive duration')
+                    q,r=qs[i],rs[i]
+                end
+                equal(q,targetQ,'Reroute must end at the chosen target')
+                equal(#qs,math.abs(targetQ-3),'The unfinished edge must not be submitted twice')
+            end
+            local pending=true
+            function p.data:Due()
+                if not pending then return {Count=0} end
+                pending=false;a.Lod=1
+                return {Count=1,GetAt=function()return {Party=a,Lod=1,PreviousLod=2,Elapsed=5,FromMinute=95}end}
+            end
+            function f:Recover()end
+            f.conflicts={Contacts=function()end,CoarseContacts=function()end}
+            local lod=setmetatable({parties=p,adventure=f.adventure,rule={},nearParties={},Cleanup=function()end},LOD)
+            lod:Advance(100)
+            equal(advances,1);equal(plans,1);equal(a.Mission,kind)
+            equal(p.pathCalls,1,'Applying the selected route must reuse its path')
+            equal(p.appliedPath[1].q,3);equal(travel.Q,2);equal(travel.Progress,.5)
+            lod:Advance(100);equal(advances,1);equal(plans,1,'A consumed LOD batch must not replan twice')
+        end
+    end
 end)
 
 test('the two-argument Plan ignores the extra value returned by Map.GetCell',function()
@@ -253,7 +296,7 @@ test('cancelling a raid removes its obsolete attack route',function()
 end)
 
 test('existing roster reads preserve wounds without allocating or restoring actors',function()
-    local f=setmetatable({adventure={}},Factions);local a=party(1,4,0);a.unit.HP=23
+    local f=setmetatable({adventure={battle={stats={animals={byUnit={}}}}}},Factions);local a=party(1,4,0);a.unit.HP=23
     f:PrepareRoster(a,404);f:PrepareRoster(a,404);equal(a.unit.HP,23);equal(a.MemberCount,1)
     local initialized=setmetatable({adventure={data={factionData={Initialized=true,SiteCount=0}}}},Factions)
     initialized:Initialize() -- Reload must not require generation services or create parties.

@@ -1,4 +1,6 @@
 package.path='Lua/?.lua;'..package.path
+-- Only the C# bridge is isolated; these probability cases have no pending conversation.
+CS={ProjectY={Data={AnimalSpeechState={Modifier=function()return 0 end}}}}
 local config=require('Config.ConfigSystem')()
 config:OnInit({services={ReadConfig=function(_,name)
     local file=assert(io.open('Assets/GameFramework/Resources/_Gen/Config/'..name..'.bytes','rb'))

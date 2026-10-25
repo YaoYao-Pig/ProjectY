@@ -79,10 +79,11 @@
       "values": [
         "town",
         "world_party",
-        "event"
+        "event",
+        "animal"
       ],
       "default": "town",
-      "description": "town 使用城镇安置与日程；world_party 绑定传奇队伍；event 由特殊事件提供存活的可招募角色"
+      "description": "town 使用城镇安置与日程；world_party 绑定传奇队伍；event 由特殊事件提供存活的可招募角色；animal 是动物交谈的通用身份容器，不使用城镇安置、日程或招募"
     }
   ],
   "rows": [
@@ -251,7 +252,7 @@
     {
       "id": 102,
       "name": "寒潮巨狼 · 听雪",
-      "description": "能够以意念交谈的古老巨狼，守护林地中的迷路者。",
+      "description": "守护林地中迷路者的古老巨狼；借助动物交谈术，才能听懂它低吼中的话语。",
       "townTemplateId": 1,
       "actorTemplateId": 702,
       "factionId": 12,
@@ -467,6 +468,23 @@
         1002
       ],
       "locationKind": "event"
+    },
+    {
+      "id": 401,
+      "name": "动物",
+      "description": "它用动作、气味和鸣声表达自己的意愿；动物交谈术能让你理解其中的含义。",
+      "townTemplateId": 1,
+      "actorTemplateId": 201,
+      "factionId": 1,
+      "recruitable": false,
+      "relationMin": -100,
+      "relationMax": 100,
+      "initialRelation": 0,
+      "dialogueIds": [
+        401
+      ],
+      "missionIds": [],
+      "locationKind": "animal"
     }
   ]
 }

@@ -4429,8 +4429,8 @@
     },
     {
       "id": "GMWorldMapUnavailable",
-      "txt": "请先创建或载入远征，再开启全图视野。",
-      "desc": "GM 开全图：尚未绑定世界地图时的失败原因"
+      "txt": "请先创建或载入远征，再切换全图视野。",
+      "desc": "GM 全图视野开关：尚未绑定世界地图时的失败原因"
     },
     {
       "id": "GMRevealWorldSuccess",
@@ -4439,13 +4439,13 @@
     },
     {
       "id": "UIGMRevealWorldText",
-      "txt": "开全图",
-      "desc": "GM 面板开全图按钮"
+      "txt": "开全图：关",
+      "desc": "GM 全图视野按钮，当前关闭，点击开启"
     },
     {
       "id": "UIGMRevealWorldHint",
-      "txt": "大地图持续全亮，远处敌人可见。重新开局或读档后需再次开启。",
-      "desc": "GM 面板开全图作用范围与生命周期说明"
+      "txt": "开启后全图可见。关闭恢复正常视野，保留已探索地形。",
+      "desc": "GM 全图视野开关说明"
     },
     {
       "id": "UIGMKillTargetText",
@@ -5001,6 +5001,746 @@
       "id": "GrowthProfessionGridHint",
       "txt": "点选职业查看介绍，确认加入后开始研习；已有技能和天赋保留。",
       "desc": "兼职网格操作提示"
+    },
+    {
+      "id": "GrowthCharacterProfessionName",
+      "txt": "%s · %s",
+      "desc": "角色与当前职业；%s1=角色名字，%s2=职业名字"
+    },
+    {
+      "id": "GrowthBaseProfessionCreationOnly",
+      "txt": "基础职业在角色创建时确定，不能通过兼职加入。",
+      "desc": "拒绝将农民或贵族作为后加兼职"
+    },
+    {
+      "id": "SaveFactionDiscoveryInvalid",
+      "txt": "存档中的势力发现记录无效。",
+      "desc": "拒绝无效势力ID或非已发现状态的保存记录"
+    },
+    {
+      "id": "NaturalEntranceRequiresItem",
+      "txt": "需要 %s ×%d，才能在谷缘固定绳索。",
+      "desc": "峡谷首次下绳条件；物品名、数量"
+    },
+    {
+      "id": "CanyonRopeFirstEntry",
+      "txt": "在谷缘消耗 %s ×%d 固定绳索，下到峡谷探索；之后可反复上下。",
+      "desc": "峡谷入口说明；物品名、数量"
+    },
+    {
+      "id": "CanyonRopeEstablished",
+      "txt": "绳索已经固定，可以沿绳索再次进入峡谷。",
+      "desc": "已建立的峡谷入口"
+    },
+    {
+      "id": "HighMountainEntranceHint",
+      "txt": "点击山体即可前往山脚，进入沿山径逐级登顶的高山副本。",
+      "desc": "高山范围点击与攀登入口"
+    },
+    {
+      "id": "GiantTreeEntranceHint",
+      "txt": "从古树脚下进入根部林地；巨根之间仍有可供穿行的道路。",
+      "desc": "巨树探索入口"
+    },
+    {
+      "id": "NaturalTerrainUseEntrance",
+      "txt": "这里无法直接通行，请前往山口、谷缘或古树脚下的探索入口。",
+      "desc": "巨型地貌拒绝直接旅行"
+    },
+    {
+      "id": "GMNoRandomEncountersOff",
+      "txt": "免随机遇敌：关",
+      "desc": "GM 免随机遇敌按钮，当前关闭，点击开启"
+    },
+    {
+      "id": "GMNoRandomEncountersOn",
+      "txt": "免随机遇敌：开",
+      "desc": "GM 免随机遇敌按钮，当前开启，点击关闭"
+    },
+    {
+      "id": "GMNoRandomEncountersHint",
+      "txt": "仅屏蔽旅途随机战斗；读档或重新开局后关闭。",
+      "desc": "GM 免随机遇敌范围与会话说明"
+    },
+    {
+      "id": "GMNoRandomEncountersEnabled",
+      "txt": "已开启免随机遇敌，行军随机战斗将被跳过。",
+      "desc": "GM 开启免随机遇敌的反馈"
+    },
+    {
+      "id": "GMNoRandomEncountersDisabled",
+      "txt": "已关闭免随机遇敌，行军随机战斗恢复正常触发。",
+      "desc": "GM 关闭免随机遇敌的反馈"
+    },
+    {
+      "id": "GMNoRandomEncountersInvalid",
+      "txt": "免随机遇敌参数必须为 0（关闭）或 1（开启）。",
+      "desc": "GM 命令参数校验失败"
+    },
+    {
+      "id": "GMNoRandomEncountersRequiresWorld",
+      "txt": "请先创建或载入远征，再切换免随机遇敌。",
+      "desc": "GM 尚未绑定世界时拒绝修改"
+    },
+    {
+      "id": "UIMainHudHideSiteTags",
+      "txt": "隐藏标签",
+      "desc": "大地图 HUD 地点标签开关：关闭远景常显，保留悬停名称"
+    },
+    {
+      "id": "UIMainHudShowSiteTags",
+      "txt": "显示标签",
+      "desc": "大地图 HUD 地点标签开关：恢复远景常显"
+    },
+    {
+      "id": "GMWorldVisionRestored",
+      "txt": "已关闭全图视野：恢复正常视野，保留已探索地形。",
+      "desc": "GM 关闭全图视野的反馈"
+    },
+    {
+      "id": "UIGMRevealWorldOnText",
+      "txt": "开全图：开",
+      "desc": "GM 全图视野按钮，当前开启，点击关闭"
+    },
+    {
+      "id": "AnimalSpeechSaveState",
+      "txt": "动物沟通结果无效",
+      "desc": "动物沟通结果存档校验"
+    },
+    {
+      "id": "AnimalMountSaveDetails",
+      "txt": "坐骑特质或出生属性记录无效",
+      "desc": "坐骑详细存档校验"
+    },
+    {
+      "id": "AnimalMountWorldReference",
+      "txt": "坐骑与世界动物记录不一致",
+      "desc": "唯一动物存档引用校验"
+    },
+    {
+      "id": "AnimalMountOwnerReference",
+      "txt": "驯服动物的主人或绑定引用无效",
+      "desc": "动物主人存档引用校验"
+    },
+    {
+      "id": "AnimalSpeechLivingCaster",
+      "txt": "请选择存活的队员",
+      "desc": "动物交谈与驯服施法者校验"
+    },
+    {
+      "id": "AnimalSpeechWildTarget",
+      "txt": "请选择未驯服的动物",
+      "desc": "驯服目标校验"
+    },
+    {
+      "id": "AnimalSpeechRetry",
+      "txt": "动物暂不接受沟通或驯服，还需等待 %d 回合",
+      "desc": "动物重试限制；剩余回合"
+    },
+    {
+      "id": "AnimalSpeechNotLearned",
+      "txt": "需要先研习动物交谈术",
+      "desc": "动物交谈术学习条件"
+    },
+    {
+      "id": "AnimalSpeechTarget",
+      "txt": "请选择仍在附近的存活动物",
+      "desc": "动物交谈目标失效"
+    },
+    {
+      "id": "AnimalSpeechBusy",
+      "txt": "请先结束当前对话",
+      "desc": "动物对话禁止重入"
+    },
+    {
+      "id": "AnimalSpeechNotDeployed",
+      "txt": "此角色没有参与当前探索",
+      "desc": "动物交谈探索角色校验"
+    },
+    {
+      "id": "AnimalSpeechUnreachable",
+      "txt": "请靠近动物，并确保视线没有被遮挡",
+      "desc": "动物交谈距离和视线校验"
+    },
+    {
+      "id": "AnimalSpeechNotUnderstood",
+      "txt": "需要先施放动物交谈术，才能理解它的话",
+      "desc": "未翻译动物剧情保护"
+    },
+    {
+      "id": "AnimalSpeechAlreadyCompanion",
+      "txt": "它已经是队伍的动物伙伴",
+      "desc": "禁止对已绑定动物重复驯服或攻击"
+    },
+    {
+      "id": "AnimalSpeechBattleWildOnly",
+      "txt": "战斗中请选择尚未驯服的动物",
+      "desc": "战斗动物交谈目标限制"
+    },
+    {
+      "id": "AnimalSpeechPending",
+      "txt": "本次沟通已完成：下次驯服成功率 %+d 个百分点",
+      "desc": "阻止换人或重开对话刷沟通；概率修正"
+    },
+    {
+      "id": "AnimalSpeechTameNotLearned",
+      "txt": "需要先研习驯服技能",
+      "desc": "和平收服角色学习条件"
+    },
+    {
+      "id": "AnimalSpeechHostileTaming",
+      "txt": "敌对动物需要在战斗中尝试驯服",
+      "desc": "地图接触不允许直接收服敌对动物"
+    },
+    {
+      "id": "AnimalSpeechCastBy",
+      "txt": "由 %s 施放动物交谈术",
+      "desc": "世界动物对话施法选项；队员名"
+    },
+    {
+      "id": "AnimalSpeechTameBy",
+      "txt": "由 %s 尝试驯服（成功率 %.1f%%）",
+      "desc": "和平收服角色选项；角色名、最终概率"
+    },
+    {
+      "id": "AnimalSpeechObserve",
+      "txt": "观察它的神态",
+      "desc": "未理解动物时的观察选项"
+    },
+    {
+      "id": "AnimalSpeechGesture",
+      "txt": "放低姿态，表示善意",
+      "desc": "未理解动物时的示好选项"
+    },
+    {
+      "id": "AnimalSpeechAttack",
+      "txt": "发起攻击",
+      "desc": "未理解传奇动物时的攻击选项"
+    },
+    {
+      "id": "AnimalSpeechLeave",
+      "txt": "结束交谈",
+      "desc": "动物对话关闭选项"
+    },
+    {
+      "id": "AnimalSpeechStale",
+      "txt": "对话已推进，请选择当前选项",
+      "desc": "动物对话版本或选项检查"
+    },
+    {
+      "id": "AnimalSpeechNarrator",
+      "txt": "旁白",
+      "desc": "动物对话叙述者"
+    },
+    {
+      "id": "AnimalSpeechUntranslated",
+      "txt": "%s 注视着你。你能辨认它的姿态，却无法理解它的声音。",
+      "desc": "未施法动物接触正文；动物名称"
+    },
+    {
+      "id": "AnimalSpeechBattleOpening",
+      "txt": "法术让你听懂了 %s 的声音。请选择这次沟通的方式。",
+      "desc": "战斗中动物对话正文；动物名称"
+    },
+    {
+      "id": "AnimalSpeechObservation",
+      "txt": "它警惕地留意着你的一举一动。仅凭姿态，还无法进行真正的交谈。",
+      "desc": "观察反馈"
+    },
+    {
+      "id": "AnimalSpeechGestureResult",
+      "txt": "你缓缓放低身姿，让它看到空着的手。它看见了你的善意，但你仍无法理解它的回应。",
+      "desc": "未施法示好反馈，不改检定"
+    },
+    {
+      "id": "AnimalSpeechResult",
+      "txt": "下一次驯服它的成功率调整 %+d 个百分点；全队共享，尝试后消耗。",
+      "desc": "动物沟通结算；有符号概率修正"
+    },
+    {
+      "id": "AnimalSpeechCheckTitle",
+      "txt": "与 %s 沟通",
+      "desc": "动物沟通骰子标题；动物名称"
+    },
+    {
+      "id": "AnimalSpeechTameFailed",
+      "txt": "驯服未成功（成功率 %.1f%%），还需等待 %d 回合。",
+      "desc": "和平收服失败反馈；概率、重试回合"
+    },
+    {
+      "id": "AnimalSpeechOpened",
+      "txt": "动物交谈术已生效",
+      "desc": "战斗动物施法反馈"
+    },
+    {
+      "id": "AnimalSpeechNoCompanion",
+      "txt": "队伍中没有存活的动物伙伴",
+      "desc": "大地图动物交谈目标检查"
+    },
+    {
+      "id": "AnimalSpeechSelectCompanion",
+      "txt": "请选择要交谈的动物伙伴。",
+      "desc": "全队伙伴选择入口"
+    },
+    {
+      "id": "AnimalSpeechTalkCompanion",
+      "txt": "与 %s 交谈",
+      "desc": "全队动物伙伴选择；动物名"
+    },
+    {
+      "id": "LegendaryAlreadyIssued",
+      "txt": "这件具名传奇已在当前世界投放，无法重复生成。",
+      "desc": "传奇重复生成拒绝提示"
+    },
+    {
+      "id": "LegendarySaveInvalid",
+      "txt": "存档中的具名传奇记录无效，请检查配置与存档。",
+      "desc": "传奇存档校验失败"
+    },
+    {
+      "id": "LegendaryEquipmentRequired",
+      "txt": "需要装备对应的传奇装备。",
+      "desc": "传奇技能装备条件"
+    },
+    {
+      "id": "LegendarySampleRequired",
+      "txt": "需要对应的残样。",
+      "desc": "炼金传奇回注缺少残样"
+    },
+    {
+      "id": "LegendaryRepriseRequired",
+      "txt": "需要两层返场。",
+      "desc": "吟游传奇资源条件"
+    },
+    {
+      "id": "LegendaryWeaknessRequired",
+      "txt": "需要自身带有虚弱。",
+      "desc": "神官传奇技能条件"
+    },
+    {
+      "id": "LegendaryMountedRequired",
+      "txt": "需要骑乘坐骑。",
+      "desc": "骑枪冲锋条件"
+    },
+    {
+      "id": "LegendaryEnemyRequired",
+      "txt": "请选择敌人。",
+      "desc": "传奇敌方技能目标"
+    },
+    {
+      "id": "LegendaryTwoEnemiesRequired",
+      "txt": "请选择两名不同的敌人。",
+      "desc": "共债整组目标校验"
+    },
+    {
+      "id": "LegendaryConstructionRequired",
+      "txt": "迁筑需要现场地图中的工事。",
+      "desc": "巧匠传奇地图条件"
+    },
+    {
+      "id": "LegendaryOwnConstructionRequired",
+      "txt": "请选择本人建造的栅栏或木墙。",
+      "desc": "巧匠传奇工事归属条件"
+    },
+    {
+      "id": "LegendarySkillMovement",
+      "txt": "传奇装备技能位移",
+      "desc": "位移战斗日志"
+    },
+    {
+      "id": "LegendaryIdentity",
+      "txt": "具名传奇",
+      "desc": "装备详情传奇身份标题"
+    },
+    {
+      "id": "LegendaryAcquisition",
+      "txt": "获取线索",
+      "desc": "传奇装备获取说明标题"
+    },
+    {
+      "id": "LegendaryUniqueNote",
+      "txt": "每个世界仅有一件，固有机制不与随机品质重复叠加。",
+      "desc": "传奇身份说明"
+    },
+    {
+      "id": "BattleSelectionConstructionHint",
+      "txt": "选择要迁移的工事，再选择相邻的合法落点。",
+      "desc": "迁筑第一步提示"
+    },
+    {
+      "id": "BattleSelectionConstructionLandingHint",
+      "txt": "已选择工事，请点击高亮落点；取消不会消耗行动。",
+      "desc": "迁筑第二步提示"
+    },
+    {
+      "id": "WaterStateInvalid",
+      "txt": "当前码头或船只状态不允许此操作。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterSaveInvalid",
+      "txt": "存档中的码头或船只状态无效。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterNoDock",
+      "txt": "这里没有可用码头。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterTalkWorker",
+      "txt": "请先靠近这处码头的工人交谈。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterFinishStep",
+      "txt": "请先完成当前一格的航行，再上下船。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterFerryFixed",
+      "txt": "客船已启航，请抵达目的地后再选择路线。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterNoRoute",
+      "txt": "没有可通行的水路；浅水、瀑布或陆地会阻断航行。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterNeedBoat",
+      "txt": "需要自己的船才能在此航行。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterNearBoat",
+      "txt": "请走到停泊船旁边的安全岸格再登船。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterUnsafeBank",
+      "txt": "请驶近可安全停靠的岸边，再点击相邻岸格下船。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterMenuChanged",
+      "txt": "码头状态已变化，请重新选择。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterTaskIncomplete",
+      "txt": "请先接受委托并完成周边清敌。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterMaterialsMissing",
+      "txt": "修缮材料不足。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterDockClosed",
+      "txt": "码头暂时停航，请先完成恢复任务。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterAlreadyOwned",
+      "txt": "你已经拥有一艘船。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterCoinsMissing",
+      "txt": "金币不足。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterBoatElsewhere",
+      "txt": "自己的船停在别处，需要先回到船旁。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterUnknownPort",
+      "txt": "请先发现目的地码头。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterTaskProgress",
+      "txt": "附近尚需击败 %d 名敌人；修缮需要 %d 份%s（持有 %d）。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterAcceptTask",
+      "txt": "接受码头恢复委托",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterRepairDock",
+      "txt": "交付材料，修复码头",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterBuyBoat",
+      "txt": "购买河船 · %d 金币",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterBoatDescription",
+      "txt": "一艘容纳整队的河船。可在合格野外岸边停泊；离船后，船留在原处。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterBoardOwn",
+      "txt": "登上自己的船",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterParkedAt",
+      "txt": "船停泊在大地图坐标（%d，%d）。公共客运不会搬运自己的船。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterFerryTo",
+      "txt": "乘船前往 %s",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterFare",
+      "txt": "支付 %d 金币，整队出发；预计 %d 游戏分钟。点击确认购票。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterNoDestinations",
+      "txt": "暂无可达的已知港口",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterExplorePorts",
+      "txt": "探索同一水系的其他城市，恢复码头后可开通客运。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterDockReady",
+      "txt": "码头正常营业",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterMenuCaption",
+      "txt": "%s  |  持有 %d 金币",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterControls",
+      "txt": "自有船：点击水面航行，点击相邻安全岸格下船；走回船旁点击船格登船。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterCloseMenu",
+      "txt": "请先结束与码头工人的交谈。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterSailing",
+      "txt": "水路航行",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterOwnedStatus",
+      "txt": "自有河船 · 点击相邻安全岸格停靠",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterFerryStatus",
+      "txt": "客运航行 · 抵港后下船",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterTaskTitle",
+      "txt": "码头恢复 · %s",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "WaterTaskActive",
+      "txt": "码头恢复委托进行中。请回到工人处交付材料。",
+      "desc": "码头与水上旅行"
+    },
+    {
+      "id": "AdvantageHighGround",
+      "txt": "高地",
+      "desc": "优势来源：对目标的站立面高差"
+    },
+    {
+      "id": "AdvantageAnimalSpeech",
+      "txt": "动物沟通",
+      "desc": "优势来源：成功沟通后的下一次驯服"
+    },
+    {
+      "id": "AdvantageSourceSeparator",
+      "txt": "、",
+      "desc": "多个优势来源的分隔符"
+    },
+    {
+      "id": "DiceAdvantageReading",
+      "txt": "%s / %s → 取最高 %s",
+      "desc": "优势最终结果；两次掷值、选中掷值"
+    },
+    {
+      "id": "DiceAdvantageRequirement",
+      "txt": "优势来源：%s\n单次要求：掷值 > %s · 最终成功率 %s%%",
+      "desc": "优势骰子详情；来源、成功下界、两次取高后的概率"
+    },
+    {
+      "id": "DiceAdvantageRollTitle",
+      "txt": "%s · 优势判定 %d/%d",
+      "desc": "优势投掷标题；原判定名、当前次序、总次数"
+    },
+    {
+      "id": "DiceAdvantageRoundResult",
+      "txt": "第 %d 次：%s",
+      "desc": "优势中间投掷结果；次序、掷值"
+    },
+    {
+      "id": "AdvantageLogDetail",
+      "txt": " · 优势（%s） · 掷值 > %g · 成功率 %g%% · ",
+      "desc": "优势战斗日志；来源、阈值、实际概率"
+    },
+    {
+      "id": "AnimalTamePreview",
+      "txt": "驯服成功率 %.2f%%",
+      "desc": "驯服目标预览；实际成功率"
+    },
+    {
+      "id": "AnimalTameAdvantagePreview",
+      "txt": "驯服成功率 %.2f%% · 动物沟通优势（两次取最高）",
+      "desc": "有沟通优势的驯服目标预览；实际成功率"
+    },
+    {
+      "id": "AnimalSpeechPendingAdvantage",
+      "txt": "本次沟通已完成：下次驯服拥有优势（判定两次，取最高值）",
+      "desc": "阻止重复获取沟通优势"
+    },
+    {
+      "id": "AnimalSpeechResultAdvantage",
+      "txt": "下一次驯服它拥有优势：判定两次，取最高值；全队共享，尝试后消耗。",
+      "desc": "成功沟通后的驯服优势说明"
+    },
+    {
+      "id": "AnimalSpeechTameAdvantageBy",
+      "txt": "由 %s 尝试驯服（优势，成功率 %.1f%%）",
+      "desc": "沟通优势下的驯服选项；角色名、实际概率"
+    },
+    {
+      "id": "HeightAdvantageBow",
+      "txt": "高打低：高出至少 %.1f 米时，弓箭命中判定两次取最高值",
+      "desc": "弓箭高地优势；高差门槛"
+    },
+    {
+      "id": "HeightAdvantageHit",
+      "txt": "高打低：每高 %.1f 米命中 +%d 个百分点，最多 +%d",
+      "desc": "非弓系旧高地收益；级距、每级命中、最大命中"
+    },
+    {
+      "id": "HeightAdvantageRange",
+      "txt": "%s；远程射程每级 +%d 格，最多 +%d 格",
+      "desc": "高地说明补充射程；原文、每级射程、最大射程"
+    },
+    {
+      "id": "HeightAdvantageTarget",
+      "txt": "%s（按当前目标高差计算）",
+      "desc": "高地说明补充适用目标；原文"
+    },
+    {
+      "id": "ProjectileHitPreview",
+      "txt": "命中目标 %.1f%%",
+      "desc": "弹道预览；穿过拦截后的命中概率"
+    },
+    {
+      "id": "ProjectileAdvantagePreview",
+      "txt": "%s · 高地优势（两次取最高值）",
+      "desc": "弓箭命中预览的高地优势提示；原文"
+    },
+    {
+      "id": "ProjectileInterceptPreview",
+      "txt": "%s · 被拦截 %.1f%%：%s",
+      "desc": "弹道拦截预览；原文、拦截概率、遮挡名称"
+    },
+    {
+      "id": "ProjectileFriendlyPreview",
+      "txt": "%s · 可能误伤友军",
+      "desc": "弹道预览的友伤风险；原文"
+    },
+    {
+      "id": "ProjectileGuidedPreview",
+      "txt": "%s · 追踪绕过遮挡",
+      "desc": "追踪弹道预览；原文"
+    },
+    {
+      "id": "ProjectileObstacle",
+      "txt": "障碍物",
+      "desc": "未命名的弹道遮挡物"
+    },
+    {
+      "id": "EquipmentPassiveEffect",
+      "txt": "固有特性",
+      "desc": "装备结构化说明标题"
+    },
+    {
+      "id": "EquipmentEffectTrigger",
+      "txt": "触发",
+      "desc": "装备特性触发段"
+    },
+    {
+      "id": "EquipmentEffectBenefit",
+      "txt": "收益",
+      "desc": "装备特性效果段"
+    },
+    {
+      "id": "EquipmentEffectLimit",
+      "txt": "限制",
+      "desc": "装备特性消费和上限段"
+    },
+    {
+      "id": "EquipmentUsageRule",
+      "txt": "使用",
+      "desc": "装备持握与距离限制段"
+    },
+    {
+      "id": "EquipmentGrantedSkills",
+      "txt": "装备技能",
+      "desc": "装备直接授予的技能列表"
+    },
+    {
+      "id": "EquipmentOtherSkills",
+      "txt": "其他可用技能",
+      "desc": "工坊已有职业和通用技能"
+    },
+    {
+      "id": "EquipmentTermHint",
+      "txt": "蓝色下划线术语可点击查看释义",
+      "desc": "装备正文术语交互提示"
+    },
+    {
+      "id": "EquipmentSkillCostAction",
+      "txt": "消耗 <b><color=#F1D18A>%d AP</color></b>  ·  %s",
+      "desc": "AP与行动类型；第二参数含术语链接"
+    },
+    {
+      "id": "EquipmentSkillRange",
+      "txt": "%d 格",
+      "desc": "技能基础/解析射程"
+    },
+    {
+      "id": "EquipmentSkillRangeBand",
+      "txt": "%d–%d 格",
+      "desc": "技能最小/最大射程"
+    },
+    {
+      "id": "EquipmentSkillRangeCooldown",
+      "txt": "射程 %s  ·  <link=\"term:cooldown\">冷却</link> <b><color=#F1D18A>%d 回合</color></b>",
+      "desc": "射程链接与冷却回合"
+    },
+    {
+      "id": "EquipmentSkillDamageHit",
+      "txt": "伤害 <b><color=#F2AE8D>× %.2f</color></b>  ·  命中 %s",
+      "desc": "当前武器解析倍率和命中链接"
     }
   ]
 }

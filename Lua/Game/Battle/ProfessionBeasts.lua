@@ -44,7 +44,8 @@ function Beasts:Partner(owner,row)
     local pet=state().Partner(owner)
     if not pet or pet.HP<=0 or not self.battle:FindUnit(pet.Id)then return nil,Language.ProfessionCompanionRequired end
     if self.battle.stats.buffs:Skipping(pet)then return nil,Language.ProfessionCompanionDisabled end
-    if self.battle.stats.animals:Distance(owner,pet,self.battle.board)>row.commandRange then return nil,Language.ProfessionCompanionTooFar end
+    local range=self.battle.legendary and self.battle.legendary:CommandRange(owner,row)or row.commandRange
+    if self.battle.stats.animals:Distance(owner,pet,self.battle.board)>range then return nil,Language.ProfessionCompanionTooFar end
     return pet
 end
 function Beasts:Deploy()

@@ -16,6 +16,13 @@ end
 function Presenter:Show(row,adventure,anchor)
     self.anchor=assert(anchor);self.stack={self.model:Build(row,adventure)};self:Render(self.stack[1])
 end
+function Presenter:ShowTerm(id,anchor)
+    local term=self.model.catalog:Term(id)
+    self.anchor=assert(anchor)
+    self.stack={{title=term.title,body=term.body,tags={},stats={},synergies={},termId=id,
+        breadcrumb=string.format(LuaLanguage.UISkillTipPresenterBreadcrumb,1)}}
+    self:Render(self.stack[1])
+end
 function Presenter:Tick()
     local id=CS.ProjectY.UI.SkillTooltipPresentation.TakeLink(self.view)
     if id=='' then return end

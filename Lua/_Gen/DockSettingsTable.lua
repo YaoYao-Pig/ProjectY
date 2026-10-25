@@ -1,0 +1,23 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class DockSettingsTableRow
+---@field id number 规则ID
+---@field maxTownDistance number 城市中心到可停泊岸格的最大寻路距离
+---@field minWaterDepth number 小船最低水深
+---@field maxWaterStep number 普通相邻水格允许水位落差，瀑布另行阻断
+---@field maxBankRise number 岸地与水面允许高差
+---@field damagedChance number 初始破损概率百分比
+---@field threatChance number 初始清敌任务概率百分比
+---@field threatKills number 恢复安全需要的附近敌对击杀数
+---@field threatRadius number 清敌任务相对码头岸格范围
+---@field repairItemId number 修复材料
+---@field repairCount number 修复所需材料数量
+---@field boatPrice number 整队基础河船价格
+---@field fareBase number 整队客运起步价
+---@field farePerCell number 整队客运每水路格费用
+---@field minutesPerCell number 船行每水格游戏分钟
+---@field intactAssetId number 完好码头资源
+---@field ruinedAssetId number 破损码头资源
+---@field boatAssetId number 基础河船资源
+---@field facilityId number 城内码头设施配置
+---@field npcTemplateId number 码头工人模板
+return {["name"]="DockSettingsTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\232\167\132\229\136\153ID"},{["name"]="maxTownDistance",["type"]="int",["description"]="\229\159\142\229\184\130\228\184\173\229\191\131\229\136\176\229\143\175\229\129\156\230\179\138\229\178\184\230\160\188\231\154\132\230\156\128\229\164\167\229\175\187\232\183\175\232\183\157\231\166\187",["min"]=0},{["name"]="minWaterDepth",["type"]="float",["description"]="\229\176\143\232\136\185\230\156\128\228\189\142\230\176\180\230\183\177",["min"]=0},{["name"]="maxWaterStep",["type"]="float",["description"]="\230\153\174\233\128\154\231\155\184\233\130\187\230\176\180\230\160\188\229\133\129\232\174\184\230\176\180\228\189\141\232\144\189\229\183\174\239\188\140\231\128\145\229\184\131\229\143\166\232\161\140\233\152\187\230\150\173",["min"]=0},{["name"]="maxBankRise",["type"]="float",["description"]="\229\178\184\229\156\176\228\184\142\230\176\180\233\157\162\229\133\129\232\174\184\233\171\152\229\183\174",["min"]=0},{["name"]="damagedChance",["type"]="int",["description"]="\229\136\157\229\167\139\231\160\180\230\141\159\230\166\130\231\142\135\231\153\190\229\136\134\230\175\148",["min"]=0},{["name"]="threatChance",["type"]="int",["description"]="\229\136\157\229\167\139\230\184\133\230\149\140\228\187\187\229\138\161\230\166\130\231\142\135\231\153\190\229\136\134\230\175\148",["min"]=0},{["name"]="threatKills",["type"]="int",["description"]="\230\129\162\229\164\141\229\174\137\229\133\168\233\156\128\232\166\129\231\154\132\233\153\132\232\191\145\230\149\140\229\175\185\229\135\187\230\157\128\230\149\176",["min"]=0},{["name"]="threatRadius",["type"]="int",["description"]="\230\184\133\230\149\140\228\187\187\229\138\161\231\155\184\229\175\185\231\160\129\229\164\180\229\178\184\230\160\188\232\140\131\229\155\180",["min"]=0},{["name"]="repairItemId",["type"]="int",["description"]="\228\191\174\229\164\141\230\157\144\230\150\153",["min"]=0,["ref"]="EquipmentItemTable"},{["name"]="repairCount",["type"]="int",["description"]="\228\191\174\229\164\141\230\137\128\233\156\128\230\157\144\230\150\153\230\149\176\233\135\143",["min"]=0},{["name"]="boatPrice",["type"]="int",["description"]="\230\149\180\233\152\159\229\159\186\231\161\128\230\178\179\232\136\185\228\187\183\230\160\188",["min"]=0},{["name"]="fareBase",["type"]="int",["description"]="\230\149\180\233\152\159\229\174\162\232\191\144\232\181\183\230\173\165\228\187\183",["min"]=0},{["name"]="farePerCell",["type"]="int",["description"]="\230\149\180\233\152\159\229\174\162\232\191\144\230\175\143\230\176\180\232\183\175\230\160\188\232\180\185\231\148\168",["min"]=0},{["name"]="minutesPerCell",["type"]="float",["description"]="\232\136\185\232\161\140\230\175\143\230\176\180\230\160\188\230\184\184\230\136\143\229\136\134\233\146\159",["min"]=0},{["name"]="intactAssetId",["type"]="int",["description"]="\229\174\140\229\165\189\231\160\129\229\164\180\232\181\132\230\186\144",["min"]=0,["ref"]="MapAssetTable"},{["name"]="ruinedAssetId",["type"]="int",["description"]="\231\160\180\230\141\159\231\160\129\229\164\180\232\181\132\230\186\144",["min"]=0,["ref"]="MapAssetTable"},{["name"]="boatAssetId",["type"]="int",["description"]="\229\159\186\231\161\128\230\178\179\232\136\185\232\181\132\230\186\144",["min"]=0,["ref"]="MapAssetTable"},{["name"]="facilityId",["type"]="int",["description"]="\229\159\142\229\134\133\231\160\129\229\164\180\232\174\190\230\150\189\233\133\141\231\189\174",["min"]=0},{["name"]="npcTemplateId",["type"]="int",["description"]="\231\160\129\229\164\180\229\183\165\228\186\186\230\168\161\230\157\191",["min"]=0,["ref"]="MapAreaTownNpcTable"}},["fingerprint"]="08efceccd34453918781064ccb82a3496308f200a5751ecaf1cfa5b2d7b2cd34"}

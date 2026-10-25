@@ -7,6 +7,7 @@ namespace ProjectY.Samples
     {
         [Serializable] public sealed class Mount { public int Id; public Transform Anchor; }
         [SerializeField] private Mount[] mounts;
+        [SerializeField] private EquipmentVisualProfileView visualProfile;
         private GameObject[] attachments;
         private int[] ids;
         private EquipmentEffectDisplay itemEffect;
@@ -18,8 +19,12 @@ namespace ProjectY.Samples
         }
         public void Apply(EquipmentVisualData.Weapon view, EquipmentAssetCatalog catalog)
         {
-            if(itemEffect==null) itemEffect=new EquipmentEffectDisplay(transform);
-            itemEffect.Set(view.Effect);
+            if(visualProfile!=null) visualProfile.SetEffect(view.Effect);
+            else
+            {
+                if(itemEffect==null) itemEffect=new EquipmentEffectDisplay(transform);
+                itemEffect.Set(view.Effect);
+            }
             if(attachmentEffects==null) attachmentEffects=new EquipmentEffectDisplay[mounts.Length];
             if (attachments==null) { attachments=new GameObject[mounts.Length]; ids=new int[mounts.Length]; }
             if (view.Sockets.Length!=mounts.Length) throw new InvalidOperationException("武器挂点数量与配置不一致。");
@@ -39,6 +44,7 @@ namespace ProjectY.Samples
         public void TickEffects(float deltaTime)
         {
             itemEffect?.Tick(deltaTime,transform.position+transform.up*.25f);
+            visualProfile?.TickEffects(deltaTime);
             if(attachmentEffects!=null) for(int i=0;i<attachmentEffects.Length;i++) attachmentEffects[i]?.Tick(deltaTime,mounts[i].Anchor.position);
         }
         private void OnDisable()
@@ -48,6 +54,7 @@ namespace ProjectY.Samples
         public static void Remove(GameObject value) { value.SetActive(false); if(Application.isPlaying) Destroy(value);else DestroyImmediate(value); }
 #if UNITY_EDITOR
         public void SetMounts(Mount[] value) { mounts=value; }
+        public void SetVisualProfile(EquipmentVisualProfileView value) { visualProfile=value; }
 #endif
     }
 }

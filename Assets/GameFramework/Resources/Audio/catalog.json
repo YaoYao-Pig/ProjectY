@@ -1,0 +1,43 @@
+{
+  "crossFadeSeconds": 1.25,
+  "music": [
+    {
+      "cue": "exploration",
+      "clip": "Audio/Music/old_tower_inn_loop",
+      "gain": 0.8
+    },
+    {
+      "cue": "battle",
+      "clip": "Audio/Music/determined_pursuit_loop",
+      "gain": 0.58
+    }
+  ],
+  "effects": [
+    {
+      "cue": "hit",
+      "clips": [
+        "Audio/Effects/impactMetal_medium_001",
+        "Audio/Effects/impactMetal_medium_002",
+        "Audio/Effects/impactMetal_medium_004"
+      ],
+      "gain": 0.6,
+      "cooldownSeconds": 0.055,
+      "maxConcurrent": 4,
+      "pitchMin": 0.96,
+      "pitchMax": 1.04
+    },
+    {
+      "cue": "hurt",
+      "clips": [
+        "Audio/Effects/impactSoft_medium_000",
+        "Audio/Effects/impactSoft_medium_002",
+        "Audio/Effects/impactSoft_medium_003"
+      ],
+      "gain": 0.42,
+      "cooldownSeconds": 0.055,
+      "maxConcurrent": 4,
+      "pitchMin": 0.96,
+      "pitchMax": 1.04
+    }
+  ]
+}

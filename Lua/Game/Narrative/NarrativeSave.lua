@@ -1,4 +1,5 @@
 local Save = {}
+local Language=require('Language')
 function Save.Validate(story,prepared)
     local data = assert(prepared.Narrative,'Missing narrative save state')
     local actors = {}; for i=0,prepared.ActorCount-1 do local actor=prepared:GetActorAt(i);actors[actor.Id]=actor end
@@ -18,6 +19,10 @@ function Save.Validate(story,prepared)
             local npc = story.rules.npcs:Get(assert(tonumber(id))); assert(value >= npc.relationMin and value <= npc.relationMax,'存档 NPC 好感越界')
         elseif kind == 'reputation' then
             local faction = story.rules.factions:Get(assert(tonumber(id))); assert(value >= faction.minValue and value <= faction.maxValue,'存档阵营声望越界')
+        elseif kind == 'faction_seen' then
+            local factionId=tonumber(id)
+            assert(factionId and math.tointeger(factionId) and factionId>0 and value==1,Language.SaveFactionDiscoveryInvalid)
+            story.rules.factions:Get(factionId)
         elseif kind == 'recruited' then
             local npc = story.rules.npcs:Get(assert(tonumber(id))); local actor = actors[value]
             assert(npc.recruitable and actor and actor.TemplateId == npc.actorTemplateId and value == 10000 + npc.id,'存档招募记录与队伍不一致')

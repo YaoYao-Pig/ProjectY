@@ -35,7 +35,7 @@
 ---@field ActorStats CS.UnityEngine.UI.Text
 ---@field Capacity CS.UnityEngine.UI.Text
 ---@field ItemName CS.UnityEngine.UI.Text
----@field ItemDetail CS.UnityEngine.UI.Text
+---@field ItemDetail CS.TMPro.TextMeshProUGUI
 ---@field Equip CS.UnityEngine.UI.Button
 ---@field EquipText CS.UnityEngine.UI.Text
 ---@field Unequip CS.UnityEngine.UI.Button
@@ -57,22 +57,22 @@
 ---@field HealthBack CS.UnityEngine.UI.Button
 ---@field HealthBackText CS.UnityEngine.UI.Text
 ---@field HealthPart0 CS.UnityEngine.UI.Button
----@field HealthPartImage0 CS.ProjectY.UI.BodyPartGraphic
+---@field HealthPartImage0 CS.UnityEngine.Component
 ---@field HealthPartOutline0 CS.UnityEngine.Component
 ---@field HealthPart1 CS.UnityEngine.UI.Button
----@field HealthPartImage1 CS.ProjectY.UI.BodyPartGraphic
+---@field HealthPartImage1 CS.UnityEngine.Component
 ---@field HealthPartOutline1 CS.UnityEngine.Component
 ---@field HealthPart2 CS.UnityEngine.UI.Button
----@field HealthPartImage2 CS.ProjectY.UI.BodyPartGraphic
+---@field HealthPartImage2 CS.UnityEngine.Component
 ---@field HealthPartOutline2 CS.UnityEngine.Component
 ---@field HealthPart3 CS.UnityEngine.UI.Button
----@field HealthPartImage3 CS.ProjectY.UI.BodyPartGraphic
+---@field HealthPartImage3 CS.UnityEngine.Component
 ---@field HealthPartOutline3 CS.UnityEngine.Component
 ---@field HealthPart4 CS.UnityEngine.UI.Button
----@field HealthPartImage4 CS.ProjectY.UI.BodyPartGraphic
+---@field HealthPartImage4 CS.UnityEngine.Component
 ---@field HealthPartOutline4 CS.UnityEngine.Component
 ---@field HealthPart5 CS.UnityEngine.UI.Button
----@field HealthPartImage5 CS.ProjectY.UI.BodyPartGraphic
+---@field HealthPartImage5 CS.UnityEngine.Component
 ---@field HealthPartOutline5 CS.UnityEngine.Component
 ---@field HealthPartName CS.UnityEngine.UI.Text
 ---@field HealthDetail CS.UnityEngine.UI.Text
@@ -83,5 +83,8 @@
 ---@field HealthDiseaseScroll CS.UnityEngine.UI.ScrollRect
 ---@field HealthDiseaseTreat CS.UnityEngine.UI.Button
 ---@field HealthDiseaseTreatText CS.UnityEngine.UI.Text
+---@field DetailsRarityFrame CS.UnityEngine.Component
+---@field DescriptionLinks CS.ProjectY.UI.TMPTermLinkView
+---@field EquipmentTermTip CS.ProjectY.UI.SkillTooltipView
 local View = {}
 return View

@@ -71,6 +71,12 @@ namespace ProjectY.Data
             route.Clear();route.AddRange(next);index=0;TargetSiteId=targetSiteId;Message="";Revision++;
         }
         public void SetPaused(bool value) { Paused=value;Revision++; }
+        /// <summary>Commit a validated embarkation or landing after the current route has stopped.</summary>
+        public void Relocate(int q,int r)
+        {
+            if(Active)throw new InvalidOperationException(ProjectY.UI.LuaLanguage.Get("WaterStateInvalid"));
+            route.Clear();index=0;elapsed=0;Q=q;R=r;TargetSiteId=0;Message="";Revision++;
+        }
         /// <summary>Follow a co-located carrier while retaining this traveler's clock, stops and random stream.</summary>
         public void Follow(WorldTravelData leader)
         {
@@ -128,6 +134,8 @@ namespace ProjectY.Data
             if(interval<=0 || double.IsNaN(interval) || double.IsInfinity(interval))throw new ArgumentOutOfRangeException(nameof(interval));
             if(sinceCheck<interval)return false;sinceCheck-=interval;return true;
         }
+        /// <summary>Water travel advances the world clock without accumulating land encounter checks.</summary>
+        public void DiscardEncounterTime() { sinceCheck=0; }
         public int Roll(int maximum)
         {
             if(maximum<1 || random==0)throw new InvalidOperationException("Travel random stream is not initialized.");

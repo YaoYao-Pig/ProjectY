@@ -9,7 +9,7 @@ test('new worlds reveal only the party radius and hide unknown sites and out-of-
     assert(data.KnownCount>0 and data.KnownCount<2500 and data.KnownCount==data.VisibleCount)
     local snapshot=adventure:Snapshot()
     assert(#snapshot.sites<#adventure.sites)
-    for _,site in ipairs(snapshot.sites) do assert(fog:Known(site.q,site.r)) end
+    for _,site in ipairs(snapshot.sites) do assert(fog:Known(site.q,site.r,site.worldRegionId>0 and site.worldRegionId or nil)) end
     for _,row in ipairs(snapshot.worldParties.rows) do
         if row.kind~='stronghold' then local party=adventure.parties.data:Find(row.id);assert(fog:Visible(party.Travel.Q,party.Travel.R)) end
     end

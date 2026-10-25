@@ -46,6 +46,7 @@ namespace ProjectY.Samples
                     pawn.View.Capture(actor, pawn.View.transform.position, 0); pawns.Add(pawn);
                 }
                 pawn.Actor = actor; pawn.View.ApplyAppearance(actor.Appearance, resolve);
+                pawn.Motion.SetFootprint(actor);
                 pawn.Motion.Speed = inBattle ? pawn.View.BattleMoveSpeed : layout.Radius * 1.7320508f / layout.MoveStepSeconds;
                 pawn.Motion.SetDestination(member.CellIndex, occupied, allowed,pawn.MovementSequence!=actor.MovementSequence?actor.MovementStyle:null);
                 pawn.MovementSequence=actor.MovementSequence;

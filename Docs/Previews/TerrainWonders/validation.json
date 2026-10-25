@@ -1,0 +1,79 @@
+{
+  "date": "2026-10-25",
+  "mapGenerationVersion": 7,
+  "checks": [
+    {
+      "name": "config export",
+      "result": "PASS",
+      "tables": 205
+    },
+    {
+      "name": "map_alpine_canyon.lua",
+      "result": "PASS",
+      "scope": "real configurations, heights, slopes, solid dark floor, final entrances, clouds, determinism"
+    },
+    {
+      "name": "map_seeded.lua",
+      "result": "PASS",
+      "scope": "13-biome coverage, topology, campaign preparation, explicit v5/v6 recipes"
+    },
+    {
+      "name": "maparea_alpine_canyon.lua",
+      "result": "PASS",
+      "cases": 9,
+      "scope": "shared corners, connected trails, slope limits, four-person deployment, flat lake, root footprint"
+    },
+    {
+      "name": "natural_entrances.lua",
+      "result": "PASS",
+      "worldSeeds": [
+        42,
+        43
+      ],
+      "cellsPerWorld": 10000,
+      "scope": "reachable sites, unique 271-cell tree, alternate perimeter entrances, existing entrance protection, first-entry rope consumption"
+    },
+    {
+      "name": "natural_entry_state.cs",
+      "result": "PASS",
+      "scope": "native inventory/visited and JSON state boundary, map version roundtrip, no player disk writes"
+    },
+    {
+      "name": "ui_localization_sources.mjs",
+      "result": "PASS"
+    },
+    {
+      "name": "terrain_wonders_preview.cs",
+      "result": "PASS",
+      "worldCells": 6000,
+      "clouds": 43,
+      "wonders": 1,
+      "localAreas": 3,
+      "scope": "real Unity rendering with final sculpted FBX, terrain-only mountain view, active scene preserved"
+    }
+  ],
+  "unity": {
+    "manualCSharpCompileRequests": 1,
+    "shaderRepair": "Renamed reserved HLSL identifier; targeted shader import, final render has no captured errors",
+    "playModeEntered": false,
+    "fullBuildRun": false,
+    "sceneBindings": {
+      "AdventureDemo": 232,
+      "MapRuntimePreview": 232
+    }
+  },
+  "limitations": [
+    "No Play Mode interaction walkthrough or full project test suite.",
+    "Only the map-version/visited serialization boundary was checked; no exhaustive legacy save migration matrix.",
+    "Rope descent uses the existing site-to-area transition; no climbing animation."
+  ],
+  "previews": [
+    "world-high-mountain.png",
+    "world-high-mountain-terrain-only.png",
+    "world-canyon.png",
+    "world-giant-tree.png",
+    "area-HighMountain.png",
+    "area-Canyon.png",
+    "area-GiantTree.png"
+  ]
+}

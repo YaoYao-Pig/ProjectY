@@ -460,7 +460,8 @@ function Rules:AssembleVisual(weapon,offhand,wearables,actor)
     result.pose.offWeaponRotationOffset=offhand and vector(self.motion:RotationOffset(offhand.ItemId,module.id,'off')) or {0,0,0}
     for _,key in ipairs({'mainShoulder','mainElbow','mainHand','offShoulder','offElbow','offHand','weaponRotation'}) do result.pose[key]=vector(pose[key]) end
     local offPose=offhand and self.poses:Get(self.motion:Grip(self.weapons:Get(offhand.ItemId)).poseId) or pose
-    result.pose.offWeaponRotation=vector(offPose.weaponRotation);result.pose.offWeaponRotation[3]=-result.pose.offWeaponRotation[3]
+    -- Shields have an independent upright frame; a couched lance must not pitch the shield with it.
+    result.pose.offWeaponRotation=shield and {0,0,0} or vector(offPose.weaponRotation);result.pose.offWeaponRotation[3]=-result.pose.offWeaponRotation[3]
     local action=self.actions:Get(actor and actor.ActionTemplateId or 0)
     result.action={sequence=actor and actor.ActionSequence or 0,kind=action.kind,duration=action.duration,recoil=action.recoil,
         pitch=action.pitch,yaw=action.yaw,roll=action.roll,handLift=action.handLift,magazineDrop=action.magazineDrop,shots=actor and actor.ActionShots or 1,

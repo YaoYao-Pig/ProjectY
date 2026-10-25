@@ -1,0 +1,156 @@
+{
+  "version": 1,
+  "name": "DockSettingsTable",
+  "description": "码头选址、恢复任务与整队船行；新世界v9启用。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "规则ID"
+    },
+    {
+      "name": "maxTownDistance",
+      "type": "int",
+      "description": "城市中心到可停泊岸格的最大寻路距离",
+      "min": 0
+    },
+    {
+      "name": "minWaterDepth",
+      "type": "float",
+      "description": "小船最低水深",
+      "min": 0
+    },
+    {
+      "name": "maxWaterStep",
+      "type": "float",
+      "description": "普通相邻水格允许水位落差，瀑布另行阻断",
+      "min": 0
+    },
+    {
+      "name": "maxBankRise",
+      "type": "float",
+      "description": "岸地与水面允许高差",
+      "min": 0
+    },
+    {
+      "name": "damagedChance",
+      "type": "int",
+      "description": "初始破损概率百分比",
+      "min": 0
+    },
+    {
+      "name": "threatChance",
+      "type": "int",
+      "description": "初始清敌任务概率百分比",
+      "min": 0
+    },
+    {
+      "name": "threatKills",
+      "type": "int",
+      "description": "恢复安全需要的附近敌对击杀数",
+      "min": 0
+    },
+    {
+      "name": "threatRadius",
+      "type": "int",
+      "description": "清敌任务相对码头岸格范围",
+      "min": 0
+    },
+    {
+      "name": "repairItemId",
+      "type": "int",
+      "description": "修复材料",
+      "min": 0,
+      "ref": "EquipmentItemTable"
+    },
+    {
+      "name": "repairCount",
+      "type": "int",
+      "description": "修复所需材料数量",
+      "min": 0
+    },
+    {
+      "name": "boatPrice",
+      "type": "int",
+      "description": "整队基础河船价格",
+      "min": 0
+    },
+    {
+      "name": "fareBase",
+      "type": "int",
+      "description": "整队客运起步价",
+      "min": 0
+    },
+    {
+      "name": "farePerCell",
+      "type": "int",
+      "description": "整队客运每水路格费用",
+      "min": 0
+    },
+    {
+      "name": "minutesPerCell",
+      "type": "float",
+      "description": "船行每水格游戏分钟",
+      "min": 0
+    },
+    {
+      "name": "intactAssetId",
+      "type": "int",
+      "description": "完好码头资源",
+      "min": 0,
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "ruinedAssetId",
+      "type": "int",
+      "description": "破损码头资源",
+      "min": 0,
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "boatAssetId",
+      "type": "int",
+      "description": "基础河船资源",
+      "min": 0,
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "facilityId",
+      "type": "int",
+      "description": "城内码头设施配置",
+      "min": 0
+    },
+    {
+      "name": "npcTemplateId",
+      "type": "int",
+      "description": "码头工人模板",
+      "min": 0,
+      "ref": "MapAreaTownNpcTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "maxTownDistance": 12,
+      "minWaterDepth": 0.15,
+      "maxWaterStep": 0.8,
+      "maxBankRise": 1.5,
+      "damagedChance": 40,
+      "threatChance": 30,
+      "threatKills": 3,
+      "threatRadius": 6,
+      "repairItemId": 81,
+      "repairCount": 6,
+      "boatPrice": 180,
+      "fareBase": 10,
+      "farePerCell": 1,
+      "minutesPerCell": 2,
+      "intactAssetId": 1200,
+      "ruinedAssetId": 1201,
+      "boatAssetId": 1202,
+      "facilityId": 1200,
+      "npcTemplateId": 4
+    }
+  ]
+}

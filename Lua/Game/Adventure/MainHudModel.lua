@@ -34,10 +34,15 @@ function Model.Build(adventure)
                 or ((travel.paused and LuaLanguage.UIMainHudBody19 or LuaLanguage.UIMainHudBody18)..(travel.message~='' and ('\n'..travel.message) or '')),
             command='hud_follow',available=true}
         model.rows[#model.rows+1]={title=travel.paused and LuaLanguage.UIMainHudTitle14 or LuaLanguage.UIMainHudTitle13,body=LuaLanguage.UIMainHudBody17,command='travel_pause',available=true}
+        if adventure.water.data.Mode~='walk' then
+            model.rows[#model.rows+1]={title=adventure.water.data.Mode=='owned' and LuaLanguage.WaterOwnedStatus or LuaLanguage.WaterFerryStatus,body=LuaLanguage.WaterControls,command='hud_follow',available=true}
+        elseif adventure.water.data.Owned then
+            model.rows[#model.rows+1]={title=string.format(LuaLanguage.WaterParkedAt,adventure.water.data.BoatQ,adventure.water.data.BoatR),body=LuaLanguage.WaterControls,command='hud_follow',available=true}
+        end
         for key,speed in ipairs({1,2,4}) do model.rows[#model.rows+1]={title=string.format(LuaLanguage.UIMainHudTitle12, (travel.speed==speed and '● ' or ''), (speed)),body=string.format(LuaLanguage.UIMainHudBody16, (key)),command='travel_speed',a=speed,available=true} end
-        local groups={dungeon={},forest={},battlefield={},town={},event={}}
+        local groups={dungeon={},forest={},battlefield={},town={},event={},nature={}}
         for _,site in ipairs(adventure.sites) do
-            if adventure.fog:Known(site.q,site.r) and (not site.travelStop or adventure.areas:AreaId(site)) then
+            if adventure.fog:Known(site.q,site.r,site.naturalKind=='HighMountain' and site.source.regionId or nil) and (not site.travelStop or adventure.areas:AreaId(site)) then
             local ok,reason;local kind='event'
             local areaId=adventure.areas:AreaId(site)
             if areaId then
@@ -46,12 +51,13 @@ function Model.Build(adventure)
                 kind=areaType==adventure.areas.townType and 'town' or 'dungeon'
                 if areaType==adventure.areas.forestType then kind='forest' end
                 if areaType==adventure.areas.battlefieldType then kind='battlefield' end
+                if site.naturalKind then kind='nature' end
             else ok,reason=adventure.events:CanVisit(site) end
             groups[kind][#groups[kind]+1]={title=(data:HasVisited(site.id) and '✓ ' or '◇ ')..site.name,
-                body=reason or (kind=='battlefield' and LuaLanguage.UIMainHudBody15 or kind=='forest' and LuaLanguage.UIMainHudBody14 or kind=='dungeon' and LuaLanguage.UIMainHudBody13 or kind=='town' and LuaLanguage.UIMainHudBody12 or LuaLanguage.UIMainHudBody11),command='visit',a=site.id,available=ok}
+                body=reason or (site.naturalKind and adventure.areas:EntranceHint(site)) or (kind=='battlefield' and LuaLanguage.UIMainHudBody15 or kind=='forest' and LuaLanguage.UIMainHudBody14 or kind=='dungeon' and LuaLanguage.UIMainHudBody13 or kind=='town' and LuaLanguage.UIMainHudBody12 or LuaLanguage.UIMainHudBody11),command='visit',a=site.id,available=ok}
             end
         end
-        for _,kind in ipairs({'forest','battlefield','dungeon','town','event'}) do for _,row in ipairs(groups[kind]) do model.rows[#model.rows+1]=row end end
+        for _,kind in ipairs({'nature','forest','battlefield','dungeon','town','event'}) do for _,row in ipairs(groups[kind]) do model.rows[#model.rows+1]=row end end
     elseif data.Areas.ActiveSiteId>0 then
         local areas=adventure.areas;local area,state=areas:ActiveLayout(),data.Areas.Active
         model.town=area.areaType==areas.townType;model.title=area.name

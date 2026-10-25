@@ -5,5 +5,6 @@
 ---@field Button CS.UnityEngine.UI.Button
 ---@field Label CS.UnityEngine.UI.Text
 ---@field Selected CS.UnityEngine.UI.Image
+---@field Sizing CS.UnityEngine.UI.LayoutElement
 local View = {}
 return View

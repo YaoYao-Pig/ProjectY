@@ -822,14 +822,14 @@
     "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
     "node": "Frame/RevealWorld/Text",
     "type": "Text",
-    "text": "开全图",
+    "text": "开全图：关",
     "id": "UIGMRevealWorldText"
   },
   {
     "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
     "node": "Frame/RevealWorldHint",
     "type": "Text",
-    "text": "大地图持续全亮，远处敌人可见。重新开局或读档后需再次开启。",
+    "text": "开启后全图可见。关闭恢复正常视野，保留已探索地形。",
     "id": "UIGMRevealWorldHint"
   },
   {
@@ -1443,6 +1443,13 @@
   },
   {
     "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
+    "node": "Common/WorldControls/SiteTags/Label",
+    "type": "Text",
+    "text": "隐藏标签",
+    "id": "UIMainHudHideSiteTags"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/MainHud/MainHudPanel.prefab",
     "node": "Common/EntryRail/Factions/FactionsText",
     "type": "Text",
     "text": "势力",
@@ -1566,6 +1573,20 @@
     "type": "Text",
     "text": "投骰子",
     "id": "GMDiceOpen"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/NoRandomEncounters/Text",
+    "type": "Text",
+    "text": "免随机遇敌：关",
+    "id": "GMNoRandomEncountersOff"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
+    "node": "Frame/NoRandomEncountersHint",
+    "type": "Text",
+    "text": "仅屏蔽旅途随机战斗；读档或重新开局后关闭。",
+    "id": "GMNoRandomEncountersHint"
   },
   {
     "prefab": "Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab",
@@ -1748,5 +1769,110 @@
     "type": "Text",
     "text": "+",
     "id": "GMDiceAdd"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Equipment/InventoryPanel.prefab",
+    "node": "EquipmentTermTip/Back/Label",
+    "type": "TextMeshProUGUI",
+    "text": "‹ 返回",
+    "id": "UIBattleHUDPanelSafeAreaSkillTipBackLabel"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Equipment/InventoryPanel.prefab",
+    "node": "EquipmentTermTip/Scroll/Viewport/Content/StatsTitle",
+    "type": "TextMeshProUGUI",
+    "text": "技能参数",
+    "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentStatsTitle"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Equipment/InventoryPanel.prefab",
+    "node": "EquipmentTermTip/Scroll/Viewport/Content/SynergyTitle",
+    "type": "TextMeshProUGUI",
+    "text": "协同效应",
+    "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentSynergyTitle"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Equipment/InventoryPanel.prefab",
+    "node": "EquipmentTermTip/Scroll/Viewport/Content/Synergies/SynergyTemplate/UndiscoveredMask/Unknown",
+    "type": "TextMeshProUGUI",
+    "text": "尚未发现",
+    "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentSynergiesSynergyTemplateUndiscoveredMaskUnknown"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Equipment/InventoryPanel.prefab",
+    "node": "EquipmentTermTip/Scroll/Viewport/Content/Synergies/SynergyTemplate/UndiscoveredMask/UnlockHint",
+    "type": "TextMeshProUGUI",
+    "text": "首次成功装配对应符文组合后解锁",
+    "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentSynergiesSynergyTemplateUndiscoveredMaskUnlockHint"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Equipment/LootPanel.prefab",
+    "node": "EquipmentTermTip/Back/Label",
+    "type": "TextMeshProUGUI",
+    "text": "‹ 返回",
+    "id": "UIBattleHUDPanelSafeAreaSkillTipBackLabel"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Equipment/LootPanel.prefab",
+    "node": "EquipmentTermTip/Scroll/Viewport/Content/StatsTitle",
+    "type": "TextMeshProUGUI",
+    "text": "技能参数",
+    "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentStatsTitle"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Equipment/LootPanel.prefab",
+    "node": "EquipmentTermTip/Scroll/Viewport/Content/SynergyTitle",
+    "type": "TextMeshProUGUI",
+    "text": "协同效应",
+    "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentSynergyTitle"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Equipment/LootPanel.prefab",
+    "node": "EquipmentTermTip/Scroll/Viewport/Content/Synergies/SynergyTemplate/UndiscoveredMask/Unknown",
+    "type": "TextMeshProUGUI",
+    "text": "尚未发现",
+    "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentSynergiesSynergyTemplateUndiscoveredMaskUnknown"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Equipment/LootPanel.prefab",
+    "node": "EquipmentTermTip/Scroll/Viewport/Content/Synergies/SynergyTemplate/UndiscoveredMask/UnlockHint",
+    "type": "TextMeshProUGUI",
+    "text": "首次成功装配对应符文组合后解锁",
+    "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentSynergiesSynergyTemplateUndiscoveredMaskUnlockHint"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Equipment/EquipmentWorkbenchPanel.prefab",
+    "node": "SafeArea/EquipmentTermTip/Back/Label",
+    "type": "TextMeshProUGUI",
+    "text": "‹ 返回",
+    "id": "UIBattleHUDPanelSafeAreaSkillTipBackLabel"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Equipment/EquipmentWorkbenchPanel.prefab",
+    "node": "SafeArea/EquipmentTermTip/Scroll/Viewport/Content/StatsTitle",
+    "type": "TextMeshProUGUI",
+    "text": "技能参数",
+    "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentStatsTitle"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Equipment/EquipmentWorkbenchPanel.prefab",
+    "node": "SafeArea/EquipmentTermTip/Scroll/Viewport/Content/SynergyTitle",
+    "type": "TextMeshProUGUI",
+    "text": "协同效应",
+    "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentSynergyTitle"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Equipment/EquipmentWorkbenchPanel.prefab",
+    "node": "SafeArea/EquipmentTermTip/Scroll/Viewport/Content/Synergies/SynergyTemplate/UndiscoveredMask/Unknown",
+    "type": "TextMeshProUGUI",
+    "text": "尚未发现",
+    "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentSynergiesSynergyTemplateUndiscoveredMaskUnknown"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Equipment/EquipmentWorkbenchPanel.prefab",
+    "node": "SafeArea/EquipmentTermTip/Scroll/Viewport/Content/Synergies/SynergyTemplate/UndiscoveredMask/UnlockHint",
+    "type": "TextMeshProUGUI",
+    "text": "首次成功装配对应符文组合后解锁",
+    "id": "UIBattleHUDPanelSafeAreaSkillTipScrollViewportContentSynergiesSynergyTemplateUndiscoveredMaskUnlockHint"
   }
 ]

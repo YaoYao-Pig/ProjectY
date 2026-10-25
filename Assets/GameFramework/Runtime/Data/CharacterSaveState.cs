@@ -14,7 +14,7 @@ namespace ProjectY.Data
         public AttributeEntry[] attributes; public IntEntry[] talents; public int[] trees, skills, pending, offers;
     }
     [Serializable] internal sealed class ActorSave
-    { public int id, templateId, hp, maxHP; public string appearance; public int[] traits; public GrowthSave growth; public bool hasMount; public AnimalMountSave mount; public GameEffectSave[] effects; public BodyInjurySave[] injuries; }
+    { public int id, templateId, hp, maxHP; public string appearance; public int[] traits; public GrowthSave growth; public InitialAttributesSave initialAttributes; public ProfessionAttributesSave[] professionAttributes; public bool hasMount; public AnimalMountSave mount; public GameEffectSave[] effects; public BodyInjurySave[] injuries; }
     [Serializable] internal sealed class WeaponSave
     { public int id, itemId, owner, magazine, affixId; public string hand; public IntEntry[] runes; public EquipmentConditionSave condition; }
     [Serializable] internal sealed class MagazineSave { public int id, itemId, ammo, capacity, rounds; }
@@ -68,11 +68,13 @@ namespace ProjectY.Data
     {
         public string CustomizationJson { get; private set; } = "";
         internal void SetCustomization(string json) { if (string.IsNullOrEmpty(json)) throw new ArgumentException("Missing actor appearance."); CustomizationJson = json; }
-        internal ActorSave CaptureSave() => new ActorSave { id = Id, templateId = TemplateId, hp = HP, maxHP = MaxHP, appearance = CustomizationJson, traits = traits.ToArray(), growth = Growth.CaptureSave(),hasMount=BoundAnimal!=null,mount=CaptureMount(),effects=Effects.Capture(),injuries=CaptureBody() };
+        internal ActorSave CaptureSave() => new ActorSave { id = Id, templateId = TemplateId, hp = HP, maxHP = MaxHP, appearance = CustomizationJson, traits = traits.ToArray(), growth = Growth.CaptureSave(),initialAttributes=CaptureInitialAttributes(),professionAttributes=CaptureProfessionAttributes(),hasMount=BoundAnimal!=null,mount=CaptureMount(),effects=Effects.Capture(),injuries=CaptureBody() };
         internal static CombatActorData FromSave(ActorSave row, CharacterAppearanceService appearances)
         {
             SaveCheck.Require(row != null && row.id > 0 && row.templateId > 0 && row.maxHP >= 1 && row.maxHP <= 1000000 && row.hp >= 0 && row.hp <= row.maxHP, "角色身份或生命");
             SaveCheck.PositiveIds(row.traits, "特质"); var actor = new CombatActorData(row.id, row.templateId);
+            actor.RestoreInitialAttributes(row.initialAttributes);
+            actor.RestoreProfessionAttributes(row.professionAttributes);
             actor.MaxHP = row.maxHP; actor.HP = row.hp; actor.traits.AddRange(row.traits); actor.Growth.RestoreSave(row.growth);
             actor.Effects.Restore(row.effects);
             actor.RestoreBody(row.injuries);

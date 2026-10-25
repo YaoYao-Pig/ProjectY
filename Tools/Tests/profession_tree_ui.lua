@@ -7,7 +7,7 @@ local ok,err=xpcall(function()
     registry:Start()
     local ui,growth,adventure=registry:Get('UI'),registry:Get('Growth'),registry:Get('Adventure')
     local data=Services.Adventure;data:Reset(920)
-    local actor=data:AddPartyActor(1,3);adventure.characterAppearances:Party(actor,920);growth:Initialize(actor)
+    local actor=data:AddPartyActor(1,3);adventure.characterAppearances:Party(actor,920);growth:PrepareActor(actor,3)
     adventure.equipment:Start();adventure.equipment:StartPartyLoadouts()
     actor:SetMaxHP(growth.stats:MaximumHP(actor));actor:Restore();growth:AddExperience(actor,140,'UI tree check')
     local adapter={LastError='',commands=0}
@@ -76,15 +76,16 @@ local ok,err=xpcall(function()
         for _,widget in ipairs(panel.nodes) do assert(not widget.view.Root.gameObject.activeSelf) end
         checkIcons()
     end)
-    check('profession root opens the chooser and every profession renders',function()
+    check('profession root opens the chooser and every addable profession renders',function()
         panel.courseProfessionRoot.view.Button.onClick:Invoke()
         assert(panel.professionPage=='tree' and panel.choosingProfession and panel.view.GraphScroll.gameObject.activeSelf)
-        for _,profession in ipairs(growth.rules.professions.professions:All()) do
+        local rendered=0
+        for _,profession in ipairs(growth.rules.professions.professions:All()) do if not profession.baseProfession then
             panel.choosingProfession=false;panel:Command('growth_profession',profession.id)
             assert(actor.Growth.CurrentProfessionId==profession.id)
-            checkIcons()
-        end
-        assert(imageCount>7,'Every profession must exercise configured artwork')
+            checkIcons();rendered=rendered+1
+        end end
+        assert(rendered==11 and imageCount>7,'All eleven addable professions must exercise configured artwork')
     end)
     messages[#messages+1]='PASS profession icon projections: '..imageCount..' artwork, '..glyphCount..' glyph fallback'
     panel:Command('growth_profession',3);panel.selectedCourse=103;panel:Refresh();panel:ResetGraph()

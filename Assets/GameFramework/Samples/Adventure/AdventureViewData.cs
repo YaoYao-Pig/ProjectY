@@ -20,7 +20,7 @@ namespace ProjectY.Samples
             public int MovementSequence;
             public string MovementStyle;
         }
-        public sealed class Site { public int Id, AreaConfigId, Q, R, WorldTownId; public string Name, Reason, Kind; public Vector3 Position; public bool Available, Visited; }
+        public sealed class Site { public int Id, AreaConfigId, Q, R, WorldTownId, WorldRegionId; public string Name, Reason, Kind; public Vector3 Position; public bool Available, Visited; }
         public sealed class Choice { public int Id; public string Label, Reason; public bool Available; }
         public sealed class Cell { public int Q, R, CellIndex; public bool Blocked; }
         public sealed class TargetPreview
@@ -34,13 +34,15 @@ namespace ProjectY.Samples
         {
             public int Id, Cost, MaxTargets;
             public string Name, Description, Action;
-            public bool ManualTargets, Guided, NeedsLanding;
+            public bool ManualTargets, Guided, NeedsLanding, NeedsCellLanding;
             public int[] Targets, TargetCells, ContainerTargets;
             public int[] RangeCells = Array.Empty<int>();
             public TargetPreview[] TargetPreviews;
             public LandingOption[] LandingOptions=Array.Empty<LandingOption>();
+            public CellLandingOption[] CellLandingOptions=Array.Empty<CellLandingOption>();
         }
         public sealed class LandingOption { public int TargetId; public Cell[] Cells; }
+        public sealed class CellLandingOption { public Cell Source; public Cell[] Cells; }
         public sealed class Trap { public int Q, R, SourceId; public string Name; }
         public string Phase, BattlePhase, Result, Error, EventTitle, EventText, Encounter;
         public int Coins, Round, ActiveId, Radius;
@@ -52,6 +54,7 @@ namespace ProjectY.Samples
         public Trap[] Traps=Array.Empty<Trap>();
         public string[] Logs;
         public WorldEffectEvent[] VisualEffects=Array.Empty<WorldEffectEvent>();
+        public BattleAudioEvent[] AudioEvents=Array.Empty<BattleAudioEvent>();
         public MapAreaViewData.State Area;
         public sealed class TravelState
         {
@@ -64,6 +67,20 @@ namespace ProjectY.Samples
         public sealed class WorldParty { public int Id;public string Name,Kind,Status,ModelPath;public Vector3 Position; }
         public sealed class WorldPartyState { public string PlayerModelPath;public WorldParty[] Rows; }
         public WorldPartyState WorldParties;
+        public sealed class WaterModel { public int Id; public string Path; public Vector3 Position; public float Yaw, Scale; }
+        public sealed class WaterState { public string Mode, BoatPath; public bool ShowBoat; public Vector3 BoatPosition; public float BoatScale; public WaterModel[] Rows; }
+        public WaterState Water=new WaterState {Mode="walk",Rows=Array.Empty<WaterModel>()};
+        private static WaterState ReadWater(LuaTable root)
+        {
+            using(var row=root.Get<LuaTable>("water"))
+            {
+                if(row==null)throw new InvalidOperationException("Adventure snapshot lacks water travel.");
+                return new WaterState {Mode=row.Get<string>("mode"),BoatPath=row.Get<string>("boatPath"),ShowBoat=row.Get<bool>("showBoat"),
+                    BoatPosition=new Vector3(row.Get<float>("boatX"),row.Get<float>("boatY"),row.Get<float>("boatZ")),BoatScale=row.Get<float>("boatScale"),
+                    Rows=Rows(row,"rows",item=>new WaterModel {Id=item.Get<int>("id"),Path=item.Get<string>("modelPath"),
+                        Position=new Vector3(item.Get<float>("x"),item.Get<float>("y"),item.Get<float>("z")),Yaw=item.Get<float>("yaw"),Scale=item.Get<float>("scale")})};
+            }
+        }
         private static WorldPartyState ReadWorldParties(LuaTable root)
         {
             using(var row=root.Get<LuaTable>("worldParties"))
@@ -141,7 +158,8 @@ namespace ProjectY.Samples
         public static AdventureViewData Read(LuaTable root) => new AdventureViewData {
             WorldFog=root.Get<ProjectY.Data.WorldMapExplorationData>("worldFog"),
             VisualEffects=WorldEffectEvent.Read(root),
-            Travel=ReadTravel(root), WorldParties=ReadWorldParties(root), Torch=ReadTorch(root),
+            AudioEvents=BattleAudioEvent.Read(root),
+            Travel=ReadTravel(root), WorldParties=ReadWorldParties(root), Water=ReadWater(root), Torch=ReadTorch(root),
             Area = MapAreaViewData.ReadState(root),
             Phase = root.Get<string>("phase"), BattlePhase = root.Get<string>("battlePhase"), Result = root.Get<string>("result"), Error = root.Get<string>("error"),
             EventTitle = root.Get<string>("eventTitle"), EventText = root.Get<string>("eventText"), Encounter = root.Get<string>("encounter"),
@@ -150,7 +168,7 @@ namespace ProjectY.Samples
             Reachable = Rows(root, "reachable", ReadCell), Logs = Values<string>(root, "logs"),
             Traps=Rows(root,"traps",row=>new Trap { Q=row.Get<int>("q"),R=row.Get<int>("r"),SourceId=row.Get<int>("sourceId"),Name=row.Get<string>("name") }),
             Sites = Rows(root, "sites", row => new Site { Id = row.Get<int>("id"), Name = row.Get<string>("name"),
-                Q = row.Get<int>("q"), R = row.Get<int>("r"), WorldTownId = row.Get<int>("worldTownId"),
+                Q = row.Get<int>("q"), R = row.Get<int>("r"), WorldTownId = row.Get<int>("worldTownId"),WorldRegionId=row.Get<int>("worldRegionId"),
                 AreaConfigId = row.Get<int>("areaConfigId"), Reason = row.Get<string>("reason"), Kind = row.Get<string>("kind"),
                 Position = new Vector3(row.Get<float>("x"), row.Get<float>("y"), row.Get<float>("z")),
                 Available = row.Get<bool>("available"), Visited = row.Get<bool>("visited") }),
@@ -161,12 +179,16 @@ namespace ProjectY.Samples
                 TargetCells = Values<int>(row,"targetCells"),ContainerTargets=Values<int>(row,"containerTargets"),RangeCells=Values<int>(row,"rangeCells"),
                 ManualTargets=row.Get<bool>("manualTargets"),MaxTargets=row.Get<int>("maxTargets"),Guided=row.Get<bool>("guided"),
                 NeedsLanding=row.Get<bool>("needsLanding"),
+                NeedsCellLanding=row.Get<bool>("needsCellLanding"),
+                CellLandingOptions=Rows(row,"cellLandingOptions",option=>new CellLandingOption { Source=ReadNestedCell(option,"source"),Cells=Rows(option,"cells",ReadCell) }),
                 LandingOptions=Rows(row,"landingOptions",option=>new LandingOption { TargetId=option.Get<int>("targetId"),Cells=Rows(option,"cells",ReadCell) }),
                 TargetPreviews=Rows(row,"targetPreviews",preview=>new TargetPreview {
                     Id=preview.Get<int>("id"),HitChance=preview.Get<float>("hitChance"),InterceptChance=preview.Get<float>("interceptChance"),
                     BlockerCount=preview.Get<int>("blockerCount"),FriendlyRisk=preview.Get<bool>("friendlyRisk"),Description=preview.Get<string>("description") }) })
         };
         public Actor Active => Array.Find(Units, actor => actor.Id == ActiveId);
+        private static Cell ReadNestedCell(LuaTable row,string key)
+        {using(var value=row.Get<LuaTable>(key))return ReadCell(value);}
         public void RetainPollingFeedback(AdventureViewData previous)
         {
             if(previous!=null && Phase==previous.Phase)Error=previous.Error;

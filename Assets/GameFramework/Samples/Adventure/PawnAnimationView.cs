@@ -31,7 +31,7 @@ namespace ProjectY.Samples
         private bool hasIdentity,ambientActive,ambientMoving;
         private EquipmentVisualData.Pose pose;
         private Vector3 facing;
-        private bool riding;
+        private bool riding, fixedFacing;
         private Vector3 ridingSeat, ridingRestPosition, ridingRestHip;
         private Transform hips, leftThigh, leftShin, leftFoot, rightThigh, rightShin, rightFoot;
         public void SetRiding(bool value,Vector3 seat)
@@ -105,6 +105,7 @@ namespace ProjectY.Samples
         public void Capture(AdventureViewData.Actor actor, Vector3 target, float impactDelay)
         {
             EnsureReady();
+            fixedFacing=actor.FixedFootprint;
             if (!initialized)
             {
                 hp = actor.HP; sequence = actor.ActionSequence; initialized = true;
@@ -152,7 +153,7 @@ namespace ProjectY.Samples
                     var action = settings.GetAction(pending.Dequeue().TemplateId);
                     if (string.IsNullOrEmpty(action.State)) continue; // Explicit no-motion action.
                     var direction = facing - owner.position; direction.y = 0;
-                    if (direction.sqrMagnitude > .001f) owner.rotation = Quaternion.LookRotation(direction);
+                    if (!fixedFacing && direction.sqrMagnitude > .001f) owner.rotation = Quaternion.LookRotation(direction);
                     remaining = actionDuration = action.Duration; actionState = action.State; currentState = null; playingAction=action;
                     Play(action.State, action.Clip.length / action.Duration, false);
                 }

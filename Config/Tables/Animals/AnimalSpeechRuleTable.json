@@ -1,0 +1,85 @@
+{
+  "version": 1,
+  "name": "AnimalSpeechRuleTable",
+  "description": "动物交谈术入口与百分骰沟通检定；理解仅本次接触，沟通结果保存到下一次驯服尝试并消耗。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定规则 ID",
+      "min": 1
+    },
+    {
+      "name": "skillId",
+      "type": "int",
+      "description": "动物交谈法术",
+      "ref": "CombatSkillTable"
+    },
+    {
+      "name": "npcId",
+      "type": "int",
+      "description": "普通动物对话身份容器",
+      "ref": "NpcTable"
+    },
+    {
+      "name": "baseChance",
+      "type": "int",
+      "description": "基础沟通成功率",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "affinityWeight",
+      "type": "int",
+      "description": "动物亲和每点增加的成功率",
+      "min": 0
+    },
+    {
+      "name": "charismaWeight",
+      "type": "int",
+      "description": "魅力每点增加的成功率",
+      "min": 0
+    },
+    {
+      "name": "hostilePenalty",
+      "type": "int",
+      "description": "敌对动物沟通惩罚",
+      "min": 0
+    },
+    {
+      "name": "legendaryPenalty",
+      "type": "int",
+      "description": "传奇动物沟通惩罚",
+      "min": 0
+    },
+    {
+      "name": "minimumChance",
+      "type": "int",
+      "description": "沟通成功率下限",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "maximumChance",
+      "type": "int",
+      "description": "沟通成功率上限",
+      "min": 0,
+      "max": 100
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "skillId": 206,
+      "npcId": 401,
+      "baseChance": 45,
+      "affinityWeight": 3,
+      "charismaWeight": 2,
+      "hostilePenalty": 20,
+      "legendaryPenalty": 20,
+      "minimumChance": 5,
+      "maximumChance": 95
+    }
+  ]
+}

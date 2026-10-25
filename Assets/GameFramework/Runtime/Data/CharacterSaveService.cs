@@ -60,7 +60,7 @@ namespace ProjectY.Data
             var expedition=ExpeditionPersistence.Capture(adventure);
             if(expedition!=null)foreach(var area in expedition.areas)foreach(var group in area.encounters)foreach(var actor in group.actors)actorIds.Add(actor.id);
             if(expedition!=null)foreach(var party in expedition.parties.parties)foreach(var actor in party.members)actorIds.Add(actor.id);
-            var document = new CharacterSaveDocument { version = expedition==null?23:24, savedAt = DateTime.UtcNow.ToString("o"), worldName = currentWorldName, seed = adventure.Seed,
+            var document = new CharacterSaveDocument { version = expedition==null?25:26, savedAt = DateTime.UtcNow.ToString("o"), worldName = currentWorldName, seed = adventure.Seed,
                 coins = player.Coins, playerLevel = player.Level, actors = Enumerable.Range(0, adventure.PartyCount).Select(i => adventure.GetPartyAt(i).CaptureSave()).ToArray(), equipment = adventure.Equipment.CaptureSave(actorIds), narrative = adventure.Narrative.Capture(), shops = adventure.Shops.Capture(),
                 camp=adventure.Camp.Capture(),partyStory=adventure.PartyBonds.Capture(),journal=adventure.CaptureJournal(),expedition=expedition,skillSynergies=adventure.SynergyDiscovery.Capture() };
             PrepareDocument(document, adventure.Equipment); // Reject incomplete state before touching a prior save.
@@ -85,7 +85,7 @@ namespace ProjectY.Data
         }
         private PreparedCharacterSave PrepareDocument(CharacterSaveDocument document, EquipmentData current)
         {
-            SaveCheck.Require(document != null && document.version >= 1 && document.version <= 24, "不支持的版本");
+            SaveCheck.Require(document != null && document.version >= 1 && document.version <= 26, "不支持的版本");
             // Old saves did not record discoveries; installed runes must not implicitly reveal them on load.
             var synergies = document.version < 13 ? new SkillSynergyDiscoveryData() : SkillSynergyDiscoveryData.Prepare(document.skillSynergies);
             SaveCheck.Require(document.coins >= 0 && document.playerLevel >= 1, "玩家数值");
@@ -103,6 +103,27 @@ namespace ProjectY.Data
                     actor.growth.offers = Array.Empty<int>(); // 保留学习次数；旧候选不再限制主动选学。
                 }
                 else SaveCheck.Require(actor.growth.currentProfessionId > 0, "缺少当前职业");
+            }
+            if(document.version<25)
+            {
+                // Existing actors keep template attributes and their saved profession; never roll during migration.
+                foreach(var actor in actors)
+                {
+                    actor.initialAttributes=InitialAttributesSave.Template();
+                    SaveCheck.PositiveIds(actor.growth.professions, "职业");
+                    actor.professionAttributes=actor.growth.professions.Select(ProfessionAttributesSave.Empty).ToArray();
+                }
+                if(document.expedition!=null)
+                {
+                    if(document.expedition.areas!=null)foreach(var area in document.expedition.areas)
+                        if(area!=null && area.encounters!=null)foreach(var group in area.encounters)
+                            if(group!=null && group.actors!=null)foreach(var actor in group.actors)
+                                if(actor!=null){actor.initialAttributes=InitialAttributesSave.Template();actor.professionAttributes=Array.Empty<ProfessionAttributesSave>();}
+                    if(document.expedition.parties!=null && document.expedition.parties.parties!=null)
+                        foreach(var party in document.expedition.parties.parties)
+                            if(party!=null && party.members!=null)foreach(var actor in party.members)
+                                if(actor!=null){actor.initialAttributes=InitialAttributesSave.Template();actor.professionAttributes=Array.Empty<ProfessionAttributesSave>();}
+                }
             }
             if(document.version<8)
             {
@@ -182,7 +203,7 @@ namespace ProjectY.Data
                 Narrative = narrative, LegacyNarrative = document.version == 1, LegacyProfessions = document.version < 5,
                 Shops = ShopData.Prepare(document.version >= 4 ? document.shops : Array.Empty<ShopStockSave>()),
                 Camp=CampData.Prepare(document.camp),PartyBonds=PartyStoryData.Prepare(document.partyStory,ids),Journal=journal,SynergyDiscovery=synergies };
-            if(document.version==9 || document.version==11 || document.version==12 || document.version==14 || document.version==16 || document.version==18 || document.version==20 || document.version==22 || document.version==24)
+            if(document.version==9 || document.version==11 || document.version==12 || document.version==14 || document.version==16 || document.version==18 || document.version==20 || document.version==22 || document.version==24 || document.version==26)
             {
                 SaveCheck.Require(document.expedition!=null,"缺少远征记录");
                 if(document.version<12)document.expedition.parties=null;

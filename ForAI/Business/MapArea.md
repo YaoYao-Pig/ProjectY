@@ -8,6 +8,8 @@
 
 ## 正文
 
+- 高山、峡谷与巨树根部使用独立自然地形策略，入口选址、峡谷首次消耗绳索、真实坡面与模型尺度见[自然地标](NaturalLandmarks.md)。
+
 - 直墙与六角楼板的接缝由 [FloorBoundary](../../Lua/Game/MapArea/FloorBoundary.lua) 共用裁切：生成策略登记真实楼板轮廓和明确洞口，冻结前构建独立 `floorBoundaryPatches`，以半六角等凸裁切块补齐墙边。它们不进入 `cells/neighbors/walkMask`，也不生成移动或战斗高亮；完整六角导航不变。快照复制 `ownerIndex/points/height/thickness`，`TownSurfaceRenderer` 随所属楼板同步迷雾、剖切和材质；封边命中返回无目标但保留遮挡距离，不能点穿到下层。已有楼梯和预留挑空必须显式排除，不能靠填满空邻格推测墙线。
 
 - 临时石堆、木箱阻断与土堆/上锁箱子交互见[工具武器与临时障碍](ToolWeapons.md)。其状态独立于只读布局；探索寻路、编队部署和战斗外部占格均叠加当前未清除障碍。

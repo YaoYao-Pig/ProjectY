@@ -28,6 +28,9 @@ function HUD:Bind()
     end)
     self:Listen(self.view.Focus,function() self.demo:FitMap() end)
     self:Listen(self.view.Follow,function() self.demo:SendCommand('hud_follow') end)
+    local function siteTagsChanged() self:RefreshSiteTags() end
+    self.view.SiteTags.onValueChanged:AddListener(siteTagsChanged)
+    self.lifetime:Add(function() self.view.SiteTags.onValueChanged:RemoveListener(siteTagsChanged) end)
     self:Listen(self.view.TimeStart,function() self.demo:SendCommand('travel_resume') end)
     self:Listen(self.view.TimePause,function() self.demo:SendCommand('travel_suspend') end)
     self:Listen(self.view.TimeSpeed,function()
@@ -42,6 +45,9 @@ function HUD:Bind()
     self:Listen(self.view.Restart,function() self.demo:SendCommand('camp_open') end)
     self:Listen(self.view.Environment,function() self.demo:ToggleEnvironment() end)
     self:Listen(self.view.Interact,function() local row=self.model.interaction;self.demo:SendCommand(row.command,row.a or 0,row.b or 0) end)
+end
+function HUD:RefreshSiteTags()
+    self.view.SiteTagsText.text=self.view.SiteTags.isOn and LuaLanguage.UIMainHudHideSiteTags or LuaLanguage.UIMainHudShowSiteTags
 end
 function HUD:OnShow(args)
     self.demo=assert(args.demo);self.demo:SetMainHud(self.view.HUD);self.navigation=false;self.menuOpen=false
@@ -83,6 +89,8 @@ function HUD:Refresh()
     local exploring=model.phase=='map' or model.phase=='area'
     self.view.TimeControls.gameObject:SetActive(model.phase=='map')
     self.view.Follow.gameObject:SetActive(exploring)
+    self.view.SiteTags.gameObject:SetActive(model.phase=='map')
+    self:RefreshSiteTags()
     if model.phase=='map' then
         self.view.TimeStart.interactable=model.timeControl.paused
         self.view.TimePause.interactable=not model.timeControl.paused

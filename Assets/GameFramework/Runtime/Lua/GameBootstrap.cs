@@ -20,6 +20,8 @@ namespace ProjectY
         private Action back;
         private LuaFunction configQuery;
         private FrameworkServices services;
+        internal Audio.GameAudioService Audio => services?.Audio ?? throw new InvalidOperationException("Audio service is not initialized.");
+        internal void StopAudioEffects() => services?.Audio?.StopEffects();
         private bool stopping;
 #if UNITY_EDITOR
         private LuaFunction editorConsoleExecute;
@@ -46,6 +48,7 @@ namespace ProjectY
                 var ui = gameObject.AddComponent<UIHost>();
                 ui.Initialize();
                 services = new FrameworkServices(ui);
+                services.InitializeAudio(transform);
                 lua = new LuaEnv();
                 var loader = new LuaFileLoader(LuaScriptPaths.RuntimeRoot);
                 lua.AddLoader(loader.Load);
@@ -65,13 +68,14 @@ namespace ProjectY
 
         private void Update()
         {
+            services?.Audio?.Tick(Time.unscaledDeltaTime);
             tick?.Invoke(Time.deltaTime, Time.unscaledDeltaTime);
             if (Input.GetKeyDown(KeyCode.Escape)) back?.Invoke();
             lua?.Tick();
         }
         private void FixedUpdate() => fixedTick?.Invoke(Time.fixedDeltaTime);
         private void LateUpdate() => lateTick?.Invoke(Time.deltaTime, Time.unscaledDeltaTime);
-        private void OnApplicationPause(bool paused) => pause?.Invoke(paused);
+        private void OnApplicationPause(bool paused) { services?.Audio?.SetPaused(paused); pause?.Invoke(paused); }
         private void OnDestroy() { if (Instance == this) { Shutdown(); Instance = null; } }
         private void OnApplicationQuit() => Shutdown();
 
@@ -131,6 +135,7 @@ namespace ProjectY
             services?.Player.ClearListeners();
             services?.UI.Shutdown();
             services?.Localization.Clear();
+            services?.ShutdownAudio();
         }
     }
 }

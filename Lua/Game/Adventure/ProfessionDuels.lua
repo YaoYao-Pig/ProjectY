@@ -56,6 +56,8 @@ function Duels:Use(actor,id)
     local ok,reason=self:CanUse(actor,id);if not ok then return false,reason end
     local adventure=self.adventure;local battle=adventure.battle;local plan=assert(self:Plan(actor))
     local enemy=CS.ProjectY.Data.CombatActorData(9000000+actor.Id,self.encounter.enemyIds[1])
+    local birthSeed=(adventure.data.Seed ~ (adventure.professionExploration:Day()*65537) ~ (adventure.data.Areas.ActiveSiteId*104729))&0xffffffff
+    battle.stats.birth:Initialize(enemy,birthSeed)
     enemy:Deploy(2,plan.target.q,plan.target.r)
     local pool=battle.appearances:Group(self.encounter.appearancePoolId,(adventure.data.Seed ~ enemy.Id)&0xffffffff)
     battle.appearances:Assign(enemy,pool);adventure.equipment:InitializeEnemy(enemy)

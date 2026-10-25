@@ -20,6 +20,10 @@ return function(command,demo)
         ui:Open('CharacterGrowth',{demo=assert(demo)})
     elseif command=='sync' then
         if not ui:IsOpen('MainHud') then ui:Open('MainHud',{demo=demo}) end
+        local water=main:Get('Adventure').water
+        if water.data.IsOpen and data.Phase~='area' then water:Close() end
+        if water.data.IsOpen and not ui:IsOpen('Harbor') then ui:Open('Harbor',{demo=demo})
+        elseif not water.data.IsOpen and ui:IsOpen('Harbor') then ui:Close('Harbor') end
         local parties=main:Get('Adventure').parties
         if parties.data.IsOpen and not ui:IsOpen('WorldParty') then ui:Open('WorldParty',{demo=demo})
         elseif not parties.data.IsOpen and ui:IsOpen('WorldParty') then ui:Close('WorldParty') end

@@ -1,6 +1,6 @@
 # 地图生成与查询
 
-关键词：Map、MapGenerator、MapRegion、Region、Border、种子、六边形、噪声、湖泊、河流、边界混合、森林、冰雪、主河、支流、瀑布、城镇、建筑占地、资源配置、道路、地图查询、地牢、隐居群落、与世隔绝。
+关键词：Map、MapGenerator、MapRegion、Region、Border、种子、六边形、噪声、湖泊、河流、边界混合、森林、冰雪、高山、峡谷、深谷、山脊、主河、支流、瀑布、城镇、建筑占地、资源配置、道路、地图查询、地牢、隐居群落、与世隔绝。
 
 ## 文档目录
 
@@ -8,15 +8,23 @@
 
 ## 正文
 
+- 世界生成 v9 在原城市／水文布局完成后，用独立随机流生成[码头布局](WaterTravel.md)，保留城市与水域身份；v8 及以前不追加码头。码头使用真实可步行岸线和相邻可航行水格。
+
+- 大地图新增的高山云带、黑暗峡谷、巨树多格奇观及其局部探索入口见[自然地标](NaturalLandmarks.md)。
+- 转换器可选 `GetBlendFloor(config,region)` 约束外来采样的最低混合高度；未实现或返回nil时维持原混合规则。v8高山用此入口保留山脚基面，防止邻接深峡谷切穿山内六角台地；峡谷侧的真实深度不削减，旧v7不启用该约束。
+
 - 需求来源：[大地图](https://my.feishu.cn/wiki/VYw9wbMINiJ9B8k0SgqcAS34n1b)、[视角](https://my.feishu.cn/wiki/N3QGwWdw2iTym9kQBSScIsghn4g)。当前实现只读布局数据；未创建 Mesh、材质、相机、建筑/敌人实体或寻路规则。可变玩法状态仍归 C# Data，不把快照中的候选配置当成实体状态。
-- `MapSystem` 依赖 Config，启动只创建生成器；调用 `Generate(seed, regionIds, targetCells?)` 才生成。seed 为 uint32，regionIds 为非空、连续的配置 ID 数组；重复 ID 生成独立实例。同种子、配表、配方顺序、目标格数与 generationVersion 才保证相同结果，调用不改变全局 `math.random` 状态；系统不持有“当前地图”。
-- `GenerateSeeded(seed, targetCells?, progress?, regionIds?)` 为随机开局入口，generationVersion=6：省略 regionIds 时候选池包含全部 MapRegionTable 配置；指定时只从该候选池抽取，供旧开局配方保持地形集合。先按 ID 排序，再由种子的独立随机流分轮洗牌，每轮无放回抽取。指定目标格数时，首轮按尚未出现的配置数分配剩余预算，避免前几块用尽小地图；格数不少于候选数时全部配置至少出现一次，极小地图尽可能覆盖且仍精确满足格数。区块尺寸/高度仍来自原配置，预算裁剪保持连通；后续轮重新洗牌。不传目标只生成一轮。旧 `Generate` 保留固定顺序与 v5 布局。
+- `MapSystem` 依赖 Config，启动只创建生成器；调用 `Generate(seed, regionIds, targetCells?, progress?, generationVersion?)` 才生成。seed 为 uint32，regionIds 为非空、连续的配置 ID 数组；重复 ID 生成独立实例。同种子、配表、配方顺序、目标格数与 generationVersion 才保证相同结果，调用不改变全局 `math.random` 状态；系统不持有“当前地图”。
+- `GenerateSeeded(seed, targetCells?, progress?, regionIds?, generationVersion?)` 为随机开局入口，新图默认 generationVersion=10（继承 v8 地形与 v9 码头，城内改用整侧自然水岸）：省略 regionIds 时候选池包含全部 MapRegionTable 配置；指定时只从该候选池抽取，供旧开局配方保持地形集合。先按 ID 排序，再由种子的独立随机流分轮洗牌，每轮无放回抽取。指定目标格数时，首轮按尚未出现的配置数分配剩余预算，避免前几块用尽小地图；格数不少于候选数时全部配置至少出现一次，极小地图尽可能覆盖且仍精确满足格数。区块尺寸/高度仍来自原配置，预算裁剪保持连通；后续轮重新洗牌。不传目标只生成一轮。固定配方保持原顺序；旧存档显式传 v5（固定配方）或 v6（随机配方）：默认随机候选仅保留原 1～11 地貌，跳过新地貌通行、奇观与云带，防止新增配置改变已保存世界。显式 v7 保留第一版高山公式与原地形数据；v8 才启用真实占地脊谷网络和六角高程台地。
 - `Generate` 第四个可选参数 `progress(value,stage)` 报告 0–1 的阶段检查点，可在 Lua 协程内 yield；不传时保持同步。创建世界的分阶段调用和仍同步的子步骤见 [Loading](../Framework/Loading.md)，回调不改变生成随机序列。
 - 可选 targetCells 为 1～Catalog `Map.MaxCells` 的整数（当前上限 100000）。固定配方传入时循环直到达到精确格数，最后一块从接壤格扩张为连通子区域，并以该起点作为地貌采样中心；不传仍只执行一遍配方。结果记录 `map.targetCells`。`DefaultTargetCells=10000` 仅决定预览入口初值；城镇、河湖上限仍由原表控制，尚不按面积增加，严格地形筛选可能使河流数为零。
-- v5/v6 共用轮廓与摆放：先生成噪声扰动的不规则轮廓，保留中心连通块；从全图真实外沿最多尝试 64 次贴合，裁掉已占用格，保留不少于原轮廓 60% 的中心连通部分，优先更长的共享边。失败时从最东格向东继续，保证终止与连通；区域从不重复占格。`MapRegionConvertBase:Generate` 累积 draft，全部完成后统一过渡、全图河湖、普通聚落/道路、偏远地点、配置装饰、建立 Border，再冻结。
-- `E_MapRegion` → converter/instance 类由 `MapSystem` 注册：Grassland=1（缓坡）、Mountain=2（多尺度山脊）、Lake=3（扰动盆地）、River=4（噪声曲流河谷）、Forest=5（林地丘陵）、Snow=6（冰雪高地），Swamp=7、DarkForest=8、Lava=9、Volcano=10、Mushroom=11。新增五生态复用湖盆/森林/山地采样策略，通过独立尺寸、高度、水文与表现参数区分；新增类型须同时补 Catalog、MapRegionTable、MapBiomeTable、旅行地形、各类 MapArea 主题与策略注册。转换器 `GetHeight(config,q,r,random,noiseScale,region)` 返回地面高度、可选水位、lake/river 类型；会在邻区边界采样，所以必须能处理轮廓外坐标，不能修改随机流或布局。`ValidateConfig` 负责策略特有校验。
+- v5/v6/v7/v8 共用轮廓与摆放：先生成噪声扰动的不规则轮廓，保留中心连通块；从全图真实外沿最多尝试 64 次贴合，裁掉已占用格，保留不少于原轮廓 60% 的中心连通部分，优先更长的共享边。失败时从最东格向东继续，保证终止与连通；区域从不重复占格。`MapRegionConvertBase:Generate` 累积 draft，全部完成后统一过渡、全图河湖、地貌通行、普通聚落/道路、偏远地点、奇观、配置装饰与云带、建立 Border，再冻结；地标环节自 v7 生效，v8 高山沿用完整平顶六角地块，不另生成连续三角山皮。
+- `E_MapRegion` → converter/instance 类由 `MapSystem` 注册：Grassland=1（缓坡）、Mountain=2（多尺度山脊）、Lake=3（扰动盆地）、River=4（噪声曲流河谷）、Forest=5（林地丘陵）、Snow=6（冰雪高地），Swamp=7、DarkForest=8、Lava=9、Volcano=10、Mushroom=11，HighMountain=12、Canyon=13。前五个扩充生态复用湖盆/森林/山地策略，高山与峡谷使用独立转换器；新增类型须同时补 Catalog、MapRegionTable、MapBiomeTable、旅行地形、各类 MapArea 主题与策略注册。可选 `PrepareRegion(config,region,random,footprint,q,r)` 在采样前准备实际占地派生数据，region 带 generationVersion/hexRadius；不得推进布局随机流。转换器 `GetHeight(config,q,r,random,noiseScale,region)` 返回地面高度、可选水位、lake/river 类型；会在邻区边界采样，所以必须能处理轮廓外坐标，不能修改随机流或布局。`ValidateConfig` 负责策略特有校验。
+- `HighMountainRegion` 按生成版本分派：v7 及以前的公式原样保存在 `HighMountainLegacy`；v8 的 `MountainRidgeNetwork` 在 `PrepareRegion` 中使用完整实际占地计算内部中心、距离外缘的层数及主轴，建立三峰/两鞍主脊、六条下降支脊与四条通向实际外沿的谷地。原配置 1～58 是高度上限，实际峰高按内切半径限制高宽比，细节幅度最多为相对山高的 2.5%；次峰先按实际落坡距离限高，鞍部高度和位置随两侧实际峰高调整。高度场以固定上界轮次向低处扩展山肩，保持主峰体量；随后按 1 米层高形成台地，原始相邻格最多相差 4 米（按 hexRadius 同比缩放），避免一格承担整段悬崖。边界混合/水文仍按原管线处理；v8 高山对外来地貌采样保住自身山脚最低基面，峡谷负高程不再侵入高山内部，真正跨峡谷边界仍保留深崖。原 Mountain 保留。`CanyonRegion` 使用变宽曲槽、分层岩壁和收口谷缘，配置高度 -42～6；深谷仍有实际 cell 与实体地块，绝不挖空地图拓扑。两者的几何采样不推进布局随机流，河湖仍交由全图水文处理；峡谷关闭自身盆地蓄水以保留可见深底。
+- `MapLandforms.Build` 在水文后、聚落前写入 `landformType/landformZone`、`mountainElevation/canyonDepth` 与 `worldTravelBlocked`；大地图峰壁及峡谷岩壁/谷底阻挡旅行和设施。`BuildEntrances` 在聚落/奇观布局完成后才发布 `landformEntrance`，仅标记未被建筑或奇观占用的干燥山脚/谷缘，必须邻接同区域阻挡格，并有高差不超过 1.2 半径的可走邻格；它是候选，实际地点还需玩法侧筛选全局可达性。深度颜色由 `MapLandforms.Color` 叠加至 `groundColor`，峡谷 `textureStrength=0`、`cliffTintStrength=1` 保留顶面和侧壁的暗色；地貌底块与装饰资源仍从 MapBiomeTable 读取。
+- v8 高山所有格子保留完整平顶六角面，不输出 `surfaceCorners`；渲染器沿用原六角台地。生成期高度缓存于地貌标记完成后释放，仅保留 `region.mountainShape` 的脊谷、层高/最大单格落差描述和最终格子数据。
 - minX/maxX、minY/maxY 保留 float，从 ceil(min) 到 floor(max) 抽整数作为 q/r **采样包围盒尺寸**，不再代表完整矩形或实际格子数。`Contains` 查询实际归属索引；普通区域保留中心，目标格数截断的末区可重设中心。MaxCells 按最终格子数检查，采样包围盒面积另限制为 MaxCells 的两倍，避免在容量检查前分配极端轮廓。
-- `SeededRandom` 的独立 uint32 随机流负责布局；Fractal/迭代振幅、Warp/坐标扰动、Ridged/折叠山脊均为带通道的纯位置采样，不推进布局随机流。区域表控制 shapeIrregularity、noiseScale（相对 Catalog 基础跨度）、roughness、warpStrength；水体策略另读 waterLevel、lakeSize/riverWidth。当前十一行配置覆盖原六地貌与五生态扩充。
+- `SeededRandom` 的独立 uint32 随机流负责布局；Fractal/迭代振幅、Warp/坐标扰动、Ridged/折叠山脊均为带通道的纯位置采样，不推进布局随机流。区域表控制 shapeIrregularity、noiseScale（相对 Catalog 基础跨度）、roughness、warpStrength；水体策略另读 waterLevel、lakeSize/riverWidth。当前十三行配置覆盖原六地貌、五生态扩充及高山/峡谷；v8 高山主形尺度来自实际裁剪占地；旧高山与峡谷主形尺度仍来自区域尺寸，旧高山细节读 roughness，峡谷宽度读 riverWidth。
 - `TerrainBlend` 按六邻接距离混合附近策略在同一点的采样，Catalog `BorderBlendWidth` 控制宽度（0–12，0 关闭）；区域主体不做整图模糊。`baseHeight` 是所属策略原始高度，受其 minHeight/maxHeight 约束；混合后的高度在过渡带允许超出所属区范围，但处于参与采样包络内；随后水系可按开挖预算进一步降低最终 `height`，避免截断后重新形成台阶。`blendAmount` 表示邻区权重，`biomeWeights` 提供归一化地貌类型权重，`regionWeights` 保留实例权重供水文配置混合。格子所有权和候选配置不变。
 - 水体仍是静态地形预览：height 为河床/湖床，waterLevel 为水面，waterDepth 为深度，waterKind 为 lake/river。启用全图水系时由盆地和排水分析统一定界，旧策略水面仅在 MapWaterNetworkTable 为空时由 MapWater.Build 整理；最终 Reindex 按连通且等高的水格分组，不把有落差的河段压平。地图外缘允许出口，不接入物理流量、队伍通行或桥梁。
 - `MapHydrology` 读取 MapWaterNetworkTable（空表关闭全图水系、最多一行）和 MapRegionTable.hydrologyProfileId → MapHydrologyProfileTable。局部径流、开挖阻力、曲流、宽度、陡坡收窄及湖泊系数按 regionWeights 混合。全外缘 Priority-Flood 分析真实盆地并部分蓄水，保留岛屿；少量低洼出口建立无环排水关系，以地形翻越高度为首要代价，低频噪声影响平缓地带路径。累计径流筛源并决定宽度，中心线与横断面先检查干岸/开挖预算再写入；支流汇入既有河段，河口可以是湖泊或地图外缘。GetRivers 保留有序 cells、source/mouth、rootId/parentRiverId、regionIds；格子含 riverId/flowTo、flowAccumulation、channelRadius（计划扩宽半径）、channelBank。
@@ -61,6 +69,7 @@ local buildings = region:GetBuildingConfigs()
 - [Map.lua](../../Lua/Game/Map/Map.lua) / [HexGrid.lua](../../Lua/Game/Map/HexGrid.lua) / [SeededRandom.lua](../../Lua/Game/Map/SeededRandom.lua)：查询、坐标与随机算法。
 - [MapRegionTable.json](../../Config/Tables/Map/MapRegionTable.json) / [MapEnemyTable.json](../../Config/Tables/Map/MapEnemyTable.json) / [MapBuildingTable.json](../../Config/Tables/Map/MapBuildingTable.json)：表源；[Catalog.json](../../Config/Catalog.json)：枚举与参数。
 - [map.lua](../../Tools/Tests/map.lua) / [map_terrain.lua](../../Tools/Tests/map_terrain.lua)：基础与自然地貌检查。
+- [HighMountainRegion.lua](../../Lua/Game/Map/HighMountainRegion.lua) / [MountainRidgeNetwork.lua](../../Lua/Game/Map/MountainRidgeNetwork.lua) / [HighMountainLegacy.lua](../../Lua/Game/Map/HighMountainLegacy.lua) / [CanyonRegion.lua](../../Lua/Game/Map/CanyonRegion.lua) / [MapLandforms.lua](../../Lua/Game/Map/MapLandforms.lua)：巍峨山脊、实体深槽、通行和入口候选；[map_alpine_canyon.lua](../../Tools/Tests/map_alpine_canyon.lua) 检查真实配表脊谷形态、小世界高宽比、完整平顶面、相邻台阶上限及连片台地、实体深谷、入口、云带、确定性，以及改造前记录的 v7 地形数据指纹。
 - [map_seeded.lua](../../Tools/Tests/map_seeded.lua)：真实开场配置的地形覆盖、种子顺序、区块/全图连通、剧情集市可达、协程准备与旧配方回归；沿用上述 xLua 测试入口，不启动 Editor/Play。
 - [map_ecology.lua](../../Tools/Tests/map_ecology.lua)：十一地貌、新模型实际快照引用、五种旅行战场与全部 MapArea 边界主题；[map_ecology_editmode.cs](../../Tools/Tests/map_ecology_editmode.cs) 在现有 Editor 读取已保存场景绑定、检查真实渲染配色并离屏预览，不进入 Play 或写玩家档案。
 - [map_infrastructure.lua](../../Tools/Tests/map_infrastructure.lua) / [map_pathfinder.lua](../../Tools/Tests/map_pathfinder.lua)：城镇、占地、道路及搜索检查。

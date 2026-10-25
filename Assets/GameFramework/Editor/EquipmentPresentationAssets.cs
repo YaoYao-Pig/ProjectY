@@ -1,5 +1,6 @@
 using System;
 using ProjectY.UI;
+using TMPro;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.UI;
@@ -23,6 +24,7 @@ namespace ProjectY.Editor
                     Apply(name, root);
                     root.GetComponent<LuaReference>().ValidateBindings();
                     PrefabUtility.SaveAsPrefabAsset(root, entry.PrefabPath);
+                    LuaViewHints.Export(root.GetComponent<LuaReference>(), entry.ViewType);
                 }
                 finally { PrefabUtility.UnloadPrefabContents(root); }
             }
@@ -45,7 +47,15 @@ namespace ProjectY.Editor
             text.color = Color.white; text.lineSpacing = 1.16f; text.alignment = TextAnchor.UpperLeft;
             text.horizontalOverflow = HorizontalWrapMode.Wrap; text.verticalOverflow = VerticalWrapMode.Overflow;
         }
-        private static void Details(Text text, RectTransform parent, float x, float y, float width, float height)
+        private static void Style(Component component,int size)
+        {
+            if(component is Text legacy){Style(legacy,size);return;}
+            if(!(component is TMP_Text text))throw new InvalidOperationException("Equipment details require a text binding.");
+            text.richText=true;text.fontSize=Mathf.Max(14,size);text.enableAutoSizing=false;text.color=Color.white;
+            text.lineSpacing=6;text.paragraphSpacing=8;text.alignment=TextAlignmentOptions.TopLeft;
+            text.enableWordWrapping=true;text.overflowMode=TextOverflowModes.Overflow;
+        }
+        private static void Details(Component text, RectTransform parent, float x, float y, float width, float height)
         {
             var viewport = parent.Find("ItemDetailsScroll") as RectTransform;
             ScrollRect scroll;
@@ -61,7 +71,7 @@ namespace ProjectY.Editor
             else scroll = viewport.GetComponent<ScrollRect>() ?? throw new InvalidOperationException("详情容器缺少 ScrollRect。");
             Box(viewport, x, y, width, height);
             text.transform.SetParent(viewport, false); Style(text, 13);
-            var content = text.rectTransform;
+            var content = (RectTransform)text.transform;
             content.anchorMin = new Vector2(0, 1); content.anchorMax = Vector2.one; content.pivot = new Vector2(0, 1);
             content.anchoredPosition = Vector2.zero; content.sizeDelta = new Vector2(-8, 0);
             var fitter = text.GetComponent<ContentSizeFitter>();
@@ -78,7 +88,7 @@ namespace ProjectY.Editor
                 Style(title, 21); Box(title.rectTransform, 18, 52, 242, 58);
                 var heading = parent.Find("DetailHeading").GetComponent<Text>();
                 heading.text = "装备详情  ·  滚轮查看"; heading.fontSize = 12; heading.color = new Color(.56f, .65f, .76f);
-                Details(reference.GetText("ItemDetail"), parent, 18, 122, 242, 252);
+                Details(reference.Get("ItemDetail"), parent, 18, 122, 242, 252);
                 Box((RectTransform)reference.GetButton("Equip").transform, 18, 392, 116, 38);
                 Box((RectTransform)reference.GetButton("Unequip").transform, 144, 392, 116, 38);
                 Box((RectTransform)reference.GetButton("Rotate").transform, 18, 440, 242, 36);
@@ -97,13 +107,13 @@ namespace ProjectY.Editor
                 Box((RectTransform)parent.Find("Viewport"), 18, 74, 480, 300);
                 Box(reference.GetImage("SelectedIcon").rectTransform, 18, 390, 52, 52);
                 Style(title, 20); Box(title.rectTransform, 84, 390, 414, 54);
-                Details(reference.GetText("ItemDetail"), parent, 18, 454, 480, 142);
+                Details(reference.Get("ItemDetail"), parent, 18, 454, 480, 142);
             }
             else if (name == "EquipmentWorkbench")
             {
                 Style(reference.GetText("Title"), 23);
-                Style(reference.GetText("Stats"), 13); Style(reference.GetText("Requirements"), 13);
-                reference.GetText("Stats").transform.parent.Find("StatsTitle").GetComponent<Text>().text = "装备详情与技能";
+                Style(reference.Get("Stats"), 13); Style(reference.GetText("Requirements"), 13);
+                reference.Get("Stats").transform.parent.Find("StatsTitle").GetComponent<Text>().text = "装备详情与技能";
             }
             else if (name == "EquipmentRow")
             {
@@ -117,6 +127,7 @@ namespace ProjectY.Editor
                 inventory.EditorLayout.Labels = root.GetComponentsInChildren<Text>(true);
                 EditorUtility.SetDirty(inventory);
             }
+            EquipmentDescriptionAssets.Apply(name,root);
         }
     }
 }

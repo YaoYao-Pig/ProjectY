@@ -9,6 +9,7 @@
 ## 正文
 
 - `GameBootstrap` 持有唯一常驻 `LuaEnv`，注入 `Services`，加载 `Main`；Unity 帧、暂停、返回和退出事件转给 Lua。
+- `FrameworkServices` 另持有原生[音频服务](Audio.md)，由同一宿主推进与释放；其 C# 内部接口不新增 xLua 绑定。
 - GameBootstrap 仅在 Play 调用 DontDestroyOnLoad；独立 Editor PreviewScene 可显式初始化同一宿主代码来做完整命令回归，结束时仍按正常 OnDestroy/Shutdown 释放单例、回调与 LuaEnv。
 - `Main` 返回现有注册器供工具查询；Editor 主线程注入、Python 入口与执行限制见 [LuaConsole](../Tools/LuaConsole.md)。其 LuaFunction 缓存随 ReleaseCallbacks 释放。
 - C# 可通过 `GameBootstrap.CallModule` 调用返回函数的 Lua 模块，复用现有 LuaEnv 与 require 缓存；调用方必须在当前调用内释放返回的 LuaTable/LuaFunction。它使用既有 `LuaFunction.Call`，不新增委托桥接；[地图运行测试](../Tools/MapRuntimePreview.md) 使用此入口读取一次性的显示快照。

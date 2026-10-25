@@ -8,5 +8,7 @@
 ---@field Body CS.ProjectY.UI.UITxt
 ---@field Locked CS.UnityEngine.RectTransform
 ---@field Style CS.ProjectY.UI.NarrativeView
+---@field Layout CS.UnityEngine.UI.VerticalLayoutGroup
+---@field Sizing CS.UnityEngine.UI.LayoutElement
 local View = {}
 return View

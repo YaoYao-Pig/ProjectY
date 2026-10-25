@@ -86,6 +86,9 @@ function Parties:Initialize()
                 end
                 self.adventure.factions:PrepareRoster(party,row.encounterId)
                 if party.Defeated then for j=0,party.MemberCount-1 do local actor=party:GetMemberAt(j);actor:Damage(actor.HP) end end
+            elseif party.MemberCount>0 then
+                -- Animal species were added after faction migration; update the saved roster in place.
+                factions:PrepareRoster(party,self.definitions:Get(party.DefinitionId).encounterId)
             end
         end
         self:Spawn(true)
@@ -205,7 +208,19 @@ function Parties:TickParty(party,minute,minutes)
     local spent=travel:Step(budget);assert(spent>0,'World party failed to advance');budget=math.max(0,budget-spent)
     end
 end
-function Parties:SyncClock()
+function Parties:AdvanceAnimalRetries(ticks,moving)
+    if not moving or ticks<=0 then return end
+    for i=0,self.data.Count-1 do local party=self.data:GetAt(i)
+        if not party.Defeated and party.BattleSiteId==0 then
+            for j=0,party.MemberCount-1 do local actor=party:GetMemberAt(j)
+                if actor.HP>0 and actor.AnimalSpeciesId>0 and actor.AnimalOwnerId==0 then
+                    for _=1,math.min(ticks,actor.TameRetryTurns) do actor:AdvanceTamingRound() end
+                end
+            end
+        end
+    end
+end
+function Parties:SyncClock(moving)
     if not self.data.Initialized then return end
     local narrative=self.adventure.narrative;local escort=narrative.townMissions and narrative.townMissions.escort
     local now=narrative.data.Minutes
@@ -214,15 +229,18 @@ function Parties:SyncClock()
         while self.data.Remainder+now-self.data.Clock>=1-1e-8 do
             local boundary=math.min(now,self.data.Clock+1-self.data.Remainder)
             local ticks=self.data:ElapsedTicks(boundary)
+            self:AdvanceAnimalRetries(ticks,moving)
             if ticks>0 then self.lod:Advance(self.data.Clock-self.data.Remainder) end
             escort:Refresh()
         end
-        self.data:ElapsedTicks(now);escort:Refresh();return
+        self:AdvanceAnimalRetries(self.data:ElapsedTicks(now),moving);escort:Refresh();return
     end
     local ticks=self.data:ElapsedTicks(now)
+    self:AdvanceAnimalRetries(ticks,moving)
     if ticks>0 then self.lod:Advance(self.data.Clock-self.data.Remainder) end
 end
 function Parties:Near(party)
+    if self.adventure.water and self.adventure.water.data.Mode~='walk' then return false end
     local player=self.adventure.travel.data;local travel=party.Travel
     if player.Progress~=0 then return false end
     local q,r=travel.Q,travel.R

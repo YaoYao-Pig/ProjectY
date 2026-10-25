@@ -31,6 +31,7 @@ namespace ProjectY.Samples
         private MapPreviewData worldMap;
         [SerializeField] private WorldPartyView.Binding[] worldPartyBindings;
         private WorldPartyView worldPartyView;
+        private WorldWaterView worldWaterView;
         private Vector3 displayedTravel;
         private float nextTravelPoll;
         private bool followTravel;
@@ -48,6 +49,7 @@ namespace ProjectY.Samples
         public void SetGMOpen(bool value) {gmOpen=value;}
         public void OpenGM()
         {
+            if(settlementPresentationPending)return;
             if(equipmentOpen || growthOpen || storyOpen || view==null || pendingExitView!=null)return;
             CancelGMKillSelection();
             bootstrap.CallModule("UI.AdventureUIBridge","gm",this);
@@ -115,12 +117,14 @@ namespace ProjectY.Samples
         public void SetStoryOpen(bool value) { storyOpen=value; }
         public void OpenGrowth()
         {
+            if(settlementPresentationPending)return;
             if(equipmentOpen || (view?.Phase!="map" && view?.Phase!="area")) return;
             bootstrap.CallModule("UI.AdventureUIBridge","growth",this);
         }
         public void SetEquipmentOpen(bool value) { equipmentOpen=value; }
         public void OpenEquipment()
         {
+            if(settlementPresentationPending)return;
             if(growthOpen || storyOpen || (view?.Phase!="map"&&view?.Phase!="area")) return;
             bootstrap.CallModule("UI.EquipmentUIBridge","open",this);
         }
@@ -146,7 +150,7 @@ namespace ProjectY.Samples
         private float worldZoom, worldYaw, worldPitch;
         private AdventureViewData view;
         private AdventureViewData pendingExitView;
-        private bool AnimationBusy => HasArea && (squadRenderer.Busy || combatRenderer.Busy || pendingEffects.Count>0 || (visualEffects!=null && visualEffects.Busy) || (battleCinematic!=null && battleCinematic.Active));
+        private bool AnimationBusy => HasArea && (squadRenderer.Busy || combatRenderer.Busy || pendingEffects.Count>0 || pendingAudio.Count>0 || bootstrap.Audio.HasActiveEffects || (visualEffects!=null && visualEffects.Busy) || (battleCinematic!=null && battleCinematic.Active));
         private float nextAI;
         private int selectedSkill, lastActor;
         private int selectedCharacter, selectedCharacterSkill;
@@ -159,7 +163,7 @@ namespace ProjectY.Samples
         }
         public void SelectCharacterSkill(int actorId,int skillId,string target)
         {
-            if(view==null || view.Phase!="area")return;
+            if(view==null || view.Phase!="area" && !(view.Phase=="map" && target=="self"))return;
             SelectCharacter(actorId);
             if(target=="self") {SendCommand("character_skill",actorId,skillId,actorId);return;}
             if(target!="unit" && target!="cell" && target!="container")throw new ArgumentException("Unknown character skill target.",nameof(target));
@@ -257,6 +261,7 @@ namespace ProjectY.Samples
                     var map = MapPreviewData.Read(mapRoot);
                     if(HasArea)ClearAreaView();
                     worldPartyView?.Dispose();worldPartyView=null;
+                    worldWaterView?.Dispose();worldWaterView=null;
                     ClearWorldSites();
                     worldMap=map;
                     mapRenderer.Build(map, asset => {
@@ -283,6 +288,7 @@ namespace ProjectY.Samples
             => SendCommandInternal(command,a,b,c,null);
         private void SendCommandInternal(string command,int a,int b,int c,int[] targetIds)
         {
+            if (settlementPresentationPending) return;
             if (campaignLoading != null) return;
             if (fatalError != null) return;
             if(command=="gm_begin_kill"){BeginGMKillSelection();return;}
@@ -316,6 +322,13 @@ namespace ProjectY.Samples
                     if(command=="snapshot")next.RetainPollingFeedback(view);
                     // GM 传送可能跨城镇或跨越很长距离；重建显示宿主，不把瞬移解释为寻路动画。
                     if(root.Get<bool>("gmTeleport") && HasArea)ClearAreaView();
+                    if(command=="water_repair" && string.IsNullOrEmpty(next.Error) && HasArea)
+                    {
+                        var layoutValues=bootstrap.CallModule(Bridge,"area_layout");
+                        using(var layoutRoot=(LuaTable)layoutValues[0])areaLayout=MapAreaViewData.Read(layoutRoot);
+                        areaRenderer.Dispose();
+                        areaRenderer=new MapAreaRenderer(previewShader,assets[areaLayout.AssetId].prefab,areaLayout,asset=>assets[asset.Id].prefab);
+                    }
                     SetView(next);
                     if(root.Get<bool>("gmTeleport") && string.IsNullOrEmpty(next.Error))
                     {
@@ -328,7 +341,7 @@ namespace ProjectY.Samples
                     }
                 }
                 if(command=="character_skill")CancelCharacterSkill();
-                if((command=="skill" || command=="skill_targets" || command=="skill_landing" || command=="skill_cell" || command=="skill_container" || command=="use_item") && string.IsNullOrEmpty(view.Error))
+                if((command=="skill" || command=="skill_targets" || command=="skill_landing" || command=="skill_at_landing" || command=="skill_cell" || command=="skill_container" || command=="use_item") && string.IsNullOrEmpty(view.Error))
                     CancelBattleSkillSelection();
                 if(view.Phase=="area" && string.IsNullOrEmpty(view.Error))
                 {
@@ -348,6 +361,7 @@ namespace ProjectY.Samples
             if(!Array.Exists(value.Party,actor=>actor.Id==selectedCharacter))selectedCharacter=0;
             if (!exitPresentationComplete && HasArea && view.Phase == "battle" && value.Area == null)
             {
+                QueueBattleAudio(value,0);
                 CaptureBattleCinematic(value.VisualEffects,0,true);
                 QueueVisualEffects(value.VisualEffects,0);value.VisualEffects=Array.Empty<WorldEffectEvent>();
                 Feedback?.Commit(0);
@@ -415,6 +429,7 @@ namespace ProjectY.Samples
                 constructionRenderer.Apply(view.Area,areaLayout);
             }
             Feedback?.Commit(impactDelay);
+            QueueBattleAudio(value,impactDelay);
             CaptureBattleCinematic(value.VisualEffects,impactDelay,wasBattle);
             QueueVisualEffects(value.VisualEffects,impactDelay);
             if (enteringBattle) FocusBattle();
@@ -431,9 +446,13 @@ namespace ProjectY.Samples
                 if(worldPartyView==null)worldPartyView=new WorldPartyView(transform,worldPartyBindings,worldMap.Radius,previewShader,worldMapLod);
                 mapRenderer.SetExploration(view.WorldFog);
                 worldPartyView.Sync(view);
+                if(worldWaterView==null)worldWaterView=new WorldWaterView(transform,worldPartyBindings);
+                worldWaterView.Sync(view);
             }
             BattleHUDRevision++;
-            bootstrap.CallModule("UI.AdventureUIBridge", "sync", this);
+            settlementPresentationPending = wasBattle && view.Phase != "battle" &&
+                (pendingAudio.Count > 0 || bootstrap.Audio.HasActiveEffects);
+            if (!settlementPresentationPending) bootstrap.CallModule("UI.AdventureUIBridge", "sync", this);
         }
         private void ClearAreaView()
         {
@@ -486,6 +505,7 @@ namespace ProjectY.Samples
         }
         private void Update()
         {
+            SyncMusic();
             cameraInputProcessed = false;
             battleCinematic?.RestoreTransforms();
             Feedback?.SetPlaybackRate(0);
@@ -494,6 +514,7 @@ namespace ProjectY.Samples
             environment?.Tick(Time.unscaledDeltaTime, view?.Area);
             environment?.SetTorch(HasArea && view.Torch!=null && view.Torch.Enabled,displayedParty);
             if (view == null || fatalError != null || campaignMenuOpen) return;
+            if (settlementPresentationPending) { AdvanceAudioSettlement(); return; }
             if(Input.GetKeyDown(KeyCode.F8))OpenGM();
             if(gmOpen)return;
             if(gmKillSelecting && (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1)))
@@ -511,12 +532,14 @@ namespace ProjectY.Samples
             float presentationDelta = battleCinematic != null ? battleCinematic.Advance(Time.deltaTime) : Time.deltaTime;
             Feedback?.SetPlaybackRate(battleCinematic != null ? battleCinematic.PlaybackRate : 1);
             Feedback?.Tick(presentationDelta);
+            TickBattleAudio(presentationDelta);
             if(view.Phase=="map")
             {
                 if(Time.unscaledTime>=nextTravelPoll) {SendCommand("snapshot");nextTravelPoll=Time.unscaledTime+.1f;}
                 if(fatalError!=null || view.Phase!="map")return;
                 displayedTravel=Vector3.Lerp(displayedTravel,view.Travel.Position,1-Mathf.Exp(-Time.unscaledDeltaTime*20));
                 worldPartyView.Tick(displayedTravel,Time.unscaledDeltaTime);
+                worldWaterView.Tick(displayedTravel);
                 if(followTravel)focus=displayedTravel;
                 if(Input.GetKeyDown(KeyCode.Space))SendCommand("travel_pause");
                 if(Input.GetKeyDown(KeyCode.Alpha1))SendCommand("travel_speed",1);
@@ -609,7 +632,7 @@ namespace ProjectY.Samples
                     else
                     {
                         var skill=Array.Find(view.Skills,row=>row.Id==selectedSkill);
-                        if(skill!=null && skill.TargetCells.Length>0) {if(index>=0)SendCommand("skill_cell",selectedSkill,index+1);}
+                        if(skill!=null && skill.TargetCells.Length>0) {if(index>=0)ChooseBattleCell(index);}
                         else if(selectedSkill>0)
                         {
                             var targetId=PickAreaActor(ray,index);
@@ -833,7 +856,7 @@ namespace ProjectY.Samples
                 else if (moveSelected) SendCommand("move", clicked.Q, clicked.R);
                 else
                 {
-                    if(chosen!=null && chosen.TargetCells.Length>0) {SendCommand("skill_cell",selectedSkill,clicked.CellIndex+1);return;}
+                    if(chosen!=null && chosen.TargetCells.Length>0) {ChooseBattleCell(clicked.CellIndex);return;}
                     var target = Array.Find(view.Units, actor => actor.HP > 0 && Array.IndexOf(actor.OccupiedCells,clicked.CellIndex)>=0);
                     if (target != null && selectedSkill > 0) ChooseBattleTarget(target.Id);
                 }
@@ -861,6 +884,7 @@ namespace ProjectY.Samples
             EndCampaignLoading();
             DisposeVisualEffects();
             worldPartyView?.Dispose();worldPartyView=null;
+            worldWaterView?.Dispose();worldWaterView=null;
             dialogueCamera?.Dispose();dialogueCamera=null;
             environment?.Dispose(); environment = null;
             lootRenderer?.Dispose();lootRenderer=null;

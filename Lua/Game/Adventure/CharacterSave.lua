@@ -15,6 +15,7 @@ function Save.Validate(adventure,prepared)
     local attributes={};for _,row in ipairs(config:GetTable('GrowthAttributeTable'):All()) do attributes[row.code]=true end
     for i=0,prepared.ActorCount-1 do
         local actor=prepared:GetActorAt(i);config:GetTable('CombatUnitTable'):Get(actor.TemplateId)
+        stats.birth:Validate(actor)
         effects:ValidateSaved(actor)
         equipment:MotionModule(actor)
         assert(adventure.appearances.templates[actor.TemplateId],'存档角色没有外观模板')
@@ -31,6 +32,7 @@ function Save.Validate(adventure,prepared)
         assert(stats:MaximumHP(actor)==actor.MaxHP,'角色生命上限与当前配置不一致，请迁移存档')
         local mount=CS.ProjectY.Data.AnimalCompanionState.Bound(actor)
         if mount then
+            stats.birth:Validate(mount)
             effects:ValidateSaved(mount)
             local species=stats.animals.species:Get(mount.AnimalSpeciesId)
             assert(species.unitId==mount.TemplateId and species.rideable and mount.AnimalBond<=species.maximumBond,'存档坐骑与配置不一致')

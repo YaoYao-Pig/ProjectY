@@ -242,8 +242,8 @@ MonoBehaviour:
       m_Calls: []
   m_text: 
   m_isRightToLeft: 0
-  m_fontAsset: {fileID: 11400000, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
-  m_sharedMaterial: {fileID: 2180264, guid: 8f586378b4e144a9851e7b34d9b748ee, type: 2}
+  m_fontAsset: {fileID: 11400000, guid: 298635e69b092324d91f96318ab00b6a, type: 2}
+  m_sharedMaterial: {fileID: -4734728628416564439, guid: 298635e69b092324d91f96318ab00b6a, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -326,6 +326,7 @@ GameObject:
   - component: {fileID: 5533390579679667385}
   - component: {fileID: 3785177699093497568}
   - component: {fileID: 1936302550696553500}
+  - component: {fileID: 2321509562213033651}
   m_Layer: 0
   m_Name: NarrativeEntryWidget
   m_TagString: Untagged
@@ -382,6 +383,11 @@ MonoBehaviour:
     Target: {fileID: 3347785355916048306}
   - Key: Style
     Target: {fileID: 1936302550696553500}
+  - Key: Layout
+    Target: {fileID: 3785177699093497568}
+  - Key: Sizing
+    Target: {fileID: 2321509562213033651}
+  localizedTexts: []
 --- !u!222 &3174387009629496289
 CanvasRenderer:
   m_ObjectHideFlags: 0
@@ -507,10 +513,29 @@ MonoBehaviour:
   labels: []
   rightAligned: 1
   richLabels:
-  - {fileID: 2104863334427414923}
   - {fileID: 1653383614350947053}
   richFont: {fileID: 11400000, guid: 83107f9f2b8cc334195f98994cef7e22, type: 2}
   choices: {fileID: 0}
+--- !u!114 &2321509562213033651
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2996976123577114633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 306cc8c2b49d7114eaa3623786fc2126, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_IgnoreLayout: 0
+  m_MinWidth: -1
+  m_MinHeight: -1
+  m_PreferredWidth: -1
+  m_PreferredHeight: -1
+  m_FlexibleWidth: -1
+  m_FlexibleHeight: -1
+  m_LayoutPriority: 1
 --- !u!1 &3065649491922320709
 GameObject:
   m_ObjectHideFlags: 0

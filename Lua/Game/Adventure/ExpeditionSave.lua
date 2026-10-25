@@ -29,10 +29,14 @@ end
 function Save.Prepare(adventure,prepared,progress)
     local bridge=CS.ProjectY.Data.ExpeditionPersistence
     local world=adventure:BuildWorld(prepared.Seed,bridge.Recipe(prepared),bridge.Target(prepared)>0 and bridge.Target(prepared) or nil,
-        progress and function(value,stage) progress(value*.7,stage) end)
+        progress and function(value,stage) progress(value*.7,stage) end,bridge.Generation(prepared))
     world.layouts={};world.states={}
-    if not bridge.HasWorld(prepared) then return world end
+    if not bridge.HasWorld(prepared) then
+        adventure.equipment.acquisition:ValidateSaved(prepared,world)
+        return world
+    end
     if progress then progress(.72,Language.CampaignLoadingWorldState) end
+    adventure.water:ValidateSaved(prepared,world)
     adventure.fog:Prepare(world.map,prepared)
     local baseCount=#world.sites
     local travel=bridge.Travel(prepared)
@@ -51,7 +55,11 @@ function Save.Prepare(adventure,prepared,progress)
     assert(not parties.Initialized or parties.Clock<=prepared.Narrative.Minutes,'存档队伍时钟超前')
     for i=0,parties.Count-1 do
         local party=parties:GetAt(i);local row=adventure.parties.definitions:Get(party.DefinitionId)
-        for j=0,party.MemberCount-1 do adventure.battle.gameEffects:ValidateSaved(party:GetMemberAt(j)) end
+        for j=0,party.MemberCount-1 do
+            local actor=party:GetMemberAt(j)
+            adventure.battle.stats.birth:Validate(actor)
+            adventure.battle.gameEffects:ValidateSaved(actor)
+        end
         assert(world.map:FindCell(party.Travel.Q,party.Travel.R),'存档游荡队伍位置无效')
         if party.AbstractTravel then
             local target=assert(world.map:FindCell(party.AbstractQ,party.AbstractR),'存档抽象行程目的地无效')
@@ -110,6 +118,7 @@ function Save.Prepare(adventure,prepared,progress)
             adventure.battle.encounters:Get(group.EncounterId)
             for j=0,group.EnemyCount-1 do local actor=group:GetEnemyAt(j)
                 adventure.config:GetTable('CombatUnitTable'):Get(actor.TemplateId)
+                adventure.battle.stats.birth:Validate(actor)
                 assert(actor.AnimalSpeciesId~=0 or adventure.battle.stats.animals:IsStaticBody(actor) or actor.CustomizationJson~='', '存档角色缺少外观')
                 -- Owned animals travel with the party; this encounter only preserves their original identity.
                 if actor.AnimalOwnerId==0 then assert(layout:Find(actor.Q,actor.R),'存档敌人坐标不在区域内') end
@@ -126,6 +135,7 @@ function Save.Prepare(adventure,prepared,progress)
         if progress then progress(.8+.19*(i+1)/areaCount,Language.CampaignLoadingAreas) end
     end
     adventure.narrative.townMissions:ValidateSaved(CS.ProjectY.Data.TownMissionData.Prepared(prepared),world,parties)
+    adventure.equipment.acquisition:ValidateSaved(prepared,world)
     if progress then progress(1,Language.CampaignLoadingWorldState) end
     return world
 end

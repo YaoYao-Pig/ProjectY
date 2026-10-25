@@ -1,0 +1,83 @@
+{
+  "version": 1,
+  "name": "MapAtmosphereTable",
+  "description": "高山山腰云带：由真实山体高度决定海拔，仅影响显示。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "配置ID",
+      "min": 1
+    },
+    {
+      "name": "regionType",
+      "type": "enum",
+      "description": "目标地貌",
+      "enumRef": "Map.E_MapRegion"
+    },
+    {
+      "name": "minPeakHeight",
+      "type": "float",
+      "description": "峰顶最低海拔"
+    },
+    {
+      "name": "minRelief",
+      "type": "float",
+      "description": "最小相对高差",
+      "min": 0
+    },
+    {
+      "name": "altitudeFraction",
+      "type": "float",
+      "description": "相对山脚至峰顶的云带高度",
+      "min": 0.01,
+      "max": 0.99
+    },
+    {
+      "name": "spacing",
+      "type": "int",
+      "description": "云团采样间距（格）",
+      "min": 1
+    },
+    {
+      "name": "width",
+      "type": "float",
+      "description": "云团宽（格半径）",
+      "min": 1
+    },
+    {
+      "name": "height",
+      "type": "float",
+      "description": "云带厚度（格半径）",
+      "min": 0.1
+    },
+    {
+      "name": "opacity",
+      "type": "float",
+      "description": "云团透明度",
+      "min": 0,
+      "max": 1
+    },
+    {
+      "name": "drift",
+      "type": "float",
+      "description": "横向漂移幅度（格半径）",
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "regionType": 12,
+      "minPeakHeight": 20,
+      "minRelief": 15,
+      "altitudeFraction": 0.58,
+      "spacing": 5,
+      "width": 14,
+      "height": 3.2,
+      "opacity": 0.33,
+      "drift": 1.8
+    }
+  ]
+}

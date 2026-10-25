@@ -126,6 +126,26 @@ const professions = [
     <path d="m115 87 13 11 13-11m-13 14v29" stroke-width="4"/>
     <path d="m50 185 12 10m-15 2 12 10m144-22-12 10m15 2-12 10" stroke-width="4"/>
   ` },
+  { id: 12, name: 'Peasant', symbol: `
+    <path d="M91 202V57" stroke="${ivory}" stroke-width="7"/>
+    <path d="M91 70q-22-6-26-28 23 1 26 28Zm0 27q-25-5-29-27 25 1 29 27Zm0 27q-25-5-29-27 25 1 29 27Zm0 27q-25-5-29-27 25 1 29 27Z" fill="${gold}" stroke-width="3"/>
+    <path d="M91 70q22-6 26-28-23 1-26 28Zm0 27q25-5 29-27-25 1-29 27Zm0 27q25-5 29-27-25 1-29 27Zm0 27q25-5 29-27-25 1-29 27Z" fill="${ivory}" stroke-width="3"/>
+    <path d="M91 58q-12-16 0-31 12 15 0 31Z" fill="${ivory}" stroke-width="3"/>
+    <path d="M161 40q42 20 43 59 1 41-44 55l-20-16q45-10 43-43-1-27-22-55Z" fill="${ivory}"/>
+    <path d="m143 137 18 13-43 64-18-13Z" fill="${dark}"/>
+    <path d="m132 158 16 11m-25 3 16 11m-25 3 16 11" stroke-width="4"/>
+    <path d="M62 204q26-17 50-3m-49 9q23-11 42-3" stroke-width="4"/>
+  ` },
+  { id: 13, name: 'Noble', symbol: `
+    <path d="m66 49 27 20 14-31 21 30 21-30 14 31 27-20-14 49H80Z" fill="${ivory}"/>
+    <path d="M80 94h96v16H80Z" fill="${gold}"/>
+    <path d="m116 94 12-11 12 11-12 11Z" fill="${dark}" stroke-width="3"/>
+    <path d="M80 121h96v35q-3 35-48 62-45-27-48-62Z" fill="${dark}"/>
+    <path d="M90 131h76v25q-4 28-38 50-34-22-38-50Z" stroke-width="3"/>
+    <path d="M128 138q-17 17-6 36-8-18-19-13-6 10 8 17h-7v10h18v9h12v-9h18v-10h-7q14-7 8-17-11-5-19 13 11-19-6-36Z" fill="${ivory}" stroke-width="3"/>
+    <path d="M55 135q-7 39 16 64m-12-42-15-8 1 17 18 10m0-6 13-10 1 19-9 7" stroke-width="4"/>
+    <path d="M201 135q7 39-16 64m12-42 15-8-1 17-18 10m0-6-13-10-1 19 9 7" stroke-width="4"/>
+  ` },
 ];
 
 function makeSvg(profession) {
@@ -163,11 +183,11 @@ async function main() {
       throw new Error(`Invalid icon bounds for ${profession.name}`);
     manifest.push({ id: profession.id, name: profession.name, sha256: crypto.createHash('sha256').update(buffer).digest('hex'), bounds: [minX, minY, maxX, maxY], paintedPixels: pixels });
   }
-  if (new Set(manifest.map(icon => icon.sha256)).size !== 11) throw new Error('Duplicate profession icons');
+  if (new Set(manifest.map(icon => icon.sha256)).size !== professions.length) throw new Error('Duplicate profession icons');
   fs.writeFileSync(path.join(sourceDir, 'manifest.json'), JSON.stringify({ canvasSize: 256, background: 'transparent', icons: manifest }, null, 2) + '\n');
 
   const columns = 6, cellWidth = 240, cellHeight = 285;
-  const sheetWidth = columns * cellWidth, sheetHeight = 2 * cellHeight + 94;
+  const sheetWidth = columns * cellWidth, sheetHeight = Math.ceil(professions.length / columns) * cellHeight + 94;
   let sheet = `<svg xmlns="http://www.w3.org/2000/svg" width="${sheetWidth}" height="${sheetHeight}"><rect width="100%" height="100%" fill="#24382f"/><text x="32" y="42" fill="${ivory}" font-size="22" font-family="sans-serif" letter-spacing="3">PROFESSION EMBLEMS</text><text x="32" y="70" fill="${gold}" font-size="14" font-family="sans-serif">ORIGINAL VECTOR SET / 256 PX / TRANSPARENT / 64 PX CHECK</text>`;
   for (let index = 0; index < professions.length; index++) {
     const p = professions[index], x = index % columns * cellWidth, y = 94 + Math.floor(index / columns) * cellHeight;

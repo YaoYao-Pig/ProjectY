@@ -22,5 +22,8 @@
 ---@field PrimaryText CS.ProjectY.UI.UITxt
 ---@field PrimaryHint CS.ProjectY.UI.UITxt
 ---@field Style CS.ProjectY.UI.NarrativeView
+---@field Skin CS.ProjectY.UI.LuaReference
+---@field RewardSkin CS.ProjectY.UI.LuaReference
+---@field RewardsLayout CS.UnityEngine.UI.GridLayoutGroup
 local View = {}
 return View

@@ -23,6 +23,18 @@ namespace ProjectY.Samples
             this.target = target; this.cell = destination = cell; this.layout = layout;
             target.position = Position(cell);
         }
+        public void SetFootprint(AdventureViewData.Actor actor)
+        {
+            if(actor.FixedFootprint && !FixedFacing)target.rotation=Quaternion.Euler(0,180,0);
+            FixedFacing=actor.FixedFootprint;VisualOffset=Vector3.zero;
+            if(!FixedFacing)return;
+            if(actor.OccupiedCells.Length==0)throw new InvalidOperationException("Fixed body has no projected footprint.");
+            float top=float.NegativeInfinity;
+            foreach(int index in actor.OccupiedCells)
+            {VisualOffset+=layout.Cells[index].Position;top=Mathf.Max(top,layout.Cells[index].Position.y);}
+            VisualOffset/=actor.OccupiedCells.Length;VisualOffset.y=top;
+            VisualOffset-=layout.Cells[actor.CellIndex].Position;
+        }
         private Vector3 Position(int index) => VisualOffset+(layout.IsTown || layout.Cells[index].UsesSurfaceMesh
             ? TownSurfaceRenderer.Ground(layout, index, index, layout.Cells[index].Position)
             : layout.Cells[index].Position + Vector3.up * .015f);

@@ -11,6 +11,8 @@ local ok,err=xpcall(function()
     test('reveal world rejects an uninitialized expedition',function()
         local success,reason=gm:Execute('reveal_world')
         assert(not success and reason==require('Language').GMWorldMapUnavailable)
+        success,reason=gm:Execute('restore_world_vision')
+        assert(not success and reason==require('Language').GMWorldMapUnavailable)
     end)
     adventure:Start(412)
     local first,second=adventure.data:GetPartyAt(0),adventure.data:GetPartyAt(1)
@@ -43,6 +45,21 @@ local ok,err=xpcall(function()
         assert(gm:Execute('reveal_world'));fog:Reset(adventure.map)
         assert(not fog.fullVision and data.KnownCount==data.VisibleCount and data.KnownCount<data.CellCount,'A new world must not inherit GM vision')
     end)
+    test('closing without moving immediately restores normal sight and hides remote enemies while retaining discovery',function()
+        local fog=adventure.fog;local data=fog.data
+        local normal=data.VisibleCount;local distant
+        for i=0,adventure.parties.data.Count-1 do local party=adventure.parties.data:GetAt(i)
+            if not party.Defeated and party.Role~='garrison' and party.Mission~='occupy' and not fog:Visible(party.Travel.Q,party.Travel.R)
+                and adventure.factions:Relation(0,party.FactionId)=='hostile' then distant=party;break end
+        end
+        assert(distant);local q,r=adventure.travel.data.Q,adventure.travel.data.R
+        assert(gm:Execute('reveal_world') and data.VisibleCount==data.CellCount)
+        assert(gm:Execute('restore_world_vision'))
+        assert(not fog.fullVision and data.VisibleCount==normal and data.KnownCount==data.CellCount)
+        assert(adventure.travel.data.Q==q and adventure.travel.data.R==r and not fog:Visible(distant.Travel.Q,distant.Travel.R))
+        for _,row in ipairs(adventure.parties:Snapshot().rows)do assert(row.id~=distant.Id,'Remote enemy must disappear from the normal snapshot')end
+        local revision=data.Revision;assert(gm:Execute('restore_world_vision') and data.Revision==revision)
+    end)
     assert(gm:Execute('goto_npc',1))
     local demo={BattleHUDRevision=0,SelectedCharacterId=first.Id,LastError='',commands=0}
     function demo:SetGMOpen(value) self.open=value end
@@ -59,12 +76,23 @@ local ok,err=xpcall(function()
         panel.view.RevealWorld.onClick:Invoke()
         assert(demo.commands==before+1 and panel.view.Result.text==require('Language').GMRevealWorldSuccess)
         assert(fog.data.VisibleCount==fog.data.CellCount and Services.UI.IsWorldPaused)
+        assert(panel.view.RevealWorldText.text==require('Language').UIGMRevealWorldOnText)
         assert(adventure.data.Areas.ActiveSiteId==site and area.CellIndex==index)
-        local revision=fog.data.Revision;panel.view.RevealWorld.onClick:Invoke();assert(fog.data.Revision==revision)
+        local visible=area.VisibleCount;panel.view.RevealWorld.onClick:Invoke()
+        assert(not fog.fullVision and fog.data.VisibleCount<fog.data.CellCount and fog.data.KnownCount==fog.data.CellCount)
+        assert(panel.view.RevealWorldText.text==require('Language').UIGMRevealWorldText)
+        assert(panel.view.Result.text==require('Language').GMWorldVisionRestored and area.VisibleCount==visible and area.CellIndex==index)
+        panel.view.RevealWorld.onClick:Invoke();assert(fog.fullVision)
         panel.view.Close.onClick:Invoke();assert(not Services.UI.IsWorldPaused)
         assert(adventure.areas:Leave());fog:Update();assert(fog.data.VisibleCount==fog.data.CellCount)
         panel=ui:Open('GM',{demo=demo,font=GMFont})
-        panel.view.Result.text=require('Language').GMRevealWorldSuccess
+        assert(panel.view.RevealWorldText.text==require('Language').UIGMRevealWorldOnText)
+        panel.view.RevealWorld.onClick:Invoke();assert(not fog.fullVision)
+        panel.view.Close.onClick:Invoke();panel=ui:Open('GM',{demo=demo,font=GMFont})
+        assert(panel.view.RevealWorldText.text==require('Language').UIGMRevealWorldText)
+        assert(gm:Execute('reveal_world'));panel:Tick();assert(panel.view.RevealWorldText.text==require('Language').UIGMRevealWorldOnText)
+        assert(gm:Execute('restore_world_vision'));panel:Tick();assert(panel.view.RevealWorldText.text==require('Language').UIGMRevealWorldText)
+        panel.view.Result.text=require('Language').GMWorldVisionRestored
     end)
 end,debug.traceback)
 if not ok then CloseGMPreview();error(err,0) end

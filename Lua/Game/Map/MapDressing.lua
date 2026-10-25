@@ -15,7 +15,8 @@ function Dressing.Build(map,rules)
         end
     end
     for _,cell in ipairs(map.cells) do
-        if not cell.waterLevel and not cell.buildingId and not cell.decorationId and #cell.roadIds==0 then
+        if not cell.waterLevel and not cell.buildingId and not cell.decorationId and not cell.wonderId
+            and not cell.worldTravelBlocked and #cell.roadIds==0 then
             local dominant=cell.biomeWeights[1]
             for _,weight in ipairs(cell.biomeWeights) do if weight.weight>dominant.weight then dominant=weight end end
             local neighbors=map:GetNeighbors(cell.q,cell.r);local slope=0
@@ -27,7 +28,7 @@ function Dressing.Build(map,rules)
                     local clear=true
                     for dq=-row.clearance,row.clearance do for dr=math.max(-row.clearance,-dq-row.clearance),math.min(row.clearance,-dq+row.clearance) do
                         local other=map:FindCell(cell.q+dq,cell.r+dr)
-                        if other and (other.buildingId or other.decorationId) then clear=false end
+                        if other and (other.buildingId or other.decorationId or other.wonderId) then clear=false end
                     end end
                     if clear then
                         local item={id=#map.decorations+1,cell=cell,assetId=row.assetId,

@@ -77,6 +77,7 @@ function Construction:Apply(battle,skill,cell)
     if row.kind=='demolish' then
         local record=assert(self:Record(site,cell.index));local name=self.skills:Get(record.SkillId).name
         local amount=math.max(1,math.floor(row.demolitionBase+battle.stats:Get(actor,'strength')*row.demolitionStrength))
+        if battle.legendary then amount=battle.legendary:StructureDamage(actor,amount)end
         local damage=self.data:Damage(site,cell.index,amount)
         battle:Emit('construction',name..' 受到 '..damage..' 点结构伤害'..(record.Removed and '，已被拆毁' or '（剩余 '..record.HP..'）'),actor.Id)
     else
@@ -84,7 +85,8 @@ function Construction:Apply(battle,skill,cell)
         -- 配置数组是只读代理；跨 xLua 边界前投影为实体数组，避免 raw length 为 0。
         local ids,counts={},{}
         for i,id in ipairs(row.itemIds) do ids[i]=id;counts[i]=row.itemCounts[i] end
-        CS.ProjectY.Data.ProfessionCombatState.PlaceConstruction(self.data,site,cell.index,row.id,hp,self.adventure.equipment.data,ids,counts,actor.Team)
+        local record=CS.ProjectY.Data.ProfessionCombatState.PlaceConstruction(self.data,site,cell.index,row.id,hp,self.adventure.equipment.data,ids,counts,actor.Team)
+        CS.ProjectY.Data.LegendaryEquipmentState.SetConstructionAuthor(record,actor.Id)
         battle:Emit('construction',battle.stats:Template(actor).name..' · '..skill.name,actor.Id)
     end
 end
@@ -120,6 +122,7 @@ function Construction:Dismantle(actor,index)
     local ok,reason=self:CanDismantle(actor,index);if not ok then return false,reason end
     local areas=self.adventure.areas;local row=self.definitions:Get(self.demolitionId)
     local amount=math.max(1,math.floor(row.demolitionBase+self.adventure.battle.stats:Get(actor,'strength')*row.demolitionStrength))
+    if self.adventure.battle.legendary then amount=self.adventure.battle.legendary:StructureDamage(actor,amount)end
     areas:Stop();self.data:Damage(areas.data.ActiveSiteId,index,amount)
     areas:SpendWorkRounds(row.workRounds)
     if areas:RefreshLivingSquad() then areas:RevealSquad(areas:ActiveLayout(),areas.data.Active) end

@@ -101,10 +101,12 @@ function Royal.Generate(area,row,random,config)
         end
     end
     require('Game.MapArea.TownDressing').Apply(area,row,random,config,doors,buildings)
+    require('Game.MapArea.TownWaterfront').Build(area,row,config,doors)
     local distance;reachable,distance=Geometry.Reachable(area,entry.index)
     assert(#reachable==area.walkableCount,'Royal public space disconnected after planning')
     for _,door in ipairs(doors) do assert(distance[door.index],'Royal entrance is disconnected') end
     area.goalDistance=assert(distance[area.goalIndex]);require('Game.MapArea.TownResidents').Populate(area,row,config,doors)
+    require('Game.MapArea.TownWaterfront').BindResidents(area)
     return area
 end
 return Royal

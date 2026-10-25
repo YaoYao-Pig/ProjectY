@@ -14,6 +14,9 @@ function Dialogue:OpenWorld(party)
     local legend=assert(parties.legends:Find(party.DefinitionId),'World dialogue requires a configured identity')
     local ok,reason=parties.legends:CanTalk(party);if not ok then return false,reason end
     assert(parties.data.IsOpen and parties.data.ContactId==party.Id,'World dialogue must follow a validated contact')
+    if story.adventure.battle.stats.animals.byUnit[story.rules.npcs:Get(legend.npcId).actorTemplateId] then
+        return story.adventure.animalSpeech:OpenWorld(party)
+    end
     local definition=self:Definition(legend.npcId)
     if not definition then return false,'此时没有可进行的对话' end
     local actor=assert(story.adventure.events:LivingParty()[1])
@@ -25,6 +28,10 @@ function Dialogue:Enter(id)
     local story = self.story; local row = story.rules.nodes:Get(id)
     assert(row.dialogueId == story.data.DialogueId,'Node outside current dialogue')
     story.data:EnterDialogueNode(id)
+    local speech=story.adventure.animalSpeech
+    if speech and speech:Active() and not speech:HasStory()then
+        story.data:AddDialogueLine(require('Language').AnimalSpeechNarrator,speech:Opening(),false);return
+    end
     local speaker = row.speaker == 'npc' and story.rules.npcs:Get(story.data.DialogueNpcId).name
         or row.speaker == 'player' and story.rules.settings.playerSpeaker or '旁白'
     story.data:AddDialogueLine(speaker,row.text,false)
@@ -56,6 +63,7 @@ end
 function Dialogue:Interjections()
     local story, result = self.story, {}
     assert(story.data.DialogueOpen,'No dialogue to display')
+    if story.adventure.animalSpeech and story.adventure.animalSpeech:Active() and not story.adventure.animalSpeech:HasStory()then return result end
     for _, row in ipairs(story.rules.interjectionsByNode[story.data.DialogueNodeId] or {}) do
         if row.mode == 'optional' and not story.data:HasDialogueInterjection(row.id) then
             for _, actor in ipairs(self:Participants(row)) do
@@ -68,6 +76,7 @@ end
 function Dialogue:Interject(id,actorId,version)
     local story = self.story
     if not story.data.DialogueOpen or version ~= story.data.DialogueVersion then return false,'对话已推进，请选择当前选项' end
+    if story.adventure.animalSpeech and story.adventure.animalSpeech:Active() and not story.adventure.animalSpeech:HasStory()then return false,require('Language').AnimalSpeechNotUnderstood end
     local row = story.rules.interjections:Find(id)
     if not row or row.nodeId ~= story.data.DialogueNodeId or row.mode ~= 'optional' or story.data:HasDialogueInterjection(id) then
         return false,'这段发言当前不可用'
@@ -84,6 +93,7 @@ function Dialogue:Interject(id,actorId,version)
 end
 function Dialogue:CanContinue()
     local story = self.story
+    if story.adventure.animalSpeech and story.adventure.animalSpeech:Active()then return story.adventure.animalSpeech:CanContinue()end
     if story.rules.npcs:Get(story.data.DialogueNpcId).locationKind == 'world_party' then
         local party = assert(story.adventure.parties.data:Find(story.data.DialogueLocalNpcId))
         return story.adventure.parties.legends:CanTalk(party)
@@ -105,12 +115,16 @@ end
 function Dialogue:Choices()
     local story = self.story
     assert(story.data.DialogueOpen,'No dialogue to display')
-    local rows = {}
+    local speech=story.adventure.animalSpeech
+    local animal=speech and speech:Active()
+    local rows = animal and speech:Choices() or {}
+    if animal and not speech:HasStory()then return rows end
     for _, id in ipairs(story.rules.nodes:Get(story.data.DialogueNodeId).choiceIds) do
         local row = story.rules.choices:Get(id)
         local ok,reason = story.conditions:Check(row.conditionId,{})
         local visible = ok or not row.hideWhenLocked
         if ok then local plan; plan,reason = Actions.Prepare(story,row.actionIds); ok = plan ~= nil end
+        if animal and row.worldAction=='attack' and CS.ProjectY.Data.AnimalSpeechState.Context(story.data)~='world' then visible=false end
         if visible then rows[#rows+1] = {id=id,text=row.text,available=ok,reason=reason or ''} end
     end
     return rows
@@ -118,6 +132,13 @@ end
 function Dialogue:Choose(id,version)
     local story = self.story
     if not story.data.DialogueOpen or version ~= story.data.DialogueVersion then return false,'对话已推进，请选择当前选项' end
+    local speech=story.adventure.animalSpeech
+    if speech and speech:Active()then
+        if id<0 then return speech:Choose(id,version)end
+        if not speech:HasStory()then return false,require('Language').AnimalSpeechNotUnderstood end
+        local choice=story.rules.choices:Find(id)
+        if choice and choice.worldAction=='attack' and CS.ProjectY.Data.AnimalSpeechState.Context(story.data)~='world' then return false,require('Language').AnimalSpeechAlreadyCompanion end
+    end
     local belongs = false
     for _, choiceId in ipairs(story.rules.nodes:Get(story.data.DialogueNodeId).choiceIds) do if choiceId == id then belongs = true; break end end
     if not belongs then return false,'选项不属于当前对话节点' end
@@ -135,6 +156,13 @@ end
 function Dialogue:Close(action)
     local story = self.story
     if not story.data.DialogueOpen then return true end
+    if story.adventure.animalSpeech and story.adventure.animalSpeech:Active()then
+        local bridge=CS.ProjectY.Data.AnimalSpeechState
+        local context,partyId=bridge.Context(story.data),bridge.PartyId(story.data)
+        story.data:CloseDialogue()
+        if context=='world' then return story.adventure.parties.legends:Finish(partyId,action or 'none')end
+        return true
+    end
     local world=story.rules.npcs:Get(story.data.DialogueNpcId).locationKind=='world_party'
     local partyId=story.data.DialogueLocalNpcId
     story.data:CloseDialogue()

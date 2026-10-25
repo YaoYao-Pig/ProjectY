@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "name": "ProfessionAttributeTable",
+  "description": "通用职业属性收益；固定加成与随机结果首次获得时保存，只有当前职业生效。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "配置ID",
+      "min": 1
+    },
+    {
+      "name": "professionId",
+      "type": "int",
+      "ref": "ProfessionTable",
+      "description": "适用职业",
+      "min": 1
+    },
+    {
+      "name": "attributeId",
+      "type": "int",
+      "ref": "GrowthAttributeTable",
+      "description": "加成属性",
+      "min": 1
+    },
+    {
+      "name": "fixedBonus",
+      "type": "int",
+      "description": "固定加成",
+      "min": 0
+    },
+    {
+      "name": "randomMin",
+      "type": "int",
+      "description": "随机加成下限（含）",
+      "min": 0
+    },
+    {
+      "name": "randomMax",
+      "type": "int",
+      "description": "随机加成上限（含），为0则不额外随机",
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "professionId": 12,
+      "attributeId": 4,
+      "fixedBonus": 0,
+      "randomMin": 0,
+      "randomMax": 2
+    },
+    {
+      "id": 2,
+      "professionId": 13,
+      "attributeId": 5,
+      "fixedBonus": 0,
+      "randomMin": 0,
+      "randomMax": 2
+    }
+  ]
+}

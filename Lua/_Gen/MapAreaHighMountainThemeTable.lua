@@ -1,0 +1,11 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaHighMountainThemeTableRow
+---@field id number 稳定配置 ID
+---@field regionType 1|2|3|4|5|6|7|8|9|10|11|12|13 入口大地图地貌
+---@field name string 玩家可见环境主题名称
+---@field floorColor string 地表基础色 #RRGGBB
+---@field wallColor string 地形基部色 #RRGGBB
+---@field wallHeight number 非地表网格柱的基础高度
+---@field heightNoise number 未设定地形高度时的噪声
+---@field assetId number 六角地形基础柱模型
+return {["name"]="MapAreaHighMountainThemeTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="regionType",["type"]="enum",["description"]="\229\133\165\229\143\163\229\164\167\229\156\176\229\155\190\229\156\176\232\178\140",["enumRef"]="Map.E_MapRegion",["enumType"]="int",["values"]={1,2,3,4,5,6,7,8,9,10,11,12,13}},{["name"]="name",["type"]="text",["description"]="\231\142\169\229\174\182\229\143\175\232\167\129\231\142\175\229\162\131\228\184\187\233\162\152\229\144\141\231\167\176"},{["name"]="floorColor",["type"]="string",["description"]="\229\156\176\232\161\168\229\159\186\231\161\128\232\137\178 #RRGGBB"},{["name"]="wallColor",["type"]="string",["description"]="\229\156\176\229\189\162\229\159\186\233\131\168\232\137\178 #RRGGBB"},{["name"]="wallHeight",["type"]="float",["description"]="\233\157\158\229\156\176\232\161\168\231\189\145\230\160\188\230\159\177\231\154\132\229\159\186\231\161\128\233\171\152\229\186\166",["min"]=0.1},{["name"]="heightNoise",["type"]="float",["description"]="\230\156\170\232\174\190\229\174\154\229\156\176\229\189\162\233\171\152\229\186\166\230\151\182\231\154\132\229\153\170\229\163\176",["min"]=0},{["name"]="assetId",["type"]="int",["description"]="\229\133\173\232\167\146\229\156\176\229\189\162\229\159\186\231\161\128\230\159\177\230\168\161\229\158\139",["ref"]="MapAssetTable"}},["fingerprint"]="53082bd97a0878816e5e41dc5ac2f8ff576fbbad578d02915ee99a3160675b71"}

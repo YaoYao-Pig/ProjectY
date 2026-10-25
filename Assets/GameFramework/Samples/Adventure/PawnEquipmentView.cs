@@ -17,7 +17,13 @@ namespace ProjectY.Samples
         private PawnCustomizationView customizationView;
         private int customizationRevision;
         private float started=-100;
-        private sealed class Attachment { public int Id; public Transform Transform; public EquipmentEffectDisplay Effect; }
+        private sealed class Attachment
+        {
+            public int Id; public Transform Transform; public EquipmentEffectDisplay Effect;
+            public EquipmentVisualProfileView Visual;
+            public void SetEffect(BlockEffectProfile value) {if(Visual!=null) Visual.SetEffect(value);else Effect.Set(value);}
+            public void Tick(float deltaTime,Vector3 position) {if(Visual!=null) Visual.TickEffects(deltaTime);else Effect.Tick(deltaTime,position);}
+        }
         private readonly Dictionary<string,Attachment> wearables=new Dictionary<string,Attachment>();
         private readonly List<string> removed=new List<string>();
         public void SetCustomization(PawnCustomizationView value)
@@ -64,14 +70,16 @@ namespace ProjectY.Samples
             foreach(var key in removed) {wearables[key].Effect.Dispose();WeaponModelView.Remove(wearables[key].Transform.gameObject);wearables.Remove(key);}
             foreach(var worn in value.Wearables)
             {
-                if(wearables.TryGetValue(worn.Slot,out var existing)&&existing.Id==worn.Model.Id) {existing.Effect.Set(worn.Effect);continue;}
+                if(wearables.TryGetValue(worn.Slot,out var existing)&&existing.Id==worn.Model.Id) {existing.SetEffect(worn.Effect);continue;}
                 if(existing!=null) {existing.Effect.Dispose();WeaponModelView.Remove(existing.Transform.gameObject);}
                 var fitted = customizationView != null && PawnCustomizationCatalog.NeedsFit(worn.Mount);
                 if (fitted && (worn.Position != Vector3.zero || worn.Rotation != Vector3.zero)) throw new InvalidOperationException("Fitted wearable offsets must be authored in the shared rest pose.");
                 var skin = fitted || (animationView != null && (worn.Mount == "legs" || worn.Mount == "feet"));
                 var obj = fitted ? customizationView.CreateFit(worn.Model.Path) : skin ? animationView.CreateSkin(worn.Model.Id, transform) : Instantiate(catalog.Resolve(worn.Model),transform,false);
-                var effect=new EquipmentEffectDisplay(EffectAnchor(worn.Slot));effect.Set(worn.Effect);
-                wearables[worn.Slot]=new Attachment {Id=worn.Model.Id,Transform=obj.transform,Effect=effect};
+                var effect=new EquipmentEffectDisplay(EffectAnchor(worn.Slot));
+                // Cache the explicitly authored optional component once at the composition boundary.
+                var attachment=new Attachment {Id=worn.Model.Id,Transform=obj.transform,Effect=effect,Visual=obj.GetComponent<EquipmentVisualProfileView>()};
+                attachment.SetEffect(worn.Effect);wearables[worn.Slot]=attachment;
                 if(animationView!=null && !skin)
                 {
                     var anchor=animationView.Anchor(worn.Mount=="ring" ? (worn.Slot=="rightRing" ? "mainHand" : "offHand") : worn.Mount=="offhand" ? "offHand" : worn.Mount);
@@ -101,9 +109,9 @@ namespace ProjectY.Samples
         {
             if(view==null) return;
             weapon?.TickEffects(deltaTime);offhand?.TickEffects(deltaTime);
-            foreach(var item in wearables) item.Value.Effect.Tick(deltaTime,SlotWorldPosition(item.Key));
+            foreach(var item in wearables) item.Value.Tick(deltaTime,SlotWorldPosition(item.Key));
         }
-        private void OnDisable() {foreach(var item in wearables.Values)item.Effect.Clear();}
+        private void OnDisable() {foreach(var item in wearables.Values) {item.Effect.Clear();item.Visual?.ClearEffects();}}
         private void OnDestroy() {foreach(var item in wearables.Values)item.Effect.Dispose();}
         private static void Segment(Transform part,Vector3 a,Vector3 b,float radius)
         {part.localPosition=a;part.localRotation=Quaternion.FromToRotation(Vector3.up,b-a);part.localScale=new Vector3(radius,(b-a).magnitude,radius);}

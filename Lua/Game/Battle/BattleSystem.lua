@@ -8,6 +8,7 @@ local Projectiles = require('Game.Battle.ProjectileCombat')
 local OpportunityAttacks = require('Game.Battle.OpportunityAttacks')
 local AllySelfPreservation = require('Game.Battle.AllySelfPreservation')
 local BattleLog = require('Game.Battle.BattleLog')
+local LuaLanguage = require('Language')
 local VisualEffects = require('Game.Presentation.VisualEffects')
 local Battle = Class('BattleSystem', System)
 function Battle:OnInit(context)
@@ -32,14 +33,17 @@ function Battle:OnInit(context)
     self.checks=function(...)self:ChanceLog(...)end
     self.professions=require('Game.Battle.ProfessionCombat').New(config,self)
     self.beasts=require('Game.Battle.ProfessionBeasts').New(config,self)
+    self.legendary=require('Game.Battle.LegendaryEquipment').New(config,self)
     self.gameEffects.professions=self.professions
+    self.gameEffects.legendary=self.legendary
     self.gameEffects.damageLimit=function(target,amount)return CS.ProjectY.Data.ProfessionDuelState.Limit(adventure,target,amount)end
     self.gameEffects:Validate()
     local construction=config:GetTable('ConstructionTable')
+    local animalSpeechSkill=config:GetTable('AnimalSpeechRuleTable'):Get(1).skillId
     for _, row in ipairs(self.skills:All()) do
         assert(row.minRange<=row.range,'Minimum skill range exceeds maximum: '..row.id)
-        assert(#row.effectIds > 0 or construction:Find(row.id) or self.professions.rows:Find(row.id) or self.beasts:Handles(row.id)
-            or config:GetTable('ProfessionExplorationTable'):Find(row.id) or row.id==501 or row.id==503, 'Skill needs effects: ' .. row.id)
+        assert(#row.effectIds > 0 or construction:Find(row.id) or self.professions.rows:Find(row.id) or self.beasts:Handles(row.id) or self.legendary.bySkill[row.id]
+            or config:GetTable('ProfessionExplorationTable'):Find(row.id) or row.id==animalSpeechSkill or row.id==501 or row.id==503, 'Skill needs effects: ' .. row.id)
         Trajectory.Description(row.trajectory)
         assert(row.trajectory=='sight' or row.target=='enemy' or row.target=='ally','Projectile skill needs an actor target: '..row.id)
         OpportunityAttacks.Validate(self,row)
@@ -97,8 +101,10 @@ function Battle:Emit(kind, message, sourceId, targetId, amount, target, attackHi
         or impact and impact.sourceName and {name=impact.sourceName,team=0}
     local targetView=target and {name=self.stats:Template(target).name,team=self:PresentationTeam(target)}
     self.data:AddLog(BattleLog.Format(kind,message,sourceView,targetView,amount,impact))
-    self.Changed:Emit({kind = kind, sourceId = sourceId, targetId = targetId, amount = amount,target=target,attackHit=attackHit==true,impact=impact,
-        hpBefore=impact and impact.hpBefore,hpAfter=impact and impact.hpAfter,periodic=impact and impact.periodic==true})
+    local event={kind = kind, sourceId = sourceId, targetId = targetId, amount = amount,target=target,attackHit=attackHit==true,impact=impact,
+        hpBefore=impact and impact.hpBefore,hpAfter=impact and impact.hpAfter,periodic=impact and impact.periodic==true}
+    require('Game.Presentation.AudioEvents').Record(self,event)
+    self.Changed:Emit(event)
 end
 function Battle:ChanceLog(source,target,skill,label,chance,roll,passed,details)
     details=details or {};details.actionName=skill.name;details.checkName=label;details.chance=chance;details.roll=roll;details.passed=passed
@@ -121,6 +127,7 @@ function Battle:Start(encounterId, party, seed)
     for i, templateId in ipairs(encounter.enemyIds) do
         CS.ProjectY.Data.EquipmentCombatState.RemoveActor(self.stats.equipment.data,100+i)
         local unit = self.data:AddEnemy(100 + i, templateId, deployment[i].q, deployment[i].r)
+        self.stats.birth:Initialize(unit,seed)
         local species=self.stats.animals.byUnit[templateId]
         if species then unit:InitializeAnimal(species.id,(seed ~ unit.Id) & 0xffffffff)
         elseif not self.stats.animals:IsStaticBody(unit) then self.appearances:Assign(unit,appearanceGroup) end
@@ -202,6 +209,7 @@ function Battle:BeginTurn(index)
         self.gameEffects:TickActor(unit,'turn_start')
         self.professions:BeginTurn(unit)
         self.beasts:BeginTurn(unit)
+        if self.legendary then self.legendary:BeginTurn(unit)end
     end
     if self:CheckWinner() then return end
     if unit.HP==0 then self:AdvanceTurn();return end
@@ -248,7 +256,7 @@ end
 function Battle:EndTurn()
     if self.data.Winner ~= '' then return false, '战斗已经结束' end
     local unit = self:Active()
-    if self.data.Phase=='combat' then self.beasts:EndTurn(unit);self.gameEffects:TickActor(unit,'turn_end') end
+    if self.data.Phase=='combat' then self.beasts:EndTurn(unit);if self.legendary then self.legendary:EndTurn(unit)end;self.gameEffects:TickActor(unit,'turn_end') end
     self:Emit('turn_ended', self.stats:Template(unit).name .. ' 结束行动', unit.Id)
     if self:CheckWinner() then return true end
     self:AdvanceTurn();return true
@@ -315,8 +323,11 @@ function Battle:TryMove(q, r)
                 distance=newDistance;previous=newPrevious
             end
             local destination,cost=self.professions:TrapOnPath(unit,cell,previous,distance)
+            local path={destination};local step=destination
+            while previous[step]do step=previous[step];table.insert(path,1,step)end
             CS.ProjectY.Data.BattleMovement.Move(unit,destination.q,destination.r,template.moveCost,cost,self.stats:MoveRange(unit,template))
-            self.professions:OnMoved(unit)
+            if self.legendary then self.legendary:Moved(unit,path,true)end
+            self.professions:OnMoved(unit,true)
             self:Emit('moved', self.stats:Template(unit).name .. ' 移动', unit.Id)
             return true
         end
@@ -329,10 +340,12 @@ function Battle:SkillIds(actor)
         local found=false;for _,id in ipairs(ids) do if id==self.construction.demolitionId then found=true end end
         if not found then ids[#ids+1]=self.construction.demolitionId end
     end
-    return self.beasts:AddSkills(actor,self.professions:AddSkills(actor,ids))
+    ids=self.beasts:AddSkills(actor,self.professions:AddSkills(actor,ids))
+    return self.legendary and self.legendary:AddSkills(actor,ids)or ids
 end
 function Battle:Skill(actor,skillId)
-    return self.professions:Skill(actor,self.stats.buffs:ApplySkillModifiers(actor,self.stats.equipment:Skill(actor,skillId,self.stats)))
+    local skill=self.professions:Skill(actor,self.stats.buffs:ApplySkillModifiers(actor,self.stats.equipment:Skill(actor,skillId,self.stats)))
+    return self.legendary and self.legendary:Skill(actor,skill)or skill
 end
 function Battle:DisarmChance(source,target,skill)
     local height=self.stats.heightAdvantage
@@ -342,12 +355,18 @@ function Battle:DisarmChance(source,target,skill)
 end
 function Battle:ShotPreview(source,target,skill)
     local preview=Projectiles.Profile(self,source,skill,assert(self.board:Find(target.Q,target.R)),nil,target)
-    if skill.id==501 then
+    if skill.id==self.stats.animals.rule.tameSkillId then
+        local chance,values=self.stats.animals:TameChance(source,target,self.stats,self:IsHostile(source,target))
+        preview.hitChance=chance;preview.interceptChance=0;preview.blockerCount=0;preview.friendlyRisk=false
+        preview.advantageSources=values.advantageSources
+        preview.description=string.format(values.advantageSources and #values.advantageSources>0 and
+            LuaLanguage.AnimalTameAdvantagePreview or LuaLanguage.AnimalTamePreview,chance)
+    elseif skill.id==501 then
         preview.hitChance=preview.reachable and self:DisarmChance(source,target,skill) or 0
         preview.description=string.format('缴械成功率 %.1f%%',preview.hitChance)
     end
     return {id=target.Id,hitChance=preview.hitChance,interceptChance=preview.interceptChance,blockerCount=preview.blockerCount,
-        friendlyRisk=preview.friendlyRisk,description=preview.description}
+        friendlyRisk=preview.friendlyRisk,description=preview.description,advantageSources=preview.advantageSources}
 end
 function Battle:ActionBudget(skill)
     if self.data.Winner ~= '' then return false, '战斗已经结束' end
@@ -369,7 +388,10 @@ function Battle:ActionBudget(skill)
     local allowed,reason=self.stats.equipment:CheckSkillEquipment(source,equipmentSkill,self.stats)
     if not allowed then return false,reason end
     local ready,why=self.stats.equipment:CheckAmmo(source,skill);if not ready then return false,why end
-    return self.professions:Budget(source,skill)
+    local professionReady,professionReason=self.professions:Budget(source,skill)
+    if not professionReady then return false,professionReason end
+    if self.legendary then return self.legendary:Budget(source,skill)end
+    return true
 end
 function Battle:SkillBudget(skillId)
     if self.data.Winner ~= '' then return false, '战斗已经结束' end
@@ -451,6 +473,7 @@ function Battle:CanUseSkill(skillId, targetId)
     local target = self:FindUnit(targetId)
     if not target or target.HP <= 0 then return false, '请选择存活的目标' end
     if self.beasts:Handles(skillId)then return self.beasts:CanUse(source,skill,target)end
+    if skill.legendaryKind=='beast'or skill.legendaryKind=='lance'then return self.legendary:CanUseMovement(source,skill,target)end
     if skillId==501 then
         if not self.board.area then return false,'缴械需要现场地图战斗' end
         if not self.stats.equipment:Weapon(target) and not self.stats.equipment:Offhand(target) then return false,'目标没有可缴获的武器' end
@@ -467,6 +490,11 @@ function Battle:CanUseSkill(skillId, targetId)
     if skill.target == 'enemy' and not self:IsHostile(source,target) then return false, '请选择敌人' end
     if skill.target == 'ally' and not self:IsAllied(source,target) then return false, '请选择友军' end
     local distance=self.stats.animals:Distance(source,target,self.board)
+    if self.animalSpeech and skillId==self.animalSpeech.rule.skillId then
+        if self.animalSpeech.story.data.DialogueOpen then return false,require('Language').AnimalSpeechBusy end
+        local can,why=self.animalSpeech:ValidTarget(target);if not can then return false,why end
+        if target.AnimalOwnerId~=0 then return false,require('Language').AnimalSpeechBattleWildOnly end
+    end
     if distance<skill.minRange then return false,'目标距离过近（至少 '..skill.minRange..' 格）' end
     if distance>self:SkillRange(source,assert(self.board:Find(target.Q,target.R)),skill) then return false,'目标超出射程' end
     if skillId==self.stats.animals.rule.tameSkillId then
@@ -483,7 +511,10 @@ function Battle:CanUseSkill(skillId, targetId)
     if not Trajectory.CanReach(self.board,assert(self.board:Find(source.Q,source.R)),assert(self.board:Find(target.Q,target.R)),skill.trajectory,occupied,skill.guided) then
         return false, skill.trajectory=='sight' and '墙壁或陈设遮挡了目标' or '物体或角色遮挡了弹道'
     end
-    return self.professions:CanUse(source,skill,target)
+    local professionReady,professionReason=self.professions:CanUse(source,skill,target)
+    if not professionReady then return false,professionReason end
+    if self.legendary then return self.legendary:CanUse(source,skill,target)end
+    return true
 end
 function Battle:TrySkillTargets(skillId,ids)
     local skill=self:Skill(self:Active(),skillId)
@@ -504,7 +535,25 @@ function Battle:TrySkill(skillId, targetId, selectedIds,selectedLanding)
     end
     local source, target = self:Active(), self:FindUnit(targetId)
     local skill = self:Skill(source,skillId)
+    if self.animalSpeech and skillId==self.animalSpeech.rule.skillId then
+        self.professions:Commit(source,skill)
+        source:SpendAction(skill.action,skill.cost);source:SetCooldown(skillId,skill.cooldownTurns)
+        source:RecordAction(skill.actionTemplate,1,target.Q,target.R)
+        VisualEffects.Skill(self,source,skill,target,1,'cast')
+        local opened,why=self.animalSpeech:Open(source,target,'battle',true);assert(opened,why)
+        self:Emit('animal_speech',require('Language').AnimalSpeechOpened,source.Id,target.Id)
+        return true
+    end
     if self.beasts:Handles(skillId)then return self.beasts:Use(source,skill,target,selectedLanding)end
+    if self.legendary then
+        local handled,legendaryReason=self.legendary:UseMovement(source,skill,target,selectedLanding)
+        if handled~=nil then return handled,legendaryReason end
+    end
+    local legendaryPath
+    if skill.legendaryKind=='hunt'then
+        legendaryPath=self.legendary:SelectedPath(source,skill,target,selectedLanding)
+        if not legendaryPath then return false,require('Language').ProfessionSelectLanding end
+    end
     local profession=self.professions.rows:Find(skillId)
     if profession and profession.mechanic=='retreat' then
         local choices=self.professions:LandingCells(source,skill,target)
@@ -536,9 +585,10 @@ function Battle:TrySkill(skillId, targetId, selectedIds,selectedLanding)
         local visualSource=VisualEffects.Source(source)
         self.professions:Commit(source,skill)
         source:SpendAction(skill.action,skill.cost);source:SetCooldown(skillId,skill.cooldownTurns)
-        local success,chance,roll,values=self.stats.animals:Tame(source,target,self.stats)
+        local success,chance,roll,values,check=self.stats.animals:Tame(source,target,self.stats,self:IsHostile(source,target))
+        if success and self.animalSpeech then self.animalSpeech:OnTamed(target)end
         if self.checks then self.checks(source,target,skill,'驯服',math.floor(chance*100)/100,roll,success,
-            {successLabel='成功',failureLabel='失败',comparison={{name='亲和',value=values.affinity},{name='魅力',value=values.charisma},{name='难度',value=values.difficulty}}})end
+            {check=check,successLabel=LuaLanguage.DiceSuccess,failureLabel=LuaLanguage.DiceFailure,comparison={{name='亲和',value=values.affinity},{name='魅力',value=values.charisma},{name='难度',value=values.difficulty}}})end
         self:Emit('tame',self.stats:Template(source).name..(success and ' 驯服并骑上了 ' or ' 未能驯服 ')..self.stats:Template(target).name..
             string.format('（成功率 %.0f%%）',chance),source.Id,target.Id)
         VisualEffects.Skill(self,visualSource,skill,target,1,success and 'hit' or 'miss')
@@ -576,6 +626,10 @@ function Battle:TrySkill(skillId, targetId, selectedIds,selectedLanding)
       end
     end
     self.professions:PrepareProgram(source,skill,target,program)
+    if self.legendary then
+        local legendaryReady,legendaryWhy=self.legendary:PrepareAction(source,skill,targets,program)
+        if not legendaryReady then return false,legendaryWhy end
+    end
     Projectiles.PrepareProgram(self,source,skill,program)
     if self.containerCombat then self.containerCombat:PrepareShots(containerPlans,source,skill,self) end
     self.professions:Commit(source,skill)
@@ -588,7 +642,9 @@ function Battle:TrySkill(skillId, targetId, selectedIds,selectedLanding)
     if self.containerCombat then self.containerCombat:Apply(containerPlans,source,skill,function()return self.data:RollPercent()end,self,shot) end
     self:ApplyEffectProgram(source,skill,program,shot)
     end
-    if selectedLanding and source.HP>0 and self.professions:CanStep(source,selectedLanding,self:Occupied(source.Id)) then
+    if self.legendary then self.legendary:AfterAction(source,skill)end
+    if legendaryPath and source.HP>0 then self.legendary:Walk(source,legendaryPath,false)
+    elseif selectedLanding and source.HP>0 and self.professions:CanStep(source,selectedLanding,self:Occupied(source.Id)) then
         self.professions:Move(source,selectedLanding)
     end
     self:CheckWinner(); return true
@@ -608,6 +664,9 @@ function Battle:CanUseSkillAt(skillId,q,r)
     if skill.target~='cell' then return false,'此技能需要角色目标' end
     local cell=self.board:Find(q,r);if not cell then return false,'落点在战场之外' end
     if self.beasts:Handles(skillId)then return self.beasts:CanUseAt(source,skill,q,r)end
+    if self.legendary then
+        local legendary,legendaryWhy=self.legendary:CanUseAt(source,skill,cell);if legendary~=nil then return legendary,legendaryWhy end
+    end
     local profession,why=self.professions:CanUseAt(source,skill,cell);if profession~=nil then return profession,why end
     if self.construction and self.construction.definitions:Find(skillId) then return self.construction:CanUse(self,skill,cell) end
     local landing,why=self.stats.animals:Landing(source,cell,self.board,skillId,self:Occupied(source.Id),self.board.allowed)
@@ -624,6 +683,11 @@ function Battle:TrySkillAt(skillId,q,r)
     local ok,reason=self:CanUseSkillAt(skillId,q,r);if not ok then return false,reason end
     local source=self:Active();local skill=self:Skill(source,skillId)
     if self.beasts:Handles(skillId)then return self.beasts:UseAt(source,skill,q,r)end
+    if self.legendary and self.legendary:NeedsCellLanding(skillId)then
+        if source.Team==1 then return false,require('Language').ProfessionSelectLanding end
+        local origin=self.board:Find(q,r);local landing=self.legendary:ConstructionLandings(source,skill,origin)[1]
+        return self.legendary:UseAtWithLanding(source,skill,origin,landing)
+    end
     local row=self.professions.rows:Find(skillId)
     if row and (row.mechanic=='trap' or row.mechanic=='salvage')then return self.professions:UseAt(source,skill,assert(self.board:Find(q,r)))end
     local visualSource=VisualEffects.Source(source)
@@ -645,12 +709,13 @@ function Battle:TrySkillAt(skillId,q,r)
 end
 function Battle:NeedsSkillLanding(skillId)
     local row=self.professions.rows:Find(skillId)
-    return row and row.mechanic=='retreat' or self.beasts:NeedsLanding(skillId)
+    return row and row.mechanic=='retreat' or self.beasts:NeedsLanding(skillId)or self.legendary and self.legendary:NeedsLanding(skillId)
 end
 function Battle:SkillLandingCells(skillId,targetId)
     local ok=self:CanUseSkill(skillId,targetId);if not ok then return {}end
     local source,skill,target=self:Active(),self:Skill(self:Active(),skillId),self:FindUnit(targetId)
     if self.beasts:Handles(skillId)then return self.beasts:LandingCells(source,skill,target)end
+    if self.legendary and self.legendary:NeedsLanding(skillId)then return self.legendary:LandingCells(source,skill,target)end
     return self.professions:LandingCells(source,skill,target)
 end
 function Battle:TrySkillWithLanding(skillId,targetId,q,r)
@@ -658,6 +723,18 @@ function Battle:TrySkillWithLanding(skillId,targetId,q,r)
     if not self:NeedsSkillLanding(skillId)then return false,require('Language').ProfessionNoLandingAction end
     local cell=self.board:Find(q,r);if not cell then return false,require('Language').ProfessionNoLanding end
     return self:TrySkill(skillId,targetId,nil,cell)
+end
+function Battle:NeedsCellLanding(skillId)return self.legendary:NeedsCellLanding(skillId)end
+function Battle:CellLandingCells(skillId,q,r)
+    if not self:NeedsCellLanding(skillId)or not self:CanUseSkillAt(skillId,q,r)then return {}end
+    return self.legendary:ConstructionLandings(self:Active(),self:Skill(self:Active(),skillId),self.board:Find(q,r))
+end
+function Battle:TrySkillAtWithLanding(skillId,fromQ,fromR,toQ,toR)
+    Hex.CheckCoordinate(fromQ,fromR);Hex.CheckCoordinate(toQ,toR)
+    local ok,why=self:CanUseSkillAt(skillId,fromQ,fromR);if not ok then return false,why end
+    if not self:NeedsCellLanding(skillId)then return false,require('Language').ProfessionNoLandingAction end
+    local landing=self.board:Find(toQ,toR);if not landing then return false,require('Language').ProfessionNoLanding end
+    return self.legendary:UseAtWithLanding(self:Active(),self:Skill(self:Active(),skillId),self.board:Find(fromQ,fromR),landing)
 end
 -- AI 通过同一套移动/技能命令执行；盟军保持独立队伍，绝不获得玩家控制权。
 function Battle:ApproachCells(actor,target)

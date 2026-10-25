@@ -157,7 +157,7 @@ namespace ProjectY.Editor
             var icon=Paint(Node("Icon",tile),Color.white);Stretch(icon.rectTransform,7);icon.preserveAspect=true;
             var title=Label("Name",tile,"",13,4,4,72,50);Stretch(title.rectTransform,4);title.rectTransform.offsetMin=new Vector2(4,19);title.alignment=TextAnchor.MiddleCenter;
             var amount=Label("Count",tile,"",10,4,60,72,16);amount.rectTransform.anchorMin=new Vector2(0,0);amount.rectTransform.anchorMax=new Vector2(1,0);amount.rectTransform.pivot=new Vector2(.5f,0);amount.rectTransform.offsetMin=new Vector2(4,2);amount.rectTransform.offsetMax=new Vector2(-4,18);amount.alignment=TextAnchor.MiddleRight;amount.color=Gold;
-            var template=tile.gameObject.AddComponent<InventoryItemView>();template.Bind(tile,bg,icon,title,amount);tile.gameObject.SetActive(false);
+            var template=tile.gameObject.AddComponent<InventoryItemView>();template.Bind(tile,bg,icon,title,amount);LegendaryEquipmentUIAssets.BindTile(template);tile.gameObject.SetActive(false);
             var details=Node("Details",frame);Box(details,920,90,300,502);Paint(details,Card);
             Label("DetailHeading",details,"物 品 详 情",14,18,17,264,26).color=Gold;
             var itemName=Label("ItemName",details,"",22,18,57,264,66);refs.Add(new LuaReference.Entry("ItemName",itemName));
@@ -172,6 +172,7 @@ namespace ProjectY.Editor
             var view=root.AddComponent<InventoryPanelView>();
             view.Bind(new InventoryPanelView.Layout {Root=rect,Frame=frame,Grid=grid,Template=template,CellTemplate=cell,Preview=preview,DragLabel=drag,Labels=root.GetComponentsInChildren<Text>(true),Slots=slots.ToArray()},AssetDatabase.LoadAssetAtPath<EquipmentAssetCatalog>(EquipmentAssets.CatalogPath));
             refs.Add(new LuaReference.Entry("Inventory",view));root.GetComponent<LuaReference>().SetEditorBindings(refs.ToArray());
+            LegendaryEquipmentUIAssets.BindPanel(root,"ItemName");
         }
     }
 }

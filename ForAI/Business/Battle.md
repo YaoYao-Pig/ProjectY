@@ -18,6 +18,7 @@
 - 原地 3D 战斗的每次实际攻击触发短特写：参与者来自已结算的 `VisualEffects` hit/miss 记录，包含多目标和实际拦截者，不揭露未显示单位。慢动作、聚焦镜头、抬升与共享轮廓灰罩的生命周期见[主 HUD](MainHud.md)。二维旧棋盘不播放此 3D 特写。
 
 - 技能的方块粒子、实际拦截/逐发命中与失败表现通过只读结算事件接入，配置扩展和清理见[技能与物品方块特效](VisualEffects.md)。
+- 直接伤害的击中/受击声音与 BGM 切换见[音频系统](../Framework/Audio.md)；音效只消费已结算事件，沿用表现时钟与逐发间隔，不参与玩法随机流。
 
 - [森林动物与骑乘](Animals.md)扩展中立动物、驯服、完整多格占位、坐骑受伤及骑兵地格技能；`CanUseSkillAt/TrySkillAt/SkillCells` 处理地格目标，角色目标仍使用 `CanUseSkill/TrySkill`。
 - [巧匠营造](Construction.md)复用地格技能入口；动态工事/坑沟投影影响移动代价、通行和射线，单格高台影响站位与远程射程。施工、501 缴械、503 拾取武器走独立事务，允许空 `effectIds`；职业独立执行器的例外见上文。静态棋盘与普通格移动规则保持原契约。
@@ -29,7 +30,8 @@
 - `Start(encounterId, livingParty, seed)` 使用独立随机流生成半径 3–7 的尖顶六边形小战场，保持地面连通、双方出生格畅通。障碍为静态阻挡；BFS 禁止穿越存活单位，尸体可通行。与大地图共用 HexGrid 坐标工具，但不复用其生成期道路通行规则。
 - `BattleBoard.FromArea(area, q, r, radius, layer)` 从 [MapArea](MapArea.md) 裁取共享地格身份与导航边的窗口。`BattleSystem:StartArea` 已接入单层地牢与森林，保留双方真实位置及角色实例；`Start` 继续服务旧事件的独立棋盘。多层战斗明确拒绝，不能把支持多层裁窗当作已实现的多层战斗。
 - 多方战场在 `board.sideRelations[a][b]` 声明 `hostile/allied/neutral`；未声明对按中立、同侧按盟友，关系不传递。`IsHostile/IsAllied` 接受角色或 side 数字，攻击、治疗、范围目标、弹道友伤提示及 AI 共用查询；未提供关系表时兼容原双边敌我规则，side 0 动物始终非敌对。`StartArea` 在有关系表时保留参战者的 side 2–64，最多 16 名非玩家角色；side 1 始终只属于最多 4 名玩家队员，盟军 AI 不参与玩家部署。`PresentationTeam` 只做显示投影（玩家1、主敌2、独立方3、盟军4、动物0），不可回写 `CombatActorData.Team`。
-- `HeightAdvantageTable` 按双方最终站立面计算高打低：默认每 1 米提升命中 5 个百分点，最多 15；敌方目标的远程技能（range>1）另获每级 1 格、最多 3 格射程。近战也获得命中收益，平地/仰攻不受罚，不增加伤害；不同 layer 不计算。天然台地、工事高台与容器攻击共用规则，已有营造射程与高差射程取较大值，避免重复相加。多目标逐目标计算，命中上限 100%；HUD 区分基础命中/射程与按目标高差结算的收益。
+- `HeightAdvantageTable` 按同层双方最终站立面计算高打低：`target='enemy'` 且 `proficiency='bow'` 的攻击满一级高差（默认 1 米）获得 `high_ground` 优势，命中投两次取最高，替换弓系旧高地命中加成；更高位置不增加次数。其他攻击保留每米 +5 个百分点、最多 +15。远程射程仍每级 +1、最多 +3，与营造射程取较大值；平地／仰攻不受罚，不增伤。天然台地、工事高台、容器和多目标逐目标共用规则。
+- `ProjectileCombat.Profile/Hit` 对优势使用[共享判定](Dice.md)，预览为优势后的实际命中率乘拦截通过率；仅最终命中抽两次，拦截、暴击和附加效果沿原流程一次结算。`details.check` 传递来源、两次高值和选中值供日志；普通命中保留旧随机流。容器探索使用 `checkPrecision=100`，战斗使用 1；`CheckRoll.BelowThreshold` 保留原百分值严格小于比较，避免浮点乘法把相等值变成成功。
 - 原地战场以首名非玩家存活者为中心，覆盖所有参战角色并追加配置边距；普通遭遇只加入触发敌群，势力冲突加入现场各参战群并设置关系表。未参战敌群保持占格、本场不行动。玩家移动限定已发现地格，移动后按存活队员更新视野；技能遮挡由 `trajectory` 决定，探索视野仍使用完整地形视线。
 - `CombatSkillTable.trajectory` 为 `sight`（默认，仍按完整视线拒绝遮挡）、`direct`（忽略攻击者相邻一格，后续路径可能拦截）、`lobbed`（只由攻击者相邻一格内的遮挡拦截）。只查中间格，起点/目标自身不拦截自己。枪械及奥术飞矢、火球、引潮/炉火与其终结术使用 direct；弓箭使用 lobbed；治疗、非弹体状态和其他技能保留各自配置，不按武器种类全局改写。
 - `SkillTrajectory.Trace` 返回几何可达性与从近到远排列、按物理身份去重的遮挡描述。地形、陈设、工事、容器、工具障碍及存活角色完整占位均可参与；角色包含友军、敌军、动物与 NPC，倒地角色及已附着坐骑不另占位。有中途遮挡仍可开火；射程、目标合法性、同层和起终点楼板等几何条件仍须成立。`CanReach`、角色/容器目标、散射、AI 与预览使用同一查询，探索 `CanSee` 不改变。
@@ -75,6 +77,7 @@
 - [SkillTrajectory.lua](../../Lua/Game/Battle/SkillTrajectory.lua)：只读 Trace；[ProjectileCombat.lua](../../Lua/Game/Battle/ProjectileCombat.lua)：共享概率、拦截与实际命中；[ContainerCombat.lua](../../Lua/Game/Loot/ContainerCombat.lua)：容器目标/拦截结算。
 - [BattleLog.lua](../../Lua/Game/Battle/BattleLog.lua)：结构化结算信息的富文本格式化；`BattleSystem:ChanceLog`接收已产生的阈值和掷值，不负责判定。
 - [HeightAdvantage.lua](../../Lua/Game/Battle/HeightAdvantage.lua) / [高地规则表](../../Config/Tables/Adventure/HeightAdvantageTable.json)：只读高度收益；地形生成见[旅行](WorldTravel.md)。
+- [高地优势检查](../../Tools/Tests/advantage_combat.lua)：实际 Height／Trajectory／Projectile 规则，覆盖预览、拦截、暴击次数、guided／sight 和百分位边界；通过 `run_lua.py` 离线执行，未替代 Unity 实机验收。
 - [部署规则](../../Config/Tables/Adventure/BattlePreparationTable.json) / [消耗品映射](../../Config/Tables/Equipment/ConsumableTable.json) / [库存消费](../../Assets/GameFramework/Runtime/Data/EquipmentConsumables.cs)：配置预算边界与堆叠事务。
 - [BattleData.cs](../../Assets/GameFramework/Runtime/Data/BattleData.cs) / [CombatActorData.cs](../../Assets/GameFramework/Runtime/Data/CombatActorData.cs)：权威状态。
 - [配置目录](../../Config/Tables/Adventure/)：Unit / Skill / Effect / Trait / Encounter 表；[数据检查](../../Tools/Tests/adventure_core.lua) / [桥接检查](../../Tools/Tests/adventure_integration.lua)。

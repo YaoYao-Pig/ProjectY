@@ -105,6 +105,13 @@ export function validateNarrative(tables) {
       requireRule(rows('LegendaryEncounterTable').filter(r=>r.npcId===npc.id).length===1,`NPC ${npc.id}: requires one legendary world-party binding`);
       continue;
     }
+    if(npc.locationKind==='animal'){
+      requireRule(!npc.recruitable&&!rows('NpcPlacementTable').some(r=>r.npcId===npc.id)&&!rows('NpcScheduleTable').some(r=>r.npcId===npc.id),`NPC ${npc.id}: animal identity cannot use town placement, schedules or recruitment`);
+      const bindings=byName.get('AnimalSpeechRuleTable')?.rows.filter(r=>r.npcId===npc.id)||[];
+      requireRule(bindings.length===1,`NPC ${npc.id}: requires one animal-speech binding`);
+      requireRule(byName.get('AnimalSpeciesTable')?.rows.some(r=>r.unitId===npc.actorTemplateId),`NPC ${npc.id}: animal identity requires a configured animal species template`);
+      continue;
+    }
     if(npc.locationKind==='event'){
       requireRule(npc.recruitable&&!rows('NpcPlacementTable').some(r=>r.npcId===npc.id)&&!rows('NpcScheduleTable').some(r=>r.npcId===npc.id),`NPC ${npc.id}: event identity must be recruitable without town placement or schedules`);
       const bindings=rows('SpecialEventTable').filter(r=>r.npcId===npc.id);

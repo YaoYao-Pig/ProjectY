@@ -25,6 +25,9 @@ function Blend.Apply(map, sources, random, noiseScale, width, progress)
         if progress and head % 1024 == 0 then progress(0) end
     end
     for index, cell in ipairs(map.cells) do
+        local owner=sources[cell.regionId]
+        -- Strategies may constrain incoming samples while preserving their own support plane.
+        local blendFloor=owner.convert.GetBlendFloor and owner.convert:GetBlendFloor(owner.config,owner.region)
         local ids = {}; for id in pairs(distances[cell]) do ids[#ids + 1] = id end
         table.sort(ids)
         local sum, height, waterSum, waterWeight, kindWeight, waterKind = 0, 0, 0, 0, 0, nil
@@ -37,6 +40,7 @@ function Blend.Apply(map, sources, random, noiseScale, width, progress)
             else ground, level, kind = source.convert:GetHeight(source.config, cell.q, cell.r, random, noiseScale, source.region) end
             assert(type(ground) == 'number' and math.abs(ground) < math.huge, 'Terrain strategy returned non-finite height')
             assert(ground >= source.config.minHeight and ground <= source.config.maxHeight, 'Terrain strategy height is outside configured bounds')
+            if blendFloor and id~=cell.regionId then ground=math.max(ground,blendFloor) end
             height = height + ground * weight; sum = sum + weight
             local regionType = source.region.regionType
             types[regionType] = (types[regionType] or 0) + weight

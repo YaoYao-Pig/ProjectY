@@ -26,7 +26,7 @@
 ---@field OptionSlots CS.UnityEngine.RectTransform
 ---@field Remove CS.UnityEngine.UI.Button
 ---@field Fill CS.UnityEngine.UI.Button
----@field Stats CS.UnityEngine.UI.Text
+---@field Stats CS.TMPro.TextMeshProUGUI
 ---@field Equip CS.UnityEngine.UI.Button
 ---@field EquipText CS.UnityEngine.UI.Text
 ---@field Unequip CS.UnityEngine.UI.Button
@@ -39,5 +39,8 @@
 ---@field TagSlots CS.UnityEngine.RectTransform
 ---@field Socket4 CS.UnityEngine.UI.Button
 ---@field SocketText4 CS.UnityEngine.UI.Text
+---@field DetailsRarityFrame CS.UnityEngine.Component
+---@field DescriptionLinks CS.ProjectY.UI.TMPTermLinkView
+---@field EquipmentTermTip CS.ProjectY.UI.SkillTooltipView
 local View = {}
 return View

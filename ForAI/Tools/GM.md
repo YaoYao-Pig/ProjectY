@@ -1,6 +1,6 @@
 # GM 调试系统
 
-关键词：GM、GMSystem、调试命令、槽位、升级、获取技能、F8、NPC 搜索、查找 NPC、传送、定位、开全图、全图视野、秒杀、点选目标、投骰子、骰子组合。
+关键词：GM、GMSystem、调试命令、槽位、升级、获取技能、F8、NPC 搜索、查找 NPC、传送、定位、开全图、全图视野、秒杀、点选目标、投骰子、骰子组合、免随机遇敌、遇敌开关。
 
 ## 文档目录
 
@@ -11,7 +11,8 @@
 - `GMSystem` 是独立 LuaSystem，注册名 `GM`，依赖 Config/Growth/Narrative；负责命令分发、参数校验和队伍槽位解析。权威数据仍归现有 C# 状态，不在 GM 系统内复制角色或 NPC 位置。
 - `Execute('level_up', slot)` 将指定队员提升一级，补齐该级所需经验并调用正常 `GrowthSystem:AddExperience`；属性点、天赋点、研习机会与经历均遵循原配置，不加满血、不重置已有进度。配置等级上限时返回原因，不额外发奖。
 - `Execute('grant_skill', slot, skillId)` 按 CombatSkillTable ID 永久授予技能，绕过职业、前置与属性门槛，不消费主动学习机会；重复技能或无效 ID 返回原因，不改变当前职业。骑乘、触媒与技能阶段要求仍由使用规则检查。
-- `Execute('reveal_world')` / F8 面板“开全图”调用 `Adventure.fog:RevealAll()`，不依赖队员槽位或技能输入；地图未创建时拒绝。大地图持续全亮，远处敌方队伍沿正常快照可见，移动、进出小地图后继续生效；不改变局部地图视野。模式仅在当前世界会话有效，重新开局或读档恢复正常视野，全图已探索记录沿正常远征存档保留，命令不自动保存。重复点击不重复写探索状态。
+- F8 面板“开全图：关/开”切换全图视野，显示真实开关状态，不依赖队员槽位或技能输入；地图未创建时拒绝。`Execute('reveal_world')` / `Adventure.fog:RevealAll()` 开启大地图持续全亮，远处敌方队伍沿正常快照可见，移动、进出小地图后继续生效。`Execute('restore_world_vision')` / `Adventure.fog:RestoreVision()` 关闭并立即按当前旅行位置重算正常视野，无须移动；已探索地形保留灰色记忆，远处敌人重新按视野隐藏。两条命令分别幂等，均不改变局部地图视野。模式仅在当前世界会话有效，重新开局或读档恢复正常视野，全图已探索记录沿正常远征存档保留，命令不自动保存。
+- F8 面板“免随机遇敌：关/开”切换 `Execute('no_random_encounters', 0/1)`，0 关闭、1 开启；不依赖角色槽位，非法参数或未创建世界时拒绝。唯一会话开关归 `Adventure.travel.randomEncountersDisabled`，默认关闭，缓存重开面板显示真实状态，`Travel:Reset`（新开局/读档）复位。开启仅跳过行军随机池抽中的战斗，仍按原顺序消费随机数与检查间隔，不重抽成普通事件、不累积待触发战斗；关闭恢复后续正常抽取。普通事件、可见敌人接触、主动入战及已经开始的战斗沿原流程，命令不自动保存。
 - F8 面板“秒杀”发送宿主命令 `gm_begin_kill`，关闭面板后在当前战斗或小地图点选模型/占格；Esc、右键、重新打开 GM、切换阶段或执行其他业务命令取消，成功秒杀一次自动退出。三维拾取复用 `PickAreaActor`，旧二维战斗使用棋盘地格。空白或不允许的目标保持点选以便重选，当前动作播放完毕后才接受场景点击。
 - `Execute('kill_target', actorId)` 的参数是当前参战者或当前区域敌群中的角色实例 ID，不能当作槽位或 NPC 配置 ID。只接受敌对单位和中立野生动物，拒绝队友、盟友、已驯服动物、场景外目标、已倒地目标及对话/非战斗非探索阶段。只扣所选单位全部生命，不消耗玩家 AP；死亡通知、效果清理和职业倒地钩子沿既有接口处理。战斗中检查胜负、交接被秒杀的行动者并正常结算；探索中生成该角色掉落，沿原标记防止重复奖励。不修改叙事 NPC 或可破坏物体。
 - F8 →“投骰子”打开 GM 内的组合页，逐种增减 D4/D6/D8/D10/D12/D20/D100，允许重复，合计 1～6 颗，默认 1D6。D10 为 0～9；D100 是百分比十位骰，按 00、10…90 的面值计入总和。可清空和返回，缓存重开保留组合。
@@ -30,7 +31,8 @@
 - [NpcCommands.lua](../../Lua/Game/GM/NpcCommands.lua)：搜索、目标解析与传送规划；[原生检查](../../Tools/Tests/gm_npc_core.lua)。
 - [GMCtr.lua](../../Lua/UI/Panel/GMCtr.lua) / [GMPanel.prefab](../../Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab) / [制作脚本](../../Tools/GM/create_gm_ui.cs)。
 - [NPC 控件与绑定制作](../../Tools/GM/extend_npc_ui.cs) / [GM 预览](../../Docs/Previews/GM.png)。
-- [开全图按钮与语言绑定制作](../../Tools/GM/extend_world_ui.cs)：经 Unity MCP 保存到现有 Prefab；[定向检查](../../Tools/Tests/gm_world_fog_integration.lua) 覆盖远处敌人快照、移动后全亮、重复执行、重绑/新世界复位及实际按钮，使用 `run_checks.cs` 执行时将 Lua 检查路径替换为该文件。
+- [全图视野开关与语言绑定制作](../../Tools/GM/extend_world_ui.cs)：经 Unity MCP 保存到现有 Prefab；[定向检查](../../Tools/Tests/gm_world_fog_integration.lua) 覆盖远处敌人快照、移动后全亮、静止关闭立即恢复视野/保留探索、开关幂等、重绑/新世界复位与缓存按钮状态，使用 `run_checks.cs` 执行时将 Lua 检查路径替换为该文件；[开关预览](../../Docs/Previews/GM-WorldVisionToggle.png)。
 - [秒杀规则](../../Lua/Game/GM/KillCommands.lua) / [场景点选](../../Assets/GameFramework/Samples/Adventure/AdventureGM.cs) / [按钮制作](../../Tools/GM/extend_kill_ui.cs)。[秒杀集成检查](../../Tools/Tests/gm_kill_integration.lua) 同样替换 `run_checks.cs` 的 Lua 路径执行；[原生输入状态检查](../../Tools/GM/check_kill_input.cs) 经 Unity MCP 执行，均使用独立 Edit Mode PreviewScene，不替代 Play 鼠标实点验收。
 - [投骰子规则](../../Lua/Game/GM/DiceCommands.lua) / [组合页制作与语言绑定](../../Tools/GM/extend_dice_ui.cs)；`python -B Tools/Tests/run_lua.py Tools/Tests/gm_dice_core.lua` 检查组合边界、面值与随机隔离。[真实动画及按钮检查](../../Tools/Tests/gm_dice_integration.lua) 替换 `run_checks.cs` 的 Lua 路径执行，覆盖混合/重复骰型、快速揭晓、正常检定回归、缓存与暂停清理；预览：[组合页](../../Docs/Previews/GM-Dice.png)、[投掷](../../Docs/Previews/GM-Dice-Roll.png)、[结果](../../Docs/Previews/GM-Dice-Result.png)。
 - [养成状态](../../Assets/GameFramework/Runtime/Data/CharacterGrowthData.cs) / [定向检查](../../Tools/Tests/gm_integration.lua) / [检查执行器](../../Tools/GM/run_checks.cs)。
+- [免随机遇敌按钮制作](../../Tools/GM/extend_encounter_ui.cs) / [旅行规则](../../Lua/Game/Adventure/WorldTravel.lua)：`python -B Tools/Tests/run_lua.py Tools/Tests/gm_no_random_encounters.lua` 检查开关、事件权重、随机数消费、行军连续性和恢复；[真实按钮与遇敌检查](../../Tools/Tests/gm_encounter_integration.lua) 替换 `run_checks.cs` 的 Lua 路径执行，覆盖缓存重开、复位、真实战场生成与当前战斗不被中断；[面板预览](../../Docs/Previews/GM-NoRandomEncounters.png)。

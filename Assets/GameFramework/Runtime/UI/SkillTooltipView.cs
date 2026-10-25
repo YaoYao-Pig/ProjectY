@@ -25,6 +25,7 @@ namespace ProjectY.UI
         [SerializeField] private Layout layout;
         [SerializeField] private float preferredWidth = 440;
         [SerializeField] private float maximumHeight = 580;
+        [SerializeField] private bool preferRight;
         private readonly List<SkillTooltipItemView> tags = new List<SkillTooltipItemView>();
         private readonly List<SkillTooltipItemView> stats = new List<SkillTooltipItemView>();
         private readonly List<SkillTooltipItemView> synergies = new List<SkillTooltipItemView>();
@@ -349,7 +350,7 @@ namespace ProjectY.UI
             var size = layout.Root.rect.size;
             float x = lower.x, y = upper.y + Gap + size.y;
             // Prefer the space above a hotbar item; side placement keeps tall cards off their anchor.
-            if (y > bounds.yMax - Edge)
+            if (preferRight || y > bounds.yMax - Edge)
             {
                 x = upper.x + Gap;
                 if (x + size.x > bounds.xMax - Edge) x = lower.x - size.x - Gap;
@@ -370,6 +371,7 @@ namespace ProjectY.UI
         [BlackList] public int EditorSynergyCount => synergyCount;
         [BlackList] public SkillTooltipItemView EditorSynergy(int index) => synergies[index];
         [BlackList] public void SetEditorLayout(Layout value) => layout = value;
+        [BlackList] public void SetEditorPreferRight(bool value) => preferRight = value;
 #endif
     }
 }

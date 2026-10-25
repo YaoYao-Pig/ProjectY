@@ -44,9 +44,14 @@ function PrepareRestorationFixture()
     local saves=CS.ProjectY.Data.CampaignSaves
     restoreId=saves.CurrentId(adventure.characterSaves)
     local site
-    for _,value in ipairs(adventure.sites) do if value.areaConfigId then site=value;break end end
-    assert(site,'Fixture requires a local area')
-    assert(adventure:EnterSite(site.id));assert(adventure.data.Phase=='area')
+    local dungeon=adventure.config:GetEnum('MapArea','E_MapAreaType').Dungeon
+    for _,value in ipairs(adventure.sites) do
+        if value.areaConfigId and adventure.areas.generator.definitions:Get(value.areaConfigId).areaType==dungeon then site=value;break end
+    end
+    assert(site,'Fixture requires a dungeon area')
+    assert(adventure.areas:Enter(site,adventure.data.Seed))
+    adventure.equipment:InitializeLoot(adventure.areas);adventure.obstacles:Initialize()
+    assert(adventure.data.Phase=='area')
     restoredArea=adventure.data.Areas.ActiveSiteId
     assert(require('Game.Adventure.CharacterSave').Write(adventure))
     otherId=saves.NewCampaign(adventure.characterSaves,'Another world')

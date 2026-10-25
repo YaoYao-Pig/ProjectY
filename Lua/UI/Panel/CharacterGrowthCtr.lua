@@ -3,11 +3,13 @@ local Class=require('Core.Class')
 local Base=require('UI.UIPanelCtrl')
 local Widgets=require('UI.GrowthWidgets')
 local ProfessionTree=require('UI.ProfessionTree')
+local Skin=require('UI.ArtSkin')
 local Growth=Class('CharacterGrowthCtr',Base)
 local function place(rect,x,y,width,height)
     rect.anchoredPosition=CS.UnityEngine.Vector2(x,-y);rect.sizeDelta=CS.UnityEngine.Vector2(width,height)
 end
 function Growth:Bind()
+    self.skin=Skin.Read(self.view.Skin)
     self.system=self.context.systems:Get('Growth');self.rules=self.system.rules;self.stats=self.system.stats
     self.appearance=require('Game.Adventure.PawnAppearance').New(self.context.systems:Get('Config'))
     self.view.Style:Prepare();self.nodes,self.edges={},{}
@@ -82,9 +84,13 @@ function Growth:Refresh()
     self.actor=assert(data:GetPartyAt(self.actorIndex));local actor=self.actor;local growth=actor.Growth
     for i=1,4 do
         local button=self.view['Party'..i];button.gameObject:SetActive(i<=data.PartyCount)
-        if i<=data.PartyCount then self.view['Party'..i..'Text'].text=self.stats:Template(data:GetPartyAt(i-1)).name end
+        if i<=data.PartyCount then
+            local member=data:GetPartyAt(i-1);local templateName=self.stats:Template(member).name
+            self.view['Party'..i..'Text'].text=string.format(LuaLanguage.GrowthCharacterProfessionName,templateName:match('^(.-)%s*·') or templateName,
+                self.rules.professions.professions:Get(member.Growth.CurrentProfessionId).name)
+        end
         self.view.Style:Highlight(button,i-1==self.actorIndex)
-        self.view['Party'..i..'Text'].color=i-1==self.actorIndex and CS.UnityEngine.Color(.91,.87,.77,1) or CS.UnityEngine.Color(.20,.24,.21,1)
+        Skin.ApplyButton(self.skin,button,self.view['Party'..i..'Text'],{selected=i-1==self.actorIndex,normal='button_light',dark=true})
     end
     local nextLevel=self.rules.levels:Find(growth.Level+1)
     local name=self.stats:Template(actor).name:match('^(.-)%s*·%s*(.+)$')
@@ -105,7 +111,7 @@ function Growth:Refresh()
     self.view.Character:Show(appearance)
     for _,key in ipairs({'Overview','Skills','History'}) do
         self.view[key].gameObject:SetActive(self.tab==key);self.view.Style:Highlight(self.view[key..'Tab'],self.tab==key)
-        self.view[key..'TabText'].color=self.tab==key and CS.UnityEngine.Color(.91,.87,.77,1) or CS.UnityEngine.Color(.20,.24,.21,1)
+        Skin.ApplyButton(self.skin,self.view[key..'Tab'],self.view[key..'TabText'],{selected=self.tab==key,normal='tab_light',active='tab_accent',dark=true})
     end
     if self.tab=='Overview' then self:Overview() elseif self.tab=='Skills' then self:Skills() else self:History() end
     local hints={Overview=LuaLanguage.UICharacterGrowthOverview,
@@ -136,8 +142,8 @@ function Growth:Skills()
     self.choosingProfession=self.professionPage~='courses'
     local chooser=not passive and self.choosingProfession
     self.view.Style:Highlight(self.view.PreviousTree,not passive);self.view.Style:Highlight(self.view.NextTree,passive)
-    self.view.PreviousTreeText.color=not passive and CS.UnityEngine.Color(.91,.87,.77,1) or CS.UnityEngine.Color(.20,.24,.21,1)
-    self.view.NextTreeText.color=passive and CS.UnityEngine.Color(.91,.87,.77,1) or CS.UnityEngine.Color(.20,.24,.21,1)
+    Skin.ApplyButton(self.skin,self.view.PreviousTree,self.view.PreviousTreeText,{selected=not passive,normal='tab_light',active='tab_accent',dark=true})
+    Skin.ApplyButton(self.skin,self.view.NextTree,self.view.NextTreeText,{selected=passive,normal='tab_light',active='tab_accent',dark=true})
     self.view.GraphScroll.gameObject:SetActive(true);self.view.GraphScroll.horizontal=not chooser;self.view.SkillTitle.gameObject:SetActive(passive)
     if passive or chooser then
         for _,widget in ipairs(self.courseNodes) do widget:SetSkillData(nil) end
@@ -156,13 +162,14 @@ function Growth:Skills()
     end
     local scroll=self.view.SkillRowsScroll
     scroll.gameObject:SetActive(not chooser)
-    local x,y,width,height=607,293,267,84
+    local x,y,width,height=607,273,267,104
     if passive then y,height=207,170 elseif chooser then x,y,width,height=0,40,570,337 end
     place(scroll.transform,x,y,width,height);place(scroll.viewport,0,0,width,height)
     self.view.SkillRows.sizeDelta=CS.UnityEngine.Vector2(width,self.view.SkillRows.sizeDelta.y)
-    place(self.view.TalentDetail.rectTransform,607,39,268,passive and 68 or (chooser and 255 or 194))
-    place(self.view.Invest.transform,607,passive and 116 or (chooser and 332 or 243),267,35)
+    place(self.view.TalentDetail.rectTransform,607,39,268,passive and 68 or (chooser and 255 or 172))
+    place(self.view.Invest.transform,607,passive and 116 or (chooser and 332 or 219),267,44)
     if passive then self:Talents() elseif chooser then self:ProfessionBrowser() else self:Courses() end
+    Skin.ApplyButton(self.skin,self.view.Invest,self.view.InvestText,{emphasis=true})
 end
 function Growth:Talents()
     local actor=self.actor;local all=self.rules.trees:All()
@@ -250,13 +257,14 @@ function Growth:Courses()
 end
 function Growth:ProfessionBrowser()
     local growth=self.actor.Growth;local all=self.rules.professions.professions:All();local grid=self.professionPage=='grid'
-    local rows={}
+    local rows={};local available=0
+    for _,profession in ipairs(all) do if not profession.baseProfession and not growth:HasProfession(profession.id) then available=available+1 end end
     if grid then
-        for _,profession in ipairs(all) do if not growth:HasProfession(profession.id) then rows[#rows+1]=profession end end
+        for _,profession in ipairs(all) do if not profession.baseProfession and not growth:HasProfession(profession.id) then rows[#rows+1]=profession end end
         if self.selectedProfession and growth:HasProfession(self.selectedProfession) then self.selectedProfession=nil end
     else
         for i=0,growth.ProfessionCount-1 do rows[#rows+1]=self.rules.professions.professions:Get(growth:GetProfessionAt(i)) end
-        if growth.ProfessionCount<#all then rows[#rows+1]={id=0,name=LuaLanguage.GrowthAddProfession} end
+        if available>0 then rows[#rows+1]={id=0,name=LuaLanguage.GrowthAddProfession} end
     end
     self.view.TreeTitle.text=grid and LuaLanguage.GrowthChooseProfession or string.format(LuaLanguage.GrowthProfessionTreeTitle,growth.ProfessionCount)
     local headers={
@@ -287,6 +295,9 @@ function Growth:ProfessionBrowser()
             elseif grid then self.selectedProfession=id;self:Refresh()
             else self:OpenProfession(id) end
         end)
+        local view=self.professionNodes[i].view
+        Skin.ApplyButton(self.skin,view.Button,view.Title,{selected=selected,normal='button_light',dark=true})
+        view.Border.enabled=false
         if not grid then
             local branchStart=#rows<=3 and 285-(columns-1)*90 or 14
             edges[#edges+1]={from={x=branchStart,y=y-80},to={x=x,y=y-80}}
@@ -310,7 +321,7 @@ function Growth:ProfessionBrowser()
     local selected=grid and self.selectedProfession and self.rules.professions.professions:Get(self.selectedProfession)
     self.view.TalentName.text=selected and selected.name or (grid and LuaLanguage.GrowthChooseProfession or LuaLanguage.GrowthProfessionOverview)
     self.view.TalentDetail.text=selected and string.format(LuaLanguage.GrowthJoinProfessionDetail,selected.description) or (grid and (#rows==0 and LuaLanguage.GrowthAllProfessionsJoined or LuaLanguage.GrowthProfessionGridDetail) or LuaLanguage.GrowthProfessionTreeDetail)
-    self.view.Invest.interactable=grid and self.selectedProfession~=nil or (not grid and growth.ProfessionCount<#all)
+    self.view.Invest.interactable=grid and self.selectedProfession~=nil or (not grid and available>0)
     self.view.InvestText.text=grid and LuaLanguage.GrowthJoinProfession or LuaLanguage.GrowthAddProfession
 end
 function Growth:CourseGraph(owned)
@@ -319,6 +330,9 @@ function Growth:CourseGraph(owned)
     local profession=tree.headers[1];profession.iconPath=self.rules.professions.professions:Get(profession.id).iconPath
     if not self.courseProfessionRoot then self.courseProfessionRoot=self:CreateWidget('ProfessionNode',self.view.Graph) end
     self.courseProfessionRoot:SetData(profession,style,true,'',function()self:SetProfessionPage('tree')end,true)
+    local rootView=self.courseProfessionRoot.view
+    Skin.ApplyButton(self.skin,rootView.Button,rootView.Title,{selected=true,normal='button_light',dark=true})
+    rootView.Border.enabled=false
     for i=2,#tree.headers do
         local row=tree.headers[i];local index=i-1
         if not self.courseHeaders[index] then self.courseHeaders[index]=self:CreateWidget('SkillAtlasCategory',self.view.Graph) end
@@ -347,6 +361,7 @@ function Growth:CourseGraph(owned)
             state=available and 'eligible' or 'locked'
         elseif not owned[node.id] then label=LuaLanguage.GrowthCourseOtherProfession end
         self.courseNodes[i]:SetSkillData(node,self.rules.skills:Get(node.id),state,label,style,self.selectedCourse==node.id,function(id) self:SelectCourse(id) end)
+        Skin.ApplySkillNode(self.skin,self.courseNodes[i].view,state)
     end
     for i=#tree.nodes+1,#self.courseNodes do self.courseNodes[i]:SetSkillData(nil) end
 end

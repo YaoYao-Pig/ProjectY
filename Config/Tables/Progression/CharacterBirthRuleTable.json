@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "name": "CharacterBirthRuleTable",
+  "description": "新建人形角色的一次性初始基础属性；与升级投入和职业切换分离。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "规则ID",
+      "min": 1
+    },
+    {
+      "name": "primaryMin",
+      "type": "int",
+      "description": "主属性随机下限",
+      "min": 0
+    },
+    {
+      "name": "primaryMax",
+      "type": "int",
+      "description": "主属性随机上限",
+      "min": 0
+    },
+    {
+      "name": "defaultProfessionId",
+      "type": "int",
+      "description": "普通人形角色的默认基础职业",
+      "ref": "ProfessionTable",
+      "min": 1
+    },
+    {
+      "name": "secondaryVariance",
+      "type": "int",
+      "description": "二级属性相对模板值的随机浮动",
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "primaryMin": 2,
+      "primaryMax": 6,
+      "defaultProfessionId": 12,
+      "secondaryVariance": 1
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaGiantTreeTableRow
+---@field id number 稳定配置 ID
+---@field maxWalkRise number 相邻可走地面最大中心高差（米）
+---@field trailRadius number 连续步道的六角净空半径
+---@field minWalkableCells number 入口连通探索地格下限
+---@field rockSurfaceId number 陡壁岩石材质
+---@field trailSurfaceId number 可行走步道材质
+---@field rootHeight number 隆起树根的地表高差（米）
+---@field trunkHeight number 局部基部模型高度（米）；模型不含树冠
+---@field rootAssetId number 4×4×12米局部粗根模型
+---@field trunkAssetId number 30×35×8米树干基部弧壁模型
+---@field rootSurfaceId number 根区土壤材质
+---@field groundSurfaceId number 林间苔草材质
+---@field treeAssetId number 普通尺度树木模型
+---@field entryName string 根间入口名称
+---@field rootName string 树干基部目标名称
+return {["name"]="MapAreaGiantTreeTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="maxWalkRise",["type"]="float",["description"]="\231\155\184\233\130\187\229\143\175\232\181\176\229\156\176\233\157\162\230\156\128\229\164\167\228\184\173\229\191\131\233\171\152\229\183\174\239\188\136\231\177\179\239\188\137",["min"]=0.1,["max"]=2},{["name"]="trailRadius",["type"]="int",["description"]="\232\191\158\231\187\173\230\173\165\233\129\147\231\154\132\229\133\173\232\167\146\229\135\128\231\169\186\229\141\138\229\190\132",["min"]=1,["max"]=3},{["name"]="minWalkableCells",["type"]="int",["description"]="\229\133\165\229\143\163\232\191\158\233\128\154\230\142\162\231\180\162\229\156\176\230\160\188\228\184\139\233\153\144",["min"]=50},{["name"]="rockSurfaceId",["type"]="int",["description"]="\233\153\161\229\163\129\229\178\169\231\159\179\230\157\144\232\180\168",["ref"]="MapAreaSurfaceTable"},{["name"]="trailSurfaceId",["type"]="int",["description"]="\229\143\175\232\161\140\232\181\176\230\173\165\233\129\147\230\157\144\232\180\168",["ref"]="MapAreaSurfaceTable"},{["name"]="rootHeight",["type"]="float",["description"]="\233\154\134\232\181\183\230\160\145\230\160\185\231\154\132\229\156\176\232\161\168\233\171\152\229\183\174\239\188\136\231\177\179\239\188\137",["min"]=6},{["name"]="trunkHeight",["type"]="float",["description"]="\229\177\128\233\131\168\229\159\186\233\131\168\230\168\161\229\158\139\233\171\152\229\186\166\239\188\136\231\177\179\239\188\137\239\188\155\230\168\161\229\158\139\228\184\141\229\144\171\230\160\145\229\134\160",["min"]=30},{["name"]="rootAssetId",["type"]="int",["description"]="4\195\1514\195\15112\231\177\179\229\177\128\233\131\168\231\178\151\230\160\185\230\168\161\229\158\139",["ref"]="MapAssetTable"},{["name"]="trunkAssetId",["type"]="int",["description"]="30\195\15135\195\1518\231\177\179\230\160\145\229\185\178\229\159\186\233\131\168\229\188\167\229\163\129\230\168\161\229\158\139",["ref"]="MapAssetTable"},{["name"]="rootSurfaceId",["type"]="int",["description"]="\230\160\185\229\140\186\229\156\159\229\163\164\230\157\144\232\180\168",["ref"]="MapAreaSurfaceTable"},{["name"]="groundSurfaceId",["type"]="int",["description"]="\230\158\151\233\151\180\232\139\148\232\141\137\230\157\144\232\180\168",["ref"]="MapAreaSurfaceTable"},{["name"]="treeAssetId",["type"]="int",["description"]="\230\153\174\233\128\154\229\176\186\229\186\166\230\160\145\230\156\168\230\168\161\229\158\139",["ref"]="MapAssetTable"},{["name"]="entryName",["type"]="text",["description"]="\230\160\185\233\151\180\229\133\165\229\143\163\229\144\141\231\167\176"},{["name"]="rootName",["type"]="text",["description"]="\230\160\145\229\185\178\229\159\186\233\131\168\231\155\174\230\160\135\229\144\141\231\167\176"}},["fingerprint"]="ebebef6e09d9cdbc709e1dc48e68b1cf1b71d99bdcf67f8156903d22902fe224"}

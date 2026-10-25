@@ -39,9 +39,9 @@
     {
       "name": "footprintRadius",
       "type": "int",
-      "description": "资源适配占地：0 单格，1 七格",
+      "description": "真实连续六边形占地半径：0 单格，1 七格；巨树奇观 9 为 271 格",
       "min": 0,
-      "max": 1
+      "max": 9
     },
     {
       "name": "tintMaterial",
@@ -2277,6 +2277,136 @@
       "previewShape": "mountain",
       "previewColor": "#9f9a82",
       "referenceHeight": 0.594,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 1100,
+      "name": "Alpine_JaggedSpire",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Alpine_JaggedSpire.fbx",
+      "previewShape": "mountain",
+      "previewColor": "#9e9685",
+      "referenceHeight": 6.8,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 1101,
+      "name": "Alpine_SnowSpire",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Alpine_SnowSpire.fbx",
+      "previewShape": "mountain",
+      "previewColor": "#e8efea",
+      "referenceHeight": 6.8,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 1102,
+      "name": "Canyon_StrataStack",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Canyon_StrataStack.fbx",
+      "previewShape": "mountain",
+      "previewColor": "#9d876d",
+      "referenceHeight": 5,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 1103,
+      "name": "Canyon_RopeAnchor",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Canyon_RopeAnchor.fbx",
+      "previewShape": "mountain",
+      "previewColor": "#bca27b",
+      "referenceHeight": 0.85,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 1104,
+      "name": "Canyon_HangingRope",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Canyon_HangingRope.fbx",
+      "previewShape": "mountain",
+      "previewColor": "#bca27b",
+      "referenceHeight": 8,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 1105,
+      "name": "Canyon_DarkBed",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/Canyon_DarkBed.fbx",
+      "previewShape": "terrain",
+      "previewColor": "#080b10",
+      "referenceHeight": 1,
+      "footprintRadius": 0,
+      "tintMaterial": "M_MapTW_Depth"
+    },
+    {
+      "id": 1106,
+      "name": "WorldTree_Colossal",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/WorldTree_Colossal.fbx",
+      "previewShape": "tree",
+      "previewColor": "#557c43",
+      "referenceHeight": 42,
+      "footprintRadius": 9,
+      "tintMaterial": ""
+    },
+    {
+      "id": 1107,
+      "name": "WorldTree_RootSection",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/WorldTree_RootSection.fbx",
+      "previewShape": "mountain",
+      "previewColor": "#66594a",
+      "referenceHeight": 4,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 1108,
+      "name": "WorldTree_BaseArc",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/WorldTree_BaseArc.fbx",
+      "previewShape": "mountain",
+      "previewColor": "#66594a",
+      "referenceHeight": 35,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 1109,
+      "name": "WorldTree_FantasyBough",
+      "prefabPath": "Assets/DynamicAsset/MapLowPoly/Models/WorldTree_FantasyBough.fbx",
+      "previewShape": "tree",
+      "previewColor": "#557c43",
+      "referenceHeight": 42,
+      "footprintRadius": 9,
+      "tintMaterial": ""
+    },
+    {
+      "id": 1200,
+      "name": "Dock_Intact",
+      "prefabPath": "Assets/DynamicAsset/DocksLowPoly/Models/Dock_Intact.fbx",
+      "previewShape": "workshop",
+      "previewColor": "#66594a",
+      "referenceHeight": 2.85,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 1201,
+      "name": "Dock_Ruined",
+      "prefabPath": "Assets/DynamicAsset/DocksLowPoly/Models/Dock_Ruined.fbx",
+      "previewShape": "workshop",
+      "previewColor": "#66594a",
+      "referenceHeight": 2.85,
+      "footprintRadius": 0,
+      "tintMaterial": ""
+    },
+    {
+      "id": 1202,
+      "name": "Boat_River",
+      "prefabPath": "Assets/DynamicAsset/DocksLowPoly/Models/Boat_River.fbx",
+      "previewShape": "house",
+      "previewColor": "#66594a",
+      "referenceHeight": 1.550664,
       "footprintRadius": 0,
       "tintMaterial": ""
     }

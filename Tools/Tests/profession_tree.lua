@@ -47,9 +47,18 @@ local function check(tree,professionId,source)
     end
     for key in pairs(expectedEdges)do assert(actualEdges[key],'Missing prerequisite edge: '..key) end
 end
-test('all eleven professions preserve each course, prerequisite closure and bounded non-overlapping nodes',function()
-    local all=professions.professions:All();assert(#all==11)
-    for _,profession in ipairs(all)do check(Tree.Build(professions,atlas,profession.id),profession.id,atlas) end
+test('all thirteen professions preserve bounded layouts, including two valid empty base professions',function()
+    local all=professions.professions:All();assert(#all==13)
+    local baseCount=0
+    for _,profession in ipairs(all)do
+        local tree=Tree.Build(professions,atlas,profession.id);check(tree,profession.id,atlas)
+        if profession.baseProfession then
+            baseCount=baseCount+1
+            assert(#tree.nodes==0 and #tree.edges==0 and #tree.headers==1 and tree.headers[1].id==profession.id,
+                'Base profession must preserve its root without inventing courses or dependencies')
+        else assert(#tree.nodes>0,'Learnable profession unexpectedly has no courses') end
+    end
+    assert(baseCount==2)
 end)
 test('mage branches contain six arcane skills and one healing skill without invented dependencies',function()
     local tree=Tree.Build(professions,atlas,3);local groups={}

@@ -20,7 +20,7 @@ local adventure = setmetatable({config = config, mapSystem = system, areas = are
 local Hex = require('Game.Map.HexGrid')
 local function inspect(world, target)
     local map = world.map
-    assert(world.recipe.id == 5 and world.recipe.seededRegions and map.generationVersion == 6)
+    assert(world.recipe.seededRegions and #world.recipe.regionIds == 0 and map.generationVersion == 8)
     assert(#map.cells == target and map.targetCells == target)
     local counts, ids = {}, {}
     for _, region in ipairs(map.regions) do
@@ -82,14 +82,14 @@ while true do
     if done then snapshot = value; break end
     assert(value >= previous and value < 1); previous = value
 end
-assert(job.ready and not job.committed and job.recipeId == job.world.recipe.id and snapshot.generationVersion == 6)
+assert(job.ready and not job.committed and job.recipeId == job.world.recipe.id and snapshot.generationVersion == 8)
 inspect(job.world, 2500)
-local old = adventure:BuildWorld(0, 3, 2500)
+local old = adventure:BuildWorld(0, 3, 2500,nil,5)
 assert(not old.recipe.seededRegions and old.map.generationVersion == 5)
 for i, region in ipairs(old.map.regions) do
     assert(region.configId == old.recipe.regionIds[(i - 1) % #old.recipe.regionIds + 1], 'Legacy recipe order changed')
 end
-local legacySeeded = adventure:BuildWorld(42, 4, 2500)
+local legacySeeded = adventure:BuildWorld(42, 4, 2500,nil,6)
 assert(#legacySeeded.recipe.regionIds == 6 and legacySeeded.map.generationVersion == 6)
 for _, region in ipairs(legacySeeded.map.regions) do assert(region.configId <= 6, 'Legacy seeded campaign acquired new terrain') end
 registry:Shutdown()

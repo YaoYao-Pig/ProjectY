@@ -54,6 +54,11 @@ function AreaSystem:OnInit(context)
         require('Game.MapArea.TrialGroundGenerator'),'MapAreaTrialGroundTable','MapAreaTrialGroundThemeTable')
     self.generator:Register(self.config:GetEnum('MapArea','E_MapAreaType').RoadsideRescue,
         require('Game.MapArea.RoadsideRescueGenerator'),'MapAreaRoadsideRescueTable','MapAreaRoadsideRescueThemeTable')
+    local types=self.config:GetEnum('MapArea','E_MapAreaType')
+    self.highMountainType=types.HighMountain;self.canyonType=types.Canyon;self.giantTreeType=types.GiantTree
+    self.generator:Register(types.HighMountain,require('Game.MapArea.HighMountainGenerator'),'MapAreaHighMountainTable','MapAreaHighMountainThemeTable')
+    self.generator:Register(types.Canyon,require('Game.MapArea.CanyonGenerator'),'MapAreaCanyonTable','MapAreaCanyonThemeTable')
+    self.generator:Register(types.GiantTree,require('Game.MapArea.GiantTreeGenerator'),'MapAreaGiantTreeTable','MapAreaGiantTreeThemeTable')
     assert(self.generator.definitions:Get(self.battlefieldAreaId).areaType==self.battlefieldType,'Invalid event battlefield definition')
     self.appearance=require('Game.Adventure.PawnAppearance').New(self.config)
     self.combatStats=require('Game.Battle.CombatStats')(self.config,context.services.Adventure.Equipment)
@@ -76,14 +81,15 @@ function AreaSystem:Entrances(map)
             local x,y,z=map:GetCellWorldPosition(cell.q,cell.r)
             result[#result+1]={areaConfigId=definition.id,pointId=town.id,name=town.name..' · '..definition.name,
                 q=cell.q,r=cell.r,x=x,y=y,z=z,source={regionId=region.instanceId,regionConfigId=region.configId,
-                regionType=region.regionType,q=cell.q,r=cell.r,height=cell.height,biomeWeights=cell.biomeWeights}}
+                regionType=region.regionType,q=cell.q,r=cell.r,height=cell.height,biomeWeights=cell.biomeWeights,
+                generationVersion=map.generationVersion,townId=town.id,dock=town.dock}}
         end
     end
     for _,entrance in ipairs(self.config:GetTable('MapAreaForestEntranceTable'):All()) do
         local selected={}
         for _,cell in ipairs(map:GetCells()) do
             local region=map:GetRegion(cell.regionId)
-            if region.regionType==entrance.regionType and not cell.waterLevel and not cell.buildingId then
+            if region.regionType==entrance.regionType and not cell.waterLevel and not cell.buildingId and not cell.worldTravelBlocked then
                 local old=selected[region.instanceId]
                 if not old or cell.q*cell.q+cell.r*cell.r<old.q*old.q+old.r*old.r then selected[region.instanceId]=cell end
             end
@@ -115,14 +121,30 @@ function AreaSystem:CanEnter(site)
     local living=false
     for i=0,self.adventure.PartyCount-1 do if self.adventure:GetPartyAt(i).HP>0 then living=true end end
     if not living then return false,'请先回营地治疗至少一名队员' end
+    if site.entryItemId and site.entryItemId>0 and not self.adventure:HasVisited(site.id) then
+        if self.adventure.Equipment:CountItem(site.entryItemId)<site.entryItemCount then
+            return false,string.format(LuaLanguage.NaturalEntranceRequiresItem,self.config:GetTable('EquipmentItemTable'):Get(site.entryItemId).name,site.entryItemCount)
+        end
+    end
     return true
+end
+function AreaSystem:EntranceHint(site)
+    if site.naturalKind=='Canyon' then
+        if self.adventure:HasVisited(site.id) then return LuaLanguage.CanyonRopeEstablished end
+        return string.format(LuaLanguage.CanyonRopeFirstEntry,self.config:GetTable('EquipmentItemTable'):Get(site.entryItemId).name,site.entryItemCount)
+    elseif site.naturalKind=='HighMountain' then return LuaLanguage.HighMountainEntranceHint
+    elseif site.naturalKind=='GiantTree' then return LuaLanguage.GiantTreeEntranceHint end
 end
 function AreaSystem:AreaId(site)
     return site.areaConfigId or (self.layouts[site.id] and self.layouts[site.id].configId)
 end
 function AreaSystem:Enter(site,worldSeed)
     local ok,reason=self:CanEnter(site);if not ok then return false,reason end
-    return self:Activate(site,worldSeed,false)
+    local first=site.entryItemId and site.entryItemId>0 and not self.adventure:HasVisited(site.id)
+    -- 生成和部署成功才扣绳；BeginArea已记录持久visited，重进和读档不重复扣除。
+    local entered,explanation=self:Activate(site,worldSeed,false)
+    if entered and first then self.adventure.Equipment:ConsumeStack(site.entryItemId,site.entryItemCount) end
+    return entered,explanation
 end
 function AreaSystem:EnterEventBattlefield(site,worldSeed,source,areaId,decorate)
     assert(self.adventure.Phase=='resolving' and self.data.ActiveSiteId==0,'Event battlefield must start from a resolved world event')
@@ -179,6 +201,7 @@ function AreaSystem:InitializeEncounters(layout,state)
             for i,cell in ipairs(plan.cells) do
                 local fixedId=plan.actorIds and plan.actorIds[i]
                 local actor=group:AddEnemy(fixedId or 100000+state.SiteId*1000+plan.id*10+i,encounter.enemyIds[i],cell.q,cell.r)
+                self.combatStats.birth:Initialize(actor,self.adventure.Seed)
                 local team=plan.teams and plan.teams[i] or plan.team or 2
                 assert(team==0 or team>=2 and team<=64,'Encounter actors cannot belong to the player side')
                 local species=self.combatStats.animals.byUnit[actor.TemplateId]
@@ -425,10 +448,11 @@ end
 function AreaSystem:Tame(actorId,animalId)
     local ok,reason=self:CanTame(actorId,animalId);if not ok then return false,reason end
     local source,target=self:PartyActor(actorId),self:FindAnimal(animalId)
-    local success,chance,roll=self.combatStats.animals:Tame(source,target,self.combatStats)
+    local success,chance,roll,_,result=self.combatStats.animals:Tame(source,target,self.combatStats)
     self.data.Active:Stop()
-    local check=require('Game.Presentation.DiceChecks').Percent(string.format(LuaLanguage.DiceTamingTitle,self.combatStats:Template(target).name),
-        roll,math.floor(chance*100)/100,success,'exclusive',100)
+    local Dice=require('Game.Presentation.DiceChecks')
+    local title=string.format(LuaLanguage.DiceTamingTitle,self.combatStats:Template(target).name)
+    local check=result and Dice.Resolved(title,result) or Dice.Percent(title,roll,math.floor(chance*100)/100,success,'exclusive',100)
     self.context.systems:Get('AdventureEvents').CheckResolved:Emit(check)
     if success then
         local area,state=self:ActiveLayout(),self.data.Active;local ids,cells={},{}
@@ -439,7 +463,7 @@ function AreaSystem:Tame(actorId,animalId)
         state:DeployMembers(ids,cells);self:RevealSquad(area,state)
         return true
     end
-    return false,string.format('驯服未成功（成功率 %.0f%%），还需等待 %d 回合',chance,target.TameRetryTurns)
+    return false,string.format(LuaLanguage.AnimalSpeechTameFailed,chance,target.TameRetryTurns)
 end
 -- 点击使用完整 cellIndex，桥上与桥下相同 q/r 不会被折叠成同一个目标。
 function AreaSystem:MoveToIndex(index,settle)
@@ -651,7 +675,7 @@ end
 local function snapshotArray(values)
     local result={};for i,value in ipairs(values) do result[i]=value end;return result
 end
-function AreaSystem:LayoutSnapshot()
+function AreaSystem:LayoutSnapshot(water)
     local area=self:ActiveLayout();local Hex=require('Game.Map.HexGrid')
     local asset=self.config:GetTable('MapAssetTable'):Get(area.theme.assetId)
     local result={name=area.name,areaType=area.areaType,moveStepSeconds=area.moveStepSeconds,hexRadius=area.hexRadius,cells={},assetId=asset.id,assetPath=asset.prefabPath,tintMaterial=asset.tintMaterial,
@@ -687,6 +711,7 @@ function AreaSystem:LayoutSnapshot()
     for i,cell in ipairs((area.baseLayout or area).cells) do
         local x,_,z=Hex.ToWorld(cell.q,cell.r,cell.height,area.hexRadius)
         result.cells[i]={q=cell.q,r=cell.r,x=x,z=z,height=cell.height,wallHeight=cell.wallHeight,layer=cell.layer,
+            waterLevel=cell.waterLevel or 0,waterDepth=cell.waterDepth or 0,waterKind=cell.waterKind,waterAssetId=cell.waterAssetId or 0,
             color=snapshotArray(cell.color),blocked=cell.blocked,kind=cell.kind,renderGround=cell.renderGround~=false,roomId=cell.roomId,interiorId=cell.interiorId or 0,
             coverInteriorId=cell.coverInteriorId or 0,cutawayGroup=cell.cutawayGroup or 0,cutawayLayer=cell.cutawayLayer or 0,walkMask=cell.walkMask,neighbors=snapshotArray(cell.neighbors),
             corners=cell.corners and snapshotArray(cell.corners) or {cell.height,cell.height,cell.height,cell.height,cell.height,cell.height},
@@ -697,16 +722,20 @@ function AreaSystem:LayoutSnapshot()
     end
     local used={}
     for _,prop in ipairs(area.props) do if not prop.container then
+        local assetId=prop.assetId
+        if water and area.waterfront and prop.id==area.waterfront.propId then
+            assetId=water.data:GetDock(area.waterfront.dockId).Damaged and water.rule.ruinedAssetId or water.rule.intactAssetId
+        end
         local top=-math.huge;local cells={}
         for j,index in ipairs(prop.cells) do top=math.max(top,area.cells[index].height);cells[j]=index end
         top=prop.height or top
         local x,_,z=Hex.ToWorld(prop.q,prop.r,top,area.hexRadius);local scale=prop.scale*area.hexRadius
-        result.props[#result.props+1]={assetId=prop.assetId,x=x+(prop.offsetX or 0),y=top+.015,z=z+(prop.offsetZ or 0),rotation=prop.yaw or -prop.rotation*60,scale=scale,
+        result.props[#result.props+1]={assetId=assetId,x=x+(prop.offsetX or 0),y=top+.015,z=z+(prop.offsetZ or 0),rotation=prop.yaw or -prop.rotation*60,scale=scale,
             interiorId=prop.interiorId or 0,cutaway=prop.cutaway==true,cameraObstacle=prop.cameraObstacle~=false,layer=prop.layer or -1,cutawayGroup=prop.cutawayGroup or 0,cutawayLayer=prop.cutawayLayer or 0,
             scaleX=prop.scaleX or scale,scaleY=prop.scaleY or scale,scaleZ=prop.scaleZ or scale,cells=cells}
-        if not used[prop.assetId] then
-            used[prop.assetId]=true
-            local row=self.config:GetTable('MapAssetTable'):Get(prop.assetId)
+        if not used[assetId] then
+            used[assetId]=true
+            local row=self.config:GetTable('MapAssetTable'):Get(assetId)
             result.propAssets[#result.propAssets+1]={id=row.id,path=row.prefabPath}
         end
     end end

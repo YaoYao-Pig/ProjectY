@@ -7,6 +7,9 @@ function Dice:Bind()
     self:Listen(self.view.Reveal,function() self.view.Dice:Reveal();self:Result() end)
     self:Listen(self.view.Continue,function()
         if not self.view.Dice.Settled then return end
+        if self.check.rounds and self.roundIndex<#self.check.rounds then
+            self.roundIndex=self.roundIndex+1;self:StartRound();return
+        end
         if #self.queue>0 then self:Start(table.remove(self.queue,1)) else self:Close() end
     end)
 end
@@ -16,10 +19,14 @@ function Dice:OnShow(args)
 end
 function Dice:Enqueue(check) self.queue[#self.queue+1]=check end
 function Dice:Start(check)
-    self.check=check;self.shown=false;self.sequence=self.sequence+1
+    self.check=check;self.roundIndex=1;self:StartRound()
+end
+function Dice:StartRound()
+    local check=self.check.rounds and self.check.rounds[self.roundIndex] or self.check
+    self.shown=false;self.sequence=self.sequence+1
     self.view.Title.text=check.title
     self.view.Detail.text=check.detail
-    self.view.Result.fontSize=check.kind=='roll' and math.min(self.resultFontSize,20) or self.resultFontSize
+    self.view.Result.fontSize=(check.kind=='roll' or self.check.rounds) and math.min(self.resultFontSize,20) or self.resultFontSize
     self.view.Result.text='';self.view.Continue.interactable=false
     self.view.Reveal.gameObject:SetActive(true)
     self.view.Dice:Prepare()
@@ -30,7 +37,9 @@ end
 function Dice:Result()
     if self.shown or not self.view.Dice.Settled then return end
     self.shown=true
-    if self.check.kind=='roll' then
+    if self.check.rounds and self.roundIndex<#self.check.rounds then
+        self.view.Result.text=string.format(LuaLanguage.DiceAdvantageRoundResult,self.roundIndex,self.check.rounds[self.roundIndex].reading)
+    elseif self.check.kind=='roll' then
         self.view.Result.text=self.check.reading
     else
         assert(type(self.check.passed)=='boolean','A settled check needs a boolean outcome')

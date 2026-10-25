@@ -8,7 +8,7 @@ function MapSystem:OnInit(context)
     self.generator = require('Game.Map.MapGenerator')(config)
     -- 新增地貌时在这里绑定对应的转换器和实例类。
     local types = config:GetEnum('Map', 'E_MapRegion')
-    for _, name in ipairs({'Grassland', 'Mountain', 'Lake', 'River', 'Forest', 'Snow'}) do
+    for _, name in ipairs({'Grassland', 'Mountain', 'Lake', 'River', 'Forest', 'Snow', 'HighMountain', 'Canyon'}) do
         local strategy = require('Game.Map.' .. name .. 'Region')
         self.generator:RegisterRegion(types[name], strategy.Convert, strategy.Instance)
     end
@@ -19,11 +19,11 @@ function MapSystem:OnInit(context)
         self.generator:RegisterRegion(types[entry[1]], strategy.Convert, strategy.Instance)
     end
 end
-function MapSystem:Generate(seed, regionIds, targetCells, progress)
-    return self.generator:Generate(seed, regionIds, targetCells, progress)
+function MapSystem:Generate(seed, regionIds, targetCells, progress, generationVersion)
+    return self.generator:Generate(seed, regionIds, targetCells, progress, generationVersion)
 end
-function MapSystem:GenerateSeeded(seed, targetCells, progress, regionIds)
-    return self.generator:GenerateSeeded(seed, targetCells, progress, regionIds)
+function MapSystem:GenerateSeeded(seed, targetCells, progress, regionIds, generationVersion)
+    return self.generator:GenerateSeeded(seed, targetCells, progress, regionIds, generationVersion)
 end
 function MapSystem:OnShutdown() self.generator = nil end
 return MapSystem

@@ -46,6 +46,7 @@ namespace ProjectY.Samples
         private readonly Material groundMaterial;
         private readonly Mesh mesh;
         private TownSurfaceRenderer townSurface;
+        private TownWaterRenderer townWater;
         private readonly Shader shader;
         private readonly MapAreaViewData map;
         private readonly bool[] known, visible;
@@ -70,6 +71,7 @@ namespace ProjectY.Samples
         {
             if (shader == null || prefab == null || !SystemInfo.supportsInstancing) throw new InvalidOperationException("MapArea 缺少实例渲染资源。");
             this.map = map; this.shader = shader;
+            townWater=new TownWaterRenderer(shader,map);
             var filter = prefab.GetComponent<MeshFilter>(); var source = prefab.GetComponent<MeshRenderer>();
             if (filter == null || source == null || filter.sharedMesh == null) throw new InvalidOperationException("MapArea 柱模型缺少 Mesh。");
             var sourceMaterials = source.sharedMaterials;
@@ -257,6 +259,7 @@ namespace ProjectY.Samples
         public void Draw(Camera camera)
         {
             townSurface?.Draw(camera);
+            townWater.Draw(camera);
             foreach (var batch in batches) for (var slot = 0; slot < mesh.subMeshCount; slot++)
                 Graphics.DrawMeshInstanced(mesh, slot, groundMaterial, batch.Matrices, batch.Count, batch.Properties,
                     ShadowCastingMode.On, true, 0, camera, LightProbeUsage.Off);
@@ -316,6 +319,7 @@ namespace ProjectY.Samples
         public void Dispose()
         {
             townSurface?.Dispose();
+            townWater.Dispose();
             if (Application.isPlaying) Object.Destroy(material); else Object.DestroyImmediate(material);
             if (Application.isPlaying) Object.Destroy(groundMaterial); else Object.DestroyImmediate(groundMaterial);
             batches.Clear(); propBatches.Clear();

@@ -143,6 +143,8 @@ intercepted=Shots.Intercept({reachable=true,blockers={blockers[3]}},function()us
 assert(intercepted==blockers[3] and used==0 and notices[#notices].impact.roll==nil and not logLines[#logLines]:find('掷值',1,true))
 print('PASS actual projectile hit/interception observers and Battle ChanceLog retain real thresholds/draws, stop at interception and never fabricate guaranteed draws')
 local animals=require('Game.Animals.AnimalRules').New(config)
+CS.ProjectY.Data.AnimalSpeechState={Modifier=function(animal)return animal.speechModifier or 0 end,
+    Consume=function(animal)animal.speechModifier=0 end}
 local species
 for _,row in pairs(animals.byUnit)do if row.rideable then species=row;break end end
 assert(species)
@@ -159,5 +161,15 @@ trainer.mounted=false;draw=math.floor(probability*100)
 passed,threshold,actual=animals:Tame(trainer,animal,tameStats)
 assert(not passed and rolls==2 and not trainer.mounted and animal.delayed==species.tameRetryTurns and actual==draw/100)
 print('PASS taming exposes its original roll and contested affinity/charisma/difficulty without another random draw')
+animal.speechModifier=15;rolls=0
+function animal:RollAnimalPercent()rolls=rolls+1;return rolls==1 and 9999 or 0 end
+local result
+passed,threshold,actual,comparison,result=animals:Tame(trainer,animal,tameStats)
+assert(passed and rolls==2 and result.rolls[1]==.01 and result.rolls[2]==100 and result.roll==100)
+local details={check=result,chance=threshold,checkName='驯服',passed=passed,successLabel='成功',failureLabel='失败'}
+local advantageText=Log.Format('check','',nil,nil,nil,details)
+assert(advantageText:find('动物沟通',1,true) and advantageText:find('0.01 / 100',1,true) and advantageText:find('取最高 100',1,true))
+assert(not advantageText:find('＜b＞',1,true) and rolls==2,'Logs must display both settled rolls without rerolling or escaping formatting tags')
+print('PASS advantage logs display both rolls, selected high value, source and effective probability without another draw')
 config:OnShutdown()
 print('PASS battle_log_core complete')

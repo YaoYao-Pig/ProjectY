@@ -33,6 +33,9 @@ function Rules.New(config)
                 assert(not binding, 'Event NPC needs one special-event binding'); binding=row
             end end
             assert(binding and binding.allyUnitId==npc.actorTemplateId, 'Event NPC template must match its special-event ally')
+        elseif npc.locationKind=='animal' then
+            assert(not npc.recruitable and not self.schedulesByNpc[npc.id], 'Animal dialogue identity cannot use town schedules or recruitment')
+            assert(config:GetTable('AnimalSpeechRuleTable'):Get(1).npcId==npc.id,'Animal dialogue identity needs a speech rule')
         else
             assert(npc.locationKind=='world_party' and not npc.recruitable and not self.schedulesByNpc[npc.id], 'World-party NPC cannot use town schedules or recruitment')
         end

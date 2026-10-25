@@ -1,12 +1,14 @@
 # 大地图模型资源
 
-关键词：大地图美术、low-poly、低多边形、六边形地块、民居、工坊、集会厅、中世纪城堡、七格平台、森林树、雪松、地牢陈设、柱厅、石棺、配置模型、模型风格、MapLowPoly。
+关键词：大地图美术、low-poly、低多边形、六边形地块、民居、工坊、集会厅、中世纪城堡、七格平台、森林树、雪松、高山、峡谷、参天巨树、雕塑树、地牢陈设、柱厅、石棺、配置模型、模型风格、MapLowPoly。
 
 ## 文档目录
 
 正文：资源边界 / 几何契约 / 修改与验收；关键入口：源文件 / Unity 资源 / 风格技能。
 
 ## 正文
+
+- [码头与河船](WaterTravel.md)资源为1200–1202：完整码头、破损码头、基础河船。源位于 [DocksLowPoly.blend](../../Art/DocksLowPoly/Source/DocksLowPoly.blend)，Unity FBX 与独立 URP 材质在 `Assets/DynamicAsset/DocksLowPoly`；两款码头同原点同包络，岸端 Z=0、甲板 Y=.5，前3米共用完整部分；河船以水线为原点、船首 +Z。[导入记录](../../Art/DocksLowPoly/Integration/unity-import.json)与[实际预览](../../Art/DocksLowPoly/Previews/Unity.png)已核对。
 
 - 本套资源延续地图实验室的低多边形与纯色风格，用于 Unity 地形和城镇表现。[Unity 运行测试](../Tools/MapRuntimePreview.md) 已使用本套模型显示真实生成布局；地图算法、配表和 Web Canvas 渲染仍由 [地图](Map.md) 与 [地图预览](../Tools/MapPreview.md) 维护。
 - 源文件、制作脚本、FBX 暂存与图片在 `Art/MapLowPoly/`；最终 Unity 资源在 `Assets/DynamicAsset/MapLowPoly/`。源 `.blend` 不进入 Assets，避免 Unity 调用本机 Blender 自动转换；已有 FBX 更新保留 `.meta`。
@@ -25,8 +27,21 @@
 - 当前交付 36 个 FBX（其中旧地牢石塔未绑定，资源表使用 35 个）、29 个共用模型材质与独立展示场景（另有 1 个展示背景材质）。小陈设各 48–180 三角形，多格设施各 156–768 三角形；建筑三角形：民居 272、工坊 248、集会厅 460、城堡细化版 2596。工坊含烟囱总高 2.124，高于墙体加屋顶的 1.9；后续相机包围盒用模型实测高度，勿只用配表墙高与屋顶高裁剪。
 - 最小验收已覆盖源网格六方向接缝、七格平台面积，以及 Unity 中全部模型尺寸/边界、零根旋转、单位缩放、材质映射和调色板；实际截图见下方入口。展示场景是独立附加场景，不加入 Build Settings，也不接入游戏生命周期。
 - 修改后只检查实际受影响模型：FBX 尺寸/朝向、材质映射、硬边、地块接缝、大建筑连续地基和模型预览。不要为美术验收进入 Play、编译工程或运行地图回归；算法变化才选对应测试。
+- `TerrainWonders` 新增资源 ID 1100–1108：裸岩/雪岩尖峰、层理岩块、绳桩、垂绳、黑色实体谷底、完整巨树、局部巨根与树干弧壁。巨大高差、峡谷深度、多格奇观占地及入口归[自然地貌与巨树奇观](NaturalLandmarks.md)；山岩模型只强化少量剪影，不负责逐格山峰或通行。
+- 完整 `WorldTree_Colossal`（1106）为 Unity XYZ=28×42×28 米、半径 9 的连续 271 格奇观；仅大地图使用。`WorldTree_RootSection`（1107）为 4×4×12 米、长轴 +Z，粗根隆起、两端渐细弯入地面；`WorldTree_BaseArc`（1108）为 30×35×8 米，仅树干一角与板根，无树冠。小地图只用后两者及普通树对照；导航净空由地图布局决定。
+- 巨树按用户参考改用精细有机雕塑：木体体积联合、接合平滑和连续纵向树皮，源几何中每件木体均为单个连通分量；叶冠为分层折叶实体，不是球体组合。完整树/巨根/弧壁分别为 185720/28000/64998 三角形，仍采用纯色哑光、无贴图与动画；这一唯一奇观的雕塑要求优先于普通低多边形树规则。
+- `WorldTree_FantasyBough`（1109）作为第二款随机巨树外形保留，原 1106 的模型不被替换。新变体 Unity XYZ 实测为 24.1948×42×19.7036 米，主导长枝向 +X 曲折延伸，三股粗木脊与主干融合，长枝叶台与上冠连片丰茂；24830 片实体折叶、共 270640 三角形。原点固定在干脚，包围盒偏心，禁止按包围盒重新居中；最远水平顶点距原点 14.71445 米，沿用半径 9 的 271 格占地。两款外形的随机选择归自然地貌模块；局部地图仍复用 1107/1108。
+- 绳桩（1103）为 1×0.85×0.85 米；垂绳（1104）顶端原点 Y=0，向下到 Y=-8，可按实际谷深缩放 Y。黑底（1105）使用精确半径 1 六边形实体，顶面 Y=0、底面 Y=-1，独立 `M_MapTW_Depth` 为 URP Unlit 近黑材质，避免把谷底当作缺失网格。
+- 本批已执行 Blender 实际建模/渲染及九个 FBX 的 Unity 定向导入检查：尺寸、零根旋转、单位缩放、轴转换与独立 URP 材质有效；三件雕塑更新保留原 GUID。源几何检查与导入证据不等于 Play 交互验收，实际地图接入验证见自然地貌模块。
 
 ## 关键入口
+
+- [奇观源场景](../../Art/MapLowPoly/Source/TerrainWonders.blend) / [奇观资产清单](../../Art/MapLowPoly/terrain_wonders_manifest.json) / [Unity 定向导入证据](../../Art/MapLowPoly/Integration/terrain-wonders-unity.json) / [雕塑木体连通检查](../../Art/MapLowPoly/Integration/terrain-wonders-sculpt-topology.json)：九个模型的尺寸、材质、原点和三个有机木体的连通性。
+- [奇观概览](../../Art/MapLowPoly/Previews/terrain-wonders-world.png) / [完整巨树](../../Art/MapLowPoly/Previews/world-tree-sculpted.png) / [树干与板根接合](../../Art/MapLowPoly/Previews/world-tree-trunk-detail.png) / [局部巨根与普通树对照](../../Art/MapLowPoly/Previews/world-tree-local-roots.png)：均为真实 Blender 源渲染，展示源资产形体与尺度。
+- [初始建模](../../Art/MapLowPoly/Scripts/build_terrain_wonders.py) / [巨树雕塑修订](../../Art/MapLowPoly/Scripts/sculpt_world_tree.py) / [导出](../../Art/MapLowPoly/Scripts/export_terrain_wonders.py) / [最终源预览](../../Art/MapLowPoly/Scripts/render_terrain_wonders_review.py)：初建后分别调用雕塑脚本 `build_colossal/build_root/build_arc/save_manifest`，再导出；已有作品优先打开源文件定向修改，不能仅重跑初始低模脚本覆盖最终雕塑。
+- [奇幻长枝变体建模](../../Art/MapLowPoly/Scripts/build_fantasy_bough.py) / [单件导出](../../Art/MapLowPoly/Scripts/export_fantasy_bough.py) / [变体源检查](../../Art/MapLowPoly/Integration/world-tree-fantasy-bough-source.json)：只新增/重做 1109，不修改原树或局部根模型；原源备份保存在 `Source/TerrainWonders_20261025_before_asymmetric.blend`，两款最终源共同保存在 TerrainWonders.blend。源检查包含原 FBX 的 SHA256、木体连通性、偏心包围盒与半径。
+- [两款巨树同框](../../Art/MapLowPoly/Previews/world-tree-variants.png) / [奇幻长枝树单体](../../Art/MapLowPoly/Previews/world-tree-fantasy-bough.png) / [长枝与交缠木体近景](../../Art/MapLowPoly/Previews/world-tree-fantasy-bough-detail.png) / [变体预览脚本](../../Art/MapLowPoly/Scripts/render_fantasy_bough_review.py)：正视机位保留长枝横向轮廓，左侧原款、右侧奇幻长枝款。
+- [变体Unity核验](../../Art/MapLowPoly/Integration/world-tree-fantasy-bough-unity.json) / [实际模型同框](../../Docs/Previews/TerrainWonders/giant-tree-variants-unity.png) / [定向核验入口](../../Tools/Tests/giant_tree_variants_preview.cs)：新模型全部顶点落在271格占地内，原模型FBX哈希不变；两场景均已保存233项资源引用。检查没有进入Play或触发项目编译。
 
 - [势力据点资源](../../Art/FactionLowPoly/README.md)：兽人木寨、哥布林营地、树精灵高树林居的单格模型；保留 Blender 源，FBX 与 14 个共享 URP 材质已导入，AdventureDemo.worldPartyBindings 保留原 7 项并追加 3 项。[实际同框预览](../../Art/FactionLowPoly/Previews/faction-sites-unity.png)已核对，未进入 Play。生态归属与玩法见[势力系统](Factions.md)。
 

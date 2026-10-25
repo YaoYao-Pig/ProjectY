@@ -10,6 +10,7 @@ function Starts.Get(config, id)
     assert(type(row.name) == 'string' and row.name ~= '' and type(row.description) == 'string', 'Invalid campaign start description')
     assert(math.tointeger(row.coins) and row.coins >= 0 and row.coins <= 2147483647, 'Invalid campaign start coins')
     config:GetTable('AdventureDemoTable'):Get(row.adventureRecipeId)
+    config:GetTable('ProfessionTable'):Get(row.initialProfessionId)
     return row
 end
 
@@ -39,8 +40,11 @@ function Starts.Preview(config, id)
         row.count = row.count + count
         if owner then row.equippedBy[#row.equippedBy + 1] = owner end
     end
-    for _,unitId in ipairs(recipe.partyIds) do
-        local name = units:Get(unitId).name
+    local professions=config:GetTable('ProfessionTable');local farmer=config:GetTable('CharacterBirthRuleTable'):Get(1).defaultProfessionId
+    for index,unitId in ipairs(recipe.partyIds) do
+        local templateName=units:Get(unitId).name
+        local name=string.format(LuaLanguage.GrowthCharacterProfessionName,templateName:match('^(.-)%s*·') or templateName,
+            professions:Get(index==1 and profile.initialProfessionId or farmer).name)
         preview.partyNames[#preview.partyNames + 1] = name; party[unitId] = name
     end
     assert(#equipment.starterItemIds == #equipment.starterCounts, 'Campaign starter arrays differ')

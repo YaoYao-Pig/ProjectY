@@ -20,6 +20,8 @@ function Story:OnInit(context)
     self.npcs = require('Game.Narrative.NpcSystem').New(self)
     self.dialogue = require('Game.Narrative.Dialogue').New(self)
     self.adventure.narrative = self; self.adventure.areas.narrative = self
+    self.adventure.animalSpeech=require('Game.Animals.AnimalSpeech').New(self)
+    self.adventure.battle.animalSpeech=self.adventure.animalSpeech
     self.townMissions = require('Game.Narrative.TownMissions').New(self)
     require('Game.Narrative.NarrativeConditions')(self)
 end
@@ -31,6 +33,7 @@ function Story:OnStart()
         if source and source.Team==1 and target.AnimalOwnerId==0 and self.adventure.battle:IsHostile(source,target) then
             self.data:RecordKill(target.TemplateId)
             self.townMissions:RecordKill()
+            self.adventure.water:RecordKill()
             self.adventure.parties.legends:RecordDefeat(target)
         end
     end)

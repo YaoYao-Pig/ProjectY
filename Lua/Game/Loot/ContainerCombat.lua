@@ -107,7 +107,7 @@ end
 function Combat:ShotContext(actor,battle,origin)
     local areas=self.adventure.areas
     origin=origin or self:Origin(actor,battle)
-    return {board=battle and battle.board or areas:ActiveLayout(),origin=origin,occupied=function(victim)
+    return {board=battle and battle.board or areas:ActiveLayout(),origin=origin,checkPrecision=battle and 1 or 100,occupied=function(victim)
         return battle and battle:ShotOccupancy(actor,victim) or areas:ShotOccupancy(actor.Id,victim and victim.Id,nil,origin.layer)
     end}
 end
@@ -152,8 +152,8 @@ function Combat:Apply(plans,actor,skill,roll,battle,shot)
                 battle.checks(actor,row.actor,skill,'拦截',row.chance,value,passed,{targetName=row.actor and battle.stats:Template(row.actor).name or row.name,shot=shot,successLabel='拦截',failureLabel='穿过'})
             end)
             if blocker then Projectiles.ApplyBlocker(owner,actor,skill,blocker,plan.interceptions,{shot=shot or 1},context,plan.vfxSource)
-            elseif profile.reachable and Projectiles.Hit(profile,roll,battle and battle.checks and function(value,passed)
-                battle.checks(actor,nil,skill,'命中',profile.baseHitChance,value,passed,{targetName=plan.container.Name,shot=shot,successLabel='命中',failureLabel='落空'})
+            elseif profile.reachable and Projectiles.Hit(profile,roll,battle and battle.checks and function(value,passed,check)
+                battle.checks(actor,nil,skill,'命中',profile.baseHitChance,value,passed,{check=check,targetName=plan.container.Name,shot=shot,successLabel='命中',failureLabel='落空'})
             end)then
                 self:ApplyDamage(plan,actor,skill,battle)
                 VisualEffects.Skill(owner,plan.vfxSource,skill,nil,shot,'hit',plan.cell)

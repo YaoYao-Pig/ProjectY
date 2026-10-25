@@ -8,6 +8,7 @@ function Stats:ctor(config, equipmentData)
     self.effects = config:GetTable('CombatEffectTable')
     self.buffs = require('Game.Battle.BuffRules').New(config)
     self.growth = require('Game.Progression.GrowthRules').New(config)
+    self.birth = require('Game.Progression.CharacterBirth').New(config)
     self.injuries = require('Game.Battle.InjuryRules').New(config)
     self.diseases = require('Game.Battle.DiseaseRules').New(config)
     self.animals = require('Game.Animals.AnimalRules').New(config)
@@ -29,7 +30,16 @@ end
 function Stats:Template(unit) return self.units:Get(unit.TemplateId) end
 function Stats:Get(unit, name, excludeEquipment, pendingEffect)
     -- 未训练的二级属性允许缺失，其基础值按契约为 0。
-    local value = assert(self.attributes[unit.TemplateId])[name] or 0
+    local value = unit.HasInitialAttributes and unit:GetInitialAttribute(name) or (assert(self.attributes[unit.TemplateId])[name] or 0)
+    local profession=unit.InitialProfessionId
+    if profession~=nil then
+        local current=unit.Growth.CurrentProfessionId
+        if current and current>0 then profession=current end
+        if profession>0 then
+            assert(unit:HasProfessionAttributes(profession),'Current profession attributes were not assigned')
+            value=value+unit:GetProfessionAttribute(profession,name)
+        end
+    end
     for i = 0, unit.TraitCount - 1 do
         local trait = self.traits:Get(unit:GetTraitAt(i))
         if trait.attribute == name then value = value + trait.amount end

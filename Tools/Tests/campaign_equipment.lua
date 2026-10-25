@@ -14,13 +14,13 @@ local rules={weapons={Get=function(_,id)assert(id==40 or id==46);return {}end},C
 local loadouts={Items=function()return {}end}
 local function prepare()return Starter.Plan(recipe,data,party,rules,{},loadouts)end
 local plan=prepare();assert(changes==0 and #plan==2)
-allowed=false;assert(not pcall(prepare) and changes==0);allowed=true
+allowed=false;assert(#prepare()==2 and changes==0 and not rules:CanEquip(),'Low attributes retain starter plan without allowing manual equip');allowed=true
 weapons[2].OwnerActorId=99;assert(not pcall(prepare) and changes==0);weapons[2].OwnerActorId=0
 recipe.equipUnitIds[2]=1;assert(not pcall(prepare) and changes==0);recipe.equipUnitIds[2]=2
 loadouts.Items=function()return {40}end;assert(not pcall(prepare) and changes==0);loadouts.Items=function()return {}end
 Starter.Apply(data,plan)
 assert(changes==2 and equipped[1]==101 and equipped[2]==102 and #weapons==2,'Starter setup must reuse original instances')
-print('PASS starter preflight, attribute failure, absent ownership, duplicate templates, conflicting loadouts and original-instance equipment')
+print('PASS starter preflight, low-attribute grant/manual gate, absent ownership, duplicate templates, conflicting loadouts and original-instance equipment')
 
 local config=require('Config.ConfigSystem')()
 config:OnInit({services={ReadConfig=function(_,name)

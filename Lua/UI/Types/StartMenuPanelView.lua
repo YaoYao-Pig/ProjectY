@@ -31,5 +31,6 @@
 ---@field StartKitTitle CS.ProjectY.UI.UITxt
 ---@field StartItems CS.UnityEngine.RectTransform
 ---@field CreateText CS.UnityEngine.UI.Text
+---@field WorldName CS.UnityEngine.UI.InputField
 local View = {}
 return View

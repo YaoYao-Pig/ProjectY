@@ -17,7 +17,7 @@ function data:Equipped()return self.main end
 function data:Offhand()return self.off end
 function data:Worn()return nil end
 function data:GetWearableAt()return armor end
-local actor={Id=1,TemplateId=3,Team=1,Growth={SkillCount=0,GetRank=function()return 0 end}}
+local actor={Id=1,TemplateId=3,Team=1,TraitCount=0,Growth={SkillCount=0,GetRank=function()return 0 end}}
 local stats={Get=function()return 100 end}
 local rules=require('Game.Equipment.EquipmentRules').New(config,data)
 local affixes=rules.affixes

@@ -4,7 +4,8 @@ Affixes.NormalizeColor=require('Config.Color').Normalize
 function Affixes.New(config)
     local self=setmetatable({table=config:GetTable('EquipmentAffixTable'),items=config:GetTable('EquipmentItemTable'),
         weapons=config:GetTable('EquipmentWeaponTable'),wearables=config:GetTable('EquipmentWearableTable'),
-        attributes=config:GetTable('EquipmentAttributeTable'),pools={},allowed={},attributeCodes={},colors={}},Affixes)
+        attributes=config:GetTable('EquipmentAttributeTable'),legendaryTable=config:GetTable('LegendaryEquipmentTable'),
+        pools={},allowed={},attributeCodes={},colors={}},Affixes)
     for _,attribute in ipairs(self.attributes:All()) do self.attributeCodes[attribute.code]=attribute end
     for _,row in ipairs(self.table:All()) do
         self.colors[row.id]=Affixes.NormalizeColor(row.color)
@@ -22,10 +23,18 @@ function Affixes.New(config)
                 ids[#ids+1]=row.id;weights[#weights+1]=row.weight;allowed[row.id]=true;total=total+row.weight;break
             end end end
             assert(allowed[1] and total>0,'Equipment needs an ordinary affix and a positive pool: '..item.id)
+            local legendary=self.legendaryTable:Find(item.id)
+            if legendary then
+                assert(allowed[legendary.fixedAffixId],'Named legendary has an incompatible fixed affix: '..item.id)
+                ids,weights,allowed={legendary.fixedAffixId},{1},{[legendary.fixedAffixId]=true}
+            end
             self.pools[item.id]={ids=ids,weights=weights};self.allowed[item.id]=allowed
         end
     end
     return self
+end
+function Affixes:Legendary(item)
+    return self.legendaryTable:Find(type(item)=='number' and item or item.ItemId)
 end
 function Affixes:Type(itemId)
     local weapon=self.weapons:Find(itemId)

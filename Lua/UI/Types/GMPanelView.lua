@@ -90,5 +90,8 @@
 ---@field DiceThrow CS.UnityEngine.UI.Button
 ---@field DiceThrowText CS.UnityEngine.UI.Text
 ---@field Frame CS.UnityEngine.RectTransform
+---@field NoRandomEncounters CS.UnityEngine.UI.Button
+---@field NoRandomEncountersText CS.UnityEngine.UI.Text
+---@field NoRandomEncountersHint CS.UnityEngine.UI.Text
 local View = {}
 return View

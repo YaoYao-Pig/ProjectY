@@ -70,7 +70,10 @@ namespace ProjectY.Editor
             else inspection=(Image)detail.Target;
             inspection.transform.SetParent(source,false);Box(inspection.rectTransform,18,496,108,100);
             var name=reference.GetText("ItemName");name.transform.SetParent(source,false);Box(name.rectTransform,138,498,360,30);name.fontSize=18;
-            var description=reference.GetText("ItemDetail");description.transform.SetParent(source,false);Box(description.rectTransform,138,536,360,60);description.fontSize=14;
+            var description=reference.Get("ItemDetail");description.transform.SetParent(source,false);Box((RectTransform)description.transform,138,536,360,60);
+            if(description is Text legacyDescription)legacyDescription.fontSize=14;
+            else if(description is TMPro.TMP_Text tmpDescription)tmpDescription.fontSize=15;
+            else throw new InvalidOperationException("Loot description must bind Text or TMP_Text.");
             var status=reference.GetText("Status");Box(status.rectTransform,24,714,1192,24);status.fontSize=14;
             var hint=frame.Find("Hint").GetComponent<Text>();Box(hint.rectTransform,24,741,1192,19);hint.fontSize=12;
             var summary=reference.GetText("Summary");Box(summary.rectTransform,40,66,1140,27);summary.fontSize=15;
@@ -136,7 +139,7 @@ namespace ProjectY.Editor
             var amount=Label("Count",tile,"",10,4,60,72,16);amount.alignment=TextAnchor.MiddleRight;amount.color=Gold;
             var ringRect=Node("SearchRing",tile);ringRect.anchorMin=ringRect.anchorMax=ringRect.pivot=new Vector2(.5f,.5f);ringRect.sizeDelta=new Vector2(26,26);ringRect.anchoredPosition=new Vector2(0,7);
             var ring=ringRect.gameObject.AddComponent<LootSearchGraphic>();ring.color=Gold;ring.raycastTarget=false;ring.gameObject.SetActive(false);
-            var template=tile.gameObject.AddComponent<InventoryItemView>();template.Bind(tile,bg,icon,title,amount);template.BindSearch(ring);tile.gameObject.SetActive(false);
+            var template=tile.gameObject.AddComponent<InventoryItemView>();template.Bind(tile,bg,icon,title,amount);template.BindSearch(ring);LegendaryEquipmentUIAssets.BindTile(template);tile.gameObject.SetActive(false);
             Label("ItemName",frame,"选择物品查看详情",18,28,650,600,30,refs).color=Paper;
             Label("ItemDetail",frame,"",13,28,686,600,38,refs).color=Muted;
             Label("Status",frame,"",14,690,650,504,76,refs).color=Gold;
@@ -150,6 +153,7 @@ namespace ProjectY.Editor
             var inspection=Paint(Node("SelectedIcon",source),Color.white);inspection.preserveAspect=true;refs.Add(new LuaReference.Entry("SelectedIcon",inspection));
             var loot=root.AddComponent<LootPanelView>();loot.Bind(inventory,grid,template,cell,catalog,scroll,inspection);
             refs.Add(new LuaReference.Entry("Inventory",inventory));refs.Add(new LuaReference.Entry("Loot",loot));reference.SetEditorBindings(refs.ToArray());
+            LegendaryEquipmentUIAssets.BindPanel(root,"ItemName");
         }
     }
 }

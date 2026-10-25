@@ -75,7 +75,7 @@ namespace ProjectY.Data
             AbstractTravel=false;AbstractQ=AbstractR=0;AbstractStartedAt=AbstractArrivalAt=AbstractMinStepMinutes=0;Owner?.Changed();
         }
         public int MemberCount => members.Count;
-        public int LivingCount => members.Count(a => a.HP > 0);
+        public int LivingCount => members.Count(a => a.HP > 0 && a.AnimalOwnerId == 0);
         public bool StrengthReady => members.Count>0 && calibratedMembers==members.Count;
         public double StrategicPower
         {
@@ -83,7 +83,7 @@ namespace ProjectY.Data
             {
                 if(!StrengthReady)throw new InvalidOperationException("World party strength has not been calibrated.");
                 double value=0;
-                for(int i=0;i<members.Count;i++)value+=memberStrengths[i]*((double)members[i].HP/members[i].MaxHP);
+                for(int i=0;i<members.Count;i++)if(members[i].AnimalOwnerId==0)value+=memberStrengths[i]*((double)members[i].HP/members[i].MaxHP);
                 return value;
             }
         }
@@ -483,7 +483,8 @@ namespace ProjectY.Data
                     foreach(var member in SaveCheck.Rows(row.members,64,"大地图队伍编制"))
                     {
                         // A legacy battle keeps its existing actor identity; newly created members use the high ID range.
-                        SaveCheck.Require(member!=null && member.id>0 && member.id<save.nextActorId && member.team>=2 && member.species==0 && member.owner==0,"大地图角色身份");
+                        SaveCheck.Require(member!=null && member.id>0 && member.id<save.nextActorId &&
+                            (member.team>=2 && member.owner==0 || member.team==1 && member.species>0 && member.owner>0),"大地图角色身份");
                         party.AddPreparedMember(CombatActorData.PrepareEnemy(member,appearances,owners));
                     }
                     SaveCheck.Require(party.MemberCount>0 && party.Defeated==(party.LivingCount==0),"大地图队伍存活状态");

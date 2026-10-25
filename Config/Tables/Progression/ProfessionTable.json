@@ -36,6 +36,12 @@
       "type": "int[]",
       "description": "仅初始职业免费授予的技能；转职不授予",
       "ref": "CombatSkillTable"
+    },
+    {
+      "name": "baseProfession",
+      "type": "bool",
+      "default": false,
+      "description": "创建时确定的基础职业，不可通过添加兼职获得"
     }
   ],
   "rows": [
@@ -177,6 +183,28 @@
         1851
       ],
       "iconPath": "Assets/DynamicAsset/UI/Icons/Professions/profession-11.png"
+    },
+    {
+      "id": 12,
+      "name": "农民",
+      "description": "基础职业。劳作锻炼力量；当前研习时获得力量加成，首次确定的职业收益会永久保留记录。",
+      "treeIds": [
+        1
+      ],
+      "initialSkillIds": [],
+      "iconPath": "Assets/DynamicAsset/UI/Icons/Professions/profession-12.png",
+      "baseProfession": true
+    },
+    {
+      "id": 13,
+      "name": "贵族",
+      "description": "基础职业。仪态与身法训练提升速度；当前研习时获得速度加成，首次确定的职业收益会永久保留记录。",
+      "treeIds": [
+        1
+      ],
+      "initialSkillIds": [],
+      "iconPath": "Assets/DynamicAsset/UI/Icons/Professions/profession-13.png",
+      "baseProfession": true
     }
   ]
 }

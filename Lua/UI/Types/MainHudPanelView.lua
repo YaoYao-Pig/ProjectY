@@ -80,5 +80,7 @@
 ---@field FollowText CS.UnityEngine.UI.Text
 ---@field Factions CS.UnityEngine.UI.Button
 ---@field FactionsText CS.UnityEngine.UI.Text
+---@field SiteTags CS.UnityEngine.UI.Toggle
+---@field SiteTagsText CS.UnityEngine.UI.Text
 local View = {}
 return View

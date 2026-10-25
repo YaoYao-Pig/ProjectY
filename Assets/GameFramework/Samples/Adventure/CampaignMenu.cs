@@ -29,6 +29,7 @@ namespace ProjectY.Samples
         internal void SetCampaignMenuOpen(bool value) {campaignMenuOpen=value;if(value)campaignMenuError="";}
         private void OpenCampaignMenu(string mode)
         {
+            if(settlementPresentationPending)return;
             if(campaignLoading!=null || equipmentOpen || growthOpen || storyOpen || pendingExitView!=null)return;
             if(view!=null && view.Phase!="map" && view.Phase!="area")return;
             bootstrap.CallModule("UI.CampaignMenuBridge",this,mode);

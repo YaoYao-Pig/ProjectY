@@ -77,15 +77,7 @@ namespace ProjectY.Samples
                     pawn.View.Capture(actor,pawn.View.transform.position,0);enemies.Add(actor.Id, pawn);
                 }
                 pawn.Actor=actor;pawn.View.ApplyAppearance(actor.Appearance, resolve);
-                pawn.Motion.FixedFacing=actor.FixedFootprint;
-                var offset=Vector3.zero;
-                if(actor.FixedFootprint)
-                {
-                    float top=float.NegativeInfinity;
-                    foreach(int index in actor.OccupiedCells){offset+=layout.Cells[index].Position;top=Mathf.Max(top,layout.Cells[index].Position.y);}
-                    offset/=actor.OccupiedCells.Length;offset.y=top;offset-=layout.Cells[actor.CellIndex].Position;
-                }
-                pawn.Motion.VisualOffset=offset;
+                pawn.Motion.SetFootprint(actor);
                 pawn.Motion.Speed=pawn.View.BattleMoveSpeed;pawn.Motion.SetDestination(actor.CellIndex,occupied);
             }
         }

@@ -14,7 +14,7 @@ local ok,err=xpcall(function()
     local actors={}
     for i,templateId in ipairs({1,3}) do
         local actor=data:AddPartyActor(i,templateId)
-        adventure.characterAppearances:Party(actor,921);growth:Initialize(actor)
+        adventure.characterAppearances:Party(actor,921);growth:PrepareActor(actor,templateId)
         actors[i]=actor
     end
     adventure.equipment:Start();adventure.equipment:StartPartyLoadouts()

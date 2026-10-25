@@ -9,12 +9,13 @@ namespace ProjectY.Data
     {
         public int Id { get; }
         public int SiteId { get; }
-        public int CellIndex { get; }
+        public int CellIndex { get; internal set; }
         public int SkillId { get; }
         public int HP { get; internal set; }
         public int MaxHP { get; }
         public bool Removed { get; internal set; }
         internal int OwnerTeam;
+        internal int OwnerActorId;
         internal int[] PaidMaterialIds=Array.Empty<int>(),PaidMaterialCounts=Array.Empty<int>();
         internal ConstructionRecord(int id,int site,int cell,int skill,int hp)
         {Id=id;SiteId=site;CellIndex=cell;SkillId=skill;HP=MaxHP=hp;}

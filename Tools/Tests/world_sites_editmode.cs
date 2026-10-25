@@ -44,6 +44,10 @@ try
     renderer.Build(map,asset=>UnityEditor.AssetDatabase.LoadAssetAtPath<GameObject>(asset.Path));
     var canvasObject=new GameObject("HUD",typeof(RectTransform),typeof(Canvas),typeof(ProjectY.UI.MainHudView));canvasObject.transform.SetParent(host.transform,false);
     var canvas=canvasObject.GetComponent<Canvas>();canvas.renderMode=RenderMode.ScreenSpaceOverlay;
+    var reference=canvasObject.AddComponent<ProjectY.UI.LuaReference>();
+    var toggleObject=new GameObject("SiteTags",typeof(RectTransform),typeof(UnityEngine.UI.Toggle));toggleObject.transform.SetParent(canvasObject.transform,false);
+    var siteTags=toggleObject.GetComponent<UnityEngine.UI.Toggle>();siteTags.isOn=true;
+    reference.SetEditorBindings(new ProjectY.UI.LuaReference.Entry("SiteTags",siteTags));
     var hud=canvasObject.GetComponent<ProjectY.UI.MainHudView>();hud.SetEditorBindings(new ProjectY.UI.MainHudView.Layout{Root=(RectTransform)canvas.transform,Canvas=canvas,Labels=new UnityEngine.UI.Text[0]});
     var type=typeof(ProjectY.Samples.AdventureRuntimeDemo).Assembly.GetType("ProjectY.Samples.WorldSiteView",true);
     siteView=(System.IDisposable)System.Activator.CreateInstance(type,flags,null,new object[]{hud,map,renderer},null);
@@ -56,6 +60,27 @@ try
     check(((int[])field(tags[33],"Cells")).Length==1,"Standalone site must keep its own cell");
     camera.orthographicSize=80;call(siteView,"Tick",new object[]{camera,false,Vector2.zero,.2f});hud.UpdateFollowers();
     foreach(System.Collections.DictionaryEntry entry in tags)check(((RectTransform)field(entry.Value,"Rect")).gameObject.activeSelf,"Far labels must show");
+    // A click can query Pick before Tick has hidden the previous frame's labels.
+    var townRect=(RectTransform)field(tags[7],"Rect");var originalPosition=townRect.position;
+    townRect.position=new Vector3(60,60,0);
+    var oldLabelPointer=RectTransformUtility.WorldToScreenPoint(null,townRect.TransformPoint(townRect.rect.center));
+    var labelPick=(ProjectY.Samples.AdventureViewData.Site)call(siteView,"Pick",new object[]{camera,oldLabelPointer});
+    check(labelPick!=null&&labelPick.Id==7,"Visible label must be pickable before disabling");
+    siteTags.isOn=false;
+    check(call(siteView,"Pick",new object[]{camera,oldLabelPointer})==null,"Disabled label must not survive the cached pick before Tick");
+    townRect.position=originalPosition;
+    call(siteView,"Tick",new object[]{camera,false,Vector2.zero,.2f});
+    foreach(System.Collections.DictionaryEntry entry in tags)check(!((RectTransform)field(entry.Value,"Rect")).gameObject.activeSelf,"Disabled far labels must hide");
+    var farPointer=(Vector2)camera.WorldToScreenPoint(map.Cells[1].Position);
+    call(siteView,"Tick",new object[]{camera,true,farPointer,.2f});
+    check(townRect.gameObject.activeSelf,"Disabled far labels must still show hovered town");
+    check(!((RectTransform)field(tags[33],"Rect")).gameObject.activeSelf,"Other far labels must remain hidden during hover");
+    call(siteView,"Hide",new object[0]);call(siteView,"Tick",new object[]{camera,false,Vector2.zero,.2f});
+    check(!siteTags.isOn&&!townRect.gameObject.activeSelf,"Hide and re-show must preserve disabled state");
+    // The original zoom hysteresis remains intact while labels are disabled.
+    camera.orthographicSize=60;call(siteView,"Tick",new object[]{camera,false,Vector2.zero,.2f});
+    siteTags.isOn=true;call(siteView,"Tick",new object[]{camera,false,Vector2.zero,.2f});
+    foreach(System.Collections.DictionaryEntry entry in tags)check(((RectTransform)field(entry.Value,"Rect")).gameObject.activeSelf,"Re-enabled far labels must restore within the hysteresis band");
     camera.orthographicSize=40;call(siteView,"Tick",new object[]{camera,false,Vector2.zero,.2f});
     foreach(System.Collections.DictionaryEntry entry in tags)check(!((RectTransform)field(entry.Value,"Rect")).gameObject.activeSelf,"Mid-distance labels must hide without hover");
     camera.orthographicSize=8;call(siteView,"Tick",new object[]{camera,false,Vector2.zero,.2f});
@@ -93,7 +118,7 @@ try
     // Repeated hover cannot accumulate height or tint.
     call(siteView,"Tick",new object[]{camera,true,pointer,.2f});call(siteView,"Hide",new object[0]);
     foreach(var entry in saved){var batch=field(entry,"Batch");var index=(int)field(entry,"Index");check(((Matrix4x4[])field(batch,"Matrices"))[index]==(Matrix4x4)field(entry,"Matrix"),"Repeated hover drifted");}
-    return "PASS world sites: full footprint, spatial picking, far/near/hover tags, lift, GPU silhouette pixels, passive mask, expired sites and restoration";
+    return "PASS world sites: full footprint, spatial picking, far/near/hover tags, toggle off/on, stale label picks, retained preference, zoom hysteresis, lift, GPU silhouette pixels, passive mask, expired sites and restoration";
 }
 finally
 {

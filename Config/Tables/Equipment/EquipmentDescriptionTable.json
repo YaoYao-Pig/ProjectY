@@ -1,0 +1,222 @@
+{
+  "version": 1,
+  "name": "EquipmentDescriptionTable",
+  "description": "装备结构化说明；正文使用明确的term链接，展示与战斗规则分离。普通装备也可配置。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "ref": "EquipmentItemTable",
+      "description": "装备物品ID"
+    },
+    {
+      "name": "passiveName",
+      "type": "text",
+      "description": "固有特性标题"
+    },
+    {
+      "name": "trigger",
+      "type": "text",
+      "default": "",
+      "description": "触发条件；支持term链接及数值富文本"
+    },
+    {
+      "name": "effect",
+      "type": "text",
+      "default": "",
+      "description": "获得的效果或资源"
+    },
+    {
+      "name": "limit",
+      "type": "text",
+      "default": "",
+      "description": "上限、消费和失效条件"
+    },
+    {
+      "name": "usage",
+      "type": "text",
+      "default": "",
+      "description": "持握、射程及其他使用限制"
+    },
+    {
+      "name": "skillIds",
+      "type": "int[]",
+      "ref": "CombatSkillTable",
+      "default": [],
+      "description": "优先展示的装备技能；正文复用SkillDescriptionTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 9001,
+      "passiveName": "孤身成阵",
+      "trigger": "本武器的<link=\"term:main_action\">主要行动</link>攻击命中结算后，身边仍相邻至少<b><color=#E9C580>2 名</color></b>存活敌人。",
+      "effect": "自身<link=\"term:guard\">护卫</link>提升至至少<b><color=#E9C580>4</color></b>。",
+      "limit": "每<link=\"term:round\">轮</link>触发一次；护卫取较大值，不相加。",
+      "usage": "双手近战武器；固有机制须装备在<link=\"term:main_hand\">主手</link>。",
+      "skillIds": [
+        2201
+      ]
+    },
+    {
+      "id": 9002,
+      "passiveName": "行猎",
+      "trigger": "本回合累计<link=\"term:normal_movement\">普通移动</link>至少<b><color=#E9C580>2 格</color></b>后，使用本弓进行主要行动攻击。",
+      "effect": "本轮下一次符合条件的攻击<link=\"term:hit\">命中率</link>提高<b><color=#E9C580>15 个百分点</color></b>。",
+      "limit": "加成在施放时用掉，未命中不保留；技能位移不计入所需的两格。",
+      "usage": "留踪箭的基础<link=\"term:range\">射程</link>为<b><color=#E9C580>2–6 格</color></b>，相邻目标在<link=\"term:min_range\">近身盲区</link>内。",
+      "skillIds": [
+        2202
+      ]
+    },
+    {
+      "id": 9003,
+      "passiveName": "异相演算",
+      "trigger": "主要伤害法术命中，且类型不同于上一次符合条件的法术。",
+      "effect": "获得<b><color=#E9C580>1 层</color></b><link=\"term:refraction\">折光</link>，最多<b><color=#E9C580>3 层</color></b>；验算终章每层增伤<b><color=#E9C580>15%</color></b>。",
+      "limit": "首次命中只记录类型；一次施法最多加一层。终章施放即耗尽折光，不产生新层数，未命中不返还；增幅受<link=\"term:conditional_bonus\">条件增伤上限</link>约束。",
+      "usage": "双手奥术触媒；奥术与火焰终章共用<link=\"term:cooldown\">冷却</link>。",
+      "skillIds": [
+        2203,
+        2223
+      ]
+    },
+    {
+      "id": 9004,
+      "passiveName": "知其接缝",
+      "trigger": "主手持有千钉，对规则允许破坏的工事或障碍造成结构伤害。",
+      "effect": "结构伤害提高<b><color=#E9C580>50%</color></b>。",
+      "limit": "不能绕过锁定与不可破坏限制；迁筑保留原耐久、材料投入与身份，不返还材料。",
+      "usage": "活榫迁筑只搬动本人建造的栅栏或木墙，目标与新落点必须合法。",
+      "skillIds": [
+        2204
+      ]
+    },
+    {
+      "id": 9005,
+      "passiveName": "誓有回声",
+      "trigger": "通过<link=\"term:interpose\">承誓</link>代受攻击，并实际损失生命。",
+      "effect": "获得回声：下一次本剑主要行动攻击命中时，伤害提高<b><color=#E9C580>20%</color></b>。",
+      "limit": "每轮获得一次；回声不叠加，保留至自身下回合结束；增幅受<link=\"term:conditional_bonus\">条件增伤上限</link>约束。",
+      "usage": "单手主武器；守门誓还要求装备一面未损毁的盾牌。",
+      "skillIds": [
+        2205
+      ]
+    },
+    {
+      "id": 9006,
+      "passiveName": "留一滴",
+      "trigger": "本人用蒸馏爆破消耗敌人的<link=\"term:burning\">燃烧</link>或<link=\"term:poison\">中毒</link>，且当前没有残样。",
+      "effect": "保留<b><color=#E9C580>1 份</color></b>对应类型的<link=\"term:sample\">残样</link>，供回注使用。",
+      "limit": "每场最多获得<b><color=#E9C580>2 次</color></b>，同时最多一份，至自身下回合结束失效；不是试剂物品，不能转成物品或循环产出。",
+      "usage": "燃烧与中毒回注共用冷却；合法施放即消耗对应残样，未命中不返还。",
+      "skillIds": [
+        2206,
+        2226
+      ]
+    },
+    {
+      "id": 9007,
+      "passiveName": "返场",
+      "trigger": "本人使用安可或破音并实际消耗<link=\"term:resonance\">余音</link>。",
+      "effect": "获得<b><color=#E9C580>1 层</color></b><link=\"term:reprise\">返场</link>；众人接唱消耗两层，为至多两名友方各赋一层余音。",
+      "limit": "每轮最多获得一层，最多存两层；众人接唱不产生返场，也不恢复主要行动。",
+      "usage": "双手战琴；普通攻击为战琴敲击，固有能力须在主手生效。",
+      "skillIds": [
+        2237,
+        2207
+      ]
+    },
+    {
+      "id": 9008,
+      "passiveName": "施恩成壁",
+      "trigger": "本轮第一次以一次行动直接治疗其他友军，并恢复了生命。",
+      "effect": "自身护卫提升至至少“该行动<link=\"term:actual_healing\">实际治疗总量</link>的<b><color=#E9C580>50%</color></b>”，向下取整、最高<b><color=#E9C580>6</color></b>。",
+      "limit": "每轮一次；治疗自己、超出生命上限的治疗和周期再生不计入。护卫取较大值，不相加。",
+      "usage": "单手奥术触媒；交还黎明要求自身有<link=\"term:weakness\">虚弱</link>，提交施法时清除全部虚弱。",
+      "skillIds": [
+        2208
+      ]
+    },
+    {
+      "id": 9009,
+      "passiveName": "痛知",
+      "trigger": "自身处于<link=\"term:poison\">中毒</link>、<link=\"term:bleeding\">流血</link>或<link=\"term:weakness\">虚弱</link>状态。",
+      "effect": "连带契约的射程增加<b><color=#E9C580>1 格</color></b>。",
+      "limit": "同时存在多种上述状态也只增加一格；<link=\"term:shared_debt\">共债</link>需两名不同敌人均成功接受连接。",
+      "usage": "双手奥术触媒；共债只在实际直接失血后触发，不由周期伤害触发。",
+      "skillIds": [
+        2209
+      ]
+    },
+    {
+      "id": 9010,
+      "passiveName": "留名不留痕",
+      "trigger": "本剑直接命中一个在命中前已带有<link=\"term:exposed\">破绽</link>的目标。",
+      "effect": "本次攻击不磨损目标装备。",
+      "limit": "自身武器仍会磨损；本次命中才新加的破绽不满足固有触发条件。",
+      "usage": "先请防护下一次相邻敌人的直接武器命中，并制造破绽；不自动反击。",
+      "skillIds": [
+        2210
+      ]
+    },
+    {
+      "id": 9011,
+      "passiveName": "闻铃知意",
+      "trigger": "主手持有同行，向自己的独立绑定动物下达口令。",
+      "effect": "口令距离增加<b><color=#E9C580>1 格</color></b>。",
+      "limit": "并肩追猎使用主人的主要行动，且占用动物本轮额外位移与攻击指令；保留借机攻击和机关风险，骑乘动物不能作为独立伙伴接受这条口令。",
+      "usage": "并肩追猎要求动物在主人<b><color=#E9C580>4 格</color></b>内；动物再移动至多两格并扑咬相邻敌人。界面<b><color=#E9C580>7 格</color></b>选敌范围不等于七格口令距离。",
+      "skillIds": [
+        2211
+      ]
+    },
+    {
+      "id": 9012,
+      "passiveName": "穷人的力气",
+      "trigger": "本轮第一次以本武器主要行动攻击命中敌人。",
+      "effect": "若该敌人的<b>最大生命</b>高于自己的最大生命，本次伤害提高<b><color=#E9C580>20%</color></b>。",
+      "limit": "每轮只检查第一次命中；先命中最大生命较低或相等的敌人，也会用掉本轮机会。增幅受<link=\"term:conditional_bonus\">条件增伤上限</link>约束。",
+      "usage": "双手近战武器；伏穗最多选择三名相邻敌人，并按每名目标分别判定命中。",
+      "skillIds": [
+        2212
+      ]
+    },
+    {
+      "id": 9013,
+      "passiveName": "旗在前",
+      "trigger": "使用本剑进行主要行动攻击，且身旁有存活友军。",
+      "effect": "命中率提高<b><color=#E9C580>10 个百分点</color></b>。",
+      "limit": "不作用于副手攻击或次要行动；以我为旗赋予的鼓舞只用于下一次主要伤害攻击，施放时消耗。",
+      "usage": "以我为旗只能选择其他友军；向自己技能移动一格，不触发借机攻击，也不恢复普通移动或行动额度。",
+      "skillIds": [
+        2213
+      ]
+    },
+    {
+      "id": 9014,
+      "passiveName": "有人在身后",
+      "trigger": "通过<link=\"term:interpose\">承誓</link>代受攻击并实际损失生命，原受保护者仍存活。",
+      "effect": "原受保护者获得归乡护符：下一次直接伤害减免<b><color=#E9C580>4</color></b>。",
+      "limit": "每轮一次；护符至接收者下回合结束失效。同类直接减伤护符取高，不相加；周期伤害不消费护符。",
+      "usage": "装备在副手盾位；护送之誓保护相邻的其他友军，使自身护卫至少为<b><color=#E9C580>6</color></b>。",
+      "skillIds": [
+        2214
+      ]
+    },
+    {
+      "id": 9015,
+      "passiveName": "一往无前",
+      "trigger": "主手持枪，在自己的回合中沿同一直线实际前进。",
+      "effect": "每格获得<b><color=#E9C580>1 层</color></b><link=\"term:momentum\">冲势</link>，最多三层；下一次本枪主要攻击每层增伤<b><color=#E9C580>10%</color></b>。",
+      "limit": "攻击施放时消耗全部冲势，未命中不返还；转向从新方向第一步重新积累，回合结束或被推拉／换位时清空。",
+      "usage": "单手骑枪，可配盾；徒步突刺固定只打<b><color=#E9C580>第 2 格</color></b>，相邻一格为近身盲区。折冠冲锋要求骑乘；副手突刺不触发传奇固有机制。",
+      "skillIds": [
+        2235,
+        2215,
+        2236
+      ]
+    }
+  ]
+}

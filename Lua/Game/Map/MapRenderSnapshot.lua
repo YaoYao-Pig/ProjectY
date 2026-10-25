@@ -2,14 +2,14 @@
 return function(map)
     local result = { seed = map.seed, generationVersion = map.generationVersion, hexRadius = map.hexRadius,
         cells = {}, buildings = {}, roads = {}, towns = {}, regionCount = #map:GetRegions(),
-        assets = {}, decorations = {}, waterfalls = {}, rivers = {}, surfaces = {}, groundcover = {} }
+        assets = {}, decorations = {}, waterfalls = {}, rivers = {}, surfaces = {}, groundcover = {}, clouds = {} }
     local surfaces = {}
     for i, row in ipairs(map.biomes) do
         assert(not surfaces[row.id], 'Duplicate render surface biome')
         surfaces[row.id] = true
         result.surfaces[i] = { id = row.id, groundTexture = assert(row.groundTexture),
             textureWorldSize = assert(row.textureWorldSize), textureStrength = assert(row.textureStrength),
-            windStrength = assert(row.windStrength), groundColor = assert(row.groundColor) }
+            windStrength = assert(row.windStrength), groundColor = assert(row.groundColor), cliffTintStrength=row.cliffTintStrength }
     end
     local indices = {}
     for i, cell in ipairs(map:GetCells()) do indices[cell] = i end
@@ -27,7 +27,9 @@ return function(map)
             elseif not second or item.weight > second.weight then second = item end
         end
         assert(first and first.weight > 0, 'Render cell requires a positive biome weight')
-        result.cells[i] = { q = cell.q, r = cell.r, townId = cell.townId or 0,
+        local corners
+        if cell.surfaceCorners then corners={};for j,height in ipairs(cell.surfaceCorners) do corners[j]=height end end
+        result.cells[i] = { q = cell.q, r = cell.r, townId = cell.townId or 0,regionId=cell.regionId,surfaceCorners=corners,
             x = x, y = y, z = z, hasWater = cell.waterLevel ~= nil,
             waterLevel = cell.waterLevel or 0, waterDepth = cell.waterDepth or 0,
             isRiver = cell.waterKind == 'river', riverId = cell.riverId or 0,
@@ -52,7 +54,11 @@ return function(map)
     for i, road in ipairs(map:GetRoads()) do result.roads[i] = { kind = road.kind, cells = cellIds(road.cells) } end
     for i, item in ipairs(map:GetDecorations()) do
         result.decorations[i] = { cell = indices[item.cell], assetId = item.assetId, scale = item.scale, yaw = item.yaw,
-            height = item.height or item.cell.height }
+            height = item.height or item.cell.height, wonder=item.wonder==true }
+    end
+    for i,cloud in ipairs(map.clouds) do
+        result.clouds[i]={x=cloud.x,y=cloud.y,z=cloud.z,width=cloud.width,height=cloud.height,
+            opacity=cloud.opacity,phase=cloud.phase,drift=cloud.drift}
     end
     for i, item in ipairs(assert(map.groundcover, 'Map groundcover has not been built')) do
         result.groundcover[i] = { cell = assert(indices[item.cell], 'Groundcover cell is outside this map'),

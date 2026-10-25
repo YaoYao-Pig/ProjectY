@@ -77,7 +77,7 @@ namespace ProjectY.Samples
             }
         }
         private void ClearVisualEffects()
-        { pendingEffects.Clear();visualEffects?.Clear(); }
+        { pendingEffects.Clear();visualEffects?.Clear();ClearBattleAudio(); }
         private void DisposeVisualEffects()
         { ClearVisualEffects();visualEffects?.Dispose();visualEffects=null;effectCatalog=null;effectCells.Clear(); }
     }

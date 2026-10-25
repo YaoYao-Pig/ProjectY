@@ -87,6 +87,7 @@ namespace ProjectY.Samples
                 narrativeData = (ProjectY.Data.NarrativeData)bootstrap.CallModule("Game.Narrative.Bridge", "data")[0];
                 if (HasArea) ClearAreaView();
                 worldPartyView?.Dispose(); worldPartyView = null;
+                worldWaterView?.Dispose(); worldWaterView = null;
                 ClearWorldSites();
                 mapRenderer.Dispose(); mapRenderer = candidate; candidate = null;
                 worldMap = map;

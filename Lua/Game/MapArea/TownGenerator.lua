@@ -193,9 +193,11 @@ function Town.Generate(area,row,random,config)
         if place({assetId=area.theme.treeAssetId,scale=area.theme.treeScale,scaleMode='grid',footprintQ=q,footprintR=r,entryQ=0,entryR=2},cell.q,cell.r,0) then trees=trees+1 end
     end
     require('Game.MapArea.TownDressing').Apply(area,row,random,config,doors,buildings)
+    require('Game.MapArea.TownWaterfront').Build(area,row,config,doors)
     local queue,distance=Geometry.Reachable(area,area.entryIndex)
     assert(#queue==area.walkableCount,'Town street layers must stay connected');area.goalDistance=distance[area.goalIndex]
     require('Game.MapArea.TownResidents').Populate(area,row,config,doors)
+    require('Game.MapArea.TownWaterfront').BindResidents(area)
     return area
 end
 return Town

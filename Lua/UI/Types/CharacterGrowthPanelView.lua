@@ -62,5 +62,6 @@
 ---@field Hint CS.UnityEngine.UI.Text
 ---@field Atlas CS.UnityEngine.UI.Button
 ---@field AtlasText CS.UnityEngine.UI.Text
+---@field Skin CS.ProjectY.UI.LuaReference
 local View = {}
 return View

@@ -20,14 +20,16 @@
 
 - 来源：[战斗总览](https://my.feishu.cn/wiki/XvPvw2sk2ih7BTkAonGcjmR7nlg)、[游戏玩法](https://my.feishu.cn/wiki/AjNMwkcNHisPnukqnESc78azn0b)、[一些想法](https://my.feishu.cn/wiki/OHZhwsGudiXWfIkywDDcczNunfe)。属性沿用六个一级属性与战斗/生活二级属性；初始数值与升级策略为用户授权的可配置 Demo。
 - `GrowthSystem` 依赖 Battle；`CombatActorData.Growth` 的 `CharacterGrowthData` 持有等级、经验、属性投入、被动阶数、开放树、潜力、已学技能、学习机会、当前职业与已加入职业。Lua 只解释配置与产生显示投影。成长与特质通过[角色存档](CharacterSave.md)跨运行恢复，经历日志不在保存范围内。
-- `CombatStats` 统一叠加基础、特质、属性投入、被动与装备数值；生命上限变化保留已受伤害，倒地不会因加点复活。主动技能合并到原有装备/战斗技能查询，既有模板和装备技能保留。
+- `CombatStats` 统一叠加实例基础值、当前职业收益、特质、属性投入、被动与装备数值；生命上限变化保留已受伤害，倒地不会因加点复活。主动技能合并到原有装备/战斗技能查询，既有模板和装备技能保留。
+- 新建人形（`CombatUnitTable.bodyInjuries`）由 [CharacterBirth.lua](../../Lua/Game/Progression/CharacterBirth.lua) 生成一次初始基础值：六主属性2–6，所有二级属性在模板值±1内取整数、最低0；参数归 [CharacterBirthRuleTable](../../Config/Tables/Progression/CharacterBirthRuleTable.json)。结果独立保存于 `CombatActorData`，不混入升级投入；查询、显示、读档与切职不重掷。动物与其他非人形保留模板值。普通城镇NPC首次创建可招募实例时生成，稳定NPC ID使重复预检一致；事件NPC保留既有敌人实例的结果且不提前初始化Growth。队员、战斗/区域敌人、世界成员、决斗均在装备与最大HP计算前接入；战斗/决斗复用临时ID时加入本次场景种子或地点/日期上下文。
+- [ProfessionAttributeTable](../../Config/Tables/Progression/ProfessionAttributeTable.json) 是所有职业共用的属性收益配置：职业、属性、固定加成、随机下限/上限；同职业同属性只能一行。首次获得职业时以独立随机源生成固定值+随机值并保存，空配置也记录；`CombatStats` 仅取当前职业，未初始化Growth的敌人取初始职业。切走撤下、切回恢复原收益，配置改动不重算历史快照。当前农民力量+0–2、贵族速度+0–2，其余职业可按同表扩展；特质与装备加成另计。`ChangeProfession` 同步重算最大HP，基础底值不变。
 - `GrowthSystem.PrepareActor` 只初始化独立角色的养成/特质，不写经历；[招募](Narrative.md)预检使用它，正式加入队伍后调用 `RecordJoined`。原 `Initialize` 仍组合这两步，供已在队伍中的初始角色使用。
 - 属性点与被动点是独立资源；加点/学习仅允许 map/area 阶段。天赋图只引用 `PassiveSkillTable`，支持属性加算、`immunityTags` 和 `triggerKind` 职业触发被动；纯触发被动显式配置属性图标，不附加占位属性。触发、次数与消费语义见[职业战斗](ProfessionCombat.md)，没有主动技能天赋节点或重置返还。`GrowthRules:Immunity(actor,tag)` 仅查询已学习且阶数大于0的节点。
 - `adjacent_any`：从根节点开始，可沿任一已学习邻居扩展，边视为无向；`prerequisite_all`：边 from→to 是前置，全部前置已学习才可投点。节点支持阶数、费用和角色等级门槛；初始化拒绝跨树边、重复边、不可达节点和有向死锁。
-- `ProfessionTable` 定义战士、游侠、法师、巧匠、骑士及新增炼金师、吟游诗人、神官、咒术师、决斗家、驯兽师，共11职业；`ProfessionSkillTable` 定义课程、角色等级与全部属性门槛，额外使用图谱前置。探索阶段免费 `ChangeProfession`，已学能力永久保留，装备不受职业限制；没有分职业等级。初始职业赠送准备技一次，转职不赠技能；新六职各有独立被动树，树的开放不等于获得被动收益。
+- `ProfessionTable` 包含11个可后加职业，以及农民12、贵族13两个 `baseProfession`；基础职业只在创建时获得，兼职网格和命令均拒绝后加，但已拥有者可切回。普通开局与同行默认农民；`CampaignStartTable.initialProfessionId` 仅覆盖领队：退伍步卒1、林地猎户2、被逐学徒3、修补匠4、流亡贵族13，其余12。`ProfessionSkillTable` 定义课程、等级/属性门槛及图谱前置。探索阶段免费切换，已学技能与被动保留；职业属性收益只当前职业生效，没有分职业等级。初始职业按配置赠送准备技一次，切职不赠技能；两个基础职业目前不赠技能。树开放不等于获得被动收益。
 - `GrowthSystem.Learn` 从当前职业全部合格课程主动选择，每次消费 `PendingCount` 的一次机会；已掌握/固有技能不能重复学习，道具动作不属于课程。空目录、条件不足、浏览和转职均不消耗机会。旧 `PrepareOffers` 保留为无副作用兼容入口，正常玩法不再生成随机候选；旧随机规则仅留作兼容工具。
 - `GrowthRuleTable` 管初始点数、初始学习次数、属性门槛是否包含装备与日志条数；`GrowthLevelTable` 每行定义经验、点数与是否学习，连续 2..N 行确定上限。当前初始 2 属性点/2 被动点/1 学习机会，每级 2 属性点/1 被动点，偶数级追加学习机会。连续升级全部保留，学习不消耗养成 RNG。
-- `GrowthAttributeTable` 注册属性；`GrowthProfileTable` 配置初始职业/树/特质/潜力；`TalentTree/Node/EdgeTable` 定义被动图；`PassiveSkillTable` 定义每阶收益。法师职业开放树 3，「奥术兵装」节点 301 要求角色等级 2、1 天赋点并加 1 智力，触媒适配器以节点阶数判定专精。新增配置后导表，不手改 `_Gen`。
+- `GrowthAttributeTable` 注册属性；`GrowthProfileTable` 配置树/特质/潜力，其原初始职业字段保留给旧档职业迁移，不替代新角色的出生规则和开局覆盖；`TalentTree/Node/EdgeTable` 定义被动图；`PassiveSkillTable` 定义每阶收益。法师职业开放树 3，「奥术兵装」节点 301 要求角色等级 2、1 天赋点并加 1 智力，触媒适配器以节点阶数判定专精。新增配置后导表，不手改 `_Gen`。
 - 「紧握武器」为被动14、节点10，位于远行者之路，通过4→10接在剑术修习之后，1级可学、消耗1点、最高1阶；`immunityTags=['disarm']` 完全免疫缴械。它使用空属性数组和 `iconAttribute='strength'`，不附带占位属性加成；缴械拒绝与资源契约见[战斗](Battle.md)。纯免疫被动必须显式配置已有属性图标，初始化拒绝无效果、重复免疫标记和无效图标。
 - `Chronicle` 与事件共用 `StoryLogTemplateTable`；`AdventureData` 持有带序号、地点、参与者、事件与选项 ID 的经历快照。个人页按参与者过滤，游戏日志只显示配置条数，完整经历不裁剪；没有虚构游戏日期或关系值。
 - `CharacterGrowth` 是暂停世界的模态 Panel，按 C 或游戏内日志上的“同行者”打开，分“属性加点 / 职业与天赋 / 旅途经历”。职业页左侧为“职业 → 主技能分类 → 技能”的可拖动树，分类线仅表示目录，箭头线取 `SkillAtlasTable.prerequisiteIds`，补齐跨职业前置且不新增学习门槛。布局不随学习状态重排；圆形节点区分已掌握、可学习、条件不足或机会不足，选中仅预览，右侧学习按钮才消费机会。点击职业徽记打开已加入职业树；其他来源能力保留在右下目录。被动页继续显示天赋图、详情与投入按钮、右下天赋树目录；经历页倒排并分页，属性页保留特质、关系、荣誉展示。
@@ -45,6 +47,8 @@
 - 紧握接入的定向检查：[growth_core.lua](../../Tools/Tests/growth_core.lua) 5组与 [disarm_immunity.lua](../../Tools/Tests/disarm_immunity.lua) 4组已通过，覆盖图连通、可学习/满阶、实际免疫查询、无额外属性、缴械拒绝事务及真实概率边界；本次未进入Play。
 
 ## 关键入口
+
+- [CharacterBirthState.cs](../../Assets/GameFramework/Runtime/Data/CharacterBirthState.cs)：实例基础属性和按职业记录的不可变收益；[规则检查](../../Tools/Tests/character_birth_core.lua)、[原生数据检查](../../Tools/Tests/character_birth_data_editmode.cs)、[真实存档检查](../../Tools/Tests/character_birth_save_editmode.cs)、[出生职业UI检查](../../Tools/Tests/character_birth_ui.lua)。原生检查通过已有空闲Editor的MCP执行，存档检查只用独立临时目录，不进入Play。
 
 - [GrowthSystem.lua](../../Lua/Game/Progression/GrowthSystem.lua) / [GrowthRules.lua](../../Lua/Game/Progression/GrowthRules.lua) / [Chronicle.lua](../../Lua/Game/Progression/Chronicle.lua)：命令、规则与记录模板。
 - [ProfessionRules.lua](../../Lua/Game/Progression/ProfessionRules.lua) / [职业配置](../../Config/Tables/Progression/ProfessionTable.json) / [职业课程](../../Config/Tables/Progression/ProfessionSkillTable.json)：职业目录、学习条件与来源；[定向检查](../../Tools/Tests/profession_core.lua)。

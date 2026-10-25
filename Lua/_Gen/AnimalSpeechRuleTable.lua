@@ -1,0 +1,13 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class AnimalSpeechRuleTableRow
+---@field id number 稳定规则 ID
+---@field skillId number 动物交谈法术
+---@field npcId number 普通动物对话身份容器
+---@field baseChance number 基础沟通成功率
+---@field affinityWeight number 动物亲和每点增加的成功率
+---@field charismaWeight number 魅力每点增加的成功率
+---@field hostilePenalty number 敌对动物沟通惩罚
+---@field legendaryPenalty number 传奇动物沟通惩罚
+---@field minimumChance number 沟通成功率下限
+---@field maximumChance number 沟通成功率上限
+return {["name"]="AnimalSpeechRuleTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\232\167\132\229\136\153 ID",["min"]=1},{["name"]="skillId",["type"]="int",["description"]="\229\138\168\231\137\169\228\186\164\232\176\136\230\179\149\230\156\175",["ref"]="CombatSkillTable"},{["name"]="npcId",["type"]="int",["description"]="\230\153\174\233\128\154\229\138\168\231\137\169\229\175\185\232\175\157\232\186\171\228\187\189\229\174\185\229\153\168",["ref"]="NpcTable"},{["name"]="baseChance",["type"]="int",["description"]="\229\159\186\231\161\128\230\178\159\233\128\154\230\136\144\229\138\159\231\142\135",["min"]=0,["max"]=100},{["name"]="affinityWeight",["type"]="int",["description"]="\229\138\168\231\137\169\228\186\178\229\146\140\230\175\143\231\130\185\229\162\158\229\138\160\231\154\132\230\136\144\229\138\159\231\142\135",["min"]=0},{["name"]="charismaWeight",["type"]="int",["description"]="\233\173\133\229\138\155\230\175\143\231\130\185\229\162\158\229\138\160\231\154\132\230\136\144\229\138\159\231\142\135",["min"]=0},{["name"]="hostilePenalty",["type"]="int",["description"]="\230\149\140\229\175\185\229\138\168\231\137\169\230\178\159\233\128\154\230\131\169\231\189\154",["min"]=0},{["name"]="legendaryPenalty",["type"]="int",["description"]="\228\188\160\229\165\135\229\138\168\231\137\169\230\178\159\233\128\154\230\131\169\231\189\154",["min"]=0},{["name"]="minimumChance",["type"]="int",["description"]="\230\178\159\233\128\154\230\136\144\229\138\159\231\142\135\228\184\139\233\153\144",["min"]=0,["max"]=100},{["name"]="maximumChance",["type"]="int",["description"]="\230\178\159\233\128\154\230\136\144\229\138\159\231\142\135\228\184\138\233\153\144",["min"]=0,["max"]=100}},["fingerprint"]="7fcd8a50b1cd4484e0a028ddbaacf3ee2334e2aafea49e6e2cf86956aa5ef6b2"}

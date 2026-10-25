@@ -1,4 +1,5 @@
 local Hex=require('Game.Map.HexGrid')
+local LuaLanguage=require('Language')
 local Travel={};Travel.__index=Travel
 local function escort(adventure)
     local story=adventure.narrative
@@ -7,7 +8,7 @@ end
 function Travel.New(adventure)
     local config=adventure.config
     local self=setmetatable({adventure=adventure,data=CS.ProjectY.Data.WorldTravelData.For(adventure.data),
-        rule=config:GetTable('WorldTravelTable'):Get(1),terrains={},events=config:GetTable('WorldTravelEventTable')},Travel)
+        rule=config:GetTable('WorldTravelTable'):Get(1),terrains={},events=config:GetTable('WorldTravelEventTable'),randomEncountersDisabled=false},Travel)
     self.maxStep=self.rule.maxHeightStep
     for _,row in ipairs(config:GetTable('WorldTravelTerrainTable'):All()) do
         assert(not self.terrains[row.regionType],'Duplicate travel terrain');self.terrains[row.regionType]=row
@@ -20,13 +21,14 @@ function Travel.New(adventure)
     return self
 end
 function Travel:Reset(map,sites)
+    self.randomEncountersDisabled=false
     self.map=map;self.cells=map:GetCells();self.paths=require('Game.Map.MapPathfinder')(map)
     local camp=assert(sites[1]);assert(not map:GetCell(camp.q,camp.r).waterLevel,'Travel camp must be on dry land')
     self.data:Reset(self.adventure.data.Seed,camp.q,camp.r,#sites+1)
 end
 function Travel:Terrain(cell) return assert(self.terrains[self.map:GetRegion(cell.regionId).regionType],'Missing travel terrain') end
 function Travel:Cost(a,b)
-    if a.waterLevel or b.waterLevel then return nil end
+    if a.waterLevel or b.waterLevel or a.worldTravelBlocked or b.worldTravelBlocked then return nil end
     local slope=math.abs(a.height-b.height);if slope>self.maxStep then return nil end
     local road=#a.roadIds>0 and #b.roadIds>0
     return (self.rule.minutesPerCell*self:Terrain(b).costMultiplier+slope*self.rule.slopeMinutes)*(road and self.rule.roadMultiplier or 1)
@@ -40,7 +42,9 @@ end
 function Travel:Plan(cell,siteId)
     local ok,reason=self:Allowed();if not ok then return false,reason end
     if not cell then return false,'目的地不在地图内' end
-    if cell.waterLevel then return false,'目的地位于水域，暂不能步行到达' end
+    if self.adventure.water and (cell.waterLevel or self.adventure.water.data.Mode~='walk') then return self.adventure.water:Plan(cell,siteId) end
+    if cell.waterLevel then return false,LuaLanguage.WaterNeedBoat end
+    if cell.worldTravelBlocked then return false,LuaLanguage.NaturalTerrainUseEntrance end
     local start=self.map:GetCell(self.data.AnchorQ,self.data.AnchorR)
     local path=self.paths:FindPath(start,cell,function(a,b)return self:Cost(a,b)end)
     if not path then return false,'没有可通行的陆路，请选择其他目的地' end
@@ -75,6 +79,9 @@ function Travel:Command(command,value)
     return true
 end
 function Travel:Arrive()
+    if self.adventure.water then
+        local handled,ok,reason=self.adventure.water:Arrive();if handled then return ok,reason end
+    end
     local siteId=self.data.TargetSiteId;self.data:Arrived()
     if siteId>0 then return self.adventure:EnterSite(siteId) end
     return true
@@ -128,21 +135,33 @@ function Travel:Check()
     end
     if total==0 then return false end
     local roll=self.data:Roll(total)
-    for _,row in ipairs(entries) do roll=roll-row.weight;if roll<=0 then assert(self:Trigger(row));return true end end
+    for _,row in ipairs(entries) do
+        roll=roll-row.weight
+        if roll<=0 then
+            -- Keep the normal draw and event weights; a suppressed battle does not become another event.
+            if self.randomEncountersDisabled and row.encounterId>0 then return false end
+            assert(self:Trigger(row));return true
+        end
+    end
     error('Travel weighted pool did not select an entry')
 end
 function Travel:Tick(dt)
     if self.adventure.data.Phase~='map' or self.data.Paused or self.adventure.parties.data.IsOpen or
         self.adventure.camp.data.IsOpen or self.adventure.context.services.UI.IsWorldPaused then return end
     local budget=dt*self.rule.minutesPerSecond*self.data.Speed
+    if self.adventure.water and self.adventure.water.data.Mode=='ferry' and not self.data.Active then
+        local _,ok,reason=self.adventure.water:Arrive();if not ok then self.data:Report(reason) end;return
+    end
     while budget>0 and self.adventure.data.Phase=='map' and not self.data.Paused do
         local convoy=escort(self.adventure);local attached=convoy and convoy.data.AttachedId>0
         local moving=self.data.Active and not attached
         local spent=moving and self.data:Step(math.min(budget,1)) or math.min(budget,1)
+        if self.adventure.water and self.adventure.water.data.Mode=='owned' then self.adventure.water.data:SyncBoat(self.data.Q,self.data.R) end
+        if self.adventure.water and self.adventure.water.data.Mode~='walk' then self.data:DiscardEncounterTime() end
         assert(spent>0,'World clock failed to advance');budget=math.max(0,budget-spent)
         self.adventure.fog:Update()
         self.adventure.narrative:AdvanceMinutes(spent)
-        self.adventure.parties:SyncClock()
+        self.adventure.parties:SyncClock(moving)
         if attached then self.adventure.fog:Update() end
         self.adventure.factions:ObserveWorld()
         if self.adventure.data.Phase~='map' then return end
@@ -151,7 +170,7 @@ function Travel:Tick(dt)
         if self.data.Paused then return end
         if moving and not self.data.Active then
             local ok,reason=self:Arrive();self.data:Report(ok and '已抵达目的地' or reason)
-        elseif moving and self.data.Progress==0 then
+        elseif moving and self.data.Progress==0 and (not self.adventure.water or self.adventure.water.data.Mode=='walk') then
             while self.data:CheckDue(self.rule.checkMinutes) do if self:Check() then return end end
         end
     end
@@ -162,16 +181,21 @@ function Travel:Summary()
     if attached then local record=convoy.data:Find(convoy.data.AttachedId);target=self.adventure.sites[record.DestinationSiteId] end
     return {active=data.Active,paused=data.Paused,speed=data.Speed,remaining=data.RemainingMinutes,
         destination=target and (attached and '护送 · ' or '')..target.name or data.Active and '地图位置' or '原地待命',
-        terrain=self:Terrain(self.map:GetCell(data.Q,data.R)).name,message=data.Message}
+        terrain=self.adventure.water and self.adventure.water.data.Mode~='walk' and LuaLanguage.WaterSailing or self:Terrain(self.map:GetCell(data.Q,data.R)).name,message=data.Message}
 end
 function Travel:Snapshot()
-    local data=self.data;local x,y,z=self.map:GetCellWorldPosition(data.Q,data.R)
+    local data=self.data
+    local function position(q,r)
+        if self.adventure.water and self.adventure.water.data.Mode~='walk' then return self.adventure.water:Position(q,r) end
+        return self.map:GetCellWorldPosition(q,r)
+    end
+    local x,y,z=position(data.Q,data.R)
     if data.Active then
-        local step=data:GetStepAt(0);local nx,ny,nz=self.map:GetCellWorldPosition(step.Q,step.R);local t=data.Progress
+        local step=data:GetStepAt(0);local nx,ny,nz=position(step.Q,step.R);local t=data.Progress
         x,y,z=x+(nx-x)*t,y+(ny-y)*t,z+(nz-z)*t
     end
     local route={}
-    for i=0,data.StepCount-1 do local step=data:GetStepAt(i);local px,py,pz=self.map:GetCellWorldPosition(step.Q,step.R)
+    for i=0,data.StepCount-1 do local step=data:GetStepAt(i);local px,py,pz=position(step.Q,step.R)
         route[#route+1]={x=px,y=py,z=pz}
     end
     local result=self:Summary();result.x=x;result.y=y;result.z=z;result.route=route;return result

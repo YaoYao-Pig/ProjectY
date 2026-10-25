@@ -2,6 +2,7 @@ local Class=require('Core.Class')
 local Widget=require('UI.UIWidgetCtrl')
 local Row=Class('EquipmentRow',Widget)
 function Row:Bind()
+    self.affixes=self.context.systems:Get('Equipment').rules.affixes
     self:Listen(self.view.Button,function() if self.row then self.callback(self.row) end end)
 end
 function Row:Initialize(workbench,callback)
@@ -17,5 +18,7 @@ function Row:SetData(row)
     self.view.Button.interactable=row.enabled~=false
     self.view.Selected.gameObject:SetActive(row.selected==true)
     self.workbench:SetItemIcon(self.view.Icon,row.itemId,row.iconPath)
+    local legendary=row.itemId and self.affixes:Legendary(row.itemId) or nil
+    self.view.RarityFrame:Configure(legendary~=nil,legendary and legendary.color or '',row.selected==true)
 end
 return Row

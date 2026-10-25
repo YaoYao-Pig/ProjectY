@@ -25,16 +25,17 @@ namespace ProjectY.UI
         }
         internal sealed class Item
         {
-            public string Key,Name,Kind,Detail,Slot,Compatible,IconPath;
+            public string Key,Name,Kind,Detail,Slot,Compatible,IconPath,RarityColor;
             public int ItemId,Count,X,Y,Width,Height,EquipMask;
-            public bool Rotated,External;
+            public bool Rotated,External,Legendary;
             public int W(bool rotated) => rotated?Height:Width;
             public int H(bool rotated) => rotated?Width:Height;
             public static Item Read(LuaTable row) => new Item {
                 Key=row.Get<string>("key"),Name=row.Get<string>("displayName"),Kind=row.Get<string>("kind"),Detail=row.Get<string>("detail"),
                 Slot=row.Get<string>("slot"),Compatible=row.Get<string>("compatible"),IconPath=row.Get<string>("iconPath"),
                 ItemId=row.Get<int>("itemId"),Count=row.Get<int>("count"),X=row.Get<int>("x"),Y=row.Get<int>("y"),
-                Width=row.Get<int>("width"),Height=row.Get<int>("height"),EquipMask=row.Get<int>("equipMask"),Rotated=row.Get<bool>("rotated")};
+                Width=row.Get<int>("width"),Height=row.Get<int>("height"),EquipMask=row.Get<int>("equipMask"),Rotated=row.Get<bool>("rotated"),
+                Legendary=row.Get<bool>("legendary"),RarityColor=row.Get<string>("rarityColor")};
         }
         [SerializeField] private Layout layout;
         [SerializeField] private EquipmentAssetCatalog catalog;

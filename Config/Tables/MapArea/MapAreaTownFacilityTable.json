@@ -31,7 +31,8 @@
         "chapel",
         "warehouse",
         "stable",
-        "watchtower"
+        "watchtower",
+        "dock"
       ]
     },
     {
@@ -202,6 +203,15 @@
       ],
       "npcTemplateId": 1,
       "interactionRadius": 1
+    },
+    {
+      "id": 1200,
+      "name": "码头",
+      "kind": "dock",
+      "description": "与码头工人交谈，恢复码头、购买船票或自己的船。",
+      "lotIds": [],
+      "npcTemplateId": 4,
+      "interactionRadius": 2
     }
   ]
 }

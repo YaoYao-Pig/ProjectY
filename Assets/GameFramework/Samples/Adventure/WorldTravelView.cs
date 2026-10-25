@@ -10,7 +10,13 @@ namespace ProjectY.Samples
             int selected=-1;float nearest=float.PositiveInfinity;
             for(int i=0;i<map.Cells.Length;i++)
             {
+                if(map.Cells[i].SurfaceCorners!=null)
+                {
+                    if(MapMountainSurface.TryRaycastCell(map.Cells[i],map.Radius,ray,out var hit) && hit<nearest){selected=i;nearest=hit;}
+                    continue;
+                }
                 var center=map.Cells[i].Position;
+                if(map.Cells[i].HasWater)center.y=map.Cells[i].WaterLevel;
                 if(!new Plane(Vector3.up,center).Raycast(ray,out float distance) || distance>=nearest)continue;
                 var point=ray.GetPoint(distance)-center;float x=Mathf.Abs(point.x),z=Mathf.Abs(point.z),radius=map.Radius;
                 if(x<=.866026f*radius && z<=radius && x+1.732051f*z<=1.732051f*radius)

@@ -1,0 +1,639 @@
+{
+  "version": 1,
+  "name": "EquipmentVisualProfileTable",
+  "description": "通用装备持续视觉配置。assetId显式绑定可复用组件；控制局部辉光材质、现有方块粒子锚点与有预算的点光，不按传奇品质或物品ID特判。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "独立装备外观配置ID；不决定品质或战斗规则",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "编辑器备注"
+    },
+    {
+      "name": "assetId",
+      "type": "int",
+      "description": "显式绑定装备资源；每个资源至多一个外观配置",
+      "ref": "EquipmentAssetTable",
+      "min": 1
+    },
+    {
+      "name": "color",
+      "type": "string",
+      "description": "主辉光颜色 #RRGGBB"
+    },
+    {
+      "name": "accent",
+      "type": "string",
+      "description": "流动光带和粒子点缀颜色 #RRGGBB"
+    },
+    {
+      "name": "emission",
+      "type": "float",
+      "description": "HDR辉光与局部粒子亮度",
+      "min": 0,
+      "max": 8
+    },
+    {
+      "name": "pulseSpeed",
+      "type": "float",
+      "description": "辉光呼吸速度，弧度每秒",
+      "min": 0,
+      "max": 12
+    },
+    {
+      "name": "pulseAmount",
+      "type": "float",
+      "description": "呼吸变化幅度",
+      "min": 0,
+      "max": 1
+    },
+    {
+      "name": "flowSpeed",
+      "type": "float",
+      "description": "沿模型光带移动速度",
+      "min": -8,
+      "max": 8
+    },
+    {
+      "name": "flowScale",
+      "type": "float",
+      "description": "每米光带密度",
+      "min": 0.1,
+      "max": 30
+    },
+    {
+      "name": "glowMaterialNames",
+      "type": "string[]",
+      "description": "需替换为通用辉光Shader的原始材质名称；其余材质保持不变"
+    },
+    {
+      "name": "particleAnchors",
+      "type": "float[]",
+      "description": "Unity装备本地坐标xyz扁平数组；最多4个发射锚点；构图复用物品VisualEffectTable"
+    },
+    {
+      "name": "particleInterval",
+      "type": "float",
+      "description": "每次小规模粒子脉冲间隔秒",
+      "min": 0.5,
+      "max": 10
+    },
+    {
+      "name": "particleScale",
+      "type": "float",
+      "description": "局部粒子缩放",
+      "min": 0.1,
+      "max": 2
+    },
+    {
+      "name": "particleCount",
+      "type": "int",
+      "description": "每锚点每次粒子上限，复用现有全局粒子预算",
+      "min": 1,
+      "max": 8
+    },
+    {
+      "name": "lightAnchor",
+      "type": "float[]",
+      "description": "可选点光本地坐标xyz；点光永不投影"
+    },
+    {
+      "name": "lightColor",
+      "type": "string",
+      "description": "点光颜色 #RRGGBB"
+    },
+    {
+      "name": "lightIntensity",
+      "type": "float",
+      "description": "局部点光强度，0关闭；每相机最多4盏",
+      "min": 0,
+      "max": 2
+    },
+    {
+      "name": "lightRange",
+      "type": "float",
+      "description": "局部点光范围，米",
+      "min": 0.1,
+      "max": 3
+    },
+    {
+      "name": "maxVisibleDistance",
+      "type": "float",
+      "description": "距当前渲染相机的最大点光距离，米",
+      "min": 1,
+      "max": 120
+    }
+  ],
+  "rows": [
+    {
+      "id": 9001,
+      "name": "断垒·裂隙余烬",
+      "assetId": 9001,
+      "color": "#D77B3E",
+      "accent": "#FFD9A2",
+      "emission": 2.1,
+      "pulseSpeed": 1.2,
+      "pulseAmount": 0.25,
+      "flowSpeed": 0.28,
+      "flowScale": 3,
+      "glowMaterialNames": [
+        "M_Legendary_Iron"
+      ],
+      "particleAnchors": [
+        0,
+        0.88,
+        0.065,
+        0,
+        1.42,
+        0.065
+      ],
+      "particleInterval": 2.4,
+      "particleScale": 0.55,
+      "particleCount": 4,
+      "lightAnchor": [
+        0,
+        0.95,
+        0.06
+      ],
+      "lightColor": "#D77B3E",
+      "lightIntensity": 0.35,
+      "lightRange": 1.1,
+      "maxVisibleDistance": 48
+    },
+    {
+      "id": 9002,
+      "name": "候风·青羽流风",
+      "assetId": 9002,
+      "color": "#67BFA2",
+      "accent": "#E8EAC6",
+      "emission": 1.8,
+      "pulseSpeed": 1.6,
+      "pulseAmount": 0.2,
+      "flowSpeed": 0.42,
+      "flowScale": 4,
+      "glowMaterialNames": [
+        "M_Legendary_Teal"
+      ],
+      "particleAnchors": [
+        0.14,
+        0.62,
+        0,
+        0.14,
+        -0.62,
+        0
+      ],
+      "particleInterval": 2,
+      "particleScale": 0.65,
+      "particleCount": 4,
+      "lightAnchor": [
+        0,
+        0.34,
+        0
+      ],
+      "lightColor": "#67BFA2",
+      "lightIntensity": 0.25,
+      "lightRange": 0.9,
+      "maxVisibleDistance": 48
+    },
+    {
+      "id": 9003,
+      "name": "第七定理·折光星轨",
+      "assetId": 9003,
+      "color": "#9C88ED",
+      "accent": "#8DEAE6",
+      "emission": 3.8,
+      "pulseSpeed": 0.9,
+      "pulseAmount": 0.32,
+      "flowSpeed": -0.28,
+      "flowScale": 5,
+      "glowMaterialNames": [
+        "M_Legendary_Purple",
+        "M_Legendary_Cyan"
+      ],
+      "particleAnchors": [
+        0,
+        1.15,
+        0
+      ],
+      "particleInterval": 1.4,
+      "particleScale": 0.85,
+      "particleCount": 7,
+      "lightAnchor": [
+        0,
+        1.15,
+        0
+      ],
+      "lightColor": "#9C88ED",
+      "lightIntensity": 0.9,
+      "lightRange": 1.5,
+      "maxVisibleDistance": 48
+    },
+    {
+      "id": 9004,
+      "name": "千钉·工坊火星",
+      "assetId": 9004,
+      "color": "#E4A44A",
+      "accent": "#FFF0B4",
+      "emission": 2.2,
+      "pulseSpeed": 2.4,
+      "pulseAmount": 0.2,
+      "flowSpeed": 0.55,
+      "flowScale": 7,
+      "glowMaterialNames": [
+        "M_Legendary_Gold"
+      ],
+      "particleAnchors": [
+        0.19,
+        0.96,
+        0.12
+      ],
+      "particleInterval": 2.1,
+      "particleScale": 0.55,
+      "particleCount": 5,
+      "lightAnchor": [
+        0,
+        0.94,
+        0
+      ],
+      "lightColor": "#E4A44A",
+      "lightIntensity": 0.25,
+      "lightRange": 1,
+      "maxVisibleDistance": 48
+    },
+    {
+      "id": 9005,
+      "name": "未尽之誓·誓带蓝焰",
+      "assetId": 9005,
+      "color": "#5AAEE3",
+      "accent": "#E7F4FC",
+      "emission": 2.7,
+      "pulseSpeed": 1.1,
+      "pulseAmount": 0.22,
+      "flowSpeed": 0.36,
+      "flowScale": 4,
+      "glowMaterialNames": [
+        "M_Legendary_Blue"
+      ],
+      "particleAnchors": [
+        0,
+        0.64,
+        0.04
+      ],
+      "particleInterval": 1.8,
+      "particleScale": 0.65,
+      "particleCount": 5,
+      "lightAnchor": [
+        0,
+        0.62,
+        0.04
+      ],
+      "lightColor": "#5AAEE3",
+      "lightIntensity": 0.55,
+      "lightRange": 1.2,
+      "maxVisibleDistance": 48
+    },
+    {
+      "id": 9006,
+      "name": "万溶·蒸馏流光",
+      "assetId": 9006,
+      "color": "#50D3B3",
+      "accent": "#D9F59A",
+      "emission": 3.2,
+      "pulseSpeed": 1.8,
+      "pulseAmount": 0.3,
+      "flowSpeed": 0.72,
+      "flowScale": 9,
+      "glowMaterialNames": [
+        "M_Legendary_Cyan"
+      ],
+      "particleAnchors": [
+        -0.046,
+        0.4,
+        0,
+        -0.046,
+        0.7,
+        0
+      ],
+      "particleInterval": 1.5,
+      "particleScale": 0.5,
+      "particleCount": 4,
+      "lightAnchor": [
+        -0.046,
+        0.5,
+        0
+      ],
+      "lightColor": "#50D3B3",
+      "lightIntensity": 0.35,
+      "lightRange": 1,
+      "maxVisibleDistance": 48
+    },
+    {
+      "id": 9007,
+      "name": "谢幕之前·余音金弦",
+      "assetId": 9007,
+      "color": "#E2B65F",
+      "accent": "#D3B1F4",
+      "emission": 2.8,
+      "pulseSpeed": 1.5,
+      "pulseAmount": 0.35,
+      "flowSpeed": -0.35,
+      "flowScale": 5,
+      "glowMaterialNames": [
+        "M_Legendary_Ivory",
+        "M_Legendary_Gold"
+      ],
+      "particleAnchors": [
+        0,
+        0.76,
+        0.03
+      ],
+      "particleInterval": 1.7,
+      "particleScale": 0.85,
+      "particleCount": 7,
+      "lightAnchor": [
+        0,
+        0.77,
+        0.05
+      ],
+      "lightColor": "#E2B65F",
+      "lightIntensity": 0.6,
+      "lightRange": 1.3,
+      "maxVisibleDistance": 48
+    },
+    {
+      "id": 9008,
+      "name": "负晨·金缮晨曦",
+      "assetId": 9008,
+      "color": "#FFD385",
+      "accent": "#FFF1CE",
+      "emission": 4.2,
+      "pulseSpeed": 0.7,
+      "pulseAmount": 0.18,
+      "flowSpeed": 0.2,
+      "flowScale": 3,
+      "glowMaterialNames": [
+        "M_Legendary_Amber",
+        "M_Legendary_Gold"
+      ],
+      "particleAnchors": [
+        0,
+        0.76,
+        0
+      ],
+      "particleInterval": 1.6,
+      "particleScale": 0.8,
+      "particleCount": 6,
+      "lightAnchor": [
+        0,
+        0.75,
+        0
+      ],
+      "lightColor": "#FFD385",
+      "lightIntensity": 1.4,
+      "lightRange": 2.1,
+      "maxVisibleDistance": 48
+    },
+    {
+      "id": 9009,
+      "name": "债王的指骨·血契双环",
+      "assetId": 9009,
+      "color": "#C85476",
+      "accent": "#B190E8",
+      "emission": 3.1,
+      "pulseSpeed": 1.25,
+      "pulseAmount": 0.35,
+      "flowSpeed": -0.45,
+      "flowScale": 6,
+      "glowMaterialNames": [
+        "M_Legendary_Steel",
+        "M_Legendary_Red"
+      ],
+      "particleAnchors": [
+        -0.08,
+        1.17,
+        0,
+        0.065,
+        1.12,
+        0
+      ],
+      "particleInterval": 1.65,
+      "particleScale": 0.6,
+      "particleCount": 4,
+      "lightAnchor": [
+        0,
+        1.14,
+        0
+      ],
+      "lightColor": "#C85476",
+      "lightIntensity": 0.65,
+      "lightRange": 1.3,
+      "maxVisibleDistance": 48
+    },
+    {
+      "id": 9010,
+      "name": "礼毕·止剑银线",
+      "assetId": 9010,
+      "color": "#BADDED",
+      "accent": "#F5E7BC",
+      "emission": 2.4,
+      "pulseSpeed": 1.8,
+      "pulseAmount": 0.15,
+      "flowSpeed": 0.85,
+      "flowScale": 8,
+      "glowMaterialNames": [
+        "M_Legendary_Gold"
+      ],
+      "particleAnchors": [
+        0,
+        1.02,
+        0.02
+      ],
+      "particleInterval": 2.2,
+      "particleScale": 0.5,
+      "particleCount": 4,
+      "lightAnchor": [
+        0,
+        0.18,
+        0
+      ],
+      "lightColor": "#BADDED",
+      "lightIntensity": 0.25,
+      "lightRange": 0.9,
+      "maxVisibleDistance": 48
+    },
+    {
+      "id": 9011,
+      "name": "同行·铃声萤火",
+      "assetId": 9011,
+      "color": "#99CC8C",
+      "accent": "#F2DA95",
+      "emission": 2.2,
+      "pulseSpeed": 1.35,
+      "pulseAmount": 0.25,
+      "flowSpeed": -0.18,
+      "flowScale": 4,
+      "glowMaterialNames": [
+        "M_Legendary_Gold"
+      ],
+      "particleAnchors": [
+        0.28,
+        0.54,
+        0
+      ],
+      "particleInterval": 2.1,
+      "particleScale": 0.65,
+      "particleCount": 5,
+      "lightAnchor": [
+        0.28,
+        0.54,
+        0
+      ],
+      "lightColor": "#99CC8C",
+      "lightIntensity": 0.4,
+      "lightRange": 1.1,
+      "maxVisibleDistance": 48
+    },
+    {
+      "id": 9012,
+      "name": "留种·丰穗星芒",
+      "assetId": 9012,
+      "color": "#D8C676",
+      "accent": "#F5E6B1",
+      "emission": 1.9,
+      "pulseSpeed": 0.85,
+      "pulseAmount": 0.24,
+      "flowSpeed": 0.32,
+      "flowScale": 6,
+      "glowMaterialNames": [
+        "M_Legendary_Gold"
+      ],
+      "particleAnchors": [
+        -0.35,
+        0.95,
+        0.025,
+        0.13,
+        -0.56,
+        0
+      ],
+      "particleInterval": 2.8,
+      "particleScale": 0.55,
+      "particleCount": 4,
+      "lightAnchor": [
+        -0.28,
+        0.95,
+        0
+      ],
+      "lightColor": "#D8C676",
+      "lightIntensity": 0.25,
+      "lightRange": 1,
+      "maxVisibleDistance": 48
+    },
+    {
+      "id": 9013,
+      "name": "无冕·集结旗光",
+      "assetId": 9013,
+      "color": "#6C97DA",
+      "accent": "#E9D69F",
+      "emission": 2.7,
+      "pulseSpeed": 1.05,
+      "pulseAmount": 0.25,
+      "flowSpeed": 0.27,
+      "flowScale": 4,
+      "glowMaterialNames": [
+        "M_Legendary_Blue"
+      ],
+      "particleAnchors": [
+        -0.3,
+        -0.02,
+        -0.02
+      ],
+      "particleInterval": 1.9,
+      "particleScale": 0.7,
+      "particleCount": 6,
+      "lightAnchor": [
+        -0.29,
+        0,
+        0
+      ],
+      "lightColor": "#6C97DA",
+      "lightIntensity": 0.5,
+      "lightRange": 1.3,
+      "maxVisibleDistance": 48
+    },
+    {
+      "id": 9014,
+      "name": "归乡·守护门扉",
+      "assetId": 9014,
+      "color": "#8BBED9",
+      "accent": "#F2E4B9",
+      "emission": 3.3,
+      "pulseSpeed": 0.8,
+      "pulseAmount": 0.22,
+      "flowSpeed": -0.22,
+      "flowScale": 3,
+      "glowMaterialNames": [
+        "M_Legendary_Ivory",
+        "M_Legendary_Gold"
+      ],
+      "particleAnchors": [
+        0,
+        0.12,
+        0.18
+      ],
+      "particleInterval": 1.8,
+      "particleScale": 0.9,
+      "particleCount": 7,
+      "lightAnchor": [
+        0,
+        0.12,
+        0.18
+      ],
+      "lightColor": "#8BBED9",
+      "lightIntensity": 0.75,
+      "lightRange": 1.6,
+      "maxVisibleDistance": 48
+    },
+    {
+      "id": 9015,
+      "name": "折冠·青辉破风",
+      "assetId": 9015,
+      "color": "#4CD7CD",
+      "accent": "#FFF0C0",
+      "emission": 3.8,
+      "pulseSpeed": 1.4,
+      "pulseAmount": 0.26,
+      "flowSpeed": 0.65,
+      "flowScale": 5,
+      "glowMaterialNames": [
+        "M_Legendary_Teal",
+        "M_Legendary_Ivory"
+      ],
+      "particleAnchors": [
+        0,
+        0.29,
+        0,
+        0,
+        2.45,
+        0
+      ],
+      "particleInterval": 1.6,
+      "particleScale": 0.75,
+      "particleCount": 5,
+      "lightAnchor": [
+        0,
+        0.28,
+        0
+      ],
+      "lightColor": "#4CD7CD",
+      "lightIntensity": 0.7,
+      "lightRange": 1.5,
+      "maxVisibleDistance": 48
+    }
+  ]
+}

@@ -62,6 +62,31 @@ buttons[ctrl.view.Reveal]();assert(ctrl.view.Result.text==freeRoll.reading)
 buttons[ctrl.view.Continue]();assert(ctrl.view.Result.fontSize==30 and ctrl.view.Result.text=='')
 buttons[ctrl.view.Reveal]();assert(ctrl.view.Result.text:find(require('Language').DiceSuccess,1,true))
 buttons[ctrl.view.Continue]();assert(closed==2)
+-- Two percentile rolls are one settled check, shown sequentially within the six-die renderer limit.
+local draws=0
+local result=require('Game.CheckRoll').Resolve(2500,100,function()
+    draws=draws+1;return draws==1 and 9999 or 2499
+end,{'animal_speech'})
+local advantage=Checks.Resolved('驯服',result)
+assert(#advantage.rounds==2 and #advantage.rounds[1].dice==4 and #advantage.rounds[2].dice==4)
+assert(advantage.rounds[1].reading=='0.01' and advantage.rounds[2].reading=='75.01')
+assert(advantage.reading:find('<b>75.01</b>',1,true) and advantage.passed)
+assert(advantage.detail:find('动物沟通',1,true) and advantage.detail:find('43.75',1,true))
+assert(Checks.FromBattleEvent({kind='check',impact={checkName='驯服',check=result}}).reading==advantage.reading)
+local before=#presented
+ctrl:OnShow({check=advantage});ctrl:Enqueue(row)
+buttons[ctrl.view.Continue]();assert(#presented==before+1,'Unsettled first roll must not advance')
+buttons[ctrl.view.Reveal]();buttons[ctrl.view.Reveal]()
+assert(ctrl.view.Result.text:find('0.01',1,true) and not ctrl.view.Result.text:find(require('Language').DiceSuccess,1,true))
+buttons[ctrl.view.Continue]();assert(#presented==before+2 and ctrl.roundIndex==2 and ctrl.view.Result.text=='')
+buttons[ctrl.view.Continue]();assert(#presented==before+2,'Unsettled second roll must not advance')
+buttons[ctrl.view.Reveal]()
+assert(ctrl.view.Result.text:find('<b>75.01</b>',1,true) and ctrl.view.Result.text:find(require('Language').DiceSuccess,1,true))
+buttons[ctrl.view.Continue]();assert(#presented==before+3 and ctrl.check==row and ctrl.view.Result.fontSize==30)
+buttons[ctrl.view.Reveal]();buttons[ctrl.view.Continue]();assert(closed==3 and draws==2)
+ctrl:OnShow({check=advantage});buttons[ctrl.view.Reveal]();buttons[ctrl.view.Continue]();buttons[ctrl.view.Reveal]()
+assert(draws==2 and ctrl.view.Result.text:find('<b>75.01</b>',1,true),'Cached replay must only show the settled outcome')
+buttons[ctrl.view.Continue]();assert(closed==4)
 for _,path in ipairs({'Lua/UI/Panel/DiceRollCtr.lua','Lua/UI/Panel/MainHudCtr.lua','Lua/Game/Adventure/EventSystem.lua',
     'Lua/Game/MapArea/ObstacleInteractions.lua','Lua/Game/MapArea/MapAreaSystem.lua'})do assert(loadfile(path))end
-print('PASS percentile boundaries, 00/100 convention, hundredth precision, guaranteed-effect filtering, reveal/queue/close lifecycle and Lua syntax')
+print('PASS percentile boundaries, advantage rounds/selection, six-die limit, reveal/queue/replay lifecycle and Lua syntax')

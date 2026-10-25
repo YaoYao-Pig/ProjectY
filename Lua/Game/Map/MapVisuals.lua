@@ -2,6 +2,7 @@
 local Class = require('Core.Class')
 local Random = require('Game.Map.SeededRandom')
 local Groundcover = require('Game.Map.MapGroundcover')
+local Landforms = require('Game.Map.MapLandforms')
 local Visuals = Class('MapVisuals')
 local function color(text)
     assert(type(text) == 'string' and text:match('^#%x%x%x%x%x%x$'), 'Map color must be #RRGGBB')
@@ -31,6 +32,7 @@ function Visuals:ctor(config, regionTypes)
         assert(row.decorationDensity >= 0 and row.decorationDensity <= 1 and row.minScale > 0 and row.maxScale >= row.minScale, 'Invalid decoration distribution')
         assert(type(row.groundTexture) == 'string' and row.groundTexture:match('^MapGround/%w+$'), 'Invalid ground texture resource key')
         assert(row.textureWorldSize > 0 and row.textureStrength >= 0 and row.textureStrength <= 1 and row.windStrength >= 0, 'Invalid ground surface parameters')
+        assert(row.cliffTintStrength >= 0 and row.cliffTintStrength <= 1, 'Invalid cliff tint strength')
         for _, field in ipairs({'groundcoverDensity', 'shrubDensity', 'butterflyDensity', 'gnatDensity'}) do
             assert(row[field] >= 0 and row[field] <= 1, 'Invalid groundcover density: ' .. field)
         end
@@ -55,13 +57,15 @@ function Visuals:Build(map)
             if not dominant or weight.weight > dominant.weight then dominant = weight end
         end
         local row = self.biomes[dominant.regionType].row
+        Landforms.Color(cell, rgb)
         cell.groundColor = rgb; cell.terrainAssetId = row.terrainAssetId; cell.waterAssetId = row.waterAssetId
         if #row.terrainVariantAssetIds > 0 then
             local pick = math.min(#row.terrainVariantAssetIds,
                 1 + math.floor(random:Noise(cell.q, cell.r, 3, 9751) * #row.terrainVariantAssetIds))
             cell.terrainAssetId = row.terrainVariantAssetIds[pick]
         end
-        if not cell.waterLevel and not cell.buildingId and #cell.roadIds == 0 and #row.decorationAssetIds > 0 then
+        if not cell.waterLevel and not cell.buildingId and not cell.wonderId and cell.landformZone ~= 'canyonFloor'
+            and #cell.roadIds == 0 and #row.decorationAssetIds > 0 then
             local cluster = random:Noise(cell.q, cell.r, 5, 9701)
             local probability = row.decorationDensity * dominant.weight * (.45 + cluster * .8)
             if random:Noise(cell.q, cell.r, 1, 9719) < probability then
@@ -69,6 +73,10 @@ function Visuals:Build(map)
                 for _, neighbor in ipairs(map:GetNeighbors(cell.q, cell.r)) do slope = math.max(slope, math.abs(cell.height - neighbor.height)) end
                 if slope <= row.decorationMaxSlope then
                     local pick = math.min(#row.decorationAssetIds, 1 + math.floor(random:Noise(cell.q, cell.r, 1, 9733) * #row.decorationAssetIds))
+                    -- 高山装饰池按海拔排列，岩体位于山脚/山腰，雪峰只在高处出现。
+                    if cell.mountainElevation then
+                        pick = math.min(#row.decorationAssetIds, 1 + math.floor(cell.mountainElevation * #row.decorationAssetIds))
+                    end
                     local scale = row.minScale + (row.maxScale - row.minScale) * random:Noise(cell.q, cell.r, 1, 9739)
                     local item = { id = #map.decorations + 1, cell = cell, assetId = row.decorationAssetIds[pick],
                         scale = scale, yaw = random:Noise(cell.q, cell.r, 1, 9743) * 360 }

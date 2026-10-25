@@ -22,6 +22,7 @@ namespace ProjectY.Samples
             public string ConstructionKind;
             public bool BaseBlocked;
             public float WallHeight;
+            public float WaterLevel,WaterDepth;
             public Color Color;
             public bool Blocked;
             public bool RenderGround = true;
@@ -330,6 +331,7 @@ namespace ProjectY.Samples
                             Position = new Vector3(row.Get<float>("x"), row.Get<float>("height"), row.Get<float>("z")),
                             BasePosition = new Vector3(row.Get<float>("x"), row.Get<float>("height"), row.Get<float>("z")),GroundHeight=row.Get<float>("height"),BaseBlocked=row.Get<bool>("blocked"),
                             WallHeight = row.Get<float>("wallHeight"), Blocked = row.Get<bool>("blocked"), Kind = row.Get<string>("kind"), RenderGround = row.Get<bool>("renderGround"),
+                            WaterLevel=row.Get<float>("waterLevel"),WaterDepth=row.Get<float>("waterDepth"),
                             Color = new Color(color.Get<int, float>(1), color.Get<int, float>(2), color.Get<int, float>(3), 1) };
                 using (var patches = root.Get<LuaTable>("floorBoundaryPatches"))
                 {

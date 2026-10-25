@@ -1,5 +1,6 @@
 -- 动物配置与即时查询。生命、归属、随机数及亲密度只保存在 CombatActorData。
 local Hex=require('Game.Map.HexGrid')
+local Check=require('Game.CheckRoll')
 local Rules={};Rules.__index=Rules
 function Rules.New(config)
     local self=setmetatable({species=config:GetTable('AnimalSpeciesTable'),skills=config:GetTable('AnimalSkillTable'),
@@ -92,29 +93,45 @@ function Rules:AddSkills(actor,ids)
     end
     return ids
 end
-function Rules:TameChance(source,target,stats)
+function Rules:TameChance(source,target,stats,hostile)
     local species=assert(self.byUnit[target.TemplateId],'Taming needs an animal')
     local values={affinity=stats:Get(source,'animalAffinity'),charisma=stats:Get(source,'charisma'),
-        missingHealth=1-target.HP/target.MaxHP,hostile=target.Team==2 and 1 or 0,difficulty=species.tameDifficulty}
+        missingHealth=1-target.HP/target.MaxHP,hostile=(hostile==true or hostile==nil and target.Team==2) and 1 or 0,difficulty=species.tameDifficulty}
     local chance=self.rule.chance:Evaluate(values)
+    local modifier=CS.ProjectY.Data.AnimalSpeechState.Modifier(target)
+    -- Positive persisted results now grant advantage; only failed communication changes the base chance.
+    values.communication=math.min(0,modifier)
+    values.advantageSources=modifier>0 and {'animal_speech'} or {}
+    chance=chance+values.communication
     assert(chance==chance and math.abs(chance)<math.huge,'Invalid taming chance')
-    return math.max(self.rule.minimumChance,math.min(self.rule.maximumChance,chance)),values
+    values.baseChance=math.max(self.rule.minimumChance,math.min(self.rule.maximumChance,chance))
+    if #values.advantageSources>0 then
+        return Check.Chance(math.floor(values.baseChance*100)/100,values.advantageSources),values
+    end
+    return values.baseChance,values
 end
 function Rules:CanTame(source,target)
     if CS.ProjectY.Data.AnimalCompanionState.Bound(source) then return false,require('Language').ProfessionAlreadyBoundAnimal end
-    if source.HP<=0 or source.Team~=1 then return false,'请选择存活的队员' end
-    if not target or target.HP<=0 or not self.byUnit[target.TemplateId] or target.AnimalOwnerId~=0 then return false,'请选择未驯服的动物' end
-    if target.TameRetryTurns>0 then return false,'动物暂不接受驯服，还需 '..target.TameRetryTurns..' 回合' end
+    if source.HP<=0 or source.Team~=1 then return false,require('Language').AnimalSpeechLivingCaster end
+    if not target or target.HP<=0 or not self.byUnit[target.TemplateId] or target.AnimalOwnerId~=0 then return false,require('Language').AnimalSpeechWildTarget end
+    if target.TameRetryTurns>0 then return false,string.format(require('Language').AnimalSpeechRetry,target.TameRetryTurns) end
     return true
 end
-function Rules:Tame(source,target,stats)
-    local chance,values=self:TameChance(source,target,stats)
+function Rules:Tame(source,target,stats,hostile)
+    local chance,values=self:TameChance(source,target,stats,hostile)
     local species=self.byUnit[target.TemplateId]
-    local roll=target:RollAnimalPercent()
-    if roll>=math.floor(chance*100) then target:DelayTaming(species.tameRetryTurns);return false,chance,roll/100,values end
+    local roll,result,success
+    if #values.advantageSources>0 then
+        result=Check.Resolve(math.floor(values.baseChance*100),100,function()return target:RollAnimalPercent()end,values.advantageSources)
+        success=result.passed;roll=100-result.roll
+    else
+        local raw=target:RollAnimalPercent();roll=raw/100;success=raw<math.floor(chance*100)
+    end
+    CS.ProjectY.Data.AnimalSpeechState.Consume(target)
+    if not success then target:DelayTaming(species.tameRetryTurns);return false,chance,roll,values,result end
     assert(species.rideable,'Non-rideable animal ownership is not configured in this release')
     source:TameAndRide(target,species.initialBond)
-    return true,chance,roll/100,values
+    return true,chance,roll,values,result
 end
 function Rules:BattleBond(actor)
     local mount=CS.ProjectY.Data.AnimalCompanionState.Bound(actor)

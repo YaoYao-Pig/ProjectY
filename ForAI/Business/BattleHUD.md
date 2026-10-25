@@ -8,6 +8,8 @@
 
 ## 正文
 
+- 传奇工事迁筑的两阶段选格复用原Hint、取消按钮与蓝色落点高亮。`AdventureSystem`快照的`needsCellLanding/cellLandingOptions`提供源工事与全部合法目的格；`BattleTargetSelection`只保存临时选择，确认通过`skill_at_landing`整组提交四个轴坐标。切换角色、回合、阶段或失效后清空，不在选格时扣AP；规则见[具名传奇装备](LegendaryEquipment.md)。
+
 - 弹药栏显示当前实体弹匣的实际弹种名称及余弹/容量，取自 `EquipmentAmmoTable`，不按弹匣默认弹种推测。弹种选择与装填在探索工坊完成，战斗继续按既有规则换备用弹匣，详见[装备与弹药](Equipment.md)。[ammunition_ui.lua](../../Tools/Tests/ammunition_ui.lua) 定向覆盖实际 HUD 投影、工坊选择和护甲日志，不替代 Play 视觉验收。
 
 - 复用 [UI 框架](../Framework/UI.md)：`BattleHUD` 是 Main 层、非模态、缓存、不可 Back 关闭的 Panel；`BattleAction/BattleParty` 通过 `CreateWidget` 创建并随 Panel 释放；`BattleTurn` 模板由行动顺序列表复用，Cell 的创建、显示、回收、释放回调托管其控制器生命周期。组件均通过 Prefab 的 LuaReference 绑定。

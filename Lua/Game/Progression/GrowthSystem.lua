@@ -11,20 +11,25 @@ end
 function Growth:Actor(id)
     for i=0,self.data.PartyCount-1 do local actor=self.data:GetPartyAt(i); if actor.Id==id then return actor end end
 end
-function Growth:PrepareActor(actor)
+function Growth:PrepareActor(actor,initialProfessionId)
     local profile = assert(self.rules.profileByUnit[actor.TemplateId], 'Missing growth profile')
     local rule = self.rules.settings
+    self.stats.birth:Initialize(actor,self.data.Seed,initialProfessionId)
     actor.Growth:Initialize((self.data.Seed+actor.Id*104729)%4294967296,rule.initialAttributePoints,rule.initialTalentPoints,profile.potential)
     for _, id in ipairs(profile.treeIds) do actor.Growth:UnlockTree(id) end
     for _, id in ipairs(profile.traitIds) do actor:AddTrait(id) end
     for _, id in ipairs(self.stats.units:Get(actor.TemplateId).traitIds) do actor:AddTrait(id) end
-    self:InitializeProfession(actor)
+    self:InitializeProfession(actor,actor.HasInitialAttributes and actor.InitialProfessionId or initialProfessionId)
     for _=1,rule.initialLearningOpportunities do actor.Growth:AddLearningOpportunity(1) end
 end
-function Growth:InitializeProfession(actor)
+function Growth:InitializeProfession(actor,initialProfessionId)
     assert(actor.Growth.CurrentProfessionId==0,'Profession already initialized')
     local profile=assert(self.rules.profileByUnit[actor.TemplateId],'Missing growth profile')
-    local profession=self.rules.professions.professions:Get(profile.initialProfessionId)
+    local profession=self.rules.professions.professions:Get(initialProfessionId or profile.initialProfessionId)
+    if not actor:HasProfessionAttributes(profession.id) then
+        if actor.HasInitialAttributes then self.stats.birth:EnsureProfession(actor,self.data.Seed,profession.id)
+        else CS.ProjectY.Data.CharacterBirthState.AssignProfession(actor,profession.id,{}, {}) end
+    end
     actor.Growth:JoinProfession(profession.id)
     for _,id in ipairs(profession.treeIds) do actor.Growth:UnlockTree(id) end
     for _,id in ipairs(profession.initialSkillIds) do actor.Growth:GrantSkill(id) end
@@ -86,9 +91,12 @@ function Growth:ChangeProfession(actorId,professionId)
     local actor,reason=self:Editable(actorId);if not actor then return false,reason end
     local profession=self.rules.professions.professions:Find(professionId)
     if not profession then return false,'未知职业' end
+    if profession.baseProfession and not actor.Growth:HasProfession(professionId) then return false,require('Language').GrowthBaseProfessionCreationOnly end
     if actor.Growth.CurrentProfessionId==professionId then return false,'当前已经在研习此职业' end
+    self.stats.birth:EnsureProfession(actor,self.data.Seed,professionId)
     actor.Growth:JoinProfession(professionId)
     for _,id in ipairs(profession.treeIds) do actor.Growth:UnlockTree(id) end
+    actor:SetMaxHP(self.stats:MaximumHP(actor))
     self.chronicle:Record('growth',actor,'职业研习','转入「'..profession.name..'」，保留此前掌握的全部技艺。','旅途中',false)
     return true
 end

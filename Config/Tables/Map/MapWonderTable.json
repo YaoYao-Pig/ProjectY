@@ -1,0 +1,96 @@
+{
+  "version": 1,
+  "name": "MapWonderTable",
+  "description": "大地图奇观：完整多格占地与树脚探索入口，每个样式最多一个。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "稳定奇观配置ID",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "地图地点名称"
+    },
+    {
+      "name": "assetId",
+      "type": "int",
+      "description": "完整世界模型",
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "variantAssetIds",
+      "type": "int[]",
+      "description": "可随机选择的完整模型，空数组使用assetId；按独立位置噪声确定，不能改变占地",
+      "default": [],
+      "ref": "MapAssetTable"
+    },
+    {
+      "name": "areaId",
+      "type": "int",
+      "description": "局部根部地图",
+      "ref": "MapAreaTable"
+    },
+    {
+      "name": "regions",
+      "type": "enum[]",
+      "description": "适合生长的地貌",
+      "enumRef": "Map.E_MapRegion"
+    },
+    {
+      "name": "maxCount",
+      "type": "int",
+      "description": "每图数量上限",
+      "min": 1,
+      "max": 1
+    },
+    {
+      "name": "footprintRadius",
+      "type": "int",
+      "description": "完整六边形占地半径",
+      "min": 2,
+      "max": 9
+    },
+    {
+      "name": "maxGroundDelta",
+      "type": "float",
+      "description": "占地最大地面高差",
+      "min": 0
+    },
+    {
+      "name": "scale",
+      "type": "float",
+      "description": "模型统一缩放（相对大地图格半径）",
+      "min": 0.01
+    },
+    {
+      "name": "rootEmbed",
+      "type": "float",
+      "description": "根部下沉距离",
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "参天古树",
+      "assetId": 1106,
+      "variantAssetIds": [1106, 1109],
+      "areaId": 72,
+      "regions": [
+        1,
+        5,
+        8,
+        11
+      ],
+      "maxCount": 1,
+      "footprintRadius": 9,
+      "maxGroundDelta": 5.5,
+      "scale": 1,
+      "rootEmbed": 0.15
+    }
+  ]
+}

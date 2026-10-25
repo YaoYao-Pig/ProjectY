@@ -31,7 +31,9 @@ function Model:Rows(actorId)
         elseif item.kind=='ammo' then
             extra=Text.Ammunition(self.rules,itemId)
         end
+        local legendary=self.rules.affixes:Legendary(itemId)
         rows[#rows+1]={key=key,id=instance,itemId=itemId,kind=item.kind,name=name,displayName=displayName,count=count,
+            legendary=legendary~=nil,rarityColor=legendary and legendary.color or '',
             detail=extra,iconPath=item.iconPath,slot=slot,compatible=compatible,equipMask=mask,width=item.width,height=item.height,
             x=place and place.X or -1,y=place and place.Y or -1,rotated=place~=nil and place.Rotated or false}
     end

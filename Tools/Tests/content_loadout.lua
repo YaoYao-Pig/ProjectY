@@ -14,8 +14,8 @@ local calls={};local data={AddWeapon=function(_,id)calls[#calls+1]='weapon:'..id
 Equip=function(_,actor,id)assert(actor==10008 and id==140);return true end,EquipOffhand=function(_,actor,id)assert(actor==10008 and id==141);return true end,Wear=function(_,actor,slot,id)assert(actor==10008 and slot=='head' and id==151);return true end}
 loadout:Apply(data,{Id=10008,TemplateId=8});assert(#calls==3)
 allowEquipment=false
-assert(not loadout:Validate({TemplateId=8}))
-local before=#calls;assert(not pcall(function()loadout:Apply(data,{Id=10008,TemplateId=8})end));assert(#calls==before,'Invalid initial equipment cannot partially grant items')
+assert(not equipmentRules:CanEquip(),'Manual equipment still rejects insufficient attributes')
+local before=#calls;loadout:Apply(data,{Id=10008,TemplateId=8});assert(#calls==before+3,'Initial loadout must survive low randomized attributes')
 allowEquipment=true
 rows[1].weaponId=44;assert(not pcall(makeLoadout));rows[1].weaponId=40
 rows[1].wearableIds={51,51};assert(not pcall(makeLoadout));rows[1].wearableIds={51}

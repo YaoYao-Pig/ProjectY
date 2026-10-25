@@ -2,12 +2,15 @@ local LuaLanguage = require('Language')
 local Class=require('Core.Class')
 local Base=require('UI.UIPanelCtrl')
 local Rich=require('UI.RichText')
+local Skin=require('UI.ArtSkin')
 local Journal=Class('MissionJournalCtr',Base)
 local categories={{'town','UIMissionJournalCategories5'},{'basic','UIMissionJournalCategories4'},{'main','UIMissionJournalCategories3'},{'side','UIMissionJournalCategories2'},{'recruit','UIMissionJournalCategories'}}
 local states=require('Config.LanguageProxy').Map(LuaLanguage,{inactive='UIMissionJournalInactive',active='UIMissionJournalActive',ready='UIMissionJournalReady',completed='UIMissionJournalCompleted',failed='UIMissionJournalFailed'})
-local stateColors={inactive='#E6C477',active='#8BC6F2',ready='#8EDBB0',completed='#9DA99F',failed='#EA9B91'}
-local function statusText(status) return '<color='..assert(stateColors[status])..'>'..states[status]..'</color>' end
+local stateColors={inactive='#875C27',active='#245C78',ready='#356647',completed='#626B61',failed='#973E39'}
+local function statusText(status,selected) return '<color='..(selected and '#F4E9D2' or assert(stateColors[status]))..'>'..states[status]..'</color>' end
 function Journal:Bind()
+    self.skin=Skin.Read(self.view.Skin)
+    self.rewardArt=Skin.ReadRewards(self.view.RewardSkin)
     self.story=self.context.systems:Get('Narrative');self.pool={};self.missionRows={};self.tabs={};self.rewardRows={}
     for i=1,#categories do self.tabs[i]=self:CreateWidget('TabButton',self.view.Tabs) end
     self:Listen(self.view.Close,function() self.context.systems:Get('UI'):Close('MissionJournal') end)
@@ -31,11 +34,19 @@ function Journal:Refresh()
     self.view.Caption.text=string.format(LuaLanguage.UIMissionJournalCaptionText,math.floor(story.data.Minutes/1440)+1,minute//60,minute%60)
     for i,category in ipairs(categories) do
         self.tabs[i]:SetData(category[1],LuaLanguage[category[2]],not self.showCompanions and self.category==category[1],font,function(id) self:SelectCategory(id) end)
+        local view=self.tabs[i].view
+        Skin.ApplyButton(self.skin,view.Button,view.Label,{selected=not self.showCompanions and self.category==category[1],normal='tab_light',active='tab_accent',dark=true})
+        Skin.ApplyImage(self.skin,view.Selected,'rule_horizontal')
+        Skin.FitTab(view)
     end
     self.view.CompanionsText.text=self.showCompanions and LuaLanguage.UIMissionJournalCompanionsTextText2 or LuaLanguage.UIMissionJournalCompanionsTextText
+    Skin.ApplyButton(self.skin,self.view.Companions,self.view.CompanionsText,{selected=self.showCompanions,normal='button_light'})
     local missions={}
     for _,mission in ipairs(story:Rows()) do if mission.category==self.category then missions[#missions+1]=mission end end
     if self.category=='town' then missions=story.townMissions:Rows(self.townSiteId,self.townNpcId) end
+    if self.category=='town' and not self.townNpcId then
+        for _,mission in ipairs(story.adventure.water:JournalRows()) do missions[#missions+1]=mission end
+    end
     local selected
     for _,mission in ipairs(missions) do if mission.id==self.selected then selected=mission end end
     selected=selected or missions[1];self.selected=selected and selected.id
@@ -43,9 +54,13 @@ function Journal:Refresh()
     for i,mission in ipairs(missions) do
         if not self.missionRows[i] then self.missionRows[i]=self:CreateWidget('NarrativeEntry',self.view.Missions) end
         local id=mission.id
-        self.missionRows[i]:SetData({title=Rich.Escape(mission.name),body=statusText(mission.status),selected=id==self.selected,tone=mission.status},font,function()
+        self.missionRows[i]:SetData({title=Rich.Escape(mission.name),body=statusText(mission.status,id==self.selected),selected=id==self.selected,tone=mission.status},font,function()
             self.selected=id;self:Refresh();self.view.Scroll.verticalNormalizedPosition=1
         end)
+        local view=self.missionRows[i].view
+        Skin.ApplyButton(self.skin,view.Button,view.Title,{selected=id==self.selected,normal='panel_light'})
+        view.Body.color=self.skin.colors.ink
+        Skin.FitEntry(view)
     end
     for i=#missions+1,#self.missionRows do self.missionRows[i]:SetData(nil) end
     self.view.Objective.gameObject:SetActive(false)
@@ -65,20 +80,22 @@ function Journal:Refresh()
         self.view.Description.DefaultText=Rich.Escape(selected.description)
         local objective={}
         if selected.objective then
-            objective[#objective+1]='<color=#E6C477><b>'..LuaLanguage.MissionObjective..'</b></color>\n'..Rich.Escape(selected.objective)
-            objective[#objective+1]='<size=90%><color=#B5C3BA>'..Rich.Escape(string.format(LuaLanguage.MissionPublisher,selected.publisher,selected.location))..'</color></size>'
+            objective[#objective+1]='<color=#875C27><b>'..LuaLanguage.MissionObjective..'</b></color>\n'..Rich.Escape(selected.objective)
+            objective[#objective+1]='<size=90%><color=#625F55>'..Rich.Escape(string.format(LuaLanguage.MissionPublisher,selected.publisher,selected.location))..'</color></size>'
         end
         local hint=selected.status=='completed' and LuaLanguage.MissionClaimedHint or selected.turnInHint
-        if hint then objective[#objective+1]='<color='..(selected.status=='ready' and '#8EDBB0' or '#B5C3BA')..'>'..Rich.Escape(hint)..'</color>' end
+        if hint then objective[#objective+1]='<color='..(selected.status=='ready' and '#356647' or '#625F55')..'>'..Rich.Escape(hint)..'</color>' end
         self.view.Objective.DefaultText=table.concat(objective,'\n');self.view.Objective.gameObject:SetActive(#objective>0)
         local rewards=selected.rewards
         self.view.RewardTitle.DefaultText=LuaLanguage.MissionRewards
         self.view.RewardTitle.gameObject:SetActive(#rewards>0);self.view.Rewards.gameObject:SetActive(#rewards>0)
-        self.view.Rewards.sizeDelta=CS.UnityEngine.Vector2(0,math.ceil(#rewards/3)*112)
+        local rewardHeight=128
         for i,reward in ipairs(rewards) do
             if not self.rewardRows[i] then self.rewardRows[i]=self:CreateWidget('MissionReward',self.view.Rewards) end
             self.rewardRows[i]:SetData(reward,font)
+            rewardHeight=math.max(rewardHeight,Skin.ApplyReward(self.skin,self.rewardArt,self.rewardRows[i].view,reward,self.view.RewardsLayout.cellSize.x))
         end
+        self.view.RewardsLayout.cellSize=CS.UnityEngine.Vector2(self.view.RewardsLayout.cellSize.x,rewardHeight)
         for i=#rewards+1,#self.rewardRows do self.rewardRows[i]:SetData(nil) end
         local id=selected.id
         if selected.status=='inactive' or selected.status=='ready' then
@@ -113,10 +130,10 @@ function Journal:Refresh()
         for _,quest in ipairs(selected.quests) do
             local qid=quest.id;local complete=quest.status=='completed';local active=quest.status=='active'
             local title=Rich.Escape(quest.name)
-            if complete then title='<s><color=#849184>'..title..'</color></s>'
+            if complete then title='<s><color=#697061>'..title..'</color></s>'
             elseif active then title='<size=115%><b>'..title..'</b></size>' end
             local claim=quest.status=='ready' and not story.rules.quests:Get(qid).autoComplete
-            rows[#rows+1]={title=title..'  <size=70%>'..statusText(quest.status)..'</size>',body=complete and '' or Rich.Escape(quest.description)..(active and quest.reason~='' and '\n\n<color=#8BC6F2>'..Rich.Escape(quest.reason)..'</color>' or ''),tone=quest.status,
+            rows[#rows+1]={title=title..'  <size=70%>'..statusText(quest.status)..'</size>',body=complete and '' or Rich.Escape(quest.description)..(active and quest.reason~='' and '\n\n<color=#245C78>'..Rich.Escape(quest.reason)..'</color>' or ''),tone=quest.status,
                 action=claim and function() self.demo:SendCommand('quest_claim',qid,0) end or nil}
         end
         if #rows==0 and not selected.contractId then rows[1]={title='',body=selected.status=='completed' and LuaLanguage.UIMissionJournalBody2 or LuaLanguage.UIMissionJournalBody,plain=true} end
@@ -126,8 +143,14 @@ function Journal:Refresh()
     for i,row in ipairs(rows) do
         if not self.pool[i] then self.pool[i]=self:CreateWidget('NarrativeEntry',self.view.Content) end
         self.pool[i]:SetData(row,font,row.action)
+        local view=self.pool[i].view
+        view.Body.font=self.view.Description.font
+        Skin.ApplyButton(self.skin,view.Button,view.Title,{normal='panel_light'})
+        view.Body.color=self.skin.colors.ink
+        Skin.FitEntry(view,row.plain)
     end
     for i=#rows+1,#self.pool do self.pool[i]:SetData(nil) end
+    Skin.ApplyButton(self.skin,self.view.PrimaryAction,self.view.PrimaryText,{emphasis=true})
     self.view.Hint.text=self.demo.LastError or '';self.revision=story.data.Revision;self.demoRevision=self.demo.BattleHUDRevision
 end
 function Journal:Tick() if self.revision~=self.story.data.Revision or self.demoRevision~=self.demo.BattleHUDRevision then self:Refresh() end end

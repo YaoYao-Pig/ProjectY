@@ -17,13 +17,16 @@ namespace ProjectY.UI
         [SerializeField] private DiceCatalog catalog;
         [SerializeField] private RawImage image;
         [SerializeField] private TMP_Text[] labels;
-        private const float Step = 1f / 60, Duration = 2.25f;
+        private const float Step = 1f / 60, FlightPlaybackSeconds = 1.2f;
         private static readonly Vector3 Origin = new Vector3(24000, 24000, 24000);
         private sealed class Toss
         {
             internal DiceCatalog.Die Model;
             internal int Value;
             internal Rigidbody Body;
+            internal Collider Collider;
+            internal int ReleaseSample, FirstContactSample = -1;
+            internal Vector3 LaunchVelocity, LaunchSpin;
             internal Transform Visual, Aura;
             internal MeshRenderer AuraRenderer;
             internal LineRenderer Trail;
@@ -43,6 +46,7 @@ namespace ProjectY.UI
         private PhysicMaterial contact;
         private Mesh auraMesh;
         private float elapsed;
+        private float playbackDuration, flightSeconds, settleSeconds, simulatedSeconds;
         private float frameHalfWidth, frameHalfHeight;
         private bool rolling;
         public bool Settled { get; private set; }
@@ -64,13 +68,13 @@ namespace ProjectY.UI
             stage = new GameObject("DiceStage") { hideFlags = HideFlags.HideAndDontSave };
             SceneManager.MoveGameObjectToScene(stage, stageScene);
             stage.transform.position = Origin;
-            contact = new PhysicMaterial("DiceContact") { dynamicFriction = .65f, staticFriction = .7f, bounciness = .35f,
+            contact = new PhysicMaterial("DiceContact") { dynamicFriction = .65f, staticFriction = .7f, bounciness = .43f,
                 frictionCombine = PhysicMaterialCombine.Average, bounceCombine = PhysicMaterialCombine.Maximum };
-            Box("Floor", new Vector3(0, -.25f, 0), new Vector3(18, .5f, 10));
-            Box("Left", new Vector3(-6, 2, 0), new Vector3(.3f, 4, 10));
-            Box("Right", new Vector3(6, 2, 0), new Vector3(.3f, 4, 10));
-            Box("Back", new Vector3(0, 2, 3), new Vector3(14, 4, .3f));
-            Box("Front", new Vector3(0, 2, -3), new Vector3(14, 4, .3f));
+            Box("Floor", new Vector3(0, -.25f, 0), new Vector3(28, .5f, 10));
+            Box("Left", new Vector3(-12, 2, 0), new Vector3(.3f, 4, 10));
+            Box("Right", new Vector3(7.5f, 2, 0), new Vector3(.3f, 4, 10));
+            Box("Back", new Vector3(0, 2, 3.5f), new Vector3(28, 4, .3f));
+            Box("Front", new Vector3(0, 2, -3.5f), new Vector3(28, 4, .3f));
             cameraView = Node("DiceCamera").AddComponent<Camera>();
             cameraView.enabled = false; cameraView.orthographic = true; cameraView.orthographicSize = 4.25f;
             cameraView.transform.localPosition = new Vector3(0, 11, -4.8f);
@@ -98,7 +102,7 @@ namespace ProjectY.UI
             var model = catalog.Get(kind); model.GetFace(value);
             labels[dice.Count].text = (caption ?? kind) + " · " + (kind=="D100"?value.ToString("D2"):value.ToString());
             var go = Node(kind); var body = go.AddComponent<Rigidbody>();
-            body.mass = .08f; body.drag = .65f; body.angularDrag = .65f;
+            body.mass = .08f; body.drag = .12f; body.angularDrag = .32f;
             body.maxAngularVelocity = 35; body.solverIterations = 12; body.solverVelocityIterations = 8;
             var collider = go.AddComponent<MeshCollider>(); collider.sharedMesh = model.Hull; collider.convex = true; collider.sharedMaterial = contact;
             var visual = Node("Model", go.transform); visual.AddComponent<MeshFilter>().sharedMesh = model.Visual;
@@ -110,7 +114,7 @@ namespace ProjectY.UI
             trail.startColor = new Color(.2f,.65f,1,.65f); trail.endColor = Color.clear; trail.numCapVertices = 2;
             trail.enabled = false;
             var trailBlock = new MaterialPropertyBlock(); trailBlock.SetFloat("_Trail",1); trail.SetPropertyBlock(trailBlock);
-            dice.Add(new Toss { Model = model, Value = value, Body = body, Visual = visual.transform,
+            dice.Add(new Toss { Model = model, Value = value, Body = body, Collider = collider, Visual = visual.transform,
                 Aura = aura.transform, AuraRenderer = auraRenderer, Trail = trail });
         }
 
@@ -118,13 +122,22 @@ namespace ProjectY.UI
         {
             if (dice.Count == 0 || rolling) throw new InvalidOperationException("No prepared dice or already rolling.");
             var random = new System.Random(visualSeed);
+            // A compact handful leaves one point at almost the same time. Spacing exceeds the
+            // models' bounding diameters, so an overlapping spawn cannot invent an explosive impulse.
+            float radius = dice.Count > 1 ? .78f / Mathf.Sin(Mathf.PI / dice.Count) : 0;
             for (int i = 0; i < dice.Count; i++)
             {
                 var toss = dice[i];
-                toss.Body.position = Origin + new Vector3((i - (dice.Count - 1) * .5f) * 1.65f, 2.4f + i * .22f, -.9f);
+                float angle = Mathf.PI * 2 * i / dice.Count + .35f;
+                var packed = new Vector3(0, radius * Mathf.Cos(angle), radius * Mathf.Sin(angle));
+                toss.ReleaseSample = Mathf.RoundToInt(i * .035f / Step);
+                toss.Body.isKinematic = true; toss.Body.detectCollisions = false;
+                toss.Body.position = Origin + new Vector3(-10, 2.35f, -1.2f) + packed;
                 toss.Body.rotation = Quaternion.Euler((float)random.NextDouble()*360, (float)random.NextDouble()*360, (float)random.NextDouble()*360);
-                toss.Body.velocity = new Vector3((float)(random.NextDouble()-.5)*2, -1, 2.2f+(float)random.NextDouble());
-                toss.Body.angularVelocity = new Vector3(8+(float)random.NextDouble()*10, -12+(float)random.NextDouble()*24, 6+(float)random.NextDouble()*10);
+                toss.LaunchVelocity = new Vector3(11.8f+((float)random.NextDouble()-.5f)*1.2f,
+                    .8f+((float)random.NextDouble()-.5f)*.4f, .7f-packed.z*.15f);
+                toss.LaunchSpin = new Vector3(((float)random.NextDouble()-.5f)*10,
+                    ((float)random.NextDouble()-.5f)*14, -11+((float)random.NextDouble()-.5f)*6);
             }
             Physics.SyncTransforms();
             // Pre-simulation uses an isolated physics scene. No main-scene time, RNG or collider is touched.
@@ -133,14 +146,21 @@ namespace ProjectY.UI
             {
                 bool asleep = sample > 90;
                 bool quiet=sample>90;
+                foreach(var toss in dice) if(sample==toss.ReleaseSample)
+                {
+                    toss.Body.isKinematic=false; toss.Body.detectCollisions=true;
+                    toss.Body.velocity=toss.LaunchVelocity; toss.Body.angularVelocity=toss.LaunchSpin;
+                }
                 physics.Simulate(Step);
                 foreach (var toss in dice)
                 {
                     toss.Positions.Add(toss.Body.position); toss.Rotations.Add(toss.Body.rotation);
                     int count=toss.Positions.Count;
+                    bool nearFloor=sample>=toss.ReleaseSample && toss.Collider.bounds.min.y<=Origin.y+.08f;
+                    if(nearFloor && toss.FirstContactSample<0)toss.FirstContactSample=sample;
                     if(count>1)quiet &= (toss.Positions[count-1]-toss.Positions[count-2]).sqrMagnitude<.000004f &&
                         Quaternion.Angle(toss.Rotations[count-1],toss.Rotations[count-2])<.08f;
-                    if(count>2 && toss.Positions[count-2].y-toss.Positions[count-3].y<-.015f && toss.Positions[count-1].y-toss.Positions[count-2].y>.008f)
+                    if(nearFloor && count>2 && toss.Positions[count-2].y-toss.Positions[count-3].y<-.015f && toss.Positions[count-1].y-toss.Positions[count-2].y>.008f)
                         toss.Impacts.Add(sample);
                     asleep &= toss.Body.IsSleeping();
                     if (sample == 240) { toss.Body.drag = 2; toss.Body.angularDrag = 2; }
@@ -148,6 +168,10 @@ namespace ProjectY.UI
                 quietFrames=quiet?quietFrames+1:0;
                 if (asleep || quietFrames>=18) break;
             }
+            simulatedSeconds = (dice[0].Positions.Count-1)*Step;
+            flightSeconds = Mathf.Min(FlightPlaybackSeconds,simulatedSeconds);
+            settleSeconds = Mathf.Clamp(simulatedSeconds-flightSeconds,.55f,1.6f);
+            playbackDuration = flightSeconds+settleSeconds;
             var min=new Vector2(float.MaxValue,float.MaxValue);var max=new Vector2(float.MinValue,float.MinValue);
             foreach (var toss in dice)
             {
@@ -156,45 +180,56 @@ namespace ProjectY.UI
                 // Polyhedron symmetry changes the numbering orientation while preserving the entire physical silhouette.
                 toss.Visual.localRotation = landed.Frame * Quaternion.Inverse(target.Frame);
                 toss.Body.isKinematic = true;
-                foreach(var position in toss.Positions)
+                toss.Body.detectCollisions = false;
+                // Frame the table after contact, leaving the launch point outside the composition.
+                // Including the entire flight here makes the camera zoom out and hides the throw.
+                int first=toss.FirstContactSample;
+                if(first<0)throw new InvalidOperationException("Dice trajectory did not contact the table: "+toss.Model.Name);
+                for(int sample=first;sample<toss.Positions.Count;sample++)
                 {
-                    var local=cameraView.transform.InverseTransformPoint(position);
+                    var local=cameraView.transform.InverseTransformPoint(toss.Positions[sample]);
                     min=Vector2.Min(min,new Vector2(local.x,local.y));max=Vector2.Max(max,new Vector2(local.x,local.y));
                 }
             }
             var center=(min+max)*.5f;
             cameraView.transform.position+=cameraView.transform.right*center.x+cameraView.transform.up*center.y;
-            frameHalfWidth=(max.x-min.x)*.5f+.9f;frameHalfHeight=(max.y-min.y)*.5f+.9f;
+            frameHalfWidth=(max.x-min.x)*.5f+1.4f;frameHalfHeight=(max.y-min.y)*.5f+1.4f;
             rolling = true; elapsed = 0; Settled = false; Advance(0);
         }
 
         public void Advance(float unscaledDelta)
         {
             if (!rolling) return;
-            bool finished = elapsed > Duration + 1;
+            bool finished = elapsed > playbackDuration + 1;
             elapsed += Mathf.Max(0, unscaledDelta);
             if (finished) { Render(false); UpdateLabels(); return; }
-            float progress = Mathf.Clamp01(elapsed / Duration);
-            Settled = progress >= 1;
+            // Keep the release, forward flight and first bounce at physical speed. Only the late
+            // settling tail is shortened, instead of squeezing the entire toss into a fixed clip.
+            float time=elapsed<=flightSeconds?elapsed:flightSeconds+
+                Mathf.Clamp01((elapsed-flightSeconds)/settleSeconds)*(simulatedSeconds-flightSeconds);
+            Settled = elapsed >= playbackDuration;
             for(int index=0;index<dice.Count;index++)
             {
                 var toss=dice[index];
-                float frame = progress * (toss.Positions.Count - 1);
+                float frame = Mathf.Min(time/Step,toss.Positions.Count-1);
                 int a = Mathf.FloorToInt(frame), b = Mathf.Min(a + 1, toss.Positions.Count - 1);
+                bool released=a>=toss.ReleaseSample;
+                toss.Visual.gameObject.SetActive(released);
                 toss.Body.transform.SetPositionAndRotation(Vector3.Lerp(toss.Positions[a], toss.Positions[b], frame-a), Quaternion.Slerp(toss.Rotations[a], toss.Rotations[b], frame-a));
                 var local = toss.Body.transform.position - Origin;
                 toss.Aura.localPosition = new Vector3(local.x, .01f, local.z);
-                float reveal = Settled ? Mathf.Clamp01((elapsed-Duration)*3) : 0;
+                float reveal = Settled ? Mathf.Clamp01((elapsed-playbackDuration)*3) : 0;
                 float flash=0;
                 foreach(int hit in toss.Impacts) if(frame>=hit) flash=Mathf.Max(flash,Mathf.Clamp01(1-(frame-hit)/16));
                 toss.Aura.localScale = Vector3.one * (1.05f + reveal*.3f + flash*.45f);
-                auraBlock.SetColor("_Color", new Color(.15f,.55f,1, .22f + reveal*.38f + flash*.35f));
+                toss.AuraRenderer.enabled=released && (Settled || flash>0);
+                auraBlock.SetColor("_Color", new Color(.15f,.55f,1, reveal*.6f + flash*.55f));
                 auraBlock.SetFloat("_Ring", Mathf.Max(reveal,flash)); toss.AuraRenderer.SetPropertyBlock(auraBlock);
-                toss.Trail.enabled = !Settled && a > 3 && local.y > .8f;
+                toss.Trail.enabled = released && !Settled && a > toss.ReleaseSample+3 && local.y > .8f;
                 if (toss.Trail.enabled)
                 {
                     toss.Trail.positionCount = 7;
-                    for (int j=0;j<7;j++) toss.Trail.SetPosition(j,toss.Positions[Mathf.Max(0,a-j*2)]);
+                    for (int j=0;j<7;j++) toss.Trail.SetPosition(j,toss.Positions[Mathf.Max(toss.ReleaseSample,a-j*2)]);
                 }
             }
             Render(); UpdateLabels();
@@ -211,7 +246,7 @@ namespace ProjectY.UI
             }
         }
 
-        public void Reveal() { if (rolling) { elapsed = Duration; Advance(0); } }
+        public void Reveal() { if (rolling) { elapsed = playbackDuration; Advance(0); } }
         public int VisibleValue(int index)
         {
             var toss = dice[index];

@@ -33,6 +33,7 @@ namespace ProjectY.Samples
         private Vector3 playerPosition;
         private readonly float radius;
         private bool shown;
+        private bool playerOnWater;
         private int creationFrame = -1;
         public int CreatedThisFrame { get; private set; }
         public int ActivatedThisFrame { get; private set; }
@@ -74,6 +75,7 @@ namespace ProjectY.Samples
         public void Sync(AdventureViewData view)
         {
             shown = view.Phase == "map"; root.SetActive(shown); snapshot = view.WorldParties; playerPosition = view.Travel.Position;
+            playerOnWater=view.Water.Mode!="walk";
             rows.Clear(); foreach (var row in snapshot.Rows) rows.Add(row.Id, row);
             removed.Clear(); foreach (var pair in pieces) if (!shown || pair.Key != 0 && !rows.ContainsKey(pair.Key)) removed.Add(pair.Key);
             foreach (var id in removed) Retire(id);
@@ -117,7 +119,7 @@ namespace ProjectY.Samples
             if (creationFrame != Time.frameCount) { creationFrame = Time.frameCount; CreatedThisFrame = ActivatedThisFrame = EvictedThisFrame = 0; }
             lod.Update(camera, playerPosition.y, radius, settings);
             wanted.Clear(); visible.Clear(); candidates.Clear(); markers.Clear();
-            Consider(0, snapshot.PlayerModelPath, "PlayerFlag", playerPosition, true, new Color(.38f,.84f,.63f));
+            if(!playerOnWater)Consider(0, snapshot.PlayerModelPath, "PlayerFlag", playerPosition, true, new Color(.38f,.84f,.63f));
             foreach (var row in snapshot.Rows)
                 Consider(row.Id, row.ModelPath, row.Name, row.Position, row.Kind == "stronghold",
                     row.Kind == "caravan" ? new Color(.93f,.79f,.48f) : new Color(.70f,.77f,.81f));

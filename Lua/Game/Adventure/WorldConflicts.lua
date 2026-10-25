@@ -38,6 +38,7 @@ function Conflicts:Prepare(conflict)
             return da<db or da==db and a.index<b.index
         end)
         for i=0,party.MemberCount-1 do local actor=party:GetMemberAt(i)
+            if actor.AnimalOwnerId==0 then
             local found
             for _,cell in ipairs(candidates) do
                 if adventure.battle.stats.animals:CanPlace(actor,layout,cell.q,cell.r,occupied) then
@@ -45,6 +46,7 @@ function Conflicts:Prepare(conflict)
                 end
             end
             assert(found,'World conflict cannot fit party footprint')
+            end
         end
         CS.ProjectY.Data.FactionPersistence.AttachParty(group,party)
         end
@@ -144,8 +146,10 @@ end
 local function living(party)
     local actors,hp,maximum={},0,0
     for i=0,party.MemberCount-1 do local actor=party:GetMemberAt(i)
+        if actor.AnimalOwnerId==0 then
         hp=hp+actor.HP;maximum=maximum+actor.MaxHP
         if actor.HP>0 then actors[#actors+1]=actor end
+        end
     end
     return actors,hp,maximum
 end
@@ -173,7 +177,7 @@ function Conflicts:Resolve(conflict,winner,minute)
         end
     end
     for _,party in ipairs(self:Parties(conflict)) do
-        local actors={};for i=0,party.MemberCount-1 do actors[#actors+1]=party:GetMemberAt(i) end
+        local actors={};for i=0,party.MemberCount-1 do local actor=party:GetMemberAt(i);if actor.AnimalOwnerId==0 then actors[#actors+1]=actor end end
         if facade then self.adventure.equipment.worldLoot:ActorDrops(facade,actors,self.adventure.battle.stats) end
         local _,hp=living(party)
         if hp==0 then
@@ -335,7 +339,13 @@ function Conflicts:Settle(result)
         local story=self.adventure.narrative;local escort=story and story.townMissions and story.townMissions.escort
         if escort and escort.data.AttachedId>0 then escort:Detach() end
         conflict:Engage(false)
-        if conflict.PartyB==0 then self:Resolve(conflict,conflict.PartyA,minute) end
+        local retired,winner=false,0
+        for _,party in ipairs(self:Parties(conflict))do
+            local _,hp=living(party)
+            if hp==0 then retired=true else winner=party.Id end
+        end
+        if retired then self:Resolve(conflict,winner,minute)
+        elseif conflict.PartyB==0 then self:Resolve(conflict,conflict.PartyA,minute) end
     end
     return true,0
 end

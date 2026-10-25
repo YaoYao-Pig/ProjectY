@@ -36,7 +36,7 @@ namespace ProjectY.Samples
                     throw new InvalidOperationException("地图地表配方数值无效: " + surface.Id);
                 layers.Add(surface.Id, i);
                 sources[i] = LoadTexture(surface.GroundTexture);
-                parameters[i] = new Vector4(surface.TextureWorldSize, surface.TextureStrength, surface.WindStrength, 0);
+                parameters[i] = new Vector4(surface.TextureWorldSize, surface.TextureStrength, surface.WindStrength, surface.CliffTintStrength);
                 tints[i] = Linear(surface.Color);
             }
             // 垂直崖面使用独立的岩土层，不把草叶或落叶贴到柱体侧面。

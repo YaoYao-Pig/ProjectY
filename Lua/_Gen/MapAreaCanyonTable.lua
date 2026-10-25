@@ -1,0 +1,19 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class MapAreaCanyonTableRow
+---@field id number 稳定配置 ID
+---@field maxWalkRise number 相邻可走地面最大中心高差（米）
+---@field trailRadius number 连续步道的六角净空半径
+---@field minWalkableCells number 入口连通探索地格下限
+---@field rockSurfaceId number 陡壁岩石材质
+---@field trailSurfaceId number 可行走步道材质
+---@field depth number 谷底相对地图零点的深度（米）
+---@field floorHalfWidth number 谷底半宽（格）
+---@field shelfHeight number 可达峡壁阶地高度（米）
+---@field streamHalfWidth number 谷底溪流半宽（格）
+---@field waterSurfaceId number 谷底溪流材质
+---@field valleySurfaceId number 谷底暗岩材质
+---@field rockAssetId number 层理峭岩模型
+---@field landingName string 入口落脚台名称
+---@field shelfName string 峡壁台地名称
+---@field valleyName string 谷底目标名称
+return {["name"]="MapAreaCanyonTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\233\133\141\231\189\174 ID",["min"]=1},{["name"]="maxWalkRise",["type"]="float",["description"]="\231\155\184\233\130\187\229\143\175\232\181\176\229\156\176\233\157\162\230\156\128\229\164\167\228\184\173\229\191\131\233\171\152\229\183\174\239\188\136\231\177\179\239\188\137",["min"]=0.1,["max"]=2},{["name"]="trailRadius",["type"]="int",["description"]="\232\191\158\231\187\173\230\173\165\233\129\147\231\154\132\229\133\173\232\167\146\229\135\128\231\169\186\229\141\138\229\190\132",["min"]=1,["max"]=3},{["name"]="minWalkableCells",["type"]="int",["description"]="\229\133\165\229\143\163\232\191\158\233\128\154\230\142\162\231\180\162\229\156\176\230\160\188\228\184\139\233\153\144",["min"]=50},{["name"]="rockSurfaceId",["type"]="int",["description"]="\233\153\161\229\163\129\229\178\169\231\159\179\230\157\144\232\180\168",["ref"]="MapAreaSurfaceTable"},{["name"]="trailSurfaceId",["type"]="int",["description"]="\229\143\175\232\161\140\232\181\176\230\173\165\233\129\147\230\157\144\232\180\168",["ref"]="MapAreaSurfaceTable"},{["name"]="depth",["type"]="float",["description"]="\232\176\183\229\186\149\231\155\184\229\175\185\229\156\176\229\155\190\233\155\182\231\130\185\231\154\132\230\183\177\229\186\166\239\188\136\231\177\179\239\188\137",["min"]=24},{["name"]="floorHalfWidth",["type"]="float",["description"]="\232\176\183\229\186\149\229\141\138\229\174\189\239\188\136\230\160\188\239\188\137",["min"]=3},{["name"]="shelfHeight",["type"]="float",["description"]="\229\143\175\232\190\190\229\179\161\229\163\129\233\152\182\229\156\176\233\171\152\229\186\166\239\188\136\231\177\179\239\188\137",["min"]=5},{["name"]="streamHalfWidth",["type"]="float",["description"]="\232\176\183\229\186\149\230\186\170\230\181\129\229\141\138\229\174\189\239\188\136\230\160\188\239\188\137",["min"]=0.1,["max"]=1.4},{["name"]="waterSurfaceId",["type"]="int",["description"]="\232\176\183\229\186\149\230\186\170\230\181\129\230\157\144\232\180\168",["ref"]="MapAreaSurfaceTable"},{["name"]="valleySurfaceId",["type"]="int",["description"]="\232\176\183\229\186\149\230\154\151\229\178\169\230\157\144\232\180\168",["ref"]="MapAreaSurfaceTable"},{["name"]="rockAssetId",["type"]="int",["description"]="\229\177\130\231\144\134\229\179\173\229\178\169\230\168\161\229\158\139",["ref"]="MapAssetTable"},{["name"]="landingName",["type"]="text",["description"]="\229\133\165\229\143\163\232\144\189\232\132\154\229\143\176\229\144\141\231\167\176"},{["name"]="shelfName",["type"]="text",["description"]="\229\179\161\229\163\129\229\143\176\229\156\176\229\144\141\231\167\176"},{["name"]="valleyName",["type"]="text",["description"]="\232\176\183\229\186\149\231\155\174\230\160\135\229\144\141\231\167\176"}},["fingerprint"]="9a4c2d502bb2018817b247618d88264a1e151d06d6d6a01dbe916c94c9fae580"}

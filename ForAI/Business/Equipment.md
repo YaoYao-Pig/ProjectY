@@ -8,6 +8,11 @@
 
 ## 正文
 
+- 具名传奇装备9001–9015共14武器和1盾，固定普通实体品质，金色身份与随机“传奇”词缀独立。战斗激活、每世界唯一性、任务预留和资源入口见[具名传奇装备](LegendaryEquipment.md)。全套独立模型、零改装挂点包装与图标在`Assets/DynamicAsset/LegendaryEquipment202610`；单手触媒和单手骑枪新增精确持握匹配，骑枪基础攻击只打第二格，骑乘冲锋另按传奇规则验证。
+- 背包/装备槽/搜刮物品格和工坊行使用显式绑定的`EquipmentRarityFrame`绘制金色双线、角饰和流光；详情显示传奇身份、固有说明与获取线索。普通物品复用时清除框，未搜索战利品不显示传奇外框。`LegendaryEquipmentUIAssets.Sync`只升级原Prefab装饰与绑定，保留3D预览和既有布局。持续模型辉光、粒子和有限点光是与传奇身份无关的[通用装备外观](VisualEffects.md)。
+- 外框Shader的`_EquipmentRarityTime`由`UI.EquipmentRarity.Tick`使用未缩放时间更新，Inventory/Loot/EquipmentWorkbench宿主推进；模态界面暂停世界时装饰仍可扫光，不为每个物品格增加Update或重建网格。
+- 装备说明按固有名称、触发、收益、限制与装备技能分段，数值强调、术语可点击；优先展示当前装备的能力，再列基础属性/品质/耐久和其他已学技能。工坊技能参数仍使用所选武器的真实只读解析，背包说明显示基础技能配置。正文与释义的唯一入口及TMP绑定见[技能说明与术语](SkillTips.md)。
+
 - 捕潮长枪为物品 742、技能 1625、双手动作模组 9；复用沉船捕潮鱼叉模型，主攻击只打第 2 格，近身禁区与固定射程见[战斗](Battle.md)。伤害/AP/命中沿用基础近战，独立 `spear` 类别继承近战品质词缀池，杂货商模板 1 每次补货包含它；旧库存需等补货或主动授予，不迁移玩家背包。没有额外配件槽，不能与副手并用。
 - [SpearAssets.Sync](../../Assets/GameFramework/Editor/SpearAssets.cs) 通过原生 API 注册长枪 Prefab、目录、模型图标及新的持握/前刺轨迹；保留源模型材质及旧动作设置。最小规则检查：`python -B Tools/Tests/run_lua.py Tools/Tests/spear_range.lua`；资源和特写检查：[spear_cinematic_editmode.cs](../../Tools/Tests/spear_cinematic_editmode.cs) 使用独立 PreviewScene 与真实 xLua 快照，不进入 Play。
 
@@ -48,7 +53,7 @@
 - 工坊支持4槽，按钮及Socket4/SocketText4的LuaReference、四套引线均已持久绑定；工作缓存按绑定数组长度初始化，配置超过容量或同侧超过2个标签时明确报错。`EquipmentAssets.SyncWorkbenchSlots`只升级已有工坊挂点，保留其他布局；武器挂点在原Prefab内增补，保留旧组件及挂点身份。[原生UI检查](../../Tools/Tests/workbench_four_slots_editmode.cs)验证第四槽装卸、4→2→3→4切换与标签避让，[实际装配](../../Art/SocketExpansion202610/Integration/validate_unity.cs)验证30武器/172个兼容组合；均在隔离Edit Mode完成，未进入Play。
 - 武器 `tagIds` 按展示顺序引用 EquipmentWeaponTagTable 的稳定字符串 ID；同一武器可有多个标签，和分类筛选、持握 `kind/hands` 独立。`EquipmentRules:WeaponTags(itemId)` 返回标签行，`HasWeaponTag(itemId,tagId)` 查询单个标签；未知或重复标签报错。工坊详情顶部通过 EquipmentTag Widget 逐个展示并自动换行，切换武器时复用并隐藏多余标签。现有大剑/巨剑包含“双手剑”，巨剑另有“巨剑”标签；标签的工具分类、清障和开锁见[工具武器与临时障碍](ToolWeapons.md)。
 - 工坊用 `EquipmentRules:PreviewWeapon` 建立所选单件武器的只读查询上下文，技能和动作不混入角色真实副手/盾牌；属性要求仍读取所选角色当前属性，符文继续读取所选武器实例。浏览不修改装备所有权、背包或 Revision，实际装备仍走 HandAllowed 的双手冲突检查。回归：`python -B Tools/Tests/run_lua.py Tools/Tests/equipment_workbench_preview.lua`，覆盖持盾/双持时浏览所有武器及直接预览副手实例。
-- 装配不限制职业，武器和防具通过 `EquipmentRules:CanEquip(actor,itemId,stats)` 校验属性硬门槛；读取 `CombatStats:Get(actor,name,true)`，计入基础、成长、特质与状态，排除全部装备加成。`EquipmentRequirementTable` 定义门槛，`EquipmentWearableTable.requirementId` 也引用该表；现有轻型防具使用无额外门槛的规则 46。工坊按钮、背包装配预览和命令、开局/招募初始装具使用同一查询。初始装具整组预检后才授予；不合法配置明确失败。
+- 手动装配不限制职业，武器和防具通过 `EquipmentRules:CanEquip(actor,itemId,stats)` 校验属性硬门槛；读取 `CombatStats:Get(actor,name,true)`，计入基础、当前职业收益、成长、特质与状态，排除全部装备加成。`EquipmentRequirementTable` 定义门槛，`EquipmentWearableTable.requirementId` 也引用该表；现有轻型防具使用无额外门槛的规则 46。工坊、背包的手动装配预览与命令继续使用该查询。开局配方、角色/招募和敌人初始装具保留指定装备，不因出生随机属性较低而拒绝生成，随后按已有软惩罚结算；槽位、双手互斥、所有权与整组容量预检仍保留。
 - 已装备后属性下降或旧档不达新门槛，不自动卸装；武器技能仍按包含穿戴加成的实时属性计算原有软惩罚。当前每少一点属性伤害减 8%（最低保留 35%）、命中减 3 个百分点（最多减 40）；只作用于该武器授予的技能。伤害按基础技能 × 武器倍率 × 需求系数 × 组件倍率结算，工坊分别显示装配门槛与已装备削弱。
 - 施法条件由 `CombatSkillTable.catalystKind` 配置，`none` 无要求，`arcane` 要求有效触媒；`CheckSkillEquipment(actor,skill,stats)` 返回可用性、原因及实际触媒。法杖由 `EquipmentWeaponTable.catalystKind` 原生提供 arcane；适配器物品 93 装入剑的 catalyst 槽后，要求 `EquipmentRuneTable.requiredTalentId=301`（奥术兵装）才能提供触媒。专精复用角色持久化天赋等级，不检查当前职业。查询按主手优先、副手其次，敌人同样读取实际主副手及配件提供的触媒；技能身份不因装备丢失，模板固有法术也不被基础攻击替换表删除。法术组件效果取实际选中的触媒，普通武器攻击仍取对应武器。
 - 武器601–620与配件701–720沿用七种分类（法杖/步枪/单手剑/双手大剑/双手巨剑/弓各3，工具2），共23个装备专属技能1601–1623、4个新Buff、60个可复用效果。武器保留原类别基础攻击与换弹，专属技能仅用于battle；所有技能有图鉴节点，但不加入研习池。商店均可补货，8件进入现有加权掉落池。`EquipmentWeaponTable.description` 在背包显示用途，独特技能仍由实际装备决定。

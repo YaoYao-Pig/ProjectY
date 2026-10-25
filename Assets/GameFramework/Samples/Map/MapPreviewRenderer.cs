@@ -9,7 +9,7 @@ namespace ProjectY.Samples
     // 只持有显示资源。地块用 GPU 实例批次，避免数千格各创建一个 GameObject。
     public sealed partial class MapPreviewRenderer : IDisposable
     {
-        public enum Kind { Terrain, Water, City, Building, Decoration }
+        public enum Kind { Terrain, Water, City, Building, Decoration, Wonder }
         private sealed class Model
         {
             public Mesh Mesh;
@@ -59,6 +59,8 @@ namespace ProjectY.Samples
         private readonly MapWaterEffects waterEffects;
         private readonly MapGroundPresentation groundPresentation;
         private readonly MapNatureRenderer natureRenderer;
+        private readonly MapCloudRenderer cloudRenderer;
+        private readonly MapMountainSurface mountainSurface;
         private readonly MapRenderLod.View lodView = new MapRenderLod.View();
         private readonly MapRenderLod.Settings defaultLod = new MapRenderLod.Settings();
         private readonly Matrix4x4[] detailMatrices = new Matrix4x4[1023];
@@ -68,6 +70,8 @@ namespace ProjectY.Samples
         private float mapRadius;
         private MapPreviewData fogMap;
         private WorldFogRenderer worldFog;
+        internal bool IsWorldCellKnown(int cell) => worldFog == null || worldFog.Known(cell);
+        internal bool PickMountainSurface(Ray ray, out int cell, out float distance) => mountainSurface.TryPick(ray, out cell, out distance);
         public void SetExploration(ProjectY.Data.WorldMapExplorationData state)
         {
             if(state==null)return; // Standalone map previews deliberately have no expedition fog.
@@ -76,10 +80,13 @@ namespace ProjectY.Samples
                 worldFog=new WorldFogRenderer(fogMap,roadObject.transform.parent);
                 worldFog.Bind(material);worldFog.Bind(roadMaterial);worldFog.Bind(groundPresentation.Material);
                 worldFog.Bind(natureRenderer.SharedMaterial);worldFog.Bind(waterEffects.SurfaceMaterial);worldFog.Bind(waterEffects.FoamMaterial);
+                worldFog.Bind(cloudRenderer.Material);
+                worldFog.Bind(mountainSurface.Material);
                 foreach(var waterMaterial in waterMaterials)worldFog.Bind(waterMaterial);
                 waterEffects.VisibilityFilter=worldFog.VisibleAt;
             }
             worldFog.Update(state);
+            if (mountainSurface.UpdateExploration(state)) focusMaskDirty = true;
         }
         public int SubmittedBatches { get; private set; }
         public int SubmittedInstances { get; private set; }
@@ -95,6 +102,8 @@ namespace ProjectY.Samples
             waterEffects = new MapWaterEffects(owner);
             groundPresentation = new MapGroundPresentation();
             natureRenderer = new MapNatureRenderer(owner);
+            cloudRenderer = new MapCloudRenderer();
+            mountainSurface = new MapMountainSurface(shader);
             roadMaterial = new Material(shader) { name = "地图预览_道路", color = new Color32(210, 180, 136, 255) };
             roadObject = new GameObject("生成的道路", typeof(MeshFilter), typeof(MeshRenderer));
             roadObject.transform.SetParent(owner, false);
@@ -203,17 +212,26 @@ namespace ProjectY.Samples
             groundPresentation.Build(map);
             yield return .16f;
             natureRenderer.Build(map);
+            cloudRenderer.Build(map);
             yield return .28f;
             Bounds = new Bounds(map.Cells[0].Position, Vector3.zero);
             var bottom = map.Cells[0].Position.y;
-            foreach (var cell in map.Cells) { Bounds = Encapsulate(Bounds, cell.Position); bottom = Mathf.Min(bottom, cell.Position.y); }
+            foreach (var cell in map.Cells)
+            {
+                Bounds = Encapsulate(Bounds, cell.Position); bottom = Mathf.Min(bottom, cell.Position.y);
+                if (cell.SurfaceCorners == null) continue;
+                foreach (var height in cell.SurfaceCorners)
+                { Bounds = Encapsulate(Bounds, new Vector3(cell.Position.x, height, cell.Position.z)); bottom = Mathf.Min(bottom, height); }
+            }
             bottom -= map.Radius * 1.5f;
+            mountainSurface.Build(map, bottom);
             for (var cellIndex = 0; cellIndex < map.Cells.Length; cellIndex++)
             {
                 var cell = map.Cells[cellIndex];
-                Add(prefabs[cell.TerrainAssetId], Kind.Terrain, cell.Position,
-                    new Vector3(map.Radius, cell.Position.y - bottom, map.Radius), Quaternion.identity,
-                    cell.Color, assets[cell.TerrainAssetId].TintMaterial, groundData: groundPresentation.GetData(cell), cellIndex: cellIndex);
+                if (cell.SurfaceCorners == null)
+                    Add(prefabs[cell.TerrainAssetId], Kind.Terrain, cell.Position,
+                        new Vector3(map.Radius, cell.Position.y - bottom, map.Radius), Quaternion.identity,
+                        cell.Color, assets[cell.TerrainAssetId].TintMaterial, groundData: groundPresentation.GetData(cell), cellIndex: cellIndex);
                 if (cell.HasWater)
                     Add(prefabs[cell.WaterAssetId], Kind.Water, new Vector3(cell.Position.x, cell.WaterLevel, cell.Position.z),
                         new Vector3(map.Radius, 1, map.Radius), Quaternion.identity, waterFlow: waterEffects.Flows[cellIndex], cellIndex: cellIndex);
@@ -248,7 +266,7 @@ namespace ProjectY.Samples
                 position.y = item.Height;
                 var prefab = prefabs[item.AssetId];
                 var scale = Vector3.one * (item.Scale * map.Radius);
-                Add(prefab, Kind.Decoration, position, scale, Quaternion.Euler(0, item.Yaw, 0), cellIndex: item.Cell);
+                Add(prefab, item.Wonder ? Kind.Wonder : Kind.Decoration, position, scale, Quaternion.Euler(0, item.Yaw, 0), cellIndex: item.Cell);
                 Bounds = Encapsulate(Bounds, position + Vector3.up * GetModel(prefab).Mesh.bounds.size.y * scale.y);
                 if ((index + 1) % 512 == 0) yield return .8f + .14f * (index + 1) / map.Decorations.Length;
             }
@@ -277,7 +295,8 @@ namespace ProjectY.Samples
             var used = new HashSet<ulong>();
             Action<Vector3, Vector3, Vector3> quad = (a, b, side) => {
                 var start = vertices.Count;
-                vertices.Add(a - side); vertices.Add(a + side); vertices.Add(b + side); vertices.Add(b - side);
+                vertices.Add(RoadPoint(map.Cells[fromCell], a - side, map.Radius)); vertices.Add(RoadPoint(map.Cells[fromCell], a + side, map.Radius));
+                vertices.Add(RoadPoint(map.Cells[toCell], b + side, map.Radius)); vertices.Add(RoadPoint(map.Cells[toCell], b - side, map.Radius));
                 vertexCells.Add(fromCell); vertexCells.Add(fromCell); vertexCells.Add(toCell); vertexCells.Add(toCell);
                 triangles.Add(start); triangles.Add(start + 2); triangles.Add(start + 1);
                 triangles.Add(start); triangles.Add(start + 3); triangles.Add(start + 2);
@@ -294,10 +313,11 @@ namespace ProjectY.Samples
                     var side = Vector3.Cross(Vector3.up, along.normalized) * map.Radius * .19f;
                     var edgeA = (a + b) * .5f; edgeA.y = a.y;
                     var edgeB = edgeA; edgeB.y = b.y;
+                    edgeA = RoadPoint(map.Cells[first], edgeA, map.Radius); edgeB = RoadPoint(map.Cells[second], edgeB, map.Radius);
                     // 在各格顶面画路，高差处补立面，避免斜线穿进高格地面。
                     fromCell = toCell = first; quad(a, edgeA, side);
                     fromCell = toCell = second; quad(edgeB, b, side);
-                    if (Mathf.Abs(a.y - b.y) > .001f)
+                    if (Mathf.Abs(edgeA.y - edgeB.y) > .001f)
                     { fromCell = first; toCell = second; quad(edgeA, edgeB, side); fromCell = second; toCell = first; quad(edgeB, edgeA, side); }
                 }
             roadMesh = new Mesh { name = "地图预览_道路网格", indexFormat = IndexFormat.UInt32 };
@@ -305,6 +325,12 @@ namespace ProjectY.Samples
             roadObject.GetComponent<MeshFilter>().sharedMesh = roadMesh;
             roadVertexCells = vertexCells.ToArray(); originalRoadVertices = vertices.ToArray(); focusRoadVertices = vertices.ToArray();
             CacheFocusRoadVertices();
+        }
+
+        private static Vector3 RoadPoint(MapPreviewData.Cell cell, Vector3 point, float radius)
+        {
+            if (cell.SurfaceCorners != null) point.y = MapMountainSurface.HeightAt(cell, radius, point) + .045f;
+            return point;
         }
 
         // 水面保持分格高度；共边补连续竖面，解决跨区落差处悬空和裂缝。
@@ -427,6 +453,8 @@ namespace ProjectY.Samples
             worldFog?.SetVisible(visible);
             roadObject.SetActive(visible); waterEdges.SetActive(visible); waterEffects.SetVisible(visible);
             natureRenderer.SetVisible(visible);
+            cloudRenderer.SetVisible(visible);
+            mountainSurface.SetVisible(visible);
         }
 
         public void Draw(Camera camera, bool water, bool buildings, bool roads, bool decorations, MapRenderLod.Settings settings = null)
@@ -441,11 +469,14 @@ namespace ProjectY.Samples
             var natureVisible = decorations && (!camera.orthographic || camera.orthographicSize <= settings.nearDistance * mapRadius);
             natureRenderer.SetVisible(natureVisible);
             natureRenderer.Draw(camera, natureVisible);
+            cloudRenderer.Draw(camera);
+            mountainSurface.Draw(camera, lodView);
+            SubmittedBatches += mountainSurface.SubmittedChunks; SubmittedInstances += mountainSurface.SubmittedCells;
             foreach (var group in drawGroups) { group.Near.Clear(); group.Distant.Clear(); }
             foreach (var batch in batches)
             {
                 if (batch.Kind == Kind.Water && !water || batch.Kind == Kind.Building && !buildings ||
-                    batch.Kind == Kind.Decoration && !decorations) continue;
+                    (batch.Kind == Kind.Decoration || batch.Kind == Kind.Wonder) && !decorations) continue;
                 batch.Tier = lodView.Classify(batch.Bounds, batch.Tier);
                 var detail = batch.Kind == Kind.Building || batch.Kind == Kind.Decoration || batch.Kind == Kind.City;
                 if (batch.Tier == MapRenderLod.Tier.Hidden || detail && batch.Tier == MapRenderLod.Tier.Far)
@@ -495,6 +526,8 @@ namespace ProjectY.Samples
             waterMaterials.Clear(); Release(waterEdges);
             waterEffects.Dispose();
             natureRenderer.Dispose(); groundPresentation.Dispose();
+            cloudRenderer.Dispose();
+            mountainSurface.Dispose();
             Release(roadObject); Release(material); Release(roadMaterial);
             batches.Clear(); drawGroups.Clear(); models.Clear();
         }

@@ -14,6 +14,9 @@ namespace ProjectY
         public AdventureData Adventure { get; } = new AdventureData();
         public LocalizationService Localization => LocalizationService.Shared;
         public UIHost UI { get; }
+        internal Audio.GameAudioService Audio { get; private set; }
+        internal void InitializeAudio(Transform owner) { Audio = new Audio.GameAudioService(owner); }
+        internal void ShutdownAudio() { Audio?.Dispose(); Audio = null; }
         public CharacterAppearanceService Appearances { get; } = new CharacterAppearanceService();
         public CharacterSaveService CharacterSaves { get; }
         public FrameworkServices(UIHost ui, string characterSavePath = null) { UI = ui; CharacterSaves = new CharacterSaveService(Appearances, characterSavePath); }

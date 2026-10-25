@@ -24,7 +24,7 @@ Shader "ProjectY/Map Ground"
             float _TileRadius;
             float _CliffLayer;
             float _GroundPreviewTime;
-            // x: texture size in tile radii; y: detail strength; z: wind strength.
+            // x: texture size; y: detail strength; z: wind; w: preserve authored cliff tint.
             float4 _LayerData[16];
             float4 _LayerTint[16];
         CBUFFER_END
@@ -223,7 +223,7 @@ Shader "ProjectY/Map Ground"
             }
 
             half3 GroundCliff(float3 positionWS, float3 dx, float3 dy, half3 normal,
-                half3 color, float surfaceDepth)
+                half3 color, float surfaceDepth, float4 data)
             {
                 int layer = (int)(_CliffLayer + 0.5);
                 bool alongX = abs(normal.x) > abs(normal.z);
@@ -234,7 +234,8 @@ Shader "ProjectY/Map Ground"
                 half3 sampled = GroundTexture(layer, position, planeDx, planeDy, detailFade);
                 half3 relative = GroundTextureDetail(sampled, layer, detailFade);
                 half3 stone = _LayerTint[layer].rgb * half3(0.78, 0.71, 0.63);
-                half3 cliffColor = lerp(color, stone, 0.80);
+                float preserve = lerp(_LayerData[(int)(data.x + .5)].w, _LayerData[(int)(data.y + .5)].w, saturate(data.z));
+                half3 cliffColor = lerp(color, stone, 0.80 * (1.0 - preserve));
                 // 保留硬边法线，仅柔化顶沿的色彩过渡；垂直面仍只显示岩土纹理。
                 float rim = 1.0 - smoothstep(0.0, 0.18, surfaceDepth);
                 cliffColor = lerp(cliffColor, color, rim * 0.72);
@@ -261,7 +262,7 @@ Shader "ProjectY/Map Ground"
                 if (topWeight < 1.0)
                 {
                     // 纯侧面仅采岩土三次；只有实际坡面过渡带同时计算顶面和侧面。
-                    albedo += GroundCliff(input.positionWS, dx, dy, normal, color.rgb, input.surfaceDepth)
+                    albedo += GroundCliff(input.positionWS, dx, dy, normal, color.rgb, input.surfaceDepth, data)
                         * (1.0 - topWeight);
                 }
 
