@@ -6,6 +6,10 @@
 
 ## 正文
 
+- 普通居民的动机招募、熟人信任传播、敌方交涉及入队后的经历培养见[世界人物](People.md)。它复用对白面板但使用独立临时会话身份，既有Mission/Quest与剧情NPC招募规则保持。
+
+- Mission、Quest 和 TownMission 成功完成后调用 `Adventure.titles:Complete`，按完成时在队成员记录称号进度；归属、重复结算与阶段计数规则见[称号授勋与士气](TitlesAndMorale.md)。
+
 - `NpcTable.locationKind=animal` 是 `AnimalSpeechRuleTable` 指定的普通动物对话配置容器，不安置到城镇、不招募为人类队员；真实目标和施法者由 `NarrativeData` 的动物会话状态持有。传奇动物沿用 `world_party` 的稳定 NPC 身份，但在未理解语言时禁止剧情选项和插话；关闭会话清除理解。详见[动物交谈与驯服](Animals.md)。
 - `NpcTable.locationKind=event` 的角色来源与同实例招募见 [特殊事件与骑士审判](SpecialEvents.md)；不使用城镇安置/日程，也不重复创建装备。
 
@@ -27,13 +31,13 @@
 - NPC 身份全局稳定；NpcPlacementTable 在本次世界的第一个匹配城镇安置一次，未生成匹配地点时不生成替身。城镇临时 npc.id 只用于位置/交互。外观引用 MapAreaTownNpcTable，招募角色模板引用 CombatUnitTable；招募 actorId=10000+npcId，招募后世界 NPC 在会话结束时隐藏并释放占格。
 - `NpcSystem:SyncPresence` 对被占据据点关闭普通居民及未招募剧情 NPC 的存在状态；解放后普通居民恢复，可招募 NPC 按 `WorldFactions:NpcAvailable` 随游戏分钟逐步回归。已招募身份优先，恢复不会重生同一 NPC；仍在当前招募对话中的 NPC 沿原规则保留至关闭。`PrepareRecruit` 再次检查安置地点、封锁与回归状态，不能通过任务奖励绕过恢复限制。服务库存另见[商店](Shop.md)。
 - 特殊 NPC 可经 [NPC 商店](Shop.md)绑定商品模板；保留原有对白，并在对话底部增加“查看商品”。普通城镇商人直接交互打开库存，交易不占用 NarrativeAction 或任务事实键。
-- NPC 好感与玩家阵营声望分别保存，初始值/上下界配表；增量动作钳制在配置边界。日程按 [startMinute,endMinute) 连续覆盖一天 0–1440，在当前城镇沿同一导航图逐格移向设施；拥堵等待，交谈/暂停时不移动。离开地图不进行后台移动，重进保留位置后继续前往当前时段目标。世界势力战争由 Adventure 的 WorldFactions/WorldConflicts 管理；NPC 彼此关系和玩家队伍编成/遣散 UI 仍未实现。
+- NPC 好感与玩家阵营声望分别保存，初始值/上下界配表；增量动作钳制在配置边界。日程按 [startMinute,endMinute) 连续覆盖一天 0–1440，在当前城镇沿同一导航图逐格移向设施；拥堵等待，交谈/暂停时不移动。离开地图不进行后台移动，重进保留位置后继续前往当前时段目标。世界势力战争由 Adventure 的 WorldFactions/WorldConflicts 管理；NPC 彼此关系和遣散 UI 仍未实现；出战/后备编组见[营地](Camp.md)。
 - 游戏时钟按 NarrativeSettingsTable.environmentId 引用 MapEnvironmentTable 的 startHour、cycleSeconds、autoCycle 推进，探索时运行、战斗/对话/暂停时停止。昼夜显示读取同一时钟；旧纯视觉调时按钮已移除，天气预览保留。
 - [角色存档](CharacterSave.md) 同时保存任务、击杀起点、事实、关系/声望、招募记录和游戏时间；不保存对话中间节点，交谈中禁止保存/读取。恢复仍重新生成地图，已完成任务不重发，NPC 根据招募记录恢复存在状态。
 - HUD 大地图的“新建叙事示例 · 三人远征”读取独立 AdventureDemoTable #2，保留一格招募位；默认 #1 四人开局不变。示例 Mission #100 为补给＋了解莱雅并行，武力/证言分支汇合；#200 为招募。NPC 位于首个集市城镇，姓名与日程见任务手记。
 - 调试时按 F8 打开[GM NPC 查找](../Tools/GM.md)，可按名称/稳定 ID 搜索并传送到目标附近，关闭 GM 后按 E 交谈；不需要手动寻找具体城镇或重开三人示例。
 - 长剧情 #300「灰烬账本」与 #400「钟楼无声」自动进入任务手记，可任意顺序推进；领取任意一案后自动开启 #500「三方议约」，完成两案后汇合。共 29 阶段，账本处置、公开证人、警钟用途通过事实交叉影响备料和四种终局；属性锁均有付费或保守方案。阶段击杀必须在激活后完成，物资盘点不扣库存。NPC #3–6 与原两人同在首个集市城镇；夜间分散到公会/商店/酒馆/广场，新增日程必须检查真实生成的可达停留格容量。入口、奖励与验收路线见[三线剧情测试说明](../../Docs/NarrativeCampaignPlaytest.md)。
-- 「边城拾遗」支线 #801–810 与招募 #901–905 共 46 阶段；旧 NPC #2–6 的“镇上还有几件事”入口保留原对白，支线由话题发现接取。#810 在 #801/#803/#807 任意两案已有结果后开放。新 NPC #201–205 同在首个集市城镇，分别使用角色模板 #901–905，具独立成长、特质、初始装备、外观和全天日程；不扩大队伍容量。招募谈妥为 ready，确认后通过 claim_mission 的原子预检加入，满员等阻碍不吞任务。事实前缀为 `bt_` / `recruit_`；对话属性门槛保持确定性查询。任务入口、分支、相互影响与检查范围见[十五条任务说明](../../Docs/BorderTownStories.md)。
+- 「边城拾遗」支线 #801–810 与招募 #901–905 共 46 阶段；旧 NPC #2–6 的“镇上还有几件事”入口保留原对白，支线由话题发现接取。#810 在 #801/#803/#807 任意两案已有结果后开放。新 NPC #201–205 同在首个集市城镇，分别使用角色模板 #901–905，具独立成长、特质、初始装备、外观和全天日程；沿用营地的4出战/6后备容量。招募谈妥为 ready，确认后通过 claim_mission 的原子预检加入，满员等阻碍不吞任务。事实前缀为 `bt_` / `recruit_`；对话属性门槛保持确定性查询。任务入口、分支、相互影响与检查范围见[十五条任务说明](../../Docs/BorderTownStories.md)。
 - 修改源表后使用[叙事工坊或 Agent CLI](../Tools/Narrative.md)共享校验并导出。最小数据检查为 Unity 菜单 `Project Y/叙事/验证任务对话与 NPC`，使用独立 LuaEnv、真实 C# 数据和临时存档；不进入 Play、不读写用户存档。Condition 的原生 Lua 检查见其模块文档。
 - [内容编辑中心](../Tools/ContentCenter.md)统一编辑特殊 NPC 的能力、特质、技能、任务线、安置和初始装备。CharacterLoadoutTable 按角色模板 unitId 定义装备/固定外观；Prepare 将招募装备与奖励合并检查容量，Recruit 才创建实例、装备并重算生命。读档不调用初始授予；固定外观也传给城镇 NPC。
 - `Project Y/叙事/验证对话 UI 与镜头` 在独立 PreviewScene 使用真实 Prefab、Lua 控制器与 Cinemachine，检查选择按钮、历史、缓存重开、暂停释放、双人构图和镜头恢复，输出 `Docs/Previews/Narrative-*.png`。预览以独立全屏 UI 相机模拟运行期 Overlay，不能把 UI 随世界视口一起裁切。

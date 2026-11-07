@@ -1,0 +1,64 @@
+{
+  "version": 1,
+  "name": "UnitInspectionNpcTable",
+  "description": "城镇居民的侦察属性与固有特质来源；剧情 NPC 优先使用 NpcTable.actorTemplateId。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "城镇 NPC 模板 ID",
+      "min": 1,
+      "ref": "MapAreaTownNpcTable"
+    },
+    {
+      "name": "unitId",
+      "type": "int",
+      "description": "只读详情投影使用的角色模板",
+      "min": 1,
+      "ref": "CombatUnitTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "unitId": 1201
+    },
+    {
+      "id": 2,
+      "unitId": 1202
+    },
+    {
+      "id": 3,
+      "unitId": 1203
+    },
+    {
+      "id": 4,
+      "unitId": 1204
+    },
+    {
+      "id": 5,
+      "unitId": 1205
+    },
+    {
+      "id": 201,
+      "unitId": 901
+    },
+    {
+      "id": 202,
+      "unitId": 902
+    },
+    {
+      "id": 203,
+      "unitId": 903
+    },
+    {
+      "id": 204,
+      "unitId": 904
+    },
+    {
+      "id": 205,
+      "unitId": 905
+    }
+  ]
+}

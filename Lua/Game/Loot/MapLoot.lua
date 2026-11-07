@@ -1,3 +1,5 @@
+local Life=require('Game.Battle.ActorLife')
+local LuaLanguage=require('Language')
 local Hex=require('Game.Map.HexGrid')
 local Generator=require('Game.Loot.ChestGenerator')
 local Loot={};Loot.__index=Loot
@@ -62,7 +64,7 @@ function Loot:LegendaryMigrationPlan(area,state,plan,areas)
     for i=0,state.NpcCount-1 do local npc=state:GetNpcAt(i);if npc.Present then occupied[npc.CellIndex]=true end end
     for i=0,state.EncounterCount-1 do local group=state:GetEncounterAt(i)
         for j=0,group.EnemyCount-1 do local actor=group:GetEnemyAt(j)
-            if actor.HP>0 and actor.AnimalOwnerId==0 then
+            if Life.Alive(actor) and actor.AnimalOwnerId==0 then
                 for _,cell in ipairs(assert(animals:Cells(actor,area))) do occupied[cell.index]=true end
             end
         end
@@ -125,12 +127,40 @@ end
 function Loot:Disarm(areas,actor,weapon)
     local area,state=areas:ActiveLayout(),areas.data.Active
     local cell=assert(area:Find(actor.Q,actor.R),'Disarmed actor is outside the battlefield')
-    state:AddLoot(cell.index,102,'失落的'..self.equipment.rules.affixes:Name(weapon),{}, {},true)
+    state:AddLoot(cell.index,102,string.format(LuaLanguage.BodyDroppedItem,self.equipment.rules.affixes:Name(weapon)),{}, {},true)
     local container=state:GetLootAt(state.LootCount-1);self:Prepare(container)
     CS.ProjectY.Data.EquipmentCombatState.DropWeapon(self.equipment.data,state,container.Id,actor.Id,weapon.Id)
     return container
 end
+function Loot:DropInjuredHands(areas,actor,stats)
+    local rules,data=self.equipment.rules,self.equipment.data
+    local pending,names={},{}
+    local function add(item,slot,wearable)
+        if item and not rules:HandAllowed(actor,item.ItemId,slot) then
+            pending[#pending+1]={item=item,wearable=wearable}
+            names[#names+1]=rules.affixes:Name(item)
+        end
+    end
+    add(data:Equipped(actor.Id),'weapon',false)
+    add(data:Offhand(actor.Id),'offhand',false)
+    add(data:Worn(actor.Id,'offhand'),'offhand',true)
+    if #pending==0 then return names end
+    local area,state=areas:ActiveLayout(),areas.data.Active
+    local cell=assert(area:Find(actor.Q,actor.R),'Injured actor is outside the battlefield')
+    local bridge=CS.ProjectY.Data.EquipmentCombatState
+    for i,entry in ipairs(pending)do
+        -- Each weapon remains independently visible and recoverable by the existing ground-pickup command.
+        state:AddLoot(cell.index,102,string.format(LuaLanguage.BodyDroppedItem,names[i]),{}, {},true)
+        local container=state:GetLootAt(state.LootCount-1);self:Prepare(container)
+        if entry.wearable then bridge.DropWearable(data,state,container.Id,actor.Id,entry.item.Id)
+        else bridge.DropWeapon(data,state,container.Id,actor.Id,entry.item.Id) end
+    end
+    bridge.RefreshMaximum(actor,stats:MaximumHP(actor))
+    return names
+end
 function Loot:Recoverable(areas,actor,stats)
+    local allowed,reason=stats.injuries:HandsAllowed(actor,'weapon',1)
+    if not allowed then return nil,reason end
     if self.equipment.data:Equipped(actor.Id) then return nil,'主手需要空出才能拾起武器' end
     local area,state=areas:ActiveLayout(),areas.data.Active
     local source=assert(area:Find(actor.Q,actor.R))
@@ -158,7 +188,7 @@ function Loot:ActorDrops(areas,actors,stats)
     local area,state=areas:ActiveLayout(),areas.data.Active
     local generated=0
     for _,actor in ipairs(actors) do
-        if actor.Team>=2 and actor.HP==0 and actor.AnimalOwnerId==0 and not actor.DropResolved then
+        if actor.Team>=2 and not Life.Alive(actor) and actor.AnimalOwnerId==0 and not actor.DropResolved then
             local rule=self.rules.enemies[actor.TemplateId]
             local equipped=self:ActorHasEquipment(actor)
             if rule or equipped then
@@ -205,7 +235,7 @@ function Loot:Collect(areas,id)
     if definition.interaction=='tool' and not physical.Destroyed and not self.session:IsOpened(container) then
         local worker=false
         for i=0,state.MemberCount-1 do local actor=areas:PartyActor(state:GetMemberIdAt(i))
-            if actor.HP>0 then for _,hand in ipairs({'Equipped','Offhand'}) do
+            if Life.Alive(actor) then for _,hand in ipairs({'Equipped','Offhand'}) do
                 local weapon=self.equipment.data[hand](self.equipment.data,actor.Id)
                 if weapon and self.equipment.rules:HasWeaponTag(weapon.ItemId,definition.toolTag) then worker=true end
             end end

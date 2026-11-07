@@ -1,8 +1,16 @@
 local Hex=require('Game.Map.HexGrid')
+local Language=require('Language')
+local Ambushes=require('Game.Adventure.EscortAmbushes')
 local Escort={};Escort.__index=Escort
 function Escort.New(story)
-    return setmetatable({story=story,adventure=story.adventure,data=CS.ProjectY.Data.TownMissionData.For(story.data),
+    local self=setmetatable({story=story,adventure=story.adventure,data=CS.ProjectY.Data.TownMissionData.For(story.data),
         rule=story.rules.config:GetTable('TownMissionSettingsTable'):Get(1),active={},byParty={}},Escort)
+    assert(self.rule.escortAmbushChecks>=1 and self.rule.escortAmbushChecks<=3 and self.rule.escortAmbushChance>=0 and self.rule.escortAmbushChance<=100,'Invalid escort ambush settings')
+    assert(#self.rule.escortAmbushPartyIds>0,'Escort ambushes require enemy definitions')
+    for _,id in ipairs(self.rule.escortAmbushPartyIds) do
+        assert(story.adventure.parties.definitions:Get(id).kind=='hostile' and not story.adventure.parties.legends:Find(id),'Escort ambush requires an ordinary hostile party')
+    end
+    return self
 end
 function Escort:Records()
     if self.revision==self.data.Revision then return self.active end
@@ -40,7 +48,12 @@ function Escort:Start(contract,plan)
     if not members then members={};parties.lod.homeParties[site.id]=members end
     members[#members+1]=party
     self.data:SetEscort(contract.Id,party.Id,plan.destinationSiteId)
+    Ambushes.Start(self,contract,party)
     return true
+end
+function Escort:AdvanceParty(party,minute,minutes)
+    local record=assert(self:ForParty(party.Id),'Escort party has no active contract')
+    Ambushes.Advance(self,record,party,minute,minutes)
 end
 function Escort:Find(id)
     local record=self.data:Find(id)
@@ -101,7 +114,7 @@ function Escort:Refresh()
                     if record.Progress<record.RequiredCount then self.data:AddProgress(record.Id,record.RequiredCount-record.Progress) end
                     self.data:Ready(record.Id)
                     party:SetMission('trade',0,0,self.story.data.Minutes);party.Travel:SetPaused(false)
-                    self.adventure.travel.data:Report('商队已安全抵达，返回发布委托的 NPC 领取奖励')
+                    self.adventure.travel.data:Report(Language.TownEscortArrived)
                 end
             end
         end

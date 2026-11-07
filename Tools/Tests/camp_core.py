@@ -23,7 +23,7 @@ def lua(value):
     raise TypeError(type(value))
 
 tables = {}
-for path in [*sorted((root / 'Config/Tables/Camp').glob('*.json')), root / 'Config/Tables/Equipment/EquipmentItemTable.json']:
+for path in [*sorted((root / 'Config/Tables/Camp').glob('*.json')), root / 'Config/Tables/Equipment/EquipmentItemTable.json', root / 'Config/Tables/Equipment/TorchTable.json', root / 'Config/Tables/Animals/AnimalSpeciesTable.json']:
     document = json.loads(path.read_text(encoding='utf-8'))
     tables[document['name']] = document['rows']
 with LuaRuntime(root) as runtime:

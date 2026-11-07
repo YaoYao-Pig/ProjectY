@@ -70,7 +70,7 @@ end
 modelData.Upgrade=function(_,facility,level,revision,coins,ids,counts)return rawArrays(ids,counts,3)end
 modelData.Enqueue=function(_,facility,recipe,level,now,duration,revision,coins,ids,counts)return rawArrays(ids,counts,2)end
 modelData.Claim=function(_,facility,revision,now,ids,counts)return rawArrays(ids,counts,1)end
-CS={ProjectY={Data={CampData={For=function()return modelData end}}}}
+CS={ProjectY={Data={CampData={For=function()return modelData end},CampLoadoutData={For=function()return {MountOwnerId=0,MountAnimalId=0,PetOwnerId=0,PetAnimalId=0,TorchItemId=0} end}}}}
 local records=0
 local adventure={config=config,data={Phase='map'},parties={data={IsOpen=false}},shop={data={IsOpen=false}},narrative={data={DialogueOpen=false,Minutes=0}},
     player={Coins=1000},equipment={data=equipment},growth={chronicle={Record=function()records=records+1 end}}}

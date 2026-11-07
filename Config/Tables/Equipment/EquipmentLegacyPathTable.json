@@ -1,0 +1,123 @@
+{
+  "version": 1,
+  "name": "EquipmentLegacyPathTable",
+  "description": "事迹进阶、随身器灵与第一项共同愿望。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "成长路线身份",
+      "min": 1
+    },
+    {
+      "name": "kind",
+      "type": "string",
+      "description": "稳定能力身份"
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "路线及武器称号"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "能力与限制"
+    },
+    {
+      "name": "deedIds",
+      "type": "int[]",
+      "description": "任一事迹满足即可选择",
+      "ref": "EquipmentDeedTable"
+    },
+    {
+      "name": "damageBonus",
+      "type": "float",
+      "description": "对敌对具名传奇的条件伤害倍率",
+      "min": 0
+    },
+    {
+      "name": "guardValue",
+      "type": "int",
+      "description": "首轮本人行动开始时护卫",
+      "min": 0
+    },
+    {
+      "name": "wishDamageBonus",
+      "type": "float",
+      "description": "完成器灵愿望后的本剑伤害倍率",
+      "min": 0
+    },
+    {
+      "name": "spiritOpening",
+      "type": "text",
+      "description": "器灵开场"
+    },
+    {
+      "name": "personality",
+      "type": "text",
+      "description": "器灵性格"
+    },
+    {
+      "name": "wish",
+      "type": "text",
+      "description": "器灵首次愿望"
+    },
+    {
+      "name": "wishAccepted",
+      "type": "text",
+      "description": "接受愿望回应"
+    },
+    {
+      "name": "wishProgress",
+      "type": "text",
+      "description": "愿望进行中回应"
+    },
+    {
+      "name": "wishCompleted",
+      "type": "text",
+      "description": "愿望完成回应"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "kind": "hunter",
+      "name": "逐猎之锋",
+      "description": "以本剑攻击敌对具名传奇时额外提高10%直接伤害。器灵愿望完成后，本剑直接攻击另提高5%。",
+      "deedIds": [
+        1,
+        2
+      ],
+      "damageBonus": 0.1,
+      "guardValue": 0,
+      "wishDamageBonus": 0.05,
+      "spiritOpening": "原来一直握着我的，是你。我还记得那一次，我们面前的身影像山一样高。",
+      "personality": "我喜欢迎着危险向前。但我更想知道，下一次挥剑时，你为什么而战。",
+      "wish": "再带我赢下一场真正的战斗吧。让我亲自出力，也请你活着回来——我想知道，我们还能一起走多远。",
+      "wishAccepted": "约好了。这次我会清醒地记住与你并肩的每一刻。",
+      "wishProgress": "我在等下一场并肩作战。用我真正击中敌人，然后一起活着迎来胜利。",
+      "wishCompleted": "这次我记得很清楚。我们一起回来了。我愿意把自己的锋芒交到你手中。"
+    },
+    {
+      "id": 2,
+      "kind": "guardian",
+      "name": "守望之锋",
+      "description": "持本剑以可用主手或副手参战，第一轮本人行动开始时获得2点护卫。器灵愿望完成后，本剑直接攻击另提高5%。",
+      "deedIds": [
+        1,
+        2
+      ],
+      "damageBonus": 0,
+      "guardValue": 2,
+      "wishDamageBonus": 0.05,
+      "spiritOpening": "我听见你了。那些握紧剑柄的瞬间，我一直都在。现在，我终于能回答你。",
+      "personality": "我记得危险，也记得你没有松开我的手。我想守住的，是战斗结束后仍能一起上路的人。",
+      "wish": "再与我并肩赢得一场战斗吧。让我真正帮上忙，也请持有我的人活着回来。",
+      "wishAccepted": "我会守着这个约定。下一次，愿我们还能一起看见归途。",
+      "wishProgress": "我们的约定还在。以我击中真正的敌人，并让持有我的人活着迎来胜利。",
+      "wishCompleted": "你回来了，我们都回来了。这就是我想记住的胜利。以后，我会继续守着你。"
+    }
+  ]
+}

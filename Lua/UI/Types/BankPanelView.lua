@@ -1,0 +1,29 @@
+---@meta
+-- Generated from LuaReference. Do not edit; never require this file.
+---@class BankPanelView
+---@field Root CS.UnityEngine.RectTransform
+---@field Title CS.UnityEngine.UI.Text
+---@field Caption CS.UnityEngine.UI.Text
+---@field Tags CS.UnityEngine.UI.Text
+---@field Close CS.UnityEngine.UI.Button
+---@field CloseLabel CS.UnityEngine.UI.Text
+---@field Legend CS.UnityEngine.UI.Text
+---@field Chart CS.ProjectY.UI.BankChartGraphic
+---@field AxisHigh CS.UnityEngine.UI.Text
+---@field AxisLow CS.UnityEngine.UI.Text
+---@field DateRange CS.UnityEngine.UI.Text
+---@field OHLC CS.UnityEngine.UI.Text
+---@field Range CS.UnityEngine.UI.Button
+---@field RangeLabel CS.UnityEngine.UI.Text
+---@field Position CS.UnityEngine.UI.Text
+---@field Risk CS.UnityEngine.UI.Text
+---@field InvestSmall CS.UnityEngine.UI.Button
+---@field InvestSmallLabel CS.UnityEngine.UI.Text
+---@field InvestLarge CS.UnityEngine.UI.Button
+---@field InvestLargeLabel CS.UnityEngine.UI.Text
+---@field Claim CS.UnityEngine.UI.Button
+---@field ClaimLabel CS.UnityEngine.UI.Text
+---@field Hint CS.UnityEngine.UI.Text
+---@field Style CS.ProjectY.UI.NarrativeView
+local View = {}
+return View

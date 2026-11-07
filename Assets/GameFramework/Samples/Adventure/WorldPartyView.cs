@@ -33,6 +33,7 @@ namespace ProjectY.Samples
         private Vector3 playerPosition;
         private readonly float radius;
         private bool shown;
+        private bool overview;
         private bool playerOnWater;
         private int creationFrame = -1;
         public int CreatedThisFrame { get; private set; }
@@ -74,7 +75,7 @@ namespace ProjectY.Samples
         }
         public void Sync(AdventureViewData view)
         {
-            shown = view.Phase == "map"; root.SetActive(shown); snapshot = view.WorldParties; playerPosition = view.Travel.Position;
+            shown = view.Phase == "map"; root.SetActive(shown && !overview); snapshot = view.WorldParties; playerPosition = view.Travel.Position;
             playerOnWater=view.Water.Mode!="walk";
             rows.Clear(); foreach (var row in snapshot.Rows) rows.Add(row.Id, row);
             removed.Clear(); foreach (var pair in pieces) if (!shown || pair.Key != 0 && !rows.ContainsKey(pair.Key)) removed.Add(pair.Key);
@@ -153,6 +154,7 @@ namespace ProjectY.Samples
         }
         public void Render(Camera camera)
         {
+            if (overview) return;
             UpdateVisibility(camera);
             if (!shown) return;
             for (var offset = 0; offset < markers.Count; offset += 1023)
@@ -178,14 +180,14 @@ namespace ProjectY.Samples
         public void Tick(Vector3 position, float dt)
         {
             playerPosition = position;
-            if (!shown || snapshot == null) return;
+            if (!shown || overview || snapshot == null) return;
             float t = 1 - Mathf.Exp(-dt * 20);
             foreach (var pair in pieces)
                 Move(pair.Value.Object, pair.Key == 0 ? playerPosition : rows[pair.Key].Position, pair.Key == 0 ? 1 : t);
         }
         public int Pick(Camera camera, Vector2 pointer)
         {
-            if (!shown || snapshot == null) return 0;
+            if (!shown || overview || snapshot == null) return 0;
             int selected = 0; float best = 26 * 26;
             foreach (var row in snapshot.Rows)
             {
@@ -205,6 +207,12 @@ namespace ProjectY.Samples
             var color = GUI.color; GUI.color = new Color(.08f,.12f,.11f,.94f); GUI.DrawTexture(box,Texture2D.whiteTexture);
             GUI.color = row.Kind == "caravan" ? new Color(.93f,.79f,.48f) : new Color(.98f,.68f,.57f);
             GUI.Label(new Rect(box.x+8,box.y+4,size.x,size.y),content,style); GUI.color = color;
+        }
+        public void SetOverview(bool value)
+        {
+            if (overview == value) return;
+            overview = value; root.SetActive(shown && !overview);
+            if (overview) { visible.Clear(); markers.Clear(); }
         }
         private static void Destroy(UnityEngine.Object value)
         { if (Application.isPlaying) UnityEngine.Object.Destroy(value); else UnityEngine.Object.DestroyImmediate(value); }

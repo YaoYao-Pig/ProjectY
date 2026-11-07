@@ -11,8 +11,9 @@ namespace ProjectY.Samples
         public sealed class Actor
         {
             public int Id, Team, HP, MaxHP, AP, Q, R, Guard, CellIndex;
+            public int CastingPoints, CastingPointMax, CastingPointRegen;
             public string Name, Traits;
-            public bool Moved, MainUsed,FixedFootprint;
+            public bool Moved, MainUsed,FixedFootprint,Alive,DeathDoor,PermanentlyDead;
             public PawnAppearanceData Appearance;
             public int ActionSequence;
             public ProjectY.Data.CombatActorData.PresentationAction[] Actions;
@@ -20,7 +21,7 @@ namespace ProjectY.Samples
             public int MovementSequence;
             public string MovementStyle;
         }
-        public sealed class Site { public int Id, AreaConfigId, Q, R, WorldTownId, WorldRegionId; public string Name, Reason, Kind; public Vector3 Position; public bool Available, Visited; }
+        public sealed class Site { public int Id, AreaConfigId, Q, R, WorldTownId, WorldRegionId, WorldWonderId; public string Name, ShortName, Reason, Kind; public Vector3 Position; public bool Available, Visited; }
         public sealed class Choice { public int Id; public string Label, Reason; public bool Available; }
         public sealed class Cell { public int Q, R, CellIndex; public bool Blocked; }
         public sealed class TargetPreview
@@ -34,24 +35,33 @@ namespace ProjectY.Samples
         {
             public int Id, Cost, MaxTargets;
             public string Name, Description, Action;
-            public bool ManualTargets, Guided, NeedsLanding, NeedsCellLanding;
+            public bool ManualTargets, Guided, NeedsLanding, NeedsCellLanding, SelectBodyPart;
             public int[] Targets, TargetCells, ContainerTargets;
             public int[] RangeCells = Array.Empty<int>();
+            public ImpactArea[] ImpactAreas=Array.Empty<ImpactArea>();
             public TargetPreview[] TargetPreviews;
             public LandingOption[] LandingOptions=Array.Empty<LandingOption>();
             public CellLandingOption[] CellLandingOptions=Array.Empty<CellLandingOption>();
+            public BodyPartOption[] BodyPartOptions=Array.Empty<BodyPartOption>();
         }
+        public sealed class BodyPartChoice { public int Id; public string Name; }
+        public sealed class BodyPartOption { public int TargetId; public BodyPartChoice[] Parts; }
         public sealed class LandingOption { public int TargetId; public Cell[] Cells; }
+        public sealed class ImpactArea { public int TargetId,ContainerId,CellIndex;public int[] Cells; }
         public sealed class CellLandingOption { public Cell Source; public Cell[] Cells; }
         public sealed class Trap { public int Q, R, SourceId; public string Name; }
+        public sealed class SpellField { public int Id, Q, R, Layer, Radius, Remaining, VisualEffectId; public string Kind;public int[] Cells=Array.Empty<int>(); }
         public string Phase, BattlePhase, Result, Error, EventTitle, EventText, Encounter;
         public int Coins, Round, ActiveId, Radius;
         public Actor[] Party, Units;
         public Site[] Sites;
+        public sealed class MapMarker { public int SiteId, Count; public string Kind; }
+        public MapMarker[] MapMarkers = Array.Empty<MapMarker>();
         public Choice[] Choices;
         public Cell[] Cells, Reachable;
         public Skill[] Skills;
         public Trap[] Traps=Array.Empty<Trap>();
+        public SpellField[] SpellFields=Array.Empty<SpellField>();
         public string[] Logs;
         public WorldEffectEvent[] VisualEffects=Array.Empty<WorldEffectEvent>();
         public BattleAudioEvent[] AudioEvents=Array.Empty<BattleAudioEvent>();
@@ -93,7 +103,7 @@ namespace ProjectY.Samples
         }
         public sealed class TorchState
         {
-            public bool Available, Enabled;
+            public bool Available, Enabled, WorldEnabled;
             public int Count;
             public string Label;
         }
@@ -103,7 +113,7 @@ namespace ProjectY.Samples
             using (var row = root.Get<LuaTable>("torch"))
             {
                 if (row == null) throw new InvalidOperationException("Adventure snapshot lacks torch state.");
-                return new TorchState { Available = row.Get<bool>("available"), Enabled = row.Get<bool>("enabled"),
+                return new TorchState { Available = row.Get<bool>("available"), Enabled = row.Get<bool>("enabled"), WorldEnabled = row.Get<bool>("worldEnabled"),
                     Count = row.Get<int>("count"), Label = row.Get<string>("label") };
             }
         }
@@ -143,10 +153,13 @@ namespace ProjectY.Samples
             Id = row.Get<int>("id"), Team = row.Get<int>("team"), Name = row.Get<string>("name"),
             Traits = row.Get<string>("traits"), HP = row.Get<int>("hp"), MaxHP = row.Get<int>("maxHP"),
             AP = row.Get<int>("ap"), Q = row.Get<int>("q"), R = row.Get<int>("r"), Guard = row.Get<int>("guard"),
+            CastingPoints = row.Get<int>("castingPoints"), CastingPointMax = row.Get<int>("castingPointMax"), CastingPointRegen = row.Get<int>("castingPointRegen"),
             FixedFootprint=row.Get<bool>("fixedFootprint"), Moved = row.Get<bool>("moved"), MainUsed = row.Get<bool>("mainUsed"), CellIndex = row.Get<int>("cellIndex") - 1 };
             using (var appearance = row.Get<LuaTable>("appearance")) actor.Appearance = PawnAppearanceData.Read(appearance);
             var source = row.Get<ProjectY.Data.CombatActorData>("presentationActor");
             if (source == null) throw new InvalidOperationException("Actor snapshot lacks its presentation source.");
+            actor.Alive=ProjectY.Data.DeathDoorState.Alive(source);
+            actor.DeathDoor=ProjectY.Data.DeathDoorState.Entered(source);actor.PermanentlyDead=ProjectY.Data.DeathDoorState.Dead(source);
             actor.ActionSequence = source.ActionSequence;
             actor.Actions = source.CopyPresentationActions();
             actor.MovementSequence=source.MovementSequence;actor.MovementStyle=source.MovementStyle;
@@ -167,19 +180,26 @@ namespace ProjectY.Samples
             Party = Rows(root, "party", ReadActor), Units = Rows(root, "units", ReadActor), Cells = Rows(root, "cells", ReadCell),
             Reachable = Rows(root, "reachable", ReadCell), Logs = Values<string>(root, "logs"),
             Traps=Rows(root,"traps",row=>new Trap { Q=row.Get<int>("q"),R=row.Get<int>("r"),SourceId=row.Get<int>("sourceId"),Name=row.Get<string>("name") }),
-            Sites = Rows(root, "sites", row => new Site { Id = row.Get<int>("id"), Name = row.Get<string>("name"),
-                Q = row.Get<int>("q"), R = row.Get<int>("r"), WorldTownId = row.Get<int>("worldTownId"),WorldRegionId=row.Get<int>("worldRegionId"),
+            SpellFields=Rows(root,"spellFields",row=>new SpellField { Id=row.Get<int>("id"),Q=row.Get<int>("q"),R=row.Get<int>("r"),Layer=row.Get<int>("layer"),
+                Radius=row.Get<int>("radius"),Remaining=row.Get<int>("remaining"),VisualEffectId=row.Get<int>("visualEffectId"),Kind=row.Get<string>("kind"),Cells=Values<int>(row,"cells") }),
+            Sites = Rows(root, "sites", row => new Site { Id = row.Get<int>("id"), Name = row.Get<string>("name"), ShortName = row.Get<string>("shortName"),
+                Q = row.Get<int>("q"), R = row.Get<int>("r"), WorldTownId = row.Get<int>("worldTownId"),WorldRegionId=row.Get<int>("worldRegionId"),WorldWonderId=row.Get<int>("worldWonderId"),
                 AreaConfigId = row.Get<int>("areaConfigId"), Reason = row.Get<string>("reason"), Kind = row.Get<string>("kind"),
                 Position = new Vector3(row.Get<float>("x"), row.Get<float>("y"), row.Get<float>("z")),
                 Available = row.Get<bool>("available"), Visited = row.Get<bool>("visited") }),
+            MapMarkers = Rows(root, "mapMarkers", row => new MapMarker { SiteId = row.Get<int>("siteId"), Kind = row.Get<string>("kind"), Count = row.Get<int>("count") }),
             Choices = Rows(root, "choices", row => new Choice { Id = row.Get<int>("id"), Label = row.Get<string>("label"),
                 Reason = row.Get<string>("reason"), Available = row.Get<bool>("available") }),
             Skills = Rows(root, "skills", row => new Skill { Id = row.Get<int>("id"), Cost = row.Get<int>("cost"), Name = row.Get<string>("name"),
                 Action = row.Get<string>("action"), Description = row.Get<string>("description"), Targets = Values<int>(row, "targets"),
                 TargetCells = Values<int>(row,"targetCells"),ContainerTargets=Values<int>(row,"containerTargets"),RangeCells=Values<int>(row,"rangeCells"),
+                ImpactAreas=Rows(row,"impactAreas",impact=>new ImpactArea {TargetId=impact.Get<int>("targetId"),ContainerId=impact.Get<int>("containerId"),CellIndex=impact.Get<int>("cellIndex")-1,Cells=Values<int>(impact,"cells")}),
                 ManualTargets=row.Get<bool>("manualTargets"),MaxTargets=row.Get<int>("maxTargets"),Guided=row.Get<bool>("guided"),
                 NeedsLanding=row.Get<bool>("needsLanding"),
                 NeedsCellLanding=row.Get<bool>("needsCellLanding"),
+                SelectBodyPart=row.Get<bool>("selectBodyPart"),
+                BodyPartOptions=Rows(row,"bodyPartOptions",option=>new BodyPartOption { TargetId=option.Get<int>("targetId"),
+                    Parts=Rows(option,"parts",part=>new BodyPartChoice {Id=part.Get<int>("id"),Name=part.Get<string>("name")}) }),
                 CellLandingOptions=Rows(row,"cellLandingOptions",option=>new CellLandingOption { Source=ReadNestedCell(option,"source"),Cells=Rows(option,"cells",ReadCell) }),
                 LandingOptions=Rows(row,"landingOptions",option=>new LandingOption { TargetId=option.Get<int>("targetId"),Cells=Rows(option,"cells",ReadCell) }),
                 TargetPreviews=Rows(row,"targetPreviews",preview=>new TargetPreview {

@@ -12,7 +12,7 @@ namespace ProjectY.UI
         [Serializable]
         public sealed class Layout
         {
-            public RectTransform Root, SafeArea, Header, Turns, Party, Deck, Skills, Items, Commands, Hint, Log, Tooltip;
+            public RectTransform Root, SafeArea, Header, Turns, Party, Deck, Skills, Items, Commands, Hint, Log, Tooltip, Casting, Anatomy;
             public GridLayoutGroup SkillGrid, ItemGrid;
             public Text[] Labels;
             public ScrollRect LogScroll;
@@ -52,6 +52,8 @@ namespace ProjectY.UI
             if(layout.LogScroll==null || layout.LogText==null || layout.LogTitle==null || layout.LogOpen==null || layout.LogClose==null)
                 throw new InvalidOperationException("战斗日志展开绑定缺失，请执行 Project Y/UI/同步战斗日志展开界面。");
             foreach (var label in layout.Labels) label.font = Font;
+            if(layout.Casting==null)throw new InvalidOperationException("Battle casting controls are not bound. Run the spellcasting UI migration.");
+            if(layout.Anatomy==null)throw new InvalidOperationException("Battle anatomy controls are not bound. Run AnatomyBattleHUDAssets.Sync.");
             ApplyLayout();
         }
         internal void SetLog(bool expanded,string compactText,string fullText,int count)
@@ -141,13 +143,16 @@ namespace ProjectY.UI
             PlaceScaled(layout.Turns,228,height-98,turnWidth,76,scale);
             layout.Party.gameObject.SetActive(false);
             Place(layout.Skills,Vector2.zero,14,132,deckWidth-28,98);
+            layout.Skills.gameObject.SetActive(!layout.Anatomy.gameObject.activeSelf);
             layout.SkillGrid.constraintCount=4;layout.SkillGrid.cellSize=new Vector2((deckWidth-46)/4,72);
-            layout.Items.gameObject.SetActive(true);
+            layout.Items.gameObject.SetActive(!layout.Anatomy.gameObject.activeSelf);
             Place(layout.Items,Vector2.zero,14,30,deckWidth-28,98);
             layout.ItemGrid.constraintCount=4;layout.ItemGrid.cellSize=new Vector2((deckWidth-46)/4,72);
             PlaceScaled(layout.Commands,deckWidth+32,18,142,140,scale);
             PlaceScaled(logControls,deckWidth+32,168,174,60,scale);
             Place(layout.Hint,Vector2.zero,14,6,deckWidth-28,22);
+            Place(layout.Casting,Vector2.zero,0,248,deckWidth,42);
+            Place(layout.Anatomy,Vector2.zero,14,32,deckWidth-28,198);
             float compactWidth=Mathf.Min(480,width-deckWidth-238);
             Compact=size.x<1050 || compactWidth<320;
             layout.Log.gameObject.SetActive(logExpanded || !Compact);
@@ -155,11 +160,11 @@ namespace ProjectY.UI
             {
                 // The entire bottom control band and the initiative row stay usable.
                 float logTop=Mathf.Min(layout.Header.anchoredPosition.y,layout.Turns.anchoredPosition.y)/scale-12;
-                float logWidth=Mathf.Min(680,width-36),logHeight=Mathf.Min(440,logTop-272);
-                PlaceScaled(layout.Log,width-logWidth-18,272,logWidth,logHeight,scale);
+                float logWidth=Mathf.Min(680,width-36),logHeight=Mathf.Min(440,logTop-316);
+                PlaceScaled(layout.Log,width-logWidth-18,316,logWidth,logHeight,scale);
             }
             else if(!Compact)PlaceScaled(layout.Log,width-compactWidth-18,18,compactWidth,140,scale);
-            PlaceScaled(layout.Tooltip,(width-400)/2,272,400,152,scale);
+            PlaceScaled(layout.Tooltip,(width-400)/2,316,400,152,scale);
         }
         private static void PlaceScaled(RectTransform rect,float x,float y,float width,float height,float scale)
         {

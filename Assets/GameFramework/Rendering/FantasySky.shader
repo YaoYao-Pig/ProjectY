@@ -8,6 +8,10 @@ Shader "ProjectY/Fantasy Sky"
         [HideInInspector] _SunDirection ("Sun Direction", Vector) = (.3,.7,.4,0)
         [HideInInspector] _SunRadiance ("Sun Radiance", Vector) = (4,3.5,2.8,1)
         [HideInInspector] _Daylight ("Daylight", Float) = 1
+        [HideInInspector] _WeatherRain ("Rain Intensity", Range(0,1)) = 0
+        [HideInInspector] _WeatherTime ("Weather Visual Seconds", Float) = -1
+        [HideInInspector] _WeatherWind ("Weather Wind XZ", Vector) = (1,.35,0,0)
+        [HideInInspector] _StarVisibility ("Stars Through Clear Sky", Range(0,1)) = 1
     }
     SubShader
     {
@@ -21,7 +25,8 @@ Shader "ProjectY/Fantasy Sky"
             #pragma target 3.0
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Core.hlsl"
             float _CloudCoverage, _CloudSpeed, _SunSize, _Daylight;
-            float4 _SunDirection, _SunRadiance;
+            float _WeatherRain, _WeatherTime, _StarVisibility;
+            float4 _SunDirection, _SunRadiance, _WeatherWind;
             struct Attributes { float4 positionOS : POSITION; };
             struct Varyings { float4 positionCS : SV_POSITION; float3 direction : TEXCOORD0; };
             Varyings Vert(Attributes input)
@@ -38,6 +43,22 @@ Shader "ProjectY/Fantasy Sky"
                 return lerp(lerp(Hash(i),Hash(i+float2(1,0)),f.x),lerp(Hash(i+float2(0,1)),Hash(i+1),f.x),f.y);
             }
             float Clouds(float2 p) { return Noise(p)*.57 + Noise(p*2.03+7.4)*.29 + Noise(p*4.07-2.7)*.14; }
+            float3 Stars(float3 direction)
+            {
+                // Stable hemisphere projection: no longitude seam and no per-frame random seed.
+                float2 grid = direction.xz / max(1 + direction.y, .1) * 160;
+                float2 cell = floor(grid);
+                float seed = Hash(cell + 31.7);
+                float2 center = .22 + .56 * float2(Hash(cell + 17.3), Hash(cell + 63.1));
+                float2 offset = frac(grid) - center;
+                float radius = lerp(.065, .12, Hash(cell + 94.6));
+                float footprint = max(length(ddx(grid)), length(ddy(grid)));
+                float filteredRadius = radius + max(.025, footprint * .65);
+                float starMask = 1 - smoothstep(radius, filteredRadius, length(offset));
+                starMask *= radius * radius / (filteredRadius * filteredRadius);
+                float brightness = starMask * step(.983, seed) * lerp(1.1, 3.6, Hash(cell + 7.9));
+                return lerp(float3(.65,.80,1), float3(1,.89,.69), Hash(cell + 42.8)) * brightness;
+            }
             half4 Frag(Varyings input) : SV_Target
             {
                 float3 d = normalize(input.direction), sun = normalize(_SunDirection.xyz);
@@ -52,13 +73,20 @@ Shader "ProjectY/Fantasy Sky"
                 float towardSun = saturate(dot(d,sun));
                 float sunset = 1-smoothstep(.12,.65,sun.y);
                 color += _SunRadiance.rgb * pow(towardSun,8) * horizonAmount * sunset * .20;
-                float2 cloudUV = d.xz / max(d.y+.18,.16) * 1.55 + _Time.y * float2(_CloudSpeed,_CloudSpeed*.35);
+                float weatherTime = _WeatherTime >= 0 ? _WeatherTime : _Time.y;
+                float2 cloudUV = d.xz / max(d.y+.18,.16) * 1.55
+                    + weatherTime * _CloudSpeed * _WeatherWind.xy;
                 float noise = Clouds(cloudUV);
-                float cloud = smoothstep(1-_CloudCoverage,1-_CloudCoverage+.18,noise) * smoothstep(.01,.22,d.y);
+                float coverage = saturate(_CloudCoverage);
+                float cloud = smoothstep(1-coverage,1-coverage+.18,noise) * smoothstep(.01,.22,d.y);
+                float stars = saturate(_StarVisibility) * (1-saturate(day)) * smoothstep(.02,.20,d.y) * (1-cloud);
+                if (_StarVisibility * (1-saturate(day)) > .001) color += Stars(d) * stars;
                 float detail = Clouds(cloudUV + sun.xz*.14);
                 float silver = saturate((noise-detail)*7+.35);
                 float3 cloudShade = lerp(float3(.025,.035,.07),float3(.50,.61,.78),day);
                 float3 cloudLight = lerp(float3(.06,.075,.12),float3(.9,.95,1),day) + _SunRadiance.rgb*.22;
+                cloudShade *= lerp(1,.52,saturate(_WeatherRain));
+                cloudLight *= lerp(1,.64,saturate(_WeatherRain));
                 color = lerp(color,lerp(cloudShade,cloudLight,silver),cloud*.94);
                 float sunDisc = smoothstep(cos(_SunSize*1.15),cos(_SunSize*.8),dot(d,sun));
                 float sunHalo = pow(towardSun,180)*.12;

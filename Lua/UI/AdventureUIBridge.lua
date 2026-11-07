@@ -44,6 +44,10 @@ return function(command,demo)
                 end
             end
         end
+        local bank=main:Get('Adventure').economy
+        if bank.data.ActiveBankSite~=0 and (data.Phase~='area' or bank.data.ActiveBankSite~=data.Areas.ActiveSiteId) then bank:CloseBank() end
+        if bank.data.ActiveBankSite~=0 and not ui:IsOpen('Bank') then ui:Open('Bank',{demo=demo})
+        elseif bank.data.ActiveBankSite==0 and ui:IsOpen('Bank') then ui:Close('Bank') end
         local shop=main:Get('Adventure').shop
         if shop.data.IsOpen and (data.Phase~='area' or shop.data.Active.SiteId~=data.Areas.ActiveSiteId) then shop:Close() end
         if shop.data.IsOpen and not ui:IsOpen('Shop') then ui:Open('Shop',{demo=demo})

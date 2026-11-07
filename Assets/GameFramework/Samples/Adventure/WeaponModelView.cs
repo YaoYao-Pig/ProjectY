@@ -51,7 +51,12 @@ namespace ProjectY.Samples
         {itemEffect?.Clear();if(attachmentEffects!=null)foreach(var effect in attachmentEffects)effect?.Clear();}
         private void OnDestroy()
         {itemEffect?.Dispose();if(attachmentEffects!=null)foreach(var effect in attachmentEffects)effect?.Dispose();}
-        public static void Remove(GameObject value) { value.SetActive(false); if(Application.isPlaying) Destroy(value);else DestroyImmediate(value); }
+        public static void Remove(GameObject value)
+        {
+            var fitted = value.GetComponent<PawnAutoFitMeshOwner>();
+            if (fitted != null) fitted.Release();
+            value.SetActive(false); if(Application.isPlaying) Destroy(value);else DestroyImmediate(value);
+        }
 #if UNITY_EDITOR
         public void SetMounts(Mount[] value) { mounts=value; }
         public void SetVisualProfile(EquipmentVisualProfileView value) { visualProfile=value; }

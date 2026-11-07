@@ -28,6 +28,7 @@ tables = {}
 for folder, names in (
     ('Progression', ('PartyStoryRuleTable', 'PartyBondStageTable', 'PartyHonorTable', 'StoryLogTemplateTable')),
     ('Adventure', ('CombatTraitTable',)),
+    ('Localization', ('LuaTxt',)),
 ):
     for name in names:
         document = json.loads((root / 'Config' / 'Tables' / folder / (name + '.json')).read_text(encoding='utf-8-sig'))

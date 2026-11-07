@@ -70,7 +70,11 @@ namespace ProjectY.Samples
         private float mapRadius;
         private MapPreviewData fogMap;
         private WorldFogRenderer worldFog;
+        private MapBoundaryRenderer boundary;
         internal bool IsWorldCellKnown(int cell) => worldFog == null || worldFog.Known(cell);
+        internal bool IsWorldWonderKnown(int id) => id>0 && (worldFog==null || worldFog.WonderKnown(id));
+        private bool IsWorldInstanceKnown(Kind kind,int cell) => kind==Kind.Wonder
+            ? IsWorldWonderKnown(fogMap.Cells[cell].WonderId) : IsWorldCellKnown(cell);
         internal bool PickMountainSurface(Ray ray, out int cell, out float distance) => mountainSurface.TryPick(ray, out cell, out distance);
         public void SetExploration(ProjectY.Data.WorldMapExplorationData state)
         {
@@ -191,6 +195,9 @@ namespace ProjectY.Samples
         public IEnumerable<float> BuildIncremental(MapPreviewData map, Func<MapPreviewData.Asset, GameObject> resolve)
         {
             mapRadius = map.Radius;
+            boundary?.Dispose();
+            boundary = new MapBoundaryRenderer(map);
+            boundary.BindWater(waterEffects.SurfaceMaterial);
             worldFog?.Dispose();worldFog=null;fogMap=map;waterEffects.VisibilityFilter=null;
             // ID 与资源路径同时校验，改表后忘记同步场景时明确报错。
             var assets = new Dictionary<int, MapPreviewData.Asset>();
@@ -459,6 +466,7 @@ namespace ProjectY.Samples
 
         public void Draw(Camera camera, bool water, bool buildings, bool roads, bool decorations, MapRenderLod.Settings settings = null)
         {
+            boundary.Draw(camera);
             settings = settings ?? defaultLod;
             lodView.Update(camera, Bounds.center.y, mapRadius, settings);
             SubmittedBatches = SubmittedInstances = SubmittedDetailInstances = CulledBatches = 0;
@@ -494,10 +502,14 @@ namespace ProjectY.Samples
             foreach (var batch in visible)
                 for (var i = 0; i < batch.Count; i++)
                 {
-                    if(worldFog!=null && !worldFog.Known(batch.CellIndices[i]))continue;
+                    if(!IsWorldInstanceKnown(batch.Kind,batch.CellIndices[i]))continue;
                     if (batch.Kind == Kind.Decoration && !near && batch.CellIndices[i] % settings.mediumDecorationStride != 0) continue;
                     if (detail && !lodView.Visible(InstanceBounds(batch.Mesh.bounds, batch.Matrices[i]))) continue;
                     detailMatrices[count] = batch.Matrices[i]; detailColors[count] = batch.Colors[i];
+                    if(batch.Kind==Kind.Wonder && worldFog!=null && !worldFog.WonderVisible(fogMap.Cells[batch.CellIndices[i]].WonderId))
+                    {
+                        detailColors[count]=MapFogColors.Remembered((Color)detailColors[count],QualitySettings.activeColorSpace==ColorSpace.Linear);
+                    }
                     if (batch.WaterFlows != null) visibleFlows[count] = batch.WaterFlows[i];
                     if (batch.GroundData != null) visibleGround[count] = batch.GroundData[i];
                     count++;
@@ -508,6 +520,8 @@ namespace ProjectY.Samples
         private void SubmitVisible(DrawGroup group, Camera camera, int count, bool near, bool detail)
         {
             detailProperties.SetVectorArray("_Color", detailColors);
+            // A discovered landmark is one visible object. Its ground cells still retain their individual fog state.
+            detailProperties.SetFloat("_WorldFogEnabled",group.Kind==Kind.Wonder || worldFog==null?0:1);
             if (group.Kind == Kind.Water) detailProperties.SetVectorArray("_WaterFlow", visibleFlows);
             if (group.Kind == Kind.Terrain) detailProperties.SetVectorArray("_GroundData", visibleGround);
             SubmittedBatches++; SubmittedInstances += count;
@@ -519,6 +533,7 @@ namespace ProjectY.Samples
 
         public void Dispose()
         {
+            boundary?.Dispose(); boundary = null;
             worldFog?.Dispose();worldFog=null;
             DisposeFocus();
             Release(roadMesh); Release(waterMesh);

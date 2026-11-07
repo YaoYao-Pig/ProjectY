@@ -48,7 +48,7 @@ local function party(id,q,role)
 end
 local function fixture(rows)
     local map=Map(7,1)
-    for q=0,80 do local cell={q=q,r=0,height=q==73 and 10 or 0,waterLevel=q==70 and 1 or nil}
+    for q=0,80 do local cell={q=q,r=0,height=q==73 and 10 or 0,waterLevel=q==70 and 1 or nil,worldTravelBlocked=q==76}
         map.cells[#map.cells+1]=cell;map.cellsByKey[Hex.Key(q,0)]=cell
     end
     local metrics={due=0,near=0,nearMinutes=0,coarse=0,plans=0,thinks=0,recover=0,contacts=0,coarseContacts=0,conflicts=0,restock=0}
@@ -76,7 +76,7 @@ local function fixture(rows)
         TickConflict=function(_,conflict,minute,level)metrics.conflicts=metrics.conflicts+1;metrics.conflictLevel=level end}
     local adventure={map=map,sites={},factions=factions,config={GetTable=function(_,name)eq(name,'WorldSimulationLodTable');return {Get=function()return lodRule end}end},
         battle={stats={}},travel={map=map,maxStep=1.2,rule={minutesPerCell=8,roadMultiplier=.6},terrains={{costMultiplier=1}},data={AnchorQ=0,AnchorR=0}}}
-    local parties={adventure=adventure,map=map,data=data,paths=require('Game.Map.MapPathfinder')(map),towns={},
+    local parties={adventure=adventure,map=map,data=data,paths=require('Game.Map.MapPathfinder')(map),towns={},Recruit=function()end,
         definitions={Get=function()return {speed=1,detectRadius=6,encounterId=404}end},rule={contactRadius=1}}
     adventure.parties=parties
     factions.adventure=adventure
@@ -95,6 +95,7 @@ local function due(p,elapsed,level,previous,to)return {Party=p,Elapsed=elapsed,F
 test('LOD topology and radii preserve real land restrictions',function()
     local lod=fixture({})
     assert(lod:Connected(30,0,60,0));assert(not lod:Connected(69,0,71,0));assert(not lod:Connected(72,0,74,0))
+    assert(not lod:Connected(75,0,77,0));assert(not lod:Connected(76,0,77,0),'Blocked wonder footprints must not enter coarse topology')
     assert(not lod:Connected(1,0,100,0));eq(lod:Level(8,0),1);eq(lod:Level(9,0),2);eq(lod:Level(24,0),2);eq(lod:Level(25,0),3)
 end)
 
@@ -176,7 +177,7 @@ test('near contact queries receive only the cached near mobile subset',function(
 end)
 
 local previousCS=CS
-CS={ProjectY={Data={FactionPersistence={
+CS={ProjectY={Data={DeathDoorState={Alive=function(actor)return actor.HP>0 end},FactionPersistence={
     Find=function(areas,id)return areas.states[id]end,
     Ensure=function(areas,id)
         local state={groups={},EncounterCount=0,loot={}}
@@ -266,7 +267,7 @@ test('batched recovery preserves strategic income periods and cap-before-spend o
             SetRecoveryAt=function(self,n)self.LastRecoveryAt=n end}
         local f=setmetatable({sites={[1]={q=0,r=0}},data={SiteCount=1,GetSiteAt=function()return site end},
             rules={settings=settings,policies={Get=function()return {income=4,recruitCost=40}end}},
-            adventure={parties={data={Count=1,GetAt=function()return guard end,Find=function()return guard end}}}},Factions)
+            adventure={parties={Recruit=function()end,data={Count=1,GetAt=function()return guard end,Find=function()return guard end}}}},Factions)
         return f,site,actors
     end
     local batch,site,actors=economy();batch:Recover(60)

@@ -1,5 +1,4 @@
 using System;
-using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Rendering;
 
@@ -11,10 +10,19 @@ namespace ProjectY.Samples
         public readonly MapEnvironmentData Data;
         private readonly Light sun;
         private readonly Camera camera;
-        private readonly Light[] lamps;
+        private readonly Transform owner;
+        public MapWeatherRenderer Weather { get; private set; }
+        private int weatherPreview = -1;
+        private Vector3 weatherFocus;
+        private float cloudCoverage, rainIntensity;
+        private Vector2 weatherWind;
+        public bool AutomaticWeather => weatherPreview < 0;
+        private readonly MapAreaSceneLighting sceneLighting;
+        private readonly MapAreaPresentationSettings localPresentation;
+        private bool underground;
         private readonly Light torch;
-        private readonly Dictionary<int, Vector3> anchors = new Dictionary<int, Vector3>();
-        private readonly HashSet<int> lit = new HashSet<int>();
+        public int SceneLightCount => sceneLighting.SourceCount;
+        public int ActiveSceneLights => sceneLighting.ActiveCount;
         private MapAreaViewData layout;
         private float hour, indoors, weatherSun, weatherAmbient, weatherShadow, fogStart, fogEnd;
         private Color weatherTint;
@@ -27,6 +35,11 @@ namespace ProjectY.Samples
         private static readonly int SkySunDirection = Shader.PropertyToID("_SunDirection");
         private static readonly int SkySunRadiance = Shader.PropertyToID("_SunRadiance");
         private static readonly int SkyDaylight = Shader.PropertyToID("_Daylight");
+        private static readonly int SkyCloudCoverage = Shader.PropertyToID("_CloudCoverage");
+        private static readonly int SkyRain = Shader.PropertyToID("_WeatherRain");
+        private static readonly int SkyStars = Shader.PropertyToID("_StarVisibility");
+        private static readonly int SkyTime = Shader.PropertyToID("_WeatherTime");
+        private static readonly int SkyWind = Shader.PropertyToID("_WeatherWind");
         public bool Running { get; set; }
         public float Hour { get => hour; set => hour = Mathf.Repeat(value, 24); }
         public int WeatherIndex => weatherIndex;
@@ -48,7 +61,7 @@ namespace ProjectY.Samples
         public MapEnvironmentController(MapEnvironmentData data, Light mainLight, Camera viewCamera, Transform owner)
         {
             if (mainLight == null || viewCamera == null || owner == null || mainLight.type != LightType.Directional) throw new InvalidOperationException("环境表现需要绑定方向光、相机和生命周期宿主。");
-            Data = data; sun = mainLight; camera = viewCamera;
+            Data = data; sun = mainLight; camera = viewCamera; this.owner = owner;
             original = new Snapshot { Ambient = RenderSettings.ambientMode, Sky = RenderSettings.ambientSkyColor, Equator = RenderSettings.ambientEquatorColor,
                 Ground = RenderSettings.ambientGroundColor, Fog = RenderSettings.fog, FogMode = RenderSettings.fogMode, FogColor = RenderSettings.fogColor,
                 FogStart = RenderSettings.fogStartDistance, FogEnd = RenderSettings.fogEndDistance, FogDensity = RenderSettings.fogDensity, Reflection = RenderSettings.reflectionIntensity,
@@ -60,18 +73,16 @@ namespace ProjectY.Samples
             if (weatherIndex < 0 || data.Keys.Length < 2 || data.CycleSeconds <= 0 || data.Transition <= 0) throw new InvalidOperationException("环境配置缺少关键帧或默认天气。");
             var weather = data.Weathers[weatherIndex]; weatherSun = weather.Sun; weatherAmbient = weather.Ambient; weatherShadow = weather.Shadow;
             weatherTint = weather.Tint; fogStart = weather.FogStart; fogEnd = weather.FogEnd;
-            lamps = new Light[data.MaxLights];
-            for (var i = 0; i < lamps.Length; i++)
-            {
-                var go = new GameObject("Map_InteriorLight_" + i) { hideFlags = HideFlags.DontSave }; go.transform.SetParent(owner, false);
-                lamps[i] = go.AddComponent<Light>(); lamps[i].type = LightType.Point; lamps[i].color = data.LampColor; lamps[i].range = data.LampRange;
-                lamps[i].shadows = LightShadows.None; lamps[i].renderMode = LightRenderMode.ForcePixel; lamps[i].enabled = false;
-            }
+            cloudCoverage = weather.Cloud; rainIntensity = weather.Rain;
+            localPresentation = MapAreaPresentationSettings.Load();
+            sceneLighting = new MapAreaSceneLighting(owner, data.MaxLights, localPresentation);
             var torchObject = new GameObject("Map_PartyTorch") { hideFlags = HideFlags.DontSave };
             torchObject.transform.SetParent(owner, false);
             torch = torchObject.AddComponent<Light>(); torch.type = LightType.Point;
             torch.color = data.TorchColor; torch.intensity = data.TorchIntensity; torch.range = data.TorchRange;
-            torch.shadows = LightShadows.None; torch.renderMode = LightRenderMode.ForcePixel; torch.enabled = false;
+            torch.shadows = LightShadows.Soft; torch.shadowCustomResolution = 512;
+            torch.shadowBias = .035f; torch.shadowNormalBias = .12f; torch.shadowNearPlane = .12f;
+            torch.renderMode = LightRenderMode.ForcePixel; torch.enabled = false;
             RenderSettings.ambientMode = AmbientMode.Trilight; RenderSettings.sun = sun;
             sun.shadows = LightShadows.Soft; sun.shadowBias = .03f; sun.shadowNormalBias = .25f;
             presentation = new ProjectY.Rendering.FantasyPresentation(camera, owner);
@@ -80,18 +91,25 @@ namespace ProjectY.Samples
         public void SelectWeather(int index)
         {
             if (index < 0 || index >= Data.Weathers.Length) throw new ArgumentOutOfRangeException(nameof(index));
-            weatherIndex = index;
+            weatherIndex = index; weatherPreview = index;
+            Weather?.SelectPreview(Data.Weathers[index]);
         }
+        public void UseAutomaticWeather() { weatherPreview = -1; Weather?.SelectPreview(null); }
+        public void BindWeather(MapPreviewData map, ProjectY.Data.WorldWeatherField field)
+        {
+            if (Weather == null) Weather = new MapWeatherRenderer(camera, owner, Data.WeatherEffects);
+            Weather.BindWorld(map, field); UseAutomaticWeather();
+            if (layout != null) Weather.SetArea(layout);
+        }
+        public void SetWeatherContext(double minutes, Vector2 worldOrigin) { Weather?.SetContext(minutes, worldOrigin); }
+        public void DrawWeather(float seconds, Vector3 focus) { Weather?.Draw(seconds, focus, underground); }
+        public void HideWeather() { Weather?.Hide(); }
         public void SetArea(MapAreaViewData value)
         {
-            layout = value; anchors.Clear(); var counts = new Dictionary<int, int>();
-            if (value != null) foreach (var cell in value.Cells) if (cell.InteriorId > 0)
-            {
-                if (!anchors.ContainsKey(cell.InteriorId)) { anchors.Add(cell.InteriorId, Vector3.zero); counts.Add(cell.InteriorId, 0); }
-                anchors[cell.InteriorId] += cell.Position; counts[cell.InteriorId]++;
-            }
-            foreach (var entry in counts) anchors[entry.Key] = anchors[entry.Key] / entry.Value + Vector3.up * Data.LampHeight;
-            foreach (var lamp in lamps) lamp.enabled = false;
+            layout = value;
+            Weather?.SetArea(value);
+            underground = value != null && localPresentation.Underground(value.AreaType);
+            sceneLighting.SetArea(value);
             torch.enabled = false;
         }
         // The inventory snapshot owns availability; this light follows the rendered leader, including movement interpolation.
@@ -100,15 +118,43 @@ namespace ProjectY.Samples
             torch.enabled = enabled && layout != null;
             if (torch.enabled) torch.transform.position = leaderPosition + Vector3.up * Data.TorchHeight;
         }
+        public void SetWorldTorch(bool enabled, Vector3 partyPosition)
+        {
+            torch.enabled=enabled && layout==null;
+            if(torch.enabled)torch.transform.position=partyPosition+Vector3.up*Data.TorchHeight;
+        }
         public void Tick(float seconds, MapAreaViewData.State state)
         {
+            if (state != null) Weather?.UpdateConstruction(state.ConstructionRevision);
             if (Running) Hour += Mathf.Max(0, seconds) * 24 / Data.CycleSeconds;
             var blend = 1 - Mathf.Exp(-Mathf.Max(0, seconds) * 3 / Data.Transition);
-            var target = layout != null && state != null && layout.Cells[state.CellIndex].InteriorId > 0 ? 1 : 0;
+            var target = underground || layout != null && state != null && layout.Cells[state.CellIndex].InteriorId > 0 ? 1 : 0;
             indoors = Mathf.Lerp(indoors, target, blend);
-            var w = Data.Weathers[weatherIndex]; weatherSun = Mathf.Lerp(weatherSun, w.Sun, blend); weatherAmbient = Mathf.Lerp(weatherAmbient, w.Ambient, blend);
-            weatherShadow = Mathf.Lerp(weatherShadow, w.Shadow, blend); weatherTint = Color.Lerp(weatherTint, w.Tint, blend);
-            fogStart = Mathf.Lerp(fogStart, w.FogStart, blend); fogEnd = Mathf.Lerp(fogEnd, w.FogEnd, blend);
+            var w = Data.Weathers[weatherIndex];
+            float targetCloud = w.Cloud, targetRain = w.Rain;
+            if (Weather != null && Weather.IsBound)
+            {
+                var sample = Weather.Sample(weatherFocus.x, weatherFocus.z);
+                targetCloud = sample.Cloud; targetRain = sample.Rain; weatherWind = new Vector2(sample.WindX, sample.WindZ);
+                // IDs select UI labels; light/cloud transitions use continuous fields, never threshold jumps.
+                for (int i = 0; i < Data.Weathers.Length; i++) if (Data.Weathers[i].Id == sample.WeatherId) { weatherIndex = i; break; }
+            }
+            cloudCoverage = Mathf.Lerp(cloudCoverage, targetCloud, blend); rainIntensity = Mathf.Lerp(rainIntensity, targetRain, blend);
+            MapEnvironmentData.Weather clear = null, overcast = null, rain = null;
+            for (int i = 0; i < Data.Weathers.Length; i++)
+            { var row = Data.Weathers[i]; if (row.Id == 1) clear = row; else if (row.Id == 2) overcast = row; else if (row.Id == 3) rain = row; }
+            if (clear == null || overcast == null || rain == null) throw new InvalidOperationException("Weather needs clear, overcast and rain profiles.");
+            float cover = Mathf.SmoothStep(0, 1, Mathf.InverseLerp(clear.Cloud, overcast.Cloud, targetCloud));
+            bool spatial = Weather != null && Weather.IsBound && layout == null;
+            // One global sun cannot represent simultaneous regional weather. The world material samples its weather field.
+            float targetSun = spatial ? clear.Sun : Mathf.Lerp(Mathf.Lerp(clear.Sun, overcast.Sun, cover), rain.Sun, targetRain);
+            float targetAmbient = spatial ? clear.Ambient : Mathf.Lerp(Mathf.Lerp(clear.Ambient, overcast.Ambient, cover), rain.Ambient, targetRain);
+            Color targetTint = spatial ? clear.Tint : Color.Lerp(Color.Lerp(clear.Tint, overcast.Tint, cover), rain.Tint, targetRain);
+            weatherSun = Mathf.Lerp(weatherSun, targetSun, blend); weatherAmbient = Mathf.Lerp(weatherAmbient, targetAmbient, blend);
+            weatherShadow = Mathf.Lerp(weatherShadow, spatial ? clear.Shadow : Mathf.Lerp(Mathf.Lerp(clear.Shadow, overcast.Shadow, cover), rain.Shadow, targetRain), blend);
+            weatherTint = Color.Lerp(weatherTint, targetTint, blend);
+            fogStart = Mathf.Lerp(fogStart, spatial ? clear.FogStart : Mathf.Lerp(Mathf.Lerp(clear.FogStart, overcast.FogStart, cover), rain.FogStart, targetRain), blend);
+            fogEnd = Mathf.Lerp(fogEnd, spatial ? clear.FogEnd : Mathf.Lerp(Mathf.Lerp(clear.FogEnd, overcast.FogEnd, cover), rain.FogEnd, targetRain), blend);
             var keys = Data.Keys; var index = keys.Length - 1;
             for (var i = 0; i < keys.Length; i++) if (Hour >= keys[i].Hour) index = i;
             var a = keys[index]; var b = keys[(index + 1) % keys.Length]; var span = Mathf.Repeat(b.Hour - a.Hour, 24);
@@ -121,23 +167,25 @@ namespace ProjectY.Samples
             var skyTint = Color.Lerp(Color.white, look.skyLightTint, daylight);
             sun.transform.rotation = Quaternion.Euler(12 + Mathf.Abs(altitude) * 58, Data.Azimuth + (altitude < 0 ? 180 : 0), 0);
             sun.color = Color.Lerp(a.SunColor, b.SunColor, t) * weatherTint;
-            sun.intensity = Mathf.Lerp(a.Sun, b.Sun, t) * weatherSun * Mathf.Lerp(1, Data.IndoorSun * look.indoorSunMultiplier, indoors) * sunGain; sun.shadowStrength = weatherShadow;
-            var indoorAmbient = Data.IndoorAmbient * look.indoorAmbientMultiplier * look.skyLightTint;
+            sun.intensity = Mathf.Lerp(a.Sun, b.Sun, t) * weatherSun * Mathf.Lerp(1, Data.IndoorSun * look.indoorSunMultiplier * localPresentation.interiorSunScale, indoors) * sunGain; sun.shadowStrength = weatherShadow;
+            if (underground)
+            {
+                sun.intensity = localPresentation.undergroundSunIntensity;
+                sun.color = localPresentation.undergroundSunColor;
+                sun.transform.rotation = Quaternion.Euler(55, -35, 0);
+            }
+            var indoorAmbient = underground ? localPresentation.undergroundAmbient :
+                Data.IndoorAmbient * look.indoorAmbientMultiplier * look.skyLightTint * localPresentation.interiorAmbientScale;
             RenderSettings.ambientSkyColor = Color.Lerp(Color.Lerp(a.Sky, b.Sky, t) * weatherTint * weatherAmbient * ambientGain * skyTint, indoorAmbient * .70f, indoors);
             RenderSettings.ambientEquatorColor = Color.Lerp(Color.Lerp(a.Equator, b.Equator, t) * weatherTint * weatherAmbient * ambientGain, indoorAmbient * .62f, indoors);
             RenderSettings.ambientGroundColor = Color.Lerp(Color.Lerp(a.Ground, b.Ground, t) * weatherTint * weatherAmbient * ambientGain, indoorAmbient * .4f, indoors);
-            RenderSettings.fog = true; RenderSettings.fogMode = FogMode.Linear; RenderSettings.fogColor = Color.Lerp(a.Fog, b.Fog, t) * weatherTint;
-            camera.backgroundColor = RenderSettings.fogColor;
-            RenderSettings.reflectionIntensity = look.reflectionIntensity * Mathf.Lerp(.3f, 1, daylight);
-            ApplySky(look.skybox, daylight);
-            lit.Clear(); var count = 0; var lampWeight = Mathf.Lerp(.4f, 1, Mathf.Lerp(a.Lamp, b.Lamp, t));
-            if (layout != null && state != null) foreach (var member in state.Members)
-            {
-                var id = layout.Cells[member.CellIndex].InteriorId;
-                if (id <= 0 || !lit.Add(id) || count == lamps.Length) continue;
-                var lamp = lamps[count++]; lamp.transform.position = anchors[id]; lamp.intensity = Data.LampIntensity * lampWeight * look.interiorLampMultiplier; lamp.enabled = true;
-            }
-            for (var i = count; i < lamps.Length; i++) lamps[i].enabled = false;
+            RenderSettings.fog = !underground; RenderSettings.fogMode = FogMode.Linear; RenderSettings.fogColor = Color.Lerp(a.Fog, b.Fog, t) * weatherTint;
+            camera.backgroundColor = underground ? localPresentation.undergroundBackground : RenderSettings.fogColor;
+            RenderSettings.reflectionIntensity = look.reflectionIntensity * Mathf.Lerp(Mathf.Lerp(.3f, 1, daylight), .16f, indoors);
+            ApplySky(look.skybox && !underground, daylight);
+            if (underground) camera.clearFlags = CameraClearFlags.SolidColor;
+            presentation.SetEnclosure(underground ? 1 : indoors * .9f);
+            sceneLighting.Tick(state, Mathf.Lerp(.18f, 1, Mathf.Lerp(a.Lamp, b.Lamp, t)), torch.enabled);
         }
 
         private void ApplySky(bool enabled, float daylight)
@@ -157,6 +205,11 @@ namespace ProjectY.Samples
             var radiance = sun.color.linear * sun.intensity;
             skyMaterial.SetVector(SkySunRadiance, new Vector4(radiance.r, radiance.g, radiance.b, 1));
             skyMaterial.SetFloat(SkyDaylight, daylight);
+            skyMaterial.SetFloat(SkyCloudCoverage, cloudCoverage);
+            skyMaterial.SetFloat(SkyRain, rainIntensity);
+            skyMaterial.SetFloat(SkyStars, 1);
+            skyMaterial.SetFloat(SkyTime, Weather != null ? Weather.VisualTime : Time.unscaledTime);
+            skyMaterial.SetVector(SkyWind, new Vector4(weatherWind.x, weatherWind.y, 0, 0));
             RenderSettings.skybox = skyMaterial; camera.clearFlags = CameraClearFlags.Skybox;
             // Refresh reflections on style changes or meaningful sun movement, not every frame.
             if (!skyEnabled || Vector3.Dot(reflectionSunDirection, sun.transform.forward) < .995f)
@@ -166,14 +219,16 @@ namespace ProjectY.Samples
         // 正交远景相机距地很远；雾从观察焦点向后累计，不能吞掉整张大地图。
         public void ApplyCameraFocus(Vector3 focus)
         {
+            weatherFocus = focus;
             var distance = Mathf.Max(0, Vector3.Dot(focus - camera.transform.position, camera.transform.forward));
             RenderSettings.fogStartDistance = distance + fogStart; RenderSettings.fogEndDistance = distance + fogEnd;
             presentation.SetShadowDistance(distance + Data.ShadowDistance);
         }
         public void Dispose()
         {
+            Weather?.Dispose(); Weather = null;
             presentation.Dispose();
-            foreach (var lamp in lamps) { if (lamp == null) continue; if (Application.isPlaying) UnityEngine.Object.Destroy(lamp.gameObject); else UnityEngine.Object.DestroyImmediate(lamp.gameObject); }
+            sceneLighting.Dispose();
             if (torch != null) { if (Application.isPlaying) UnityEngine.Object.Destroy(torch.gameObject); else UnityEngine.Object.DestroyImmediate(torch.gameObject); }
             RenderSettings.ambientMode = original.Ambient; RenderSettings.ambientSkyColor = original.Sky; RenderSettings.ambientEquatorColor = original.Equator; RenderSettings.ambientGroundColor = original.Ground;
             RenderSettings.fog = original.Fog; RenderSettings.fogMode = original.FogMode; RenderSettings.fogColor = original.FogColor;

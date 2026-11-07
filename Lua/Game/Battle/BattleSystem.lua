@@ -1,7 +1,9 @@
+local Life=require('Game.Battle.ActorLife')
 local Class = require('Core.Class')
 local System = require('Core.LuaSystem')
 local Signal = require('Core.Signal')
 local Hex = require('Game.Map.HexGrid')
+local SkillShape = require('Game.Battle.SkillShape')
 local Board = require('Game.Battle.BattleBoard')
 local Trajectory = require('Game.Battle.SkillTrajectory')
 local Projectiles = require('Game.Battle.ProjectileCombat')
@@ -26,26 +28,36 @@ function Battle:OnInit(context)
     self.consumables = config:GetTable('ConsumableTable')
     self.Changed = Signal(context.log)
     self.gameEffects=require('Game.Battle.GameEffects').New(self.stats,self.effects,function(...) self:Emit(...) end,
-        {roll=function()return self.data:RollPercent()end,minutes=function()return adventure.Narrative.Minutes end,
+        {battle=self,roll=function()return self.data:RollPercent()end,minutes=function()return adventure.Narrative.Minutes end,
          report=function(kind,plan,details)
             self:Emit(kind,details.reason or details.checkName or kind,plan.sourceId,plan.target.Id,0,plan.target,false,details)
          end})
     self.checks=function(...)self:ChanceLog(...)end
     self.professions=require('Game.Battle.ProfessionCombat').New(config,self)
+    self.spellcasting=self.stats.spellcasting
+    self.morale=self.stats.morale
+    self.titleCombat=require('Game.Battle.TitleCombat').New(self)
     self.beasts=require('Game.Battle.ProfessionBeasts').New(config,self)
     self.legendary=require('Game.Battle.LegendaryEquipment').New(config,self)
     self.gameEffects.professions=self.professions
     self.gameEffects.legendary=self.legendary
+    self.gameEffects.titleCombat=self.titleCombat
     self.gameEffects.damageLimit=function(target,amount)return CS.ProjectY.Data.ProfessionDuelState.Limit(adventure,target,amount)end
     self.gameEffects:Validate()
     local construction=config:GetTable('ConstructionTable')
     local animalSpeechSkill=config:GetTable('AnimalSpeechRuleTable'):Get(1).skillId
     for _, row in ipairs(self.skills:All()) do
         assert(row.minRange<=row.range,'Minimum skill range exceeds maximum: '..row.id)
-        assert(#row.effectIds > 0 or construction:Find(row.id) or self.professions.rows:Find(row.id) or self.beasts:Handles(row.id) or self.legendary.bySkill[row.id]
+        SkillShape.Validate(row.rangeShape)
+        SkillShape.Validate(row.splashShape)
+        assert(#row.effectIds > 0 or self.spellcasting.recipes:Find(row.id) or construction:Find(row.id) or self.professions.rows:Find(row.id) or self.beasts:Handles(row.id) or self.legendary.bySkill[row.id]
             or config:GetTable('ProfessionExplorationTable'):Find(row.id) or row.id==animalSpeechSkill or row.id==501 or row.id==503, 'Skill needs effects: ' .. row.id)
         Trajectory.Description(row.trajectory)
         assert(row.trajectory=='sight' or row.target=='enemy' or row.target=='ally','Projectile skill needs an actor target: '..row.id)
+        if row.selectBodyPart then
+            assert(row.target=='enemy' and row.maxTargets==1 and row.shots==1 and not row.affectsContainers,
+                'Body-target skills require one enemy recipient and no container damage: '..row.id)
+        end
         OpportunityAttacks.Validate(self,row)
     end
     for _,row in ipairs(self.consumables:All()) do
@@ -100,11 +112,17 @@ function Battle:Emit(kind, message, sourceId, targetId, amount, target, attackHi
     local sourceView=source and {name=self.stats:Template(source).name,team=self:PresentationTeam(source)}
         or impact and impact.sourceName and {name=impact.sourceName,team=0}
     local targetView=target and {name=self.stats:Template(target).name,team=self:PresentationTeam(target)}
+    if targetView and self.stats.inspection then
+        targetView.healthKnown=self.stats.inspection:Known(target,'health')
+        targetView.defenseKnown=self.stats.inspection:Known(target,'attribute:defense')
+        targetView.guardKnown=self.stats.inspection:Known(target,'guard')
+    end
     self.data:AddLog(BattleLog.Format(kind,message,sourceView,targetView,amount,impact))
     local event={kind = kind, sourceId = sourceId, targetId = targetId, amount = amount,target=target,attackHit=attackHit==true,impact=impact,
         hpBefore=impact and impact.hpBefore,hpAfter=impact and impact.hpAfter,periodic=impact and impact.periodic==true}
     require('Game.Presentation.AudioEvents').Record(self,event)
     self.Changed:Emit(event)
+    self.morale:OnEvent(self,event)
 end
 function Battle:ChanceLog(source,target,skill,label,chance,roll,passed,details)
     details=details or {};details.actionName=skill.name;details.checkName=label;details.chance=chance;details.roll=roll;details.passed=passed
@@ -116,7 +134,7 @@ function Battle:Start(encounterId, party, seed)
     assert(#party > 0 and #party <= 4, 'Battle needs 1..4 living party members')
     assert(#encounter.enemyIds > 0 and #encounter.enemyIds <= 4, 'Encounter needs 1..4 enemies')
     local board = Board.Create(encounter.radius, seed, encounter.obstacleChance)
-    for _, unit in ipairs(party) do assert(unit.HP > 0, 'Cannot deploy a defeated unit') end
+    for _, unit in ipairs(party) do assert(Life.Alive(unit), 'Cannot deploy a defeated unit') end
     self.data:Reset(encounterId, encounter.maxRounds)
     VisualEffects.Clear(self)
     self.data:SetRandomSeed(seed)
@@ -127,13 +145,14 @@ function Battle:Start(encounterId, party, seed)
     for i, templateId in ipairs(encounter.enemyIds) do
         CS.ProjectY.Data.EquipmentCombatState.RemoveActor(self.stats.equipment.data,100+i)
         local unit = self.data:AddEnemy(100 + i, templateId, deployment[i].q, deployment[i].r)
-        self.stats.birth:Initialize(unit,seed)
+        self.stats.birth:InitializeEnemy(unit,seed)
         local species=self.stats.animals.byUnit[templateId]
         if species then unit:InitializeAnimal(species.id,(seed ~ unit.Id) & 0xffffffff)
         elseif not self.stats.animals:IsStaticBody(unit) then self.appearances:Assign(unit,appearanceGroup) end
         self.context.systems:Get('Equipment'):InitializeEnemy(unit)
         unit:SetMaxHP(self.stats:MaximumHP(unit)); unit:Restore()
     end
+    self.titleCombat:Begin()
     self:Emit('battle_started', encounter.name)
     self:BeginDeployment()
 end
@@ -146,7 +165,7 @@ function Battle:StartArea(encounterId, board, party, enemies)
     local function check(actor, q, r)
         local cell = assert(board:Find(q, r), 'Actor outside area battle window')
         local key = Hex.Key(q, r)
-        assert(actor.HP > 0 and self.stats.animals:CanPlace(actor,board,q,r,occupied) and not ids[actor.Id], 'Invalid area combat position')
+        assert(Life.Alive(actor) and self.stats.animals:CanPlace(actor,board,q,r,occupied) and not ids[actor.Id], 'Invalid area combat position')
         for _,part in ipairs(assert(self.stats.animals:Cells(actor,board,q,r))) do occupied[Hex.Key(part.q,part.r)]=true end
         ids[actor.Id] = true
     end
@@ -160,12 +179,13 @@ function Battle:StartArea(encounterId, board, party, enemies)
     self.data:SetRandomSeed((board.area.seed + enemies[1].Id * 1009)%4294967296)
     for _, row in ipairs(party) do self.data:AddUnit(row.actor, 1, row.q, row.r) end
     for _, actor in ipairs(enemies) do self.data:AddUnit(actor, board.sideRelations and actor.Team or 2, actor.Q, actor.R) end
+    self.titleCombat:Begin()
     self:Emit('battle_started', encounter.name); self:BeginDeployment()
 end
 function Battle:TurnOrder(playersOnly)
     local order={}
     for _,unit in ipairs(self:Units()) do
-        if unit.HP>0 and unit.AnimalOwnerId==0 and (not playersOnly or unit.Team==1) then order[#order+1]=unit end
+        if Life.Alive(unit) and unit.AnimalOwnerId==0 and (not playersOnly or unit.Team==1) then order[#order+1]=unit end
     end
     table.sort(order,function(a,b)
         local sa,sb=self.stats:Get(a,'speed'),self.stats:Get(b,'speed')
@@ -175,10 +195,15 @@ function Battle:TurnOrder(playersOnly)
     return order
 end
 function Battle:BeginDeployment()
+    self.spellcasting:BindBoard(self)
+    for _,actor in ipairs(self:Units())do
+        self.spellcasting:AdvanceWorld(actor,self.context.services.Adventure.Narrative.Minutes,false)
+    end
     self.beasts:Deploy()
     self.board.deploymentOrigins={}
     local order=self:TurnOrder(true)
     self.data:BeginDeployment()
+    for _,unit in ipairs(self:Units())do self:DropInjuredEquipment(unit)end
     for _,unit in ipairs(order) do
         self.board.deploymentOrigins[unit.Id]={q=unit.Q,r=unit.R}
         self.data:AddTurn(unit.Id)
@@ -186,10 +211,20 @@ function Battle:BeginDeployment()
     self:Emit('deployment_started','战前部署：调整站位，使用职业准备技能或道具。')
     self:BeginTurn(0)
 end
+function Battle:DropInjuredEquipment(actor)
+    if self.data.Phase~='combat' and self.data.Phase~='deployment' then return end
+    if not self.stats.equipment:HasDisabledHandEquipment(actor) then return end
+    local names=self.context.systems:Get('Equipment').worldLoot:DropInjuredHands(self.context.systems:Get('MapArea'),actor,self.stats)
+    if #names>0 then
+        self:Emit('injury_equipment_dropped',string.format(LuaLanguage.BodyEquipmentDropped,self.stats:Template(actor).name,
+            table.concat(names,LuaLanguage.BodyEquipmentSeparator)),nil,actor.Id,0,actor)
+    end
+end
 function Battle:NewRound()
     if self.data.Round>0 then
+        CS.ProjectY.Data.SpellcastingState.AdvanceFields(self.data)
         if self.board.onRoundCompleted then self.board.onRoundCompleted()
-        else for _,actor in ipairs(self:Units()) do if actor.HP>0 then actor:AdvanceTamingRound() end end end
+        else for _,actor in ipairs(self:Units()) do if Life.Alive(actor) then actor:AdvanceTamingRound() end end end
     end
     if self.data.Round >= self.data.MaxRounds then
         self.data:Finish('draw'); self:ClearBattleEffects();self:Emit('battle_ended', '战斗时间耗尽，队伍撤回。'); return
@@ -206,13 +241,20 @@ function Battle:BeginTurn(index)
     if self.data.Phase=='deployment' then unit:BeginDeploymentTurn(self.stats:Template(unit).actionPoints)
     else
         unit:BeginTurn(self.stats:Template(unit).actionPoints)
+        self.titleCombat:BeginTurn(unit)
         self.gameEffects:TickActor(unit,'turn_start')
+        self.spellcasting:BeginTurn(unit,self)
         self.professions:BeginTurn(unit)
         self.beasts:BeginTurn(unit)
         if self.legendary then self.legendary:BeginTurn(unit)end
+        if self.legacyCombat then self.legacyCombat:BeginTurn(unit)end
     end
     if self:CheckWinner() then return end
-    if unit.HP==0 then self:AdvanceTurn();return end
+    if not Life.Alive(unit) then self:AdvanceTurn();return end
+    if self.data.Phase=='combat' then
+        self.morale:BeginTurn(self,unit)
+        if self.morale:Fleeing(unit) then self:Emit('turn_started',LuaLanguage.MoraleFleeing,unit.Id);self.morale:Flee(self,unit);return end
+    end
     if skipped then self:Emit('turn_skipped',self.stats:Template(unit).name..' 因「'..skipped.name..'」跳过行动',unit.Id);self:EndTurn();return end
     self:Emit('turn_started', self.stats:Template(unit).name .. (self.data.Phase=='deployment' and ' 部署' or ' 行动'), unit.Id)
 end
@@ -223,7 +265,7 @@ function Battle:CheckWinner()
         self.data:Finish(duel);self:ClearBattleEffects();self:Emit('battle_ended',require('Language').ProfessionDuelEnded);return true
     end
     local players,hostiles=0,0
-    for _,unit in ipairs(self:Units()) do if unit.HP>0 then
+    for _,unit in ipairs(self:Units()) do if Life.Alive(unit) then
         if unit.Team==1 and unit.AnimalOwnerId==0 then players=players+1
         elseif self:IsHostile(1,unit) then hostiles=hostiles+1 end
     end end
@@ -235,19 +277,24 @@ function Battle:CheckWinner()
     return true
 end
 function Battle:ClearBattleEffects()
+    self.titleCombat:Finish()
+    self.morale:End(self)
     self.beasts:Finish()
     self.professions:Finish()
     for i=0,self.data.UnitCount-1 do
         local unit=self.data:GetUnitAt(i)
+        CS.ProjectY.Data.SpellcastingState.ClearBoosts(unit)
+        self.spellcasting:AdvanceWorld(unit,self.context.services.Adventure.Narrative.Minutes,false)
         self.gameEffects:Clear(unit,'battle_end')
         if unit.MountedAnimal then self.gameEffects:Clear(unit.MountedAnimal,'battle_end') end
     end
+    CS.ProjectY.Data.SpellcastingState.ClearFields(self.data)
 end
 function Battle:ApplyEffect(effectId,source,target)
     local ok,reason=self.gameEffects:Apply(effectId,source,target)
     if ok and self.data.Phase~='idle' and self.data.Winner=='' then
         if not self:CheckWinner() then
-            if self:Active().HP==0 then self:AdvanceTurn()
+            if not Life.Alive(self:Active()) then self:AdvanceTurn()
             elseif self.data.Phase=='combat' and self.stats.buffs:Skipping(self:Active()) then self:EndTurn() end
         end
     end
@@ -256,7 +303,10 @@ end
 function Battle:EndTurn()
     if self.data.Winner ~= '' then return false, '战斗已经结束' end
     local unit = self:Active()
-    if self.data.Phase=='combat' then self.beasts:EndTurn(unit);if self.legendary then self.legendary:EndTurn(unit)end;self.gameEffects:TickActor(unit,'turn_end') end
+    if self.data.Phase=='combat' then
+        self.beasts:EndTurn(unit);if self.legendary then self.legendary:EndTurn(unit)end
+        self.gameEffects:TickActor(unit,'turn_end');self.titleCombat:EndTurn(unit)
+    end
     self:Emit('turn_ended', self.stats:Template(unit).name .. ' 结束行动', unit.Id)
     if self:CheckWinner() then return true end
     self:AdvanceTurn();return true
@@ -264,7 +314,7 @@ end
 function Battle:AdvanceTurn()
     for i = self.data.TurnIndex + 1, self.data.TurnCount - 1 do
         local nextUnit=self:FindUnit(self.data:GetTurnAt(i))
-        if nextUnit.HP > 0 and nextUnit.AnimalOwnerId==0 then self:BeginTurn(i); return true end
+        if Life.Alive(nextUnit) and nextUnit.AnimalOwnerId==0 then self:BeginTurn(i); return true end
     end
     self:NewRound()
 end
@@ -274,7 +324,7 @@ function Battle:Occupied(exceptId)
         for key in pairs(self.board.externalOccupied) do occupied[key] = true end
     end
     for _, unit in ipairs(self:Units()) do
-        if unit.HP > 0 and unit.Id ~= exceptId then self.stats.animals:Occupy(unit,self.board,occupied) end
+        if Life.Alive(unit) and unit.Id ~= exceptId then self.stats.animals:Occupy(unit,self.board,occupied) end
     end
     return occupied
 end
@@ -304,7 +354,8 @@ end
 function Battle:OpportunityAttackers(actor)
     return OpportunityAttacks.Candidates(self,actor)
 end
-function Battle:TryMove(q, r)
+function Battle:TryMove(q, r,retreat)
+    if self.morale:Fleeing(self:Active()) and not retreat then return false,LuaLanguage.MoraleCannotAct end
     Hex.CheckCoordinate(q, r)
     local cells,distance,previous=self:Reachable()
     for _, cell in ipairs(cells) do
@@ -314,11 +365,15 @@ function Battle:TryMove(q, r)
             if OpportunityAttacks.Resolve(self,unit)>0 then
                 -- 命令已经产生攻击结算；中断仍返回 true，保证上层处理真实伤亡和战斗结束。
                 if self.data.Winner~='' then return true,'借机攻击结束了战斗，移动已中断' end
-                if unit.HP<=0 then self:AdvanceTurn();return true,'角色在借机攻击中倒地，移动已中断' end
+                if not Life.Alive(unit) then self:AdvanceTurn();return true,'角色在借机攻击中倒地，移动已中断' end
+                if self.morale:Fleeing(unit) and not retreat then return true,LuaLanguage.MoraleCannotAct end
                 if self.stats.buffs:Skipping(unit) then self:EndTurn();return true,'角色无法继续行动，移动已中断' end
                 -- 坐骑死亡可能缩小移动距离或改变占地，使用结算后的真实状态重查路线。
                 local remaining,newDistance,newPrevious=self:Reachable();local reachable=false
                 for _,destination in ipairs(remaining) do if destination==cell then reachable=true;break end end
+                if not reachable and retreat then
+                    cell=self.morale:FleeDestination(self,unit,remaining);reachable=cell~=nil
+                end
                 if not reachable then return true,'借机攻击后无法到达目标，移动已中断' end
                 distance=newDistance;previous=newPrevious
             end
@@ -327,8 +382,10 @@ function Battle:TryMove(q, r)
             while previous[step]do step=previous[step];table.insert(path,1,step)end
             CS.ProjectY.Data.BattleMovement.Move(unit,destination.q,destination.r,template.moveCost,cost,self.stats:MoveRange(unit,template))
             if self.legendary then self.legendary:Moved(unit,path,true)end
+            self.spellcasting:OnPath(self,unit,path)
             self.professions:OnMoved(unit,true)
             self:Emit('moved', self.stats:Template(unit).name .. ' 移动', unit.Id)
+            if not self:CheckWinner() and not Life.Alive(unit) then self:AdvanceTurn()end
             return true
         end
     end
@@ -341,11 +398,32 @@ function Battle:SkillIds(actor)
         if not found then ids[#ids+1]=self.construction.demolitionId end
     end
     ids=self.beasts:AddSkills(actor,self.professions:AddSkills(actor,ids))
-    return self.legendary and self.legendary:AddSkills(actor,ids)or ids
+    ids=self.legendary and self.legendary:AddSkills(actor,ids)or ids
+    return self.spellcasting:AddSkills(actor,ids)
 end
 function Battle:Skill(actor,skillId)
     local skill=self.professions:Skill(actor,self.stats.buffs:ApplySkillModifiers(actor,self.stats.equipment:Skill(actor,skillId,self.stats)))
-    return self.legendary and self.legendary:Skill(actor,skill)or skill
+    skill=self.legendary and self.legendary:Skill(actor,skill)or skill
+    skill=self.morale:Skill(actor,self.spellcasting:Resolve(actor,skill))
+    if skill.selectBodyPart then
+        -- A body selection belongs to exactly one recipient, even with multi-target weapon modifiers.
+        skill.maxTargets=1;skill.splashRadius=0;skill.manualTargets=false
+    end
+    return skill
+end
+function Battle:CastingBoost(skillId)return CS.ProjectY.Data.SpellcastingState.Boost(self:Active(),skillId)end
+function Battle:SetCastingBoost(skillId,extra)
+    if self.data.Winner~='' or self.data.Phase~='combat' and self.data.Phase~='deployment' then return false,LuaLanguage.SpellcastingNotActive end
+    local actor=self:Active()
+    if actor.Team~=1 or not Life.Alive(actor) then return false,LuaLanguage.SpellcastingNotActive end
+    if type(extra)~='number' or not math.tointeger(extra)then return false,LuaLanguage.SpellcastingInvalidBoost end
+    local known=false;for _,id in ipairs(self:SkillIds(actor))do if id==skillId then known=true;break end end
+    if not known then return false,LuaLanguage.SpellcastingMissingRecipe end
+    local skill=self:Skill(actor,skillId)
+    if not skill.castingBoostLimit or extra<0 or extra>skill.castingBoostLimit then return false,LuaLanguage.SpellcastingInvalidBoost end
+    CS.ProjectY.Data.SpellcastingState.SetBoost(actor,skillId,extra)
+    self.Changed:Emit({kind='casting_boost',sourceId=actor.Id})
+    return true
 end
 function Battle:DisarmChance(source,target,skill)
     local height=self.stats.heightAdvantage
@@ -371,6 +449,7 @@ end
 function Battle:ActionBudget(skill)
     if self.data.Winner ~= '' then return false, '战斗已经结束' end
     local source=self:Active()
+    if self.morale:Fleeing(source) then return false,LuaLanguage.MoraleCannotAct end
     local blocked=self.data.Phase=='combat' and self.stats.buffs:Skipping(source)
     if blocked then return false,'受到「'..blocked.name..'」影响，无法行动' end
     local context=self.data.Phase=='deployment' and 'preparation' or 'battle'
@@ -390,6 +469,8 @@ function Battle:ActionBudget(skill)
     local ready,why=self.stats.equipment:CheckAmmo(source,skill);if not ready then return false,why end
     local professionReady,professionReason=self.professions:Budget(source,skill)
     if not professionReady then return false,professionReason end
+    local castingReady,castingReason=self.spellcasting:Budget(source,skill)
+    if not castingReady then return false,castingReason end
     if self.legendary then return self.legendary:Budget(source,skill)end
     return true
 end
@@ -446,6 +527,16 @@ function Battle:SkillRange(source,targetCell,skill)
     end
     return skill.range+bonus
 end
+function Battle:SkillInShape(source,skill,targetCell,targetParts)
+    local origins=assert(self.stats.animals:Cells(source,self.board))
+    return SkillShape.Footprints(skill.rangeShape,origins,targetParts or {targetCell},self:SkillRange(source,targetCell,skill),skill.minRange)
+end
+function Battle:SkillImpactCells(skill,center)
+    if skill.manualTargets or skill.splashRadius==0 then return {} end
+    local recipe=self.spellcasting.recipes:Find(skill.id)
+    if skill.maxTargets<=1 and (not recipe or recipe.fieldKind=='')then return {} end
+    return SkillShape.Cells(self.board,center,skill.splashShape,skill.splashRadius)
+end
 -- Spatial coverage only. Target allegiance, action budget and occupancy are checked on submission.
 function Battle:SkillRangeCells(skillId)
     local source=self:Active();local skill=self:Skill(source,skillId)
@@ -455,9 +546,7 @@ function Battle:SkillRangeCells(skillId)
     local origin=assert(self.board:Find(source.Q,source.R));local result={}
     for _,cell in ipairs(self.board.cells) do
         if not cell.blocked and (cell.layer or 0)==(origin.layer or 0) then
-            local distance=math.huge
-            for _,part in ipairs(origins)do distance=math.min(distance,Hex.Distance(part.q,part.r,cell.q,cell.r))end
-            if distance>=skill.minRange and distance<=self:SkillRange(source,cell,skill)
+            if SkillShape.Footprints(skill.rangeShape,origins,{cell},self:SkillRange(source,cell,skill),skill.minRange)
                 and Trajectory.CanReach(self.board,origin,cell,skill.trajectory,nil,skill.guided) then
                 result[#result+1]=cell
             end
@@ -471,7 +560,12 @@ function Battle:CanUseSkill(skillId, targetId)
     local source=self:Active();local skill=self:Skill(source,skillId)
     if skill.target=='cell' then return false,'请选择技能落点' end
     local target = self:FindUnit(targetId)
-    if not target or target.HP <= 0 then return false, '请选择存活的目标' end
+    if not target or not Life.Alive(target) then return false, '请选择存活的目标' end
+    if skill.selectBodyPart and not self.stats:Template(target).bodyInjuries then return false,LuaLanguage.AnatomyCoreUnsupportedTarget end
+    if skill.selectBodyPart and target.MountedAnimal then return false,LuaLanguage.AnatomyCoreMountedTarget end
+    if skill.rangeShape~='hex' and not self:SkillInShape(source,skill,assert(self.board:Find(target.Q,target.R)),assert(self.stats.animals:Cells(target,self.board)))then
+        return false,LuaLanguage.BattleOutsideSkillShape
+    end
     if self.beasts:Handles(skillId)then return self.beasts:CanUse(source,skill,target)end
     if skill.legendaryKind=='beast'or skill.legendaryKind=='lance'then return self.legendary:CanUseMovement(source,skill,target)end
     if skillId==501 then
@@ -527,7 +621,39 @@ function Battle:TrySkillTargets(skillId,ids)
     end
     return self:TrySkill(skillId,ids[1],ids)
 end
-function Battle:TrySkill(skillId, targetId, selectedIds,selectedLanding)
+function Battle:BodyPartOptions(skillId,targetId)
+    local allowed=self:CanUseSkill(skillId,targetId)
+    if not allowed or not self:Skill(self:Active(),skillId).selectBodyPart then return {} end
+    local target=assert(self:FindUnit(targetId));local result={}
+    for _,part in ipairs(self.stats.injuries.parts)do
+        if CS.ProjectY.Data.BodyHealth.MaximumHP(target,part.index)>0 then result[#result+1]={id=part.index,name=part.name}end
+    end
+    return result
+end
+function Battle:TrySkillBodyPart(skillId,targetId,partIndex)
+    if type(partIndex)~='number' or not math.tointeger(partIndex) or partIndex<0 or partIndex>5 then return false,LuaLanguage.AnatomyCoreInvalidPart end
+    if not self:Skill(self:Active(),skillId).selectBodyPart then return false,LuaLanguage.AnatomyCoreNotTargetedSkill end
+    return self:TrySkill(skillId,targetId,nil,nil,partIndex)
+end
+function Battle:TrySkill(skillId, targetId, selectedIds,selectedLanding,selectedBodyPart)
+    return self:ObserveSkillUse(self:FindUnit(self.data.ActiveId),skillId,self.TrySkillInternal,skillId,targetId,selectedIds,selectedLanding,selectedBodyPart)
+end
+-- Capture sight and learning chance before effects move actors or clear battle fields.
+-- Failed commands discard the snapshot; one successful action emits once even for multiple shots/targets.
+function Battle:ObserveSkillUse(source,skillId,execute,...)
+    local observer=self.specialSkillObserver
+    local observation=observer and source and observer:CaptureUse(source,skillId)
+    local inspection=self.stats.inspection
+    local discovery=inspection and source and inspection:CaptureUse(source,skillId)
+    local ok,reason=execute(self,...)
+    if ok then
+        if inspection then inspection:CommitUse(discovery)end
+        if observer then observer:CommitUse(observation)end
+        self.Changed:Emit({kind='skill_used',sourceId=assert(source).Id,skillId=skillId})
+    end
+    return ok,reason
+end
+function Battle:TrySkillInternal(skillId, targetId, selectedIds,selectedLanding,selectedBodyPart)
     local ok, reason,blocked = self:CanUseSkill(skillId, targetId)
     if not ok then
         if blocked then self:Emit('immune',reason,self:Active().Id,blocked.target.Id,0,blocked.target,false,blocked)end
@@ -535,6 +661,21 @@ function Battle:TrySkill(skillId, targetId, selectedIds,selectedLanding)
     end
     local source, target = self:Active(), self:FindUnit(targetId)
     local skill = self:Skill(source,skillId)
+    if skill.selectBodyPart then
+        if selectedIds then return false,LuaLanguage.AnatomyCoreInvalidPart end
+        local options=self:BodyPartOptions(skillId,targetId)
+        if #options==0 then return false,LuaLanguage.AnatomyCoreNoSelectablePart end
+        if selectedBodyPart==nil and source.Team~=1 then
+            selectedBodyPart=options[1].id
+            for _,part in ipairs(options)do if part.id==3 then selectedBodyPart=part.id;break end end
+        end
+        if selectedBodyPart==nil then return false,LuaLanguage.AnatomyCoreSelectPart end
+        local valid=false;for _,part in ipairs(options)do if part.id==selectedBodyPart then valid=true;break end end
+        if not valid then return false,LuaLanguage.AnatomyCoreInvalidPart end
+        skill.targetBodyPartIndex=selectedBodyPart
+    elseif selectedBodyPart~=nil then return false,LuaLanguage.AnatomyCoreNotTargetedSkill end
+    local recovered=self.spellcasting:UseRecovery(self,source,skill)
+    if recovered~=nil then return recovered end
     if self.animalSpeech and skillId==self.animalSpeech.rule.skillId then
         self.professions:Commit(source,skill)
         source:SpendAction(skill.action,skill.cost);source:SetCooldown(skillId,skill.cooldownTurns)
@@ -600,19 +741,21 @@ function Battle:TrySkill(skillId, targetId, selectedIds,selectedLanding)
         assert(landing,'Cavalry landing changed after validation')
     end
     local targets={target}
+    if not skill.manualTargets and skill.maxTargets>1
+        and not SkillShape.Contains(skill.splashShape,target.Q,target.R,target.Q,target.R,skill.splashRadius,0)then targets={}end
     if selectedIds then
         targets={};for _,id in ipairs(selectedIds)do targets[#targets+1]=assert(self:FindUnit(id)) end
     elseif skill.maxTargets>1 and (not skill.manualTargets or source.Team~=1) then
         local others={}
         for _,unit in ipairs(self:Units()) do
-            if unit.Id~=target.Id and (skill.manualTargets or Hex.Distance(target.Q,target.R,unit.Q,unit.R)<=skill.splashRadius)
+            if unit.Id~=target.Id and (skill.manualTargets or SkillShape.Contains(skill.splashShape,target.Q,target.R,unit.Q,unit.R,skill.splashRadius,0))
                 and self:CanUseSkill(skillId,unit.Id) then others[#others+1]=unit end
         end
         table.sort(others,function(a,b)
             local da,db=Hex.Distance(target.Q,target.R,a.Q,a.R),Hex.Distance(target.Q,target.R,b.Q,b.R)
             return da==db and a.Id<b.Id or da<db
         end)
-        for i=1,math.min(#others,skill.maxTargets-1) do targets[#targets+1]=others[i] end
+        for i=1,math.min(#others,skill.maxTargets-#targets) do targets[#targets+1]=others[i] end
     end
     local containerPlans={}
     if not skill.manualTargets and self.containerCombat and skill.affectsContainers and self.board.area then
@@ -643,8 +786,8 @@ function Battle:TrySkill(skillId, targetId, selectedIds,selectedLanding)
     self:ApplyEffectProgram(source,skill,program,shot)
     end
     if self.legendary then self.legendary:AfterAction(source,skill)end
-    if legendaryPath and source.HP>0 then self.legendary:Walk(source,legendaryPath,false)
-    elseif selectedLanding and source.HP>0 and self.professions:CanStep(source,selectedLanding,self:Occupied(source.Id)) then
+    if legendaryPath and Life.Alive(source) then self.legendary:Walk(source,legendaryPath,false)
+    elseif selectedLanding and Life.Alive(source) and self.professions:CanStep(source,selectedLanding,self:Occupied(source.Id)) then
         self.professions:Move(source,selectedLanding)
     end
     self:CheckWinner(); return true
@@ -663,6 +806,8 @@ function Battle:CanUseSkillAt(skillId,q,r)
     local source=self:Active();local skill=self:Skill(source,skillId)
     if skill.target~='cell' then return false,'此技能需要角色目标' end
     local cell=self.board:Find(q,r);if not cell then return false,'落点在战场之外' end
+    if skill.rangeShape~='hex' and not self:SkillInShape(source,skill,cell)then return false,LuaLanguage.BattleOutsideSkillShape end
+    local casting,castingWhy=self.spellcasting:CanUseAt(self,source,skill,cell);if casting~=nil then return casting,castingWhy end
     if self.beasts:Handles(skillId)then return self.beasts:CanUseAt(source,skill,q,r)end
     if self.legendary then
         local legendary,legendaryWhy=self.legendary:CanUseAt(source,skill,cell);if legendary~=nil then return legendary,legendaryWhy end
@@ -679,9 +824,14 @@ function Battle:SkillCells(skillId)
     return cells
 end
 function Battle:TrySkillAt(skillId,q,r)
+    return self:ObserveSkillUse(self:FindUnit(self.data.ActiveId),skillId,self.TrySkillAtInternal,skillId,q,r)
+end
+function Battle:TrySkillAtInternal(skillId,q,r)
     Hex.CheckCoordinate(q,r)
     local ok,reason=self:CanUseSkillAt(skillId,q,r);if not ok then return false,reason end
     local source=self:Active();local skill=self:Skill(source,skillId)
+    local recipe=self.spellcasting.recipes:Find(skillId)
+    if recipe and recipe.fieldKind~='' then return self.spellcasting:UseAt(self,source,skill,assert(self.board:Find(q,r)))end
     if self.beasts:Handles(skillId)then return self.beasts:UseAt(source,skill,q,r)end
     if self.legendary and self.legendary:NeedsCellLanding(skillId)then
         if source.Team==1 then return false,require('Language').ProfessionSelectLanding end
@@ -730,6 +880,9 @@ function Battle:CellLandingCells(skillId,q,r)
     return self.legendary:ConstructionLandings(self:Active(),self:Skill(self:Active(),skillId),self.board:Find(q,r))
 end
 function Battle:TrySkillAtWithLanding(skillId,fromQ,fromR,toQ,toR)
+    return self:ObserveSkillUse(self:FindUnit(self.data.ActiveId),skillId,self.TrySkillAtWithLandingInternal,skillId,fromQ,fromR,toQ,toR)
+end
+function Battle:TrySkillAtWithLandingInternal(skillId,fromQ,fromR,toQ,toR)
     Hex.CheckCoordinate(fromQ,fromR);Hex.CheckCoordinate(toQ,toR)
     local ok,why=self:CanUseSkillAt(skillId,fromQ,fromR);if not ok then return false,why end
     if not self:NeedsCellLanding(skillId)then return false,require('Language').ProfessionNoLandingAction end
@@ -742,7 +895,7 @@ function Battle:ApproachCells(actor,target)
     for _,id in ipairs(self:SkillIds(actor)) do
         local skill=self:Skill(actor,id)
         if skill.target=='enemy' and self:SkillBudget(id) then
-            attacks[#attacks+1]=skill;needsSpacing=needsSpacing or skill.minRange>1
+            attacks[#attacks+1]=skill;needsSpacing=needsSpacing or skill.minRange>1 or skill.rangeShape~='hex'
         end
     end
     if not needsSpacing then return self.board:Neighbors(assert(self.board:Find(target.Q,target.R))) end
@@ -751,11 +904,10 @@ function Battle:ApproachCells(actor,target)
     for _,cell in ipairs(self.board.cells) do
         local parts=self.stats.animals:Cells(actor,self.board,cell.q,cell.r,cell.layer)
         if parts then
-            local distance=math.huge
-            for _,a in ipairs(parts) do for _,b in ipairs(targetParts) do distance=math.min(distance,Hex.Distance(a.q,a.r,b.q,b.r)) end end
             for _,skill in ipairs(attacks) do
                 local bonus=self.board.area and self.stats.heightAdvantage:RangeBonus(cell,targetCell,skill) or 0
-                if distance>=skill.minRange and distance<=skill.range+bonus and Trajectory.CanReach(self.board,cell,targetCell,skill.trajectory,nil,skill.guided) then
+                if self.construction then bonus=math.max(bonus,self.construction:RangeBonusAt(self.board,{Q=cell.q,R=cell.r},targetCell,skill))end
+                if SkillShape.Footprints(skill.rangeShape,parts,targetParts,skill.range+bonus,skill.minRange) and Trajectory.CanReach(self.board,cell,targetCell,skill.trajectory,nil,skill.guided) then
                     result[#result+1]=cell;break
                 end
             end
@@ -771,7 +923,7 @@ function Battle:StepAI()
     if actor.Team == 1 then return false, '等待玩家行动' end
     local enemies={}
     for _,target in ipairs(self:Units()) do
-        if target.HP>0 and self:IsHostile(actor,target) then enemies[#enemies+1]=target end
+        if Life.Alive(target) and self:IsHostile(actor,target) then enemies[#enemies+1]=target end
     end
     if #enemies==0 then return self:EndTurn() end
     if AllySelfPreservation.Step(self,actor,enemies) then return true end
@@ -802,7 +954,7 @@ function Battle:StepAI()
         end)
         local bestPath
         for _, target in ipairs(enemies) do
-            if target.HP > 0 then
+            if Life.Alive(target) then
                 for _, cell in ipairs(self:ApproachCells(actor,target)) do
                     if previous[cell] then
                         local path, cursor = {}, cell

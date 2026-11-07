@@ -1,6 +1,7 @@
 local LuaLanguage = require('Language')
 local Class=require('Core.Class')
 local Base=require('UI.UIWidgetCtrl')
+local Identity=require('Game.Presentation.CharacterIdentity')
 local Party=Class('HudParty',Base)
 function Party:Bind()
     self:Listen(self.view.Button,function() if self.row and self.activate then self.activate(self.row.id) end end)
@@ -14,9 +15,11 @@ function Party:SetData(row,style,selected,activate,feedback)
     end
     self.feedback=assert(feedback)
     self.view.Name.font,self.view.HealthText.font,self.view.APText.font=style.Font,style.Font,style.Font
-    self.view.Name.text=row.name
+    self.view.Name.text=Identity.Format(row.identity,17,11,'E3BE73')
     self.view.HealthText.text=row.riderHP and (string.format(LuaLanguage.UIHudHealthHealthTextText, (row.hp), (row.maxHP), (row.riderHP), (row.riderMaxHP)))
         or (row.hp..' / '..row.maxHP)
+    if row.dead then self.view.HealthText.text=LuaLanguage.DeathDoorDied
+    elseif row.deathDoor then self.view.HealthText.text=string.format(LuaLanguage.DeathDoorHealthText,row.hp,row.maxHP)end
     feedback:BindHealth(self.view.HealthAnimation,row.id,row.healthId,row.hp/row.maxHP)
     self.view.APText.text=row.ap..' / '..row.maxAP..' AP';style:SetHealth(self.view.AP,row.ap/row.maxAP)
     if self.portraitKey~=row.portraitKey then self.view.Portrait:Show(row.appearance);self.portraitKey=row.portraitKey end

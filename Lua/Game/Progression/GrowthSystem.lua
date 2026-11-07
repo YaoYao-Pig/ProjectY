@@ -9,7 +9,7 @@ function Growth:OnInit(context)
     self.chronicle = require('Game.Progression.Chronicle').New(context.systems:Get('Config'),self.data,self.stats)
 end
 function Growth:Actor(id)
-    for i=0,self.data.PartyCount-1 do local actor=self.data:GetPartyAt(i); if actor.Id==id then return actor end end
+    return CS.ProjectY.Data.PartyRoster.Find(self.data,id)
 end
 function Growth:PrepareActor(actor,initialProfessionId)
     local profile = assert(self.rules.profileByUnit[actor.TemplateId], 'Missing growth profile')
@@ -84,6 +84,7 @@ function Growth:Learn(actorId, skillId)
     local ok;ok,reason=self.rules.professions:CanLearn(actor,skillId,self.stats,self.rules.atlas)
     if not ok then return false,reason end
     actor.Growth:LearnSelected(skillId)
+    if self.personalGrowth then self.personalGrowth:RecordLearnedSkill(actor,skillId)end
     self.chronicle:Record('growth',actor,'主动技能','学会「'..self.rules.skills:Get(skillId).name..'」。','旅途中',false)
     return true
 end

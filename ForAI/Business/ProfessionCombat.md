@@ -1,6 +1,6 @@
 # 职业战斗与兼职联动
 
-关键词：炼金师、吟游诗人、神官、咒术师、决斗家、破绽、咒印、余音、附刃、安可、转祸、绊索、护卫换位、承誓。
+关键词：炼金师、吟游诗人、神官、咒术师、决斗家、解剖学家、精准解剖、异种学家、部位选择、破绽、咒印、余音、附刃、安可、转祸、绊索、护卫换位、承誓。
 
 ## 文档目录
 
@@ -8,7 +8,12 @@
 
 ## 正文
 
+- 解剖学家职业15的主动技能2601“精准解剖”沿用普通近战2 AP、1格、一次基础武器伤害。`CombatSkillTable.selectBodyPart` 要求敌方单目标且不可攻击容器；`Battle:BodyPartOptions/TrySkillBodyPart` 通过稳定部位索引0–5查询与提交，部位名称来自 `BodyPartTable`。玩家普通提交缺少部位时零消耗拒绝，AI优先右臂、不可用时选择首个有效部位；每次技能复制体携带 `targetBodyPartIndex`，不写回配置或共享技能。武器多目标修正不能扩散本次选择，仍需正常命中，未命中照常消费行动。
+- 精准解剖只接受启用肢体系统且未骑乘的目标；坐骑仍沿原承伤契约。护甲与身体伤害复用本次选定部位；承誓等机制若改变实际接收者，无肢体接收者保留普通伤害。被动2605“异种学家”按已学天赋 `triggerKind=xenologist` 生效：每发实际直接伤害接收者（含承誓、拦截与坐骑）`bodyInjuries=false` 时提高25个百分点暴击率，上限100%；不要求当前职业，治疗、持续伤害与容器不触发，0%/100%继续不额外抽暴击随机数。
+
 - 职业战斗使用 `ProfessionCombatTable` 的技能身份、机制、材料、技能族、装备条件与变体父技能，`ProfessionStatusTable` 把实际 Buff 连接到一次性状态语义。职业名不参与使用许可；已学父技能自动开放对应水／毒涂层、燃烧／中毒爆破、转祸状态与火／水附刃变体。学习和天赋入口见 [养成](Progression.md)，动物指令见 [动物](Animals.md)。
+- 2401–2533 的职业进阶课程沿用破甲／流血收割、附刃、护符、余音、净化、真实材料和动物伙伴机制。`requiredSourceTag` 在预算阶段校验自身状态，`consumeSourceTag` 在合法提交时只消费一次，未命中仍付费、多目标不重复付费；消费负面状态才触发余恩，消费余音或护符不算净化。`chorus` 可在战斗内赋予余音，使诗人无需兼职也能进入后续连招。
+- `requiredBoundCompanion` 的支援技能只接受 `AnimalCompanionState.Partner(source)` 所指的真实独立伙伴；不扩大额外攻击／位移口令。机关通过唯一 `applyEffectId` 找回技能名称，伤足绊索与原迟缓绊索共用公开、一次触发和敌我生效的规则。
 - `ProfessionCombat` 仅持规则和查询临时结果；每轮／每场被动计数在角色的 C# `ProfessionMarks`，机关在 C# `BattleData.ProfessionTraps`。计数和机关随本次战斗清理；可显示、计时和转移的状态仍使用 [GameEffect](GameEffects.md) 的 C# 实例，不另建 Lua 状态镜像。
 - [具名传奇装备](LegendaryEquipment.md)复用同一命中快照、条件附伤预算、承誓和角色计数；共债不能再生成一份独立的 50% 附伤预算，传奇资源不改变原职业材料或行动额度。
 - `Battle:Skill` 返回实际装备与状态修正后的复制技能。`Budget/CanUse/CanUseAt` 完整校验动作、材料、免疫和落点后，`Commit` 扣对应材料并消费减费状态，之后提交 AP／冷却；合法施放未命中仍付费。安可最低 1 AP，不能恢复主要行动额度，同一接收者每轮仅受益一次；减费不作用于道具。
@@ -21,6 +26,8 @@
 - 绊索消耗真实麻绳物品 82，放置公开的一次性机关。普通移动在路径上首个接触机关处截断，技能推拉／换位／动物位移调用同一 `OnMoved`；触发中止剩余移动并施加迟缓，敌我均可触发。机关公开只读投影供二维、三维战场显示。拆料的实际投入与退款边界见 [营造](Construction.md)。
 
 ## 关键入口
+
+- [anatomist_core.lua](../../Tools/Tests/anatomist_core.lua)：真实配置与生产战斗命令的部位提交、零消耗失败、AI、正常未命中、异种暴击及实际承伤者边界；`python -B Tools/Tests/run_lua.py Tools/Tests/anatomist_core.lua` 离线定向执行，不替代 Unity 显示与原生桥接验收。
 
 - [ProfessionCombat.lua](../../Lua/Game/Battle/ProfessionCombat.lua)：配置查询、事务、一次命中快照、被动、位移和机关。
 - [ProfessionCombatState.cs](../../Assets/GameFramework/Runtime/Data/ProfessionCombatState.cs)：权威计数、机关、精确状态转移与技能位移桥；不依赖修改已生成的角色包装。

@@ -1,0 +1,13 @@
+{
+  "version": 1,
+  "name": "CampRosterTable",
+  "description": "后备成员按实际游戏时间休养；永久伤残与疾病不由休养治疗。",
+  "key": "id",
+  "fields": [
+    { "name": "id", "type": "int", "description": "规则编号", "min": 1 },
+    { "name": "healthPerDay", "type": "float", "description": "每日恢复的可恢复血量上限比例", "min": 0, "max": 1 },
+    { "name": "traumaPerDay", "type": "int", "description": "每日每个非永久创伤部位恢复点数", "min": 0, "max": 100 },
+    { "name": "scheduleSpeed", "type": "float", "description": "后备剧情伤势恢复倒计时速度倍率", "min": 1 }
+  ],
+  "rows": [{ "id": 1, "healthPerDay": 0.25, "traumaPerDay": 20, "scheduleSpeed": 2 }]
+}

@@ -8,6 +8,8 @@
 
 ## 正文
 
+- [营地仓储](Camp.md)保留原装备实例在 EquipmentData 中，仅将位置从背包 Grid 转到仓库引用。实例总数包含仓库装备；随身可用性按既有 `IsCarriedWeapon/IsCarriedMagazine` 和 Grid/穿戴判断。`CampEquipmentKeys` 阻止直接穿戴、回包或改装仓库装备，仓储取回事务才恢复背包位置。保存准备保留原两参 `PrepareSave`，联合仓储读取使用 `PrepareWarehouseSave`。
+
 - 装备预览右上角“身体健康”切换到六部位健康图，查看创伤、属性影响并消耗医疗物资治疗，规则与界面同步见[身体健康与创伤](BodyInjuries.md)。
 
 - 远征探索阶段按 `I` 或侧栏“背包与装备”打开 Inventory Panel。全队共享一个网格，每位角色独立穿戴头部、身体甲、左右戒指、裤子、鞋子，另有主手、副手，共八个装备槽。工坊由背包右下按钮进入，规则见[装备与改装](Equipment.md)。

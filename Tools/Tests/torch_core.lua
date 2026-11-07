@@ -18,14 +18,17 @@ presentation.torch.range=0;assert(definition.range>0,'Snapshot leaked a mutable 
 local count,values=0,{}
 local data={Phase='map',Equipment={CountItem=function(_,id) assert(id==item.id);return count end},
     Narrative={GetValue=function(_,key) return values[key] or 0 end,SetValue=function(_,key,value) values[key]=value end}}
-local adventure={config=config,data=data}
+local Loadout=require('Game.Camp.CampLoadout')
+local loadout=setmetatable({data={TorchItemId=0},rule=config:GetTable('CampLoadoutTable'):Get(1)},Loadout)
+data.Narrative.Minutes=12*60
+local adventure={config=config,data=data,camp={loadout=loadout}}
 local state=Torch.Snapshot(adventure)
 assert(not state.available and not state.enabled and not Torch.Toggle(adventure),'Missing physical torch must not create light')
 count=1;state=Torch.Snapshot(adventure)
 assert(state.available and state.enabled and state.count==1,'Owned torch defaults to lit')
 assert(Torch.Toggle(adventure));assert(not Torch.Snapshot(adventure).enabled)
 -- Reconstruct the projection over restored C# state: no Lua-only switch needs migration or caching.
-local resumed={config=config,data=data}
+local resumed={config=config,data=data,camp=adventure.camp}
 assert(not Torch.Snapshot(resumed).enabled,'Saved extinguished flag was ignored')
 assert(Torch.Toggle(resumed));assert(Torch.Snapshot(adventure).enabled)
 count=0;assert(not Torch.Snapshot(adventure).enabled,'Transferred or stored torch still lit')
@@ -38,4 +41,11 @@ Torch.ValidateSaved({Narrative=data.Narrative,LegacyNarrative=false})
 Torch.ValidateSaved({LegacyNarrative=true})
 values['flag:torch_extinguished']=2;assert(not pcall(Torch.Snapshot,adventure),'Invalid stored switch must fail visibly')
 assert(not pcall(Torch.ValidateSaved,{Narrative=data.Narrative,LegacyNarrative=false}),'Invalid switch must be rejected before save commit')
+values['flag:torch_extinguished']=0;count=0;loadout.data.TorchItemId=item.id;data.Phase='map'
+assert(Torch.Snapshot(adventure).enabled and not Torch.Snapshot(adventure).worldEnabled,'Daytime world light must remain off')
+for _,minutes in ipairs({18*60,23*60,0,6*60-1}) do data.Narrative.Minutes=minutes;assert(Torch.Snapshot(adventure).worldEnabled) end
+for _,minutes in ipairs({6*60,12*60,18*60-1}) do data.Narrative.Minutes=minutes;assert(not Torch.Snapshot(adventure).worldEnabled) end
+data.Narrative.Minutes=20*60;assert(Torch.Toggle(adventure));assert(not Torch.Snapshot(adventure).worldEnabled)
+assert(Torch.Toggle(adventure));loadout.data.TorchItemId=0;count=1
+assert(not Torch.Snapshot(adventure).worldEnabled,'Backpack torch must not replace the world loadout slot')
 print('PASS torch: exported light recipe/assets, ownership, toggle, restored state, transfer, battle guard')

@@ -10,16 +10,33 @@ end
 function Dialogue:OnShow(args)
     self.demo=assert(args.demo);self.demo:SetStoryOpen(true)
     self.lineCount=0;self.nodeId=nil;self.dialogueVersion=nil
-    self.camera=self.story.rules.cameras:Get(self.story.rules.dialogues:Get(self.story.data.DialogueId).cameraId)
+    local title=self.view.Title
+    title.resizeTextForBestFit=true;title.resizeTextMinSize=14;title.resizeTextMaxSize=title.fontSize
+    title.verticalOverflow=CS.UnityEngine.VerticalWrapMode.Truncate
+    local spirit=self.story.adventure.spiritDialogue
+    local people=self.story.adventure.peopleDialogue
+    local cameraId=people and people:Active() and 1
+        or spirit and spirit:Active() and self.story.adventure.forge.rules.settings.spiritCameraId
+        or self.story.rules.dialogues:Get(self.story.data.DialogueId).cameraId
+    self.camera=self.story.rules.cameras:Get(cameraId)
     self.view.Style:Prepare(self.demo.MainHudFont,self.camera.panelWidth);self:Refresh()
 end
 function Dialogue:Refresh()
     local story,data=self.story,self.story.data
     if not data.DialogueOpen then return end
-    local npc=story.rules.npcs:Get(data.DialogueNpcId)
-    local animal=story.adventure.animalSpeech and story.adventure.animalSpeech:Active() and CS.ProjectY.Data.AnimalSpeechState.Target(data)
-    self.view.Title.text=animal and story.adventure.battle.stats:Template(animal).name or npc.name
-    self.view.Caption.text=string.format(LuaLanguage.UIDialogueCaptionText, (story.rules.factions:Get(npc.factionId).name))
+    local spirit=story.adventure.spiritDialogue and story.adventure.spiritDialogue:Active() and story.adventure.spiritDialogue
+    local people=story.adventure.peopleDialogue and story.adventure.peopleDialogue:Active() and story.adventure.peopleDialogue
+    local npc
+    if people then
+        self.view.Title.text=people:Title();self.view.Caption.text=people:Caption()
+    elseif spirit then
+        self.view.Title.text=spirit:Title();self.view.Caption.text=spirit:Caption()
+    else
+        npc=story.rules.npcs:Get(data.DialogueNpcId)
+        local animal=story.adventure.animalSpeech and story.adventure.animalSpeech:Active() and CS.ProjectY.Data.AnimalSpeechState.Target(data)
+        self.view.Title.text=animal and story.adventure.battle.stats:Template(animal).name or npc.name
+        self.view.Caption.text=string.format(LuaLanguage.UIDialogueCaptionText, (story.rules.factions:Get(npc.factionId).name))
+    end
     local linesChanged=self.lineCount~=data.LineCount or self.dialogueVersion~=data.DialogueVersion
     if linesChanged then
         local rows={}
@@ -57,7 +74,7 @@ function Dialogue:Refresh()
             self.demo.MainHudFont,function() self.demo:SendCommand('dialogue_choose',id,version) end)
     end
     local adventure=story.adventure;local localId=data.DialogueLocalNpcId
-    if npc.locationKind=='town' then
+    if npc and npc.locationKind=='town' then
         local area=adventure.areas:ActiveLayout()
         if adventure.shop.rules:Resolve(area,area.npcs[localId]) then
             choiceCount=choiceCount+1
@@ -68,7 +85,7 @@ function Dialogue:Refresh()
     end
     for i=choiceCount+1,#self.choices do self.choices[i]:SetData(nil) end
     if self.nodeId~=data.DialogueNodeId then self.view.ChoiceScroll.verticalNormalizedPosition=1 end
-    self.view.Hint.text=self.demo.LastError~='' and self.demo.LastError or LuaLanguage.UIDialogueHintText
+    self.view.Hint.text=self.demo.LastError~='' and self.demo.LastError or people and LuaLanguage.PeopleDialogueHint or spirit and LuaLanguage.EquipmentSpiritHint or LuaLanguage.UIDialogueHintText
     -- OnShow runs before the host activates the panel; settle wrapped rows on the first visible tick.
     if linesChanged then self.scrollPending=true end
     self.lineCount=data.LineCount;self.nodeId=data.DialogueNodeId
@@ -78,6 +95,8 @@ function Dialogue:Refresh()
 end
 function Dialogue:Camera()
     local data=self.story.data;local camera=self.camera
+    if self.story.adventure.peopleDialogue and self.story.adventure.peopleDialogue:Active()then return end
+    if self.story.adventure.spiritDialogue and self.story.adventure.spiritDialogue:Active()then return end
     if self.story.adventure.animalSpeech and self.story.adventure.animalSpeech:Active()then return end
     if self.story.rules.npcs:Get(data.DialogueNpcId).locationKind=='world_party' then return end
     self.demo:SetDialogueCamera(data.DialogueActorId,data.DialogueLocalNpcId,self.story.rules.nodes:Get(data.DialogueNodeId).shot,

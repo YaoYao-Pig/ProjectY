@@ -23,6 +23,12 @@ function Save.Validate(story,prepared)
             local factionId=tonumber(id)
             assert(factionId and math.tointeger(factionId) and factionId>0 and value==1,Language.SaveFactionDiscoveryInvalid)
             story.rules.factions:Get(factionId)
+        elseif kind == 'escort_route' or kind == 'escort_checks' then
+            local missionId=tonumber(id)
+            assert(missionId and math.tointeger(missionId) and missionId>0,Language.SaveEscortAmbushInvalid)
+            local mission=CS.ProjectY.Data.TownMissionData.Prepared(prepared):Find(missionId)
+            assert(mission and mission.PartyId>0 and mission.State~='offered' and story.rules.config:GetTable('TownMissionTable'):Get(mission.DefinitionId).kind=='escort',Language.SaveEscortAmbushInvalid)
+            assert(math.tointeger(value) and value>0 and (kind=='escort_route' or value<=3 and data:GetValue('escort_route:'..missionId)>0),Language.SaveEscortAmbushInvalid)
         elseif kind == 'recruited' then
             local npc = story.rules.npcs:Get(assert(tonumber(id))); local actor = actors[value]
             assert(npc.recruitable and actor and actor.TemplateId == npc.actorTemplateId and value == 10000 + npc.id,'存档招募记录与队伍不一致')

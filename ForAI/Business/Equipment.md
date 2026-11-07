@@ -8,6 +8,8 @@
 
 ## 正文
 
+- 普通旧剑的本体重铸、事迹进阶与器灵成长见[装备锻造与随身器灵](EquipmentForging.md)；成长属于物理实例，独立于品质词缀和既有具名传奇模板。
+
 - 具名传奇装备9001–9015共14武器和1盾，固定普通实体品质，金色身份与随机“传奇”词缀独立。战斗激活、每世界唯一性、任务预留和资源入口见[具名传奇装备](LegendaryEquipment.md)。全套独立模型、零改装挂点包装与图标在`Assets/DynamicAsset/LegendaryEquipment202610`；单手触媒和单手骑枪新增精确持握匹配，骑枪基础攻击只打第二格，骑乘冲锋另按传奇规则验证。
 - 背包/装备槽/搜刮物品格和工坊行使用显式绑定的`EquipmentRarityFrame`绘制金色双线、角饰和流光；详情显示传奇身份、固有说明与获取线索。普通物品复用时清除框，未搜索战利品不显示传奇外框。`LegendaryEquipmentUIAssets.Sync`只升级原Prefab装饰与绑定，保留3D预览和既有布局。持续模型辉光、粒子和有限点光是与传奇身份无关的[通用装备外观](VisualEffects.md)。
 - 外框Shader的`_EquipmentRarityTime`由`UI.EquipmentRarity.Tick`使用未缩放时间更新，Inventory/Loot/EquipmentWorkbench宿主推进；模态界面暂停世界时装饰仍可扫光，不为每个物品格增加Update或重建网格。

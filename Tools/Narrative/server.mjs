@@ -17,7 +17,7 @@ export function createNarrativeServer({root=path.resolve(directory,'../..')}={})
         if(url.pathname==='/api/workspace')return send(200,{...snapshot(root),token});
         if(url.pathname==='/rules.mjs')return send(200,fs.readFileSync(path.join(directory,'rules.mjs')),'text/javascript; charset=utf-8');
         if(url.pathname==='/api/impact')return send(200,impact(root,url.searchParams.get('key')));
-        const assets={'/':['index.html','text/html'],'/app.js':['app.js','text/javascript'],'/styles.css':['styles.css','text/css']};
+        const assets={'/':['index.html','text/html'],'/app.js':['app.js','text/javascript'],'/preview.js':['preview.js','text/javascript'],'/preview-model.mjs':['preview-model.mjs','text/javascript'],'/styles.css':['styles.css','text/css']};
         if(assets[url.pathname]){const [file,type]=assets[url.pathname];return send(200,fs.readFileSync(path.join(directory,'public',file)),type+'; charset=utf-8');}
         return send(404,{error:'Not found'});
       }

@@ -1,0 +1,11 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class PersonalGrowthChoiceTableRow
+---@field id number 成长选项稳定ID
+---@field stageId number 所属成长阶段
+---@field title string 选择标题
+---@field description string 选择说明
+---@field history string 选择后的个人经历
+---@field traitId number 选择后获得的经历专属特质
+---@field skillIds number[] 选择后授予的已有技能；空或仅一个ID
+---@field replacePreviousTrait boolean 第二阶段替换第一阶段实际选中的个人特质
+return {["name"]="PersonalGrowthChoiceTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\230\136\144\233\149\191\233\128\137\233\161\185\231\168\179\229\174\154ID",["min"]=1},{["name"]="stageId",["type"]="int",["description"]="\230\137\128\229\177\158\230\136\144\233\149\191\233\152\182\230\174\181",["ref"]="PersonalGrowthStageTable"},{["name"]="title",["type"]="text",["description"]="\233\128\137\230\139\169\230\160\135\233\162\152"},{["name"]="description",["type"]="text",["description"]="\233\128\137\230\139\169\232\175\180\230\152\142"},{["name"]="history",["type"]="text",["description"]="\233\128\137\230\139\169\229\144\142\231\154\132\228\184\170\228\186\186\231\187\143\229\142\134"},{["name"]="traitId",["type"]="int",["description"]="\233\128\137\230\139\169\229\144\142\232\142\183\229\190\151\231\154\132\231\187\143\229\142\134\228\184\147\229\177\158\231\137\185\232\180\168",["ref"]="CombatTraitTable"},{["name"]="skillIds",["type"]="int[]",["description"]="\233\128\137\230\139\169\229\144\142\230\142\136\228\186\136\231\154\132\229\183\178\230\156\137\230\138\128\232\131\189\239\188\155\231\169\186\230\136\150\228\187\133\228\184\128\228\184\170ID",["ref"]="CombatSkillTable"},{["name"]="replacePreviousTrait",["type"]="bool",["description"]="\231\172\172\228\186\140\233\152\182\230\174\181\230\155\191\230\141\162\231\172\172\228\184\128\233\152\182\230\174\181\229\174\158\233\153\133\233\128\137\228\184\173\231\154\132\228\184\170\228\186\186\231\137\185\232\180\168"}},["fingerprint"]="1049c90dd0c3ddbadc11f26eed3007cf572996d5f5301aa3aa002a9b8271b636"}

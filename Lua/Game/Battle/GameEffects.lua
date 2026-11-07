@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 -- Skills and external gameplay both use Prepare/Apply. All mutable instances live on C# actors.
 local Effects={};Effects.__index=Effects
 local Instructions=require('Game.Battle.EffectInstructions')
@@ -5,7 +6,7 @@ local ArmorDamage=require('Game.Battle.ArmorDamage')
 local LuaLanguage=require('Language')
 function Effects.New(stats,definitions,emit,options)
     local self=setmetatable({stats=stats,definitions=definitions,emit=emit,roll=options and options.roll,minutes=options and options.minutes,
-        report=options and options.report},Effects)
+        report=options and options.report,battle=options and options.battle},Effects)
     self.buffEffects=require('Game.Battle.BuffEffects').New(self);return self
 end
 function Effects:Report(kind,plan,details)
@@ -71,40 +72,52 @@ function Effects:Notify(kind,message,sourceId,target,amount,attackHit,impact)
     self.emit(kind,message,sourceId,target.Id,amount,target,attackHit,impact)
 end
 function Effects:Execute(row,target,amount,sourceId,sourceName,label,source,attackHit,impact,periodic,skill)
-    local alive=target.HP>0
+    local alive=Life.Alive(target)
     if not alive then return end
     local incoming=impact;impact={}
     if incoming then for key,value in pairs(incoming) do impact[key]=value end end
     local health=row.kind=='damage' and target.MountedAnimal or target
+    local healthAlive=Life.Alive(health);local defeatedByDamage=false
+    local deathDoorUsed=CS.ProjectY.Data.DeathDoorState.Used(health)
     impact.hpBefore=health.HP;impact.maxHP=health.MaxHP;impact.periodic=periodic==true
     impact.actionName=label;impact.sourceName=sourceName
     if row.kind=='damage' then
+        if self.legacyCombat then amount=self.legacyCombat:Damage(source,health,row,amount,skill,periodic,attackHit)end
+        if self.titleCombat then amount=self.titleCombat:Damage(source,health,amount,skill,periodic,attackHit and source~=target)end
         if not periodic and attackHit and self.professions then amount=self.professions:Mitigate(target,amount,impact)end
         local color=impact.damageColor or (row.damageColor~='' and row.damageColor) or (periodic and row.color) or ''
         impact.damageColor=color~='' and require('Config.Color').Normalize(color) or ''
         local mount=target.MountedAnimal
-        local bodyHit=not mount and attackHit and not periodic and source~=target and self.stats:Template(target).bodyInjuries
+        local bodyHit=not mount and target.HP>0 and attackHit and not periodic and source~=target and self.stats:Template(target).bodyInjuries
         local armored=ArmorDamage.Applies(skill,source,target,attackHit,periodic,impact.damageType or row.damageType)
         local hit
+        if bodyHit and amount>0 and skill and skill.targetBodyPartIndex~=nil then
+            hit=self.stats.injuries:SelectHit(target,self.roll,skill.targetBodyPartIndex)
+        end
         if armored then
-            if bodyHit and amount>0 then hit=self.stats.injuries:SelectHit(target,self.roll) end
+            if bodyHit and amount>0 and not hit then hit=self.stats.injuries:SelectHit(target,self.roll) end
             local preserve=skill.preserveArmor or (impact.professionContext and impact.professionContext.preserveArmor)
             amount,impact.armor=ArmorDamage.Apply(self.stats.equipment.data,target,amount,skill,hit,preserve)
             impact.equipmentDamage=impact.armor.damage
         end
         if self.damageLimit then amount=self.damageLimit(target,amount)end
+        local incomingDamage=amount
+        impact.incomingDamage=incomingDamage
         if bodyHit and amount>0 then
             amount,impact.injury=self.stats.injuries:DamageHit(source,target,row,amount,self.roll,hit)
         else amount=target:Damage(amount) end
+        self.stats.deathDoor:Resolve(self,health,impact.hpBefore,deathDoorUsed,incomingDamage,sourceId)
+        defeatedByDamage=healthAlive and incomingDamage>0 and not Life.Alive(health)
         impact.shot=impact.shot or 1;impact.critical=impact.critical==true
-        impact.defeated=target.HP==0 or (mount~=nil and target.MountedAnimal==nil)
+        impact.defeated=not Life.Alive(target) or (mount~=nil and target.MountedAnimal==nil)
         if not armored and not mount and amount>0 and row.equipmentDamage>0 and not (impact.professionContext and impact.professionContext.preserveArmor) then
-            local wear=row.equipmentDamage+(target.HP==0 and row.killEquipmentDamage or 0)
+            local wear=row.equipmentDamage+(not Life.Alive(target) and row.killEquipmentDamage or 0)
             impact.equipmentDamage=CS.ProjectY.Data.EquipmentCombatState.DamageArmor(self.stats.equipment.data,target.Id,wear)
         end
         if not mount and impact.equipmentDamage and impact.equipmentDamage>0 then
             CS.ProjectY.Data.EquipmentCombatState.RefreshMaximum(target,self.stats:MaximumHP(target))
         end
+        if not mount and self.battle then self.battle:DropInjuredEquipment(target) end
         if mount and not target.MountedAnimal then
             self:Clear(mount,'death');self:Notify('mount_defeated',self.stats:Template(mount).name..' 死亡，骑手下马',target.Id,mount,0)
         end
@@ -116,24 +129,26 @@ function Effects:Execute(row,target,amount,sourceId,sourceName,label,source,atta
     elseif row.kind=='reload' then
         amount=assert(self.stats.equipment:Loaded(self.stats.equipment:Weapon(assert(source))),'Reload has no loaded magazine').Rounds
     else error('Unsupported periodic execution: '..row.kind) end
-    impact.hpAfter=health.HP;impact.maxHP=health.MaxHP
+    impact.hpAfter=health.HP;impact.maxHP=health.MaxHP;impact.healthActorId=health.Id
     if self.legendary then self.legendary:Resolved(source,target,row,amount,impact,skill,periodic)end
+    if self.legacyCombat then self.legacyCombat:Resolved(source,health,row,amount,impact,skill,periodic,sourceId,attackHit)end
     local verb=({damage='伤害',heal='治疗',guard='防御',reload='装入子弹',remove_buffs='清除状态'})[row.kind]
     self:Notify(row.kind,sourceName..' · '..(label~='' and label or verb)..' → '..self.stats:Template(target).name..'（'..verb..' '..amount..'）',sourceId,target,amount,attackHit,impact)
     if impact.injury then
         local injury=impact.injury
         self:Notify('injury',string.format(LuaLanguage.BodyInjuryLogV2,self.stats:Template(target).name,injury.partName,injury.injuryName,injury.stage,injury.health,injury.maximum),sourceId,target,injury.damage,false,injury)
-        if injury.trauma and target.HP>0 then self.stats.diseases:OnTrauma(self,source,target) end
+        if injury.trauma and Life.Alive(target) then self.stats.diseases:OnTrauma(self,source,target) end
     end
-    if target.HP==0 then
+    if not Life.Alive(target) then
         self:Notify('defeated',self.stats:Template(target).name..' 倒地',sourceId,target,0)
         self:Clear(target,'death')
         if self.professions then self.professions:OnDefeated(target)end
     end
+    if defeatedByDamage and self.titleCombat then self.titleCombat:Defeated(source,health,sourceId)end
 end
 function Effects:ApplyPrepared(plan,impact,periodic)
     local row,target=plan.definition,plan.target
-    if target.HP<=0 then return false,'目标已倒地' end
+    if not Life.Alive(target) then return false,'目标已倒地' end
     if not Instructions.Allowed(self.stats.buffs,plan.hitTarget or target,row,plan.source)then return true end
     if row.chance<100 or row.kind=='apply_buff' then
         local roll=row.chance>0 and row.chance<100 and (assert(self.roll,'Probabilistic effects need an explicit random stream')()+1) or nil
@@ -197,7 +212,7 @@ function Effects:TickActor(target,phase)
     local mount=target.MountedAnimal
     if mount then
         self:Tick(mount,phase)
-        if mount.HP==0 then target:DetachDefeatedMount();self:Notify('mount_defeated',self.stats:Template(mount).name..' 死亡，骑手下马',target.Id,mount,0) end
+        if not Life.Alive(mount) then target:DetachDefeatedMount();self:Notify('mount_defeated',self.stats:Template(mount).name..' 死亡，骑手下马',target.Id,mount,0) end
     end
     self:Tick(target,phase)
 end
@@ -226,7 +241,7 @@ function Effects:TickWorldActor(target,now)
     local mount=CS.ProjectY.Data.AnimalCompanionState.Bound(target);local changed=false
     if mount then
         changed=self.buffEffects:TickWorld(mount,now)
-        if mount.HP==0 then
+        if not Life.Alive(mount) then
             if CS.ProjectY.Data.AnimalCompanionState.Independent(mount)then
                 CS.ProjectY.Data.AnimalCompanionState.ReleaseDefeated(target)
                 self:Notify('mount_defeated',string.format(LuaLanguage.ProfessionCompanionDefeated,self.stats:Template(mount).name),target.Id,mount,0)

@@ -14,9 +14,9 @@ namespace ProjectY.Data
         public AttributeEntry[] attributes; public IntEntry[] talents; public int[] trees, skills, pending, offers;
     }
     [Serializable] internal sealed class ActorSave
-    { public int id, templateId, hp, maxHP; public string appearance; public int[] traits; public GrowthSave growth; public InitialAttributesSave initialAttributes; public ProfessionAttributesSave[] professionAttributes; public bool hasMount; public AnimalMountSave mount; public GameEffectSave[] effects; public BodyInjurySave[] injuries; }
+    { public int id, templateId, hp, maxHP; public string appearance; public int[] traits; public GrowthSave growth; public InitialAttributesSave initialAttributes; public ProfessionAttributesSave[] professionAttributes; public bool hasMount; public AnimalMountSave mount; public GameEffectSave[] effects; public BodyInjurySave[] injuries; public SpellcastingSave spellcasting; public TitleSave titles; public DeathDoorSave deathDoor; }
     [Serializable] internal sealed class WeaponSave
-    { public int id, itemId, owner, magazine, affixId; public string hand; public IntEntry[] runes; public EquipmentConditionSave condition; }
+    { public int id, itemId, owner, magazine, affixId; public string hand; public IntEntry[] runes; public EquipmentConditionSave condition; public EquipmentLegacySave legacy; }
     [Serializable] internal sealed class MagazineSave { public int id, itemId, ammo, capacity, rounds; }
     [Serializable] internal sealed class WearableSave { public int id, itemId, owner, affixId; public string slot; public EquipmentConditionSave condition; }
     [Serializable] internal sealed class EquipmentConditionSave
@@ -32,7 +32,7 @@ namespace ProjectY.Data
     [Serializable] internal sealed class EquipmentSave
     { public int width, height, nextId, nextPileId=1; public IntEntry[] stacks; public InventoryPileSave[] piles=Array.Empty<InventoryPileSave>(); public WeaponSave[] weapons; public MagazineSave[] magazines; public WearableSave[] wearables; public PlacementSave[] placements; }
     [Serializable] internal sealed class CharacterSaveDocument
-    { public int version, coins, playerLevel; public uint seed; public string savedAt, worldName; public ActorSave[] actors; public EquipmentSave equipment; public NarrativeSave narrative; public ShopStockSave[] shops; public CampSave camp; public PartyStorySave partyStory; public ChronicleSave[] journal; public ExpeditionSave expedition; public SkillSynergyDiscoverySave skillSynergies; }
+    { public int version, coins, playerLevel; public uint seed; public string savedAt, worldName, createdAt; public ActorSave[] actors; public PartyRosterSave roster; public EquipmentSave equipment; public NarrativeSave narrative; public ShopStockSave[] shops; public EconomySave economy; public CampSave camp; public PartyStorySave partyStory; public ChronicleSave[] journal; public ExpeditionSave expedition; public SkillSynergyDiscoverySave skillSynergies; public UnitInspectionSave unitInspections; public ReputationSave reputation; public PeopleSave people; }
 
     internal static class SaveCheck
     {
@@ -68,7 +68,7 @@ namespace ProjectY.Data
     {
         public string CustomizationJson { get; private set; } = "";
         internal void SetCustomization(string json) { if (string.IsNullOrEmpty(json)) throw new ArgumentException("Missing actor appearance."); CustomizationJson = json; }
-        internal ActorSave CaptureSave() => new ActorSave { id = Id, templateId = TemplateId, hp = HP, maxHP = MaxHP, appearance = CustomizationJson, traits = traits.ToArray(), growth = Growth.CaptureSave(),initialAttributes=CaptureInitialAttributes(),professionAttributes=CaptureProfessionAttributes(),hasMount=BoundAnimal!=null,mount=CaptureMount(),effects=Effects.Capture(),injuries=CaptureBody() };
+        internal ActorSave CaptureSave() => new ActorSave { id = Id, templateId = TemplateId, hp = HP, maxHP = MaxHP, appearance = CustomizationJson, traits = traits.ToArray(), growth = Growth.CaptureSave(),initialAttributes=CaptureInitialAttributes(),professionAttributes=CaptureProfessionAttributes(),hasMount=BoundAnimal!=null,mount=CaptureMount(),effects=Effects.Capture(),injuries=CaptureBody(),spellcasting=SpellcastingState.Capture(this),titles=TitleState.Capture(this),deathDoor=DeathDoorState.Capture(this) };
         internal static CombatActorData FromSave(ActorSave row, CharacterAppearanceService appearances)
         {
             SaveCheck.Require(row != null && row.id > 0 && row.templateId > 0 && row.maxHP >= 1 && row.maxHP <= 1000000 && row.hp >= 0 && row.hp <= row.maxHP, "角色身份或生命");
@@ -78,6 +78,9 @@ namespace ProjectY.Data
             actor.MaxHP = row.maxHP; actor.HP = row.hp; actor.traits.AddRange(row.traits); actor.Growth.RestoreSave(row.growth);
             actor.Effects.Restore(row.effects);
             actor.RestoreBody(row.injuries);
+            SpellcastingState.Restore(actor,row.spellcasting);
+            TitleState.Restore(actor,row.titles);
+            DeathDoorState.Restore(actor,row.deathDoor);
             if(row.hasMount){SaveCheck.Require(row.mount!=null,"缺少坐骑记录");actor.RestoreMount(row.mount);}
             else SaveCheck.Require(row.mount==null || (row.mount.id==0 && row.mount.templateId==0 && row.mount.speciesId==0 && row.mount.hp==0 && row.mount.maxHP==0 && row.mount.bond==0 && row.mount.random==0),"未骑乘角色包含坐骑数据");
             appearances.Apply(actor, row.appearance); return actor;
@@ -86,7 +89,7 @@ namespace ProjectY.Data
     public sealed partial class EquipmentWeaponData
     {
         internal WeaponSave CaptureSave() => new WeaponSave { id = Id, itemId = ItemId, owner = OwnerActorId, hand = Hand, magazine = MagazineId, affixId = AffixId,
-            runes = runes.Select(p => new IntEntry { id = p.Key, value = p.Value }).ToArray(), condition=EquipmentConditionSave.Capture(Condition) };
+            runes = runes.Select(p => new IntEntry { id = p.Key, value = p.Value }).ToArray(), condition=EquipmentConditionSave.Capture(Condition), legacy=Legacy.Capture() };
         public int RuneCount => runes.Count;
         public int GetRuneSocketAt(int index) => runes.Keys.ElementAt(index);
     }
@@ -109,7 +112,8 @@ namespace ProjectY.Data
                 wearables=wearables.Where(w=>w.OwnerActorId==0 || actors.Contains(w.OwnerActorId)).Select(w=>new WearableSave{id=w.Id,itemId=w.ItemId,owner=w.OwnerActorId,slot=w.Slot,affixId=w.AffixId,condition=EquipmentConditionSave.Capture(w.Condition)}).ToArray(),
                 placements=Enumerable.Range(0,Grid.Count).Select(i=>Grid.GetAt(i)).Select(p=>new PlacementSave{key=p.Key,itemId=p.ItemId,x=p.X,y=p.Y,rotated=p.Rotated}).ToArray() };
         }
-        internal EquipmentData PrepareSave(EquipmentSave row, HashSet<int> actors)
+        internal EquipmentData PrepareSave(EquipmentSave row, HashSet<int> actors) => PrepareWarehouseSave(row,actors,null);
+        internal EquipmentData PrepareWarehouseSave(EquipmentSave row, HashSet<int> actors, Dictionary<string,int> warehouse)
         {
             SaveCheck.Require(row != null && row.width == Grid.Width && row.height == Grid.Height && row.nextId > 0 && row.nextPileId>0, "背包尺寸或实例编号");
             var next = new EquipmentData(); Grid.CopyDefinitionsTo(next.Grid); next.Grid.Configure(row.width, row.height);
@@ -141,6 +145,7 @@ namespace ProjectY.Data
                 SaveCheck.Require(affixPools.TryGetValue(item.itemId,out var weaponPool) && Array.IndexOf(weaponPool.Ids,item.affixId)>=0,"武器词缀无效或不适用");
                 var weapon = new EquipmentWeaponData(item.id, item.itemId) { OwnerActorId = item.owner, Hand = item.hand, MagazineId = item.magazine, AffixId = item.affixId };
                 SaveCheck.Require(item.condition!=null,"缺少武器耐久");weapon.Condition=item.condition.Restore();
+                weapon.Legacy=EquipmentLegacyData.Prepare(item.legacy);
                 var sockets = new HashSet<int>(); foreach (var rune in SaveCheck.Rows(item.runes, 128, "配件")) { SaveCheck.Require(rune != null && rune.id > 0 && rune.value > 0 && sockets.Add(rune.id), "配件槽"); weapon.SetRune(rune.id, rune.value); }
                 next.weapons.Add(weapon); if (item.owner == 0) bag.Add("w" + item.id, item.itemId);
             }
@@ -163,17 +168,23 @@ namespace ProjectY.Data
                 SaveCheck.Require(place != null && place.key != null && bag.TryGetValue(place.key, out int item) && item == place.itemId, "背包归属");
                 SaveCheck.Require(next.Grid.Insert(place.key, place.itemId, place.x, place.y, place.rotated), "背包越界或重叠"); bag.Remove(place.key);
             }
+            if(warehouse!=null)foreach(var pair in warehouse)
+            {
+                SaveCheck.Require(bag.TryGetValue(pair.Key,out int item)&&item==pair.Value&&next.CampEquipmentItem(pair.Key)==item,"camp.equipment.reference");
+                bag.Remove(pair.Key);next.CampEquipmentKeys.Add(pair.Key);
+            }
             SaveCheck.Require(bag.Count == 0, "背包漏项"); next.nextId = row.nextId;next.nextPileId=row.nextPileId;return next;
         }
         internal void TakePrepared(EquipmentData source)
         {
             combatOwners.Clear();
+            CampEquipmentKeys.Clear();CampEquipmentKeys.UnionWith(source.CampEquipmentKeys);
             stacks.Clear(); stacks.AddRange(source.stacks); weapons.Clear(); weapons.AddRange(source.weapons); magazines.Clear(); magazines.AddRange(source.magazines);
             wearables.Clear(); wearables.AddRange(source.wearables); Grid.TakePlacements(source.Grid); nextId = source.nextId;nextPileId=source.nextPileId;Revision++;
         }
     }
     public sealed partial class AdventureData
-    { internal void TakePreparedParty(CombatActorData[] actors, EquipmentData equipment) { RequirePhase("map"); party.Clear(); party.AddRange(actors); Equipment.TakePrepared(equipment); } }
+    { internal void TakePreparedParty(CombatActorData[] actors, PartyRosterSave roster, EquipmentData equipment) { RequirePhase("map"); RestoreRoster(actors,roster); Equipment.TakePrepared(equipment); } }
     public sealed partial class PlayerData
     { internal void RestoreProfile(int coins, int level) { Coins = coins; Level = level; Changed?.Invoke(); } }
 }

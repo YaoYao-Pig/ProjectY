@@ -57,7 +57,7 @@ namespace ProjectY.Data
         public void TameAndRide(CombatActorData animal, int initialBond)
         {
             if (animal == null || animal == this || animal.AnimalSpeciesId == 0 || animal.AnimalOwnerId != 0 ||
-                animal.HP == 0 || HP == 0 || Team != 1 || boundAnimal != null || initialBond < 0)
+                animal.HP == 0 || !DeathDoorState.Alive(this) || Team != 1 || boundAnimal != null || initialBond < 0)
                 throw new InvalidOperationException("Invalid taming transition.");
             MountedAnimal = animal; animal.AnimalOwnerId = Id; animal.AnimalBond = initialBond;
             animal.TameRetryTurns=0;
@@ -72,7 +72,7 @@ namespace ProjectY.Data
         }
         public void RelocateWithSkill(int q, int r, string style)
         {
-            if (HP == 0) throw new InvalidOperationException("A defeated actor cannot relocate.");
+            if (!DeathDoorState.Alive(this)) throw new InvalidOperationException("A defeated actor cannot relocate.");
             if(style!="charge" && style!="pounce" && style!="leap") throw new ArgumentException("Unknown skill movement.",nameof(style));
             Q = q; R = r; Moved = true;
             MovementStyle=style;MovementSequence++;
@@ -81,7 +81,7 @@ namespace ProjectY.Data
         internal void SetCompanionMode(bool independent,int q,int r,int layer)
         {
             if(layer<0)throw new ArgumentOutOfRangeException(nameof(layer));
-            if(HP<=0 || boundAnimal==null || boundAnimal.HP<=0 || boundAnimal.AnimalOwnerId!=Id)
+            if(!DeathDoorState.Alive(this) || boundAnimal==null || boundAnimal.HP<=0 || boundAnimal.AnimalOwnerId!=Id)
                 throw new InvalidOperationException("A living owner and owned animal are required.");
             animalCompanion=independent;boundAnimal.IndependentAnimal=independent;
             boundAnimal.Q=q;boundAnimal.R=r;boundAnimal.Team=Team;boundAnimal.CompanionLayer=layer;
@@ -89,7 +89,7 @@ namespace ProjectY.Data
         internal void FollowCompanion(int q,int r,int layer)
         {
             if(layer<0)throw new ArgumentOutOfRangeException(nameof(layer));
-            if(!IndependentAnimal || HP<=0)throw new InvalidOperationException("Only a living independent companion can follow.");
+            if(!IndependentAnimal || !DeathDoorState.Alive(this))throw new InvalidOperationException("Only a living independent companion can follow.");
             if(Q==q&&R==r&&CompanionLayer==layer)return;
             Q=q;R=r;CompanionLayer=layer;MovementStyle="walk";MovementSequence++;
         }

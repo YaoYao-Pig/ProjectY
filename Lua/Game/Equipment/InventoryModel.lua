@@ -16,9 +16,9 @@ function Model:Rows(actorId)
             local kind=(target=='leftRing' or target=='rightRing') and 'ring' or target
             local allowed=false
             if item.kind=='weapon' and (target=='weapon' or target=='offhand') then
-                allowed=self.rules:CanEquip(actor,itemId,self.stats) and self.system:HandAllowed(actorId,self.data:GetWeapon(instance),target) and (target=='weapon' and self.data:CanEquip(actorId,instance) or target=='offhand' and self.data:CanEquipOffhand(actorId,instance))
+                allowed=self.rules:CanEquip(actor,itemId,self.stats,target) and self.system:HandAllowed(actorId,self.data:GetWeapon(instance),target) and (target=='weapon' and self.data:CanEquip(actorId,instance) or target=='offhand' and self.data:CanEquipOffhand(actorId,instance))
             elseif item.kind=='wearable' and compatible==kind then
-                allowed=self.rules:CanEquip(actor,itemId,self.stats) and (target~='offhand' or self.system:HandAllowed(actorId,nil,'offhand')) and self.data:CanWear(actorId,target,instance)
+                allowed=self.rules:CanEquip(actor,itemId,self.stats,target) and (target~='offhand' or self.system:HandAllowed(actorId,nil,'offhand')) and self.data:CanWear(actorId,target,instance)
             end
             if allowed then mask=mask+2^(i-1) end
         end
@@ -86,7 +86,7 @@ function Model:Command(command,actorId,key,x,y,rotated)
         end
         local compatible=(slot=='leftRing' or slot=='rightRing') and 'ring' or slot
         if selected.kind~='wearable' or selected.compatible~=compatible then return false,LuaLanguage.UIInventoryText6 end
-        local allowed,reason=self.rules:CanEquip(actor,selected.itemId,self.stats);if not allowed then return false,reason end
+        local allowed,reason=self.rules:CanEquip(actor,selected.itemId,self.stats,slot);if not allowed then return false,reason end
         if slot=='offhand' then local allowed,reason=self.system:HandAllowed(actorId,nil,'offhand');if not allowed then return false,reason end end
         if not self.data:Wear(actorId,slot,selected.id) then return false,LuaLanguage.UIInventoryText5 end
     else error('Unknown inventory command: '..tostring(command)) end

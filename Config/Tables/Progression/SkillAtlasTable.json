@@ -2264,6 +2264,791 @@
         "战斗"
       ],
       "glyphCode": "sword"
+    },
+    {
+      "id": 2401,
+      "categoryId": 16,
+      "glyphCode": "strength",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 2470,
+      "prerequisiteIds": [
+        101
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "1"
+      ]
+    },
+    {
+      "id": 2402,
+      "categoryId": 16,
+      "glyphCode": "endurance",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 2620,
+      "prerequisiteIds": [
+        108
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "1"
+      ]
+    },
+    {
+      "id": 2403,
+      "categoryId": 16,
+      "glyphCode": "strength",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 2770,
+      "prerequisiteIds": [
+        2401,
+        2402
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "1"
+      ]
+    },
+    {
+      "id": 2411,
+      "categoryId": 14,
+      "glyphCode": "bow",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 2650,
+      "prerequisiteIds": [
+        105
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "2"
+      ]
+    },
+    {
+      "id": 2412,
+      "categoryId": 14,
+      "glyphCode": "bow",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 2800,
+      "prerequisiteIds": [
+        402
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "2"
+      ]
+    },
+    {
+      "id": 2413,
+      "categoryId": 14,
+      "glyphCode": "bow",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 2950,
+      "prerequisiteIds": [
+        2411,
+        2412
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "2"
+      ]
+    },
+    {
+      "id": 2431,
+      "categoryId": 41,
+      "glyphCode": "crafting",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 3010,
+      "prerequisiteIds": [
+        1907
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "4"
+      ]
+    },
+    {
+      "id": 2432,
+      "categoryId": 42,
+      "glyphCode": "crafting",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 150,
+      "prerequisiteIds": [
+        404
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "4"
+      ]
+    },
+    {
+      "id": 2433,
+      "categoryId": 41,
+      "glyphCode": "crafting",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 3160,
+      "prerequisiteIds": [
+        2431,
+        2432
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "4"
+      ]
+    },
+    {
+      "id": 2441,
+      "categoryId": 13,
+      "glyphCode": "endurance",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 3190,
+      "prerequisiteIds": [
+        108
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "5"
+      ]
+    },
+    {
+      "id": 2442,
+      "categoryId": 13,
+      "glyphCode": "endurance",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 3340,
+      "prerequisiteIds": [
+        1910
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "5"
+      ]
+    },
+    {
+      "id": 2443,
+      "categoryId": 13,
+      "glyphCode": "strength",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 3490,
+      "prerequisiteIds": [
+        2441,
+        2442
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "5"
+      ]
+    },
+    {
+      "id": 2451,
+      "categoryId": 71,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 3730,
+      "prerequisiteIds": [
+        1802
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "6"
+      ]
+    },
+    {
+      "id": 2452,
+      "categoryId": 71,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 3880,
+      "prerequisiteIds": [
+        1801
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "6"
+      ]
+    },
+    {
+      "id": 2453,
+      "categoryId": 71,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 4030,
+      "prerequisiteIds": [
+        1804,
+        2451
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "6"
+      ]
+    },
+    {
+      "id": 2461,
+      "categoryId": 81,
+      "glyphCode": "charisma",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 3910,
+      "prerequisiteIds": [
+        1811
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "7"
+      ]
+    },
+    {
+      "id": 2462,
+      "categoryId": 81,
+      "glyphCode": "charisma",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 4060,
+      "prerequisiteIds": [
+        1812,
+        2461
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "7"
+      ]
+    },
+    {
+      "id": 2463,
+      "categoryId": 81,
+      "glyphCode": "charisma",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 4210,
+      "prerequisiteIds": [
+        1813,
+        2461
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "7"
+      ]
+    },
+    {
+      "id": 2471,
+      "categoryId": 23,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 3910,
+      "prerequisiteIds": [
+        1822
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "8"
+      ]
+    },
+    {
+      "id": 2472,
+      "categoryId": 23,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 4060,
+      "prerequisiteIds": [
+        1823
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "8"
+      ]
+    },
+    {
+      "id": 2473,
+      "categoryId": 23,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 4210,
+      "prerequisiteIds": [
+        2471,
+        2472
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "8"
+      ]
+    },
+    {
+      "id": 2481,
+      "categoryId": 24,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 4090,
+      "prerequisiteIds": [
+        1832
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "9"
+      ]
+    },
+    {
+      "id": 2482,
+      "categoryId": 24,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 4240,
+      "prerequisiteIds": [
+        1831
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "9"
+      ]
+    },
+    {
+      "id": 2483,
+      "categoryId": 24,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 4390,
+      "prerequisiteIds": [
+        2481,
+        2482
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "9"
+      ]
+    },
+    {
+      "id": 2491,
+      "categoryId": 17,
+      "glyphCode": "speed",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 4090,
+      "prerequisiteIds": [
+        1842
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "10"
+      ]
+    },
+    {
+      "id": 2492,
+      "categoryId": 17,
+      "glyphCode": "speed",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 4240,
+      "prerequisiteIds": [
+        2491
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "10"
+      ]
+    },
+    {
+      "id": 2493,
+      "categoryId": 17,
+      "glyphCode": "speed",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 4390,
+      "prerequisiteIds": [
+        2491,
+        2492
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "10"
+      ]
+    },
+    {
+      "id": 2501,
+      "categoryId": 54,
+      "glyphCode": "animalAffinity",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 4270,
+      "prerequisiteIds": [
+        1851
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "11"
+      ]
+    },
+    {
+      "id": 2502,
+      "categoryId": 54,
+      "glyphCode": "animalAffinity",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 4420,
+      "prerequisiteIds": [
+        1853
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "11"
+      ]
+    },
+    {
+      "id": 2503,
+      "categoryId": 54,
+      "glyphCode": "animalAffinity",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 4570,
+      "prerequisiteIds": [
+        2501,
+        2502
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "11"
+      ]
+    },
+    {
+      "id": 2511,
+      "categoryId": 16,
+      "glyphCode": "strength",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 2920,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "12"
+      ]
+    },
+    {
+      "id": 2512,
+      "categoryId": 16,
+      "glyphCode": "endurance",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 3070,
+      "prerequisiteIds": [
+        2511
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "12"
+      ]
+    },
+    {
+      "id": 2521,
+      "categoryId": 16,
+      "glyphCode": "charisma",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 3220,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "13"
+      ]
+    },
+    {
+      "id": 2522,
+      "categoryId": 16,
+      "glyphCode": "charisma",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 3370,
+      "prerequisiteIds": [
+        2521
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "13"
+      ]
+    },
+    {
+      "id": 2531,
+      "categoryId": 21,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 3730,
+      "prerequisiteIds": [
+        1905
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "14"
+      ]
+    },
+    {
+      "id": 2532,
+      "categoryId": 21,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 3880,
+      "prerequisiteIds": [
+        403
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "14"
+      ]
+    },
+    {
+      "id": 2533,
+      "categoryId": 21,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 4030,
+      "prerequisiteIds": [
+        2531,
+        2532
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "14"
+      ]
+    },
+    {
+      "id": 2301,
+      "categoryId": 21,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 4180,
+      "prerequisiteIds": [
+        3
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "3"
+      ]
+    },
+    {
+      "id": 2302,
+      "categoryId": 21,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 4330,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "3"
+      ]
+    },
+    {
+      "id": 2303,
+      "categoryId": 21,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 4480,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "3"
+      ]
+    },
+    {
+      "id": 2304,
+      "categoryId": 21,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 4630,
+      "prerequisiteIds": [
+        2301,
+        2302
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "3"
+      ]
+    },
+    {
+      "id": 2305,
+      "categoryId": 21,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 4780,
+      "prerequisiteIds": [
+        2301,
+        2303
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "3"
+      ]
+    },
+    {
+      "id": 2306,
+      "categoryId": 21,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 4930,
+      "prerequisiteIds": [
+        2302,
+        2303
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "3"
+      ]
+    },
+    {
+      "id": 2307,
+      "categoryId": 21,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 5080,
+      "prerequisiteIds": [
+        2304,
+        104
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "3"
+      ]
+    },
+    {
+      "id": 2308,
+      "categoryId": 21,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 365,
+      "y": 5230,
+      "prerequisiteIds": [
+        403
+      ],
+      "prerequisiteMode": "all",
+      "tags": [
+        "profession_depth",
+        "3"
+      ]
+    },
+    {
+      "id": 2701,
+      "categoryId": 11,
+      "glyphCode": "strength",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 2080,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "special",
+        "sword"
+      ]
+    },
+    {
+      "id": 2702,
+      "categoryId": 14,
+      "glyphCode": "bow",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 3100,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "special",
+        "bow"
+      ]
+    },
+    {
+      "id": 2703,
+      "categoryId": 22,
+      "glyphCode": "intellect",
+      "relatedCategoryIds": [],
+      "x": 145,
+      "y": 272,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "special",
+        "healing"
+      ]
+    },
+    {
+      "id": 2601,
+      "categoryId": 18,
+      "relatedCategoryIds": [],
+      "x": 280,
+      "y": 160,
+      "prerequisiteIds": [],
+      "prerequisiteMode": "all",
+      "tags": [
+        "anatomy",
+        "battle",
+        "physical"
+      ],
+      "glyphCode": "dagger"
     }
   ]
 }

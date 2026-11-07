@@ -1,6 +1,7 @@
+local Life=require('Game.Battle.ActorLife')
 -- Special-event orchestration. Durable identity/outcomes live in NarrativeData flags;
 -- the combatant, wounds and equipment remain owned by the saved area encounter.
-local Hex=require('Game.Map.HexGrid')
+local Language=require('Language')
 local Events={};Events.__index=Events
 function Events.New(adventure)
     local self=setmetatable({adventure=adventure,byEvent={},byArea={},byNpc={},byChoice={}},Events)
@@ -21,17 +22,31 @@ function Events.New(adventure)
 end
 function Events:Value(row,suffix) return self.adventure.data.Narrative:GetValue('flag:'..row.key..'_'..suffix) end
 function Events:Set(row,suffix,value) self.adventure.data.Narrative:SetValue('flag:'..row.key..'_'..suffix,value) end
-function Events:CanTrigger(eventId,cell)
-    local row=self.byEvent[eventId];if not row then return true end
-    if self:Value(row,'site')~=0 then return false end
-    if row.townRadius==0 then return true end
-    local definitions=self.adventure.config:GetTable('MapAreaTable')
-    local townType=self.adventure.config:GetEnum('MapArea','E_MapAreaType').Town
-    for _,site in ipairs(self.adventure.sites) do
-        if site.areaConfigId and definitions:Get(site.areaConfigId).areaType==townType and
-            Hex.Distance(cell.q,cell.r,site.q,site.r)<=row.townRadius then return true end
+function Events:PlanWorld(world,narrativeData)
+    return require('Game.Adventure.SpecialEventSites').Plan(self,world,narrativeData)
+end
+function Events:EnsureGenerated(plans)
+    local adventure=self.adventure
+    plans=plans or self:PlanWorld({map=adventure.map,sites=adventure.sites,seed=adventure.data.Seed},adventure.data.Narrative)
+    return require('Game.Adventure.SpecialEventSites').Apply(self,plans)
+end
+function Events:SiteForNpc(npcId)
+    local row=assert(self.byNpc[npcId],'Event NPC has no special-event definition')
+    local id=self:Value(row,'site');if id==0 then return nil end
+    local site=assert(self.adventure.sites[id],'Special event site is missing')
+    assert(site.eventId==row.eventId,'Special event site identity differs')
+    return site
+end
+function Events:EncounterAt(q,r)
+    for _,row in ipairs(self.adventure.config:GetTable('SpecialEventTable'):All()) do
+        local site=self:SiteForNpc(row.npcId)
+        if site and site.q==q and site.r==r and self:Value(row,'outcome')==0 and not self.adventure.data:HasVisited(site.id) then return site end
     end
-    return false
+end
+function Events:CanTrigger(eventId)
+    local row=self.byEvent[eventId];if not row then return true end
+    return self:Value(row,'site')==0 and self:Value(row,'outcome')==0 and
+        self.adventure.data.Narrative:GetValue('recruited:'..row.npcId)==0
 end
 function Events:Discovered(site)
     local row=self.byEvent[site.eventId];if not row then return end
@@ -90,7 +105,7 @@ function Events:Choose(choice,resultText)
         self:BeforeExplore()
     elseif choice.id==row.battleChoiceId then
         assert(adventure.areas:ActiveLayout().configId==row.areaId and self:Value(row,'outcome')==0,'Special encounter is no longer available')
-        local actor,group=self:FindAlly(row,data.Areas.Active);assert(actor and actor.HP>0,'Special encounter ally is missing')
+        local actor,group=self:FindAlly(row,data.Areas.Active);assert(actor and Life.Alive(actor),'Special encounter ally is missing')
         data:Complete(resultText or adventure.events:Text(choice.result));data:ReturnToMap()
         local relations={[1]={[2]='hostile',[4]='allied'},[2]={[1]='hostile',[4]='hostile'},[4]={[1]='allied',[2]='hostile'}}
         local context={relations=relations,primary=2}
@@ -113,8 +128,8 @@ end
 function Events:CanChoose(choiceId)
     local row=self.byChoice[choiceId];if not row then return true end
     if choiceId==row.enterChoiceId or choiceId==row.battleChoiceId then
-        if #self.adventure.events:LivingParty()==0 then return false,'请先到营地救治至少一名队员。' end
-        if self:Value(row,'outcome')~=0 then return false,'这次遭遇已经结束。' end
+        if #self.adventure.events:LivingParty()==0 then return false,Language.SpecialEventNeedLivingMember end
+        if self:Value(row,'outcome')~=0 then return false,Language.SpecialEventAlreadyResolved end
     end
     return true
 end
@@ -124,7 +139,7 @@ function Events:Settle(result)
     local row=self.byArea[adventure.areas:ActiveLayout().configId];if not row then return end
     assert(self:Value(row,'outcome')==0,'Special event result already settled')
     local actor=assert(self:FindAlly(row,adventure.data.Areas.Active),'Special encounter ally is missing')
-    local survived=result=='victory' and actor.HP>0
+    local survived=result=='victory' and Life.Alive(actor)
     if result~='victory' then
         if row.killAllyOnFailure then
             assert(not actor.MountedAnimal,'Event execution requires an unmounted combatant')
@@ -140,11 +155,11 @@ function Events:Settle(result)
 end
 function Events:PrepareRecruit(npcId)
     local row=assert(self.byNpc[npcId],'Event NPC has no special-event definition')
-    if self:Value(row,'outcome')~=1 then return nil,'需要成功救下这位同行者，才能邀请他入队。' end
+    if self:Value(row,'outcome')~=1 then return nil,Language.SpecialEventRescueRequired end
     local site=self:Value(row,'site');local state=self.adventure.data.Areas:Find(site)
     assert(state,'Rescued companion has no saved area')
     local actor,group=self:FindAlly(row,state)
-    if not actor or actor.HP<=0 then return nil,'这位同行者已不在现场，无法招募。' end
+    if not actor or not Life.Alive(actor) then return nil,Language.SpecialEventCompanionGone end
     return {npcId=npcId,actorId=actor.Id,actor=actor,group=group,existing=true}
 end
 return Events

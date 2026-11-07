@@ -5039,8 +5039,8 @@
     },
     {
       "id": "GiantTreeEntranceHint",
-      "txt": "从古树脚下进入根部林地；巨根之间仍有可供穿行的道路。",
-      "desc": "巨树探索入口"
+      "txt": "点击巨树或根系占地，队伍会走到树脚，进入局部巨根与林木环绕的根境。",
+      "desc": "巨树范围点击与树脚探索入口"
     },
     {
       "id": "NaturalTerrainUseEntrance",
@@ -5741,6 +5741,3381 @@
       "id": "EquipmentSkillDamageHit",
       "txt": "伤害 <b><color=#F2AE8D>× %.2f</color></b>  ·  命中 %s",
       "desc": "当前武器解析倍率和命中链接"
+    },
+    {
+      "id": "EnvironmentWeatherAuto",
+      "txt": "自动天气",
+      "desc": "环境面板：恢复按世界位置与游戏时间演化的天气"
+    },
+    {
+      "id": "EnvironmentWeatherHint",
+      "txt": "自动天气随地点与游戏时间变化；手动选择仅用于画面预览",
+      "desc": "环境面板：天气预览与玩法天气的区别"
+    },
+    {
+      "id": "GmNpcInvalidId",
+      "txt": "请输入有效的 NPC 整数 ID",
+      "desc": "GM NPC定位：参数不是正整数"
+    },
+    {
+      "id": "GmNpcUnknown",
+      "txt": "不存在 NPC #%d",
+      "desc": "GM NPC定位：未知NPC配置；%d=NPC ID"
+    },
+    {
+      "id": "GmNpcWorldParty",
+      "txt": "%s 在大地图游荡，请接近地图上的传奇队伍交谈",
+      "desc": "GM NPC定位：世界队伍身份；%s=NPC名"
+    },
+    {
+      "id": "GmNpcAnimalIdentity",
+      "txt": "这是动物交谈的通用对白身份，不对应唯一出生地点。请对现场动物或动物伙伴使用动物交谈术。",
+      "desc": "GM NPC定位：通用动物对白身份不可单独传送"
+    },
+    {
+      "id": "GmNpcRecruited",
+      "txt": "%s 已入队，位于队伍槽位 %d",
+      "desc": "GM NPC定位：已招募；%s=NPC名，%d=队伍槽位"
+    },
+    {
+      "id": "GmNpcRequiresWorld",
+      "txt": "请先开始远征",
+      "desc": "GM NPC定位：还没有世界会话"
+    },
+    {
+      "id": "GmNpcTownUnavailable",
+      "txt": "本次地图未生成 %s 的出生城镇",
+      "desc": "GM NPC定位：仅城镇NPC缺安置；%s=NPC名"
+    },
+    {
+      "id": "GmNpcFinishDialogue",
+      "txt": "请先结束当前对话",
+      "desc": "GM NPC定位：对话阻止传送"
+    },
+    {
+      "id": "GmNpcTravelPhase",
+      "txt": "只能在大地图或探索阶段传送，不能中断战斗或事件",
+      "desc": "GM NPC定位：阶段限制"
+    },
+    {
+      "id": "GmNpcFinishTravelStep",
+      "txt": "请先完成当前行进格，再前往特殊事件地点。",
+      "desc": "GM特殊事件定位：当前行进边未完成，不改变路线或世界时间"
+    },
+    {
+      "id": "GmNpcNoLivingParty",
+      "txt": "队伍已全部倒地，请先治疗队员",
+      "desc": "GM NPC定位：没有存活队员"
+    },
+    {
+      "id": "GmNpcTownSchedule",
+      "txt": "%s · %s",
+      "desc": "GM城镇NPC列表：%s1=城镇名，%s2=日程活动"
+    },
+    {
+      "id": "GmNpcTownPosition",
+      "txt": "%s\n当前位置 (%d, %d) · 层 %d",
+      "desc": "GM城镇NPC列表：已有正文、q、r、楼层"
+    },
+    {
+      "id": "GmNpcTownAwaitPosition",
+      "txt": "%s\n传送时进入该城镇并读取 NPC 实际位置",
+      "desc": "GM城镇NPC列表：%s=已有正文"
+    },
+    {
+      "id": "GmNpcNotPresent",
+      "txt": "NPC 当前不在场景中",
+      "desc": "GM城镇NPC定位：权威居民状态不在场"
+    },
+    {
+      "id": "GmNpcTownGoHint",
+      "txt": "点击传送到附近 · 关闭 GM 后按 E 交谈",
+      "desc": "GM城镇NPC列表操作说明"
+    },
+    {
+      "id": "GmNpcSearchAction",
+      "txt": "%s\n%s",
+      "desc": "GM NPC列表组合：%s1=身份位置状态正文，%s2=操作提示或不可用原因"
+    },
+    {
+      "id": "GmNpcNoDeployment",
+      "txt": "NPC 附近没有可容纳整队的合法位置（含坐骑占地）",
+      "desc": "GM城镇NPC定位：完整队伍占地规划失败"
+    },
+    {
+      "id": "GmNpcEnteredFailure",
+      "txt": "已进入 %s；%s",
+      "desc": "GM城镇NPC定位：进城后部署失败；城镇名、具体原因"
+    },
+    {
+      "id": "GmNpcTeleported",
+      "txt": "已传送到 %s 附近",
+      "desc": "GM城镇NPC定位成功；%s=NPC名"
+    },
+    {
+      "id": "GmNpcEventLocation",
+      "txt": "%s · 特殊事件\n大地图位置 (%d, %d)\n%s",
+      "desc": "GM事件NPC列表：地点名、q、r、事件状态"
+    },
+    {
+      "id": "GmNpcEventPending",
+      "txt": "等待参与，前往地点后由你决定如何处理。",
+      "desc": "GM特殊事件列表：尚未结算"
+    },
+    {
+      "id": "GmNpcEventRescued",
+      "txt": "已成功救援，可在任务手记中查看招募资格。",
+      "desc": "GM特殊事件列表：救援成功但尚未入队"
+    },
+    {
+      "id": "GmNpcEventEnded",
+      "txt": "事件已经结束，无法再招募这位同行者。",
+      "desc": "GM特殊事件列表：已结束且无招募资格"
+    },
+    {
+      "id": "GmNpcEventPresent",
+      "txt": "当前已在该事件区域。",
+      "desc": "GM特殊事件列表：无需重新入场"
+    },
+    {
+      "id": "GmNpcEventGoHint",
+      "txt": "点击前往事件地点，随后按事件流程继续。",
+      "desc": "GM特殊事件列表操作说明，不替玩家选择剧情"
+    },
+    {
+      "id": "GmNpcEventHere",
+      "txt": "已位于 %s，无需重新进入。",
+      "desc": "GM特殊事件定位：已经在目标区域；%s=地点名"
+    },
+    {
+      "id": "GmNpcEventEntered",
+      "txt": "已前往 %s，请按事件流程继续。",
+      "desc": "GM特殊事件定位成功；%s=地点名"
+    },
+    {
+      "id": "SpecialEventNeedLivingMember",
+      "txt": "请先到营地救治至少一名队员。",
+      "desc": "特殊事件：没有存活队员时禁止入场或参战"
+    },
+    {
+      "id": "SpecialEventAlreadyResolved",
+      "txt": "这次遭遇已经结束。",
+      "desc": "特殊事件：拒绝重复参战"
+    },
+    {
+      "id": "SpecialEventRescueRequired",
+      "txt": "需要成功救下这位同行者，才能邀请他入队。",
+      "desc": "特殊事件：招募前置失败"
+    },
+    {
+      "id": "SpecialEventCompanionGone",
+      "txt": "这位同行者已不在现场，无法招募。",
+      "desc": "特殊事件：招募对象已死亡或离场"
+    },
+    {
+      "id": "SpecialEventUseLocation",
+      "txt": "请前往「%s」的事件地点。",
+      "desc": "特殊事件：不能在另一格重复创建已生成地点；%s=事件地点名"
+    },
+    {
+      "id": "UIWorldMapTitle",
+      "txt": "世界地图",
+      "desc": "俯瞰地图HUD标题"
+    },
+    {
+      "id": "UIWorldMapSubtitle",
+      "txt": "已知地点与任务联络",
+      "desc": "俯瞰地图HUD副标题"
+    },
+    {
+      "id": "UIWorldMapFiltersTitle",
+      "txt": "地图显示",
+      "desc": "地图HUD图层过滤标题"
+    },
+    {
+      "id": "UIWorldMapLegendTitle",
+      "txt": "图例",
+      "desc": "地图HUD图例标题"
+    },
+    {
+      "id": "UIWorldMapLegendBody",
+      "txt": "金色 · 可接任务联络\n蓝色 · 进行中委托\n绿色 · 可回城交付\n浅蓝 · 我的小队\n\n仅显示已知地点。图标表示联络或委托地点，并非所有任务的精确目标。",
+      "desc": "地图HUD图例及标记数据范围说明"
+    },
+    {
+      "id": "UIWorldMapHint",
+      "txt": "滚轮拉近返回 · 中键拖动 · WASD 平移",
+      "desc": "地图HUD操作说明"
+    },
+    {
+      "id": "UIWorldMapSiteTags",
+      "txt": "地点名称",
+      "desc": "地图HUD地点名称开关"
+    },
+    {
+      "id": "UIWorldMapAvailableMissions",
+      "txt": "可接任务",
+      "desc": "地图HUD可接任务联系人与委托标记开关"
+    },
+    {
+      "id": "UIWorldMapActiveMissions",
+      "txt": "进行中委托",
+      "desc": "地图HUD已接委托与护送目的地标记开关"
+    },
+    {
+      "id": "UIWorldMapReadyMissions",
+      "txt": "可回城交付",
+      "desc": "地图HUD满足交付条件的联系人与委托标记开关"
+    },
+    {
+      "id": "UIWorldMapPlayerMarker",
+      "txt": "我的小队",
+      "desc": "地图HUD玩家位置开关及图上标记"
+    },
+    {
+      "id": "UIWorldMapRoute",
+      "txt": "旅行路线",
+      "desc": "地图HUD当前旅行路线开关"
+    },
+    {
+      "id": "UIWorldMapClose",
+      "txt": "返回",
+      "desc": "地图HUD返回近景按钮"
+    },
+    {
+      "id": "UIWorldMapHome",
+      "txt": "回到小队",
+      "desc": "地图HUD返回近景并恢复跟随按钮"
+    },
+    {
+      "id": "UIWorldMapMissions",
+      "txt": "任务日志",
+      "desc": "地图HUD打开任务日志按钮"
+    },
+    {
+      "id": "UIWorldMapMarkerAvailable",
+      "txt": "{0} · 可接 {1}",
+      "desc": "C#地图标记：{0}=已知地点名，{1}=任务联络人或委托数量"
+    },
+    {
+      "id": "UIWorldMapMarkerActive",
+      "txt": "{0} · 委托 {1}",
+      "desc": "C#地图标记：{0}=已知地点名，{1}=已接委托数量"
+    },
+    {
+      "id": "UIWorldMapMarkerReady",
+      "txt": "{0} · 交付 {1}",
+      "desc": "C#地图标记：{0}=已知地点名，{1}=可交付联络人或委托数量"
+    },
+    {
+      "id": "UIWorldMapCompactName",
+      "txt": "{0}…",
+      "desc": "C#地图短标签：{0}=按可见宽度保留的地点名，省略过长尾部"
+    },
+    {
+      "id": "ForgeMapRequired",
+      "txt": "请在大地图营地中锻造。",
+      "desc": "锻造场景限制"
+    },
+    {
+      "id": "ForgeCampClosed",
+      "txt": "请先打开营地。",
+      "desc": "锻造会话限制"
+    },
+    {
+      "id": "ForgeStateChanged",
+      "txt": "装备或营地状态已变化，请重新选择。",
+      "desc": "锻造旧点击拒绝"
+    },
+    {
+      "id": "ForgeFacilityRequired",
+      "txt": "需要建成一级工作台。",
+      "desc": "首版锻造设施要求"
+    },
+    {
+      "id": "ForgeWeaponUnavailable",
+      "txt": "这件武器已不在队伍身边。",
+      "desc": "锻造装备所有权"
+    },
+    {
+      "id": "ForgeAlreadyWhole",
+      "txt": "这把武器已完成锻造，且本体完好。",
+      "desc": "避免重复支付重铸"
+    },
+    {
+      "id": "ForgeInsufficientCoins",
+      "txt": "锻造所需金币不足。",
+      "desc": "锻造金币预检"
+    },
+    {
+      "id": "ForgeInsufficientMaterials",
+      "txt": "仓库与背包中的锻造材料不足。",
+      "desc": "锻造材料预检"
+    },
+    {
+      "id": "ForgeSaveInvalid",
+      "txt": "装备成长记录无效，请检查存档与配置。",
+      "desc": "成长存档验证"
+    },
+    {
+      "id": "ForgeUnsupported",
+      "txt": "此工艺暂不支持这件装备。",
+      "desc": "工艺适用范围"
+    },
+    {
+      "id": "ForgePathUnavailable",
+      "txt": "这条装备进阶路线已不可用。",
+      "desc": "进阶路线验证"
+    },
+    {
+      "id": "ForgeNeedsForging",
+      "txt": "请先完成初次锻造。",
+      "desc": "装备进阶前置"
+    },
+    {
+      "id": "ForgePathChosen",
+      "txt": "这把武器已经选择了进阶方向。",
+      "desc": "进阶不可重复"
+    },
+    {
+      "id": "ForgeNeedsDeed",
+      "txt": "需要以这把武器参与传奇事迹，或见证关键事件并完成对应传奇委托。",
+      "desc": "进阶事迹门槛"
+    },
+    {
+      "id": "ForgeNeedsPath",
+      "txt": "请先为这把武器选择进阶方向。",
+      "desc": "器灵觉醒前置"
+    },
+    {
+      "id": "ForgeAlreadyAwake",
+      "txt": "器灵已经觉醒，可以直接与它交谈。",
+      "desc": "觉醒幂等反馈"
+    },
+    {
+      "id": "ForgeNamedWeapon",
+      "txt": "%s · %s",
+      "desc": "Lua：路线称号、原装备品质名称"
+    },
+    {
+      "id": "ForgeWeaponIdentity",
+      "txt": "%s〔第 %d 件〕",
+      "desc": "Lua：装备名称、实例编号，用于同名装备区分"
+    },
+    {
+      "id": "ForgeDeedMemory",
+      "txt": "第 %d 日 %02d:%02d · %s：%s",
+      "desc": "Lua：日、时、分、事迹名称、具体传奇或任务名"
+    },
+    {
+      "id": "ForgeChronicleBody",
+      "txt": "%s：%s",
+      "desc": "Lua：装备名称、成长记录正文"
+    },
+    {
+      "id": "ForgeCompleted",
+      "txt": "重铸旧物",
+      "desc": "武器锻造纪事标题"
+    },
+    {
+      "id": "ForgeAdvanceCompleted",
+      "txt": "传奇初成",
+      "desc": "武器进阶纪事标题"
+    },
+    {
+      "id": "ForgeAwakenCompleted",
+      "txt": "回应的声音",
+      "desc": "器灵觉醒纪事标题"
+    },
+    {
+      "id": "ForgeDeedRecorded",
+      "txt": "铭记此刻",
+      "desc": "装备事迹纪事标题"
+    },
+    {
+      "id": "ForgePageTitle",
+      "txt": "锻造与传奇传承",
+      "desc": "营地锻造页标题"
+    },
+    {
+      "id": "ForgePageDescription",
+      "txt": "选定一把旧剑，经锻造改善本体，随真实传奇事迹选择进阶，最终唤醒寄宿其中的器灵。重铸始终保留原装备。",
+      "desc": "营地锻造说明"
+    },
+    {
+      "id": "ForgeNoDeeds",
+      "txt": "尚未留下传奇事迹。初次锻造后，以这把剑参与冒险。",
+      "desc": "装备空经历提示"
+    },
+    {
+      "id": "ForgeFirstAction",
+      "txt": "锻造：%s",
+      "desc": "Lua：初次锻造装备名"
+    },
+    {
+      "id": "ForgeReforgeAction",
+      "txt": "重铸修复：%s",
+      "desc": "Lua：恢复本体装备名"
+    },
+    {
+      "id": "ForgeReady",
+      "txt": "材料齐备，点击完成锻造。",
+      "desc": "锻造可执行提示"
+    },
+    {
+      "id": "ForgePathAction",
+      "txt": "进阶为：%s",
+      "desc": "Lua：选择进阶路线名"
+    },
+    {
+      "id": "ForgeChoosePath",
+      "txt": "点击确定此方向；事迹与已有记忆均会保留。",
+      "desc": "选择进阶说明"
+    },
+    {
+      "id": "ForgeTalkAction",
+      "txt": "与器灵交谈：%s",
+      "desc": "Lua：器灵装备名"
+    },
+    {
+      "id": "ForgeAwakenAction",
+      "txt": "回应器灵：%s",
+      "desc": "Lua：觉醒装备名"
+    },
+    {
+      "id": "ForgeAwakenHint",
+      "txt": "共同经历的记忆正在凝聚。静下心，回应这把武器的声音。",
+      "desc": "觉醒入口说明"
+    },
+    {
+      "id": "ForgeNoWeapon",
+      "txt": "还没有适合此工艺的旧剑。",
+      "desc": "锻造列表空态"
+    },
+    {
+      "id": "ForgeAcquireWeapon",
+      "txt": "当前工艺支持练习铁剑和铁剑。可保留开局的旧剑，或通过营地生产制作铁剑。",
+      "desc": "首版工艺来源"
+    },
+    {
+      "id": "ForgeSection",
+      "txt": "锻造",
+      "desc": "营地锻造页签"
+    },
+    {
+      "id": "ForgeLegacyHeading",
+      "txt": "传奇成长",
+      "desc": "背包装备成长标题"
+    },
+    {
+      "id": "ForgeForgedDetail",
+      "txt": "已锻造 · 本武器直接攻击伤害提高 %d%%",
+      "desc": "Lua：锻造伤害百分比"
+    },
+    {
+      "id": "ForgeSpiritState",
+      "txt": "器灵已觉醒 · %s",
+      "desc": "Lua：愿望状态"
+    },
+    {
+      "id": "ForgeWishUnaccepted",
+      "txt": "等待约定",
+      "desc": "未接受器灵愿望"
+    },
+    {
+      "id": "ForgeWishActive",
+      "txt": "同行之约进行中",
+      "desc": "器灵愿望进行"
+    },
+    {
+      "id": "ForgeWishComplete",
+      "txt": "同行之约已完成",
+      "desc": "器灵愿望完成"
+    },
+    {
+      "id": "EquipmentSpiritBusy",
+      "txt": "请先结束当前对话",
+      "desc": "器灵对话会话门禁"
+    },
+    {
+      "id": "EquipmentSpiritMapOnly",
+      "txt": "请在大地图上与器灵交谈",
+      "desc": "器灵对话场景门禁"
+    },
+    {
+      "id": "EquipmentSpiritUnavailable",
+      "txt": "这件装备已不在队伍身边",
+      "desc": "器灵实例所有权"
+    },
+    {
+      "id": "EquipmentSpiritDormant",
+      "txt": "这件装备的器灵尚未觉醒",
+      "desc": "器灵觉醒门禁"
+    },
+    {
+      "id": "EquipmentSpiritLivingActor",
+      "txt": "需要一名存活的队员与器灵交谈",
+      "desc": "器灵交谈者检查"
+    },
+    {
+      "id": "EquipmentSpiritStale",
+      "txt": "对话已推进，请选择当前选项",
+      "desc": "器灵对话过期点击"
+    },
+    {
+      "id": "EquipmentSpiritKnow",
+      "txt": "我想更了解你。",
+      "desc": "器灵性格话题"
+    },
+    {
+      "id": "EquipmentSpiritMemories",
+      "txt": "聊聊我们一起经历的事。",
+      "desc": "器灵记忆话题"
+    },
+    {
+      "id": "EquipmentSpiritWish",
+      "txt": "你有什么愿望？",
+      "desc": "器灵愿望话题"
+    },
+    {
+      "id": "EquipmentSpiritAcceptWish",
+      "txt": "我答应你，一起去完成。",
+      "desc": "接受器灵愿望"
+    },
+    {
+      "id": "EquipmentSpiritLeave",
+      "txt": "我们继续冒险吧。",
+      "desc": "关闭器灵对白"
+    },
+    {
+      "id": "EquipmentSpiritNoMemory",
+      "txt": "我们的故事才刚刚开始。",
+      "desc": "器灵没有事迹时答复"
+    },
+    {
+      "id": "EquipmentSpiritCaption",
+      "txt": "随身器灵 · %s",
+      "desc": "Lua：器灵成长路线名"
+    },
+    {
+      "id": "EquipmentSpiritHint",
+      "txt": "与你的装备交谈，回顾共同经历与器灵的愿望。",
+      "desc": "器灵对话说明"
+    },
+    {
+      "id": "EquipmentSpiritNoInterjection",
+      "txt": "这段对话暂时没有队员插话",
+      "desc": "器灵不支持点名插话提示"
+    },
+    {
+      "id": "CampSceneHint",
+      "txt": "点击营地设施进行准备；关闭营地后返回原来的地图。",
+      "desc": "营地主场景提示"
+    },
+    {
+      "id": "CampForgeBuilding",
+      "txt": "熔炉与铁砧",
+      "desc": "营地锻造场景入口"
+    },
+    {
+      "id": "CampForgeService",
+      "txt": "锻造与重铸",
+      "desc": "营地锻造入口状态"
+    },
+    {
+      "id": "CampFacilityStatus",
+      "txt": "等级 %d · %s",
+      "desc": "营地设施标签；等级、状态"
+    },
+    {
+      "id": "CampFacilityLevel",
+      "txt": "设施等级 %d",
+      "desc": "营地设施页副标题；等级"
+    },
+    {
+      "id": "CampStationIdle",
+      "txt": "工位空闲",
+      "desc": "营地生产工位无订单"
+    },
+    {
+      "id": "CampStationWorking",
+      "txt": "生产中",
+      "desc": "营地生产状态"
+    },
+    {
+      "id": "CampOrderReady",
+      "txt": "已完成 · 可领取",
+      "desc": "营地订单已完成"
+    },
+    {
+      "id": "CampOrderHelp",
+      "txt": "每个设施同时生产一份订单；完成后手动领取。",
+      "desc": "营地订单说明"
+    },
+    {
+      "id": "CampOrderRemaining",
+      "txt": "剩余 %d 游戏分钟",
+      "desc": "营地订单剩余游戏分钟"
+    },
+    {
+      "id": "CampClaimFirst",
+      "txt": "请先领取产物",
+      "desc": "完成订单占用工位"
+    },
+    {
+      "id": "CampStartProduction",
+      "txt": "开始制作",
+      "desc": "营地制作主按钮"
+    },
+    {
+      "id": "CampMaterialNeed",
+      "txt": "%s ×%d",
+      "desc": "营地材料卡；名称、需求数量"
+    },
+    {
+      "id": "CampMaterialSources",
+      "txt": "仓库 %d · 背包 %d",
+      "desc": "营地材料来源；仓库数量、背包数量"
+    },
+    {
+      "id": "CampMaterialsPriority",
+      "txt": "材料优先从仓库扣除，背包补足；金币与材料满足后才开始。",
+      "desc": "营地制作提示"
+    },
+    {
+      "id": "CampRecipeTime",
+      "txt": "%d 游戏分钟",
+      "desc": "营地配方行耗时"
+    },
+    {
+      "id": "CampRecipeOutputs",
+      "txt": "产物：%s",
+      "desc": "营地配方产物说明；整组物品"
+    },
+    {
+      "id": "CampProductionCost",
+      "txt": "%d 游戏分钟  ·  %d 金币",
+      "desc": "营地制作耗时与费用"
+    },
+    {
+      "id": "CampUpgradeTitle",
+      "txt": "营地建设",
+      "desc": "营地设施升级页标题"
+    },
+    {
+      "id": "CampUpgradeHint",
+      "txt": "升级设施会解锁新配方，并改变工位与附属陈设。",
+      "desc": "营地升级提示"
+    },
+    {
+      "id": "CampUpgradeAction",
+      "txt": "升级设施",
+      "desc": "营地升级按钮"
+    },
+    {
+      "id": "CampBuildAction",
+      "txt": "建造设施",
+      "desc": "营地首次建设按钮"
+    },
+    {
+      "id": "CampUpgradeCost",
+      "txt": "升级至 %d 级  ·  %d 金币",
+      "desc": "营地升级目标与费用"
+    },
+    {
+      "id": "CampForgeAction",
+      "txt": "锻造",
+      "desc": "营地锻造主按钮"
+    },
+    {
+      "id": "CampReforgeAction",
+      "txt": "重铸",
+      "desc": "营地重铸主按钮"
+    },
+    {
+      "id": "CampForgeCost",
+      "txt": "即时完成  ·  %d 金币",
+      "desc": "营地锻造费用"
+    },
+    {
+      "id": "CampWeaponIdentity",
+      "txt": "#%d · 耐久 %d / %d",
+      "desc": "营地武器行；实例ID、当前耐久、上限"
+    },
+    {
+      "id": "CampWarehouseStatus",
+      "txt": "物资 %d / %d 件",
+      "desc": "营地仓储容量；已存、上限"
+    },
+    {
+      "id": "CampWarehouseHint",
+      "txt": "左右拖拽存取物资 · R 旋转 · 右键取消 · 拖到同类物资上合并",
+      "desc": "营地仓库操作提示"
+    },
+    {
+      "id": "CampWarehouseChoose",
+      "txt": "选择物资查看详情",
+      "desc": "仓库未选中提示"
+    },
+    {
+      "id": "CampWarehouseAllowed",
+      "txt": "可存放背包中的装备与物资；装备保留耐久、词缀、配件和成长记录。",
+      "desc": "仓库存放范围"
+    },
+    {
+      "id": "CampStoredItemInfo",
+      "txt": "数量 %d · 占格 %d × %d",
+      "desc": "仓库选中物品；数量、宽、高"
+    },
+    {
+      "id": "CampBagCapacity",
+      "txt": "占用 %d / %d 格",
+      "desc": "背包格子容量；占用、总格数"
+    },
+    {
+      "id": "CampWarehouseInvalidDrop",
+      "txt": "无法放在此处，物资保留原位。",
+      "desc": "拖拽非法落点"
+    },
+    {
+      "id": "CampWarehouseMoved",
+      "txt": "物资已整理。",
+      "desc": "营地物资成功转移"
+    },
+    {
+      "id": "CampWarehousePlacementInvalid",
+      "txt": "仓库落点被占用或超出边界。",
+      "desc": "仓库数据层落点失败"
+    },
+    {
+      "id": "CampWarehouseGridFull",
+      "txt": "仓库没有足够的空闲格子。",
+      "desc": "旧版自动存入入口网格不足"
+    },
+    {
+      "id": "CampBackToScene",
+      "txt": "返回营地",
+      "desc": "营地子界面返回"
+    },
+    {
+      "id": "CampLeave",
+      "txt": "收起营地",
+      "desc": "关闭营地"
+    },
+    {
+      "id": "CampClaim",
+      "txt": "领取产物",
+      "desc": "营地订单领取"
+    },
+    {
+      "id": "CampWaitOneHour",
+      "txt": "等待 1 小时",
+      "desc": "营地等待60分钟"
+    },
+    {
+      "id": "CampWaitSixHours",
+      "txt": "等待 6 小时",
+      "desc": "营地等待360分钟"
+    },
+    {
+      "id": "CampWaitOneDay",
+      "txt": "等待 1 天",
+      "desc": "营地等待1440分钟"
+    },
+    {
+      "id": "CampBagTitle",
+      "txt": "共享背包",
+      "desc": "营地仓库左侧标题"
+    },
+    {
+      "id": "CampWarehouseTitle",
+      "txt": "营地仓库",
+      "desc": "营地仓库右侧标题"
+    },
+    {
+      "id": "CampRecipeList",
+      "txt": "工位配方",
+      "desc": "营地左侧列表标题"
+    },
+    {
+      "id": "CampRequiredMaterials",
+      "txt": "所需材料",
+      "desc": "营地详情材料标题"
+    },
+    {
+      "id": "CampModelLabel",
+      "txt": "物品展示",
+      "desc": "固定角度模型展示说明"
+    },
+    {
+      "id": "CampTimeNotice",
+      "txt": "等待将推进世界时间",
+      "desc": "生产区时间说明"
+    },
+    {
+      "id": "CampWeaponTemplateDetails",
+      "txt": "%s · 等级 %d · %s\n成品品质与词缀以领取结果为准。",
+      "desc": "营地武器模板；分类、等级、持握要求"
+    },
+    {
+      "id": "CampUnsupportedItem",
+      "txt": "无法存放这类物品。",
+      "desc": "仓库不支持的物品类型"
+    },
+    {
+      "id": "CampEquipmentUnavailable",
+      "txt": "装备已离开背包，请重新选择。",
+      "desc": "仓库存入时装备来源失效"
+    },
+    {
+      "id": "MenuBrand",
+      "txt": "PROJECT Y",
+      "desc": "场景式开始菜单游戏标题"
+    },
+    {
+      "id": "MenuStrapline",
+      "txt": "每一段远征，都从岔路口开始。",
+      "desc": "开始菜单标题下短句"
+    },
+    {
+      "id": "MenuStart",
+      "txt": "开始",
+      "desc": "木路牌新游戏入口"
+    },
+    {
+      "id": "MenuLoad",
+      "txt": "加载",
+      "desc": "木路牌读取世界入口"
+    },
+    {
+      "id": "MenuSettings",
+      "txt": "设置",
+      "desc": "开始菜单设置页标题与入口"
+    },
+    {
+      "id": "MenuAbout",
+      "txt": "About Me",
+      "desc": "关于页标题与路牌入口"
+    },
+    {
+      "id": "MenuQuit",
+      "txt": "退出",
+      "desc": "退出游戏入口"
+    },
+    {
+      "id": "MenuBack",
+      "txt": "← 返回路口",
+      "desc": "创建与加载页返回主菜单"
+    },
+    {
+      "id": "MenuUnnamedWorld",
+      "txt": "尚未命名的远方",
+      "desc": "未命名世界与默认沙盘标题"
+    },
+    {
+      "id": "MenuDefaultPreview",
+      "txt": "未创建世界 · 山川静候，旅途将启。",
+      "desc": "没有世界时的默认沙盘状态"
+    },
+    {
+      "id": "MenuRecentWorld",
+      "txt": "最近创建的世界 · 山川依旧，静候归人。",
+      "desc": "首页选择创建时间最近世界"
+    },
+    {
+      "id": "MenuPreviewMissing",
+      "txt": "此世界尚无预览 · 首次加载后生成，当前展示示意沙盘。",
+      "desc": "旧档或缺失预览快照时的明确说明"
+    },
+    {
+      "id": "MenuPreviewUnreadable",
+      "txt": "预览暂不可读 · 当前展示示意沙盘，请在加载页检查存档。",
+      "desc": "缓存或目录读取异常时的说明"
+    },
+    {
+      "id": "MenuSnapshotReady",
+      "txt": "简化世界预览",
+      "desc": "加载页真实世界快照状态"
+    },
+    {
+      "id": "MenuSelectWorld",
+      "txt": "选择一个世界",
+      "desc": "加载页未选择可读存档"
+    },
+    {
+      "id": "MenuSelectedInfo",
+      "txt": "种子 %s · %d 格\n%s\n%s",
+      "desc": "加载页摘要；种子、规模、队伍、预览状态"
+    },
+    {
+      "id": "MenuContinue",
+      "txt": "继续远征 →",
+      "desc": "加载页确认选中存档"
+    },
+    {
+      "id": "MenuDelete",
+      "txt": "删除",
+      "desc": "存档条目删除按钮与确认按钮"
+    },
+    {
+      "id": "MenuInUse",
+      "txt": "使用中",
+      "desc": "当前游玩存档禁删状态"
+    },
+    {
+      "id": "MenuDeleteTitle",
+      "txt": "删除世界",
+      "desc": "删除存档确认标题"
+    },
+    {
+      "id": "MenuDeletePrompt",
+      "txt": "删除「%s」及其存档备份？\n此操作无法撤销。",
+      "desc": "删除确认；世界名称"
+    },
+    {
+      "id": "MenuDeleteActive",
+      "txt": "当前正在游玩的世界不能删除。",
+      "desc": "当前会话存档删除保护"
+    },
+    {
+      "id": "MenuDeleteFailed",
+      "txt": "删除未完成，请检查文件权限后重试。",
+      "desc": "删除存档失败的本地化提示"
+    },
+    {
+      "id": "MenuDeleted",
+      "txt": "世界存档已删除。",
+      "desc": "删除成功提示"
+    },
+    {
+      "id": "MenuCancel",
+      "txt": "关闭",
+      "desc": "菜单弹层取消或关闭"
+    },
+    {
+      "id": "MenuConfirm",
+      "txt": "确认",
+      "desc": "菜单弹层确认"
+    },
+    {
+      "id": "MenuApply",
+      "txt": "应用设置",
+      "desc": "菜单设置保存按钮"
+    },
+    {
+      "id": "MenuMasterVolume",
+      "txt": "总音量",
+      "desc": "设置总音量滑块"
+    },
+    {
+      "id": "MenuMusicVolume",
+      "txt": "音乐音量",
+      "desc": "设置音乐音量滑块"
+    },
+    {
+      "id": "MenuEffectsVolume",
+      "txt": "音效音量",
+      "desc": "设置音效音量滑块"
+    },
+    {
+      "id": "MenuReducedMotion",
+      "txt": "减少镜头运动",
+      "desc": "设置减少运动开关"
+    },
+    {
+      "id": "MenuAboutVersion",
+      "txt": "%s\n版本 %s",
+      "desc": "关于页；项目产品名与版本号"
+    },
+    {
+      "id": "MenuQuitPrompt",
+      "txt": "要离开这段旅途吗？\n尚未保存的进度不会自动保存。",
+      "desc": "退出游戏确认"
+    },
+    {
+      "id": "MenuCreatedTimeInvalid",
+      "txt": "存档中的世界创建时间无效。",
+      "desc": "存档元数据创建时间校验失败"
+    },
+    {
+      "id": "TownClearPartyLimit",
+      "txt": "世界队伍数量已达上限，暂时无法接取清剿委托。",
+      "desc": "清剿接取前补刷队伍容量不足"
+    },
+    {
+      "id": "TownClearNoSpawnSpace",
+      "txt": "委托范围内暂时没有足够的可达空地容纳敌人，请稍后再试。",
+      "desc": "清剿接取前无法完整放置补刷敌人"
+    },
+    {
+      "id": "GMEquipmentOpen",
+      "txt": "刷装备",
+      "desc": "GM 面板打开全部武器与穿戴装备目录"
+    },
+    {
+      "id": "GMEquipmentTitle",
+      "txt": "武器装备目录",
+      "desc": "GM 装备列表标题"
+    },
+    {
+      "id": "GMEquipmentHelp",
+      "txt": "选择装备加入背包，每次 1 件。品质沿用生成规则，传奇装备遵循唯一性限制。",
+      "desc": "GM 装备列表使用说明"
+    },
+    {
+      "id": "GMEquipmentSearch",
+      "txt": "名称 / ID",
+      "desc": "GM 装备目录搜索标签"
+    },
+    {
+      "id": "GMEquipmentCount",
+      "txt": "共 %d 件装备",
+      "desc": "GM 装备搜索数量；%d=条目数"
+    },
+    {
+      "id": "GMEquipmentEmpty",
+      "txt": "没有匹配的装备",
+      "desc": "GM 装备搜索无结果"
+    },
+    {
+      "id": "GMEquipmentAdd",
+      "txt": "加入背包",
+      "desc": "GM 装备条目按钮"
+    },
+    {
+      "id": "GMEquipmentBack",
+      "txt": "返回 GM",
+      "desc": "GM 装备目录返回按钮"
+    },
+    {
+      "id": "GMEquipmentWeapon",
+      "txt": "武器",
+      "desc": "GM 装备目录武器类型"
+    },
+    {
+      "id": "GMEquipmentWearable",
+      "txt": "穿戴装备",
+      "desc": "GM 装备目录防具、盾牌、饰品类型"
+    },
+    {
+      "id": "GMEquipmentRowTitle",
+      "txt": "%s  ·  #%d",
+      "desc": "GM 装备行标题；%s=装备名，%d=物品配置 ID"
+    },
+    {
+      "id": "GMEquipmentRowDetail",
+      "txt": "%s  ·  背包占格 %d×%d",
+      "desc": "GM 装备行说明；%s=类型，%d1=宽，%d2=高"
+    },
+    {
+      "id": "GMEquipmentInvalid",
+      "txt": "请选择有效的武器或穿戴装备。",
+      "desc": "GM 刷装备的 ID 或类型校验失败"
+    },
+    {
+      "id": "GMEquipmentRequiresWorld",
+      "txt": "请先创建或载入远征，再将装备加入背包。",
+      "desc": "GM 刷装备要求已有世界"
+    },
+    {
+      "id": "GMEquipmentGranted",
+      "txt": "已将「%s」加入背包。",
+      "desc": "GM 装备入包成功；%s=装备配置名称"
+    },
+    {
+      "id": "EquipmentGrantBagFull",
+      "txt": "背包放不下了，请先整理背包。",
+      "desc": "通用物品授予与 GM 刷装备的容量不足提示"
+    },
+    {
+      "id": "ProfessionDepthNeedsSourceStatus",
+      "txt": "尚未获得技能说明要求的自身状态",
+      "desc": "职业连招资源前置不足"
+    },
+    {
+      "id": "ProfessionDepthOwnCompanionOnly",
+      "txt": "请选择本人绑定且独立随行的动物伙伴",
+      "desc": "动物支援目标限制"
+    },
+    {
+      "id": "SpellcastingInsufficient",
+      "txt": "施法点不足：需要 %d 点，当前 %d 点",
+      "desc": "施法拒绝；所需、当前点数"
+    },
+    {
+      "id": "SpellcastingMissingRecipe",
+      "txt": "需要先掌握组合所需的全部基础法术",
+      "desc": "法术组合前置不足"
+    },
+    {
+      "id": "SpellcastingAlreadyFull",
+      "txt": "施法点已经充满",
+      "desc": "静心回路在满资源时拒绝"
+    },
+    {
+      "id": "SpellcastingInvalidCell",
+      "txt": "请选择同层可通行的地面",
+      "desc": "区域法术落点限制"
+    },
+    {
+      "id": "SpellcastingOutOfRange",
+      "txt": "法术落点超出施法距离",
+      "desc": "区域法术射程限制"
+    },
+    {
+      "id": "SpellcastingObscured",
+      "txt": "迷雾或地形遮挡了施法视线",
+      "desc": "区域法术视线限制"
+    },
+    {
+      "id": "SpellcastingFieldLimit",
+      "txt": "战场上的持续法术区域已达到上限",
+      "desc": "区域法术容量限制"
+    },
+    {
+      "id": "SpellcastingFieldCreated",
+      "txt": "%s形成了持续 %d 轮的法术区域",
+      "desc": "法术区域日志；技能名、轮数"
+    },
+    {
+      "id": "SpellcastingRecovered",
+      "txt": "%s恢复了 %d 点施法点",
+      "desc": "主动恢复日志；技能名、实际点数"
+    },
+    {
+      "id": "SpellcastingNotActive",
+      "txt": "请在己方角色行动时调整施法投入",
+      "desc": "强化选择阶段限制"
+    },
+    {
+      "id": "SpellcastingInvalidBoost",
+      "txt": "额外投入超出该法术的强化范围",
+      "desc": "强化输入校验"
+    },
+    {
+      "id": "SpellcastingRecipeOwned",
+      "txt": "组合已就绪：基础法术共同解锁，无需另花学习机会",
+      "desc": "图鉴组合已解锁来源"
+    },
+    {
+      "id": "SpellcastingRecipeLocked",
+      "txt": "组合未就绪：先掌握图示的全部基础法术",
+      "desc": "图鉴组合未解锁来源"
+    },
+    {
+      "id": "SpellcastingEquipmentBonus",
+      "txt": "施法点上限 +%d；每回合回复 +%d（非战斗回复同步提高）",
+      "desc": "装备施法属性；上限、回复"
+    },
+    {
+      "id": "CampLoadoutTitle",
+      "txt": "队伍装备",
+      "desc": "营地入口与子面板标题"
+    },
+    {
+      "id": "CampLoadoutHint",
+      "txt": "选择坐骑、宠物或火把槽，再选择要装备的动物或物品。",
+      "desc": "队伍装备操作提示"
+    },
+    {
+      "id": "CampLoadoutMount",
+      "txt": "坐骑",
+      "desc": "队伍装备槽"
+    },
+    {
+      "id": "CampLoadoutPet",
+      "txt": "宠物",
+      "desc": "队伍装备槽"
+    },
+    {
+      "id": "CampLoadoutTorch",
+      "txt": "火把",
+      "desc": "队伍装备槽"
+    },
+    {
+      "id": "CampLoadoutEmpty",
+      "txt": "空槽",
+      "desc": "队伍装备空槽选项"
+    },
+    {
+      "id": "CampLoadoutEquip",
+      "txt": "装备到队伍",
+      "desc": "队伍装备按钮"
+    },
+    {
+      "id": "CampLoadoutUnequip",
+      "txt": "卸下装备",
+      "desc": "队伍卸下按钮"
+    },
+    {
+      "id": "CampLoadoutRemoveHint",
+      "txt": "卸下当前槽位的装备",
+      "desc": "空槽选项说明"
+    },
+    {
+      "id": "CampLoadoutAlreadySelected",
+      "txt": "当前已选择此装备",
+      "desc": "重复装备提示"
+    },
+    {
+      "id": "CampLoadoutSummary",
+      "txt": "坐骑：%s　宠物：%s　火把：%s",
+      "desc": "参数：三个槽位装备名"
+    },
+    {
+      "id": "CampLoadoutCurrent",
+      "txt": "当前装备：%s",
+      "desc": "参数：当前槽位装备名"
+    },
+    {
+      "id": "CampLoadoutTab",
+      "txt": "%s槽",
+      "desc": "参数：槽位名"
+    },
+    {
+      "id": "CampLoadoutTabSelected",
+      "txt": "● %s槽",
+      "desc": "参数：当前槽位名"
+    },
+    {
+      "id": "CampLoadoutMountEffect",
+      "txt": "大地图陆路行军速度提高 %.0f%%，同一路线花费的游戏时间相应缩短。",
+      "desc": "参数：速度加成百分比"
+    },
+    {
+      "id": "CampLoadoutPetEffect",
+      "txt": "大地图当前可见范围的半径增加 %d 格。卸下后已探索的地区仍会保留。",
+      "desc": "参数：额外视野半径"
+    },
+    {
+      "id": "CampLoadoutTorchEffect",
+      "txt": "每天 %02d:00 至次日 %02d:00，在大地图照亮队伍周围 %.0f 米。",
+      "desc": "参数：夜间起止小时、照明半径"
+    },
+    {
+      "id": "CampLoadoutAnimalHelp",
+      "txt": "使用队伍已经驯服的同一只动物，保留生命与亲密度。坐骑槽需要可骑乘的动物；每只动物只能占用一个队伍槽位，原有骑乘与伙伴随行模式保持不变。",
+      "desc": "队伍动物装备说明"
+    },
+    {
+      "id": "CampLoadoutTorchHelp",
+      "txt": "装入一支旅行火炬，优先从营地仓库取用，再取共享背包。卸下时退回背包；背包放不下则保留在槽中。无燃料消耗，按 T 可开关；只改变照明，不额外揭开迷雾。局部地图仍可使用背包或槽中的火炬。",
+      "desc": "队伍火把说明"
+    },
+    {
+      "id": "CampLoadoutAnimalOwner",
+      "txt": "%s 的伙伴",
+      "desc": "参数：动物主人名"
+    },
+    {
+      "id": "CampLoadoutAnimalStatus",
+      "txt": "生命 %d / %d · 亲密度 %d",
+      "desc": "参数：动物生命、生命上限、亲密度"
+    },
+    {
+      "id": "CampLoadoutTorchStock",
+      "txt": "背包 %d 支 · 仓库 %d 支",
+      "desc": "参数：两处可用火炬数"
+    },
+    {
+      "id": "CampLoadoutInvalid",
+      "txt": "装备状态已变化，请重新选择。",
+      "desc": "队伍装备事务校验"
+    },
+    {
+      "id": "CampLoadoutAnimalMissing",
+      "txt": "这只动物已无法为队伍提供效果。",
+      "desc": "动物不再归属当前队伍或已阵亡"
+    },
+    {
+      "id": "CampLoadoutAnimalBusy",
+      "txt": "这只动物已装备在另一个队伍槽位，请先卸下。",
+      "desc": "同一动物不能占两个队伍槽"
+    },
+    {
+      "id": "CampLoadoutNotRideable",
+      "txt": "这只动物不能装入坐骑槽。",
+      "desc": "坐骑槽种类限制"
+    },
+    {
+      "id": "CampLoadoutTorchMissing",
+      "txt": "背包或营地仓库中需要一支旅行火炬。",
+      "desc": "火把槽缺少实物"
+    },
+    {
+      "id": "CampLoadoutNoAnimals",
+      "txt": "队伍暂无适合此槽位的已驯服动物。",
+      "desc": "空动物候选列表"
+    },
+    {
+      "id": "CampTorchUnavailable",
+      "txt": "火炬 · 背包与队伍槽中没有火炬",
+      "desc": "便携照明不可用"
+    },
+    {
+      "id": "CampTorchEnabled",
+      "txt": "火炬 · 已开启 [T]",
+      "desc": "点亮意图；大地图仍受夜间限制"
+    },
+    {
+      "id": "CampTorchDisabled",
+      "txt": "火炬 · 已熄灭 [T]",
+      "desc": "便携照明关闭"
+    },
+    {
+      "id": "CampTorchExplorationOnly",
+      "txt": "只能在探索期间开关火炬",
+      "desc": "战斗火炬开关门禁"
+    },
+    {
+      "id": "CastingPointLabel",
+      "txt": "施法点",
+      "desc": "技能说明：独立于 AP 的施法资源消耗标签"
+    },
+    {
+      "id": "CastingBoostLabel",
+      "txt": "额外投入",
+      "desc": "技能说明：当前选择的额外施法点标签"
+    },
+    {
+      "id": "CastingBoostValue",
+      "txt": "%d / %d 点",
+      "desc": "技能说明：参数为当前额外投入、允许的额外投入上限"
+    },
+    {
+      "id": "CastingRecipeDescription",
+      "txt": "%s\n\n<color=#78F0A5>组合法术：%s</color>\n掌握以上基础法术后自动解锁；一次施放统一消耗 AP 与施法点。",
+      "desc": "技能说明：参数为原说明、基础技能名称列表"
+    },
+    {
+      "id": "CastingHUDStatus",
+      "txt": "施法点 %d / %d　·　每回合 +%d",
+      "desc": "战斗施法栏：参数为当前施法点、上限、自身回合回复"
+    },
+    {
+      "id": "CastingHUDStrength",
+      "txt": "%s　·　额外投入 %d　·　总消耗 %d",
+      "desc": "战斗施法栏：参数为技能名、额外投入、总施法点消耗"
+    },
+    {
+      "id": "CastingHUDSelectSpell",
+      "txt": "选择法术后，可调整额外投入",
+      "desc": "战斗施法栏：尚未选中法术时的操作提示"
+    },
+    {
+      "id": "CastingHUDLess",
+      "txt": "−",
+      "desc": "战斗施法栏：减少一点额外投入按钮"
+    },
+    {
+      "id": "CastingHUDMore",
+      "txt": "+",
+      "desc": "战斗施法栏：增加一点额外投入按钮"
+    },
+    {
+      "id": "CastingStateTitle",
+      "txt": "施法点 %d / %d · 回合恢复 %d",
+      "desc": "角色状态入口：参数为当前、上限、每个自身回合恢复点数"
+    },
+    {
+      "id": "CastingStateDescription",
+      "txt": "当前施法点：%d / %d\n每个自身战斗回合开始恢复 %d 点；非战斗时按相同速率每 10 游戏分钟恢复。\n\n施法点与 AP 分开消耗。选择法术后可额外投入施法点强化效果；掌握配方中的基础法术会自动解锁组合法术。\n\n技能与装备可以提高上限和恢复速率。达到上限后不预存回复，提高上限也不会立即补满。\n\n脚下绿色菱形表示可用点，灰色菱形表示已消耗点；超过一弧后自动换行。",
+      "desc": "角色状态说明：参数为当前、上限、自身回合恢复点数"
+    },
+    {
+      "id": "GrowthSkillDetailUnlockHeading",
+      "txt": "解锁条件",
+      "desc": "角色手记技能详情：独立条件区域标题"
+    },
+    {
+      "id": "GrowthSkillDetailPhase",
+      "txt": "处于探索间隙（大地图或区域）",
+      "desc": "技能学习的阶段条件"
+    },
+    {
+      "id": "GrowthSkillDetailLevel",
+      "txt": "角色等级 ≥ %d（当前 %d）",
+      "desc": "技能详情条件：需要等级、实际等级"
+    },
+    {
+      "id": "GrowthSkillDetailAttribute",
+      "txt": "%s ≥ %g（当前 %g）",
+      "desc": "技能详情条件：属性名称、门槛、当前值"
+    },
+    {
+      "id": "GrowthSkillDetailOpportunity",
+      "txt": "学习机会 ≥ 1（当前 %d）",
+      "desc": "技能详情条件：剩余学习机会"
+    },
+    {
+      "id": "GrowthSkillDetailProfession",
+      "txt": "研习职业：%s",
+      "desc": "技能详情条件：课程职业"
+    },
+    {
+      "id": "GrowthSkillDetailProfessionAny",
+      "txt": "研习任一课程职业：%s",
+      "desc": "技能详情条件：可选课程职业列表"
+    },
+    {
+      "id": "GrowthSkillDetailPrerequisite",
+      "txt": "掌握技能：%s",
+      "desc": "技能详情条件：前置技能名称"
+    },
+    {
+      "id": "GrowthSkillDetailPrerequisiteAny",
+      "txt": "掌握任一前置：%s",
+      "desc": "技能详情条件：任选前置技能列表"
+    },
+    {
+      "id": "GrowthSkillDetailRoute",
+      "txt": "可选课程 · %s",
+      "desc": "技能详情替代课程路线：职业名称"
+    },
+    {
+      "id": "GrowthSkillDetailAttributeWithEquipment",
+      "txt": "属性门槛计入装备加成",
+      "desc": "技能详情属性口径说明"
+    },
+    {
+      "id": "GrowthSkillDetailAttributeWithoutEquipment",
+      "txt": "属性门槛不计入装备加成",
+      "desc": "技能详情属性口径说明"
+    },
+    {
+      "id": "SkillAtlasDomainNextPage",
+      "txt": "更多领域 %d/%d",
+      "desc": "技艺图谱领域分页按钮；%d1=当前页，%d2=总页数，点击循环到下一页"
+    },
+    {
+      "id": "EconomyStale",
+      "txt": "行情或账户已变化，请重新选择。",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyInvalid",
+      "txt": "无效的经济交易。",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyStockMissing",
+      "txt": "当地库存不足。",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyCoinsMissing",
+      "txt": "金币不足。",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyBagFull",
+      "txt": "背包空间或物品数量不足以接收商品。",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyGoodsMissing",
+      "txt": "随身商品不足。",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyWarehouseFull",
+      "txt": "当地市场已积压，无法继续收购。",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyCoinLimit",
+      "txt": "金币已达上限。",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyAlreadyInvested",
+      "txt": "该城镇已有一笔投资，请先完成结算。",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyNotMature",
+      "txt": "投资尚未到期。",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyNoDebt",
+      "txt": "当前没有欠薪。",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyBankMissing",
+      "txt": "请靠近银行柜台办理业务。",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyUnavailable",
+      "txt": "当前无法进行此项交易。",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyCloseBank",
+      "txt": "请先关闭银行界面。",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyUseMarket",
+      "txt": "此商品使用下方的城镇市场行情交易。",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyRoadGood",
+      "txt": "商路便利",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyRoadPoor",
+      "txt": "运输条件有限",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyTagSeparator",
+      "txt": " · ",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyBuyName",
+      "txt": "买入 %s × %d",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomySellName",
+      "txt": "卖出 %s × %d",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyTradeBody",
+      "txt": "本批总价 %d 金币 · 市场库存 %d · 随身持有 %d",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyUpkeepTitle",
+      "txt": "食物 %d · 每日食物 %d / 工资 %d",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyUpkeepBody",
+      "txt": "累计欠薪 %d 金币 · 饥饿成员 %d。点击优先补发欠薪。",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyMemberCost",
+      "txt": "%s：每日食物 %d、工资 %d；饥饿 %d 日，欠薪 %d",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyHudResources",
+      "txt": "金币 %d  ·  食物 %d",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyBankTitle",
+      "txt": "%s · 银行",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyBankCaption",
+      "txt": "商贸份额净值 %.2f  /  持有金币 %d",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyBankRisk",
+      "txt": "投资期限：%d 日\n本金风险：最多亏损 %d%%\n单期盈利上限：%d%%\n每城投资额度：%d 金币\n不保本；到期金额固定，需回本城领取。",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyInvest",
+      "txt": "投入 %d 金币",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyClose",
+      "txt": "关闭",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyClaim",
+      "txt": "领取到期款项",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyChartRange",
+      "txt": "最近 %d 日",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyChartLegend",
+      "txt": "日K线 · 红涨 / 绿跌 / 金色持平 · 每 6 游戏小时记录一次",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyNoPosition",
+      "txt": "当前没有投资\n\n资金用于本地生产与商贸。原料短缺、运输条件和城镇封锁都会影响经营。",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyMaturePosition",
+      "txt": "投资已到期\n投入本金：%d\n可领取：%d\n实际损益：%+d 金币",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyOpenPosition",
+      "txt": "持有本金：%d\n买入净值：%.2f\n当前估值：%d\n浮动损益：%+d\n到期：第 %d 日 %02d:00",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyChartPrice",
+      "txt": "%.2f",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyChartDates",
+      "txt": "第 %d 日 — 第 %d 日",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyChartHelp",
+      "txt": "悬停查看每日开、高、低、收；当日K线仅包含已发生的行情。历史表现不保证收益。",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyChartOHLC",
+      "txt": "第 %d 日  开 %.2f  高 %.2f  低 %.2f  收/现 %.2f  涨跌 %+.2f%%",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyCaravanBuy",
+      "txt": "购买 · %s",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyCaravanSell",
+      "txt": "出售 · %s × %d",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyCaravanBuyBody",
+      "txt": "%d 金币 / 件 · 剩余 %d",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "EconomyCaravanSellBody",
+      "txt": "出售这一堆，共获得 %d 金币",
+      "desc": "城镇经济、银行与每日开销"
+    },
+    {
+      "id": "TitleTab",
+      "txt": "称 号",
+      "desc": "角色手记称号页签"
+    },
+    {
+      "id": "TitleEquip",
+      "txt": "装备称号",
+      "desc": "装备选中的已获得称号"
+    },
+    {
+      "id": "TitleUnequip",
+      "txt": "卸下称号",
+      "desc": "卸下当前称号"
+    },
+    {
+      "id": "TitleEquipped",
+      "txt": "已装备",
+      "desc": "称号列表装备状态"
+    },
+    {
+      "id": "TitleOwned",
+      "txt": "已获得",
+      "desc": "称号列表解锁状态"
+    },
+    {
+      "id": "TitleLocked",
+      "txt": "未获得",
+      "desc": "称号列表未解锁状态"
+    },
+    {
+      "id": "TitleNone",
+      "txt": "无",
+      "desc": "当前无装备称号"
+    },
+    {
+      "id": "TitleListEntry",
+      "txt": "%s · %s",
+      "desc": "Lua：称号名称、状态"
+    },
+    {
+      "id": "TitleSummary",
+      "txt": "称号 %d / %d　当前装备：%s",
+      "desc": "Lua：已获得数、总数、当前称号"
+    },
+    {
+      "id": "TitleHint",
+      "txt": "完成挑战获得称号，或消耗声望自拟称号；每次只装备一个，只有装备中的称号生效。",
+      "desc": "称号页操作说明"
+    },
+    {
+      "id": "TitleSelectHint",
+      "txt": "点击查看称号效果与获取方式",
+      "desc": "称号列表条目说明"
+    },
+    {
+      "id": "TitleEmpty",
+      "txt": "暂无可用称号配置",
+      "desc": "空称号列表"
+    },
+    {
+      "id": "TitleCurrent",
+      "txt": "称号 · %s",
+      "desc": "Lua：已装备称号名称"
+    },
+    {
+      "id": "TitleAllRequirements",
+      "txt": "获得条件（全部满足）",
+      "desc": "称号全部条件说明"
+    },
+    {
+      "id": "TitleAnyRequirements",
+      "txt": "获得条件（满足任一项）",
+      "desc": "称号任一条件说明"
+    },
+    {
+      "id": "TitleRequirementProgress",
+      "txt": "%s：%d / %d",
+      "desc": "Lua：条件描述、当前次数、要求次数"
+    },
+    {
+      "id": "TitleBonusHeading",
+      "txt": "装备加成",
+      "desc": "称号详情加成标题"
+    },
+    {
+      "id": "TitleAttributeBonus",
+      "txt": "%s %+d",
+      "desc": "Lua：属性名称、有符号加成"
+    },
+    {
+      "id": "TitleAttackBonus",
+      "txt": "攻击伤害 %+d%%",
+      "desc": "Lua：称号直接攻击伤害百分比"
+    },
+    {
+      "id": "TitleMoraleBonus",
+      "txt": "士气上限 %+d",
+      "desc": "Lua：称号额外士气上限"
+    },
+    {
+      "id": "TitleAwardHistory",
+      "txt": "获得称号",
+      "desc": "获得称号的经历标题"
+    },
+    {
+      "id": "TitleAwardDescription",
+      "txt": "达成挑战，获得称号「%s」。可在角色手记中装备。",
+      "desc": "Lua：新称号名称"
+    },
+    {
+      "id": "TitleJourney",
+      "txt": "旅途中",
+      "desc": "无当前地点时的称号经历地点"
+    },
+    {
+      "id": "TitleExploreOnly",
+      "txt": "只能在探索时更换称号",
+      "desc": "称号装备阶段门禁"
+    },
+    {
+      "id": "TitleInvalidActor",
+      "txt": "这位角色不在当前队伍中",
+      "desc": "称号装备目标校验"
+    },
+    {
+      "id": "TitleNotOwned",
+      "txt": "尚未获得这个称号",
+      "desc": "称号装备资格校验"
+    },
+    {
+      "id": "MoraleOverview",
+      "txt": "士气 %d / %d · %s",
+      "desc": "Lua：当前士气、上限、阶段名"
+    },
+    {
+      "id": "MoraleDescription",
+      "txt": "勇气决定士气上限与检定成功率。受重伤、目睹同伴倒下或逃跑会造成压力；击败敌人可以提振士气。低士气降低命中与防御，逃跑时自动远离敌人，并在安全距离尝试重整。",
+      "desc": "角色手记士气机制说明"
+    },
+    {
+      "id": "MoraleChanged",
+      "txt": "%s · %s：士气 %d / %d（%s）",
+      "desc": "Lua：角色、事件、当前士气、上限、阶段"
+    },
+    {
+      "id": "MoraleCheck",
+      "txt": "%s · %s：勇气检定 %d / %.0f%%，%s",
+      "desc": "Lua：角色、事件、骰值、成功率、结果"
+    },
+    {
+      "id": "MoralePassed",
+      "txt": "通过",
+      "desc": "勇气检定成功"
+    },
+    {
+      "id": "MoraleFailed",
+      "txt": "未通过",
+      "desc": "勇气检定失败"
+    },
+    {
+      "id": "MoraleCapacityChanged",
+      "txt": "士气上限变化",
+      "desc": "属性改变时的士气上限同步"
+    },
+    {
+      "id": "MoraleFleeing",
+      "txt": "士气崩溃，正在逃跑",
+      "desc": "逃跑回合战斗日志"
+    },
+    {
+      "id": "MoraleCannotAct",
+      "txt": "正在逃跑，无法自主行动",
+      "desc": "逃跑角色行动门禁"
+    },
+    {
+      "id": "InspectionUnknown",
+      "txt": "？？？",
+      "desc": "单位详情：未发现的信息"
+    },
+    {
+      "id": "InspectionTitle",
+      "txt": "单位详情 · 侦察",
+      "desc": "单位详情窗口与入口"
+    },
+    {
+      "id": "InspectionSubtitle",
+      "txt": "基础战斗资源见面即知，技能用过才认识；其余信息每个目标仅一次侦察。",
+      "desc": "单位详情规则说明"
+    },
+    {
+      "id": "InspectionObserve",
+      "txt": "进行侦察",
+      "desc": "提交一次侦察行动"
+    },
+    {
+      "id": "InspectionTargets",
+      "txt": "可查看的单位",
+      "desc": "单位详情目标列表标题"
+    },
+    {
+      "id": "InspectionAttributes",
+      "txt": "属性",
+      "desc": "单位详情属性栏"
+    },
+    {
+      "id": "InspectionTraits",
+      "txt": "特质与技能",
+      "desc": "单位详情特质与技能栏"
+    },
+    {
+      "id": "InspectionObserver",
+      "txt": "侦察者：%s",
+      "desc": "单位详情侦察者姓名"
+    },
+    {
+      "id": "InspectionSelect",
+      "txt": "请选择左侧的单位。",
+      "desc": "单位详情空选择"
+    },
+    {
+      "id": "InspectionTargetUnavailable",
+      "txt": "目标已离开可观察范围。",
+      "desc": "侦察目标失效"
+    },
+    {
+      "id": "InspectionOwned",
+      "txt": "已加入队伍，无需侦察。",
+      "desc": "己方单位无需检定"
+    },
+    {
+      "id": "InspectionAlreadyObserved",
+      "txt": "队伍已侦察过此目标，无法再次检定。",
+      "desc": "一次侦察限制"
+    },
+    {
+      "id": "InspectionObserverRequired",
+      "txt": "请选择存活的队员进行侦察。",
+      "desc": "侦察者资格"
+    },
+    {
+      "id": "InspectionPlayerTurn",
+      "txt": "请等待当前队员的行动回合。",
+      "desc": "战斗侦察回合限制"
+    },
+    {
+      "id": "InspectionUnavailable",
+      "txt": "当前无法进行侦察。",
+      "desc": "侦察阶段限制"
+    },
+    {
+      "id": "InspectionBattleCost",
+      "txt": "次要行动 · 1 AP",
+      "desc": "战前与战斗侦察消耗"
+    },
+    {
+      "id": "InspectionLifeCost",
+      "txt": "消耗 5 游戏分钟",
+      "desc": "探索侦察消耗"
+    },
+    {
+      "id": "InspectionUnobserved",
+      "txt": "尚未侦察。",
+      "desc": "单位详情未侦察状态"
+    },
+    {
+      "id": "InspectionResult",
+      "txt": "侦察骰点 %d · 已揭示 %d / %d 项",
+      "desc": "己方骰点、已揭示数、总项数"
+    },
+    {
+      "id": "InspectionOwnedResult",
+      "txt": "队员的全部属性、特质和技能均已知。",
+      "desc": "己方单位详情状态"
+    },
+    {
+      "id": "InspectionHealth",
+      "txt": "生命",
+      "desc": "单位详情生命分组"
+    },
+    {
+      "id": "InspectionActionPoints",
+      "txt": "行动力",
+      "desc": "单位详情行动力分组"
+    },
+    {
+      "id": "InspectionGuard",
+      "txt": "护卫",
+      "desc": "单位详情护卫分组"
+    },
+    {
+      "id": "InspectionCasting",
+      "txt": "施法点",
+      "desc": "单位详情施法点分组"
+    },
+    {
+      "id": "InspectionFraction",
+      "txt": "%s / %s",
+      "desc": "当前值、最大值"
+    },
+    {
+      "id": "InspectionAttributeLine",
+      "txt": "%s    %s",
+      "desc": "属性名、已知数值或未知标记"
+    },
+    {
+      "id": "InspectionTraitBlock",
+      "txt": "%s\n%s",
+      "desc": "特质名与说明"
+    },
+    {
+      "id": "InspectionNoTraits",
+      "txt": "无特质",
+      "desc": "已知单位没有特质"
+    },
+    {
+      "id": "InspectionPartyLabel",
+      "txt": "队伍成员 · 全部已知",
+      "desc": "单位列表己方标签"
+    },
+    {
+      "id": "InspectionTargetLabel",
+      "txt": "点击查看详情",
+      "desc": "单位列表其他目标标签"
+    },
+    {
+      "id": "InspectionHealthLabel",
+      "txt": "生命 %s",
+      "desc": "战斗日志已知生命分数或未知标记"
+    },
+    {
+      "id": "InspectionDefenseLabel",
+      "txt": "防御 %s / 护卫 %s",
+      "desc": "战斗日志已知防御和护卫或未知标记"
+    },
+    {
+      "id": "InspectionAPLabel",
+      "txt": "%s AP",
+      "desc": "行动力分数或未知标记"
+    },
+    {
+      "id": "RosterTitle",
+      "txt": "队伍编组",
+      "desc": "营地编组入口和标题"
+    },
+    {
+      "id": "RosterHint",
+      "txt": "在营地调整出战与后备；出战至少保留一人，后备继续消耗食物与工资。",
+      "desc": "营地编组说明"
+    },
+    {
+      "id": "RosterCounts",
+      "txt": "出战 %d/%d 人 · 后备 %d/%d 人",
+      "desc": "编组人数；出战数/上限/后备数/上限"
+    },
+    {
+      "id": "RosterActive",
+      "txt": "出战",
+      "desc": "编组状态"
+    },
+    {
+      "id": "RosterReserve",
+      "txt": "后备休养",
+      "desc": "编组状态"
+    },
+    {
+      "id": "RosterMemberStatus",
+      "txt": "%s · Lv%d · 生命 %d/%d",
+      "desc": "状态/等级/生命/上限"
+    },
+    {
+      "id": "RosterRecoveryHelp",
+      "txt": "后备每游戏日恢复 %.0f%% 可恢复血量，各部位减少 %d 点创伤；剧情伤势恢复速度为 %.0f 倍。按实际休养时间累计，永久残疾和疾病仍需原有处理。",
+      "desc": "比例/创伤点数/倍率"
+    },
+    {
+      "id": "RosterBodyStatus",
+      "txt": "%s：生命 %d/%d · 创伤 %d%s",
+      "desc": "部位/生命/上限/创伤/永久标记"
+    },
+    {
+      "id": "RosterPermanent",
+      "txt": "（永久伤残）",
+      "desc": "部位状态标记"
+    },
+    {
+      "id": "RosterDailyCost",
+      "txt": "每日消耗：食物 %d 份 · 工资 %d 金币",
+      "desc": "食物/工资；主角工资为0"
+    },
+    {
+      "id": "RosterRestAction",
+      "txt": "转入后备休养",
+      "desc": "出战角色操作"
+    },
+    {
+      "id": "RosterDeployAction",
+      "txt": "加入出战小队",
+      "desc": "后备角色操作"
+    },
+    {
+      "id": "RosterSwapAction",
+      "txt": "与后备交换",
+      "desc": "满编时也可原子交换"
+    },
+    {
+      "id": "RosterConfirmSwap",
+      "txt": "确认交换",
+      "desc": "选择后备后的操作"
+    },
+    {
+      "id": "RosterCancelSwap",
+      "txt": "取消交换",
+      "desc": "取消后备选择"
+    },
+    {
+      "id": "RosterChooseReplacement",
+      "txt": "请选择要替换上场的后备角色。",
+      "desc": "交换选择提示"
+    },
+    {
+      "id": "RosterUpdated",
+      "txt": "编组已更新。",
+      "desc": "编组成功提示"
+    },
+    {
+      "id": "RosterCampOnly",
+      "txt": "只能在营地调整编组。",
+      "desc": "编组失败原因"
+    },
+    {
+      "id": "RosterInvalidMember",
+      "txt": "角色编组已改变，请重新选择。",
+      "desc": "编组失败原因"
+    },
+    {
+      "id": "RosterLastActive",
+      "txt": "出战小队至少需要保留一名角色。",
+      "desc": "编组失败原因"
+    },
+    {
+      "id": "RosterReserveFull",
+      "txt": "后备已满，最多容纳 6 人；可与后备直接交换。",
+      "desc": "编组失败原因"
+    },
+    {
+      "id": "RosterActiveFull",
+      "txt": "出战已满，最多容纳 4 人；可选择出战角色与后备交换。",
+      "desc": "编组失败原因"
+    },
+    {
+      "id": "RosterRecruitFull",
+      "txt": "出战与后备均已满，任务保持待领取。",
+      "desc": "招募容量失败原因"
+    },
+    {
+      "id": "DeathDoorStatus",
+      "txt": "死门",
+      "desc": "仍存活但生命为零的状态"
+    },
+    {
+      "id": "DeathDoorWeakness",
+      "txt": "死门衰弱",
+      "desc": "挺过死亡检定后的持久属性惩罚"
+    },
+    {
+      "id": "DeathDoorEnteredLog",
+      "txt": "%s 进入死门：生命为0，仍可行动；再次受到伤害将进行死亡检定。",
+      "desc": "Lua：角色名称"
+    },
+    {
+      "id": "DeathDoorCheckTitle",
+      "txt": "%s · 死门检定",
+      "desc": "Lua：角色名称"
+    },
+    {
+      "id": "DeathDoorCheckLog",
+      "txt": "%s · 死门D20掷出%d，死亡区间1–%d（%d%%），%s。",
+      "desc": "Lua：角色、骰值、致死面数、死亡率、结果"
+    },
+    {
+      "id": "DeathDoorSurvived",
+      "txt": "挺过死门",
+      "desc": "死亡检定幸存"
+    },
+    {
+      "id": "DeathDoorDied",
+      "txt": "已死亡",
+      "desc": "死亡检定失败，永久死亡"
+    },
+    {
+      "id": "DeathDoorSurvivalPressure",
+      "txt": "死门幸存的冲击",
+      "desc": "幸存后大幅士气损失来源"
+    },
+    {
+      "id": "DeathDoorDieLabel",
+      "txt": "命运",
+      "desc": "D20死门检定骰子标签"
+    },
+    {
+      "id": "DeathDoorDiceRequirement",
+      "txt": "D20：1–%d为死亡，其余为幸存\n本次死亡率：%d%%　检定前士气：%d / %d",
+      "desc": "Lua：致死面数、死亡率、士气、上限"
+    },
+    {
+      "id": "DeathDoorHealthText",
+      "txt": "%d / %d · 死门",
+      "desc": "Lua：当前血量、血量上限"
+    },
+    {
+      "id": "DeathDoorPermanentDescription",
+      "txt": "这位角色已永久死亡。普通治疗和营地休整都无法使其复活。",
+      "desc": "永久死亡的角色说明"
+    },
+    {
+      "id": "DeathDoorWeaknessDescription",
+      "txt": "已挺过%d次死亡检定，战斗属性额外降低%d%%。回血可离开死门；本场再次归零仍需检定。营地休整可清除幸存者的衰弱。",
+      "desc": "Lua：幸存次数、叠加属性降幅"
+    },
+    {
+      "id": "RosterSaveInvalid",
+      "txt": "出战、后备或休养记录无效。",
+      "desc": "编组存档验证失败"
+    },
+    {
+      "id": "InspectionSaveInvalid",
+      "txt": "存档中的单位侦察记录与当前配置不一致。",
+      "desc": "侦察字段配置校验失败"
+    },
+    {
+      "id": "InspectionPreviousValue",
+      "txt": "（原 %s）",
+      "desc": "战斗日志原数值"
+    },
+    {
+      "id": "InspectionPreviousObserver",
+      "txt": "上一位",
+      "desc": "切换侦察者"
+    },
+    {
+      "id": "InspectionNextObserver",
+      "txt": "下一位",
+      "desc": "切换侦察者"
+    },
+    {
+      "id": "DeathDoorSaveInvalid",
+      "txt": "存档中的死门或死亡状态无效",
+      "desc": "死门保存记录校验失败"
+    },
+    {
+      "id": "InspectionClose",
+      "txt": "关闭",
+      "desc": "单位详情关闭按钮"
+    },
+    {
+      "id": "BattlePausedByWindow",
+      "txt": "请先完成当前窗口中的操作",
+      "desc": "骰子等模态窗口期间禁止推进战斗命令"
+    },
+    {
+      "id": "CharacterIdentityTitle",
+      "txt": "【%s】",
+      "desc": "角色名牌称号行；%s=当前装备的称号名称"
+    },
+    {
+      "id": "TitleReputation",
+      "txt": "声望点数",
+      "desc": "全队共享的称号制作货币，与阵营声望区分"
+    },
+    {
+      "id": "TitleReputationShared",
+      "txt": "全队共享 · 可用于制作称号",
+      "desc": "任务奖励卡片的称号声望说明"
+    },
+    {
+      "id": "TitleForgeInvalidEffects",
+      "txt": "称号效果或档位无效。",
+      "desc": "制作称号的效果参数校验"
+    },
+    {
+      "id": "TitleForgeInvalidName",
+      "txt": "称号需为1至16个字符，不能包含换行、控制符或尖括号。",
+      "desc": "玩家自定义称号名称边界"
+    },
+    {
+      "id": "TitleForgeNeedPositive",
+      "txt": "请至少选择一项正面效果。",
+      "desc": "制作称号禁止仅包含负面项"
+    },
+    {
+      "id": "TitleForgeInsufficient",
+      "txt": "声望不足，无法制作这个称号。",
+      "desc": "共享货币余额不足"
+    },
+    {
+      "id": "TitleForgeEffectSummary",
+      "txt": "%s · %d档\n%s",
+      "desc": "Lua：效果名称、档位、每档说明"
+    },
+    {
+      "id": "TitleForgeOwnedDescription",
+      "txt": "自定义称号 · 制作时消耗%d声望\n\n%s",
+      "desc": "Lua：历史实际支付声望、效果说明"
+    },
+    {
+      "id": "TitleForgeTitle",
+      "txt": "自拟称号",
+      "desc": "称号制作界面文案"
+    },
+    {
+      "id": "TitleForgeOpen",
+      "txt": "制作称号",
+      "desc": "称号制作界面文案"
+    },
+    {
+      "id": "TitleForgeClose",
+      "txt": "返回称号",
+      "desc": "称号制作界面文案"
+    },
+    {
+      "id": "TitleForgeOwner",
+      "txt": "为 %s 制作称号",
+      "desc": "Lua：角色名称"
+    },
+    {
+      "id": "TitleForgeBalance",
+      "txt": "全队声望  %d",
+      "desc": "Lua：全队声望余额"
+    },
+    {
+      "id": "TitleForgeNameLabel",
+      "txt": "称号名称",
+      "desc": "称号制作界面文案"
+    },
+    {
+      "id": "TitleForgeNamePlaceholder",
+      "txt": "输入称号名（1—16 字）",
+      "desc": "称号制作界面文案"
+    },
+    {
+      "id": "TitleForgePermanent",
+      "txt": "制作后永久拥有，卸下不返还声望。负面效果最多抵扣正面费用的%d%%。",
+      "desc": "Lua：负面抵扣比例上限"
+    },
+    {
+      "id": "TitleForgePrimary",
+      "txt": "基础属性",
+      "desc": "称号制作界面文案"
+    },
+    {
+      "id": "TitleForgeCombat",
+      "txt": "战斗属性",
+      "desc": "称号制作界面文案"
+    },
+    {
+      "id": "TitleForgeLife",
+      "txt": "生活属性",
+      "desc": "称号制作界面文案"
+    },
+    {
+      "id": "TitleForgeSpecial",
+      "txt": "特殊效果",
+      "desc": "称号制作界面文案"
+    },
+    {
+      "id": "TitleForgeNegative",
+      "txt": "负面效果",
+      "desc": "称号制作界面文案"
+    },
+    {
+      "id": "TitleForgePreview",
+      "txt": "称号效果预览",
+      "desc": "称号制作界面文案"
+    },
+    {
+      "id": "TitleForgeEmptyPreview",
+      "txt": "使用左侧的加减按钮搭配称号效果。",
+      "desc": "称号制作界面文案"
+    },
+    {
+      "id": "TitleForgeRank",
+      "txt": "%d / %d",
+      "desc": "Lua：当前档位、最大档位"
+    },
+    {
+      "id": "TitleForgePrice",
+      "txt": "%d 声望 / 档",
+      "desc": "Lua：每档声望价格"
+    },
+    {
+      "id": "TitleForgeDiscountPrice",
+      "txt": "抵扣 %d / 档",
+      "desc": "Lua：每档抵扣声望"
+    },
+    {
+      "id": "TitleForgePositiveCost",
+      "txt": "正面效果  %d",
+      "desc": "Lua：正面效果总价"
+    },
+    {
+      "id": "TitleForgeDiscountCost",
+      "txt": "负面抵扣  −%d",
+      "desc": "Lua：实际负面抵扣额"
+    },
+    {
+      "id": "TitleForgeTotalCost",
+      "txt": "消耗声望  %d",
+      "desc": "Lua：本次制作总价"
+    },
+    {
+      "id": "TitleForgeCraft",
+      "txt": "制作称号",
+      "desc": "称号制作界面文案"
+    },
+    {
+      "id": "TitleForgeReady",
+      "txt": "制作后可在称号页装备；每名角色同时装备一个称号。",
+      "desc": "称号制作界面文案"
+    },
+    {
+      "id": "TitleForgeDecrease",
+      "txt": "−",
+      "desc": "称号制作界面文案"
+    },
+    {
+      "id": "TitleForgeIncrease",
+      "txt": "＋",
+      "desc": "称号制作界面文案"
+    },
+    {
+      "id": "TownEscortTurnInHint",
+      "txt": "商队安全抵达、护送完成后，可在任务手记中直接完成委托并领取报酬。",
+      "desc": "护送委托无需返回委托人的结算说明"
+    },
+    {
+      "id": "TownEscortComplete",
+      "txt": "完成委托并领取报酬",
+      "desc": "护送完成后的任务手记按钮"
+    },
+    {
+      "id": "TownMissionTurnInHint",
+      "txt": "完成后回原委托人处交付并领取报酬。",
+      "desc": "材料与清剿委托交付说明"
+    },
+    {
+      "id": "TownEscortArrived",
+      "txt": "商队已安全抵达，可在任务手记中直接完成委托并领取奖励",
+      "desc": "护送抵达通知"
+    },
+    {
+      "id": "SaveEscortAmbushInvalid",
+      "txt": "存档护送袭击进度无效",
+      "desc": "护送路线与判定次数事实预检错误"
+    },
+    {
+      "id": "TownMissionClaimExplorationOnly",
+      "txt": "只能在探索时完成委托并领取报酬",
+      "desc": "委托领取禁止战斗与非探索阶段"
+    },
+    {
+      "id": "PauseMenuTitle",
+      "txt": "游戏暂停",
+      "desc": "ESC 半屏菜单标题"
+    },
+    {
+      "id": "PauseMenuResume",
+      "txt": "继续游戏",
+      "desc": "ESC 菜单继续游戏按钮"
+    },
+    {
+      "id": "PauseMenuSave",
+      "txt": "保存游戏",
+      "desc": "ESC 菜单保存当前远征按钮"
+    },
+    {
+      "id": "PauseMenuLoad",
+      "txt": "加载游戏",
+      "desc": "ESC 菜单打开存档列表按钮"
+    },
+    {
+      "id": "PauseMenuSettings",
+      "txt": "游戏设置",
+      "desc": "ESC 菜单设置占位按钮，暂不执行操作"
+    },
+    {
+      "id": "PauseMenuQuit",
+      "txt": "退出游戏",
+      "desc": "ESC 菜单退出应用按钮"
+    },
+    {
+      "id": "PauseMenuHint",
+      "txt": "按 ESC 继续游戏",
+      "desc": "ESC 菜单返回提示"
+    },
+    {
+      "id": "PauseMenuSaved",
+      "txt": "游戏已保存。",
+      "desc": "ESC 菜单保存成功反馈"
+    },
+    {
+      "id": "PauseMenuSaveFailed",
+      "txt": "保存失败：%s",
+      "desc": "ESC 菜单保存失败反馈；%s=存档服务错误详情"
+    },
+    {
+      "id": "BattleOutsideSkillShape",
+      "txt": "目标不在技能的攻击形态内",
+      "desc": "战斗：线形或环形技能的位置不合法"
+    },
+    {
+      "id": "RelationshipLove",
+      "txt": "爱恋",
+      "desc": "关系：已确认爱恋"
+    },
+    {
+      "id": "RelationshipLoveStrained",
+      "txt": "爱恋·疏远",
+      "desc": "关系：爱恋仍在但好感低于挚友门槛"
+    },
+    {
+      "id": "RelationshipStageTitle",
+      "txt": "关系 · %s",
+      "desc": "关系纪事标题；阶段名"
+    },
+    {
+      "id": "RelationshipStageChanged",
+      "txt": "关系从「%s」变为「%s」。%s",
+      "desc": "关系阶段变化；旧阶段、新阶段、说明"
+    },
+    {
+      "id": "RelationshipHonorTitle",
+      "txt": "荣誉 · %s",
+      "desc": "荣誉纪事；名称"
+    },
+    {
+      "id": "RelationshipHonorEarned",
+      "txt": "完成 %d 次真实危急救援，获得「%s」。",
+      "desc": "荣誉纪事；次数、荣誉名"
+    },
+    {
+      "id": "RelationshipEvent",
+      "txt": "%s\n好感变化：%+d。",
+      "desc": "关系纪事；事件正文、实际变化"
+    },
+    {
+      "id": "RelationshipDeathRescue",
+      "txt": "从死门拉回",
+      "desc": "关系事件标题"
+    },
+    {
+      "id": "RelationshipRescue",
+      "txt": "危急援手",
+      "desc": "关系事件标题"
+    },
+    {
+      "id": "RelationshipRescueMemory",
+      "txt": "%s救回了濒危的%s，恢复 %d 点生命。那次伸出的手，彼此都记得。",
+      "desc": "关系救援；救助者、获救者、恢复量"
+    },
+    {
+      "id": "RelationshipReliance",
+      "txt": "学会依靠同伴",
+      "desc": "特质变化标题"
+    },
+    {
+      "id": "RelationshipTraitMemory",
+      "txt": "被%s从危险中救助后，克服了「%s」。",
+      "desc": "救援特质纪事；救助者、特质名"
+    },
+    {
+      "id": "RelationshipCare",
+      "txt": "及时照料",
+      "desc": "关系治疗标题"
+    },
+    {
+      "id": "RelationshipCareMemory",
+      "txt": "%s照料了%s的伤口，有效恢复 %d 点生命。",
+      "desc": "关系治疗；治疗者、受益者、扣除友伤后的恢复量"
+    },
+    {
+      "id": "RelationshipFriendlyFire",
+      "txt": "误伤留下芥蒂",
+      "desc": "关系误伤标题"
+    },
+    {
+      "id": "RelationshipHarmMemory",
+      "txt": "%s的攻击误伤了%s，造成 %d 点生命损失。即使仍并肩作战，这件事也没有被忽略。",
+      "desc": "关系误伤；伤害者、受伤者、生命损失"
+    },
+    {
+      "id": "RelationshipCooperate",
+      "txt": "接住同伴的攻势",
+      "desc": "关系协作标题"
+    },
+    {
+      "id": "RelationshipCooperateMemory",
+      "txt": "%s先行攻击，%s在同一轮接续对%s的攻势。彼此逐渐熟悉对方的节奏。",
+      "desc": "关系协作；先攻者、接续者、目标"
+    },
+    {
+      "id": "RelationshipVictory",
+      "txt": "并肩取胜",
+      "desc": "关系胜利标题"
+    },
+    {
+      "id": "RelationshipUneasyVictory",
+      "txt": "共同战胜了敌人，但这一战的误伤让彼此心存芥蒂。",
+      "desc": "有友伤时胜利无好感奖励"
+    },
+    {
+      "id": "RelationshipVictoryMemory",
+      "txt": "又一次共同度过险境，为彼此留下了一段同行的记忆。",
+      "desc": "关系胜利纪事"
+    },
+    {
+      "id": "RelationshipCalm",
+      "txt": "相处安稳",
+      "desc": "关系无芥蒂状态"
+    },
+    {
+      "id": "RelationshipGrudge",
+      "txt": "心存芥蒂：治疗收益减半，交谈收益降低；道歉能逐步修复。",
+      "desc": "关系芥蒂状态"
+    },
+    {
+      "id": "RelationshipDetails",
+      "txt": "好感 %d（−100～100） · 芥蒂 %d\n%s\n共同取胜 %d 次 · 危急救援 %d 次\n照料 %d 次 · 协作 %d 次 · 误伤 %d 次",
+      "desc": "关系详情；好感、芥蒂、状态、胜利、救援、照料、协作、误伤"
+    },
+    {
+      "id": "RelationshipMemoryLine",
+      "txt": "第 %d 日 · %s（%+d）",
+      "desc": "关系近期记忆；日期、事件名、实际变化"
+    },
+    {
+      "id": "RelationshipMemories",
+      "txt": "最近的共同记忆\n%s\n完整经过可在「经历」中查看。",
+      "desc": "关系近期记忆列表"
+    },
+    {
+      "id": "RelationshipNoMemories",
+      "txt": "还没有共同记忆。一起行动，关系才会留下自己的故事。",
+      "desc": "关系无记忆"
+    },
+    {
+      "id": "RelationshipTag",
+      "txt": "◇ %s · %s",
+      "desc": "关系标签；对方姓名、关系状态"
+    },
+    {
+      "id": "RelationshipHonorOwned",
+      "txt": "★ 荣誉 · %s",
+      "desc": "已获荣誉名称"
+    },
+    {
+      "id": "RelationshipHonorChallenge",
+      "txt": "☆ 挑战 · %s",
+      "desc": "未获荣誉名称"
+    },
+    {
+      "id": "RelationshipHonorProgress",
+      "txt": "%s\n危急救援 %d / %d · %s",
+      "desc": "荣誉说明、进度、要求、状态"
+    },
+    {
+      "id": "RelationshipEarned",
+      "txt": "已获得",
+      "desc": "荣誉状态"
+    },
+    {
+      "id": "RelationshipUnearned",
+      "txt": "尚未达成",
+      "desc": "荣誉状态"
+    },
+    {
+      "id": "RelationshipRestOnly",
+      "txt": "请在战斗外、没有进行其他对话时交流。",
+      "desc": "关系交流条件失败"
+    },
+    {
+      "id": "RelationshipLivingPair",
+      "txt": "需要两名仍然存活的队员。",
+      "desc": "关系交流条件失败"
+    },
+    {
+      "id": "RelationshipDailyLimit",
+      "txt": "这两人今天已经认真交流过了，明天再继续吧。",
+      "desc": "双方共享每日交流限次"
+    },
+    {
+      "id": "RelationshipNoGrudge",
+      "txt": "彼此没有尚待化解的芥蒂，无需反复道歉。",
+      "desc": "道歉无目标"
+    },
+    {
+      "id": "RelationshipAlreadyPartnered",
+      "txt": "其中一人已有伴侣。请先处理当前的关系。",
+      "desc": "确认爱恋失败"
+    },
+    {
+      "id": "RelationshipLoveRequirement",
+      "txt": "需要好感达到 %d、共同取胜至少 %d 次，并化解全部芥蒂。",
+      "desc": "确认爱恋要求；好感、次数"
+    },
+    {
+      "id": "RelationshipNotPartners",
+      "txt": "两人目前不是恋人。",
+      "desc": "结束爱恋条件失败"
+    },
+    {
+      "id": "RelationshipChat",
+      "txt": "聊聊近况",
+      "desc": "关系交谈动作"
+    },
+    {
+      "id": "RelationshipApology",
+      "txt": "坦诚道歉",
+      "desc": "关系修复动作"
+    },
+    {
+      "id": "RelationshipConfess",
+      "txt": "确认彼此心意",
+      "desc": "关系恋爱动作"
+    },
+    {
+      "id": "RelationshipRemainFriends",
+      "txt": "回到朋友关系",
+      "desc": "关系结束爱恋动作"
+    },
+    {
+      "id": "RelationshipChatMemory",
+      "txt": "%s与%s聊了聊一路的见闻，慢慢了解对方。",
+      "desc": "交流纪事；双方名字"
+    },
+    {
+      "id": "RelationshipApologyMemory",
+      "txt": "%s与%s认真谈起了那次伤害。歉意被听见了，但信任仍需以后的行动修复。",
+      "desc": "道歉纪事；双方名字"
+    },
+    {
+      "id": "RelationshipLoveMemory",
+      "txt": "%s与%s确认了彼此的心意，决定以恋人的身份继续同行。",
+      "desc": "爱恋纪事；双方名字"
+    },
+    {
+      "id": "RelationshipFriendshipMemory",
+      "txt": "%s与%s坦诚约定回到朋友关系，珍惜已经共同走过的旅程。",
+      "desc": "解除爱恋纪事；双方名字"
+    },
+    {
+      "id": "RelationshipChatHint",
+      "txt": "每天每对队员可交流一次。聊聊近况会增进好感；心存芥蒂时，提升较少，也会稍稍缓解芥蒂。",
+      "desc": "关系交谈预览"
+    },
+    {
+      "id": "RelationshipApologyHint",
+      "txt": "认真道歉能逐步消解芥蒂，仅恢复少量好感。与其他交流共享每日一次的机会。",
+      "desc": "关系道歉预览"
+    },
+    {
+      "id": "RelationshipLoveHint",
+      "txt": "确认后，两人建立爱恋关系。挚友与爱恋是平等的关系方向，爱恋没有额外属性优势；这会占用今天的交流机会。",
+      "desc": "恋爱预览及确认"
+    },
+    {
+      "id": "RelationshipFriendshipHint",
+      "txt": "两人将结束爱恋并保留当前好感，不扣除友情；这会占用今天的交流机会。",
+      "desc": "结束爱恋预览及确认"
+    },
+    {
+      "id": "RelationshipBack",
+      "txt": "← 返回旅途印记",
+      "desc": "关系面板返回"
+    },
+    {
+      "id": "RelationshipConfirm",
+      "txt": "确认：%s",
+      "desc": "关系操作确认；动作名"
+    },
+    {
+      "id": "RelationshipConfirmHint",
+      "txt": "阅读后，点击上方的确认选项执行。选择其他行动可更改决定。",
+      "desc": "关系操作确认提示"
+    },
+    {
+      "id": "RelationshipOnRoad",
+      "txt": "旅途中",
+      "desc": "队员在大地图交流时的纪事地点"
+    },
+    {
+      "id": "RelationshipRememberedLove",
+      "txt": "爱恋·追忆",
+      "desc": "伴侣已亡故的爱情状态"
+    },
+    {
+      "id": "RelationshipRemember",
+      "txt": "珍藏回忆，继续前行",
+      "desc": "幸存者明确解除亡故伴侣关系的动作"
+    },
+    {
+      "id": "RelationshipRememberHint",
+      "txt": "保留共同记忆，结束当前伴侣约定，为新的情谊留出空间。好感不会被扣除；这会占用今天的交流机会。",
+      "desc": "亡故伴侣关系的操作预览"
+    },
+    {
+      "id": "RelationshipRememberMemory",
+      "txt": "%s珍藏着与%s共同走过的岁月，决定带着这段记忆继续前行。",
+      "desc": "追忆纪事；幸存者、亡故伴侣"
+    },
+    {
+      "id": "RelationshipPanelHint",
+      "txt": "选择行动后确认；在右侧详情区域滚动，可查看共同记忆。",
+      "desc": "关系面板操作提示"
+    },
+    {
+      "id": "PeopleSaveInvalid",
+      "txt": "人物记录与当前远征不一致，无法恢复。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleRecruitInvalid",
+      "txt": "这位人物当前无法离开原来的编制；已交战或仅剩一人的队伍需要先解决原有事务。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleGrowthInvalid",
+      "txt": "个人成长记录无效，请重新打开人物界面。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleDialogueTalk",
+      "txt": "交谈",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleDialogueTalkOwned",
+      "txt": "交谈与培养",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleDialogueTalkOther",
+      "txt": "交谈与招募",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleDialogueInspectionHint",
+      "txt": "交谈了解人物的处境与愿望，讨论招募或共同成长。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleDialogueHint",
+      "txt": "共同经历会影响招募意愿与成长机会，选项下方会显示所需条件。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleDialogueBusy",
+      "txt": "请先结束当前对话",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleDialogueUnavailable",
+      "txt": "当前无法与这位人物交谈",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleDialogueLivingActor",
+      "txt": "需要一位能够交谈的队员",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleDialogueStale",
+      "txt": "对话已推进，请选择当前选项",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleDialogueLeave",
+      "txt": "暂时告别",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleDialogueNoInterjection",
+      "txt": "请从当前人物的交谈选项中选择",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleExplorationOnly",
+      "txt": "请在探索间隙交谈。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleUnavailable",
+      "txt": "当前无法与这位人物交谈。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleComeCloser",
+      "txt": "请先沿可通行道路靠近这位人物。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleDuty",
+      "txt": "这位人物仍需履行城镇职务，暂时不能离岗同行。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleWorldParleyOnly",
+      "txt": "请先在大地图上主动接触这支队伍，再与其中的成员交涉。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleAuthoredNpc",
+      "txt": "这位人物有自己的故事，请通过原有对话了解招募条件。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleCaption",
+      "txt": "%s · 信任 %d",
+      "desc": "人物对话副标题；动机名称、信任值"
+    },
+    {
+      "id": "PeopleOpening",
+      "txt": "%s\n\n%s\n\n%s",
+      "desc": "人物介绍；背景、开场对白、完整熟人说明"
+    },
+    {
+      "id": "PeopleBond",
+      "txt": "在这里，我最牵挂的熟人是%s。",
+      "desc": "熟人牵挂介绍；熟人姓名"
+    },
+    {
+      "id": "PeopleNoBond",
+      "txt": "眼前的生活和未来的打算，都需要认真考虑。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleAlreadyJoined",
+      "txt": "这位人物已经加入队伍。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleFinishCommission",
+      "txt": "请先完成这位人物已经交给你的委托，再邀请同行。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleAskBackground",
+      "txt": "聊聊你的来历与牵挂。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleAskWish",
+      "txt": "接下来，你希望做些什么？",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleOfferAdvance",
+      "txt": "提供 %d 金币安家预支，邀请同行。",
+      "desc": "安家预支招募选项；金币数"
+    },
+    {
+      "id": "PeopleNeedCoins",
+      "txt": "需要 %d 金币。",
+      "desc": "招募金币不足；需要金币数"
+    },
+    {
+      "id": "PeopleOfferTrust",
+      "txt": "以已经建立的信任邀请同行。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleNeedTrust",
+      "txt": "完成此人的委托，或通过帮助熟人将信任提升至 %d；当前信任 %d。",
+      "desc": "信任路线要求；目标信任值、当前信任值"
+    },
+    {
+      "id": "PeopleOfferMentor",
+      "txt": "由队中有经验的同伴带领你学习。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleNeedMentor",
+      "txt": "需要一位掌握至少 %d 门已学技艺的存活同伴；当前最多 %d 门。",
+      "desc": "导师路线要求；目标技能数、当前最多已学技能数"
+    },
+    {
+      "id": "PeopleOfferSponsor",
+      "txt": "帮助完成委托后，提供 %d 金币学习资助。",
+      "desc": "学习资助招募选项；金币数"
+    },
+    {
+      "id": "PeopleNeedSponsor",
+      "txt": "需要完成此人的委托，并准备 %d 金币。",
+      "desc": "学习资助路线要求；需要金币数"
+    },
+    {
+      "id": "PeopleOfferSafety",
+      "txt": "道路已经更安全了，一起出发吧。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleNeedSafety",
+      "txt": "需要完成本镇的一份清剿或护送委托。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleOfferBond",
+      "txt": "你牵挂的熟人已在队中，一起同行吧。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleNeedBond",
+      "txt": "需要你牵挂的熟人已经入队，且信任达到 %d。",
+      "desc": "熟人同行路线要求；目标信任值"
+    },
+    {
+      "id": "PeopleOfferRespect",
+      "txt": "展示战绩，并支付 %d 金币解除旧约。",
+      "desc": "战阵认同招募选项；解约金币数"
+    },
+    {
+      "id": "PeopleNeedRespect",
+      "txt": "需要 %d 场正式胜利、%d 金币，以及至少等级 %d 的存活同伴；当前胜利 %d 场、最高等级 %d。",
+      "desc": "战阵认同要求；目标胜利数、金币、目标等级、当前胜利数、当前最高等级"
+    },
+    {
+      "id": "PeopleJoinedTitle",
+      "txt": "新的同行者",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleJoinedMemory",
+      "txt": "%s因为「%s」决定同行。双方的约定是：%s",
+      "desc": "加入经历正文；人物姓名、动机名称、所选招募约定"
+    },
+    {
+      "id": "PeopleJourney",
+      "txt": "旅途中",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleGrowthOption",
+      "txt": "%s\n%s",
+      "desc": "成长选项说明；禁用原因、完整条件和奖励说明"
+    },
+    {
+      "id": "PeopleGrowthSummary",
+      "txt": "%s\n\n%s\n\n%s",
+      "desc": "个人成长话题；阶段标题、阶段正文、进度说明"
+    },
+    {
+      "id": "PeopleWorldTalk",
+      "txt": "与%s交涉",
+      "desc": "世界队伍交涉选项；人物姓名"
+    },
+    {
+      "id": "PeopleWorldTalkBody",
+      "txt": "了解这位人物的来历与意愿，讨论是否愿意离开旧编制。原有能力、装备和伤势都会保留。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleWorldStale",
+      "txt": "队伍成员或接触状态已变化，请重新选择。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleGrowthWins",
+      "txt": "共同胜利 %d/%d",
+      "desc": "个人成长条件进度；已完成次数、需要次数"
+    },
+    {
+      "id": "PeopleGrowthRescues",
+      "txt": "危急救援 %d/%d",
+      "desc": "个人成长条件进度；已完成次数、需要次数"
+    },
+    {
+      "id": "PeopleGrowthLearning",
+      "txt": "正式研习 %d/%d",
+      "desc": "个人成长条件进度；已完成次数、需要次数；不含赠技"
+    },
+    {
+      "id": "PeopleGrowthAny",
+      "txt": "满足任一经历：%s",
+      "desc": "个人成长任一门槛；完整计数项列表"
+    },
+    {
+      "id": "PeopleGrowthAll",
+      "txt": "所需经历：%s",
+      "desc": "个人成长全部门槛；完整计数项列表"
+    },
+    {
+      "id": "PeopleGrowthSeparator",
+      "txt": "；",
+      "desc": "个人成长计数项之间的分隔符"
+    },
+    {
+      "id": "PeopleGrowthTrait",
+      "txt": "获得特质「%s」：%s",
+      "desc": "个人成长奖励；特质名、特质配置描述"
+    },
+    {
+      "id": "PeopleGrowthReplaces",
+      "txt": "替换此前选择的特质「%s」，其原加成不再保留。",
+      "desc": "个人成长替换奖励说明；原特质名"
+    },
+    {
+      "id": "PeopleGrowthSkill",
+      "txt": "掌握技能「%s」：%s",
+      "desc": "个人成长技能奖励；技能名、技能配置描述"
+    },
+    {
+      "id": "PeopleGrowthSkillKnown",
+      "txt": "已掌握技能「%s」：%s。本次仍获得新的特质，技能不重复授予。",
+      "desc": "个人成长已有技能说明；技能名、技能配置描述"
+    },
+    {
+      "id": "PeopleGrowthCompleted",
+      "txt": "个人成长已完成",
+      "desc": "人物已完成首版两个个人成长阶段的状态"
+    },
+    {
+      "id": "PeopleGrowthNotReady",
+      "txt": "还需要更多真实经历。",
+      "desc": "个人成长计数门槛尚未满足"
+    },
+    {
+      "id": "PeopleGrowthActorUnavailable",
+      "txt": "这名角色当前无法作出成长选择。",
+      "desc": "个人成长目标不在队伍、未入队或已经死亡"
+    },
+    {
+      "id": "PeopleGrowthChoiceBody",
+      "txt": "%s\n\n%s\n\n%s",
+      "desc": "个人成长选项正文；配置说明、进度、实际奖励"
+    },
+    {
+      "id": "PeopleGrowthExploreOnly",
+      "txt": "请在探索间隙作出成长选择。",
+      "desc": "战斗等非探索状态禁止个人成长选择"
+    },
+    {
+      "id": "PeopleGrowthInvalidChoice",
+      "txt": "这个成长选项已失效，请重新查看。",
+      "desc": "个人成长阶段或选项不一致、重复提交"
+    },
+    {
+      "id": "PeopleGrowthMemory",
+      "txt": "%s\n%s",
+      "desc": "个人成长经历；配置经历正文、实际奖励"
+    },
+    {
+      "id": "PeopleGrowthJourney",
+      "txt": "旅途中",
+      "desc": "个人成长当前无地点时的经历地点"
+    },
+    {
+      "id": "PeopleGrowthHistoryEntry",
+      "txt": "%s：%s",
+      "desc": "已保存的个人成长选择；选择标题、配置经历正文"
+    },
+    {
+      "id": "SpecialSkillLabel",
+      "txt": "特殊技能",
+      "desc": "特殊技能分类标签"
+    },
+    {
+      "id": "SpecialSkillExploreOnly",
+      "txt": "请在探索间隙传授特殊技能。",
+      "desc": "传授阶段限制"
+    },
+    {
+      "id": "SpecialSkillLivingPair",
+      "txt": "师徒必须是两名不同的存活队员。",
+      "desc": "师徒资格限制"
+    },
+    {
+      "id": "SpecialSkillUnknown",
+      "txt": "未知的特殊技能。",
+      "desc": "无效特殊技能"
+    },
+    {
+      "id": "SpecialSkillTeacherMissing",
+      "txt": "这名队员尚未掌握此特殊技能。",
+      "desc": "导师不持有技能"
+    },
+    {
+      "id": "SpecialSkillCannotTeach",
+      "txt": "此特殊技能无法传授。",
+      "desc": "技能不允许教学"
+    },
+    {
+      "id": "SpecialSkillCannotReteach",
+      "txt": "此特殊技能仅限原始持有者传授。",
+      "desc": "不允许再次传授"
+    },
+    {
+      "id": "SpecialSkillRelationshipRequired",
+      "txt": "双方关系需要达到 %d。",
+      "desc": "传授关系阈值"
+    },
+    {
+      "id": "SpecialSkillAlreadyKnown",
+      "txt": "已经掌握此特殊技能。",
+      "desc": "防止重复学习"
+    },
+    {
+      "id": "SpecialSkillTeachingReady",
+      "txt": "可以学习，不消耗职业学习机会。",
+      "desc": "传授合格说明"
+    },
+    {
+      "id": "SpecialSkillTeachingBody",
+      "txt": "%s\n\n%s",
+      "desc": "技能说明、当前传授资格"
+    },
+    {
+      "id": "SpecialSkillTeachAction",
+      "txt": "请教「%s」",
+      "desc": "关系页请教技能按钮"
+    },
+    {
+      "id": "SpecialSkillTeachingTitle",
+      "txt": "特殊技能传授",
+      "desc": "师徒经历标题"
+    },
+    {
+      "id": "SpecialSkillTeachingMemory",
+      "txt": "%s 向 %s 传授了「%s」。",
+      "desc": "教师、学生、技能"
+    },
+    {
+      "id": "SpecialSkillObservationTitle",
+      "txt": "战后领悟",
+      "desc": "战斗观摩经历标题"
+    },
+    {
+      "id": "SpecialSkillObservationMemory",
+      "txt": "%s 在观摩 %s 后，领悟了「%s」。",
+      "desc": "学生、释放者、技能"
+    },
+    {
+      "id": "SpecialSkillJourney",
+      "txt": "旅途中",
+      "desc": "无地点时经历地点"
+    },
+    {
+      "id": "SpecialSkillAttributeRequired",
+      "txt": "需要%s达到 %d。",
+      "desc": "共享属性门槛；属性名称、要求"
+    },
+    {
+      "id": "SpecialSkillRequirementsMet",
+      "txt": "满足属性要求。",
+      "desc": "共享门槛通过"
+    },
+    {
+      "id": "SpecialSkillSource",
+      "txt": "特殊技能：学习途径与要求见下方说明。",
+      "desc": "尚未获得时的来源"
+    },
+    {
+      "id": "SpecialSkillOwned",
+      "txt": "已掌握特殊技能。",
+      "desc": "已学特殊技能状态"
+    },
+    {
+      "id": "SpecialSkillOriginal",
+      "txt": "原始持有的特殊技能。",
+      "desc": "配置持有者状态"
+    },
+    {
+      "id": "SpecialSkillTeachingRule",
+      "txt": "传授：双方关系至少 %d；%s",
+      "desc": "关系阈值、再次传授规则"
+    },
+    {
+      "id": "SpecialSkillReteachable",
+      "txt": "学会后可以继续传授。",
+      "desc": "可继续传授"
+    },
+    {
+      "id": "SpecialSkillOriginalOnly",
+      "txt": "仅原始持有者能够传授。",
+      "desc": "不可继续传授"
+    },
+    {
+      "id": "SpecialSkillObserveRule",
+      "txt": "观摩领悟：%s至少 %d；基础概率 %.0f%%，每多 1 点增加 %.0f%%，最高 %.0f%%。",
+      "desc": "属性、最低值、基础百分比、每点百分比、上限百分比"
+    },
+    {
+      "id": "SpecialSkillObserveBasis",
+      "txt": "以施放时的属性判定，不计装备加成；每人每技能每场至多判定一次，战后存活时结算。",
+      "desc": "观摩属性与结算范围"
+    },
+    {
+      "id": "PeopleAskCommissions",
+      "txt": "看看你需要帮忙的事。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "PeopleCommissionsOpening",
+      "txt": "这些就是眼下需要帮忙的事情。",
+      "desc": "世界人物与招募；格式参数按调用顺序填写"
+    },
+    {
+      "id": "InspectionSkills",
+      "txt": "技能 · 使用后认识",
+      "desc": "单位详情技能列表标题"
+    },
+    {
+      "id": "InspectionSkillBlock",
+      "txt": "%s\n%s",
+      "desc": "单位详情技能名与配置说明"
+    },
+    {
+      "id": "InspectionNoSkills",
+      "txt": "无技能",
+      "desc": "单位详情无可列出的技能"
+    },
+    {
+      "id": "AnatomyTargetTitle",
+      "txt": "精准打击：{0}",
+      "desc": "C# 部位选择标题；目标名称"
+    },
+    {
+      "id": "AnatomyChooseTargetHint",
+      "txt": "请选择目标，再选择要打击的部位。",
+      "desc": "精准技能等待目标"
+    },
+    {
+      "id": "AnatomyChoosePartHint",
+      "txt": "点击部位施放；取消不会消耗行动资源。",
+      "desc": "精准技能等待部位"
+    },
+    {
+      "id": "AnatomyChoosePartAction",
+      "txt": "选择打击部位",
+      "desc": "精准技能选择中禁用的结束回合按钮"
+    },
+    {
+      "id": "AnatomyChoosePartHelp",
+      "txt": "左右以目标自身为准；攻击仍需命中判定。",
+      "desc": "精准技能部位选择说明"
+    },
+    {
+      "id": "AnatomyInvalidPart",
+      "txt": "该部位当前无法选择，请重新选择。",
+      "desc": "精准技能选择失效"
+    },
+    {
+      "id": "BodyLeftArmUnavailable",
+      "txt": "左臂重伤或致残，无法使用副手或双手装备",
+      "desc": "装备/技能/拾取被左臂伤势阻止"
+    },
+    {
+      "id": "BodyRightArmUnavailable",
+      "txt": "右臂重伤或致残，无法使用主手或双手装备",
+      "desc": "装备/技能/拾取被右臂伤势阻止"
+    },
+    {
+      "id": "BodyDroppedItem",
+      "txt": "失落的%s",
+      "desc": "落地容器完整名称；参数为装备名称"
+    },
+    {
+      "id": "BodyEquipmentDropped",
+      "txt": "%s因手臂重伤，%s掉落在脚下",
+      "desc": "战斗重伤掉落日志；角色名、装备名列表"
+    },
+    {
+      "id": "BodyEquipmentSeparator",
+      "txt": "、",
+      "desc": "同时掉落的装备名称分隔符"
+    },
+    {
+      "id": "BodyArmEquipmentNote",
+      "txt": "重伤或永久致残时无法使用对应手的装备；双手装备需要双臂均可用。战斗中装备会掉落，恢复后可重新装备。",
+      "desc": "身体健康手臂状态说明"
+    },
+    {
+      "id": "AnatomyCoreSelectPart",
+      "txt": "请选择本次攻击的身体部位。",
+      "desc": "精准解剖提交时缺少部位"
+    },
+    {
+      "id": "AnatomyCoreInvalidPart",
+      "txt": "所选身体部位无效，请重新选择。",
+      "desc": "精准解剖非法或失效部位"
+    },
+    {
+      "id": "AnatomyCoreUnsupportedTarget",
+      "txt": "目标没有可精准打击的身体部位。",
+      "desc": "精准解剖拒绝未启用肢体系统的目标"
+    },
+    {
+      "id": "AnatomyCoreNoSelectablePart",
+      "txt": "目标没有可选择的身体部位。",
+      "desc": "精准解剖无可用部位"
+    },
+    {
+      "id": "AnatomyCoreMountedTarget",
+      "txt": "坐骑正在代为承受伤害，请先击落坐骑再选择骑手部位。",
+      "desc": "精准解剖遵守坐骑承伤规则"
+    },
+    {
+      "id": "AnatomyCoreNotTargetedSkill",
+      "txt": "此技能不能指定身体部位。",
+      "desc": "部位命令用于不支持部位的技能"
     }
   ]
 }

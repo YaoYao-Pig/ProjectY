@@ -41,6 +41,10 @@ function Atlas:Owned(actor,stats)
     if stats.animals then for _,id in ipairs(stats.animals:AddSkills(actor,{})) do result[id]=true end end
     -- 破坏工事是人人可用的战场动作，不进入升级研习候选。
     for id in pairs(self.universal) do result[id]=true end
+    if stats.spellcasting then
+        local ids={};for id in pairs(result)do ids[#ids+1]=id end
+        for _,id in ipairs(stats.spellcasting:AddSkills(actor,ids))do result[id]=true end
+    end
     return result
 end
 function Atlas:Prerequisites(id,owned)
@@ -83,6 +87,14 @@ function Atlas:Related(id)
     return result
 end
 function Atlas:State(id,actor,stats,owned)
+    if stats.specialSkills and stats.specialSkills.bySkill[id] then
+        if stats.specialSkills:IsOriginal(actor,id) then return 'owned',LuaLanguage.SpecialSkillOriginal end
+        return owned[id] and 'owned' or 'source',owned[id] and LuaLanguage.SpecialSkillOwned or LuaLanguage.SpecialSkillSource
+    end
+    local recipe=stats.spellcasting and stats.spellcasting.recipes:Find(id)
+    if recipe and #recipe.ingredientIds>0 then
+        return owned[id] and 'owned' or 'source',owned[id] and LuaLanguage.SpellcastingRecipeOwned or LuaLanguage.SpellcastingRecipeLocked
+    end
     if owned[id] then
         if actor.Growth:HasSkill(id) then return 'owned',LuaLanguage.UISkillAtlasText8 end
         for _,skillId in ipairs(stats:Template(actor).skillIds) do if skillId==id then return 'owned',LuaLanguage.UISkillAtlasText7 end end
@@ -129,6 +141,7 @@ function Atlas:Details(id,actor,stats,owned)
             lines[#lines+1]=self.professions.professions:Get(course.professionId).name..'：'..table.concat(requirements,'、')
         end
         lines[#lines+1]=LuaLanguage.UISkillAtlasLinesLines14
+    elseif stats.specialSkills and stats.specialSkills.bySkill[id] then lines[#lines+1]=stats.specialSkills:Description(id,stats)
     elseif self.universal[id] then lines[#lines+1]=LuaLanguage.UISkillAtlasLinesLines13
     elseif skill.skillKind=='item' then lines[#lines+1]=LuaLanguage.UISkillAtlasLinesLines12
     else lines[#lines+1]=LuaLanguage.UISkillAtlasLinesLines1 end

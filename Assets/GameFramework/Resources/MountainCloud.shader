@@ -41,8 +41,14 @@ Shader "ProjectY/Mountain Cloud"
                 float4 data=UNITY_ACCESS_INSTANCED_PROP(Props,_CloudData);
                 float2 p=input.uv*2-1;
                 float soft=saturate(1-dot(p,p));soft=soft*soft;
-                float2 flow=input.uv*float2(5,3)+float2(_Time.y*.015,data.y);
-                float density=noise(flow)*.65+noise(flow*2.1)*.35;
+                // Different advection speeds keep the mist rolling inside its mountain-height envelope.
+                float time=_Time.y*(1+sin(data.y)*.12);
+                float2 flow=input.uv*float2(5,3)+float2(data.y*.73,data.y);
+                float2 wind=float2(.11,.018)*time;
+                float curl=noise(flow*.65-float2(.025,-.018)*time+19.3)-.5;
+                float broad=noise(flow-wind+float2(curl*.55,curl*.32));
+                float wisps=noise(flow*2.1-wind*1.6+float2(4.7,9.2));
+                float density=broad*.65+wisps*.35;
                 half alpha=soft*smoothstep(.16,.72,density)*data.x;
                 clip(alpha-.004);
                 half3 color=ApplyWorldFog(lerp(half3(.61,.70,.75),half3(.91,.95,.95),density),input.positionWS);

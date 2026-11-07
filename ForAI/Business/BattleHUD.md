@@ -8,7 +8,13 @@
 
 ## 正文
 
+- 有施法资源的角色在技能栏上方显示当前/最大施法点与每回合回复；选中法术后显示额外投入和本次总消耗，显式绑定的 `CastingLess/CastingMore` 按钮调用 `Battle:SetCastingBoost`，成功后通过现有 `snapshot` 命令重读目标预览。选择强度不扣 AP/施法点；按钮同时受玩家回合、选中法术、配置上限及当前资源约束，失败展示规则返回的本地化原因。无资源角色和部署阶段隐藏整栏。数据来自 resolved skill 的 `castingCost/castingBoost/castingBoostLimit`，组合配方由 `castingRecipe` 技能 ID 数组投影到结构化 Tips。
+- 原生控件由 [施法 UI 迁移](../../Tools/UI/apply_spellcasting_ui.cs) 保存并继承到 MainHud 的嵌套 BattleHUD；`BattleHUDView.Layout.Casting` 参与布局，展开日志与目标提示为其预留高度。离线控制器检查为 `python -B Tools/Tests/run_lua.py Tools/Tests/spellcasting_ui.lua`，覆盖选择不扣资源、资源不足、规则拒绝、非玩家/无选择禁用和部署/非施法者隐藏；原生点数与绑定检查见 [MainHud](MainHud.md)。
+
 - 传奇工事迁筑的两阶段选格复用原Hint、取消按钮与蓝色落点高亮。`AdventureSystem`快照的`needsCellLanding/cellLandingOptions`提供源工事与全部合法目的格；`BattleTargetSelection`只保存临时选择，确认通过`skill_at_landing`整组提交四个轴坐标。切换角色、回合、阶段或失效后清空，不在选格时扣AP；规则见[具名传奇装备](LegendaryEquipment.md)。
+
+- 精准打击使用 `selectBodyPart/bodyPartOptions` 快照：先点击合法敌人，再在原技能栏区域选择头、躯干、左右臂腿；选项名称和稳定下标来自规则快照，点击部位后以 `skill_body_part` 一次提交技能、目标和部位。选择过程不提交战斗命令，Enter不能绕过部位选择；取消、换技能、角色、回合、阶段或目标失效清空临时状态。普通技能栏与道具栏在选部位时隐藏，左右以目标自身为准。正常命中判定和目标资格仍由战斗规则处理，见[身体健康](BodyInjuries.md)。
+- [AnatomyBattleHUDAssets.Sync](../../Assets/GameFramework/Editor/AnatomyBattleHUDAssets.cs) / `Project Y/UI/同步精准打击部位选择` 幂等保存六部位按钮、动态文字及布局绑定，MainHud继承嵌套BattleHUD；不手改Prefab。离线控制器检查：[anatomy_ui.lua](../../Tools/Tests/anatomy_ui.lua)；原生输入、绑定与窄屏布局检查：[anatomy_ui_editmode.cs](../../Tools/Tests/anatomy_ui_editmode.cs)，需按授权在空闲Edit Mode执行，不进入Play。
 
 - 弹药栏显示当前实体弹匣的实际弹种名称及余弹/容量，取自 `EquipmentAmmoTable`，不按弹匣默认弹种推测。弹种选择与装填在探索工坊完成，战斗继续按既有规则换备用弹匣，详见[装备与弹药](Equipment.md)。[ammunition_ui.lua](../../Tools/Tests/ammunition_ui.lua) 定向覆盖实际 HUD 投影、工坊选择和护甲日志，不替代 Play 视觉验收。
 
@@ -28,7 +34,9 @@
 - `BattleLogPresentation.Set` 反射桥将格式化文本交给原生 View。`Logs` 是启用 rich text、14 号基础字号、自动换行及 ContentSizeFitter 的 Text，位于绑定的 `LogScroll` 内；Viewport、Mask、Scrollbar 及 `LogOpen/LogClose/LogTitle` 均持久序列化。展开默认定位最新记录；读者停在底部时跟随新增记录，向上翻阅时保留滚动偏移，不拉回底部。`Project Y/UI/同步战斗日志展开界面`（`BattleHUDAssets.SyncLogExpansion`）仅升级已有 BattleHUD Prefab 并导出绑定；本轮已保存迁移，MainHud 内嵌 BattleHUD 继承同一绑定。
 - 数字键1–4选择当前页技能；通常Enter结束己方回合，Esc取消技能并切回仍可用的移动模式，F定位战场。追踪多选期间，结束回合按钮改为“确认释放 已选/上限”，Enter同样只确认施放；移动按钮改为取消，Esc或再次点击当前技能清空选择。点击敌人切换入选，允许1至上限个不同目标，空列表不可确认；不自动补选。选择列表归Demo的临时表现状态，切换角色/回合/阶段、技能失效或离开战斗时清理，确认才向规则提交整组目标，不提前扣AP/弹药/CD。
 - 悬停目标使用规则快照中的 `targetPreviews` 展示实际目标命中率、拦截概率、遮挡数与友军风险，不能把“路径有遮挡”显示成必定不可攻击，也不能把追踪显示成必中。提示只读，不掷骰；没有额外的友伤确认弹窗。多选目标高亮保留，悬停明细与当前选择数量在既有Hint/Tooltip中显示；普通单目标仍点击即提交，转施后的any法术等待选择自己/队友/敌人。伤害及拦截契约见 [战斗](Battle.md)。
-- 选中技能时通过 `Battle:SkillRangeCells` 投影 `rangeCells`，场景与独立棋盘均以蓝色标明覆盖地格，合法目标保持金色、已选多目标保持青色。范围复用实际射程（含最小射程、高地/工事取大值、完整占地）、视线与弹道；有拦截风险的弹道仍可覆盖。地格技能复用合法落点，自身技能只显示自身占地；范围不代替AP或目标资格检查。取消、切回移动或换人后按当前快照重建。定向检查为 [skill_range_preview.lua](../../Tools/Tests/skill_range_preview.lua)。
+- 选中技能时通过 `Battle:SkillRangeCells` 投影 `rangeCells`，以蓝色填色、亮边和辉光显示配置形态，合法目标保持金色、已选多目标保持青色。范围形态与实际角色／地格／容器判定及 AI 寻位共用 [SkillShape.lua](../../Lua/Game/Battle/SkillShape.lua)；配置和射程规则见[战斗](Battle.md)。地格技能复用合法落点，自身技能只显示自身占地；范围不代替 AP 或目标资格检查。
+- `AdventureSystem` 为合法角色、容器和地格生成 `impactAreas`，鼠标悬停时显示橙色落点影响范围。格子列表由 Lua 生成，C# 不重算形态；追踪手选多目标不显示扩散。该范围描述空间覆盖，实际追加目标仍受目标资格与数量上限约束。二阶段位移选落脚点时隐藏；移入 UI、取消、切回移动、换人或换回合清理。3D 使用 Resources 下的 [SkillRange.shader](../../Assets/GameFramework/Resources/Rendering/SkillRange.shader)，同时提供自带柔光与可参与 Bloom 的 HDR 亮边；旧二维棋盘使用分层高亮。
+- 定向检查：[skill_range_preview.lua](../../Tools/Tests/skill_range_preview.lua) 覆盖形态、六方向格数、环形内外边界、实际攻击／AI／容器一致性、遮挡、高地与最小射程；[skill_shape_targets.lua](../../Tools/Tests/skill_shape_targets.lua) 经真实 `TrySkill` 检查环形中心不受击、线形追加目标、目标数量上限与追踪多选；[skill_range_editmode.cs](../../Tools/Tests/skill_range_editmode.cs) 在空闲 Editor 的隔离 PreviewScene 检查悬停／取消／换回合以及 Shader 实际像素输出，不进入 Play。
 - 技能说明使用[结构化技能 Tips](SkillTips.md)：彩色标签、统一参数、TMP 术语导航及发现式协同遮罩；目标命中预览仍使用原 Tooltip。
 - 技能超过四个时分页，可悬停说明；头顶 GameEffect 的悬停由 MainHud 负责。不可用技能展示 AP、行动额度或目标原因；道具点击直接自用，满血治疗、AP不足与库存不足显示明确原因，道具无需数字快捷键。
 - `BattleAction` 复用原生 Button ColorTint 的 0.12 秒悬停/按压过渡；`UIPointerState` 继续提供禁用技能的原因提示。选中投影使用金棕底色、3 px 金框与顶部几何对勾，鼠标移出保持选中；数字快捷键与点击使用同一投影。不可用技能的文字/图标减淡，点击仍按真实 `row.available` 拒绝。只有存在性、可用性或选中状态变化才重写 ColorBlock，普通快照刷新不会重置悬停；隐藏清空视觉投影，缓存重开按当前选择恢复，Pointer 的 OnDisable 清除旧悬停。

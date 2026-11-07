@@ -1,0 +1,55 @@
+{
+  "version": 1,
+  "name": "ReputationRuleTable",
+  "description": "全队称号声望获取与制作规则，独立于阵营声望。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "min": 1,
+      "description": "唯一规则ID"
+    },
+    {
+      "name": "killReward",
+      "type": "int",
+      "min": 1,
+      "description": "每名普通敌人的声望"
+    },
+    {
+      "name": "legendReward",
+      "type": "int",
+      "min": 1,
+      "description": "每名传奇敌人的总声望，不叠加普通击杀"
+    },
+    {
+      "name": "missionReward",
+      "type": "int",
+      "min": 1,
+      "description": "完成剧情Mission的全队声望，Quest阶段不重复发放"
+    },
+    {
+      "name": "townReward",
+      "type": "int",
+      "min": 1,
+      "description": "每份城镇委托实例的全队声望"
+    },
+    {
+      "name": "discountPercent",
+      "type": "int",
+      "min": 0,
+      "max": 99,
+      "description": "负面效果最多抵扣正面费用的百分比"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "killReward": 2,
+      "legendReward": 50,
+      "missionReward": 60,
+      "townReward": 30,
+      "discountPercent": 50
+    }
+  ]
+}

@@ -57,7 +57,14 @@ namespace ProjectY.Samples
         private MainHudView mainHud;
         public Camera WorldCamera => mapCamera;
         private BattleFeedbackSystem Feedback => mainHud != null ? mainHud.BattleFeedback : null;
-        public void SetMainHud(MainHudView value) {if(mainHud!=value){DisposeBattleCinematic();Feedback?.Clear();}mainHud=value;}
+        public void SetMainHud(MainHudView value)
+        {
+            if(mainHud!=value)
+            {DisposeBattleCinematic();Feedback?.Clear();ClearWorldMapMarkers();ClearWorldSites();mapLabels?.Dispose();mapLabels=null;}
+            mainHud=value;
+            cameraInputGroup=value==null?null:(CanvasGroup)value.GetComponent<LuaReference>().Get("Group");
+            if (value != null && mapLabels == null) mapLabels = new MapLabelCoordinator(value);
+        }
         public void ToggleEnvironment() {showEnvironment=!showEnvironment;}
         public int[] RenderedHealthActorIds()
         {
@@ -66,9 +73,9 @@ namespace ProjectY.Samples
             if(HasArea)
             {
                 foreach(var member in view.Area.Members)ids.Add(member.ActorId);
-                foreach(var actor in view.Area.Enemies)if(actor.HP>0)ids.Add(actor.Id);
+                foreach(var actor in view.Area.Enemies)if(actor.Alive)ids.Add(actor.Id);
             }
-            else if(view.Phase=="battle")foreach(var actor in view.Units)if(actor.HP>0)ids.Add(actor.Id);
+            else if(view.Phase=="battle")foreach(var actor in view.Units)if(actor.Alive)ids.Add(actor.Id);
             return ids.ToArray();
         }
         public Transform HealthTarget(int actorId)
@@ -209,12 +216,13 @@ namespace ProjectY.Samples
         public void FocusBattleActor(int id)
         {
             if (view?.Phase != "battle") return;
-            var actor = Array.Find(view.Units, row => row.Id == id && row.HP > 0);
+            var actor = Array.Find(view.Units, row => row.Id == id && row.Alive);
             if (actor != null && HasArea) { focus = areaLayout.Cells[actor.CellIndex].Position; followParty = false; }
         }
 
         private void Start()
         {
+            cameraSettings.Validate(); worldMapCameraSettings.Validate(); cameraRig.Tuning = cameraSettings;
             if (bootstrap == null || mapCamera == null || previewShader == null || environmentSun == null || assetBindings == null || pawnPrefab == null || pawnBindings == null || townMissionMarkerPrefab == null || townMissionReadyMaterial == null)
                 throw new InvalidOperationException("远征演示未绑定宿主、相机或地图资源。");
             foreach (var binding in assetBindings) assets.Add(binding.id, binding);
@@ -264,6 +272,7 @@ namespace ProjectY.Samples
                     worldWaterView?.Dispose();worldWaterView=null;
                     ClearWorldSites();
                     worldMap=map;
+                    environment.BindWeather(worldMap, (ProjectY.Data.WorldWeatherField)bootstrap.CallModule(Bridge, "weather_field")[0]);
                     mapRenderer.Build(map, asset => {
                         if (!assets.TryGetValue(asset.Id, out var binding) || binding.path != asset.Path || binding.prefab == null)
                             throw new InvalidOperationException("地图资源绑定不一致：" + asset.Id);
@@ -272,7 +281,7 @@ namespace ProjectY.Samples
                     SetView(next);
                     displayedTravel=view.Travel.Position;followTravel=false;
                 }
-                fatalError = null; FitMap();cameraRig.Snap();return true;
+                fatalError = null; InitializeTravelCamera();return true;
             }
             catch (Exception exception)
             {
@@ -308,9 +317,9 @@ namespace ProjectY.Samples
                 (view.Phase == "battle" ? AnimationBusy : squadRenderer.ActionBusy || combatRenderer.ActionBusy))) return;
             if(command=="hud_follow")
             {
-                if(view.Phase=="map") {followTravel=true;focus=displayedTravel;zoom=20*worldMap.Radius;pitch=52;return;}
+                if(view.Phase=="map") {LeaveWorldMapOverview(true);return;}
                 if(!HasArea) return;
-                followParty=true;focus=displayedParty;zoom=10*areaLayout.Radius;pitch=50;return;
+                followParty=true;focus=displayedParty;zoom=10*areaLayout.Radius;pitch=cameraSettings.defaultPitch;return;
             }
             try
             {
@@ -336,12 +345,12 @@ namespace ProjectY.Samples
                         if(npc==null)throw new InvalidOperationException("GM target NPC is absent from the displayed layout.");
                         followParty=false;
                         focus=(townNpcs.Position(npc.Id)+squadRenderer.Position(view.Area.Members[0].ActorId))*.5f;
-                        zoom=Mathf.Max(4,areaLayout.Radius*3);pitch=50;yaw=-25;
+                        zoom=Mathf.Max(4,areaLayout.Radius*3);pitch=cameraSettings.defaultPitch;yaw=-25;
                         cameraRig.Snap(); cameraDragButton = -1;
                     }
                 }
                 if(command=="character_skill")CancelCharacterSkill();
-                if((command=="skill" || command=="skill_targets" || command=="skill_landing" || command=="skill_at_landing" || command=="skill_cell" || command=="skill_container" || command=="use_item") && string.IsNullOrEmpty(view.Error))
+                if((command=="skill" || command=="skill_body_part" || command=="skill_targets" || command=="skill_landing" || command=="skill_at_landing" || command=="skill_cell" || command=="skill_container" || command=="use_item") && string.IsNullOrEmpty(view.Error))
                     CancelBattleSkillSelection();
                 if(view.Phase=="area" && string.IsNullOrEmpty(view.Error))
                 {
@@ -373,6 +382,7 @@ namespace ProjectY.Samples
             bool enteringArea = value.Area != null && !HasArea;
             if (enteringArea)
             {
+                ResetWorldMapMode();
                 selectedAreaCell=-1;
                 worldFocus = focus; worldZoom = zoom; worldYaw = yaw; worldPitch = pitch;
                 var values = bootstrap.CallModule(Bridge, "area_layout");
@@ -403,7 +413,7 @@ namespace ProjectY.Samples
                     townNpcs = new TownNpcRenderer(transform, pawnPrefab, areaLayout, ResolvePawnPart, townMissionMarkerPrefab, townMissionReadyMaterial);
                 }
                 focus = displayedParty = areaLayout.Cells[value.Area.CellIndex].Position;
-                zoom = 10 * areaLayout.Radius; pitch = 50; yaw = -35;
+                zoom = 10 * areaLayout.Radius; pitch = cameraSettings.defaultPitch; yaw = -35;
                 cameraDragButton = -1;
             }
             else if (value.Area == null && HasArea)
@@ -471,13 +481,14 @@ namespace ProjectY.Samples
             environment?.SetArea(null);
             areaRenderer.Dispose();areaRenderer=null;areaLayout=null;
             focus=worldFocus;zoom=worldZoom;yaw=worldYaw;pitch=worldPitch;
+            ResetWorldMapMode();
             cameraRig.Snap(); cameraDragButton = -1;
             view.Area=null;
         }
         private void FocusBattle()
         {
             var bounds = new Bounds(areaLayout.Cells[view.Units[0].CellIndex].Position, Vector3.zero);
-            foreach (var actor in view.Units) if (actor.HP > 0) bounds.Encapsulate(areaLayout.Cells[actor.CellIndex].Position);
+            foreach (var actor in view.Units) if (actor.Alive) bounds.Encapsulate(areaLayout.Cells[actor.CellIndex].Position);
             focus = bounds.center; followParty = false;
             var viewport = CameraViewport;
             zoom = StrategyCameraRig.FitSize(bounds, yaw, pitch, viewport.width / viewport.height, 10 * areaLayout.Radius);
@@ -501,7 +512,7 @@ namespace ProjectY.Samples
             var bounds = HasArea ? areaRenderer.Bounds : mapRenderer.Bounds; focus = bounds.center;
             if (HasArea) followParty = false;
             var viewport = CameraViewport;
-            zoom = StrategyCameraRig.FitSize(bounds, yaw, pitch, viewport.width / viewport.height, 8);
+            zoom = StrategyCameraRig.FitSize(bounds, HasArea ? yaw : 0, HasArea ? pitch : 90, viewport.width / viewport.height, 8);
         }
         private void Update()
         {
@@ -509,18 +520,26 @@ namespace ProjectY.Samples
             cameraInputProcessed = false;
             battleCinematic?.RestoreTransforms();
             Feedback?.SetPlaybackRate(0);
-            if (campaignLoading != null) { AdvanceCampaignLoading(); return; }
-            if(environment!=null && narrativeData!=null){environment.Running=false;environment.Hour=(float)(narrativeData.Minutes/60%24);}
+            if (campaignLoading != null) { environment?.HideWeather(); AdvanceCampaignLoading(); return; }
+            if (campaignMenuOpen) { environment?.HideWeather(); return; }
+            if(environment!=null && narrativeData!=null)
+            {
+                environment.Running=false;environment.Hour=(float)(narrativeData.Minutes/60%24);
+                environment.SetWeatherContext(narrativeData.Minutes, view?.Area == null ? Vector2.zero : new Vector2(view.Area.WeatherX, view.Area.WeatherZ));
+            }
             environment?.Tick(Time.unscaledDeltaTime, view?.Area);
-            environment?.SetTorch(HasArea && view.Torch!=null && view.Torch.Enabled,displayedParty);
+            if(HasArea)environment?.SetTorch(view.Torch!=null && view.Torch.Enabled,displayedParty);
+            else environment?.SetWorldTorch(view!=null && view.Torch!=null && view.Torch.WorldEnabled,displayedTravel);
             if (view == null || fatalError != null || campaignMenuOpen) return;
+            if (bootstrap.WorldPaused) return;
             if (settlementPresentationPending) { AdvanceAudioSettlement(); return; }
+            if (UnitDetailsOpen) return;
             if(Input.GetKeyDown(KeyCode.F8))OpenGM();
             if(gmOpen)return;
             if(gmKillSelecting && (Input.GetKeyDown(KeyCode.Escape) || Input.GetMouseButtonDown(1)))
             {CancelGMKillSelection();return;}
             if(Input.GetKeyDown(KeyCode.C)) OpenGrowth();
-            if(growthOpen || storyOpen) {CancelGMKillSelection();return;}
+            if(growthOpen || storyOpen || UnitDetailsOpen) {CancelGMKillSelection();return;}
             if(dialogueCamera!=null && dialogueCamera.Active)return;
             if(Input.GetKeyDown(KeyCode.I))
             {
@@ -538,6 +557,7 @@ namespace ProjectY.Samples
                 if(Time.unscaledTime>=nextTravelPoll) {SendCommand("snapshot");nextTravelPoll=Time.unscaledTime+.1f;}
                 if(fatalError!=null || view.Phase!="map")return;
                 displayedTravel=Vector3.Lerp(displayedTravel,view.Travel.Position,1-Mathf.Exp(-Time.unscaledDeltaTime*20));
+                environment?.SetWorldTorch(view.Torch!=null && view.Torch.WorldEnabled,displayedTravel);
                 worldPartyView.Tick(displayedTravel,Time.unscaledDeltaTime);
                 worldWaterView.Tick(displayedTravel);
                 if(followTravel)focus=displayedTravel;
@@ -578,9 +598,10 @@ namespace ProjectY.Samples
             if (battleCinematic != null && battleCinematic.Active) return;
             if (view.Phase != "map" && !HasArea) return;
             UpdateCameraInput();
-            if (Input.GetMouseButton(1) || Input.GetMouseButton(2)) { SetBattleTargetHover(0); return; }
-            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) {SetBattleTargetHover(0);return;}
-            if (PointerOverInterface()) return;
+            if (!cameraInputProcessed || worldMapMode.Transitioning) { ClearBattleHover(); return; }
+            if (Input.GetMouseButton(1) || Input.GetMouseButton(2)) { ClearBattleHover(); return; }
+            if (EventSystem.current != null && EventSystem.current.IsPointerOverGameObject()) {ClearBattleHover();return;}
+            if (PointerOverInterface()) {ClearBattleHover();return;}
             if(view.Phase=="map" && Input.GetMouseButtonDown(0))
             {
                 int partyId=worldPartyView.Pick(mapCamera,Input.mousePosition);
@@ -596,6 +617,7 @@ namespace ProjectY.Samples
                 var hoverIndex=areaRenderer.Pick(hoverRay);
                 SetBattleTargetHover(PickAreaActor(hoverRay,hoverIndex));
                 SetBattleCellHover(Array.Find(view.Cells,cell=>cell.CellIndex==hoverIndex));
+                hoveredBattleContainer=hoveredBattleTarget==0?PickContainer(hoverRay,hoverIndex):0;
             }
             if (HasArea && Input.GetMouseButtonDown(0))
             {
@@ -666,15 +688,17 @@ namespace ProjectY.Samples
             if (!cameraInputProcessed) { cameraDragButton = -1; cameraRig.Stop(); }
             if (campaignLoading != null) {worldSites?.Hide();return;}
             if (view == null || mapRenderer == null) return;
+            TickWorldMapCamera();
             if(dialogueCamera!=null && dialogueCamera.Active)
             {
                 worldSites?.Hide();
                 dialogueCamera.Tick(squadRenderer.Position(dialogueActorId),townNpcs.Position(dialogueNpcId),dialogueShot,dialoguePanelFraction);
                 townNpcs.LateTick(mapCamera);
-                mapRenderer.SetVisible(false);areaRenderer.Draw(mapCamera);environment?.ApplyCameraFocus(displayedParty);return;
+                mapRenderer.SetVisible(false);areaRenderer.Draw(mapCamera);environment?.ApplyCameraFocus(displayedParty);
+                environment?.DrawWeather(Time.unscaledDeltaTime, displayedParty);return;
             }
             mapCamera.orthographic = true; mapCamera.nearClipPlane = .1f;
-            var fraction = view.Phase == "battle" ? 0 : Mathf.Min(.7f, (mainHud!=null?mainHud.WorldLeftInset:0) / Screen.width);
+            var fraction = CameraViewport.x / Screen.width;
             mapCamera.rect = new Rect(fraction, 0, 1 - fraction, 1);
             var bounds = HasArea ? areaRenderer.Bounds : mapRenderer.Bounds;
             cameraRig.Tick(Time.unscaledDeltaTime);
@@ -686,13 +710,16 @@ namespace ProjectY.Samples
             townNpcs?.LateTick(mapCamera);
             battleCinematic?.DrawMask(mapCamera);
             environment?.ApplyCameraFocus(cameraRig.RenderFocus);
+            environment?.DrawWeather(Time.unscaledDeltaTime, cameraRig.RenderFocus);
+            mapLabels?.Configure(mapCamera);
             TickWorldSites();
+            TickWorldMapMarkers();
             mapRenderer.SetVisible(!HasArea && view.Phase != "battle");
             if (HasArea)
             {
                 areaRenderer.Draw(mapCamera);
                 DrawExplorationGrid();
-                combatRenderer.Draw(mapCamera, view, areaLayout, moveSelected, selectedSkill,selectedBattleTargets,IsChoosingBattleLanding?battleLandingCells:null);
+                combatRenderer.Draw(mapCamera, view, areaLayout, moveSelected, selectedSkill,selectedBattleTargets,IsChoosingBattleLanding?battleLandingCells:null,BattleImpactCells);
             }
             else if (view.Phase != "battle")
             {
@@ -702,7 +729,7 @@ namespace ProjectY.Samples
         }
         private bool AreaPointerBlocked()
         {
-            return campaignMenuOpen || equipmentOpen || growthOpen || storyOpen || gmOpen || fatalError != null ||
+            return campaignMenuOpen || equipmentOpen || growthOpen || storyOpen || UnitDetailsOpen || gmOpen || fatalError != null ||
                 Input.GetMouseButton(1) || Input.GetMouseButton(2) || PointerOverInterface();
         }
         private void DrawExplorationGrid()
@@ -755,7 +782,11 @@ namespace ProjectY.Samples
                 return;
             }
             if(view.Phase=="battle"&&!HasArea) DrawBattle();
-            else if(view.Phase=="map") {WorldTravelView.Draw(mapCamera,view.Travel,displayedTravel,textStyle);worldPartyView.DrawHover(mapCamera,textStyle);}
+            else if(view.Phase=="map")
+            {
+                if (WorldMapRouteVisible) WorldTravelView.Draw(mapCamera,view.Travel,displayedTravel,textStyle);
+                if (!WorldMapVisible) worldPartyView.DrawHover(mapCamera,textStyle);
+            }
             if(HasArea) townNpcs?.DrawNames(mapCamera,smallStyle);
             if(HasArea && !AreaPointerBlocked())
             {
@@ -786,12 +817,14 @@ namespace ProjectY.Samples
         public void ToggleTownCamera()
         {
             if(!HasArea)return;
-            followParty = true; focus = displayedParty;zoom = 10 * areaLayout.Radius; pitch = 50;
+            followParty = true; focus = displayedParty;zoom = 10 * areaLayout.Radius; pitch = cameraSettings.defaultPitch;
         }
         private void DrawEnvironmentControls()
         {
             GUILayout.Label(ProjectY.UI.LuaLanguage.Format("EnvironmentClock",Mathf.FloorToInt(environment.Hour).ToString("00"),Mathf.FloorToInt(environment.Hour % 1 * 60).ToString("00")), subtitleStyle);
             GUILayout.Label(ProjectY.UI.LuaLanguage.Get("EnvironmentClockHint"), subtitleStyle);
+            GUILayout.Label(ProjectY.UI.LuaLanguage.Get("EnvironmentWeatherHint"), subtitleStyle);
+            if (GUILayout.Button((environment.AutomaticWeather ? "● " : "") + ProjectY.UI.LuaLanguage.Get("EnvironmentWeatherAuto"), buttonStyle)) environment.UseAutomaticWeather();
             GUILayout.BeginHorizontal();
             for (var i = 0; i < environment.Data.Weathers.Length; i++)
                 if (GUILayout.Button((environment.WeatherIndex == i ? "● " : "") + environment.Data.Weathers[i].Name, buttonStyle)) environment.SelectWeather(i);
@@ -802,12 +835,13 @@ namespace ProjectY.Samples
         {
             if (environment == null) return;
             if (!showEnvironment) return;
-            var rect = new Rect(Screen.width - 308, 106, 290, 236); Fill(rect, Panel);
+            var rect = new Rect(Screen.width - 328, 106, 310, 316); Fill(rect, Panel);
             GUILayout.BeginArea(new Rect(rect.x + 12, rect.y + 10, rect.width - 24, rect.height - 20)); DrawEnvironmentControls(); GUILayout.EndArea();
         }
         private AdventureViewData.Site WorldSiteAtPointer()
         {
-            return WorldSitePointerEnabled ? worldSites?.Pick(mapCamera,Input.mousePosition) : null;
+            if (!WorldSitePointerEnabled) return null;
+            return (WorldMapVisible ? worldMapMarkers?.Pick(mapCamera,Input.mousePosition) : null) ?? worldSites?.Pick(mapCamera,Input.mousePosition);
         }
         private Vector2 CellCenter(int q, int r, Vector2 center, float size) => center + new Vector2(1.7320508f * (q + r * .5f), 1.5f * r) * size;
         private float BoardSize() => Mathf.Max(8,Mathf.Min((Screen.width-70)/((view.Radius*2+1)*1.7320508f),(Screen.height-210)/(view.Radius*3+2)));
@@ -817,6 +851,7 @@ namespace ProjectY.Samples
             var area = new Rect(0, 0, Screen.width, Screen.height); Fill(area, Background);
             var size = BoardSize();var center = BoardCenter();
             var chosen = Array.Find(view.Skills, skill => skill.Id == selectedSkill);
+            var impactCells=BattleImpactCells;
             AdventureViewData.Cell clicked = null;
             AdventureViewData.Cell hoveredCell=null;
             foreach (var cell in view.Cells)
@@ -827,9 +862,19 @@ namespace ProjectY.Samples
                     || !IsChoosingBattleLanding && (moveSelected && Array.Exists(view.Reachable, next => next.Q == cell.Q && next.R == cell.R)
                     || chosen!=null && Array.IndexOf(chosen.TargetCells,cell.CellIndex+1)>=0));
                 var color = cell.Blocked ? new Color(.12f, .15f, .17f) : reachable ? new Color(.19f, .39f, .34f) : new Color(.18f, .23f, .25f);
-                if (!cell.Blocked && !reachable && view.Active.Team==1 && !IsChoosingBattleLanding && chosen!=null
-                    && Array.IndexOf(chosen.RangeCells,cell.CellIndex+1)>=0) color=new Color(.27f,.38f,.57f);
+                var inRange=!cell.Blocked && view.Active.Team==1 && !IsChoosingBattleLanding && chosen!=null
+                    && Array.IndexOf(chosen.RangeCells,cell.CellIndex+1)>=0;
+                var inImpact=!cell.Blocked && Array.IndexOf(impactCells,cell.CellIndex+1)>=0;
+                if(inRange || inImpact)
+                {
+                    var glow=inImpact?new Color(1f,.45f,.15f):new Color(.32f,.62f,1f);
+                    for(int spread=3;spread>=1;spread--)
+                        Fill(new Rect(rect.x-spread*2,rect.y-spread*2,rect.width+spread*4,rect.height+spread*4),new Color(glow.r,glow.g,glow.b,.08f),hexTexture);
+                    if(inImpact)color=new Color(.65f,.32f,.14f);
+                    else if(!reachable)color=new Color(.27f,.38f,.57f);
+                }
                 Fill(rect, new Color(.08f, .12f, .14f), hexTexture);
+                if(inRange || inImpact)Fill(rect,inImpact?new Color(1f,.64f,.25f,.95f):new Color(.48f,.72f,1f,.85f),hexTexture);
                 var inner = new Rect(rect.x + 2, rect.y + 2, rect.width - 4, rect.height - 4); Fill(inner, color, hexTexture);
                 if (cell.Blocked) GUI.Label(rect, "◆", tokenStyle);
                 if(Array.Exists(view.Traps,trap=>trap.Q==cell.Q && trap.R==cell.R))GUI.Label(rect,"×",tokenStyle);
@@ -843,9 +888,9 @@ namespace ProjectY.Samples
                 }
             }
             // 尸体先画，存活角色在其上方；尸体不阻挡路径。
-            foreach (var actor in view.Units) if (actor.HP == 0) DrawActor(actor, center, size, chosen);
-            foreach (var actor in view.Units) if (actor.HP > 0) DrawActor(actor, center, size, chosen);
-            var hovered=hoveredCell==null?null:Array.Find(view.Units,actor=>actor.HP>0 && Array.IndexOf(actor.OccupiedCells,hoveredCell.CellIndex)>=0);
+            foreach (var actor in view.Units) if (!actor.Alive) DrawActor(actor, center, size, chosen);
+            foreach (var actor in view.Units) if (actor.Alive) DrawActor(actor, center, size, chosen);
+            var hovered=hoveredCell==null?null:Array.Find(view.Units,actor=>actor.Alive && Array.IndexOf(actor.OccupiedCells,hoveredCell.CellIndex)>=0);
             SetBattleTargetHover(EventSystem.current!=null && EventSystem.current.IsPointerOverGameObject()?0:(hovered?.Id ?? 0));
             SetBattleCellHover(EventSystem.current!=null && EventSystem.current.IsPointerOverGameObject()?null:hoveredCell);
             if (clicked != null && (gmKillSelecting || view.Active.Team == 1) && (EventSystem.current == null || !EventSystem.current.IsPointerOverGameObject()))
@@ -857,7 +902,7 @@ namespace ProjectY.Samples
                 else
                 {
                     if(chosen!=null && chosen.TargetCells.Length>0) {ChooseBattleCell(clicked.CellIndex);return;}
-                    var target = Array.Find(view.Units, actor => actor.HP > 0 && Array.IndexOf(actor.OccupiedCells,clicked.CellIndex)>=0);
+                    var target = Array.Find(view.Units, actor => actor.Alive && Array.IndexOf(actor.OccupiedCells,clicked.CellIndex)>=0);
                     if (target != null && selectedSkill > 0) ChooseBattleTarget(target.Id);
                 }
             }
@@ -870,15 +915,17 @@ namespace ProjectY.Samples
             var target = chosen != null && Array.IndexOf(chosen.Targets, actor.Id) >= 0;
             var selected=selectedBattleTargets.IndexOf(actor.Id);
             if (actor.Id == view.ActiveId || target || selected>=0) Fill(new Rect(rect.x - 3, rect.y - 3, rect.width + 6, rect.height + 6), selected>=0?Teal:target ? Gold : Color.white, circleTexture);
-            Fill(rect, actor.HP == 0 ? new Color(.23f, .26f, .27f) : actor.Team == 1 || actor.Team == 4 ? Teal * .7f
+            Fill(rect, !actor.Alive ? new Color(.23f, .26f, .27f) : actor.Team == 1 || actor.Team == 4 ? Teal * .7f
                 : actor.Team == 2 ? Enemy * .8f : new Color(.96f,.78f,.22f), circleTexture);
             var separator = actor.Name.IndexOf(" · ", StringComparison.Ordinal);
-            var label = actor.HP == 0 ? "×" : separator > 0 ? actor.Name.Substring(0, separator) : actor.Name.Substring(0, Mathf.Min(3, actor.Name.Length));
+            var label = !actor.Alive ? "×" : separator > 0 ? actor.Name.Substring(0, separator) : actor.Name.Substring(0, Mathf.Min(3, actor.Name.Length));
             GUI.Label(rect, label, tokenStyle);
             if(selected>=0)GUI.Label(new Rect(rect.xMax-12,rect.y-10,24,22),(selected+1).ToString(),tokenStyle);
         }
         private void OnDestroy()
         {
+            ClearWorldMapMarkers();
+            mapLabels?.Dispose(); mapLabels = null;
             DisposeBattleCinematic();
             ClearWorldSites();
             EndCampaignLoading();

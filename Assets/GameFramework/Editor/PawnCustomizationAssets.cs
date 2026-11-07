@@ -33,7 +33,7 @@ namespace ProjectY.Editor
                 {
                     // CopySerialized can retain the old native vertex layout while replacing indices.
                     // Explicitly rebuild the mesh buffers so topology changes keep the existing GUID safely.
-                    target.Clear(false);
+                    target.ClearBlendShapes(); target.Clear(false);
                     target.indexFormat = source.indexFormat;
                     target.vertices = source.vertices; target.normals = source.normals;
                     target.tangents = source.tangents; target.colors32 = source.colors32;
@@ -47,16 +47,28 @@ namespace ProjectY.Editor
                     target.subMeshCount = source.subMeshCount;
                     for (int i = 0; i < source.subMeshCount; i++)
                         target.SetIndices(source.GetIndices(i), source.GetTopology(i), i, false);
+                    CopyBlendShapes(source, target, Matrix4x4.identity);
                     target.bounds = source.bounds; target.name = source.name;
                 }
                 else EditorUtility.CopySerialized(value, prior);
                 UnityEngine.Object.DestroyImmediate(value); EditorUtility.SetDirty(prior);
             }
         }
+        internal static void CopyBlendShapes(Mesh source, Mesh target, Matrix4x4 matrix)
+        {
+            var dv = new Vector3[source.vertexCount]; var dn = new Vector3[source.vertexCount]; var dt = new Vector3[source.vertexCount];
+            var normal = matrix.inverse.transpose;
+            for (int shape = 0; shape < source.blendShapeCount; shape++) for (int frame = 0; frame < source.GetBlendShapeFrameCount(shape); frame++)
+            {
+                source.GetBlendShapeFrameVertices(shape, frame, dv, dn, dt);
+                for (int i = 0; i < dv.Length; i++) { dv[i] = matrix.MultiplyVector(dv[i]); dn[i] = normal.MultiplyVector(dn[i]); dt[i] = normal.MultiplyVector(dt[i]); }
+                target.AddBlendShapeFrame(source.GetBlendShapeName(shape), source.GetBlendShapeFrameWeight(shape, frame), dv, dn, dt);
+            }
+        }
         private static float MatrixError(Matrix4x4 a, Matrix4x4 b)
         { float error = 0; for (int i = 0; i < 16; i++) error = Mathf.Max(error, Mathf.Abs(a[i] - b[i])); return error; }
 
-        internal static PawnCustomizationCatalog.Part ImportPart(GameObject source, SkinnedMeshRenderer renderer, GameObject original, string id)
+        internal static PawnCustomizationCatalog.Part ImportPart(GameObject source, SkinnedMeshRenderer renderer, GameObject original, string id, Texture2D albedo = null)
         {
             var reference = original.GetComponentInChildren<SkinnedMeshRenderer>();
             var names = reference.bones.Select(b => b.name).ToArray();
@@ -67,6 +79,7 @@ namespace ProjectY.Editor
             var vertices = mesh.vertices; var normals = mesh.normals;
             for (int i = 0; i < vertices.Length; i++) { vertices[i] = matrix.MultiplyPoint3x4(vertices[i]); normals[i] = matrix.inverse.transpose.MultiplyVector(normals[i]).normalized; }
             mesh.vertices = vertices; mesh.normals = normals;
+            mesh.ClearBlendShapes(); CopyBlendShapes(renderer.sharedMesh, mesh, matrix);
             var remap = renderer.bones.Select(b => Array.IndexOf(names, b.name)).ToArray();
             for (int i = 0; i < remap.Length; i++)
             {
@@ -94,6 +107,11 @@ namespace ProjectY.Editor
                     external = new Material(shader) { name = "PC_" + role, color = material.color };
                     external.SetFloat("_Smoothness", .12f); AssetDatabase.CreateAsset(external, path);
                 }
+                if (albedo != null)
+                {
+                    external.SetTexture("_BaseMap", albedo); external.SetColor("_BaseColor", Color.white);
+                    external.SetFloat("_Smoothness", .10f); EditorUtility.SetDirty(external);
+                }
                 materials.Add(external); roles.Add(role);
             }
             return new PawnCustomizationCatalog.Part { Id = id, Mesh = AssetDatabase.LoadAssetAtPath<Mesh>(meshPath), Materials = materials.ToArray(), Roles = roles.ToArray() };
@@ -117,9 +135,10 @@ namespace ProjectY.Editor
             foreach (var definition in rules.modules)
             {
                 if (definition.id == "none") continue;
-                var renderer = Array.Find(source.GetComponentsInChildren<SkinnedMeshRenderer>(true), s => s.name == definition.id + "_export");
+                var moduleSource = HeadSculptAssets.Source(definition, source);
+                var renderer = Array.Find(moduleSource.GetComponentsInChildren<SkinnedMeshRenderer>(true), s => s.name == definition.id + "_export");
                 if (renderer == null) throw new InvalidOperationException("Missing Blender module: " + definition.id);
-                parts.Add(ImportPart(source, renderer, original, definition.id));
+                parts.Add(ImportPart(moduleSource, renderer, original, definition.id, HeadSculptAssets.Albedo(definition)));
             }
             var catalog = AssetDatabase.LoadAssetAtPath<PawnCustomizationCatalog>(CatalogPath);
             if (catalog == null) { catalog = ScriptableObject.CreateInstance<PawnCustomizationCatalog>(); AssetDatabase.CreateAsset(catalog, CatalogPath); }
@@ -203,15 +222,16 @@ namespace ProjectY.Editor
         }
 
         [Serializable] private sealed class Dependency { public string path, sha256; }
-        [Serializable] internal sealed class WebMaterial { public string role, path; public float[] color; }
+        [Serializable] internal sealed class WebMaterial { public string role, path, texture; public float[] color; }
         [Serializable] internal sealed class WebGroup { public int[] indices; public WebMaterial material; }
-        [Serializable] internal sealed class WebMesh { public string id, path; public bool rigid; public float[] positions, normals, weights, bindposes; public int[] joints; public WebGroup[] groups; }
+        [Serializable] internal sealed class WebShape { public string name; public float[] deltas; }
+        [Serializable] internal sealed class WebMesh { public string id, path; public bool rigid; public WebShape[] shapes; public float[] uv, positions, normals, weights, bindposes; public int[] joints; public WebGroup[] groups; }
         [Serializable] internal sealed class WebAnimation { public string id, label; public float duration; public bool loop; public int frameCount; public float[] poses, attachmentPoses; }
         [Serializable] internal sealed class WebLoadout { public string id, label, moduleName; public int moduleId; public float[] primaryGrip, secondaryGrip; public WebMesh[] meshes; public WebAnimation[] animations; public WebGripEditor gripEditor; }
         [Serializable] internal sealed class WebGripWeapon { public string slot; public int itemId, gripId; public int[] meshes; public float[] scale, mainPosition, mainRotation, offPosition, offRotation, rotationOffset; }
         [Serializable] internal sealed class WebGripArm { public int[] bones; public float[] mountPosition, mountRotation, pole; }
         [Serializable] internal sealed class WebGripEditor { public int version = 2, head, moduleId; public bool shared; public float clearance; public float[] mainHand; public WebGripArm[] arms; public WebGripWeapon[] weapons; }
-        [Serializable] private sealed class WebFit { public string id, sourcePath, body, race, slot; public int coverage; public bool hideHair; }
+        [Serializable] private sealed class WebFit { public string id, sourcePath, body, race, slot, head; public int coverage; public bool hideHair; }
         [Serializable] private sealed class WebCovered { public string body, id; public int mask; }
         [Serializable] private sealed class WebBundle
         {
@@ -234,12 +254,54 @@ namespace ProjectY.Editor
                 var indices = mesh.GetTriangles(i);
                 for (int t = 0; t < indices.Length; t += 3) { int swap = indices[t + 1]; indices[t + 1] = indices[t + 2]; indices[t + 2] = swap; }
                 var c = part.Materials[i].color;
-                groups.Add(new WebGroup { indices = indices, material = new WebMaterial { role = part.Roles[i], path = AssetDatabase.GetAssetPath(part.Materials[i]), color = new[] { c.r, c.g, c.b } } });
+                groups.Add(new WebGroup { indices = indices, material = new WebMaterial { role = part.Roles[i], path = AssetDatabase.GetAssetPath(part.Materials[i]), color = new[] { c.r, c.g, c.b }, texture = ExportAlbedo(part.Materials[i]) } });
             }
             return new WebMesh { id = part.Id, path = AssetDatabase.GetAssetPath(mesh),
+                uv = mesh.uv.SelectMany(v => new[] { v.x, v.y }).ToArray(), shapes = ExportShapes(mesh),
                 positions = mesh.vertices.SelectMany(v => new[] { v.x, v.y, -v.z }).ToArray(),
                 normals = mesh.normals.SelectMany(v => new[] { v.x, v.y, -v.z }).ToArray(), joints = joints.ToArray(), weights = weights.ToArray(),
                 bindposes = mesh.bindposes.SelectMany(m => MatrixValues(Mirror * m * Mirror)).ToArray(), groups = groups.ToArray() };
+        }
+        private static string ExportAlbedo(Material material)
+        {
+            if (!material.HasProperty("_BaseMap")) return null;
+            string path = AssetDatabase.GetAssetPath(material.GetTexture("_BaseMap"));
+            if (string.IsNullOrEmpty(path)) return null;
+            string folder = "Tools/CharacterPreview/public/data/textures"; Directory.CreateDirectory(folder);
+            string name = Path.GetFileName(path); File.Copy(path, folder + "/" + name, true);
+            return "data/textures/" + name;
+        }
+        private static WebShape[] ExportShapes(Mesh mesh)
+        {
+            var result = new List<WebShape>();
+            for (int i = 0; i < mesh.blendShapeCount; i++)
+            {
+                var dv = new Vector3[mesh.vertexCount]; mesh.GetBlendShapeFrameVertices(i, mesh.GetBlendShapeFrameCount(i) - 1, dv, null, null);
+                result.Add(new WebShape { name = mesh.GetBlendShapeName(i), deltas = dv.SelectMany(v => new[] { v.x, v.y, -v.z }).ToArray() });
+            }
+            return result.ToArray();
+        }
+        private static PawnCustomizationCatalog.Part[] ExportFittedParts(PawnCustomizationCatalog catalog, List<Mesh> owned, out WebFit[] mappings)
+        {
+            var parts = new List<PawnCustomizationCatalog.Part>(); var rows = new List<WebFit>();
+            foreach (var fit in catalog.GearFits)
+            {
+                var choices = fit.Slot == "head" ? catalog.Rules.modules.Where(m => m.slot == "head" && m.race == fit.Race).ToArray() :
+                    catalog.Rules.modules.Where(m => m.slot == "body" && (fit.Body == "" || m.id == fit.Body)).ToArray();
+                foreach (var choice in choices)
+                {
+                    string race = fit.Slot == "head" ? choice.race : "human", sex = choice.sex;
+                    var descriptor = catalog.Rules.Randomize(0, race, sex);
+                    if (fit.Slot == "head") descriptor.head = choice.id; else descriptor.body = choice.id;
+                    var mesh = PawnEquipmentAutoFit.Create(catalog, fit, descriptor);
+                    if (mesh != fit.Part.Mesh) owned.Add(mesh);
+                    string id = fit.Part.Id + "__" + choice.id;
+                    parts.Add(new PawnCustomizationCatalog.Part { Id = id, Mesh = mesh, Materials = fit.Part.Materials, Roles = fit.Part.Roles });
+                    rows.Add(new WebFit { id = id, sourcePath = fit.SourcePath, body = fit.Slot == "head" ? "" : choice.id,
+                        race = fit.Race, slot = fit.Slot, head = fit.Slot == "head" ? choice.id : "", coverage = fit.Coverage, hideHair = fit.HideHair });
+                }
+            }
+            mappings = rows.ToArray(); return parts.ToArray();
         }
         private static Dependency[] Dependencies()
         {
@@ -264,6 +326,7 @@ namespace ProjectY.Editor
             if (EditorApplication.isPlayingOrWillChangePlaymode) throw new InvalidOperationException("Edit Mode required.");
             var catalog = AssetDatabase.LoadAssetAtPath<PawnCustomizationCatalog>(CatalogPath);
             var scene = EditorSceneManager.NewPreviewScene();
+            var ownedFits = new List<Mesh>();
             try
             {
                 var pawn = UnityEngine.Object.Instantiate(AssetDatabase.LoadAssetAtPath<GameObject>(RigPath)); SceneManager.MoveGameObjectToScene(pawn, scene);
@@ -294,10 +357,11 @@ namespace ProjectY.Editor
                     animations.Add(new WebAnimation { id = states[s], label = labels[s], duration = clip.length, loop = s < 2, frameCount = count, poses = poses.ToArray() });
                 }
                 var offset = view.transform.localPosition;
+                WebFit[] webFits; var fitParts = ExportFittedParts(catalog, ownedFits, out webFits);
                 var bundle = new WebBundle { exportedAt = DateTime.UtcNow.ToString("o"), unityVersion = Application.unityVersion, rules = catalog.Rules, bones = catalog.BoneNames,
                     rootOffset = new[] { offset.x, offset.y, -offset.z },
-                    meshes = catalog.Parts.Concat(catalog.GearFits.Select(f => f.Part)).Concat(catalog.CoveredBodies.Select(c => new PawnCustomizationCatalog.Part { Id = c.Mesh.name, Mesh = c.Mesh, Materials = catalog.GetPart(c.Body).Materials, Roles = catalog.GetPart(c.Body).Roles })).Select(ExportMesh).ToArray(),
-                    gearFits = catalog.GearFits.Select(f => new WebFit { id = f.Part.Id, sourcePath = f.SourcePath, body = f.Body, race = f.Race, slot = f.Slot, coverage = f.Coverage, hideHair = f.HideHair }).ToArray(),
+                    meshes = catalog.Parts.Concat(fitParts).Concat(catalog.CoveredBodies.Select(c => new PawnCustomizationCatalog.Part { Id = c.Mesh.name, Mesh = c.Mesh, Materials = catalog.GetPart(c.Body).Materials, Roles = catalog.GetPart(c.Body).Roles })).Select(ExportMesh).ToArray(),
+                    gearFits = webFits,
                     coveredBodies = catalog.CoveredBodies.Select(c => new WebCovered { body = c.Body, mask = c.Mask, id = c.Mesh.name }).ToArray(),
                     animations = animations.ToArray(), loadouts = PawnEquipmentWebExport.Export(), dependencies = Dependencies(),
                     randomFixtures = new[] { 0, 1, 42, 20260927, int.MaxValue }.Select(seed => catalog.Rules.Randomize(seed)).ToArray() };
@@ -311,7 +375,7 @@ namespace ProjectY.Editor
                 finally { if (File.Exists(temporary)) File.Delete(temporary); }
                 Debug.Log("Exported actual Unity meshes, palettes and six Humanoid animations for Character Lab.");
             }
-            finally { EditorSceneManager.ClosePreviewScene(scene); }
+            finally { foreach (var mesh in ownedFits) UnityEngine.Object.DestroyImmediate(mesh); EditorSceneManager.ClosePreviewScene(scene); }
         }
     }
 }

@@ -60,6 +60,16 @@ namespace ProjectY.UI
             screenMode=false;retainPosition=true;lastTargetPosition=point;
         }
         public void SetScreenPoint(Vector2 point) {screenPoint=point;}
+        internal void SetScreenOffset(Vector2 offset) {screenOffset=offset;}
+        internal void ApplyScreenLayout(bool visible, Vector2 pixelOffset)
+        {
+            if (!visible) { SetVisible(false); return; }
+            var uiCamera = canvas.renderMode == RenderMode.ScreenSpaceOverlay ? null : canvas.worldCamera;
+            var point = RectTransformUtility.WorldToScreenPoint(uiCamera, content.position) + pixelOffset;
+            if (!RectTransformUtility.ScreenPointToLocalPointInRectangle(container, point, uiCamera, out var local))
+                throw new InvalidOperationException("Map label cannot project into its saved UI container.");
+            content.localPosition = new Vector3(local.x, local.y, 0);
+        }
         public void SetGroundRadius(float radius)
         {if(radius<=0 || float.IsNaN(radius) || float.IsInfinity(radius))throw new ArgumentOutOfRangeException(nameof(radius));groundRadius=radius;}
         public void Clear() {target=null;worldCamera=null;canvas=null;screenMode=false;retainPosition=false;SetVisible(false);}

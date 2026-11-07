@@ -4,14 +4,60 @@
   "description": "无向队员关系阶段；跨越阈值时在双方的经历中留下记录。",
   "key": "id",
   "fields": [
-    {"name":"id","type":"int","description":"关系阶段 ID","min":1},
-    {"name":"minimum","type":"int","description":"阶段最低关系值","min":0,"max":100},
-    {"name":"name","type":"text","description":"阶段名称"},
-    {"name":"description","type":"text","description":"角色手记说明"}
+    {
+      "name": "id",
+      "type": "int",
+      "description": "关系阶段 ID",
+      "min": 1
+    },
+    {
+      "name": "minimum",
+      "type": "int",
+      "description": "阶段最低关系值",
+      "min": -100,
+      "max": 100
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "阶段名称"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "角色手记说明"
+    }
   ],
   "rows": [
-    {"id":1,"minimum":0,"name":"同行","description":"还在旅途中相互了解。"},
-    {"id":2,"minimum":30,"name":"信任","description":"共同经历让彼此值得依靠。"},
-    {"id":3,"minimum":60,"name":"生死与共","description":"一次次共同面对危险，结下深厚的情谊。"}
+    {
+      "id": 1,
+      "minimum": -100,
+      "name": "仇恨",
+      "description": "伤害已经留下很深的裂痕。修复需要持续行动，但不会擅自拒绝你的战斗指令。"
+    },
+    {
+      "id": 2,
+      "minimum": -60,
+      "name": "厌恶",
+      "description": "彼此心存不满，仍愿意履行队友的职责。一次道歉无法抹去所有芥蒂。"
+    },
+    {
+      "id": 3,
+      "minimum": -20,
+      "name": "一般",
+      "description": "还在相互了解。记得彼此做过的事，关系会随着共同经历改变。"
+    },
+    {
+      "id": 4,
+      "minimum": 30,
+      "name": "友好",
+      "description": "彼此相处融洽，愿意把困难与心事交给对方。"
+    },
+    {
+      "id": 5,
+      "minimum": 60,
+      "name": "挚友",
+      "description": "长期的陪伴积累成深厚情谊。可以保持挚友，也可以在双方没有伴侣、芥蒂消解后确认爱恋。"
+    }
   ]
 }

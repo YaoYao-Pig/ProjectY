@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 local Hex=require('Game.Map.HexGrid')
 local Conflicts={};Conflicts.__index=Conflicts
 function Conflicts.New(factions) return setmetatable({factions=factions,adventure=factions.adventure,data=factions.data},Conflicts) end
@@ -76,7 +77,6 @@ function Conflicts:Begin(a,b,minute,targetSite,abstract)
 end
 function Conflicts:Near(a,b)
     local first,second=a.Travel,b.Travel
-    if first.Progress~=0 or second.Progress~=0 then return false end
     local adventure=self.adventure;local range=adventure.parties.rule.contactRadius
     local aq,ar,bq,br=first.Q,first.R,second.Q,second.R
     local distance=Hex.Distance(aq,ar,bq,br)
@@ -96,9 +96,12 @@ function Conflicts:Contacts(minute,maximumLod,participants)
         byId[row.Id]=row
         if not row.busy then
             local travel=party.Travel
-            row.Travel={Q=travel.Q,R=travel.R,Progress=travel.Progress};row.FactionId=party.FactionId
+            local q,r=travel.Q,travel.R
+            -- Match player contact: a moving party occupies its nearest endpoint, not only exact minute boundaries.
+            if travel.Progress>=.5 then local step=travel:GetStepAt(0);q,r=step.Q,step.R end
+            row.Travel={Q=q,R=r};row.FactionId=party.FactionId
             local role,mission=party.Role,party.Mission
-            if role~='garrison' and mission~='occupy' and minute>=party.SafeUntil and row.Travel.Progress==0 and
+            if role~='garrison' and mission~='occupy' and minute>=party.SafeUntil and
                 (not maximumLod or party.Lod<=maximumLod) then
                 row.mission=mission
                 if mission=='raid' then row.target=party.TargetSiteId;row.home=party.HomeSiteId end
@@ -111,7 +114,7 @@ function Conflicts:Contacts(minute,maximumLod,participants)
     else for i=0,data.Count-1 do capture(data:GetAt(i)) end end
     local function nearby(a,b)
         local first,second=a.Travel,b.Travel
-        return not b.busy and second.Progress==0 and Hex.Distance(first.Q,first.R,second.Q,second.R)<=range
+        return not b.busy and Hex.Distance(first.Q,first.R,second.Q,second.R)<=range
     end
     local function hostile(a,b)
         local first,second=math.min(a.FactionId,b.FactionId),math.max(a.FactionId,b.FactionId)
@@ -148,7 +151,7 @@ local function living(party)
     for i=0,party.MemberCount-1 do local actor=party:GetMemberAt(i)
         if actor.AnimalOwnerId==0 then
         hp=hp+actor.HP;maximum=maximum+actor.MaxHP
-        if actor.HP>0 then actors[#actors+1]=actor end
+        if Life.Alive(actor) then actors[#actors+1]=actor end
         end
     end
     return actors,hp,maximum

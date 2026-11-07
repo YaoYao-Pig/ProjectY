@@ -74,6 +74,7 @@ function Board:Search(q, r, occupied, limit, allowed)
         if distance[current] < limit then
             for _, nextCell in ipairs(self:Neighbors(current)) do
                 local cost=distance[current]+(self.area and self.area.MoveCost and self.area:MoveCost(current,nextCell) or 1)
+                if self.spellcasting then cost=cost+self.spellcasting:MoveCost(self.spellBattle,nextCell)end
                 if cost<=limit and (not distance[nextCell] or cost<distance[nextCell]) and not occupied[Hex.Key(nextCell.q, nextCell.r)] and (not allowed or allowed(nextCell)) then
                     distance[nextCell] = cost
                     previous[nextCell] = current

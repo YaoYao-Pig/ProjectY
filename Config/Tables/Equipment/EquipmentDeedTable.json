@@ -1,0 +1,87 @@
+{
+  "version": 1,
+  "name": "EquipmentDeedTable",
+  "description": "真实装备事迹；任务凭关键事件留存的装备记忆结算，不使用领奖时的装备。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "事迹规则身份",
+      "min": 1
+    },
+    {
+      "name": "kind",
+      "type": "string",
+      "description": "legendary_kill / mission / legendary_resolution"
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "事迹名称"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "获得条件"
+    },
+    {
+      "name": "targetIds",
+      "type": "int[]",
+      "description": "传奇为CombatUnit身份，任务为Mission身份"
+    },
+    {
+      "name": "sourceTargetIds",
+      "type": "int[]",
+      "description": "任务与targetIds一一对应的传奇目标，其余为空"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "kind": "legendary_kill",
+      "name": "迎战传奇",
+      "description": "以这把剑对敌对具名传奇造成直接伤害，并在胜利中由己方真正击败它。",
+      "targetIds": [
+        701,
+        702,
+        703,
+        704,
+        705,
+        706
+      ],
+      "sourceTargetIds": []
+    },
+    {
+      "id": 2,
+      "kind": "mission",
+      "name": "践行传奇之约",
+      "description": "这把剑见证关键目标被击败或在对话中和解，并完成对应传奇委托。",
+      "targetIds": [
+        701,
+        702,
+        703
+      ],
+      "sourceTargetIds": [
+        701,
+        704,
+        705
+      ]
+    },
+    {
+      "id": 3,
+      "kind": "legendary_resolution",
+      "name": "止战之证",
+      "description": "持有这把剑的交谈者亲自与具名传奇和解；完成相关委托后解锁进阶。",
+      "targetIds": [
+        701,
+        702,
+        703,
+        704,
+        705,
+        706
+      ],
+      "sourceTargetIds": []
+    }
+  ]
+}

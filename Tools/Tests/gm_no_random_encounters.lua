@@ -12,7 +12,7 @@ function state:Roll(maximum)
     return self.selection
 end
 local adventure={sites={{id=1}},data={Phase='map'},events={LivingParty=function()return {1}end,CanVisit=function()return true end},
-    specialEvents={CanTrigger=function()return true end}}
+    specialEvents={byEvent={},EncounterAt=function()end,CanTrigger=function()return true end}}
 local travel=setmetatable({adventure=adventure,data=state,rule={eventChance=100,minutesPerSecond=1,checkMinutes=1},
     map={GetCell=function()return {regionId=1}end,GetRegion=function()return {regionType=1}end},
     events={All=function()return rows end},randomEncountersDisabled=false},Travel)

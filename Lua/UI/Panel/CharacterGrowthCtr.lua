@@ -4,13 +4,17 @@ local Base=require('UI.UIPanelCtrl')
 local Widgets=require('UI.GrowthWidgets')
 local ProfessionTree=require('UI.ProfessionTree')
 local Skin=require('UI.ArtSkin')
+local Identity=require('Game.Presentation.CharacterIdentity')
 local Growth=Class('CharacterGrowthCtr',Base)
+local conditionOrder={level=1,attribute=2,prerequisite=3,prerequisite_any=3,profession=4,profession_any=4,course_route=4,opportunity=5,phase=6}
 local function place(rect,x,y,width,height)
     rect.anchoredPosition=CS.UnityEngine.Vector2(x,-y);rect.sizeDelta=CS.UnityEngine.Vector2(width,height)
 end
 function Growth:Bind()
     self.skin=Skin.Read(self.view.Skin)
     self.system=self.context.systems:Get('Growth');self.rules=self.system.rules;self.stats=self.system.stats
+    self.titles=self.context.systems:Get('Adventure').titles
+    self.skillDetails=require('UI.GrowthSkillDetailModel').New(self.context.systems:Get('Config'))
     self.appearance=require('Game.Adventure.PawnAppearance').New(self.context.systems:Get('Config'))
     self.view.Style:Prepare();self.nodes,self.edges={},{}
     self.courseNodes,self.courseEdges,self.courseHeaders={},{},{}
@@ -23,15 +27,27 @@ function Growth:Bind()
         self:Close();self.context.systems:Get('UI'):Open('SkillAtlas',{demo=demo,actorIndex=resume.actorIndex,returnTo=resume})
     end)
     for i=1,4 do self:Listen(self.view['Party'..i],function()
-        self.actorIndex=i-1;self.historyPage=1;self.selectedNode=nil;self.selectedCourse=nil;self.selectedProfession=nil;self.treeIndex=nil;self:Refresh();self:ResetGraph()
+        self.actorIndex=i-1;self.relationshipId=nil;self.relationshipAction=nil;self.historyPage=1;self.selectedNode=nil;self.selectedCourse=nil;self.selectedProfession=nil;self.treeIndex=nil;self:Refresh();self:ResetGraph()
     end) end
-    for _,key in ipairs({'Overview','Skills','History'}) do self:Listen(self.view[key..'Tab'],function()
+    for _,key in ipairs({'Overview','Skills','History','Titles'}) do self:Listen(self.view[key..'Tab'],function()
         self.tab=key;self:Refresh();if key=='Skills' then self:ResetGraph() end
     end) end
     self:Listen(self.view.PreviousTree,function() self.skillMode='profession';self:SetProfessionPage('courses') end)
     self:Listen(self.view.NextTree,function() self.skillMode='talent';self:Refresh();self:ResetGraph();self.view.SkillRowsScroll.verticalNormalizedPosition=1 end)
     self:Listen(self.view.PreviousHistory,function() self.historyPage=self.historyPage-1;self:Refresh() end)
     self:Listen(self.view.NextHistory,function() self.historyPage=self.historyPage+1;self:Refresh() end)
+    self:Listen(self.view.TitleEquip,function()
+        if self.selectedTitle then
+            local id=CS.ProjectY.Data.TitleState.Equipped(self.actor)==self.selectedTitle and 0 or self.selectedTitle
+            self:Command('title_equip',id)
+        end
+    end)
+    self.view.TitlesTabText.text=LuaLanguage.TitleTab
+    self:Listen(self.view.TitleForge,function()
+        self.context.systems:Get('UI'):Open('TitleForge',{demo=self.demo,actorId=self.actor.Id,onCrafted=function(id)
+            self.selectedTitle=id;if self.visible then self:Refresh()end
+        end})
+    end)
     self:Listen(self.view.Invest,function()
         if self.skillMode=='talent' and self.selectedNode then self:Command('growth_talent',self.selectedNode)
         elseif self.skillMode=='profession' then
@@ -51,10 +67,12 @@ function Growth:ResetGraph()
 end
 function Growth:OnShow(args)
     self.demo=assert(args.demo);self.demo:SetGrowthOpen(true)
+    self.relationshipId=nil;self.relationshipAction=nil
     self.actorIndex,self.treeIndex,self.historyPage,self.tab,self.selectedNode=args.actorIndex or 0,args.treeIndex,1,args.tab or 'Overview',args.selectedNode
     self.skillMode,self.selectedCourse=args.skillMode or 'profession',args.selectedCourse
     self.professionPage,self.selectedProfession=args.professionPage or 'courses',args.selectedProfession
     self.choosingProfession=self.professionPage~='courses';self.previewSkill=nil
+    self.detailKey=nil
     self:Refresh();self:ResetGraph()
     self.view.SkillRowsScroll.verticalNormalizedPosition=1
 end
@@ -85,16 +103,16 @@ function Growth:Refresh()
     for i=1,4 do
         local button=self.view['Party'..i];button.gameObject:SetActive(i<=data.PartyCount)
         if i<=data.PartyCount then
-            local member=data:GetPartyAt(i-1);local templateName=self.stats:Template(member).name
-            self.view['Party'..i..'Text'].text=string.format(LuaLanguage.GrowthCharacterProfessionName,templateName:match('^(.-)%s*·') or templateName,
-                self.rules.professions.professions:Get(member.Growth.CurrentProfessionId).name)
+            local member=data:GetPartyAt(i-1)
+            self.view['Party'..i..'Text'].text=Identity.Format(Identity.Read(self.stats,member),19,12,'E3BE73')
         end
         self.view.Style:Highlight(button,i-1==self.actorIndex)
         Skin.ApplyButton(self.skin,button,self.view['Party'..i..'Text'],{selected=i-1==self.actorIndex,normal='button_light',dark=true})
     end
     local nextLevel=self.rules.levels:Find(growth.Level+1)
-    local name=self.stats:Template(actor).name:match('^(.-)%s*·%s*(.+)$')
-    self.view.Title.text=name or self.stats:Template(actor).name;self.view.Role.text=self.rules.professions.professions:Get(growth.CurrentProfessionId).name
+    local identity=Identity.Read(self.stats,actor)
+    self.view.Title.text=Identity.Format({name=identity.name,title=identity.title},29,14,'E3BE73')
+    self.view.Role.text=identity.profession
     self.view.HeroLevel.text=string.format(LuaLanguage.UICharacterGrowthHeroLevelText, (growth.Level))
     self.view.HeroHealth.text=string.format(LuaLanguage.UICharacterGrowthHeroHealthText, (actor.HP), (actor.MaxHP))
     self.view.HeroExperience.text=nextLevel and (string.format(LuaLanguage.UICharacterGrowthHeroExperienceText2, (growth.Experience), (nextLevel.experience))) or LuaLanguage.UICharacterGrowthHeroExperienceText
@@ -109,16 +127,20 @@ function Growth:Refresh()
         self.previewSkill=nil
     end
     self.view.Character:Show(appearance)
-    for _,key in ipairs({'Overview','Skills','History'}) do
+    for _,key in ipairs({'Overview','Skills','History','Titles'}) do
         self.view[key].gameObject:SetActive(self.tab==key);self.view.Style:Highlight(self.view[key..'Tab'],self.tab==key)
         Skin.ApplyButton(self.skin,self.view[key..'Tab'],self.view[key..'TabText'],{selected=self.tab==key,normal='tab_light',active='tab_accent',dark=true})
     end
-    if self.tab=='Overview' then self:Overview() elseif self.tab=='Skills' then self:Skills() else self:History() end
+    if self.tab=='Overview' then self:Overview() elseif self.tab=='Skills' then self:Skills() elseif self.tab=='Titles' then self:Titles() else self:History() end
     local hints={Overview=LuaLanguage.UICharacterGrowthOverview,
         Skills=self.skillMode=='talent' and LuaLanguage.UICharacterGrowthSkills2 or (self.professionPage=='tree' and LuaLanguage.GrowthProfessionTreeHint or (self.professionPage=='grid' and LuaLanguage.GrowthProfessionGridHint or LuaLanguage.UICharacterGrowthSkills)),
-        History=LuaLanguage.UICharacterGrowthHistory}
+        History=LuaLanguage.UICharacterGrowthHistory,Titles=LuaLanguage.TitleHint}
     self.view.Hint.text=self.demo.LastError~='' and self.demo.LastError or hints[self.tab]
+    if self.tab=='Overview' and self.relationshipId and self.demo.LastError=='' then self.view.Hint.text=LuaLanguage.RelationshipPanelHint end
     self.revision,self.count,self.socialRevision=growth.Revision,data.JournalCount,data.PartyBonds.Revision
+    self.titleRevision=CS.ProjectY.Data.TitleState.Revision(actor)
+    self.reputationRevision=CS.ProjectY.Data.ReputationState.Revision(data)
+    self.deathDoorRevision=CS.ProjectY.Data.DeathDoorState.Revision(actor)
 end
 function Growth:Overview()
     local actor=self.actor;local attributes={}
@@ -130,17 +152,83 @@ function Growth:Overview()
     end
     Widgets.Rows(self,'Attributes','JournalAttribute',attributes,function(row) self:Command('growth_attribute',row.id) end)
     local traits={}
+    local deathDoor=CS.ProjectY.Data.DeathDoorState
+    if deathDoor.Dead(actor) then
+        traits[#traits+1]={title=LuaLanguage.DeathDoorDied,body=LuaLanguage.DeathDoorPermanentDescription,color='A53D37'}
+    elseif deathDoor.Entered(actor) or deathDoor.Survived(actor)>0 then
+        traits[#traits+1]={title=deathDoor.Entered(actor) and LuaLanguage.DeathDoorStatus or LuaLanguage.DeathDoorWeakness,
+            body=string.format(LuaLanguage.DeathDoorWeaknessDescription,deathDoor.Survived(actor),self.stats.deathDoor:Penalty(actor)),color='A53D37'}
+    end
+    local morale,maximum,status=self.stats.morale:Projection(actor)
+    traits[#traits+1]={title=string.format(LuaLanguage.MoraleOverview,morale,maximum,status),body=LuaLanguage.MoraleDescription,color='354739'}
+    local title=self.stats.titles:Equipped(actor)
+    if title then traits[#traits+1]={title=string.format(LuaLanguage.TitleCurrent,title.name),body=title.description,color='805723'}end
+    self.stats.spellcasting:Sync(actor)
+    local casting=CS.ProjectY.Data.SpellcastingState
+    if casting.Maximum(actor)>0 then
+        traits[#traits+1]={title=string.format(LuaLanguage.CastingStateTitle,casting.Current(actor),casting.Maximum(actor),casting.Regen(actor)),
+            body=string.format(LuaLanguage.CastingStateDescription,casting.Current(actor),casting.Maximum(actor),casting.Regen(actor)),color='296B48'}
+    end
     for i=0,actor.TraitCount-1 do local row=self.stats.traits:Get(actor:GetTraitAt(i));traits[#traits+1]={title='◆ '..row.name,body=row.description,color='354739'} end
     if #traits==0 then traits[1]={title=LuaLanguage.GrowthNoTraits,body=LuaLanguage.GrowthTraitHint,color='354739'} end
     local story=self.context.systems:Get('Adventure').partyStory
+    if self.relationshipId then self:Relationship(story);return end
     for _,row in ipairs(story:OverviewRows(actor)) do traits[#traits+1]=row end
-    self.view.TraitDetail.text=traits[1].body
-    Widgets.Rows(self,'Traits','TraitTag',traits,function(row) self.view.TraitDetail.text=row.title..'\n\n'..row.body end)
+    self:TraitText(traits[1].body)
+    Widgets.Rows(self,'Traits','TraitTag',traits,function(row)
+        if row.relationId then self.relationshipId=row.relationId;self.relationshipAction=nil;self:Relationship(story)
+        else self:TraitText(row.title..'\n\n'..row.body) end
+    end)
+end
+function Growth:TraitText(value)
+    self.view.TraitDetail.text=value
+    self.view.TraitDetailScroll:StopMovement()
+    self.view.TraitDetail.rectTransform.anchoredPosition=CS.UnityEngine.Vector2(0,0)
+end
+function Growth:Relationship(story)
+    local other=assert(story:Actor(self.relationshipId),'Selected relationship actor is missing')
+    local title=string.format(LuaLanguage.RelationshipTag,story:Name(other),story:StageName(self.actor.Id,other.Id))
+    local rows={{title=LuaLanguage.RelationshipBack,body='',back=true,color='354739'},
+        {title=title,body=story:PairBody(self.actor,other),color='354739'}}
+    self:TraitText(title..'\n\n'..rows[2].body)
+    self.view.Hint.text=LuaLanguage.RelationshipPanelHint
+    for _,row in ipairs(story:ActionRows(self.actor,other)) do
+        -- Disabled actions remain readable so their eligibility is visible.
+        row.allowed=row.available;row.available=true
+        rows[#rows+1]=row
+    end
+    for _,row in ipairs(self.context.systems:Get('Adventure').specialSkills:TeachingRows(self.actor,other)) do
+        row.available=true
+        rows[#rows+1]=row
+    end
+    if self.relationshipAction then
+        local choice=self.relationshipAction
+        rows[2]={title=string.format(LuaLanguage.RelationshipConfirm,choice.title),confirm=choice.action,
+            confirmSkillId=choice.skillId,body=choice.body,color='805723'}
+        self:TraitText(choice.body..'\n\n'..LuaLanguage.RelationshipConfirmHint)
+    end
+    Widgets.Rows(self,'Traits','TraitTag',rows,function(row)
+        if row.back then self.relationshipId=nil;self.relationshipAction=nil;self:Overview()
+        elseif row.confirmSkillId then
+            self.demo:SendCommand('special_skill_teach',other.Id,self.actor.Id,row.confirmSkillId)
+            self.relationshipAction=nil;self:Refresh()
+        elseif row.confirm then
+            self.demo:SendCommand('relationship_'..row.confirm,self.actor.Id,other.Id)
+            self.relationshipAction=nil;self:Refresh()
+        elseif row.action or row.skillId then
+            self.relationshipAction=row.allowed and row or nil
+            self:Relationship(story)
+            if not row.allowed then self:TraitText(row.body) end
+        else self.relationshipAction=nil;self:Relationship(story)end
+    end)
 end
 function Growth:Skills()
     local passive=self.skillMode=='talent'
     self.choosingProfession=self.professionPage~='courses'
     local chooser=not passive and self.choosingProfession
+    self.view.CourseDetail.gameObject:SetActive(not passive and not chooser)
+    self.view.TalentDetail.gameObject:SetActive(passive or chooser)
+    if passive or chooser then self.detailKey=nil end
     self.view.Style:Highlight(self.view.PreviousTree,not passive);self.view.Style:Highlight(self.view.NextTree,passive)
     Skin.ApplyButton(self.skin,self.view.PreviousTree,self.view.PreviousTreeText,{selected=not passive,normal='tab_light',active='tab_accent',dark=true})
     Skin.ApplyButton(self.skin,self.view.NextTree,self.view.NextTreeText,{selected=passive,normal='tab_light',active='tab_accent',dark=true})
@@ -235,19 +323,23 @@ function Growth:Courses()
     self:CourseGraph(owned)
     for _,row in ipairs(rows) do if row.command=='select_course' and row.id==self.selectedCourse then row.title='› '..row.title end end
     if self.selectedCourse then
-        local skill=self.rules.skills:Get(self.selectedCourse);local available,reason=professions:CanLearn(actor,skill.id,self.stats,self.rules.atlas)
+        local skill=self.rules.skills:Get(self.selectedCourse)
+        local detail=self.skillDetails:Build(actor,self.stats,self.system.data.Phase,skill.id,owned)
         self.view.TalentName.text=skill.name
-        local kind=skill.skillKind=='preparation' and LuaLanguage.UICharacterGrowthKind2 or LuaLanguage.UICharacterGrowthKind
-        local condition=self.rules.atlas:EquipmentCondition(skill,actor,self.stats)
-        self.view.TalentDetail.text=string.format(LuaLanguage.UICharacterGrowthTalentDetailText3, (kind), (reason), (skill.description), (condition and '\n\n'..condition or ''))
-        local node=self.rules.atlas.nodes:Get(skill.id)
-        if #node.prerequisiteIds>0 then
-            local names={};for _,id in ipairs(node.prerequisiteIds) do names[#names+1]=self.rules.skills:Get(id).name end
-            local title=node.prerequisiteMode=='all' and LuaLanguage.UISkillAtlasPrerequisiteTitleText2 or LuaLanguage.UISkillAtlasPrerequisiteTitleText
-            self.view.TalentDetail.text=self.view.TalentDetail.text..'\n\n'..title..'\n'..table.concat(names,' / ')
-        end
-        self.view.Invest.interactable=available;self.view.InvestText.text=available and LuaLanguage.UICharacterGrowthInvestTextText5 or (growth:HasSkill(skill.id) and LuaLanguage.UICharacterGrowthInvestTextText4 or LuaLanguage.UICharacterGrowthInvestTextText3)
+        local key=actor.Id..':'..skill.id;local presentation=CS.ProjectY.UI.GrowthSkillDetailPresentation
+        local status=detail.sourceKind=='course' and '' or detail.statusText
+        presentation.Begin(self.view.CourseDetail,detail.body,LuaLanguage.GrowthSkillDetailUnlockHeading,status,detail.equipmentText,self.detailKey~=key)
+        for _,tag in ipairs(detail.tags)do presentation.AddTag(self.view.CourseDetail,tag.name,tag.textColor,tag.backgroundColor)end
+        local conditions={};for index,condition in ipairs(detail.conditions)do conditions[#conditions+1]={row=condition,index=index,order=assert(conditionOrder[condition.kind])}end
+        table.sort(conditions,function(a,b)
+            if a.row.met~=b.row.met then return not a.row.met end
+            return a.order==b.order and a.index<b.index or a.order<b.order
+        end)
+        for _,condition in ipairs(conditions)do presentation.AddCondition(self.view.CourseDetail,condition.row.text,condition.row.met)end
+        presentation.End(self.view.CourseDetail);self.detailKey=key
+        self.view.Invest.interactable=detail.canLearn;self.view.InvestText.text=detail.buttonText
     else
+        self.view.CourseDetail.gameObject:SetActive(false);self.view.TalentDetail.gameObject:SetActive(true);self.detailKey=nil
         self.view.TalentName.text=LuaLanguage.UICharacterGrowthTalentNameText2;self.view.TalentDetail.text=LuaLanguage.UICharacterGrowthTalentDetailText2
         self.view.Invest.interactable=false;self.view.InvestText.text=LuaLanguage.UICharacterGrowthInvestTextText2
     end
@@ -270,7 +362,7 @@ function Growth:ProfessionBrowser()
     local headers={
         {title=grid and LuaLanguage.GrowthBackProfessionTree or LuaLanguage.GrowthBackSkillTree,detail='',x=68,y=26,width=124,action=function()self:SetProfessionPage(grid and 'tree' or 'courses')end},
     }
-    if not grid then headers[2]={title=self.view.Title.text,detail=string.format(LuaLanguage.GrowthStudyingProfession,self.rules.professions.professions:Get(growth.CurrentProfessionId).name),x=285,y=26,width=170} end
+    if not grid then headers[2]={title=Identity.Read(self.stats,self.actor).name,detail=string.format(LuaLanguage.GrowthStudyingProfession,self.rules.professions.professions:Get(growth.CurrentProfessionId).name),x=285,y=26,width=170} end
     for i,row in ipairs(headers) do
         if not self.professionHeaders[i] then self.professionHeaders[i]=self:CreateWidget('SkillAtlasCategory',self.view.Graph) end
         local widget=self.professionHeaders[i];widget:SetData(row.title,row.detail,self.view.Style,i==2,row.action)
@@ -375,6 +467,26 @@ function Growth:History()
     self.view.PreviousHistory.interactable=self.historyPage>1;self.view.NextHistory.interactable=self.historyPage<pages
     Widgets.Rows(self,'HistoryRows','JournalEntry',rows)
 end
-function Growth:Tick() if self.revision~=self.actor.Growth.Revision or self.count~=self.system.data.JournalCount or self.socialRevision~=self.system.data.PartyBonds.Revision then self:Refresh() end end
+function Growth:Titles()
+    local rows=self.titles.rules:Rows(self.actor,self.system.data.PartyBonds)
+    local selected;for _,row in ipairs(rows)do if row.id==self.selectedTitle then selected=row end end
+    if not selected then selected=rows[1];self.selectedTitle=selected and selected.id end
+    local equipped=self.stats.titles:Equipped(self.actor)
+    self.view.TitleSummary.text=string.format(LuaLanguage.TitleSummary,CS.ProjectY.Data.TitleState.Count(self.actor)+CS.ProjectY.Data.TitleState.CustomCount(self.actor),#rows,equipped and equipped.name or LuaLanguage.TitleNone)
+    self.view.TitleReputation.text=string.format(LuaLanguage.TitleForgeBalance,CS.ProjectY.Data.ReputationState.Balance(self.system.data))
+    local previews={}
+    for _,row in ipairs(rows)do previews[#previews+1]={id=row.id,title=row.title,body=LuaLanguage.TitleSelectHint,color=row.color}end
+    Widgets.Rows(self,'TitleRows','JournalSkill',previews,function(row)
+        self.selectedTitle=row.id;self:Refresh();self.view.TitleDetailScroll:StopMovement();self.view.TitleDetailScroll.verticalNormalizedPosition=1
+    end)
+    self.view.TitleDetail.text=selected and selected.body or LuaLanguage.TitleEmpty
+    self.view.TitleEquipText.text=selected and selected.equipped and LuaLanguage.TitleUnequip or LuaLanguage.TitleEquip
+    local phase=self.system.data.Phase
+    self.view.TitleEquip.interactable=selected~=nil and selected.owned and (phase=='map' or phase=='area')
+    self.view.TitleForge.interactable=phase=='map' or phase=='area'
+    Skin.ApplyButton(self.skin,self.view.TitleEquip,self.view.TitleEquipText,{normal='button_light',dark=true})
+    Skin.ApplyButton(self.skin,self.view.TitleForge,self.view.TitleForgeText,{emphasis=true})
+end
+function Growth:Tick() if self.revision~=self.actor.Growth.Revision or self.count~=self.system.data.JournalCount or self.socialRevision~=self.system.data.PartyBonds.Revision or self.titleRevision~=CS.ProjectY.Data.TitleState.Revision(self.actor) or self.reputationRevision~=CS.ProjectY.Data.ReputationState.Revision(self.system.data) or self.deathDoorRevision~=CS.ProjectY.Data.DeathDoorState.Revision(self.actor) then self:Refresh() end end
 function Growth:OnHide() self.previewSkill=nil;self.view.Character:ReleasePreview();if self.demo then self.demo:SetGrowthOpen(false);self.demo=nil end end
 return Growth

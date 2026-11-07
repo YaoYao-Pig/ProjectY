@@ -1,0 +1,36 @@
+---@meta
+-- Generated from LuaReference. Do not edit; never require this file.
+---@class UnitDetailsPanelView
+---@field Root CS.UnityEngine.RectTransform
+---@field Canvas CS.UnityEngine.Canvas
+---@field Panel CS.ProjectY.UI.LuaPanel
+---@field Page CS.UnityEngine.RectTransform
+---@field Title CS.ProjectY.UI.UITxt
+---@field Subtitle CS.ProjectY.UI.UITxt
+---@field Close CS.UnityEngine.UI.Button
+---@field CloseText CS.ProjectY.UI.UITxt
+---@field TargetTitle CS.ProjectY.UI.UITxt
+---@field TargetRows CS.UnityEngine.RectTransform
+---@field TargetScroll CS.UnityEngine.UI.ScrollRect
+---@field TargetName CS.ProjectY.UI.UITxt
+---@field AttributeTitle CS.ProjectY.UI.UITxt
+---@field TraitTitle CS.ProjectY.UI.UITxt
+---@field Attributes CS.ProjectY.UI.UITxt
+---@field AttributeScroll CS.UnityEngine.UI.ScrollRect
+---@field Traits CS.ProjectY.UI.UITxt
+---@field TraitScroll CS.UnityEngine.UI.ScrollRect
+---@field ObserverLabel CS.ProjectY.UI.UITxt
+---@field PreviousObserver CS.UnityEngine.UI.Button
+---@field PreviousObserverText CS.ProjectY.UI.UITxt
+---@field NextObserver CS.UnityEngine.UI.Button
+---@field NextObserverText CS.ProjectY.UI.UITxt
+---@field Cost CS.ProjectY.UI.UITxt
+---@field Result CS.ProjectY.UI.UITxt
+---@field Reason CS.ProjectY.UI.UITxt
+---@field Observe CS.UnityEngine.UI.Button
+---@field ObserveText CS.ProjectY.UI.UITxt
+---@field Style CS.UnityEngine.Component
+---@field Talk CS.UnityEngine.UI.Button
+---@field TalkText CS.ProjectY.UI.UITxt
+local View = {}
+return View

@@ -181,17 +181,17 @@ namespace ProjectY.UI
             var screen=new Vector2(Mathf.Max(1,Screen.width),Mathf.Max(1,Screen.height));
             layout.Safe.anchorMin=Screen.safeArea.min/screen;layout.Safe.anchorMax=Screen.safeArea.max/screen;layout.Safe.offsetMin=layout.Safe.offsetMax=Vector2.zero;
             var w=previousSize.x*Screen.safeArea.width/screen.x;var h=previousSize.y*Screen.safeArea.height/screen.y;
-            layout.ActorGrid.cellSize=new Vector2(Mathf.Min(150,(w-64)/4),36);
+            layout.ActorGrid.cellSize=new Vector2(Mathf.Min(150,(w-64)/4),72);
             Place(layout.Heading,20,16,Mathf.Max(200,w-220),34);
             if(w<700)
             {Place(layout.Equip,0,0,180,36);Place(layout.Unequip,190,0,132,36);Place(layout.Status,0,-20,w-40,20);}
             else {Place(layout.Equip,0,0,220,40);Place(layout.Unequip,232,0,144,40);Place(layout.Status,390,0,w-430,40);}
-            Place(layout.Actors,20,68,w-40,36);Place(layout.Footer,20,h-58,w-40,42);
+            Place(layout.Actors,20,68,w-40,72);Place(layout.Footer,20,h-58,w-40,42);
             if(w>=1040)
-            {Place(layout.Inventory,20,118,240,h-190);Place(layout.Preview,272,118,w-626,h-190);Place(layout.Details,w-342,118,322,h-190);}
+            {Place(layout.Inventory,20,154,240,h-226);Place(layout.Preview,272,154,w-626,h-226);Place(layout.Details,w-342,154,322,h-226);}
             else
             {var left=Mathf.Clamp(w*.29f,155,240);var bottom=Mathf.Min(260,h*.32f);
-                Place(layout.Inventory,16,118,left,h-190);Place(layout.Preview,left+26,118,w-left-42,h-200-bottom);Place(layout.Details,left+26,h-72-bottom,w-left-42,bottom);}
+                Place(layout.Inventory,16,154,left,h-226);Place(layout.Preview,left+26,154,w-left-42,h-236-bottom);Place(layout.Details,left+26,h-72-bottom,w-left-42,bottom);}
         }
         public void ReleasePreview()
         {

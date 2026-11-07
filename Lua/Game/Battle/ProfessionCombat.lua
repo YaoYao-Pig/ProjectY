@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 -- Configuration-driven profession actions. Mutable encounter counters live in ProfessionCombatState.
 local Hex=require('Game.Map.HexGrid')
 local L=require('Language')
@@ -9,7 +10,7 @@ local function exists(actor,id)
     return false
 end
 function Rules.New(config,battle)
-    local self=setmetatable({battle=battle,rows=config:GetTable('ProfessionCombatTable'),statuses=config:GetTable('ProfessionStatusTable'),byMechanic={}},Rules)
+    local self=setmetatable({battle=battle,rows=config:GetTable('ProfessionCombatTable'),statuses=config:GetTable('ProfessionStatusTable'),byMechanic={},trapSkills={}},Rules)
     for _,row in ipairs(self.statuses:All())do
         assert(not self.byMechanic[row.mechanic],'Duplicate profession status mechanic')
         self.byMechanic[row.mechanic]=row
@@ -22,6 +23,11 @@ function Rules.New(config,battle)
         if row.materialId>0 then battle.stats.equipment.items:Get(row.materialId)end
         if row.applyEffectId>0 then battle.effects:Get(row.applyEffectId)end
         if row.baseSkillId>0 then battle.skills:Get(row.baseSkillId)end
+        assert(not row.consumeSourceTag or row.requiredSourceTag~='', 'Source status consumption needs a required tag')
+        if row.mechanic=='trap' then
+            assert(not self.trapSkills[row.applyEffectId],'Trap skills must have distinct applied effects')
+            self.trapSkills[row.applyEffectId]=battle.skills:Get(row.id)
+        end
     end
     return self
 end
@@ -108,6 +114,9 @@ function Rules:Skill(actor,skill)
 end
 function Rules:Budget(source,skill)
     local row=self.rows:Find(skill.id)
+    if row and row.requiredSourceTag~='' and #self:Tagged(source,row.requiredSourceTag)==0 then
+        return false,L.ProfessionDepthNeedsSourceStatus
+    end
     if row and row.requiredEquipment and row.requiredEquipment~='' then
         local allowed
         if row.requiredEquipment=='shield' then
@@ -148,9 +157,20 @@ function Rules:ConsumeEquipment(source,skill)
     else equipment:Consume(source,skill)end
 end
 function Rules:Commit(source,skill)
+    if self.battle.spellcasting then self.battle.spellcasting:Commit(source,skill)end
     if self.battle.legendary then self.battle.legendary:Commit(source,skill)end
     local row=self.rows:Find(skill.id)
     if row and row.materialId>0 then self.battle.stats.equipment.data:ConsumeStack(row.materialId,row.materialCount)end
+    if row and row.consumeSourceTag then
+        local instances=self:Tagged(source,row.requiredSourceTag);local debuffs=0
+        assert(#instances>0,'Committed profession action lost its required source status')
+        for _,instance in ipairs(instances)do
+            local definition=self.battle.gameEffects:Definition(instance.EffectId)
+            if definition.category=='debuff' or definition.category=='control' or definition.kind=='damage'
+                or definition.kind=='modifier' and instance.Amount<0 then debuffs=debuffs+1 end
+        end
+        self:RemoveInstances(source,instances);self:OnCleansed(source,source,debuffs)
+    end
     for _,id in ipairs(skill.professionDiscounts or {})do if exists(source,id)then self.battle.gameEffects:Remove(source,id)end end
 end
 function Rules:BlockedTransfer(target,instance)
@@ -165,6 +185,9 @@ function Rules:BlockedTransfer(target,instance)
 end
 function Rules:CanUse(source,skill,target)
     local row=self.rows:Find(skill.id);if not row then return true end
+    if row.requiredBoundCompanion and CS.ProjectY.Data.AnimalCompanionState.Partner(source)~=target then
+        return false,L.ProfessionDepthOwnCompanionOnly
+    end
     if row.mechanic=='encore' then
         if not self:Status(target,'resonance')then return false,L.ProfessionNeedsResonance end
         if state().Mark(target,'encore_round')==self.battle.data.Round then return false,L.ProfessionEncoreUsed end
@@ -211,7 +234,7 @@ function Rules:Redirect(source,skill,target)
     if not direct then return target end
     local oath=self:Status(target,'interpose');if not oath then return target end
     local guardian=self.battle:FindUnit(oath.SourceId)
-    if guardian and guardian.HP>0 and guardian~=source and self.battle:IsAllied(guardian,target) and self.battle.stats.animals:Distance(guardian,target,self.battle.board)==1 then
+    if guardian and Life.Alive(guardian) and guardian~=source and self.battle:IsAllied(guardian,target) and self.battle.stats.animals:Distance(guardian,target,self.battle.board)==1 then
         self.battle.gameEffects:Remove(target,oath.Id)
         self.battle:Emit('profession',string.format(L.ProfessionInterpose,self.battle.stats:Template(guardian).name,self.battle.stats:Template(target).name),guardian.Id,target.Id)
         return guardian
@@ -297,16 +320,16 @@ function Rules:AfterHit(context)
             if context.opening then self:RemoveInstances(source,{context.opening})end
             for _,coating in ipairs(context.coatings or {})do
                 self:RemoveInstances(source,{coating.instance})
-                if source.HP>0 and target.HP>0 then self.battle.gameEffects:Apply(coating.status.amount,source,target)end
+                if Life.Alive(source) and Life.Alive(target) then self.battle.gameEffects:Apply(coating.status.amount,source,target)end
             end
         end
         if context.curse then self:RemoveInstances(target,{context.curse})end
         context.legendaryConsumed=self:RemoveInstances(target,context.consume)
         local cleared=self:RemoveInstances(source,context.sourceConsume);self:OnCleansed(source,source,cleared)
-        if source.HP>0 and row and row.mechanic=='distill' and #context.consume>0 and self.battle:IsHostile(source,target) and self.battle.data.Phase=='combat'
+        if Life.Alive(source) and row and row.mechanic=='distill' and #context.consume>0 and self.battle:IsHostile(source,target) and self.battle.data.Phase=='combat'
             and self:HasPassive(source,'recycle') and state().Once(source,'recycle_encounter',1)then self:ApplyStatus(source,source,'recycle_discount')end
     end
-    if row and source.HP>0 then
+    if row and Life.Alive(source) then
         local mechanic=row.mechanic
         if mechanic=='coat' or mechanic=='opening' or mechanic=='draw_mark' then
             if mechanic=='coat' then self:RemoveInstances(source,self:Tagged(source,'coating'))end
@@ -320,8 +343,9 @@ function Rules:AfterHit(context)
             if row.statusTag=='' then local item=self:ApplyStatus(source,target,'resonance');if item then state().SetLifetime(item,1)end
             else
                 local resonance=self:Status(source,'resonance')
-                if resonance then self:RemoveInstances(source,{resonance});if target.HP>0 then self.battle.gameEffects:Apply(row.applyEffectId,source,target)end end
+                if resonance then self:RemoveInstances(source,{resonance});if Life.Alive(target) then self.battle.gameEffects:Apply(row.applyEffectId,source,target)end end
             end
+        elseif mechanic=='chorus' then self:ApplyStatus(source,target,'resonance',true)
         elseif mechanic=='ward' then self:ApplyStatus(source,target,'ward',true)
         elseif mechanic=='encore' then
             self:RemoveInstances(target,{assert(self:Status(target,'resonance'))})
@@ -330,11 +354,11 @@ function Rules:AfterHit(context)
             local cleared=self:RemoveInstances(source,self:Tagged(source,'poison'))+self:RemoveInstances(source,self:Tagged(source,'bleeding'))
             self:ApplyStatus(source,source,'guard_floor');source:SetGuard(self.byMechanic.guard_floor.amount);self:OnCleansed(source,source,cleared)
         elseif mechanic=='curse_mark' or mechanic=='feint' or mechanic=='splash' then
-            if target.HP>0 and row.applyEffectId>0 then self.battle.gameEffects:Apply(row.applyEffectId,source,target)end
+            if Life.Alive(target) and row.applyEffectId>0 then self.battle.gameEffects:Apply(row.applyEffectId,source,target)end
         elseif mechanic=='discord' then
             local resonance=self:Status(source,'resonance')
-            if resonance then self:RemoveInstances(source,{resonance});if target.HP>0 then self:ApplyStatus(source,target,'exposed')end end
-        elseif mechanic=='transfer' and target.HP>0 then
+            if resonance then self:RemoveInstances(source,{resonance});if Life.Alive(target) then self:ApplyStatus(source,target,'exposed')end end
+        elseif mechanic=='transfer' and Life.Alive(target) then
             local instance=self:Tagged(source,row.statusTag)[1]
             if instance and not self:BlockedTransfer(target,instance)then
                 local definition=self.battle.gameEffects:Definition(instance.EffectId)
@@ -344,7 +368,7 @@ function Rules:AfterHit(context)
                 self:OnCleansed(source,source,1)
             end
         elseif mechanic=='push' or mechanic=='pull' then
-            local cell=target.HP>0 and self:ForcedLanding(source,target,mechanic)
+            local cell=Life.Alive(target) and self:ForcedLanding(source,target,mechanic)
             if cell then self:Move(target,cell)end
         elseif mechanic=='swap' then
             local q,r=source.Q,source.R
@@ -352,7 +376,7 @@ function Rules:AfterHit(context)
             self:OnMoved(source);self:OnMoved(target)
         elseif mechanic=='interpose' then self:ApplyStatus(source,target,'interpose')end
     end
-    if source.HP>0 and skill.action=='main' and not skill.professionReaction and context.hadDebuff and self.battle:IsHostile(source,target) and self.battle.data.Phase=='combat'
+    if Life.Alive(source) and skill.action=='main' and not skill.professionReaction and context.hadDebuff and self.battle:IsHostile(source,target) and self.battle.data.Phase=='combat'
         and self:HasPassive(source,'reply') and state().Once(source,'reply_round',self.battle.data.Round)then self:ApplyStatus(source,source,'resonance',true)end
     if self.battle.legendary then self.battle.legendary:AfterHit(context)end
 end
@@ -409,6 +433,7 @@ function Rules:Move(actor,cell)
     self.battle:Emit('moved',string.format(L.ProfessionSkillMove,self.battle.stats:Template(actor).name),actor.Id)
 end
 function Rules:OnMoved(actor,tracked)
+    if self.battle.spellcasting then self.battle.spellcasting:TouchFields(self.battle,actor)end
     if self.battle.legendary and not tracked then self.battle.legendary:UntrackedMovement(actor)end
     for _,cell in ipairs(self.battle.stats.animals:Cells(actor,self.battle.board))do
         local trap=state().Trap(self.battle.data,cell.q,cell.r)
@@ -455,7 +480,9 @@ function Rules:UseAt(source,skill,cell)
 end
 function Rules:TrapRows()
     local result={}
-    for i=0,state().TrapCount(self.battle.data)-1 do local row=state().TrapAt(self.battle.data,i);result[#result+1]={q=row.Q,r=row.R,name=L.ProfessionTripwireName,sourceId=row.SourceId}end
+    for i=0,state().TrapCount(self.battle.data)-1 do local row=state().TrapAt(self.battle.data,i)
+        result[#result+1]={q=row.Q,r=row.R,name=assert(self.trapSkills[row.EffectId],'Unknown profession trap effect').name,sourceId=row.SourceId}
+    end
     return result
 end
 function Rules:Finish()

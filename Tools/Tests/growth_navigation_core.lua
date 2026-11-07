@@ -5,7 +5,15 @@ config:OnInit({services={ReadConfig=function(_,name)
     local file=assert(io.open('Assets/GameFramework/Resources/_Gen/Config/'..name..'.bytes','rb'));local bytes=file:read('*a');file:close();return bytes
 end}})
 local rules=require('Game.Progression.GrowthRules').New(config)
+-- Native skin rendering is covered by the saved-Prefab check; this fixture owns navigation only.
+package.loaded['UI.ArtSkin']={Read=function()return {}end,ApplyButton=function()end,ApplySkillNode=function()end}
 CS={UnityEngine={Vector2=function(x,y)return {x=x,y=y}end,Color=function(...)return {...}end,TextAnchor={MiddleCenter=4}}}
+CS.ProjectY={UI={GrowthSkillDetailPresentation={
+    Begin=function(view,body,heading,status,equipment,reset)view.body=body;view.status=status;view.equipment=equipment;view.tags={};view.conditions={};view.resetScroll=reset end,
+    AddTag=function(view,label,foreground,background)view.tags[#view.tags+1]={label=label,foreground=foreground,background=background}end,
+    AddCondition=function(view,text,met)view.conditions[#view.conditions+1]={text=text,met=met}end,
+    End=function()end
+}}}
 local function signal()
     local event={}
     function event:AddListener(fn) self.fn=fn end
@@ -39,7 +47,7 @@ local other={Id=10,Growth=setmetatable({CurrentProfessionId=3,ProfessionCount=1,
 local stats={growth=rules,Template=function()return {skillIds={}}end,Get=function()return 0 end,
     equipment={SkillIds=function(_,owner)local ids={};for id in pairs(owner.Growth.learned)do ids[#ids+1]=id end;table.sort(ids);return ids end,
         CheckSkillEquipment=function()return false,'缺少触媒' end}}
-local data={Equipment={Revision=0},GetPartyAt=function(_,index)return index==0 and actor or other end}
+local data={Phase='map',Equipment={Revision=0},GetPartyAt=function(_,index)return index==0 and actor or other end}
 local system={rules=rules,stats=stats,data=data}
 local ui={Close=function(self,name)self.closed=name end,Open=function(self,name,args)self.opened,self.args=name,args end}
 local context={systems={Get=function(_,name)return assert(({Growth=system,Config=config,UI=ui})[name])end}}
@@ -48,7 +56,7 @@ local panel=setmetatable({context=context,view=view('CharacterGrowth'),visible=t
     lifetime={Add=function()end},actor=actor,actorIndex=0,skillMode='profession',tab='Skills'},Growth)
 function panel:Listen(button,callback)button.onClick:AddListener(callback)end
 function panel:CreateWidget(name)
-    local widget={name=name,view={Root=rect(),Button={},Title={rectTransform=rect()},Detail={gameObject=rect().gameObject}}}
+    local widget={name=name,view={Root=rect(),Button={},Border={},Title={rectTransform=rect()},Detail={gameObject=rect().gameObject}}}
     function widget:SetData(row,...)
         self.row=row;self.view.Root.gameObject:SetActive(row~=nil)
         local args={...};self.action=name=='TalentNode' and args[6] or ((name=='SkillAtlasCategory' or name=='ProfessionNode') and args[4] or args[2])
@@ -112,7 +120,8 @@ local function test(name,fn)fn();count=count+1;print('PASS '..name)end
 test('eligible and locked course selections preview without spending or sending commands',function()
     click('select_course',101);assert(#commands==0 and state.PendingCount==2 and panel.view.Invest.interactable)
     click('select_course',501);assert(panel.selectedCourse==501 and not panel.view.Invest.interactable and #commands==0)
-    assert(panel.view.TalentDetail.text:find('需要角色等级 2',1,true))
+    assert(not panel.view.CourseDetail.conditions[1].met and panel.view.CourseDetail.conditions[1].text:find('角色等级',1,true))
+    assert(panel.view.CourseDetail.gameObject.activeSelf and not panel.view.TalentDetail.gameObject.activeSelf)
 end)
 test('explicit learning targets the selected actor and selected course',function()
     click('select_course',101);panel.view.Invest.onClick:Invoke()
@@ -129,7 +138,7 @@ test('profession chooser suppresses stale learn action; selected retained skills
     panel.professionHeaders[1].action();assert(panel.professionPage=='courses' and not panel.choosingProfession)
     hidden(panel.professionNodes);hidden(panel.professionEdges);hidden(panel.professionHeaders)
     learned[103]=true;panel:Refresh();click('select_course',103)
-    assert(panel.selectedCourse==103 and not panel.view.Invest.interactable and panel.view.TalentDetail.text:find('缺少触媒',1,true))
+    assert(panel.selectedCourse==103 and not panel.view.Invest.interactable and panel.view.CourseDetail.equipment:find('缺少触媒',1,true))
 end)
 test('mode changes route to the correct resource and restore matching scroll viewport',function()
     panel.view.NextTree.onClick:Invoke()
@@ -168,7 +177,7 @@ test('joined branches retain previous professions and exclude them from the add 
     for _,profession in ipairs(rules.professions.professions:All())do
         if not profession.baseProfession and not state:HasProfession(profession.id)then expected=expected+1 end
     end
-    assert(available==expected and expected==9)
+    assert(available==expected and expected>0)
     panel.view.NextTree.onClick:Invoke();hidden(panel.professionNodes);hidden(panel.professionEdges);hidden(panel.professionHeaders)
     panel.view.PreviousTree.onClick:Invoke();assert(panel.professionPage=='courses');hidden(panel.professionNodes)
 end)

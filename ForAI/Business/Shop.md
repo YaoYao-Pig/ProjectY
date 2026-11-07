@@ -14,7 +14,7 @@
 - 据点被占据时，`ShopModel:Open/Buy/Snapshot` 均复查 `WorldFactions:ServiceAllowed`，不能开店、购买或显示可购买按钮；时间流逝不会解除占领。解放后的开店统一通过 `FactionPersistence.ApplyShopRecovery` 缩减该商人的当前库存，已有库存也受损；新周期先正常抽货，再按本期恢复比例缩减。每份库存记录最后处理的解放时间，同次解放的重开、读档和恢复进度增长不重复扣减或补足，条目可减为零。下一次解放可再次损毁；持久字段与版本见[存档](CharacterSave.md)。
 - 默认示例为 `MapAreaTownNpcTable #3` 杂货商，安置在商店设施；绑定模板 A，按天售卖随机弹药、材料、武器、防具和弹匣。靠近 NPC 按 E 打开；设施交互通过 `TownResidents.facilityId` 路由到同一商人和距离校验。未绑定商人的设施保留原事件服务。
 - 特殊 NPC 保留剧情对话，配置为商人后在对话底部增加“查看商品”；无对白的商人直接进入商店。每次开店和购买都检查探索阶段、当前地点及实际 NPC 距离，不能隔层或远程交易。商店使用现有 UI 模态暂停，禁止开店时保存/读取角色；关闭及 Back 释放暂停和交互。
-- 首版只支持玩家用金币购买，点击一件商品购买一件。界面显示单价、剩余库存、占格、余额和下次补货日期；售罄/钱不足/满包禁用按钮，服务端规则仍再次检查。使用会话 Revision 拒绝重复旧点击；所有可预期失败在扣款、入包和库存改变前检查。成功购买进入共享背包并写【获得】记录，弹匣沿物品配置初始化余弹。
+- 六类经济商品接入[城镇经济](Economy.md)：共享地区库存，支持逐批买入/卖出及动态总价，原随机条目不再以固定价交易。其余商品仍只支持玩家用金币购买，点击一件商品购买一件。界面显示单价、剩余库存、占格、余额和下次补货日期；售罄/钱不足/满包禁用按钮，服务端规则仍再次检查。使用会话 Revision 拒绝重复旧点击；所有可预期失败在扣款、入包和库存改变前检查。成功购买进入共享背包并写【获得】记录，弹匣沿物品配置初始化余弹。
 - [角色存档](CharacterSave.md) v4 保存库存（包含售罄条目和空列表）及周期，加载时验证商品与模板配置；v1–v3 显式迁移为空商店库存。新远征清除库存。临时商店窗口不入档。
 - 改源表后运行 `node Tools/ConfigEditor/exporter.mjs`；商店资源创建入口为 `NarrativeAssets.CreateShop`（`Project Y/商店/同步商店界面`），只创建缺失资源，不重建已编辑 Prefab。Shop Panel 复用 NarrativeView 与 NarrativeEntry，全部通过 LuaReference 绑定。
 - 最小离线检查：`python -B Tools/Tests/run_lua.py Tools/Tests/shop_core.lua`。真实 C#、城镇、购买、存档与 UI 检查通过 Unity MCP 执行 `Tools/Tests/shop_editmode.cs`，使用独立 PreviewScene/LuaEnv 和 OS 临时存档，不进入 Play、不触碰玩家存档。宿主输出临时文件路径供清理。

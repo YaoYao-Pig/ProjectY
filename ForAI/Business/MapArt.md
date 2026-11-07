@@ -8,6 +8,8 @@
 
 ## 正文
 
+- 完整巨树模型1106/1109的ModelImporter必须保留Read/Write，用于运行时缓存三角BVH并支持真实树干/树冠点击；只为这两件奇观启用，不扩展到普通装饰。修改或重导模型后核对可读标志与原GUID。巨树范围发现、遮挡和树脚入口规则见[自然地标](NaturalLandmarks.md)。
+
 - [码头与河船](WaterTravel.md)资源为1200–1202：完整码头、破损码头、基础河船。源位于 [DocksLowPoly.blend](../../Art/DocksLowPoly/Source/DocksLowPoly.blend)，Unity FBX 与独立 URP 材质在 `Assets/DynamicAsset/DocksLowPoly`；两款码头同原点同包络，岸端 Z=0、甲板 Y=.5，前3米共用完整部分；河船以水线为原点、船首 +Z。[导入记录](../../Art/DocksLowPoly/Integration/unity-import.json)与[实际预览](../../Art/DocksLowPoly/Previews/Unity.png)已核对。
 
 - 本套资源延续地图实验室的低多边形与纯色风格，用于 Unity 地形和城镇表现。[Unity 运行测试](../Tools/MapRuntimePreview.md) 已使用本套模型显示真实生成布局；地图算法、配表和 Web Canvas 渲染仍由 [地图](Map.md) 与 [地图预览](../Tools/MapPreview.md) 维护。

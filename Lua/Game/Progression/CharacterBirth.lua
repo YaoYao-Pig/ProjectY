@@ -10,6 +10,7 @@ function Birth.New(config)
     self.rule=config:GetTable('CharacterBirthRuleTable'):Get(1)
     self.units=config:GetTable('CombatUnitTable')
     self.professions=config:GetTable('ProfessionTable')
+    self.enemyProfessions=require('Game.Progression.EnemyProfessions').New(config)
     self.names,self.registered,self.templates,self.byProfession={},{},{},{}
     local rule=self.rule
     for _,name in ipairs({'primaryMin','primaryMax','secondaryVariance'}) do
@@ -79,6 +80,10 @@ function Birth:Initialize(actor,seed,professionId)
     CS.ProjectY.Data.CharacterBirthState.Initialize(actor,professionId,self.names,values)
     self:EnsureProfession(actor,seed,professionId)
 end
+function Birth:InitializeEnemy(actor,seed)
+    if actor.InitialAttributesAssigned then return end
+    self:Initialize(actor,seed,self.enemyProfessions:Choose(actor,seed))
+end
 function Birth:EnsureProfession(actor,seed,professionId)
     local rows=assert(self.byProfession[professionId],'Unknown character profession attribute owner')
     if actor:HasProfessionAttributes(professionId) then return end
@@ -104,7 +109,9 @@ function Birth:Validate(actor)
     else
         assert(actor.InitialAttributesAssigned,'Saved character birth attributes were not assigned')
         self.professions:Get(actor.InitialProfessionId)
-        assert(actor.InitialAttributeCount==#self.names,'Saved character birth attribute set differs from configuration')
+        -- Courage was introduced after saved birth rolls. Its missing instance value is explicitly zero;
+        -- the configured common base still applies, without rerolling any existing attribute.
+        assert(actor.InitialAttributeCount==#self.names or actor.InitialAttributeCount==#self.names-1,'Saved character birth attribute set differs from configuration')
         local seen={}
         for i=0,actor.InitialAttributeCount-1 do
             local name=actor:GetInitialAttributeNameAt(i)
@@ -113,6 +120,7 @@ function Birth:Validate(actor)
             assert(integer(actor:GetInitialAttribute(name)),'Invalid saved character birth attribute value')
             seen[name]=true
         end
+        for _,name in ipairs(self.names)do assert(seen[name] or name=='courage','Saved character birth attribute set is incomplete')end
         assert(actor:HasProfessionAttributes(actor.InitialProfessionId),'Saved initial profession attribute record is missing')
         for i=0,actor.Growth.ProfessionCount-1 do
             assert(actor:HasProfessionAttributes(actor.Growth:GetProfessionAt(i)),'Saved joined profession attribute record is missing')

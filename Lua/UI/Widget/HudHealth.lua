@@ -16,13 +16,18 @@ function Health:SetData(row,style,demo,iconStyle,feedback)
     self.style,self.demo,self.feedback=style,demo,assert(feedback)
     self.view.Name.font,self.view.HealthText.font,self.view.APText.font=style.Font,style.Font,style.Font
     self.view.Name.text=row.name
-    self.view.HealthText.text=row.riderHP and (string.format(LuaLanguage.UIHudHealthHealthTextText, (row.hp), (row.maxHP), (row.riderHP), (row.riderMaxHP)))
+    self.view.HealthText.text=(row.healthKnown==false or row.riderHealthKnown==false) and LuaLanguage.InspectionUnknown
+        or row.riderHP and (string.format(LuaLanguage.UIHudHealthHealthTextText, (row.hp), (row.maxHP), (row.riderHP), (row.riderMaxHP)))
         or (row.hp..' / '..row.maxHP)
+    if row.deathDoor and row.healthKnown~=false then self.view.HealthText.text=string.format(LuaLanguage.DeathDoorHealthText,row.hp,row.maxHP)end
     self.view.Team.color=(row.team==1 or row.team==4) and CS.UnityEngine.Color(.38,.74,.53,1)
         or row.team==2 and CS.UnityEngine.Color(.87,.36,.27,1) or CS.UnityEngine.Color(.96,.78,.22,1)
     feedback:BindHealth(self.view.HealthAnimation,row.id,row.healthId,row.hp/row.maxHP)
     feedback:BindDamageNumbers(self.view.DamageNumbers,row.id,row.healthId,style.Font)
-    self.view.APText.text=row.ap..'/'..row.maxAP..' AP';style:SetHealth(self.view.AP,row.ap/row.maxAP)
+    self.view.APText.text=string.format(LuaLanguage.InspectionAPLabel,row.apKnown==false and LuaLanguage.InspectionUnknown or string.format(LuaLanguage.InspectionFraction,row.ap,row.maxAP))
+    style:SetHealth(self.view.AP,row.ap/row.maxAP)
+    CS.ProjectY.UI.SpellcastingPresentation.SetPoints(self.view.CastingPoints,row.castingPoints,row.castingKnown==false and 0 or row.castingPointMax)
+    self.view.Morale.fillAmount=row.morale/row.moraleMaximum
     for i,effect in ipairs(row.effects) do
         if not self.effects[i] then self.effects[i]=self:CreateWidget('HudStatusEffect',self.view.EffectSlots) end
         self.effects[i]:SetData(effect,iconStyle,self.icons:Get(effect.iconId))
@@ -54,7 +59,7 @@ function Health:OnShow()
     end
 end
 function Health:Retire()
-    self.retiring=true;self.view.HealthText.text='0 / '..self.row.maxHP
+    self.retiring=true;self.view.HealthText.text=self.row.healthKnown==false and LuaLanguage.InspectionUnknown or string.format(LuaLanguage.InspectionFraction,0,self.row.maxHP)
     self.view.Follower:RetainLastWorldPosition()
     self.view.DamageNumbers:Retire()
 end

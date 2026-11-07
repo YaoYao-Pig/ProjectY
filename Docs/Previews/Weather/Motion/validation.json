@@ -1,0 +1,25 @@
+{
+  "date": "2026-10-27",
+  "check": "Tools/Tests/world_weather_motion_editmode.cs",
+  "movingPairs": 9720,
+  "samplingBoundaryPairs": 216,
+  "reusedPairs": 1704,
+  "minimumFrameDisplacement": 0.004334047,
+  "maximumFrameDisplacement": 0.004338922,
+  "measuredFrames": 120,
+  "cpuElapsedMilliseconds": 27.3168,
+  "managedAllocatedBytes": 0,
+  "maximumCloudSlots": 96,
+  "projectCompileRequests": 1,
+  "playModeEntered": false,
+  "gpuFrameTimeMeasured": false,
+  "scope": [
+    "60fps cloud positions and submitted matrices",
+    "frozen narrative clock",
+    "discrete minute advances",
+    "large time jump",
+    "zero delta and long frame",
+    "camera pan, teleport, zoom and Hide recovery",
+    "resource budget and warmed CPU allocation"
+  ]
+}

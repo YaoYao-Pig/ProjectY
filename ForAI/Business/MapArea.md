@@ -44,7 +44,7 @@
 - `BattleBoard.FromArea(area,q,r,radius,layer)` 按平面半径裁出包含各层的窗口，共享原格身份和导航边。当前原地战斗接单层地牢与森林；城镇多层导航与旧事件独立棋盘继续使用各自原有入口。
 - Unity 菜单 `Project Y/地图/打开 MapArea 地牢测试` 复用 `AdventureDemo.unity`，Play 后点击“古代地下迷宫”地点。左键移动、空格停止、滚轮缩放、中键/WASD 平移、右键旋转；侧栏可跟随小队、查看全图与完整结构。调试显示不解锁探索状态，测试返回按钮允许在任意位置返回大地图。
 - `MapAreaRenderer` 使用已绑定、配表指定的低模陈设做 GPU 实例渲染；地牢平地和墙使用低模柱，坡阶复用 `TownSurfaceRenderer` 的实际三角形与贴地采样。未知坡阶隐藏并显示压平迷雾，已知不可见部分连同材质细节显示为有亮度下限的灰色记忆，未知区域仍隐藏/黑色、当前视野正常着色；共用颜色入口见[战争迷雾](WorldFog.md)。城镇按 `corners/deckThickness/stairRise` 绘制台地、台阶和薄楼板，桥下不填成实体；二楼剖切同时作用于渲染、拾取、相机避障和探索高亮。静态快照包含层、邻接、通行掩码和物件 `scaleX/Y/Z`，进入时读取一次；显示数据不持有 LuaTable，也不作为玩法状态。
-- 俯视探索默认俯角 50°、方位角 −35°、正交尺寸 `10×hexRadius`；城镇与地牢共用[俯视镜头与操控](CameraControls.md)。人物保持现有米制尺寸。`PawnMotion` 对城镇和地牢坡阶逐边采样，冲锋也展开成直线逐格路径；站立与移动末端同样贴合踏步。视线仍保留墙体规则，并以 1.6 米眼高检查中途地表遮挡。
+- 俯视探索默认俯角 45°、方位角 −35°、正交尺寸 `10×hexRadius`；城镇与地牢共用[俯视镜头与操控](CameraControls.md)。人物保持现有米制尺寸。`PawnMotion` 对城镇和地牢坡阶逐边采样，冲锋也展开成直线逐格路径；站立与移动末端同样贴合踏步。视线仍保留墙体规则，并以 1.6 米眼高检查中途地表遮挡。
 - `LayoutSnapshot` 的嵌套数值数组必须复制为普通 Lua 数组：冻结布局是带 `__index/__len` 的空代理，xLua `LuaTable.Length` 调用 `xlua_objlen`，不会使用代理的 `__len`。直接传 `corners/neighbors` 会让 C# 收到零长度数组；颜色也复制，确保显示快照不共享只读代理。最小边界回归为 `python -B Tools/Tests/run_lua.py Tools/Tests/maparea_snapshot.lua`。
 - 柱模型的 `tintMaterial` 允许为空（新增五地貌战场使用此配置）；非空时必须匹配实际材质名，材质槽仍须完整且与子网格数量一致。MapArea 地表颜色/图案继续由地格配方提供。最小回归为 [材质契约检查](../../Tools/Tests/maparea_materials.cs)，编译后通过 MCP `execute_code` 在 Edit Mode 执行，覆盖六种主题表引用的模型和无效材质配置，不进入 Play。
 - 动态快照的 `fullVisibilityCount>0` 表示真实 Known/Visible 都覆盖全图，此时 `known/visible` 空数组由 C# 展开为共享只读的 `0..N-1` 索引范围，避免每次移动往返传递数万个索引。部分/空视野继续发送原数组；旧快照省略该字段仍可读。显示方不得修改索引数组内容，只能替换快照引用。

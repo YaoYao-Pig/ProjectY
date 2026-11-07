@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 -- First sightings are expedition facts in NarrativeData; Lua retains only observation stamps.
 local Discovery={}
 local function key(id) return 'faction_seen:'..id end
@@ -47,7 +48,7 @@ function Discovery.Area(factions,layout,state)
         if partyId>0 then
             for j=0,group.EnemyCount-1 do
                 local actor=group:GetEnemyAt(j);local cell=assert(layout:Find(actor.Q,actor.R))
-                if actor.HP>0 and (all or visible[cell.index]) then
+                if Life.Alive(actor) and (all or visible[cell.index]) then
                     Discovery.Mark(factions,assert(adventure.parties.data:Find(partyId)).FactionId);break
                 end
             end

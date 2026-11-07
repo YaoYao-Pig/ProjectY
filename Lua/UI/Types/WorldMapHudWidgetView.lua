@@ -1,0 +1,51 @@
+---@meta
+-- Generated from LuaReference. Do not edit; never require this file.
+---@class WorldMapHudWidgetView
+---@field Root CS.UnityEngine.RectTransform
+---@field Group CS.UnityEngine.CanvasGroup
+---@field Title CS.UnityEngine.UI.Text
+---@field Subtitle CS.UnityEngine.UI.Text
+---@field Close CS.UnityEngine.UI.Button
+---@field CloseText CS.UnityEngine.UI.Text
+---@field FiltersTitle CS.UnityEngine.UI.Text
+---@field SiteTags CS.UnityEngine.UI.Toggle
+---@field SiteTagsText CS.UnityEngine.UI.Text
+---@field AvailableMissions CS.UnityEngine.UI.Toggle
+---@field AvailableMissionsText CS.UnityEngine.UI.Text
+---@field ActiveMissions CS.UnityEngine.UI.Toggle
+---@field ActiveMissionsText CS.UnityEngine.UI.Text
+---@field ReadyMissions CS.UnityEngine.UI.Toggle
+---@field ReadyMissionsText CS.UnityEngine.UI.Text
+---@field PlayerMarker CS.UnityEngine.UI.Toggle
+---@field PlayerMarkerText CS.UnityEngine.UI.Text
+---@field Route CS.UnityEngine.UI.Toggle
+---@field RouteText CS.UnityEngine.UI.Text
+---@field LegendTitle CS.UnityEngine.UI.Text
+---@field LegendBody CS.UnityEngine.UI.Text
+---@field Hint CS.UnityEngine.UI.Text
+---@field Home CS.UnityEngine.UI.Button
+---@field HomeText CS.UnityEngine.UI.Text
+---@field Missions CS.UnityEngine.UI.Button
+---@field MissionsText CS.UnityEngine.UI.Text
+---@field MarkerRoot CS.UnityEngine.RectTransform
+---@field MarkerTemplate CS.ProjectY.UI.LuaReference
+---@field CloseIcon CS.UnityEngine.UI.Image
+---@field SiteTagsIcon CS.UnityEngine.UI.Image
+---@field AvailableMissionsIcon CS.UnityEngine.UI.Image
+---@field ActiveMissionsIcon CS.UnityEngine.UI.Image
+---@field ReadyMissionsIcon CS.UnityEngine.UI.Image
+---@field PlayerMarkerIcon CS.UnityEngine.UI.Image
+---@field RouteIcon CS.UnityEngine.UI.Image
+---@field LegendAvailableMissionsIcon CS.UnityEngine.UI.Image
+---@field LegendAvailableMissionsText CS.UnityEngine.UI.Text
+---@field LegendActiveMissionsIcon CS.UnityEngine.UI.Image
+---@field LegendActiveMissionsText CS.UnityEngine.UI.Text
+---@field LegendReadyMissionsIcon CS.UnityEngine.UI.Image
+---@field LegendReadyMissionsText CS.UnityEngine.UI.Text
+---@field LegendPlayerMarkerIcon CS.UnityEngine.UI.Image
+---@field LegendPlayerMarkerText CS.UnityEngine.UI.Text
+---@field HomeIcon CS.UnityEngine.UI.Image
+---@field MissionsIcon CS.UnityEngine.UI.Image
+---@field Layout CS.ProjectY.Samples.MapHudLayout
+local View = {}
+return View

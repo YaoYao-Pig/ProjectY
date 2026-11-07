@@ -47,8 +47,8 @@ local function check(tree,professionId,source)
     end
     for key in pairs(expectedEdges)do assert(actualEdges[key],'Missing prerequisite edge: '..key) end
 end
-test('all thirteen professions preserve bounded layouts, including two valid empty base professions',function()
-    local all=professions.professions:All();assert(#all==13)
+test('all fourteen professions preserve bounded layouts, including two valid empty base professions',function()
+    local all=professions.professions:All();assert(#all==14)
     local baseCount=0
     for _,profession in ipairs(all)do
         local tree=Tree.Build(professions,atlas,profession.id);check(tree,profession.id,atlas)
@@ -60,16 +60,24 @@ test('all thirteen professions preserve bounded layouts, including two valid emp
     end
     assert(baseCount==2)
 end)
-test('mage branches contain six arcane skills and one healing skill without invented dependencies',function()
+test('mage branches contain seven arcane skills and one healing skill without invented dependencies',function()
     local tree=Tree.Build(professions,atlas,3);local groups={}
-    assert(#tree.nodes==7 and #tree.headers==3)
+    assert(#tree.nodes==8 and #tree.headers==3)
     for _,node in ipairs(tree.nodes)do
         local name=atlas.categories:Get(node.categoryId).name
         groups[name]=(groups[name] or 0)+1
         assert(#node.prerequisiteIds==0)
     end
-    assert(groups['奥术']==6 and groups['治疗']==1)
+    assert(groups['奥术']==7 and groups['治疗']==1)
     for _,edge in ipairs(tree.edges)do assert(not edge.fromId and not edge.toId) end
+end)
+test('arcane knight has exactly one sword branch and one arcane branch with shared skill identities',function()
+    local tree=Tree.Build(professions,atlas,14);local groups={}
+    check(tree,14,atlas)
+    assert(#tree.nodes==7 and #tree.headers==3)
+    for _,node in ipairs(tree.nodes)do groups[node.categoryId]=(groups[node.categoryId] or 0)+1 end
+    assert(groups[11]==3 and groups[21]==4)
+    assert(tree.byId[1905].course and tree.byId[101].course)
 end)
 test('cross-profession prerequisite chains remain visible without adding learnable courses',function()
     local altered={nodes={Get=function(_,id)
@@ -78,7 +86,7 @@ test('cross-profession prerequisite chains remain visible without adding learnab
         local copy={};for key,value in pairs(row)do copy[key]=value end;copy.prerequisiteIds={302};return copy
     end},categories=atlas.categories}
     local tree=Tree.Build(professions,altered,3);check(tree,3,altered)
-    assert(#tree.nodes==9 and not tree.byId[301].course and not tree.byId[302].course)
+    assert(#tree.nodes==10 and not tree.byId[301].course and not tree.byId[302].course)
     assert(tree.byId[103].depth==2)
 end)
 test('eligibility, learning and opportunity changes preserve node positions and graph bounds',function()

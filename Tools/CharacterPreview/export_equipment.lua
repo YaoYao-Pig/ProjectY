@@ -3,9 +3,37 @@ local registry=require('Core.SystemRegistry')(Services)
 registry:Register('Config',require('Config.ConfigSystem'))
 registry:Register('Battle',require('Game.Battle.BattleSystem'),{'Config'})
 registry:Register('Equipment',require('Game.Equipment.EquipmentSystem'),{'Config'})
+-- The real equip command now records profession effects (including cursed weapons).
+-- Give this detached fixture those actual rules/data without starting world generation.
+local Class=require('Core.Class')
+local System=require('Core.LuaSystem')
+local ExportAdventure=Class('CharacterExportAdventure',System)
+function ExportAdventure:OnInit(context)
+    System.OnInit(self,context)
+    self.config=context.systems:Get('Config');self.data=context.services.Adventure
+    self.battle=context.systems:Get('Battle');self.equipment=context.systems:Get('Equipment')
+    self.professionExploration=require('Game.Adventure.ProfessionExploration').New(self)
+end
+registry:Register('Adventure',ExportAdventure,{'Config','Battle','Equipment'})
 registry:Start()
 local data=Services.Adventure;data:Reset(412)
 local actor=data:AddPartyActor(1,1);local equipment=registry:Get('Equipment');equipment:Start()
+-- This isolated display actor must genuinely meet current authored weapon requirements.
+-- Keep CanEquip active; use the real growth data instead of bypassing its check.
+local needed={}
+for _,row in ipairs(equipment.rules.requirements:All()) do
+    for i,id in ipairs(row.attributeIds) do
+        local code=equipment.rules.attributes:Get(id).code
+        needed[code]=math.max(needed[code] or 0,row.values[i])
+    end
+end
+assert(not actor.Growth.Initialized,'Display actor growth was unexpectedly initialized')
+local count=0;for _ in pairs(needed) do count=count+1 end
+actor.Growth:Initialize(412,count,0,0)
+for code,required in pairs(needed) do
+    local missing=required-registry:Get('Battle').stats:Get(actor,code,true)
+    if missing>0 then actor.Growth:InvestAttribute(code,1,missing) end
+end
 actor:SetMaxHP(registry:Get('Battle').stats:MaximumHP(actor));actor:Restore()
 local appearances=require('Game.Adventure.PawnAppearance').New(registry:Get('Config'))
 local snapshot=require('Game.Battle.CombatSnapshot')

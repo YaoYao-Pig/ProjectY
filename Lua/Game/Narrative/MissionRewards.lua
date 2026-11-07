@@ -1,5 +1,9 @@
 local Language = require('Language')
 local Rewards = {}
+function Rewards.TitleReputation(amount)
+    if amount==0 then return nil end
+    return {kind='reputation',name=Language.TitleReputation,amount=amount,note=Language.TitleReputationShared}
+end
 
 -- Presentation rows are snapshots, never a source for granting rewards.
 function Rewards.Row(story, action, amount, recipients)
@@ -44,14 +48,15 @@ function Rewards.Append(rows,row)
     rows[#rows+1] = copy
 end
 
-function Rewards.Preview(story,actionIds)
+function Rewards.Preview(story,actionIds,completionKind)
     local rows = {}
     for _,id in ipairs(actionIds) do
         local action = story.rules.actions:Get(id)
         if action.kind == 'claim_mission' then
-            for _,row in ipairs(Rewards.Preview(story,story.rules.missions:Get(action.targetId).actionIds)) do Rewards.Append(rows,row) end
+            for _,row in ipairs(Rewards.Preview(story,story.rules.missions:Get(action.targetId).actionIds,'mission')) do Rewards.Append(rows,row) end
         else Rewards.Append(rows,Rewards.Row(story,action)) end
     end
+    if completionKind then Rewards.Append(rows,Rewards.TitleReputation(story.adventure.titles:CompletionReward(completionKind))) end
     return rows
 end
 

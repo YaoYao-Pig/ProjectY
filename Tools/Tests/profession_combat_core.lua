@@ -48,7 +48,7 @@ CS={ProjectY={Data={GameBuffState=snapshots,ProfessionCombatState=state,
         Hit=function(a,_,amount)return a:Damage(amount)end,Injure=function()return false end,RecoverableHP=function(a)return a.MaxHP end},
     EquipmentCombatState={DamageArmor=function(_,id,n)armor[id]=(armor[id]or 0)+n;return n end,RefreshMaximum=function()end,DamageWeapon=function(_,id,n)wear[id]=(wear[id]or 0)+n end},
     EquipmentConditionData={Of=function(item)return item.condition end},EquipmentAffixData={Of=function(item)return item.affixId end},
-    AnimalCompanionState={Independent=function(a)return a.independent==true end,Bound=function(a)return a.MountedAnimal end}}}}
+    AnimalCompanionState={Independent=function(a)return a.independent==true end,Bound=function(a)return a.MountedAnimal end,Partner=function(a)return a.CompanionAnimal end}}}}
 local inventory={WearableCount=0,material={[8013]=10,[8014]=10,[8015]=10,[8016]=10,[82]=10},hands={},shields={}}
 function inventory:Equipped(id)return self.hands[id]end
 function inventory:Offhand()end
@@ -205,8 +205,37 @@ source,target=reset({1825});effects:Apply(801,source,source);roll=0
 effects:Apply(1352,source,source);assert(source.Guard==0,'Removing a boon must not trigger Grace')
 effects:Apply(803,source,source);effects:Apply(20205,source,source);assert(source.Guard==4,'Actual skill-cleansed debuffs trigger Grace')
 print('PASS Grace distinguishes cleansed debuffs from removed beneficial statuses')
+source,target=reset({1825})
+local finale=skill(2463);local ap=source.AP
+assert(not rules:Budget(source,finale) and source.AP==ap,'A missing combo resource must reject without spending')
+cast(skill(2461),source,source);assert(source.Effects:Find(12003),'Battle chorus can produce resonance without a passive or another profession')
+assert(rules:Budget(source,finale));rules:Commit(source,finale)
+assert(not source.Effects:Find(12003) and source.Guard==0,'Positive combo-state consumption must not trigger Grace')
+roll=99;finale.hitChance=1;cast(finale,source,target)
+assert(not target.Effects:Find(12013) and not source.Effects:Find(12003),'Missed finale still consumes its committed resonance')
+roll=0;effects:Apply(20013,source,source);rules:Commit(source,skill(2473))
+assert(not source.Effects:Find(12013) and source.Guard==4,'Purging a real source debuff at commit triggers Grace once')
+print('PASS battle-generated combo resources, free rejection, misses pay and debuff-only Grace')
+source,target=reset();source.HP=100;target.HP=1
+effects:Apply(802,source,target);cast(skill(2483),source,target)
+assert(target.HP==0 and source.HP>100,'Blood harvest heals from pre-hit bleeding even on a lethal hit')
+source,target=reset();effects:Apply(20007,source,source);cast(skill(2531),source,target)
+assert(source.Guard==5 and not source.Effects:Find(12007),'Spellblade guard reads enchantment before its one-hit consumption')
+print('PASS lethal bleeding harvest and enchantment-to-defense transition')
+source,target=reset();local partner=actor(3,1,-1,0);local stranger=actor(4,1,0,-1);source.CompanionAnimal=partner
+assert(rules:CanUse(source,skill(2501),partner) and not rules:CanUse(source,skill(2501),stranger),'Companion support must use the actual bound independent animal')
+assert(rules.trapSkills[802].id==2431 and rules.trapSkills[20016].id==1907,'Trap projection retains each authored skill identity')
+local professionRules=require('Game.Progression.ProfessionRules').New(config)
+for _,profession in ipairs(professionRules.professions:All())do
+    local added=0
+    for _,course in pairs(professionRules.byProfession[profession.id])do if course.skillId>=2300 and course.skillId<2600 then added=added+1 end end
+    assert(added>=(profession.baseProfession and 2 or 3),'Every profession must receive its own progression depth')
+end
+assert(not professionRules.bySkill[2304] and not professionRules.bySkill[2305] and not professionRules.bySkill[2306] and not professionRules.bySkill[2307],'Derived mage recipes must not spend separate learning opportunities')
+print('PASS companion ownership, trap identities, per-profession coverage and recipe course exclusion')
 local Battle=require('Game.Battle.BattleSystem');setmetatable(battle,{__index=Battle})
 battle.beasts=require('Game.Battle.ProfessionBeasts').New(config,battle)
+battle.spellcasting=require('Game.Battle.Spellcasting').New(config,stats)
 function battle:CheckWinner()return false end -- This fixture owns no expedition lifecycle.
 source,target=reset();source.Growth.SkillCount=1;source.Growth.GetSkillAt=function()return 1803 end
 source.AP=4;roll=99;local materials=inventory:CountItem(8015)

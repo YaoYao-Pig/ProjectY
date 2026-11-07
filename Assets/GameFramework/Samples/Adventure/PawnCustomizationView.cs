@@ -45,6 +45,7 @@ namespace ProjectY.Samples
                 renderer.enabled = part != null;
                 if (part == null) continue;
                 renderer.sharedMesh = i == 0 ? catalog.BodyMesh(value.body, covered) : part.Mesh; renderer.sharedMaterials = part.Materials;
+                if (i == 1) PawnHeadShapes.Apply(renderer, value);
                 for (int m = 0; m < part.Materials.Length; m++)
                 {
                     block.Clear(); block.SetColor("_BaseColor", catalog.Rules.Tint(part.Roles[m], value, part.Materials[m].color));
@@ -58,7 +59,9 @@ namespace ProjectY.Samples
             if (applied == null) throw new InvalidOperationException("A fitted wearable requires a character appearance.");
             var fit = catalog.Fit(path, applied); var obj = new GameObject(fit.Part.Id); obj.transform.SetParent(transform, false);
             var renderer = obj.AddComponent<SkinnedMeshRenderer>(); renderer.bones = bones; renderer.rootBone = bones[0];
-            renderer.sharedMesh = fit.Part.Mesh; renderer.sharedMaterials = fit.Part.Materials; renderer.localBounds = fit.Part.Mesh.bounds; renderer.updateWhenOffscreen = true;
+            var fitted = PawnEquipmentAutoFit.Create(catalog, fit, applied);
+            renderer.sharedMesh = fitted; renderer.sharedMaterials = fit.Part.Materials; renderer.localBounds = fitted.bounds; renderer.updateWhenOffscreen = true;
+            if (fitted != fit.Part.Mesh) obj.AddComponent<PawnAutoFitMeshOwner>().OwnedMesh = fitted;
             return obj;
         }
 #if UNITY_EDITOR

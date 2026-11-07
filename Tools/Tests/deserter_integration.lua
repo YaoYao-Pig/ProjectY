@@ -27,13 +27,13 @@ local ok,result=xpcall(function()
         end
     end
     local function start()
-        local distant
-        for _,cell in ipairs(world.map:GetCells()) do
-            if not cell.waterLevel and not special:CanTrigger(301,cell) then distant=cell;break end
-        end
-        assert(distant and special:CanTrigger(303,distant),'Deserter must also appear far from towns')
+        local generated=assert(special:SiteForNpc(302),'Deserter site must exist at world start')
+        assert(rule.townRadius==0,'Deserter must not require a nearby town')
+        adventure.travel.data:Relocate(generated.q,generated.r)
+        local stops=adventure.travel.data.StopCount
         assert(adventure.travel:Trigger(adventure.config:GetTable('WorldTravelEventTable'):Get(303)))
         local site=data.SiteId;assert(data.EventId==303)
+        assert(site==generated.id and adventure.travel.data.StopCount==stops,'Deserter entry must reuse the generated location')
         assert(adventure:Choose(3031));assert(data.EventId==304 and adventure.areas:ActiveLayout().configId==61)
         local actor,group=special:FindAlly(rule,data.Areas.Active)
         assert(actor.Id==10302 and actor.Team==4 and actor.HP==math.max(1,math.floor(actor.MaxHP*.35)))

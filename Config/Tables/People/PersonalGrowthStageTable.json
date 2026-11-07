@@ -1,0 +1,154 @@
+{
+  "version": 1,
+  "name": "PersonalGrowthStageTable",
+  "description": "入队后依真实共战、危急救援和主动研习开启的个人成长阶段；浏览不会推进。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "成长阶段稳定ID",
+      "min": 1
+    },
+    {
+      "name": "profileId",
+      "type": "int",
+      "description": "人物动机模板",
+      "ref": "PeopleProfileTable"
+    },
+    {
+      "name": "stage",
+      "type": "int",
+      "description": "本动机的阶段序号",
+      "min": 1,
+      "max": 2
+    },
+    {
+      "name": "title",
+      "type": "text",
+      "description": "成长机会标题"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "成长机会正文"
+    },
+    {
+      "name": "conditionMode",
+      "type": "enum",
+      "values": [
+        "all",
+        "any"
+      ],
+      "description": "正数计数门槛全部满足或任一满足"
+    },
+    {
+      "name": "requiredWins",
+      "type": "int",
+      "description": "加入后实际参战并存活取胜次数；0表示不检查",
+      "min": 0
+    },
+    {
+      "name": "requiredRescues",
+      "type": "int",
+      "description": "加入后实际危急救援次数；0表示不检查",
+      "min": 0
+    },
+    {
+      "name": "requiredLearnedSkills",
+      "type": "int",
+      "description": "加入后正式研习新技能数；赠技不计，0表示不检查",
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 11,
+      "profileId": 1,
+      "stage": 1,
+      "title": "第一次有余地",
+      "description": "一场共同取胜之后，最初只求安稳的人终于有余力考虑：今后要靠什么站稳脚跟。",
+      "conditionMode": "all",
+      "requiredWins": 1,
+      "requiredRescues": 0,
+      "requiredLearnedSkills": 0
+    },
+    {
+      "id": 12,
+      "profileId": 1,
+      "stage": 2,
+      "title": "把本事留在身上",
+      "description": "一次次同行让生计不再只是眼前的问题。是练出独自撑过困境的韧性，还是用双手替队伍搭起屏障？",
+      "conditionMode": "all",
+      "requiredWins": 3,
+      "requiredRescues": 0,
+      "requiredLearnedSkills": 0
+    },
+    {
+      "id": 21,
+      "profileId": 2,
+      "stage": 1,
+      "title": "第一次把所学用起来",
+      "description": "加入队伍之后掌握的新技艺，让求学的念头有了具体的方向。接下来可以深入原理，也可以训练观察与判断。",
+      "conditionMode": "all",
+      "requiredWins": 0,
+      "requiredRescues": 0,
+      "requiredLearnedSkills": 1
+    },
+    {
+      "id": 22,
+      "profileId": 2,
+      "stage": 2,
+      "title": "自己的研究方法",
+      "description": "新技艺与实战经验逐渐连在一起。是把学习化为可反复运转的施法方法，还是从敌人的动作中读出队友需要的机会？",
+      "conditionMode": "all",
+      "requiredWins": 2,
+      "requiredRescues": 0,
+      "requiredLearnedSkills": 2
+    },
+    {
+      "id": 31,
+      "profileId": 3,
+      "stage": 1,
+      "title": "牵挂有了重量",
+      "description": "真实的共战或危急救援，让守护不再只是出发时的一句承诺。可以先练好照料同伴的耐力，也可以学习站稳防线。",
+      "conditionMode": "any",
+      "requiredWins": 1,
+      "requiredRescues": 1,
+      "requiredLearnedSkills": 0
+    },
+    {
+      "id": 32,
+      "profileId": 3,
+      "stage": 2,
+      "title": "守护的办法",
+      "description": "经过多次并肩奋战，或亲手救助陷入危急的同伴，守护的愿望开始成为具体本领：救治伤者，或在攻击落下之前挡住危险。",
+      "conditionMode": "any",
+      "requiredWins": 4,
+      "requiredRescues": 2,
+      "requiredLearnedSkills": 0
+    },
+    {
+      "id": 41,
+      "profileId": 4,
+      "stage": 1,
+      "title": "同一面旗之下",
+      "description": "真正并肩赢下一场战斗之后，对彼此的认同有了依据。今后的训练可以偏向克制对手的锋芒，也可以练习协调同伴。",
+      "conditionMode": "all",
+      "requiredWins": 1,
+      "requiredRescues": 0,
+      "requiredLearnedSkills": 0
+    },
+    {
+      "id": 42,
+      "profileId": 4,
+      "stage": 2,
+      "title": "选择怎样赢",
+      "description": "新的技艺与多次共同胜利，让信任变成习惯。是以稳健的迎击掌握节奏，还是用明确的号令把整支队伍带出险境？",
+      "conditionMode": "all",
+      "requiredWins": 3,
+      "requiredRescues": 0,
+      "requiredLearnedSkills": 1
+    }
+  ]
+}

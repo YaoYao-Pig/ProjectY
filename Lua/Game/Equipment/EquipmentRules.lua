@@ -2,9 +2,12 @@
 local Rules = {}; Rules.__index = Rules
 function Rules.New(config, data)
     local self = setmetatable({data=data,visualEffectConfig=config},Rules)
+    self.injuries=require('Game.Battle.InjuryRules').New(config)
+    self.enemyProfessions=require('Game.Progression.EnemyProfessions').New(config)
     self.motion=require('Game.Equipment.EquipmentMotion').New(config)
     self.affixes=require('Game.Equipment.EquipmentAffixes').New(config)
     self.ammunition=require('Game.Equipment.Ammunition').New(config)
+    self.forge=require('Game.Equipment.EquipmentForgeRules').New(config)
     self.torch=config:GetTable('TorchTable'):Get(1)
     for key,name in pairs({items='EquipmentItemTable',weapons='EquipmentWeaponTable',runes='EquipmentRuneTable',
         magazines='EquipmentMagazineTable',sockets='EquipmentSocketTable',assets='EquipmentAssetTable',
@@ -138,17 +141,30 @@ function Rules:ItemAttributeBonus(item,name)
     if definition then for i,attribute in ipairs(definition.attributeNames) do if attribute==name then value=value+definition.attributeValues[i] end end end
     return rounded(value*self:Condition(item).Efficiency)
 end
+function Rules:HandAllowed(actor,itemId,slot)
+    local item=self.items:Get(itemId)
+    if item.kind=='weapon' then return self.injuries:HandsAllowed(actor,slot or 'weapon',self.weapons:Get(itemId).hands) end
+    if item.kind=='wearable' and self.wearables:Get(itemId).slot=='offhand' then return self.injuries:HandsAllowed(actor,'offhand',1) end
+    return true
+end
+function Rules:HasDisabledHandEquipment(actor)
+    if not self.data then return false end
+    local main,off,shield=self:Weapon(actor),self:Offhand(actor),self.data:Worn(actor.Id,'offhand')
+    return main~=nil and not self:HandAllowed(actor,main.ItemId,'weapon')
+        or off~=nil and not self:HandAllowed(actor,off.ItemId,'offhand')
+        or shield~=nil and not self:HandAllowed(actor,shield.ItemId,'offhand')
+end
 function Rules:AttributeBonus(actor,name)
     if not self.data then return 0 end
     local bonus=0
     for i=0,self.data.WearableCount-1 do local item=self.data:GetWearableAt(i)
-        if item.OwnerActorId==actor.Id then
+        if item.OwnerActorId==actor.Id and self:HandAllowed(actor,item.ItemId,item.Slot) then
             bonus=bonus+self:ItemAttributeBonus(item,name)
         end
     end
     local main,off=self:Weapon(actor),self:Offhand(actor)
-    if main then bonus=bonus+self:ItemAttributeBonus(main,name) end
-    if off then bonus=bonus+self:ItemAttributeBonus(off,name) end
+    if main and self:HandAllowed(actor,main.ItemId,'weapon') then bonus=bonus+self:ItemAttributeBonus(main,name) end
+    if off and self:HandAllowed(actor,off.ItemId,'offhand') then bonus=bonus+self:ItemAttributeBonus(off,name) end
     return bonus
 end
 function Rules:SkillIds(actor, template)
@@ -156,7 +172,7 @@ function Rules:SkillIds(actor, template)
     local definition = self:Usable(weapon) and self.weapons:Get(weapon.ItemId) or nil
     local removed,seen,result={},{},{}
     if definition then for _,id in ipairs(definition.replacesSkillIds) do removed[id]=true end end
-    for _,id in ipairs(template.skillIds) do
+    for _,id in ipairs(self.enemyProfessions:SkillIds(actor,template)) do
         local base=self.skills:Get(id)
         if (not removed[id] or base.catalystKind~='none') and (definition or (base.skillGroup~='weapon' and base.skillGroup~='slash') or not self.data) then result[#result+1]=id;seen[id]=true end
     end
@@ -165,8 +181,11 @@ function Rules:SkillIds(actor, template)
     local off=self:Offhand(actor)
     if self:Usable(off) then local id=self.weapons:Get(off.ItemId).offhandSkillId;assert(id>0,'Offhand weapon has no attack');if not seen[id] then result[#result+1]=id;seen[id]=true end end
     if self.data and actor.AnimalSpeciesId==0 then
-        if not definition and not seen[504] then result[#result+1]=504 end
-        if not seen[503] then result[#result+1]=503 end
+        if not definition and not seen[504] then result[#result+1]=504;seen[504]=true end
+        if not seen[503] then result[#result+1]=503;seen[503]=true end
+    end
+    if self.specialSkills then
+        for _,id in ipairs(self.specialSkills:InitialSkills(actor))do if not seen[id]then result[#result+1]=id;seen[id]=true end end
     end
     return result
 end
@@ -187,7 +206,9 @@ function Rules:ItemRequirements(actor,itemId,stats,excludeEquipment)
     return result
 end
 function Rules:Requirements(actor,weapon,stats) return self:ItemRequirements(actor,weapon.ItemId,stats,false) end
-function Rules:CanEquip(actor,itemId,stats)
+function Rules:CanEquip(actor,itemId,stats,slot)
+    local allowed,reason=self:HandAllowed(actor,itemId,slot)
+    if not allowed then return false,reason end
     local requirement=self:ItemRequirements(actor,itemId,stats,true)
     if requirement.met then return true end
     local missing={}
@@ -196,8 +217,8 @@ function Rules:CanEquip(actor,itemId,stats)
     end
     return false,'属性不足，无法装备：'..table.concat(missing,'，')..'（不计装备加成）'
 end
-local function catalystWeapon(self,actor,weapon,kind)
-    if not self:Usable(weapon) then return nil end
+local function catalystWeapon(self,actor,weapon,kind,slot)
+    if not self:Usable(weapon) or not self:HandAllowed(actor,weapon.ItemId,slot) then return nil end
     local definition=self.weapons:Get(weapon.ItemId)
     if definition.catalystKind==kind then return weapon end
     local blockedTalent
@@ -222,9 +243,9 @@ function Rules:Catalyst(actor,kind)
         if offId~=0 and self.items:Get(offId).kind=='weapon' and self.weapons:Get(offId).catalystKind==kind then return {ItemId=offId} end
         return nil,'需要奥术触媒（主手或副手）'
     end
-    local selected,blockedTalent=catalystWeapon(self,actor,self:Weapon(actor),kind)
+    local selected,blockedTalent=catalystWeapon(self,actor,self:Weapon(actor),kind,'weapon')
     if selected then return selected end
-    local offTalent;selected,offTalent=catalystWeapon(self,actor,self:Offhand(actor),kind)
+    local offTalent;selected,offTalent=catalystWeapon(self,actor,self:Offhand(actor),kind,'offhand')
     if selected then return selected end
     blockedTalent=blockedTalent or offTalent
     if blockedTalent then return nil,'触媒配件需要专精：'..self.passives:Get(self.talents:Get(blockedTalent).passiveId).name end
@@ -233,7 +254,10 @@ end
 function Rules:CheckSkillEquipment(actor,skill,stats)
     if skill.skillGroup=='weapon' or skill.skillGroup=='slash' then
         local main,off=self:Weapon(actor),self:Offhand(actor)
-        if not self:Usable(main) and not (self:Usable(off) and self.weapons:Get(off.ItemId).offhandSkillId==skill.id) then return false,'需要一把耐久大于零的已装备武器' end
+        local selected=off and self.weapons:Get(off.ItemId).offhandSkillId==skill.id and off or main
+        if not self:Usable(selected) then return false,'需要一把耐久大于零的已装备武器' end
+        local allowed,reason=self:HandAllowed(actor,selected.ItemId,selected==off and 'offhand' or 'weapon')
+        if not allowed then return false,reason end
     end
     if skill.catalystKind=='none' then return true end
     local weapon,reason=self:Catalyst(actor,skill.catalystKind)
@@ -243,9 +267,9 @@ function Rules:Skill(actor, id, stats)
     local base=self.skills:Get(id);local result={}
     result.appliedRuneIds={}
     result.baseHitChance=base.hitChance
-    for _,key in ipairs({'id','name','description','iconId','action','cost','range','minRange','fixedRange','target','proficiency','effectIds',
-        'skillGroup','cooldownTurns','hitChance','shots','ammoPerShot','damageScale','actionTemplate','contexts','affectsContainers','opportunityAttack','trajectory','catalystKind','skillKind','weaponWear','allowTransfer','preserveArmor'}) do result[key]=base[key] end
-    result.maxTargets=base.maxTargets;result.splashRadius=base.splashRadius
+    for _,key in ipairs({'id','name','description','iconId','action','cost','range','rangeShape','minRange','fixedRange','target','proficiency','effectIds',
+        'skillGroup','cooldownTurns','hitChance','shots','ammoPerShot','damageScale','actionTemplate','contexts','affectsContainers','opportunityAttack','trajectory','catalystKind','skillKind','weaponWear','allowTransfer','preserveArmor','selectBodyPart'}) do result[key]=base[key] end
+    result.maxTargets=base.maxTargets;result.splashRadius=base.splashRadius;result.splashShape=base.splashShape
     result.criticalChance=base.criticalChance;result.criticalMultiplier=base.criticalMultiplier
     local damageSkill=false
     for _,effectId in ipairs(base.effectIds)do if self.effects:Get(effectId).kind=='damage' then damageSkill=true end end
@@ -280,6 +304,17 @@ function Rules:Skill(actor, id, stats)
     if weapon and base.target=='enemy' and base.catalystKind=='none' and (base.skillGroup=='weapon' or base.skillGroup=='slash') then
         local onHit=self.weapons:Get(weapon.ItemId).onHitEffectIds
         appendEffects(onHit)
+        -- Retain the physical item used by this action, before use wear or later equipment changes.
+        if damageSkill and self:Usable(weapon) then
+            result.weaponInstance=weapon
+            local recipe=self.forge:Recipe(weapon.ItemId)
+            local legacy=recipe and CS.ProjectY.Data.EquipmentLegacyData.Of(weapon)
+            if legacy and legacy.Forged then
+                local bonus=recipe.damageBonus
+                if legacy.WishState==2 then bonus=bonus+self.forge.paths:Get(legacy.PathId).wishDamageBonus end
+                result.damageScale=result.damageScale*(1+bonus)
+            end
+        end
     end
     if base.catalystKind~='none' then modifierWeapon=self:Catalyst(actor,base.catalystKind) end
     if modifierWeapon and (weaponAttack or base.catalystKind~='none') then

@@ -141,6 +141,8 @@ namespace ProjectY.Data
         public void CloseDialogue()
         {
             ClearAnimalSpeech();
+            ClearEquipmentSpirit();
+            ClearPeopleDialogue();
             DialogueId = DialogueNodeId = DialogueNpcId = DialogueLocalNpcId = DialogueActorId = 0;
             lines.Clear(); dialogueInterjections.Clear(); DialogueVersion++; Revision++;
         }

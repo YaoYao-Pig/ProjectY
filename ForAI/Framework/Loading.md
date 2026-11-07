@@ -25,4 +25,5 @@
 - [CampaignRestoration.lua](../../Lua/Game/Adventure/CampaignRestoration.lua) / [CampaignPreparation.lua](../../Lua/Game/Adventure/CampaignPreparation.lua)：读档候选与共用推进契约；[campaign_restoration.lua](../../Tools/Tests/campaign_restoration.lua) 验证失败、取消、token、提交和同步兼容。
 - [CampaignLoading.cs](../../Assets/GameFramework/Samples/Adventure/CampaignLoading.cs) / [MapPreviewRenderer.cs](../../Assets/GameFramework/Samples/Map/MapPreviewRenderer.cs)：Update 驱动、候选资源所有权、渲染分批。
 - [LoadingAssets.cs](../../Assets/GameFramework/Editor/LoadingAssets.cs)：Prefab 与 PanelConfig 创建入口。
+- [Loading/HUD 原生叠层检查](../../Tools/Tests/ui_panel_sorting.cs)：隔离 PreviewScene 中先创建 Loading、后创建 HUD，验证真实 Canvas 排序、缓存重开、加载遮挡和关闭恢复；与无 HUD 参考图逐像素对比，不以 Layer 配置或 Lua visible 标记代替可见性检查。
 - [loading_editmode.cs](../../Tools/Tests/loading_editmode.cs) / [loading_integration.lua](../../Tools/Tests/loading_integration.lua)：MCP execute_code 运行的定向 Edit Mode 检查，使用隔离 PreviewScene、真实 2,500 格候选地图/渲染与临时独立存档，覆盖具名创建、跨槽读档、局部区域恢复及名称保留，不进入 Play，不写玩家存档。

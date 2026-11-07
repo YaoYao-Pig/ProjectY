@@ -120,6 +120,19 @@ namespace ProjectY.Editor
             var found=parent.Find(name);if(found!=null)return (RectTransform)found;
             var rect=(RectTransform)new GameObject(name,typeof(RectTransform)).transform;rect.SetParent(parent,false);return rect;
         }
+        private static RectTransform MainLayoutNode(SerializedProperty layout,string key,string name,Transform parent)
+        {
+            var value=layout.FindPropertyRelative(key).objectReferenceValue;
+            if(value!=null)
+            {
+                if(!(value is RectTransform rect)||!rect.IsChildOf(parent))throw new InvalidOperationException("Invalid MainHud layout binding: "+key);
+                return rect;
+            }
+            // Older HUDs have no Common layout bindings yet. Preserve any authored
+            // motion wrapper while migrating those fields instead of duplicating its child.
+            var wrapped=parent.Find(name+"Motion/"+name);
+            return wrapped!=null?(RectTransform)wrapped:Node(name,parent);
+        }
         private static void Box(RectTransform r,float x,float y,float w,float h)
         {r.localScale=Vector3.one;r.anchorMin=r.anchorMax=r.pivot=new Vector2(0,1);r.anchoredPosition=new Vector2(x,-y);r.sizeDelta=new Vector2(w,h);}
         private static void Stretch(RectTransform r,float l=0,float b=0,float right=0,float t=0)
@@ -243,9 +256,9 @@ namespace ProjectY.Editor
         {
             var reference=root.GetComponent<LuaReference>();var style=root.GetComponent<MainHudView>();var serialized=new SerializedObject(style);var layout=serialized.FindProperty("layout");
             var safe=(RectTransform)layout.FindPropertyRelative("Safe").objectReferenceValue;
-            var common=Node("Common",root.transform);Stretch(common);common.SetAsLastSibling();
-            var rail=Node("EntryRail",common);Box(rail,0,0,94,300);
-            var menu=Node("Menu",common);Box(menu,0,0,314,410);Paint(menu,Ink,true);Bind(root,"Menu",menu);
+            var common=MainLayoutNode(layout,"Common","Common",root.transform);Stretch(common);
+            var rail=MainLayoutNode(layout,"Rail","EntryRail",common);Box(rail,0,0,94,300);
+            var menu=MainLayoutNode(layout,"Menu","Menu",common);Box(menu,0,0,314,410);Paint(menu,Ink,true);Bind(root,"Menu",menu);
             MoveButton(root,"Inventory",rail,0,0,94,52);MoveButton(root,"Growth",rail,0,62,94,52);
             Button(root,"Missions",rail,LuaLanguage.Get("UIMainHudPanelCommonEntryRailMissionsMissionsText"),0,124,94,52);
             Button(root,"Factions",rail,LuaLanguage.Get("UIFactionEntry"),0,186,94,52);
@@ -265,12 +278,18 @@ namespace ProjectY.Editor
             MoveButton(root,"GM",menu,14,130,138,34);
             MoveButton(root,"CameraMode",menu,14,172,138,34);MoveButton(root,"Restart",menu,14,172,138,34);
             Scroll(root,"MenuRows",menu,9,214,296,180);
-            var clock=Node("Clock",common);Box(clock,0,0,112,112);var clockImage=Paint(clock,Ink);
-            clockImage.sprite=AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Knob.psd");
-            var needle=Node("Needle",clock);Box(needle,54,8,3,39);needle.pivot=new Vector2(.5f,0);needle.anchoredPosition=new Vector2(56,-56);Paint(needle,Gold);Bind(root,"ClockNeedle",needle);
-            var time=Label(root,"ClockTime",clock,"",0,42,112,26,21);time.alignment=TextAnchor.MiddleCenter;
-            var day=Label(root,"ClockDay",clock,"",0,72,112,20,12);day.alignment=TextAnchor.MiddleCenter;
-            reference.GetText("Coins").transform.SetParent(clock,false);Box(reference.GetText("Coins").rectTransform,0,110,112,24);reference.GetText("Coins").alignment=TextAnchor.MiddleCenter;
+            var clock=MainLayoutNode(layout,"Clock","Clock",common);
+            var weatherDial=clock.GetComponent<WeatherDialView>();
+            if(weatherDial==null)
+            {
+                Box(clock,0,0,112,112);var clockImage=Paint(clock,Ink);
+                clockImage.sprite=AssetDatabase.GetBuiltinExtraResource<Sprite>("UI/Skin/Knob.psd");
+                var needle=Node("Needle",clock);Box(needle,54,8,3,39);needle.pivot=new Vector2(.5f,0);needle.anchoredPosition=new Vector2(56,-56);Paint(needle,Gold);Bind(root,"ClockNeedle",needle);
+                var time=Label(root,"ClockTime",clock,"",0,42,112,26,21);time.alignment=TextAnchor.MiddleCenter;
+                var day=Label(root,"ClockDay",clock,"",0,72,112,20,12);day.alignment=TextAnchor.MiddleCenter;
+                reference.GetText("Coins").transform.SetParent(clock,false);Box(reference.GetText("Coins").rectTransform,0,110,112,24);reference.GetText("Coins").alignment=TextAnchor.MiddleCenter;
+            }
+            else Bind(root,"WeatherDial",weatherDial); // Keep installed art, pivots and explicit animated layers.
             var header=(RectTransform)layout.FindPropertyRelative("Header").objectReferenceValue;Paint(header,new Color(0,0,0,0));
             Box(reference.GetText("Location").rectTransform,0,0,420,26);Box(reference.GetText("Subtitle").rectTransform,0,28,440,20);
             var rule=header.Find("GoldRule");if(rule!=null)rule.gameObject.SetActive(false);

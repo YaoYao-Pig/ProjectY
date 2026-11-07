@@ -13,6 +13,7 @@ local function validateGround(rules,bridge,container)
         magazine(loose);magazine(loaded)
         if weapon then
             local definition=rules.weapons:Get(weapon.ItemId);rules.affixes:Of(weapon)
+            rules.forge:ValidateSaved(weapon)
             assert(rules.items:Get(weapon.ItemId).kind=='weapon','存档容器武器类型无效')
             if loaded then assert(loaded.ItemId==definition.magazineItemId,'存档容器武器的弹匣不兼容') end
             for j=0,weapon.RuneCount-1 do
@@ -31,8 +32,10 @@ function Save.Prepare(adventure,prepared,progress)
     local world=adventure:BuildWorld(prepared.Seed,bridge.Recipe(prepared),bridge.Target(prepared)>0 and bridge.Target(prepared) or nil,
         progress and function(value,stage) progress(value*.7,stage) end,bridge.Generation(prepared))
     world.layouts={};world.states={}
+    adventure.economy:ValidateSaved(prepared,world)
     if not bridge.HasWorld(prepared) then
         adventure.equipment.acquisition:ValidateSaved(prepared,world)
+        world.specialEventPlan=adventure.specialEvents:PlanWorld(world,prepared.Narrative)
         return world
     end
     if progress then progress(.72,Language.CampaignLoadingWorldState) end
@@ -136,6 +139,7 @@ function Save.Prepare(adventure,prepared,progress)
     end
     adventure.narrative.townMissions:ValidateSaved(CS.ProjectY.Data.TownMissionData.Prepared(prepared),world,parties)
     adventure.equipment.acquisition:ValidateSaved(prepared,world)
+    world.specialEventPlan=adventure.specialEvents:PlanWorld(world,prepared.Narrative)
     if progress then progress(1,Language.CampaignLoadingWorldState) end
     return world
 end

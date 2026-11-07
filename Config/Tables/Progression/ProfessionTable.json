@@ -205,6 +205,32 @@
       "initialSkillIds": [],
       "iconPath": "Assets/DynamicAsset/UI/Icons/Professions/profession-13.png",
       "baseProfession": true
+    },
+    {
+      "id": 14,
+      "name": "奥术骑士",
+      "description": "兼修单手剑与奥术两条技艺路线，以骑士战技配合法术附刃，并可研习奥术兵装。",
+      "treeIds": [
+        1,
+        3
+      ],
+      "initialSkillIds": [
+        403
+      ],
+      "iconPath": "Assets/DynamicAsset/UI/Icons/Professions/profession-14.png"
+    },
+    {
+      "id": 15,
+      "name": "解剖学家",
+      "description": "研究身体结构，以精准解剖打击指定部位；研习异种学家后，更容易对没有肢体系统的敌人造成暴击。",
+      "treeIds": [
+        1,
+        15
+      ],
+      "initialSkillIds": [
+        2601
+      ],
+      "iconPath": "Assets/DynamicAsset/UI/Icons/Professions/profession-15.png"
     }
   ]
 }

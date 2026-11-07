@@ -1,0 +1,25 @@
+{
+  "version": 1,
+  "name": "TitleRequirementTable",
+  "description": "个人称号条件；支持击杀、传奇、剧情任务、任务阶段、城镇委托及真实救援。",
+  "key": "id",
+  "fields": [
+    {"name":"id","type":"int","min":1,"description":"条件 ID"},
+    {"name":"kind","type":"enum","values":["kill","legend","mission","quest","town","rescue"],"description":"统计类型"},
+    {"name":"targetId","type":"int","min":0,"description":"指定类型的配置 ID，0 表示任意；rescue 只能为 0。mission:0 包含城镇委托，不包含阶段。"},
+    {"name":"required","type":"int","min":1,"description":"需要的累计次数"},
+    {"name":"description","type":"text","description":"玩家可见的达成条件说明"}
+  ],
+  "rows": [
+    {"id":1,"kind":"kill","targetId":0,"required":10,"description":"亲自击败敌人"},
+    {"id":2,"kind":"kill","targetId":0,"required":50,"description":"亲自击败敌人"},
+    {"id":3,"kind":"legend","targetId":0,"required":1,"description":"亲自击败任意传奇敌人"},
+    {"id":4,"kind":"legend","targetId":11,"required":1,"description":"亲自击败血月巨狼·裂喉"},
+    {"id":5,"kind":"legend","targetId":15,"required":1,"description":"亲自击败叛誓剑士·维兰"},
+    {"id":6,"kind":"mission","targetId":100,"required":1,"description":"在队期间完成「失踪的驿使」"},
+    {"id":7,"kind":"mission","targetId":0,"required":5,"description":"在队期间完成任务（含城镇委托，不含任务阶段）"},
+    {"id":8,"kind":"mission","targetId":0,"required":20,"description":"在队期间完成任务（含城镇委托，不含任务阶段）"},
+    {"id":9,"kind":"town","targetId":0,"required":10,"description":"在队期间完成城镇委托"},
+    {"id":10,"kind":"rescue","targetId":0,"required":3,"description":"在正式战斗中救助生命濒危的同伴"}
+  ]
+}

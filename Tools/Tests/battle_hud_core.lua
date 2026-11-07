@@ -1,6 +1,25 @@
 local EmptyGrowth=assert(loadfile('Tools/Tests/growth_empty.lua'))()
 local Gear=assert(loadfile('Tools/Tests/equipment_read_fixture.lua'))()
 assert(loadfile('Tools/Tests/battle_movement_fixture.lua'))()
+-- Neutral state for this resource/action projection fixture; keep the Lua rules real.
+CS.ProjectY.Data.TitleState={Equipped=function()return 0 end}
+CS.ProjectY.Data.MoraleState={Active=function()return false end}
+CS.ProjectY.Data.DeathDoorState={Alive=function(row)return row.HP>0 end,Dead=function(row)return row.HP<=0 end,
+    Entered=function()return false end,Survived=function()return 0 end}
+CS.ProjectY.Data.AnimalCompanionState={Bound=function()return nil end,Independent=function()return false end}
+CS.ProjectY.Data.BodyHealth={Revision=function()return 0 end,MaximumHP=function()return 1 end,HP=function()return 1 end,
+    Damage=function()return 0 end,Permanent=function()return false end,RecoverableHP=function(row)return row.MaxHP end}
+local casting={}
+CS.ProjectY.Data.SpellcastingState={
+    Configure=function(actor,maximum,regen)
+        local resource=casting[actor] or {current=maximum};casting[actor]=resource
+        resource.maximum=maximum;resource.regen=regen;resource.current=math.min(resource.current,maximum)
+    end,
+    Current=function(actor)return assert(casting[actor]).current end,
+    Maximum=function(actor)return assert(casting[actor]).maximum end,
+    Regen=function(actor)return assert(casting[actor]).regen end,
+    Boost=function()return 0 end,
+}
 -- Targeted, editor-free projection checks against the real config and skill rules.
 package.path = 'Lua/?.lua;' .. package.path
 local config = require('Config.ConfigSystem')()
@@ -12,6 +31,9 @@ local battle = require('Game.Battle.BattleSystem')()
 battle.skills = config:GetTable('CombatSkillTable'); battle.encounters = config:GetTable('CombatEncounterTable')
 battle.consumables=config:GetTable('ConsumableTable');battle.effects=config:GetTable('CombatEffectTable')
 battle.stats = require('Game.Battle.CombatStats')(config)
+battle.spellcasting=battle.stats.spellcasting;battle.morale=battle.stats.morale
+battle.professions=require('Game.Battle.ProfessionCombat').New(config,battle)
+battle.beasts=require('Game.Battle.ProfessionBeasts').New(config,battle)
 local bow=Gear(1,46,1)
 battle.stats.equipment.data={WearableCount=0,Equipped=function(_,id)return id==1 and bow or nil end,Offhand=function()return nil end,Worn=function()return nil end,CountItem=function()return 0 end}
 battle.gameEffects=require('Game.Battle.GameEffects').New(battle.stats,config:GetTable('CombatEffectTable'))
@@ -20,7 +42,11 @@ local hero = {Id=1,Growth=EmptyGrowth(),TemplateId=2,Team=1,HP=32,MaxHP=38,AP=4,
 local down = {Id=2,Growth=EmptyGrowth(),TemplateId=3,Team=1,HP=0,MaxHP=34,AP=0,Guard=0,Moved=false,MainUsed=false,TraitCount=0,Q=-2,R=0}
 local enemy = {Id=101,Growth=EmptyGrowth(),TemplateId=4,Team=2,HP=24,MaxHP=34,AP=4,Guard=0,Moved=false,MainUsed=false,TraitCount=0,Q=0,R=0}
 local units = {hero,down,enemy}; local order = {1,101,2}
-for _,unit in ipairs(units) do unit.AnimalOwnerId=0;unit.Effects={Count=0};function unit:GetCooldown() return 0 end end
+for _,unit in ipairs(units) do
+    unit.AnimalOwnerId=0;unit.InitialProfessionId=0;unit.Effects={Count=0,Find=function()return nil end}
+    unit.Growth.GetRank=function()return 0 end;unit.Growth.CurrentProfessionId=0
+    function unit:GetCooldown() return 0 end
+end
 battle.data = {Phase='combat',Winner='',ActiveId=1,UnitCount=3,TurnCount=3,TurnIndex=0,Round=3,MaxRounds=18,EncounterId=1,LogCount=2,
     GetUnitAt=function(_,i) return units[i+1] end,GetTurnAt=function(_,i) return order[i+1] end,
     GetLogAt=function(_,i) return ({'first','second'})[i+1] end}
@@ -32,6 +58,18 @@ assert(view.hp==32 and view.maxHP==38 and view.ap==4 and view.maxAP==4 and view.
 assert(#view.party==2 and view.party[2].hp==0 and #view.turns==2 and view.turns[1].active)
 assert(view.moveAvailable and view.skills[1].available and view.skills[2].available and #view.logs==2)
 assert(hero.AP==4 and hero.HP==32 and not hero.Moved and not hero.MainUsed)
+assert(view.party[1].healthKnown and view.party[1].speedKnown and view.turns[2].healthKnown and view.turns[2].speedKnown)
+local discovered={}
+battle.stats.inspection={Known=function(_,unit,field)return unit.Team==1 or discovered[field]==true end,
+    targets={Name=function(_,unit)return battle.stats:Template(unit).name end}}
+view=build(battle,adventure)
+assert(view.party[1].healthKnown and view.party[1].speedKnown)
+assert(not view.turns[2].healthKnown and not view.turns[2].speedKnown)
+discovered.health=true;view=build(battle,adventure)
+assert(view.turns[2].healthKnown and not view.turns[2].speedKnown,'Health discovery must not reveal initiative speed')
+discovered['attribute:speed']=true;view=build(battle,adventure)
+assert(view.turns[2].healthKnown and view.turns[2].speedKnown)
+battle.stats.inspection=nil
 print('PASS real resources, dead party members, living initiative and read-only projection')
 hero.MainUsed=true
 view=build(battle,adventure);assert(not action(view,2).available and action(view,2).reason:find('主要行动') and action(view,4).available)
@@ -41,6 +79,11 @@ hero.AP=4;enemy.Q=4;enemy.R=0
 view=build(battle,adventure);assert(not action(view,2).available and action(view,2).reason:find('距离'))
 battle.data.ActiveId=101;battle.data.TurnIndex=1
 view=build(battle,adventure);assert(not view.player and not view.moveAvailable and not view.skills[1].available and view.turns[1].active)
+battle.stats.inspection={Known=function(_,unit,field)return unit.Team==1 or discovered[field]==true end,
+    targets={Name=function(_,unit)return battle.stats:Template(unit).name end}}
+view=build(battle,adventure);assert(not view.castingKnown,'Enemy casting resources must remain hidden until discovered')
+discovered.casting=true;view=build(battle,adventure);assert(view.castingKnown)
+battle.stats.inspection=nil
 print('PASS main-action, AP, range and enemy-turn gating through actual battle rules')
 local icons=config:GetTable('BattleIconTable')
 local checkedIcons={}

@@ -16,11 +16,17 @@ namespace ProjectY.Samples
         {
             public int Id;
             public string Name;
-            public float Sun, Ambient, FogStart, FogEnd, Shadow;
+            public float Sun, Ambient, FogStart, FogEnd, Shadow, Cloud, Rain;
             public Color Tint;
         }
         public Key[] Keys;
         public Weather[] Weathers;
+        public sealed class WeatherSettings
+        {
+            public int MaxRainParticles, MaxSplashParticles, MaxClouds;
+            public float RainRate, RefreshSeconds, CloudSpacingHexes;
+        }
+        public WeatherSettings WeatherEffects;
         public int DefaultWeather, MaxLights;
         public float CycleSeconds, StartHour, Transition, Azimuth, IndoorSun, LampIntensity, LampRange, LampHeight, ShadowDistance;
         public float TorchIntensity, TorchRange, TorchHeight;
@@ -34,6 +40,14 @@ namespace ProjectY.Samples
         public static MapEnvironmentData Read(LuaTable root)
         {
             var result = new MapEnvironmentData();
+            using (var p = root.Get<LuaTable>("weatherSystem"))
+            {
+                if (p == null) throw new InvalidOperationException("Weather system configuration is missing.");
+                result.WeatherEffects = new WeatherSettings {
+                    MaxRainParticles = p.Get<int>("maxRainParticles"), MaxSplashParticles = p.Get<int>("maxSplashParticles"),
+                    MaxClouds = p.Get<int>("maxClouds"), RainRate = p.Get<float>("rainRate"),
+                    RefreshSeconds = p.Get<float>("refreshSeconds"), CloudSpacingHexes = p.Get<float>("cloudSpacingHexes") };
+            }
             using (var p = root.Get<LuaTable>("profile"))
             {
                 result.DefaultWeather = p.Get<int>("defaultWeatherId"); result.MaxLights = p.Get<int>("maxLocalLights");
@@ -62,7 +76,8 @@ namespace ProjectY.Samples
                 result.Weathers = new Weather[rows.Length];
                 for (var i = 0; i < rows.Length; i++) using (var row = rows.Get<int, LuaTable>(i + 1))
                     result.Weathers[i] = new Weather { Id = row.Get<int>("id"), Name = row.Get<string>("name"), Sun = row.Get<float>("sunMultiplier"), Ambient = row.Get<float>("ambientMultiplier"),
-                        FogStart = row.Get<float>("fogStart"), FogEnd = row.Get<float>("fogEnd"), Shadow = row.Get<float>("shadowStrength"), Tint = ColorValue(row, "tint") };
+                        FogStart = row.Get<float>("fogStart"), FogEnd = row.Get<float>("fogEnd"), Shadow = row.Get<float>("shadowStrength"), Tint = ColorValue(row, "tint"),
+                        Cloud = row.Get<float>("cloudCoverage"), Rain = row.Get<float>("rainIntensity") };
             }
             return result;
         }

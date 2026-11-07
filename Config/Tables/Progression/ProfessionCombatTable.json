@@ -74,6 +74,24 @@
       "description": "拆料返还的实际原投入物品；0 表示无",
       "default": 0,
       "min": 0
+    },
+    {
+      "name": "requiredSourceTag",
+      "type": "string",
+      "default": "",
+      "description": "施放要求自身已有的状态标签；空为无"
+    },
+    {
+      "name": "consumeSourceTag",
+      "type": "bool",
+      "default": false,
+      "description": "合法施放提交时消费自身requiredSourceTag的全部状态；未命中仍消费"
+    },
+    {
+      "name": "requiredBoundCompanion",
+      "type": "bool",
+      "default": false,
+      "description": "目标必须为本人绑定且独立出战的真实动物伙伴"
     }
   ],
   "rows": [
@@ -462,6 +480,203 @@
       "baseSkillId": 0,
       "requiredEquipment": "melee",
       "refundItemId": 0
+    },
+    {
+      "id": 2401,
+      "mechanic": "strike",
+      "requiredEquipment": "melee"
+    },
+    {
+      "id": 2403,
+      "mechanic": "consume_damage",
+      "statusTag": "armor_break",
+      "bonusDamage": 8,
+      "requiredEquipment": "melee"
+    },
+    {
+      "id": 2411,
+      "mechanic": "strike",
+      "requiredEquipment": "bow"
+    },
+    {
+      "id": 2412,
+      "mechanic": "strike",
+      "requiredEquipment": "bow"
+    },
+    {
+      "id": 2413,
+      "mechanic": "consume_damage",
+      "statusTag": "bleeding",
+      "bonusDamage": 8,
+      "requiredEquipment": "bow"
+    },
+    {
+      "id": 2431,
+      "mechanic": "trap",
+      "materialId": 82,
+      "materialCount": 1,
+      "applyEffectId": 802
+    },
+    {
+      "id": 2432,
+      "mechanic": "strike",
+      "materialId": 81,
+      "materialCount": 1
+    },
+    {
+      "id": 2433,
+      "mechanic": "push",
+      "materialId": 8016,
+      "materialCount": 1
+    },
+    {
+      "id": 2441,
+      "mechanic": "push",
+      "requiredEquipment": "shield"
+    },
+    {
+      "id": 2442,
+      "mechanic": "interpose",
+      "requiredEquipment": "shield"
+    },
+    {
+      "id": 2443,
+      "mechanic": "feint",
+      "requiredEquipment": "shield",
+      "requiredSourceTag": "ward",
+      "consumeSourceTag": true,
+      "applyEffectId": 20001
+    },
+    {
+      "id": 2451,
+      "mechanic": "strike",
+      "family": "potion",
+      "materialId": 8016,
+      "materialCount": 1
+    },
+    {
+      "id": 2452,
+      "mechanic": "strike",
+      "family": "potion",
+      "materialId": 8013,
+      "materialCount": 1
+    },
+    {
+      "id": 2453,
+      "mechanic": "distill",
+      "family": "potion",
+      "materialId": 8016,
+      "materialCount": 1,
+      "statusTag": "poison",
+      "bonusDamage": 3
+    },
+    {
+      "id": 2461,
+      "mechanic": "chorus"
+    },
+    {
+      "id": 2462,
+      "mechanic": "strike",
+      "requiredSourceTag": "resonance",
+      "consumeSourceTag": true
+    },
+    {
+      "id": 2463,
+      "mechanic": "strike",
+      "requiredSourceTag": "resonance",
+      "consumeSourceTag": true
+    },
+    {
+      "id": 2471,
+      "mechanic": "strike"
+    },
+    {
+      "id": 2472,
+      "mechanic": "strike"
+    },
+    {
+      "id": 2473,
+      "mechanic": "strike",
+      "requiredSourceTag": "weakness",
+      "consumeSourceTag": true
+    },
+    {
+      "id": 2481,
+      "mechanic": "strike",
+      "family": "curse"
+    },
+    {
+      "id": 2482,
+      "mechanic": "strike",
+      "family": "curse"
+    },
+    {
+      "id": 2483,
+      "mechanic": "consume_damage",
+      "family": "curse",
+      "statusTag": "bleeding",
+      "bonusDamage": 8
+    },
+    {
+      "id": 2491,
+      "mechanic": "feint",
+      "applyEffectId": 20001,
+      "requiredEquipment": "melee"
+    },
+    {
+      "id": 2492,
+      "mechanic": "finisher",
+      "bonusDamage": 6,
+      "requiredEquipment": "melee"
+    },
+    {
+      "id": 2493,
+      "mechanic": "strike"
+    },
+    {
+      "id": 2501,
+      "mechanic": "strike",
+      "requiredBoundCompanion": true
+    },
+    {
+      "id": 2502,
+      "mechanic": "strike",
+      "requiredBoundCompanion": true
+    },
+    {
+      "id": 2503,
+      "mechanic": "consume_damage",
+      "statusTag": "bleeding",
+      "bonusDamage": 8,
+      "requiredEquipment": "melee"
+    },
+    {
+      "id": 2511,
+      "mechanic": "strike",
+      "requiredEquipment": "melee"
+    },
+    {
+      "id": 2531,
+      "mechanic": "strike",
+      "requiredEquipment": "melee"
+    },
+    {
+      "id": 2532,
+      "mechanic": "strike"
+    },
+    {
+      "id": 2533,
+      "mechanic": "consume_damage",
+      "statusTag": "wet",
+      "bonusDamage": 8,
+      "requiredEquipment": "melee",
+      "requiredSourceTag": "ward",
+      "consumeSourceTag": true
+    },
+    {
+      "id": 2601,
+      "mechanic": "body_target",
+      "requiredEquipment": "melee"
     }
   ]
 }

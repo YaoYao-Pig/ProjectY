@@ -19,7 +19,6 @@
 ---@field Hint CS.UnityEngine.UI.Text
 ---@field Back CS.UnityEngine.UI.Button
 ---@field Resume CS.UnityEngine.UI.Button
----@field Style CS.ProjectY.UI.NarrativeView
 ---@field OriginsTitle CS.UnityEngine.UI.Text
 ---@field Origins CS.UnityEngine.RectTransform
 ---@field OriginsScroll CS.UnityEngine.UI.ScrollRect
@@ -32,5 +31,29 @@
 ---@field StartItems CS.UnityEngine.RectTransform
 ---@field CreateText CS.UnityEngine.UI.Text
 ---@field WorldName CS.UnityEngine.UI.InputField
+---@field Settings CS.UnityEngine.UI.Button
+---@field SettingsText CS.UnityEngine.UI.Text
+---@field About CS.UnityEngine.UI.Button
+---@field AboutText CS.UnityEngine.UI.Text
+---@field Quit CS.UnityEngine.UI.Button
+---@field QuitText CS.UnityEngine.UI.Text
+---@field SelectedMap CS.UnityEngine.UI.RawImage
+---@field SelectedTitle CS.UnityEngine.UI.Text
+---@field SelectedInfo CS.UnityEngine.UI.Text
+---@field LoadSelected CS.UnityEngine.UI.Button
+---@field LoadSelectedText CS.UnityEngine.UI.Text
+---@field Dialog CS.UnityEngine.RectTransform
+---@field DialogTitle CS.UnityEngine.UI.Text
+---@field DialogText CS.UnityEngine.UI.Text
+---@field SettingsContent CS.UnityEngine.RectTransform
+---@field MasterVolume CS.UnityEngine.UI.Slider
+---@field MusicVolume CS.UnityEngine.UI.Slider
+---@field EffectsVolume CS.UnityEngine.UI.Slider
+---@field ReducedMotion CS.UnityEngine.UI.Toggle
+---@field DialogCancel CS.UnityEngine.UI.Button
+---@field DialogCancelText CS.UnityEngine.UI.Text
+---@field DialogConfirm CS.UnityEngine.UI.Button
+---@field DialogConfirmText CS.UnityEngine.UI.Text
+---@field Style CS.ProjectY.UI.StartMenuView
 local View = {}
 return View

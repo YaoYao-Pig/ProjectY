@@ -2,6 +2,8 @@ local Random=require('Game.Map.SeededRandom')
 local Hex=require('Game.Map.HexGrid')
 local Actions=require('Game.Narrative.NarrativeActions')
 local Rewards=require('Game.Narrative.MissionRewards')
+local Clear=require('Game.Adventure.ClearMissions')
+local Language=require('Language')
 local Missions={};Missions.__index=Missions
 function Missions.New(story)
     local config=story.rules.config
@@ -29,9 +31,9 @@ function Missions:EnsureTown()
     if self.data:GetDay(siteId)==day then return end
     local residents={}
     for _,npc in ipairs(area.npcs) do
-        if not npc.narrativeId and not npc.facilityId then residents[#residents+1]=self:NpcId(npc) end
+        if not npc.narrativeId and not npc.facilityId and not (adventure.people and adventure.people:ResidentJoined(siteId,self:NpcId(npc)))then residents[#residents+1]=self:NpcId(npc) end
     end
-    assert(#residents>0,'Town missions require at least one resident')
+    if #residents==0 then self.data:BeginDay(siteId,day);return end
     local candidates={};local escort=self.escort:Prepare(siteId)
     for _,row in ipairs(self.definitions:All()) do if row.kind~='escort' or escort then candidates[#candidates+1]=row end end
     assert(#candidates>=self.settings.maxOffers,'Town missions require enough non-escort templates for the maximum offer count')
@@ -74,10 +76,12 @@ function Missions:Accept(id)
     local mission=self.data:Find(id)
     if not mission or mission.State~='offered' then return false,'这份委托已刷新或已被接取' end
     local ok,reason=self:NearPublisher(mission);if not ok then return false,reason end
-    local row=self.definitions:Get(mission.DefinitionId);local plan
+    local row=self.definitions:Get(mission.DefinitionId);local plan;local clearPlan
     if row.kind=='escort' then plan,reason=self.escort:Prepare(mission.SiteId);if not plan then return false,reason end end
+    if row.kind=='clear' then clearPlan,reason=Clear.Prepare(self.story,mission,row.radius);if not clearPlan then return false,reason end end
     self.data:Accept(id)
     if plan then self.escort:Start(mission,plan) end
+    if clearPlan then Clear.Start(self.story,mission,clearPlan) end
     self:Refresh();return true
 end
 function Missions:CanClaim(mission)
@@ -89,17 +93,26 @@ function Missions:CanClaim(mission)
     local plan,reason=Actions.Prepare(self.story,row.actionIds)
     return plan~=nil,reason or '',plan
 end
+function Missions:CanClaimHere(mission)
+    local phase=self.story.adventure.data.Phase
+    if phase~='map' and phase~='area' then return false,Language.TownMissionClaimExplorationOnly end
+    if self.definitions:Get(mission.DefinitionId).kind~='escort' then
+        local ok,reason=self:NearPublisher(mission);if not ok then return false,reason end
+    end
+    return self:CanClaim(mission)
+end
 function Missions:Claim(id)
     self:Refresh()
     local mission=self.data:Find(id)
     if not mission then return false,'委托不存在' end
-    local ok,reason=self:NearPublisher(mission);if not ok then return false,reason end
-    local plan;ok,reason,plan=self:CanClaim(mission);if not ok then return false,reason end
+    local ok,reason,plan=self:CanClaimHere(mission);if not ok then return false,reason end
     if self.definitions:Get(mission.DefinitionId).kind=='delivery' then
         self.story.adventure.data.Equipment:ConsumeStack(mission.TargetId,mission.RequiredCount)
     end
     local rewards=Actions.Apply(self.story,plan)
     self.data:Complete(id)
+    if self.story.adventure.people then self.story.adventure.people:CommissionCompleted(mission)end
+    Rewards.Append(rewards,Rewards.TitleReputation(self.story.adventure.titles:Complete('town',id,mission.DefinitionId)))
     self.story.RewardSettled:Emit({title=self.definitions:Get(mission.DefinitionId).name,kind='town',id=id,rows=rewards})
     return true
 end
@@ -134,6 +147,9 @@ function Missions:Marker(siteId,npc)
     return result
 end
 function Missions:PublisherName(mission)
+    local people=self.story.adventure.people
+    local person=people and people:Find('resident:'..mission.SiteId..':'..mission.NpcId)
+    if person then return people:Name(person)end
     local layout=self.story.adventure.areas.layouts[mission.SiteId]
     if layout then for _,npc in ipairs(layout.npcs) do if self:NpcId(npc)==mission.NpcId then
         return self.story.rules.config:GetTable('MapAreaTownNpcTable'):Get(npc.templateId).name
@@ -154,13 +170,16 @@ function Missions:Rows(siteId,npcId)
                 objective='护送至'..(destination and destination.name or '附近可达城镇')..'。可随商队同行，也可独立行动并在商队遇袭时主动参战。'
             end
             local claimable,reason=false,''
-            if mission.State=='ready' then claimable,reason=self:CanClaim(mission) end
-            local nearby,nearReason=self:NearPublisher(mission)
-            if not nearby then claimable=false;reason=nearReason end
+            if mission.State=='ready' then claimable,reason=self:CanClaimHere(mission)
+            else
+                local nearby,nearReason=self:NearPublisher(mission)
+                if not nearby then reason=nearReason end
+            end
             result[#result+1]={id=-mission.Id,contractId=mission.Id,name=town.name..' · '..row.name,category='town',
                 status=mission.State=='offered' and 'inactive' or mission.State,kind=row.kind,claimable=claimable,reason=reason,
                 description=row.description,objective=objective,publisher=self:PublisherName(mission),location=town.name,
-                rewards=Rewards.Preview(self.story,row.actionIds),turnInHint='完成后回原委托人处交付并领取报酬。',quests={}}
+                rewards=Rewards.Preview(self.story,row.actionIds,'town'),
+                turnInHint=row.kind=='escort' and Language.TownEscortTurnInHint or Language.TownMissionTurnInHint,quests={}}
         end
     end
     return result

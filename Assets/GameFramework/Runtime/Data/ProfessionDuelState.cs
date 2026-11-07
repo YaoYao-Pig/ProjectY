@@ -8,7 +8,7 @@ namespace ProjectY.Data
         internal void BeginProfessionDuel(int actorId,int threshold)
         {
             RequirePhase("area");
-            if(ProfessionDuelActorId!=0 || threshold<1 || threshold>=100 || !party.Exists(a=>a.Id==actorId && a.HP>0))
+            if(ProfessionDuelActorId!=0 || threshold<1 || threshold>=100 || !party.Exists(a=>a.Id==actorId && DeathDoorState.Alive(a)))
                 throw new InvalidOperationException("Invalid profession duel contract.");
             Areas.Active.Stop();ProfessionDuelActorId=actorId;ProfessionDuelThreshold=threshold;
             AreaEncounterId=0;ResultText="";Phase="battle";

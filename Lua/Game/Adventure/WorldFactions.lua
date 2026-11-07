@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 local Hex=require('Game.Map.HexGrid')
 local Discovery=require('Game.Adventure.FactionDiscovery')
 local Factions={};Factions.__index=Factions
@@ -84,7 +85,7 @@ function Factions:PrepareRoster(party,encounterId,count)
     for i,template in ipairs(encounter.enemyIds) do if not count or i<=count then
         local actor=party:AddMember(template)
         initializeAnimal(actor)
-        adventure.battle.stats.birth:Initialize(actor,adventure.data.Seed)
+        adventure.battle.stats.birth:InitializeEnemy(actor,adventure.data.Seed)
         if not adventure.battle.stats.animals:IsStaticBody(actor) then adventure.characterAppearances:Assign(actor,appearance) end
         adventure.equipment:InitializeEnemy(actor)
         actor:SetMaxHP(adventure.battle.stats:MaximumHP(actor));actor:Restore()
@@ -291,7 +292,7 @@ function Factions:Recover(minute,selectedSites)
                                 site:AddReserve(math.max(0,math.min(policy.income*needed,self.rules.settings.reserveCapacity-site.Reserve)))
                                 remaining=remaining-needed
                                 assert(site:SpendReserve(policy.recruitCost))
-                                if actor.HP==0 then
+                                if not Life.Alive(actor) then
                                     CS.ProjectY.Data.EquipmentCombatState.RemoveActor(self.adventure.equipment.data,actor.Id)
                                     CS.ProjectY.Data.FactionPersistence.Replenish(actor)
                                     self.adventure.equipment:InitializeEnemy(actor)
@@ -305,6 +306,9 @@ function Factions:Recover(minute,selectedSites)
                 if recovered then self:InvalidatePower() end
             end
             site:AddReserve(math.max(0,math.min(policy.income*remaining,self.rules.settings.reserveCapacity-site.Reserve)))
+            if site.LiberatedAt<0 or minute-site.LiberatedAt>=self.rules.settings.retreatMinutes then
+                self.adventure.parties:Recruit(site,minute,remaining)
+            end
             site:SetRecoveryAt(previousRecovery+periods*self.rules.settings.thinkMinutes)
         end
     end

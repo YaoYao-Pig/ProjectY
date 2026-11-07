@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 -- 技能栏的查询和命令适配器；UI 只保存当前角色与技能选择，玩法状态归原系统。
 local Supports=require('Game.Battle.SkillContext')
 local VisualEffects=require('Game.Presentation.VisualEffects')
@@ -21,7 +22,7 @@ function Skills.New(adventure)
             for i=0,state.VisibleCount-1 do visible[state:GetVisibleAt(i)]=true end
             for i=0,state.EncounterCount-1 do local group=state:GetEncounterAt(i)
                 for j=0,group.EnemyCount-1 do local actor=group:GetEnemyAt(j)
-                    if actor.Team==0 and actor.HP>0 and actor.AnimalOwnerId==0 and visible[area:Find(actor.Q,actor.R).index] then targets[#targets+1]=actor.Id end
+                    if actor.Team==0 and Life.Alive(actor) and actor.AnimalOwnerId==0 and visible[area:Find(actor.Q,actor.R).index] then targets[#targets+1]=actor.Id end
                 end
             end
             return targets
@@ -62,7 +63,7 @@ end
 function Skills:Context() return self.adventure.data.Phase=='battle' and 'battle' or 'life' end
 function Skills:CanUse(actorId,skillId,targetId)
     local actor=self:Actor(actorId)
-    if not actor or actor.HP<=0 then return false,'请选择存活的队员' end
+    if not actor or not Life.Alive(actor) then return false,'请选择存活的队员' end
     local skill=self.skills:Find(skillId);if not skill then return false,'未知技能' end
     local owns=false
     for _,id in ipairs(self.adventure.battle:SkillIds(actor)) do if id==skillId then owns=true;break end end
@@ -115,7 +116,7 @@ function Skills:Rows(actorId,context)
             end
             local available,reason=false,'附近没有可用目标'
             if self.adventure.data.Phase=='map' then reason='进入小地图后使用' end
-            if actor.HP<=0 then reason='角色已倒地' end
+            if not Life.Alive(actor) then reason='角色已倒地' end
             for _,targetId in ipairs(targets) do
                 local ok,why=self:CanUse(actorId,id,targetId)
                 if ok then available=true;reason='';break end

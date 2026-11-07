@@ -17,6 +17,8 @@ namespace ProjectY.Data
         public static void RefreshMaximum(CombatActorData actor, int maximum) => actor.SetEquipmentMaximum(maximum);
         public static void DropWeapon(EquipmentData data, MapAreaStateData area, int containerId, int actorId, int weaponId)
             => data.DropCombatEquipment(area, containerId, actorId, weaponId, false);
+        public static void DropWearable(EquipmentData data, MapAreaStateData area, int containerId, int actorId, int wearableId)
+            => data.DropCombatEquipment(area, containerId, actorId, 0, false, wearableId);
         public static void DropActor(EquipmentData data, MapAreaStateData area, int containerId, int actorId)
             => data.DropCombatEquipment(area, containerId, actorId, 0, true);
         public static EquipmentWeaponData GroundWeapon(MapAreaLootData container)
@@ -85,13 +87,13 @@ namespace ProjectY.Data
             if (changed > 0) Revision++;
             return changed;
         }
-        internal void DropCombatEquipment(MapAreaStateData area, int containerId, int actorId, int weaponId, bool all)
+        internal void DropCombatEquipment(MapAreaStateData area, int containerId, int actorId, int weaponId, bool all, int wearableId = 0)
         {
             var container = area.GetLootAt(containerId - 1);
             if (container.SearchItems == null) throw new InvalidOperationException("Prepare the destination loot grid first.");
             var selectedWeapons = weapons.Where(w => w.OwnerActorId == actorId && (all || w.Id == weaponId)).ToArray();
-            var selectedWearables = all ? wearables.Where(w => w.OwnerActorId == actorId).ToArray() : Array.Empty<EquipmentWearableData>();
-            if (!all && selectedWeapons.Length != 1) throw new InvalidOperationException("The disarmed weapon is no longer equipped.");
+            var selectedWearables = wearables.Where(w => w.OwnerActorId == actorId && (all || w.Id == wearableId)).ToArray();
+            if (!all && selectedWeapons.Length + selectedWearables.Length != 1) throw new InvalidOperationException("The dropped equipment is no longer equipped.");
             var pending = new List<LootItemData>();
             foreach (var weapon in selectedWeapons)
                 pending.Add(new LootItemData(container, container.SearchItems.Length + pending.Count, 0, weapon.ItemId, 1, "weapon")

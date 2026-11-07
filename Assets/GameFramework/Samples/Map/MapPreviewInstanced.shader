@@ -9,6 +9,13 @@ Shader "ProjectY/Map Preview Instanced"
         _Smoothness ("Smoothness", Range(0,1)) = .08
         _UseVertexColor ("Vertex color", Float) = 0
         _UseSurfacePattern ("Surface pattern", Float) = 0
+        _DetailPattern ("Model surface detail", Vector) = (0,1,0,0)
+        _DetailRelief ("Model relief metres", Float) = .025
+        _SurfaceRelief ("Terrain relief metres", Float) = .03
+        _BaseMap ("Base map", 2D) = "white" {}
+        _BumpMap ("Normal map", 2D) = "bump" {}
+        _MetallicGlossMap ("Metallic smoothness", 2D) = "white" {}
+        _MaterialMaps ("Map flags and bump scale", Vector) = (0,0,1,0)
     }
     SubShader
     {
@@ -19,7 +26,8 @@ Shader "ProjectY/Map Preview Instanced"
         #include "Packages/com.unity.render-pipelines.core/ShaderLibrary/CommonMaterial.hlsl"
         CBUFFER_START(UnityPerMaterial)
             half _Metallic, _Smoothness;
-            float _UseVertexColor, _UseSurfacePattern;
+            float _UseVertexColor, _UseSurfacePattern, _DetailRelief, _SurfaceRelief;
+            float4 _DetailPattern, _BaseMap_ST, _MaterialMaps;
         CBUFFER_END
         // Keep the existing CPU property-block contract for instanced map batches.
         UNITY_INSTANCING_BUFFER_START(Props)
@@ -28,6 +36,10 @@ Shader "ProjectY/Map Preview Instanced"
             UNITY_DEFINE_INSTANCED_PROP(float4, _SurfaceData)
             UNITY_DEFINE_INSTANCED_PROP(float4, _SurfaceFinish)
         UNITY_INSTANCING_BUFFER_END(Props)
+        TEXTURE2D(_BaseMap); SAMPLER(sampler_BaseMap);
+        TEXTURE2D(_BumpMap); SAMPLER(sampler_BumpMap);
+        TEXTURE2D(_MetallicGlossMap); SAMPLER(sampler_MetallicGlossMap);
+        #include "MapSurfaceDetail.hlsl"
         ENDHLSL
         Pass
         {
@@ -45,12 +57,14 @@ Shader "ProjectY/Map Preview Instanced"
         #pragma multi_compile_fragment _ _SHADOWS_SOFT
         #pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
         #pragma multi_compile _ _FORWARD_PLUS
-        #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+        #include "../../Resources/MapWeatherLighting.hlsl"
         #include "../../Resources/WorldFogSampling.hlsl"
         struct Attributes
         {
             float4 positionOS : POSITION;
             float3 normalOS : NORMAL;
+            float4 tangentOS : TANGENT;
+            float2 uv : TEXCOORD0;
             half4 color : COLOR;
             float4 surfaceData : TEXCOORD1;
             float4 finish : TEXCOORD2;
@@ -65,6 +79,10 @@ Shader "ProjectY/Map Preview Instanced"
             float4 finish : TEXCOORD3;
             half4 fogAndVertexLight : TEXCOORD4;
             half4 color : COLOR;
+            float3 objectPos : TEXCOORD5;
+            float3 objectNormal : TEXCOORD6;
+            float4 tangentWS : TEXCOORD7;
+            float2 uv : TEXCOORD8;
             UNITY_VERTEX_INPUT_INSTANCE_ID
             UNITY_VERTEX_OUTPUT_STEREO
         };
@@ -77,45 +95,14 @@ Shader "ProjectY/Map Preview Instanced"
             VertexPositionInputs position = GetVertexPositionInputs(v.positionOS.xyz);
             o.positionCS = position.positionCS;
             o.worldPos = position.positionWS;
+            o.objectPos = v.positionOS.xyz; o.objectNormal = v.normalOS;
+            o.tangentWS = float4(TransformObjectToWorldDir(v.tangentOS.xyz), v.tangentOS.w * GetOddNegativeScale());
+            o.uv = v.uv * _BaseMap_ST.xy + _BaseMap_ST.zw;
             o.worldNormal = TransformObjectToWorldNormal(v.normalOS);
             o.color = v.color;
             o.surfaceData = v.surfaceData; o.finish = v.finish;
             o.fogAndVertexLight = half4(ComputeFogFactor(position.positionCS.z), VertexLighting(o.worldPos, o.worldNormal));
             return o;
-        }
-        float hash(float2 p) { return frac(sin(dot(p, float2(127.1,311.7))) * 43758.5453); }
-        float noise(float2 p)
-        {
-            float2 i = floor(p), f = frac(p); f = f*f*(3-2*f);
-            return lerp(lerp(hash(i),hash(i+float2(1,0)),f.x),lerp(hash(i+float2(0,1)),hash(i+1),f.x),f.y);
-        }
-        float pattern(float2 p, float4 data)
-        {
-            float kind = data.x; p /= max(.1, data.y);
-            float detail = 1-saturate(max(fwidth(p.x),fwidth(p.y))*1.5);
-            float value = 1;
-            if (kind < .5) return 1;
-            if (kind < 2.5 || (kind > 4.5 && kind < 5.5) || kind > 8.5)
-            {
-                if (kind > 4.5) p.y *= .16;
-                if (kind > 8.5) p.y *= 12;
-                p.x += fmod(floor(p.y),2)*.5;
-                float2 f=frac(p), fw=max(fwidth(p),.002);
-                float2 edge=min(f,1-f);
-                float joint=1-min(smoothstep(data.w, data.w+fw.x,edge.x),smoothstep(data.w,data.w+fw.y,edge.y));
-                if (kind > 1.5 && kind < 2.5)
-                {
-                    float2 rounded=abs(f-.5); joint=max(joint,smoothstep(.57,.63+max(fw.x,fw.y),length(rounded)));
-                }
-                value += (hash(floor(p))-.5)*data.z*2*detail - joint*data.z*detail;
-            }
-            else
-            {
-                float coarse=noise(p*.43), fine=noise(p*2.7);
-                value += ((coarse-.5)*1.4 + (fine-.5)*.4*detail)*data.z;
-                if (kind > 5.5 && kind < 6.5) value -= pow(1-abs(noise(p*.8)*2-1),12)*data.z*.35;
-            }
-            return value;
         }
         half4 frag(Varyings IN) : SV_Target
         {
@@ -127,28 +114,39 @@ Shader "ProjectY/Map Preview Instanced"
             o.albedo = color.rgb;
             float4 data = _UseSurfacePattern > 1.5 ? UNITY_ACCESS_INSTANCED_PROP(Props, _SurfaceData) : IN.surfaceData;
             float4 finish = _UseSurfacePattern > 1.5 ? UNITY_ACCESS_INSTANCED_PROP(Props, _SurfaceFinish) : IN.finish;
-            if (_UseSurfacePattern > .5)
+            bool terrain = _UseSurfacePattern > .5;
+            float2 p = terrain ? MapProject(IN.worldPos, IN.worldNormal) : MapProject(IN.objectPos, IN.objectNormal);
+            float4 detail = MapSurface(p, MapOrientedPattern(terrain ? data : _DetailPattern, terrain ? IN.worldNormal : IN.objectNormal), terrain ? _SurfaceRelief : _DetailRelief);
+            o.albedo *= detail.x;
+            if (terrain && data.x > 7.5 && data.x < 8.5)
             {
-                float3 n=abs(IN.worldNormal);
-                float2 p=n.y>.6 ? IN.worldPos.xz : (n.x>n.z ? IN.worldPos.zy : IN.worldPos.xy);
-                o.albedo *= pattern(p, data);
-                // 苔藓以连续的大块覆盖出现，世界坐标保证相邻格之间没有独立贴片边界。
-                if (data.x > 7.5 && data.x < 8.5)
-                {
-                    float damp = noise(p / max(.1,data.y) * .38) + noise(p*.9)*.18;
-                    float moss = smoothstep(.43,.72,damp);
-                    o.albedo = lerp(o.albedo, finish.rgb*(.8+.3*noise(p*.5)), moss*.85);
-                }
+                float damp = MapNoise(p / max(.1,data.y)*.38)+MapNoise(p*.9)*.18;
+                float moss = smoothstep(.43,.72,damp);
+                o.albedo = lerp(o.albedo,finish.rgb*(.8+.3*MapNoise(p*.5)),moss*.85);
             }
-            o.metallic = _UseSurfacePattern > .5 ? 0 : _Metallic;
-            o.smoothness = _UseSurfacePattern > .5 ? finish.w : _Smoothness;
+            if (!terrain && _MaterialMaps.x > .5) o.albedo *= SAMPLE_TEXTURE2D(_BaseMap,sampler_BaseMap,IN.uv).rgb;
+            o.metallic = terrain ? 0 : _Metallic;
+            o.smoothness = saturate((terrain ? finish.w : _Smoothness)+detail.w);
+            if (!terrain && _MaterialMaps.w > .5)
+            {
+                half4 mask = SAMPLE_TEXTURE2D(_MetallicGlossMap,sampler_MetallicGlossMap,IN.uv);
+                o.metallic *= mask.r; o.smoothness *= mask.a;
+            }
             o.emission = UNITY_ACCESS_INSTANCED_PROP(Props, _EmissionColor).rgb;
             o.alpha = 1;
-            o.occlusion = 1;
-            o.normalTS = half3(0, 0, 1);
+            o.occlusion = detail.z;
+            o.normalTS = half3(0,0,1);
+            float3 normal = normalize(IN.worldNormal);
+            if (!terrain && _MaterialMaps.y > .5)
+            {
+                half3 mapped = UnpackNormalScale(SAMPLE_TEXTURE2D(_BumpMap,sampler_BumpMap,IN.uv),_MaterialMaps.z);
+                float3 tangent = normalize(IN.tangentWS.xyz);
+                float3 bitangent = cross(normal,tangent)*IN.tangentWS.w;
+                normal = normalize(mapped.x*tangent+mapped.y*bitangent+mapped.z*normal);
+            }
             InputData lighting = (InputData)0;
             lighting.positionWS = IN.worldPos;
-            lighting.normalWS = NormalizeNormalPerPixel(IN.worldNormal);
+            lighting.normalWS = MapReliefNormal(IN.worldPos, normal, detail.y);
             lighting.viewDirectionWS = GetWorldSpaceNormalizeViewDir(IN.worldPos);
             #if defined(_MAIN_LIGHT_SHADOWS_SCREEN)
                 lighting.shadowCoord = ComputeScreenPos(TransformWorldToHClip(IN.worldPos));
@@ -159,7 +157,7 @@ Shader "ProjectY/Map Preview Instanced"
             lighting.vertexLighting = IN.fogAndVertexLight.yzw;
             lighting.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(IN.positionCS);
             lighting.shadowMask = half4(1, 1, 1, 1);
-            half4 result = UniversalFragmentPBR(lighting, o);
+            half4 result = ProjectYWeatherFragmentPBR(lighting, o);
             result.rgb = MixFog(result.rgb, IN.fogAndVertexLight.x);
                 result.rgb = ApplyWorldFog(result.rgb, IN.worldPos);
             return result;
@@ -200,11 +198,70 @@ Shader "ProjectY/Map Preview Instanced"
             ZWrite On
             HLSLPROGRAM
             #pragma target 3.5
-            #pragma vertex DepthNormalsVertex
-            #pragma fragment DepthNormalsFragment
+            #pragma vertex DetailNormalsVertex
+            #pragma fragment DetailNormalsFragment
             #pragma multi_compile_instancing
             #pragma multi_compile_fragment _ _GBUFFER_NORMALS_OCT
-            #include "Packages/com.unity.render-pipelines.universal/Shaders/DepthNormalsPass.hlsl"
+            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+            struct DetailNormalAttributes
+            {
+                float4 positionOS : POSITION;
+                float3 normalOS : NORMAL;
+                float4 tangentOS : TANGENT;
+                float2 uv : TEXCOORD0;
+                float4 surfaceData : TEXCOORD1;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+            };
+            struct DetailNormalVaryings
+            {
+                float4 positionCS : SV_POSITION;
+                float3 positionWS : TEXCOORD0;
+                float3 normalWS : TEXCOORD1;
+                float3 positionOS : TEXCOORD2;
+                float3 normalOS : TEXCOORD3;
+                float4 surfaceData : TEXCOORD4;
+                float4 tangentWS : TEXCOORD5;
+                float2 uv : TEXCOORD6;
+                UNITY_VERTEX_INPUT_INSTANCE_ID
+                UNITY_VERTEX_OUTPUT_STEREO
+            };
+            DetailNormalVaryings DetailNormalsVertex(DetailNormalAttributes v)
+            {
+                DetailNormalVaryings o = (DetailNormalVaryings)0;
+                UNITY_SETUP_INSTANCE_ID(v);
+                UNITY_TRANSFER_INSTANCE_ID(v,o);
+                UNITY_INITIALIZE_VERTEX_OUTPUT_STEREO(o);
+                o.positionWS = TransformObjectToWorld(v.positionOS.xyz);
+                o.positionCS = TransformWorldToHClip(o.positionWS);
+                o.normalWS = TransformObjectToWorldNormal(v.normalOS);
+                o.positionOS = v.positionOS.xyz; o.normalOS = v.normalOS;
+                o.surfaceData = v.surfaceData;
+                o.tangentWS = float4(TransformObjectToWorldDir(v.tangentOS.xyz),v.tangentOS.w*GetOddNegativeScale());
+                o.uv = v.uv*_BaseMap_ST.xy+_BaseMap_ST.zw;
+                return o;
+            }
+            half4 DetailNormalsFragment(DetailNormalVaryings i) : SV_Target
+            {
+                UNITY_SETUP_INSTANCE_ID(i);
+                UNITY_SETUP_STEREO_EYE_INDEX_POST_VERTEX(i);
+                bool terrain = _UseSurfacePattern > .5;
+                float4 data = _UseSurfacePattern > 1.5 ? UNITY_ACCESS_INSTANCED_PROP(Props,_SurfaceData) : i.surfaceData;
+                float2 p = terrain ? MapProject(i.positionWS,i.normalWS) : MapProject(i.positionOS,i.normalOS);
+                float4 detail = MapSurface(p,MapOrientedPattern(terrain ? data : _DetailPattern,terrain ? i.normalWS : i.normalOS),terrain ? _SurfaceRelief : _DetailRelief);
+                float3 normal = normalize(i.normalWS);
+                if (!terrain && _MaterialMaps.y > .5)
+                {
+                    half3 mapped = UnpackNormalScale(SAMPLE_TEXTURE2D(_BumpMap,sampler_BumpMap,i.uv),_MaterialMaps.z);
+                    float3 tangent = normalize(i.tangentWS.xyz);
+                    normal = normalize(mapped.x*tangent+mapped.y*cross(normal,tangent)*i.tangentWS.w+mapped.z*normal);
+                }
+                normal = MapReliefNormal(i.positionWS,normal,detail.y);
+                #if defined(_GBUFFER_NORMALS_OCT)
+                    return half4(PackFloat2To888(saturate(PackNormalOctQuadEncode(normal)*.5+.5)),0);
+                #else
+                    return half4(normal,0);
+                #endif
+            }
             ENDHLSL
         }
     }

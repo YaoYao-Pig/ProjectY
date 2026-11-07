@@ -1,4 +1,5 @@
 local LuaLanguage = require('Language')
+local Identity=require('Game.Presentation.CharacterIdentity')
 local Class=require('Core.Class')
 local Base=require('UI.UIPanelCtrl')
 local Atlas=Class('SkillAtlasCtr',Base)
@@ -13,10 +14,34 @@ function Atlas:Bind()
     self:Listen(self.view.ClearSearch,function() self.view.Search.text='';self:Search() end)
     for i=1,4 do self:Listen(self.view['Party'..i],function() self.actorIndex=i-1;self:Refresh() end) end
     for i=1,6 do self:Listen(self.view['Domain'..i],function()
-        local domain=self.domains[i];self.disciplineId=domain.id;self.categoryId=self.atlas:Categories(domain.id)[1].id;self.selectedId=nil;self.view.Geometry:Dismiss();self:Refresh()
+        if #self.domains>6 and i==6 then
+            local page=self.domainPage%math.ceil(#self.domains/5)+1
+            self:ChooseDomain(self.domains[(page-1)*5+1])
+        else
+            local domain=self:DomainAt(i)
+            if domain then self:ChooseDomain(domain) end
+        end
     end) end
     local function query() self:Search() end
     self.view.Search.onEndEdit:AddListener(query);self.lifetime:Add(function() self.view.Search.onEndEdit:RemoveListener(query) end)
+end
+function Atlas:AlignDomainPage()
+    local pageSize=#self.domains>6 and 5 or 6
+    for index,domain in ipairs(self.domains) do
+        if domain.id==self.disciplineId then self.domainPage=math.floor((index-1)/pageSize)+1;return end
+    end
+    error('Selected skill atlas discipline is missing: '..tostring(self.disciplineId))
+end
+function Atlas:DomainAt(slot)
+    local pageSize=#self.domains>6 and 5 or 6
+    if slot>pageSize then return nil end
+    return self.domains[(self.domainPage-1)*pageSize+slot]
+end
+function Atlas:ChooseDomain(domain)
+    local category=assert(self.atlas:Categories(domain.id)[1],'Skill atlas discipline has no categories: '..domain.id)
+    self.disciplineId,self.categoryId,self.selectedId=domain.id,category.id,nil
+    self:AlignDomainPage();self.view.SearchResults.gameObject:SetActive(false)
+    self.view.Geometry:Dismiss();self:Refresh();self.view.Geometry:Focus(0,0)
 end
 function Atlas:OnShow(args)
     self.demo=assert(args.demo);self.demo:SetGrowthOpen(true)
@@ -31,8 +56,8 @@ function Atlas:OnShow(args)
     assert(category,'Skill atlas has no category')
     self.disciplineId,self.categoryId=category.disciplineId,category.id
     self.domains={};for _,row in ipairs(self.atlas.disciplines:All()) do self.domains[#self.domains+1]=row end
-    table.sort(self.domains,function(a,b) return a.order<b.order end)
-    assert(#self.domains<=6,'Skill atlas layout supports six primary domains')
+    table.sort(self.domains,function(a,b) return a.order==b.order and a.id<b.id or a.order<b.order end)
+    self:AlignDomainPage()
     self.view.CloseText.text=self.returnTo and LuaLanguage.UISkillAtlasCloseTextText2 or LuaLanguage.UISkillAtlasCloseTextText
     self.view.Search.text='';self.view.SearchResults.gameObject:SetActive(false);self.view.Geometry:Dismiss();self:Refresh();self.view.Geometry:Focus(0,0)
 end
@@ -46,13 +71,18 @@ function Atlas:Refresh()
     local data=self.growth.data;self.actor=assert(data:GetPartyAt(self.actorIndex));self.owned=self.atlas:Owned(self.actor,self.stats)
     for i=1,4 do
         self.view['Party'..i].gameObject:SetActive(i<=data.PartyCount)
-        if i<=data.PartyCount then self.view['Party'..i..'Text'].text=self.stats:Template(data:GetPartyAt(i-1)).name end
+        if i<=data.PartyCount then self.view['Party'..i..'Text'].text=Identity.Format(Identity.Read(self.stats,data:GetPartyAt(i-1)),18,12,i-1==self.actorIndex and 'E3BE73' or '805723') end
         self.view.Style:Highlight(self.view['Party'..i],i-1==self.actorIndex)
         self.view['Party'..i..'Text'].color=i-1==self.actorIndex and CS.UnityEngine.Color(.94,.88,.74) or CS.UnityEngine.Color(.20,.25,.22)
     end
     for i=1,6 do
-        local domain=self.domains[i];self.view['Domain'..i].gameObject:SetActive(domain~=nil)
-        if domain then
+        local pager=#self.domains>6 and i==6
+        local domain=self:DomainAt(i);self.view['Domain'..i].gameObject:SetActive(pager or domain~=nil)
+        if pager then
+            self.view['Domain'..i..'Text'].text=string.format(LuaLanguage.SkillAtlasDomainNextPage,self.domainPage,math.ceil(#self.domains/5))
+            self.view.Style:Highlight(self.view['Domain'..i],false)
+            self.view['Domain'..i..'Text'].color=CS.UnityEngine.Color(.20,.25,.22)
+        elseif domain then
             local selected=domain.id==self.disciplineId;self.view['Domain'..i..'Text'].text=domain.name
             self.view.Style:Highlight(self.view['Domain'..i],selected)
             self.view['Domain'..i..'Text'].color=selected and CS.UnityEngine.Color(.94,.88,.74) or CS.UnityEngine.Color(.20,.25,.22)
@@ -116,6 +146,7 @@ end
 function Atlas:Jump(id)
     local node=self.atlas.nodes:Get(id);local category=self.atlas.categories:Get(node.categoryId)
     self.disciplineId,self.categoryId,self.selectedId=category.disciplineId,category.id,id
+    self:AlignDomainPage()
     self.view.SearchResults.gameObject:SetActive(false);self.view.Geometry:Dismiss();self:Refresh();self.view.Geometry:Focus(node.x,node.y)
     for _,widget in ipairs(self.nodes) do if widget.node and widget.node.id==id then self.view.Geometry:Follow(widget.view.Root);break end end
 end

@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 -- Shared, read-only shot queries and per-projectile interception. Mutable health stays in C# Data.
 local Trajectory=require('Game.Battle.SkillTrajectory')
 local Instructions=require('Game.Battle.EffectInstructions')
@@ -103,6 +104,13 @@ function Shots.Hit(profile,roll,onCheck,precision)
     if onCheck then onCheck(value,passed)end
     return passed
 end
+function Shots.CriticalChance(battle,source,target,skill)
+    local chance=skill.criticalChance
+    if battle.professions and battle.stats:Template(target).bodyInjuries==false and battle.professions:HasPassive(source,'xenologist')then
+        chance=chance+25
+    end
+    return math.max(0,math.min(100,chance))
+end
 function Shots.ApplyActor(battle,source,program,impact)
     local professionSkill=program[1] and program[1].skill
     local professionContext
@@ -123,25 +131,26 @@ function Shots.ApplyActor(battle,source,program,impact)
         impact.professionContext=professionContext
     end
     -- Resolve once per projectile/victim after a successful hit, never once per attached effect.
-    local skill
+    local skill,criticalTarget
     for _,effect in ipairs(program)do
-        if effect.definition.kind=='damage' and effect.definition.duration=='instant' and effect.target~=source and effect.target.HP>0 then
-            skill=effect.skill;break
+        if effect.definition.kind=='damage' and effect.definition.duration=='instant' and effect.target~=source and Life.Alive(effect.target) then
+            skill=effect.skill;criticalTarget=effect.target.MountedAnimal or effect.target;break
         end
     end
-    if skill and skill.criticalChance>0 then
-        local value=skill.criticalChance<100 and battle.data:RollPercent() or nil
-        impact.critical=skill.criticalChance==100 or value<skill.criticalChance
+    local criticalChance=skill and Shots.CriticalChance(battle,source,criticalTarget,skill) or 0
+    if criticalChance>0 then
+        local value=criticalChance<100 and battle.data:RollPercent() or nil
+        impact.critical=criticalChance==100 or value<criticalChance
         if battle.checks then
-            battle.checks(source,program[1].hitTarget or program[1].target,skill,LuaLanguage.DiceCritical,skill.criticalChance,value,impact.critical,
+            battle.checks(source,criticalTarget,skill,LuaLanguage.DiceCritical,criticalChance,value,impact.critical,
                 {shot=impact.shot,successLabel=LuaLanguage.DiceCritical,failureLabel=LuaLanguage.DiceNormalHit})
         end
     end
     -- A successful hit authorizes all effects for this projectile, including source benefits after a lethal hit.
     for _,effect in ipairs(program)do
-        if source.HP<=0 then break end
+        if not Life.Alive(source) and not impact.committedArea then break end
         if effect.definition.kind=='profession'or effect.definition.kind=='legendary' then -- The mechanism owns this no-effect action.
-        elseif effect.target.HP>0 then battle.gameEffects:ApplyPrepared(effect,impact)
+        elseif Life.Alive(effect.target) then battle.gameEffects:ApplyPrepared(effect,impact)
         elseif effect.definition.kind=='apply_buff' then
             battle.gameEffects:Report('effect_blocked',effect,{statusName=battle.stats.buffs:Get(effect.definition.buffId).name,reason='目标已倒地'})
         end
@@ -192,9 +201,9 @@ end
 function Shots.ApplyProgram(battle,source,skill,program,shot)
     local groups=program.shotGroups or Shots.PrepareProgram(battle,source,skill,program).shotGroups
     for _,group in ipairs(groups)do
-        if source.HP<=0 then break end
+        if not Life.Alive(source) then break end
         local victim=group.victim
-        if victim.HP>0 then
+        if Life.Alive(victim) then
             if not needsHit(battle,source,skill,victim) then
                 local actual=Shots.ApplyActor(battle,source,group.effects,{shot=shot})
                 VisualEffects.Skill(battle,program.vfxSource,skill,actual or victim,shot,'cast')

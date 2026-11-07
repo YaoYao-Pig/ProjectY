@@ -1,0 +1,18 @@
+{
+  "version":1,"name":"MoraleStageTable","description":"五档士气按当前值除以上限划分；阈值严格递增。","key":"id",
+  "fields":[
+    {"name":"id","type":"int","min":1,"max":5,"description":"阶段 ID，1 至 5"},
+    {"name":"stage","type":"int","min":-3,"max":1,"description":"阶段，逃跑 -3 至自信 1"},
+    {"name":"name","type":"text","description":"士气阶段名称"},
+    {"name":"minimumPercent","type":"int","min":0,"max":100,"description":"本阶段起始百分比，逃跑必须为 0"},
+    {"name":"hitScale","type":"float","min":0,"max":3,"description":"命中率倍率"},
+    {"name":"defenseScale","type":"float","min":0,"max":3,"description":"防御属性倍率"},
+    {"name":"checkBonus","type":"int","description":"勇气检定的成功率加算"}
+  ],"rows":[
+    {"id":1,"stage":-3,"name":"逃跑","minimumPercent":0,"hitScale":0,"defenseScale":0.7,"checkBonus":-20},
+    {"id":2,"stage":-2,"name":"崩溃","minimumPercent":20,"hitScale":0.8,"defenseScale":0.8,"checkBonus":-15},
+    {"id":3,"stage":-1,"name":"动摇","minimumPercent":40,"hitScale":0.9,"defenseScale":0.9,"checkBonus":-10},
+    {"id":4,"stage":0,"name":"稳定","minimumPercent":60,"hitScale":1,"defenseScale":1,"checkBonus":0},
+    {"id":5,"stage":1,"name":"自信","minimumPercent":90,"hitScale":1.1,"defenseScale":1.1,"checkBonus":10}
+  ]
+}

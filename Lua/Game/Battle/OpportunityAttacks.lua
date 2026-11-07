@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 -- 移动前的近战反应；只查询当前占位，不保存交战关系或另一份行动预算。
 local Trajectory=require('Game.Battle.SkillTrajectory')
 local Projectiles=require('Game.Battle.ProjectileCombat')
@@ -16,8 +17,8 @@ function Attacks.Validate(battle,skill)
     assert(damage,'Opportunity attack needs target damage: '..skill.id)
 end
 function Attacks.Skill(battle,source,target)
-    if source.HP<=0 or target.HP<=0 or source.AnimalOwnerId~=0 or not battle:IsHostile(source,target)
-        or battle.stats.buffs:Skipping(source) or battle.stats.animals:Distance(source,target,battle.board)~=1 then return end
+    if not Life.Alive(source) or not Life.Alive(target) or source.AnimalOwnerId~=0 or not battle:IsHostile(source,target)
+        or battle.stats.buffs:Skipping(source) or battle.morale:Fleeing(source) or battle.stats.animals:Distance(source,target,battle.board)~=1 then return end
     local selected
     for _,id in ipairs(battle:SkillIds(source)) do
         if battle.skills:Get(id).opportunityAttack then
@@ -35,7 +36,7 @@ function Attacks.Skill(battle,source,target)
 end
 function Attacks.Candidates(battle,target)
     local result={}
-    if battle.data.Phase~='combat' or battle.data.Winner~='' or target.HP<=0 then return result end
+    if battle.data.Phase~='combat' or battle.data.Winner~='' or not Life.Alive(target) then return result end
     for _,source in ipairs(battle:Units()) do
         local skill=Attacks.Skill(battle,source,target)
         if skill then result[#result+1]={source=source,skill=skill} end
@@ -44,6 +45,7 @@ function Attacks.Candidates(battle,target)
     return result
 end
 function Attacks.Execute(battle,source,target,skill)
+    return battle:ObserveSkillUse(source,skill.id,function()
     local program={}
     skill.professionReaction=true
     skill.name='借机攻击 · '..skill.name
@@ -54,6 +56,8 @@ function Attacks.Execute(battle,source,target,skill)
     source:RecordAction(skill.actionTemplate,1,target.Q,target.R)
     battle:Emit('opportunity_attack',skill.name,source.Id,target.Id,0,target,false,{actionName=skill.name})
     battle:ApplyEffectProgram(source,skill,program,1)
+    return true
+    end)
 end
 function Attacks.Resolve(battle,target)
     local count=0
@@ -62,7 +66,7 @@ function Attacks.Resolve(battle,target)
         local skill=Attacks.Skill(battle,entry.source,target)
         if skill then
             Attacks.Execute(battle,entry.source,target,skill);count=count+1
-            if battle:CheckWinner() or target.HP<=0 or battle.stats.buffs:Skipping(target) then break end
+            if battle:CheckWinner() or not Life.Alive(target) or battle.stats.buffs:Skipping(target) then break end
         end
     end
     return count

@@ -10,6 +10,7 @@ function Travel.New(adventure)
     local self=setmetatable({adventure=adventure,data=CS.ProjectY.Data.WorldTravelData.For(adventure.data),
         rule=config:GetTable('WorldTravelTable'):Get(1),terrains={},events=config:GetTable('WorldTravelEventTable'),randomEncountersDisabled=false},Travel)
     self.maxStep=self.rule.maxHeightStep
+    assert(self.rule.checkMinutes>0 and self.rule.checkMaxMinutes>=self.rule.checkMinutes,'Invalid travel check interval range')
     for _,row in ipairs(config:GetTable('WorldTravelTerrainTable'):All()) do
         assert(not self.terrains[row.regionType],'Duplicate travel terrain');self.terrains[row.regionType]=row
     end
@@ -84,6 +85,16 @@ function Travel:Arrive()
     end
     local siteId=self.data.TargetSiteId;self.data:Arrived()
     if siteId>0 then return self.adventure:EnterSite(siteId) end
+    self:CheckSpecialStop()
+    return true
+end
+function Travel:CheckSpecialStop()
+    if self.adventure.water and self.adventure.water.data.Mode~='walk' then return false end
+    if #self.adventure.events:LivingParty()==0 then return false end
+    local site=self.adventure.specialEvents:EncounterAt(self.data.Q,self.data.R)
+    if not site then return false end
+    self.data:SetPaused(true)
+    assert(self.adventure:EnterSite(site.id))
     return true
 end
 function Travel:CreateStop(row)
@@ -103,7 +114,26 @@ function Travel:CreateWorldStop(q,r,encounterId)
     self.adventure.sites[stop.Id]=site
     return site
 end
+function Travel:CreateEventStop(q,r,eventId)
+    local stop=self.data:AddWorldStop(q,r,eventId,0)
+    local x,y,z=self.map:GetCellWorldPosition(q,r)
+    local site={id=stop.Id,eventId=stop.EventId,q=q,r=r,x=x,y=y,z=z,travelStop=true,
+        name=self.adventure.events.events:Get(eventId).name}
+    assert(stop.Id==#self.adventure.sites+1,'Special event site IDs must remain contiguous')
+    self.adventure.sites[stop.Id]=site
+    return site
+end
 function Travel:Trigger(row)
+    local special=self.adventure.specialEvents.byEvent[row.eventId]
+    if special then
+        local existing=self.adventure.specialEvents:SiteForNpc(special.npcId)
+        if existing then
+            if existing.q~=self.data.Q or existing.r~=self.data.R then return false,string.format(LuaLanguage.SpecialEventUseLocation,existing.name) end
+            self.data:SetPaused(true)
+            return self.adventure:EnterSite(existing.id)
+        end
+        if not self.adventure.specialEvents:CanTrigger(row.eventId) then return false,LuaLanguage.SpecialEventAlreadyResolved end
+    end
     local site=self:CreateStop(row)
     self.adventure.specialEvents:Discovered(site)
     if row.encounterId==0 then return self.adventure:EnterSite(site.id) end
@@ -155,7 +185,7 @@ function Travel:Tick(dt)
     while budget>0 and self.adventure.data.Phase=='map' and not self.data.Paused do
         local convoy=escort(self.adventure);local attached=convoy and convoy.data.AttachedId>0
         local moving=self.data.Active and not attached
-        local spent=moving and self.data:Step(math.min(budget,1)) or math.min(budget,1)
+        local spent=moving and CS.ProjectY.Data.WorldTravelProgress.Step(self.data,math.min(budget,1),self.adventure.camp.loadout:SpeedMultiplier()) or math.min(budget,1)
         if self.adventure.water and self.adventure.water.data.Mode=='owned' then self.adventure.water.data:SyncBoat(self.data.Q,self.data.R) end
         if self.adventure.water and self.adventure.water.data.Mode~='walk' then self.data:DiscardEncounterTime() end
         assert(spent>0,'World clock failed to advance');budget=math.max(0,budget-spent)
@@ -171,7 +201,8 @@ function Travel:Tick(dt)
         if moving and not self.data.Active then
             local ok,reason=self:Arrive();self.data:Report(ok and '已抵达目的地' or reason)
         elseif moving and self.data.Progress==0 and (not self.adventure.water or self.adventure.water.data.Mode=='walk') then
-            while self.data:CheckDue(self.rule.checkMinutes) do if self:Check() then return end end
+            if self:CheckSpecialStop() then return end
+            if self.data:CheckDue(self.rule.checkMinutes,self.rule.checkMaxMinutes) and self:Check() then return end
         end
     end
 end
@@ -179,7 +210,7 @@ function Travel:Summary()
     local data=self.data;local target=data.TargetSiteId>0 and self.adventure.sites[data.TargetSiteId] or nil
     local convoy=escort(self.adventure);local attached=convoy and convoy.data.AttachedId>0
     if attached then local record=convoy.data:Find(convoy.data.AttachedId);target=self.adventure.sites[record.DestinationSiteId] end
-    return {active=data.Active,paused=data.Paused,speed=data.Speed,remaining=data.RemainingMinutes,
+    return {active=data.Active,paused=data.Paused,speed=data.Speed,remaining=data.RemainingMinutes/(attached and 1 or self.adventure.camp.loadout:SpeedMultiplier()),
         destination=target and (attached and '护送 · ' or '')..target.name or data.Active and '地图位置' or '原地待命',
         terrain=self.adventure.water and self.adventure.water.data.Mode~='walk' and LuaLanguage.WaterSailing or self:Terrain(self.map:GetCell(data.Q,data.R)).name,message=data.Message}
 end

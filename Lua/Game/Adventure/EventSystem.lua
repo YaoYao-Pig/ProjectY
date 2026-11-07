@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 local Class = require('Core.Class')
 local System = require('Core.LuaSystem')
 local Events = Class('AdventureEventSystem', System)
@@ -40,7 +41,7 @@ function Events:LivingParty()
     local result = {}
     for i = 0, self.data.PartyCount - 1 do
         local actor = self.data:GetPartyAt(i)
-        if actor.HP > 0 then result[#result + 1] = actor end
+        if Life.Alive(actor) then result[#result + 1] = actor end
     end
     return result
 end
@@ -110,7 +111,7 @@ function Events:CheckRequirements(choice,subject)
     if scouting < choice.minScouting then return false, '侦察不足，需要 ' .. choice.minScouting end
     if #choice.encounterIds > 0 and #party == 0 then return false, '队伍已倒地，请先到营地休整' end
     if #choice.traitIds > 0 and #party == 0 and not choice.healParty then return false, '没有可获得特质的存活角色' end
-    if #choice.effectIds>0 and not choice.healParty and (choice.recipient=='subject' and subject.HP<=0 or #party==0) then return false,'没有可接受该效果的存活角色' end
+    if #choice.effectIds>0 and not choice.healParty and (choice.recipient=='subject' and not Life.Alive(subject) or #party==0) then return false,'没有可接受该效果的存活角色' end
     return true
 end
 function Events:Recipients(choice)
@@ -139,7 +140,7 @@ function Events:Choose(choiceId)
     assert(self.player.Coins - choice.costCoins + choice.rewardCoins <= 2147483647, 'Coin reward overflow')
     local recipients=self:Recipients(choice);local plans={}
     for _,actor in ipairs(recipients)do
-        if actor.HP>0 or choice.healParty then
+        if Life.Alive(actor) or choice.healParty then
             for _,id in ipairs(choice.effectIds)do plans[#plans+1]=self.gameEffects:Prepare(id,self:Subject(),actor) end
         end
     end
@@ -182,7 +183,7 @@ function Events:Choose(choiceId)
         actor:SetMaxHP(self.stats:MaximumHP(actor))
         self.growth:AddExperience(actor,choice.experience,self.data.EventLocation)
     end
-    for _,plan in ipairs(plans)do if plan.target.HP>0 then assert(self.gameEffects:ApplyPrepared(plan)) end end
+    for _,plan in ipairs(plans)do if Life.Alive(plan.target) then assert(self.gameEffects:ApplyPrepared(plan)) end end
     if check then self.CheckResolved:Emit(check) end
     return true, choice, resultText
 end

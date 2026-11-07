@@ -28,12 +28,12 @@ local ok,result=xpcall(function()
         end
     end
     local function open(defer)
-        local camp=world.sites[1];local cell=world.map:GetCell(camp.q,camp.r)
-        assert(special:CanTrigger(301,cell),'Camp next to market should qualify')
-        local far
-        for _,candidate in ipairs(world.map:GetCells()) do if not special:CanTrigger(301,candidate) then far=candidate;break end end
-        assert(far,'Town filter must exclude distant wilderness')
+        local generated=assert(special:SiteForNpc(301),'Trial site must exist at world start')
+        assert(rule.townRadius==0,'Trial must not require a nearby town')
+        local cell=world.map:GetCell(generated.q,generated.r);local stops=adventure.travel.data.StopCount
+        adventure.travel.data:Relocate(generated.q,generated.r)
         assert(adventure.travel:Trigger(travelRow));local site=data.SiteId
+        assert(site==generated.id and adventure.travel.data.StopCount==stops,'Entering a generated trial must reuse its identity')
         assert(data.Phase=='event' and data.EventId==301)
         assert(not special:CanTrigger(301,cell),'Discovered unique event must leave random pool')
         if defer then
@@ -104,7 +104,8 @@ local ok,result=xpcall(function()
         for _,marker in ipairs(adventure:Snapshot().sites) do if marker.id==site then assert(not marker.available,'Failed trial marker must show that entry is closed') end end
         assert(save.Write(adventure));assert(save.Read(adventure));assert(not adventure:EnterSite(site))
     end
-    reset(false);assert(adventure.travel:Trigger(travelRow))
+    reset(false);local generated=assert(special:SiteForNpc(301));adventure.travel.data:Relocate(generated.q,generated.r)
+    assert(adventure.travel:Trigger(travelRow))
     for i=0,data.PartyCount-1 do local actor=data:GetPartyAt(i);actor:Damage(actor.HP) end
     assert(not adventure:Choose(3011) and data.Phase=='event','All-down party cannot consume scene entry')
     return 'PASS knight trial: town radius/unique discovery, scene choices, autonomous ally/HUD, victory-survival, same-actor wounded recruitment, full-party deferral, defeat/draw execution, dead-victory exclusion, temporary-save round trips and no respawn'

@@ -65,12 +65,18 @@ Shader "ProjectY/World Exploration Fog"
                 float time=_FogPreviewTime>=0?_FogPreviewTime:_Time.y;
                 float2 uv=(input.world.xz-_WorldFogBounds.xy)*_WorldFogBounds.zw;
                 half3 mask=SoftMask(uv);
+                // Exterior samples are not unexplored cells; avoid a false gray rim on a revealed continent.
+                mask.rg=saturate(mask.rg/max(mask.b,.001));
+                float unknown=1-smoothstep(.1,.85,mask.g);
+                float coverage=smoothstep(.03,.4,mask.b);
+                // Remembered terrain is shaded by its own materials. A second cloud veil erased its relief.
+                // Skip cloud noise entirely once this portion of the map has been explored.
+                if(unknown<=.0001 || coverage<=.0001)return half4(0,0,0,0);
                 float2 p=input.world.xz*.18;
                 float n=Clouds(p+float2(time*.025,-time*.018));
                 float billow=Clouds(p*.55+float2(-time*.013,time*.02)+n*.8);
                 float reveal=smoothstep(.12+n*.14,.8+n*.12,mask.r);
-                float unknown=1-smoothstep(.1,.85,mask.g);
-                float alpha=(1-reveal)*lerp(.22+billow*.13,.96,unknown)*smoothstep(.03,.4,mask.b);
+                float alpha=(1-reveal)*unknown*.96*coverage;
                 half3 color=_FogColor.rgb*(.58+n*.32+billow*.34);
                 color+=half3(.055,.065,.07)*smoothstep(.42,.78,billow);
                 return half4(color,alpha);

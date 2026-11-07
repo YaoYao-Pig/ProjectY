@@ -15,5 +15,7 @@
 ---@field DamageNumbers CS.ProjectY.UI.DamageNumberAnimation
 ---@field WorldCanvas CS.UnityEngine.Canvas
 ---@field DamageFollower CS.ProjectY.UI.UIFollower
+---@field CastingPoints CS.UnityEngine.Component
+---@field Morale CS.UnityEngine.UI.Image
 local View = {}
 return View

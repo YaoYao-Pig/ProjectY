@@ -1,0 +1,18 @@
+{
+  "version":1,"name":"MoraleEventTable","description":"士气事件；正增量检定成功生效，负增量检定失败生效。","key":"id",
+  "fields":[
+    {"name":"id","type":"int","min":1,"description":"事件 ID"},
+    {"name":"kind","type":"enum","values":["wound","ally_defeated","ally_fleeing","enemy_defeated","kill","outnumbered","rally"],"description":"事件类型，每种恰好一行"},
+    {"name":"name","type":"text","description":"战斗日志中的事件名称"},
+    {"name":"difficulty","type":"int","description":"从勇气检定成功率扣除的难度，可为负数"},
+    {"name":"change","type":"int","min":-1000000,"max":1000000,"description":"检定生效后改变的士气点数"}
+  ],"rows":[
+    {"id":1,"kind":"wound","name":"承受重伤","difficulty":0,"change":-20},
+    {"id":2,"kind":"ally_defeated","name":"目睹同伴倒下","difficulty":10,"change":-25},
+    {"id":3,"kind":"ally_fleeing","name":"目睹同伴逃跑","difficulty":0,"change":-15},
+    {"id":4,"kind":"enemy_defeated","name":"目睹敌人倒下","difficulty":-10,"change":8},
+    {"id":5,"kind":"kill","name":"击败敌人","difficulty":-20,"change":15},
+    {"id":6,"kind":"outnumbered","name":"寡不敌众","difficulty":5,"change":-10},
+    {"id":7,"kind":"rally","name":"重整勇气","difficulty":-20,"change":20}
+  ]
+}

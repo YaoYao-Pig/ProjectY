@@ -15,6 +15,14 @@ namespace ProjectY.UI
         [SerializeField] private Vector2 spacing = new Vector2(4, 6);
         private Quaternion previousFacing;
         private Vector2 previousSize;
+        private float innerSpacing;
+
+        internal void SetInnerSpacing(float value)
+        {
+            if (Mathf.Approximately(innerSpacing, value)) return;
+            innerSpacing = value;
+            SetDirty();
+        }
 
         public override void CalculateLayoutInputHorizontal()
         {
@@ -53,7 +61,7 @@ namespace ProjectY.UI
             var rect = rectTransform.rect;
             m_Tracker.Clear();
             float projection = camera != null ? Mathf.Max(.2f, Mathf.Abs(camera.transform.forward.y)) : 1;
-            float rx = rect.width * .5f * radius, ry = rect.height * .5f * radius;
+            float rx = rect.width * .5f * radius + innerSpacing, ry = rect.height * .5f * radius + innerSpacing;
             for (int i = 0; i < rectChildren.Count; i++)
             {
                 int row = i / columns, count = Mathf.Min(columns, rectChildren.Count - row * columns);

@@ -36,7 +36,13 @@
     {
       "name": "checkMinutes",
       "type": "float",
-      "description": "途中随机检查的累计旅行分钟",
+      "description": "途中随机检查间隔的最小累计行军分钟",
+      "min": 1
+    },
+    {
+      "name": "checkMaxMinutes",
+      "type": "float",
+      "description": "途中随机检查间隔的最大累计行军分钟；每次检查后重新抽取",
       "min": 1
     },
     {
@@ -60,7 +66,8 @@
       "minutesPerCell": 8,
       "roadMultiplier": 0.6,
       "slopeMinutes": 1.5,
-      "checkMinutes": 90,
+      "checkMinutes": 1440,
+      "checkMaxMinutes": 2880,
       "eventChance": 35,
       "maxHeightStep": 1.2
     }

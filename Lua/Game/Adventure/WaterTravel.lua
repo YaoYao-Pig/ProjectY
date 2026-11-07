@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 local L=require('Language')
 local Hex=require('Game.Map.HexGrid')
 local Navigation=require('Game.Adventure.WaterNavigation')
@@ -120,7 +121,7 @@ function Water:DeployAtDock()
     local a=self.adventure;local area=a.areas:ActiveLayout();local front=area.waterfront
     assert(front,'Dock city lacks its waterfront')
     local state=a.data.Areas.Active;local ids={}
-    for i=0,a.data.PartyCount-1 do local actor=a.data:GetPartyAt(i);if actor.HP>0 then ids[#ids+1]=actor.Id end end
+    for i=0,a.data.PartyCount-1 do local actor=a.data:GetPartyAt(i);if Life.Alive(actor) then ids[#ids+1]=actor.Id end end
     local shape=a.areas:SquadFootprint(area,ids)
     local enemies=a.areas:EnemyOccupancy(area,state)
     local obstacles=a.obstacles:BlockedCells()

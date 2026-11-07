@@ -38,12 +38,21 @@ function Log.Format(kind,message,source,target,amount,details)
         local verb=kind=='damage' and (d.periodic and '持续伤害' or '伤害') or kind=='heal' and '治疗' or '护卫'
         local tint=kind=='damage' and (d.damageColor and d.damageColor~='' and d.damageColor or color.bad) or color.good
         local text=prefix..action(verb)..' '..value(assert(amount),tint)
-        if kind=='guard' and d.guardAfter~=nil then return prefix..action(verb)..' '..value(d.guardAfter,color.good)..note('（原 '..number(d.guardBefore)..'）')end
-        if d.hpAfter~=nil and d.maxHP then
-            text=text..note(' · 生命 ')..value(number(d.hpAfter)..'/'..number(d.maxHP))
-            if d.hpBefore~=nil then text=text..note('（原 '..number(d.hpBefore)..'）')end
+        if kind=='guard' and d.guardAfter~=nil then
+            if target and target.guardKnown==false then return prefix..action(verb)..' '..value(LuaLanguage.InspectionUnknown)end
+            return prefix..action(verb)..' '..value(d.guardAfter,color.good)..note(string.format(LuaLanguage.InspectionPreviousValue,number(d.guardBefore)))
         end
-        if kind=='damage' and d.defense~=nil then text=text..note(' · 防御 ')..value(d.defense)..note(' / 护卫 ')..value(d.guard or 0)end
+        if d.hpAfter~=nil and d.maxHP then
+            local health=target and target.healthKnown==false and LuaLanguage.InspectionUnknown
+                or number(d.hpAfter)..'/'..number(d.maxHP)
+            text=text..note(' · ')..value(string.format(LuaLanguage.InspectionHealthLabel,health))
+            if d.hpBefore~=nil and (not target or target.healthKnown~=false)then text=text..note(string.format(LuaLanguage.InspectionPreviousValue,number(d.hpBefore)))end
+        end
+        if kind=='damage' and d.defense~=nil then
+            text=text..note(' · ')..value(string.format(LuaLanguage.InspectionDefenseLabel,
+                target and target.defenseKnown==false and LuaLanguage.InspectionUnknown or d.defense,
+                target and target.guardKnown==false and LuaLanguage.InspectionUnknown or d.guard or 0))
+        end
         if d.shot and d.shot>1 then text=text..note(' · 第'..d.shot..'发')end
         if kind=='damage' and d.armor and d.armor.before>0 then
             local armor=d.armor

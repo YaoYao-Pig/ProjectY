@@ -8,6 +8,9 @@
 
 ## 正文
 
+- 大地图 HUD 使用独立 `MapParchment` 浅纸皮肤，四纸面/十图标由无文字透明图集原生切片，保留真实地图渲染和可本地化原生文字。切片清单与绑定入口见[俯视镜头与地图HUD](../Business/CameraControls.md)，不替换现有 GuildMatte/CollageMatte。地点短签与任务图标共同参与屏幕避让；不能只在Prefab中缩小而保留显示器的旧尺寸写入。
+- 时间/天气表盘使用 `WeatherDialV2`：素净深棕/象牙窄框和径向昼/昏/夜三色盘面，v1 仅保留作历史美术版本。源图有9个Sprite；正式[MainHud](../Business/MainHud.md)使用其中8个，盘底由原生 `WeatherDialFace` 按光照关键帧精确生成色区/刻度。天气、独立指针/轴帽均已显式绑定；[设计与提示词](../../Art/WeatherDial/v2/README.md)、[切片清单](../../Art/WeatherDial/v2/sprites.json)、[原生导入](../../Tools/UI/import_weather_dial_v2.cs)、[Prefab替换](../../Tools/UI/apply_weather_dial_v2.cs)。200/300px概念拼装仍保留，运行时布局与动效以MainHud入口为准。
+
 - 标题、叙事正文和数值的字体分工及原生同步见[UI字体规则](UITypography.md)；重建美术或布局后需按该文档恢复明确的字体角色。
 
 - `GuildMatte` 用于 Inventory、CharacterGrowth；`CollageMatte` 用于 MissionJournal、Dialogue、StoryEvent。它们编辑自原08/09图集，保留铜扣/缝线/撕纸/叠层造型，移除烘焙高光和脏纹理；各16张切片。早期 `GuildClean/CollageClean` 为被替换的极简版本，不作为当前风格源。

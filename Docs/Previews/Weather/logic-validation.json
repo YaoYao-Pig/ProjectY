@@ -1,0 +1,36 @@
+{
+  "date": "2026-10-26",
+  "unityVersion": "2022.3.55f1c1",
+  "authoritativeSamples": 8192,
+  "weatherCounts": {
+    "rain": 3012,
+    "clear": 2948,
+    "overcast": 2232
+  },
+  "measuredQueryCount": 100000,
+  "unityMonoQueryMilliseconds": 56.7781,
+  "unityMonoAllocatedBytes": 0,
+  "offlineDotNetQueryMilliseconds": 25.3994,
+  "offlineDotNetAllocatedBytes": 0,
+  "checks": [
+    "Determinism and restored seed/time",
+    "Spatial and temporal continuity",
+    "Static wind evolves",
+    "Full uint seeds and long absolute time",
+    "Invalid arguments rejected",
+    "Actual xLua constructor and value-type query",
+    "Exported configuration and localization",
+    "Torch regression",
+    "UI localization source audit",
+    "Real world and town render validation"
+  ],
+  "activeProjectCompilationRequests": 1,
+  "shaderOnlyReimports": [
+    "MapWeatherCloud.shader",
+    "MapWeatherParticle.shader"
+  ],
+  "editorAutomaticRefreshesControlled": false,
+  "enteredPlayMode": false,
+  "gpuFrameTimeMeasured": false,
+  "renderValidation": "validation.json"
+}

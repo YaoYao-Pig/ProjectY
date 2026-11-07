@@ -37,7 +37,10 @@ function HUD:Bind()
             -- Cells belong to the list; parent Show must not show a newly bound cell twice.
             cell.widget = require('UI.Widget.BattleTurn')(self.context, cell.reference)
             cell.widget:Bind()
-            cell.widget:Initialize(self.view.HUD, true, function(id) self.demo:FocusBattleActor(id) end)
+            cell.widget:Initialize(self.view.HUD, true, function(id)
+                self.demo:FocusBattleActor(id)
+                self.context.systems:Get('UI'):Open('UnitDetails',{demo=self.demo,actorId=id})
+            end)
         end,
         onBind = function(cell, index)
             if not cell.widget.visible then cell.widget:Show(self.args) end
@@ -62,11 +65,26 @@ function HUD:Bind()
     self:Listen(self.view.LogClose, function() self.logExpanded = false; self.dirty = true end)
     self:Listen(self.view.Previous, function() self.page = self.page - 1; self.dirty = true end)
     self:Listen(self.view.Next, function() self.page = self.page + 1; self.dirty = true end)
+    self:Listen(self.view.CastingLess, function() self:AdjustCasting(-1) end)
+    self:Listen(self.view.CastingMore, function() self:AdjustCasting(1) end)
+    for part=0,5 do
+        self:Listen(self.view['AnatomyPart'..part],function()
+            CS.ProjectY.Samples.BattleTargetSelection.ChooseBodyPart(self.demo,part)
+        end)
+    end
+end
+function HUD:AdjustCasting(delta)
+    local row=self.castingSkill
+    if not row or not self.model.player then return end
+    local ok,reason=self.battle:SetCastingBoost(row.id,row.skill.castingBoost+delta)
+    self.castingError=not ok and reason or nil
+    if ok then self.demo:SendCommand('snapshot',0,0) end
+    self.dirty=true
 end
 function HUD:OnShow(args)
     self.demo = assert(args.demo, 'Battle HUD requires its input adapter')
     self.page, self.logExpanded, self.lastActor, self.lastTooltip = 1, false, nil, nil
-    self.model = nil
+    self.model,self.castingError = nil,nil
     -- Battle events may arrive midway through a command/settlement. Read after the command, in Tick.
     self.visibleScope:Add(self.battle.Changed:Subscribe(function() self.dirty = true end))
     self:Refresh()
@@ -79,7 +97,11 @@ function HUD:Refresh()
     local selection=CS.ProjectY.Samples.BattleTargetSelection
     local selecting=selection.Active(self.demo)
     local selectingLanding=selection.NeedsLanding(self.demo)
-    if self.lastActor ~= model.actorId or self.lastPhase~=model.phase then self.page = 1; self.lastActor = model.actorId;self.lastPhase=model.phase end
+    local selectingBodyPart=selection.NeedsBodyPart(self.demo)
+    local choosingBodyPart=selection.ChoosingBodyPart(self.demo)
+    if self.lastActor ~= model.actorId or self.lastPhase~=model.phase then
+        self.page = 1; self.lastActor = model.actorId;self.lastPhase=model.phase;self.castingError=nil
+    end
     local previous = self.model
     local resetTurns = not previous or previous.actorId ~= model.actorId
         or previous.round ~= model.round or previous.phase ~= model.phase
@@ -95,10 +117,11 @@ function HUD:Refresh()
     self.view.Round.text = model.phase=='deployment' and LuaLanguage.UIBattleHUDContentRoundText or string.format(LuaLanguage.BattleRound, model.round, model.maxRounds)
     self.view.SkillTitle.text = (model.phase=='deployment' and LuaLanguage.UIBattleHUDContentSkillTitleText or LuaLanguage.BattleSkills) .. (pages > 1 and ('  ' .. self.page .. '/' .. pages) or '')
     self.view.ItemTitle.text = LuaLanguage.BattleItems
-    self.view.EndTurnText.text = selectingLanding and LuaLanguage.BattleSelectionChooseLanding
+    self.view.EndTurnText.text = selectingBodyPart and LuaLanguage.AnatomyChoosePartAction
+        or selectingLanding and LuaLanguage.BattleSelectionChooseLanding
         or selecting and (string.format(LuaLanguage.UIBattleHUDContentEndTurnTextText2, (selection.Count(self.demo)), (selection.Limit(self.demo))))
         or model.phase=='deployment' and LuaLanguage.UIBattleHUDContentEndTurnTextText or model.player and LuaLanguage.BattleEndTurn or LuaLanguage.BattleAdvanceAI
-    self.view.EndTurn.interactable = not selectingLanding and (selecting and selection.Count(self.demo)>0 or not selecting and (model.player or not self.demo.BattleAutoAI))
+    self.view.EndTurn.interactable = not selectingLanding and not selectingBodyPart and (selecting and selection.Count(self.demo)>0 or not selecting and (model.player or not self.demo.BattleAutoAI))
     self.view.MoveText.text = selecting and LuaLanguage.UIBattleHUDContentMoveTextText3 or model.moved and LuaLanguage.UIBattleHUDContentMoveTextText2
         or string.format(LuaLanguage.UIBattleHUDContentMoveTextText, (self.demo.IsBattleMoveSelected and '• ' or ''), (LuaLanguage.BattleMove), (model.moveRemaining))
     self.view.Move.interactable = selecting or model.moveAvailable
@@ -110,7 +133,33 @@ function HUD:Refresh()
     CS.ProjectY.UI.BattleLogPresentation.Set(self.view.HUD,self.logExpanded,table.concat(recent,'\n\n'),table.concat(model.logs,'\n\n'),#model.logs)
     self.view.Previous.gameObject:SetActive(pages > 1); self.view.Next.gameObject:SetActive(pages > 1)
     self.view.Previous.interactable = self.page > 1; self.view.Next.interactable = self.page < pages
-    local errorText = self.demo.LastError
+    self.view.CastingPanel.gameObject:SetActive(model.castingPointMax>0 and model.phase~='deployment')
+    self.castingSkill=nil
+    for _,row in ipairs(model.skills) do
+        if row.id==self.demo.SelectedBattleSkill and row.skill.castingCost and row.skill.castingCost>0 then self.castingSkill=row;break end
+    end
+    local castingSkill=self.castingSkill and self.castingSkill.skill
+    self.view.CastingStatus.text=model.castingKnown==false and LuaLanguage.InspectionUnknown or string.format(LuaLanguage.CastingHUDStatus,model.castingPoints,model.castingPointMax,model.castingPointRegen)
+    self.view.CastingDetail.text=model.castingKnown==false and LuaLanguage.InspectionUnknown
+        or castingSkill and string.format(LuaLanguage.CastingHUDStrength,castingSkill.name,castingSkill.castingBoost,castingSkill.castingCost)
+        or LuaLanguage.CastingHUDSelectSpell
+    self.view.CastingLess.interactable=model.player and castingSkill~=nil and castingSkill.castingBoost>0
+    self.view.CastingMore.interactable=model.player and castingSkill~=nil and castingSkill.castingBoost<castingSkill.castingBoostLimit
+        and castingSkill.castingCost<model.castingPoints
+    self.view.CastingLessText.text=LuaLanguage.CastingHUDLess
+    self.view.CastingMoreText.text=LuaLanguage.CastingHUDMore
+    self.view.AnatomyPanel.gameObject:SetActive(choosingBodyPart)
+    self.view.SkillControls.gameObject:SetActive(not choosingBodyPart)
+    self.view.ItemControls.gameObject:SetActive(not choosingBodyPart)
+    self.view.AnatomyTitle.text=choosingBodyPart and selection.BodyPartTitle(self.demo) or ''
+    self.view.AnatomyHelp.text=LuaLanguage.AnatomyChoosePartHelp
+    for part=0,5 do
+        local name=choosingBodyPart and selection.BodyPartName(self.demo,part) or ''
+        self.view['AnatomyPart'..part].gameObject:SetActive(name~='')
+        self.view['AnatomyPart'..part].interactable=model.player and name~=''
+        self.view['AnatomyPart'..part..'Text'].text=name
+    end
+    local errorText = self.castingError or self.demo.LastError
     local targetHint=selection.Hint(self.demo)
     self.view.Hint.text = errorText and errorText ~= '' and errorText or targetHint~='' and targetHint or (not model.player and LuaLanguage.BattleEnemyTurn
         or (model.moved and self.demo.SelectedBattleSkill==0 and LuaLanguage.UIBattleHUDContentHintText3
@@ -133,17 +182,19 @@ function HUD:Refresh()
     end
     self.revision = self.demo.BattleHUDRevision; self.dirty = false
     self.lastTargetTooltip=nil;self.view.Tooltip.gameObject:SetActive(false)
-    if not keepTip then self.lastTooltip=nil;self.skillTip:Hide() end
+    if choosingBodyPart or not keepTip then self.lastTooltip=nil;self.skillTip:Hide() end
 end
 function HUD:Tick()
     if self.context.services.Adventure.Phase ~= 'battle' then return end
     if self.dirty or self.revision ~= self.demo.BattleHUDRevision then self:Refresh() end
-    if not self.view.Group.interactable then self.skillTip:Hide();self.lastTooltip=nil;return end
+    if self.context.services.UI.IsWorldPaused or not self.view.Group.interactable then self.skillTip:Hide();self.lastTooltip=nil;return end
     self.skillTip:Tick()
     local shortcut = self.view.HUD:ReadShortcut()
     if shortcut >= 1 and shortcut <= 4 then
-        local row = self.actions[shortcut].row
-        if row and row.available then self.demo:SelectBattleSkill(row.id) end
+        if not CS.ProjectY.Samples.BattleTargetSelection.ChoosingBodyPart(self.demo) then
+            local row = self.actions[shortcut].row
+            if row and row.available then self.demo:SelectBattleSkill(row.id) end
+        end
     elseif shortcut == 9 and self.model.player then
         local selection=CS.ProjectY.Samples.BattleTargetSelection
         if selection.Active(self.demo) then selection.Confirm(self.demo) else self.demo:SendCommand('end_turn', 0, 0) end

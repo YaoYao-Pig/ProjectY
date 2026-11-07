@@ -18,10 +18,11 @@ namespace ProjectY.Samples
             { worldSites?.Hide(); return; }
             if (siteMap != worldMap || siteHud != mainHud)
             {
-                worldSites?.Dispose(); worldSites = new WorldSiteView(mainHud, worldMap, mapRenderer); siteMap = worldMap; siteHud = mainHud;
+                worldSites?.Dispose(); worldSites = new WorldSiteView(mainHud, worldMap, mapRenderer, mapLabels); siteMap = worldMap; siteHud = mainHud;
             }
             worldSites.Sync(view.Sites);
-            worldSites.Tick(mapCamera, WorldSitePointerEnabled, Input.mousePosition, Time.unscaledDeltaTime);
+            worldSites.SetOverview(WorldMapVisible);
+            worldSites.Tick(mapCamera, WorldSitePointerEnabled && !worldMapMode.Transitioning, Input.mousePosition, Time.unscaledDeltaTime);
         }
         private void ClearWorldSites()
         { worldSites?.Dispose(); worldSites = null; siteMap = null; siteHud = null; }

@@ -1,0 +1,24 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class EconomyRuleTableRow
+---@field id number 规则编号
+---@field radius number 城镇可达资源搜索半径
+---@field foodBase number 每名人形队员每日基础食物
+---@field foodLevelStep number 每提升多少级增加一份食物
+---@field wageBase number 队员基础日薪
+---@field wagePerLevel number 每级增加日薪
+---@field animalFoodBase number 动物每个占地格的基础食物
+---@field termDays number 投资期限，游戏日
+---@field investmentLimit number 每城同时可投入的本金上限
+---@field maximumLossPercent number 投资最大本金损失百分比
+---@field maximumGainPercent number 单期最大盈利百分比
+---@field historyDays number 保留真实日K线数量
+---@field marketTarget number 常态参考库存
+---@field marketCapacity number 市场单商品容量
+---@field sellMultiplier number 收购折扣
+---@field hungerPenalty number 每个饥饿日的状态减益比例
+---@field debtPenalty number 每欠一天日薪的状态减益比例
+---@field maximumPenalty number 状态减益上限
+---@field starterFood number 新远征初始口粮
+---@field bankFacilityId number 银行设施配置
+---@field bankRoyalPlacementId number 王城银行地块预设
+return {["name"]="EconomyRuleTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\232\167\132\229\136\153\231\188\150\229\143\183",["min"]=0},{["name"]="radius",["type"]="int",["description"]="\229\159\142\233\149\135\229\143\175\232\190\190\232\181\132\230\186\144\230\144\156\231\180\162\229\141\138\229\190\132",["min"]=0},{["name"]="foodBase",["type"]="int",["description"]="\230\175\143\229\144\141\228\186\186\229\189\162\233\152\159\229\145\152\230\175\143\230\151\165\229\159\186\231\161\128\233\163\159\231\137\169",["min"]=0},{["name"]="foodLevelStep",["type"]="int",["description"]="\230\175\143\230\143\144\229\141\135\229\164\154\229\176\145\231\186\167\229\162\158\229\138\160\228\184\128\228\187\189\233\163\159\231\137\169",["min"]=0},{["name"]="wageBase",["type"]="int",["description"]="\233\152\159\229\145\152\229\159\186\231\161\128\230\151\165\232\150\170",["min"]=0},{["name"]="wagePerLevel",["type"]="int",["description"]="\230\175\143\231\186\167\229\162\158\229\138\160\230\151\165\232\150\170",["min"]=0},{["name"]="animalFoodBase",["type"]="int",["description"]="\229\138\168\231\137\169\230\175\143\228\184\170\229\141\160\229\156\176\230\160\188\231\154\132\229\159\186\231\161\128\233\163\159\231\137\169",["min"]=0},{["name"]="termDays",["type"]="int",["description"]="\230\138\149\232\181\132\230\156\159\233\153\144\239\188\140\230\184\184\230\136\143\230\151\165",["min"]=0},{["name"]="investmentLimit",["type"]="int",["description"]="\230\175\143\229\159\142\229\144\140\230\151\182\229\143\175\230\138\149\229\133\165\231\154\132\230\156\172\233\135\145\228\184\138\233\153\144",["min"]=0},{["name"]="maximumLossPercent",["type"]="int",["description"]="\230\138\149\232\181\132\230\156\128\229\164\167\230\156\172\233\135\145\230\141\159\229\164\177\231\153\190\229\136\134\230\175\148",["min"]=0},{["name"]="maximumGainPercent",["type"]="int",["description"]="\229\141\149\230\156\159\230\156\128\229\164\167\231\155\136\229\136\169\231\153\190\229\136\134\230\175\148",["min"]=0},{["name"]="historyDays",["type"]="int",["description"]="\228\191\157\231\149\153\231\156\159\229\174\158\230\151\165K\231\186\191\230\149\176\233\135\143",["min"]=0},{["name"]="marketTarget",["type"]="int",["description"]="\229\184\184\230\128\129\229\143\130\232\128\131\229\186\147\229\173\152",["min"]=0},{["name"]="marketCapacity",["type"]="int",["description"]="\229\184\130\229\156\186\229\141\149\229\149\134\229\147\129\229\174\185\233\135\143",["min"]=0},{["name"]="sellMultiplier",["type"]="float",["description"]="\230\148\182\232\180\173\230\138\152\230\137\163",["min"]=0},{["name"]="hungerPenalty",["type"]="float",["description"]="\230\175\143\228\184\170\233\165\165\233\165\191\230\151\165\231\154\132\231\138\182\230\128\129\229\135\143\231\155\138\230\175\148\228\190\139",["min"]=0},{["name"]="debtPenalty",["type"]="float",["description"]="\230\175\143\230\172\160\228\184\128\229\164\169\230\151\165\232\150\170\231\154\132\231\138\182\230\128\129\229\135\143\231\155\138\230\175\148\228\190\139",["min"]=0},{["name"]="maximumPenalty",["type"]="float",["description"]="\231\138\182\230\128\129\229\135\143\231\155\138\228\184\138\233\153\144",["min"]=0},{["name"]="starterFood",["type"]="int",["description"]="\230\150\176\232\191\156\229\190\129\229\136\157\229\167\139\229\143\163\231\178\174",["min"]=0},{["name"]="bankFacilityId",["type"]="int",["description"]="\233\147\182\232\161\140\232\174\190\230\150\189\233\133\141\231\189\174",["min"]=0},{["name"]="bankRoyalPlacementId",["type"]="int",["description"]="\231\142\139\229\159\142\233\147\182\232\161\140\229\156\176\229\157\151\233\162\132\232\174\190",["min"]=0}},["fingerprint"]="f39e8e422c9c1a71d945213535a80bbfbf7ca392e76b295d1830110cb5e1aba1"}

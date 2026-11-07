@@ -1,7 +1,13 @@
 -- 同一角色在探索和战斗中导出相同显示契约，不持有长期 Lua/C# 句柄。
 return function(actor,stats,appearances,area)
+    stats.spellcasting:Sync(actor)
+    local casting=CS.ProjectY.Data.SpellcastingState
     local traits={}
-    for i=0,actor.TraitCount-1 do traits[#traits+1]=stats.traits:Get(actor:GetTraitAt(i)).name end
+    for i=0,actor.TraitCount-1 do
+        local id=actor:GetTraitAt(i)
+        traits[#traits+1]=(not stats.inspection or stats.inspection:Known(actor,'trait:'..id))
+            and stats.traits:Get(id).name or require('Language').InspectionUnknown
+    end
     local layer=CS.ProjectY.Data.AnimalCompanionState.Independent(actor)and CS.ProjectY.Data.AnimalCompanionState.Layer(actor)or nil
     local cell=area and assert(area:Find(actor.Q,actor.R,layer),'Combat actor outside area')
     local equipment,customization
@@ -18,5 +24,6 @@ return function(actor,stats,appearances,area)
     if area then for _,part in ipairs(assert(stats.animals:Cells(actor,area,nil,nil,layer))) do occupiedCells[#occupiedCells+1]=part.index end end
     return {id=actor.Id,name=stats:Template(actor).name,team=actor.Team,hp=actor.HP,maxHP=actor.MaxHP,presentationActor=actor,
         fixedFootprint=stats.animals:IsStaticBody(mount or actor),ap=actor.AP,q=actor.Q,r=actor.R,guard=actor.Guard,moved=actor.Moved,mainUsed=actor.MainUsed,
+        castingPoints=casting.Current(actor),castingPointMax=casting.Maximum(actor),castingPointRegen=casting.Regen(actor),
         traits=table.concat(traits,' · '),appearance=appearance,cellIndex=cell and cell.index or 0,occupiedCells=occupiedCells}
 end

@@ -42,6 +42,7 @@ return function(command, a, b, c)
     elseif unchanged(pausedState(adventure)) then return {unchanged=true}
     else pausedPoll=nil end
     if command=='visual_effect_catalog' then return require('Game.Presentation.VisualEffectCatalog').Snapshot(adventure.config) end
+    if command=='campaign_save_service' then return adventure.characterSaves end
     if command=='campaign_saves' then return CS.ProjectY.Data.CampaignSaves.List(adventure.characterSaves) end
     if command=='menu_load' then
         if type(b)~='string' or b=='' then return nil,{error='请选择存档'} end
@@ -89,6 +90,9 @@ return function(command, a, b, c)
     if command == 'area_layout' then return require('Main'):Get('MapArea'):LayoutSnapshot(adventure.water) end
     if command == 'area_state' then return adventure.data.Areas.Active end
     if command == 'presentation' then return require('Game.Rendering.MapPresentation').Snapshot(require('Main'):Get('Config')) end
+    if command == 'weather_field' then return assert(adventure.weatherField,'Weather field is not bound to a world') end
+    -- weather_at(x, z, absoluteMinutes?) uses world-map coordinates; omitted time uses the game clock.
+    if command == 'weather_at' then return require('Game.Adventure.Weather').Query(adventure,a,b,c) end
     local previousArea=adventure.data.Areas.ActiveSiteId
     local ok, reason
     if command == 'torch_toggle' then ok,reason=require('Game.Adventure.Torch').Toggle(adventure)
@@ -100,8 +104,18 @@ return function(command, a, b, c)
     elseif command == 'camp_deposit' then ok,reason=adventure.camp:Deposit(a,b,c)
     elseif command == 'camp_withdraw' then ok,reason=adventure.camp:Withdraw(a,b,c)
     elseif command == 'camp_wait' then ok,reason=adventure.camp:Wait(a,b)
+    elseif command == 'camp_roster_move' then ok,reason=adventure.camp.roster:Move(a,c==1,b)
+    elseif command == 'camp_roster_swap' then ok,reason=adventure.camp.roster:Swap(a,c,b)
+    elseif command == 'camp_loadout_mount' then ok,reason=adventure.camp.loadout:Equip(1,a,c,b)
+    elseif command == 'camp_loadout_pet' then ok,reason=adventure.camp.loadout:Equip(2,a,c,b)
+    elseif command == 'camp_loadout_torch' then ok,reason=adventure.camp.loadout:EquipTorch(a,b)
+    elseif command == 'forge_forge' then ok,reason=adventure.forge:Forge(a,b)
+    elseif command == 'forge_path' then ok,reason=adventure.forge:Advance(a,b,c)
+    elseif command == 'forge_awaken' then ok,reason=adventure.forge:Talk(a,b,true)
+    elseif command == 'forge_talk' then ok,reason=adventure.forge:Talk(a,b,false)
     elseif command:sub(1,6)=='water_' then ok,reason=adventure.water:Command(command,a,b)
     elseif command:sub(1,6)=='world_' then ok,reason=adventure.parties:Command(command,a,b,c)
+    elseif command:sub(1,5)=='bank_' or command:sub(1,8)=='economy_' then ok,reason=adventure.economy:Command(command,a,b,c)
     elseif command == 'shop_open' then ok,reason=adventure.shop:Open(a,b)
     elseif command == 'shop_buy' then ok,reason=adventure.shop:Buy(a,b,c)
     elseif command == 'shop_close' then ok,reason=adventure.shop:Close()
@@ -125,7 +139,10 @@ return function(command, a, b, c)
     elseif command == 'growth_attribute' then ok,reason = adventure.growth:InvestAttribute(a,b)
     elseif command == 'growth_talent' then ok,reason = adventure.growth:InvestTalent(a,b)
     elseif command == 'growth_skill' then ok,reason = adventure.growth:Learn(a,b)
+    elseif command == 'special_skill_teach' then ok,reason=adventure.specialSkills:Teach(a,b,c)
     elseif command == 'growth_profession' then ok,reason = adventure.growth:ChangeProfession(a,b)
+    elseif command == 'title_equip' then ok,reason = adventure.titles:Equip(a,b)
+    elseif command:sub(1,13)=='relationship_' then ok,reason=adventure.partyStory:Social(a,b,command:sub(14))
     elseif command == 'character_skill' then ok,reason=adventure.characterSkills:Use(a,b,c)
     elseif command:sub(1,3)=='gm_' then ok,reason=require('Main'):Get('GM'):Execute(command:sub(4),a,b)
     elseif command:sub(1,5)=='area_' then ok,reason=adventure:AreaCommand(command,a,b)
@@ -135,7 +152,8 @@ return function(command, a, b, c)
     snapshot.unchanged=false
     snapshot.visualEffects=require('Game.Presentation.VisualEffects').Drain(adventure.battle)
     snapshot.audioEvents=require('Game.Presentation.AudioEvents').Drain(adventure.battle)
-    snapshot.gmTeleport=command=='gm_goto_npc' and (ok or previousArea~=adventure.data.Areas.ActiveSiteId)
+    local gmTarget=command=='gm_goto_npc' and adventure.narrative.rules.npcs:Find(a)
+    snapshot.gmTeleport=command=='gm_goto_npc' and gmTarget~=nil and gmTarget.locationKind=='town' and (ok or previousArea~=adventure.data.Areas.ActiveSiteId)
     snapshot.error = ok and '' or reason
     pausedPoll=pausedState(adventure)
     return snapshot

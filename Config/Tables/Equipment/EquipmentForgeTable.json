@@ -1,0 +1,93 @@
+{
+  "version": 1,
+  "name": "EquipmentForgeTable",
+  "description": "保留装备实例的锻造与重铸；首版旧剑成长线。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "锻造规则身份",
+      "min": 1
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "工艺名称"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "工艺说明"
+    },
+    {
+      "name": "weaponIds",
+      "type": "int[]",
+      "description": "适用武器模板",
+      "ref": "EquipmentWeaponTable"
+    },
+    {
+      "name": "facilityId",
+      "type": "int",
+      "description": "使用现有营地工作台",
+      "ref": "CampFacilityTable"
+    },
+    {
+      "name": "requiredLevel",
+      "type": "int",
+      "description": "设施等级",
+      "min": 1
+    },
+    {
+      "name": "coins",
+      "type": "int",
+      "description": "锻造或重铸费用",
+      "min": 0
+    },
+    {
+      "name": "itemIds",
+      "type": "int[]",
+      "description": "仓库优先消费材料",
+      "ref": "EquipmentItemTable"
+    },
+    {
+      "name": "itemCounts",
+      "type": "int[]",
+      "description": "对应材料数量"
+    },
+    {
+      "name": "damageBonus",
+      "type": "float",
+      "description": "锻造对本武器直接攻击的额外倍率",
+      "min": 0
+    },
+    {
+      "name": "spiritCameraId",
+      "type": "int",
+      "description": "器灵对白仅复用面板宽度",
+      "ref": "DialogueCameraTable"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "旧剑重铸",
+      "description": "保留这把剑的品质、配件与记忆，恢复完整耐久上限。本剑直接攻击伤害提高20%；参与传奇事迹后可选择进阶。",
+      "weaponIds": [
+        101,
+        40
+      ],
+      "facilityId": 1,
+      "requiredLevel": 1,
+      "coins": 12,
+      "itemIds": [
+        83
+      ],
+      "itemCounts": [
+        3
+      ],
+      "damageBonus": 0.2,
+      "spiritCameraId": 1
+    }
+  ]
+}

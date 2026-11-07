@@ -13,7 +13,7 @@ namespace ProjectY.Data
         public static int Remaining(CombatActorData actor,int range)
         {
             if(actor==null || range<0)throw new ArgumentException("Invalid movement query.");
-            return actor.HP==0 || actor.Moved?0:Math.Max(0,range-actor.MovementSpent);
+            return !DeathDoorState.Alive(actor) || actor.Moved?0:Math.Max(0,range-actor.MovementSpent);
         }
         public static void Move(CombatActorData actor,int q,int r,int moveAP,int pathCost,int range)
         {

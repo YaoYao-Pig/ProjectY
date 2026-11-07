@@ -16,5 +16,10 @@ test('town mission template references and objective/reward contracts are review
   const forbidden=state.tables.find(t=>t.name==='NarrativeActionTable').rows.find(r=>r.kind==='accept_mission');
   assert.throws(()=>edit('TownMissionTable',{actionIds:[forbidden.id]}),/reward/);
   assert.throws(()=>edit('TownMissionSettingsTable',{maxOffers:6}),/daily count/);
+  assert.throws(()=>edit('TownMissionSettingsTable',{escortAmbushChecks:4}),/ambush count|maximum|at most|<=|max/i);
+  assert.throws(()=>edit('TownMissionSettingsTable',{escortAmbushChance:101}),/ambush chance|maximum|at most|<=|max/i);
+  assert.throws(()=>edit('TownMissionSettingsTable',{escortAmbushPartyIds:[1]}),/ordinary hostile/);
+  assert.throws(()=>edit('TownMissionSettingsTable',{escortAmbushPartyIds:[11]}),/ordinary hostile/);
+  assert.throws(()=>edit('TownMissionSettingsTable',{escortAmbushPartyIds:[]}),/missing or duplicate/);
   assert(edit('TownMissionTable',{name:'A review-only commission'}).review.valid);
 });

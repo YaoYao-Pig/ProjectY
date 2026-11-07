@@ -12,7 +12,7 @@
 - `AudioEvents.Record` 接收 `Battle:Emit` 的已结算事件，仅记录正数、非周期、非自身的直接伤害；同一次快照中相同 source/target/shot 去重，连发保留原 shot。队列上限128，DemoBridge 随快照一次性 Drain；共用 `VisualEffects.Clear` 的新战斗/重开/读档/关闭清理边界。战斗结束不清掉致死末击。
 - 每条命中同时播放 hit（金属短响）和 hurt（柔和身体撞击），敌我相同；当前不按武器、种族或元素细分，也不包含挥空、脚步、对白或 UI 音效。2D旧棋盘使用零动画延迟。
 - 战斗结束先推进末击、连发间隔及短尾音，再同步战利品/结果弹窗，避免弹窗暂停世界导致末击迟播；这一等待仅阻断表现期输入，不延后玩法结算或再次执行战斗规则。
-- [catalog](../../Assets/GameFramework/Resources/Audio/catalog.json)维护资源路径、增益和并发。默认总音量/音乐/音效为 .8/.45/.8；`SetVolumes` 以 `ProjectY.Audio.Master/Music/Effects` 保存到 PlayerPrefs。本版提供服务接口，尚无玩家设置面板。
+- [catalog](../../Assets/GameFramework/Resources/Audio/catalog.json)维护资源路径、增益和并发。默认总音量/音乐/音效为 .8/.45/.8；`SetVolumes` 以 `ProjectY.Audio.Master/Music/Effects` 保存到 PlayerPrefs。[开始菜单设置页](../Business/StartMenu.md)通过原服务读取实际音量，点击应用时提交三项音量，关闭不提交。
 - 导入器对 Music 使用 Streaming/Vorbis、不预载，对 Effects 使用 DecompressOnLoad/PCM/单声道预载。素材只使用本批核实的 CC0 文件，作者/下载地址/hash/许可见 [来源记录](../../Art/Audio/README.md)。
 - 最小事件检查：`python -B Tools/Tests/run_lua.py Tools/Tests/audio_events.lua`。Editor 后端检查为 [audio_editmode.cs](../../Tools/Tests/audio_editmode.cs)，仅在已打开的非 Play Editor 用 MCP `execute_code` 运行；不启动游戏、不发声，检查资源、切换、池容量、暂停与释放。游戏内响度、混音和循环听感须另行实机验收。
 

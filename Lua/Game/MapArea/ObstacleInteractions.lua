@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 local Hex=require('Game.Map.HexGrid')
 local Random=require('Game.Map.SeededRandom')
 local Obstacles={};Obstacles.__index=Obstacles
@@ -97,7 +98,7 @@ end
 function Obstacles:Worker(tag)
     local equipment=self.adventure.equipment;local best
     for i=0,self.adventure.data.PartyCount-1 do local actor=self.adventure.data:GetPartyAt(i)
-        if actor.HP>0 then
+        if Life.Alive(actor) then
             if tag then
                 for _,hand in ipairs({'Equipped','Offhand'}) do local weapon=equipment.data[hand](equipment.data,actor.Id)
                     if weapon and equipment.rules:HasWeaponTag(weapon.ItemId,tag) then return actor end

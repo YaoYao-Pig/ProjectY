@@ -5,6 +5,7 @@ Shader "ProjectY/Map Water"
     {
         _Color ("Color", Color) = (0.20, 0.45, 0.57, 1)
         _FlowTex ("Seamless flow noise (RGBA)", 2D) = "gray" {}
+        [HideInInspector] _WaterBoundaryField ("Coverage / elevation / shore / optical depth", 2D) = "black" {}
         _WaterMode ("Mode: surface / curtain / foam / particle", Float) = 0
         _WaterScale ("Cell radius / world pattern scale", Float) = 1
         [HideInInspector] _WaterPreviewTime ("Preview time (-1 uses game time)", Float) = -1
@@ -86,8 +87,9 @@ Shader "ProjectY/Map Water"
             #pragma multi_compile _ _FORWARD_PLUS
             // 保留环境漫反射和主光高光，不采样反射探针、屏幕反射或深度纹理。
             #define _ENVIRONMENTREFLECTIONS_OFF 1
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+            #include "MapWeatherLighting.hlsl"
         #include "WorldFogSampling.hlsl"
+            #include "MapWaterSurface.hlsl"
 
             struct WaterVaryings
             {
@@ -120,26 +122,6 @@ Shader "ProjectY/Map Water"
                 return output;
             }
 
-            float WaterHash(float2 cell)
-            {
-                float3 q = frac(float3(cell.x, cell.y, cell.x) * 0.1031);
-                q += dot(q, q.yzx + 33.33);
-                return frac((q.x + q.y) * q.z);
-            }
-
-            // 五次插值的随机势函数及解析梯度：不需要四次贴图差分求流场。
-            float3 WaterPotential(float2 p)
-            {
-                float2 cell = floor(p), f = frac(p);
-                float2 u = f*f*f*(f*(f*6.0-15.0)+10.0);
-                float2 du = 30.0*f*f*(f*(f-2.0)+1.0);
-                float a = WaterHash(cell), b = WaterHash(cell+float2(1,0));
-                float c = WaterHash(cell+float2(0,1)), d = WaterHash(cell+1);
-                float mixed = a-b-c+d;
-                return float3(a+(b-a)*u.x+(c-a)*u.y+mixed*u.x*u.y,
-                    (b-a+mixed*u.y)*du.x, (c-a+mixed*u.x)*du.y);
-            }
-
             float4 AdvectWater(float2 p, float time, float2 velocity, float phaseOffset)
             {
                 // 两个相隔半周期的平流层分别采样再混合；重置时权重和导数均为零。
@@ -162,32 +144,6 @@ Shader "ProjectY/Map Water"
                 return a * weight + b * (1.0 - weight);
             }
 
-            // 有限支撑的随机波包：每处波峰有独立寿命、方向、波长，并在消散后换代。
-            // 支撑半径为一个格点间距，四个邻格点足够；边界的波高和导数同时归零。
-            float3 WaterPacket(float2 q, float2 node, float time)
-            {
-                float seed = WaterHash(node);
-                float lifetime = 4.5 + frac(seed * 19.31) * 4.0;
-                float clock = (time + seed * 17.0) / lifetime;
-                float age = frac(clock);
-                float generation = WaterHash(node + floor(clock) * float2(19.1, 7.7) + 43.6);
-                float angle = generation * 6.2831853;
-                float2 direction = float2(cos(angle), sin(angle));
-                float frequency = 7.0 + frac(generation * 13.7) * 6.0;
-                float2 r = q - node;
-                float support = saturate(1.0 - dot(r, r));
-                float envelope = support * support * support;
-                float life = 16.0 * age * age * (1.0 - age) * (1.0 - age);
-                float amplitude = (0.025 + frac(generation * 7.3) * 0.016) * life;
-                float phase = frequency * dot(r, direction)
-                    - time * (2.5 + generation * 2.2) + seed * 6.2831853;
-                float wave = sin(phase), slope = cos(phase);
-                float2 gradient = -6.0 * r * support * support * wave
-                    + envelope * frequency * direction * slope;
-                // q 的格点间距为1.45格半径，斜率须换回p坐标。
-                return float3(amplitude * envelope * wave, amplitude * gradient / 1.45);
-            }
-
             half4 WaterFragment(WaterVaryings input, FRONT_FACE_TYPE frontFace : FRONT_FACE_SEMANTIC) : SV_Target
             {
                 UNITY_SETUP_INSTANCE_ID(input);
@@ -205,46 +161,22 @@ Shader "ProjectY/Map Water"
                 if (_WaterMode < 0.5)
                 {
                     float2 p = input.positionWS.xz / scale;
-                    float3 potentialA = WaterPotential(p * 0.39 + float2(0.037, -0.021) * time);
-                    float3 potentialB = WaterPotential(p * 0.83 + float2(-0.026, 0.043) * time + 19.7);
-                    // 势函数梯度旋转90度形成curl；不同尺度以不同方向演化，产生局部旋转与变速。
-                    float2 curl = float2(potentialA.z, -potentialA.y) * 0.075
-                        + float2(potentialB.z, -potentialB.y) * 0.032;
-                    float2 velocity = float2(0.055, 0.028) + curl;
-                    float directionLengthSq = dot(flow.xy, flow.xy);
-                    float2 direction = directionLengthSq > 0.0001
-                        ? flow.xy * rsqrt(directionLengthSq) : float2(0.0, 1.0);
-                    // 当前流向是每格常量，在共边渐变回连续全局流场，避免弯道露出六边形拼缝。
+                    float4 boundary = WaterBoundary(input.positionWS.xz);
+                    float depth = _WaterBoundaryEnabled > .5 ? boundary.a : max(0,flow.w);
+                    half3 water = StylizedWater(input.positionWS, scale, time, boundary.b, depth);
+                    // Retain a subtle downstream signal inside river cells, fading to the shared ocean pattern at seams.
                     float2 local = input.localXZ;
-                    float edgeDistance = max(abs(local.x), max(abs(dot(local, float2(0.5, 0.8660254))),
-                        abs(dot(local, float2(0.5, -0.8660254)))));
-                    float river = saturate(flow.z) * (1.0 - smoothstep(0.57, 0.865, edgeDistance));
-                    float4 carried = AdvectWater(p, time, velocity, potentialA.x * 0.31);
-                    float4 riverCarried = AdvectWater(p, time, velocity + direction * 0.31,
-                        potentialA.x * 0.31);
-                    carried = lerp(carried, riverCarried, river * 0.72);
-                    float2 warped = p + potentialA.yz * 0.12 + potentialB.yz * 0.055;
-                    float2 q = (warped - float2(0.043, 0.019) * time) / 1.45;
-                    float2 node = floor(q);
-                    float3 waves = WaterPacket(q, node, time)
-                        + WaterPacket(q, node+float2(1,0), time)
-                        + WaterPacket(q, node+float2(0,1), time)
-                        + WaterPacket(q, node+1, time);
-                    // 河道追加沿实际下游运动的短波，只在河格内部增强，避免边界不连续。
-                    float riverPhase = dot(warped, direction) * 9.7 - time * 5.6 + carried.a * 3.1;
-                    float riverAmplitude = river * 0.012 * smoothstep(0.28, 0.73, carried.g);
-                    waves += float3(sin(riverPhase) * riverAmplitude,
-                        direction * cos(riverPhase) * riverAmplitude * 9.7);
-                    float detail = 1.0 - smoothstep(0.05, 0.38, max(fwidth(p.x), fwidth(p.y)));
-                    float top = smoothstep(0.45, 0.9, normal.y);
-                    float crest = smoothstep(0.007, 0.027, waves.x)
-                        * smoothstep(0.25, 0.65, carried.b) * detail * top;
-                    albedo *= 0.98 + (carried.r - 0.5) * 0.11 + waves.x * detail * 0.75;
-                    albedo = lerp(albedo, half3(0.65, 0.82, 0.83), crest * 0.32);
-                    albedo *= 1.0 - saturate(flow.w) * 0.025;
-                    // 波面斜率驱动光照起伏，主要运动来自明暗和波峰变化，而非画在水面的白线。
-                    normal = normalize(normal + half3(-waves.y, 0, -waves.z) * detail * top);
-                    smoothness = 0.43;
+                    float edgeDistance = max(abs(local.x), max(abs(dot(local, float2(.5,.8660254))),
+                        abs(dot(local, float2(.5,-.8660254)))));
+                    float river = saturate(flow.z) * (1-smoothstep(.57,.865,edgeDistance));
+                    if (river > .001 && max(fwidth(p.x),fwidth(p.y)) < .7)
+                    {
+                        float2 direction = normalize(flow.xy + float2(.00001,0));
+                        float4 carried = AdvectWater(p,time,direction*.31,0);
+                        water *= 1 + (carried.g-.5)*.04*river;
+                    }
+                    water = MixFog(water,input.fogAndVertexLight.x);
+                    return half4(ApplyWorldFog(water,input.positionWS),1);
                 }
                 else if (_WaterMode < 1.5)
                 {
@@ -337,7 +269,7 @@ Shader "ProjectY/Map Water"
                 lighting.vertexLighting = input.fogAndVertexLight.yzw;
                 lighting.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(input.positionCS);
                 lighting.shadowMask = half4(1, 1, 1, 1);
-                half4 result = UniversalFragmentPBR(lighting, surface);
+                half4 result = ProjectYWeatherFragmentPBR(lighting, surface);
                 result.rgb = MixFog(result.rgb, input.fogAndVertexLight.x);
                 result.rgb = ApplyWorldFog(result.rgb, input.positionWS);
                 result.a = alpha;

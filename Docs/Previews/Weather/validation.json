@@ -1,0 +1,98 @@
+{
+  "worldCellCount": 2500,
+  "townCellCount": 4132,
+  "reports": [
+    {
+      "view": "world-clear",
+      "rain": 0,
+      "splashes": 0,
+      "clouds": 0,
+      "cloudMin": 30,
+      "cloudMax": 30,
+      "rainMin": 0,
+      "rainMax": 0,
+      "refreshes": 1
+    },
+    {
+      "view": "world-rain",
+      "rain": 502,
+      "splashes": 128,
+      "clouds": 36,
+      "cloudMin": 249,
+      "cloudMax": 249,
+      "rainMin": 255,
+      "rainMax": 255,
+      "refreshes": 1
+    },
+    {
+      "view": "world-regional",
+      "rain": 13,
+      "splashes": 0,
+      "clouds": 3,
+      "cloudMin": 0,
+      "cloudMax": 255,
+      "rainMin": 0,
+      "rainMax": 255,
+      "refreshes": 1
+    },
+    {
+      "view": "town-rain-shelter",
+      "rain": 505,
+      "splashes": 128,
+      "clouds": 36,
+      "cloudMin": 249,
+      "cloudMax": 249,
+      "rainMin": 255,
+      "rainMax": 255,
+      "refreshes": 1
+    },
+    {
+      "view": "night-clear-stars",
+      "starPixels": 925,
+      "cloudCoverage": 0.12
+    },
+    {
+      "view": "night-clear-stars",
+      "rain": 0,
+      "splashes": 0,
+      "clouds": 0,
+      "cloudMin": 30,
+      "cloudMax": 30,
+      "rainMin": 0,
+      "rainMax": 0,
+      "refreshes": 1
+    },
+    {
+      "view": "night-overcast-stars",
+      "starPixels": 216,
+      "cloudCoverage": 0.75
+    },
+    {
+      "view": "night-overcast-stars",
+      "rain": 0,
+      "splashes": 0,
+      "clouds": 0,
+      "cloudMin": 191,
+      "cloudMax": 191,
+      "rainMin": 0,
+      "rainMax": 0,
+      "refreshes": 1
+    },
+    {
+      "shelteredCells": 184,
+      "clearStarPixels": 925,
+      "overcastStarPixels": 216,
+      "isolation": "No Play, scene saves, player saves or full-game startup"
+    }
+  ],
+  "outputs": [
+    "Docs/Previews/Weather/world-clear.png",
+    "Docs/Previews/Weather/world-rain.png",
+    "Docs/Previews/Weather/world-regional.png",
+    "Docs/Previews/Weather/town-rain-shelter.png",
+    "Docs/Previews/Weather/night-clear-stars.png",
+    "Docs/Previews/Weather/night-overcast-stars.png"
+  ],
+  "playMode": false,
+  "gpuPerformanceMeasured": false
+}

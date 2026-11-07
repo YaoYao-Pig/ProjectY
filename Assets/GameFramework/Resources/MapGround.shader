@@ -53,7 +53,7 @@ Shader "ProjectY/Map Ground"
             #pragma multi_compile_fragment _ _SHADOWS_SOFT
             #pragma multi_compile_fragment _ _SCREEN_SPACE_OCCLUSION
             #pragma multi_compile _ _FORWARD_PLUS
-            #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+            #include "MapWeatherLighting.hlsl"
         #include "WorldFogSampling.hlsl"
 
             struct GroundAttributes
@@ -286,7 +286,7 @@ Shader "ProjectY/Map Ground"
                 lighting.vertexLighting = input.fogAndVertexLight.yzw;
                 lighting.normalizedScreenSpaceUV = GetNormalizedScreenSpaceUV(input.positionCS);
                 lighting.shadowMask = half4(1, 1, 1, 1);
-                half4 result = UniversalFragmentPBR(lighting, surface);
+                half4 result = ProjectYWeatherFragmentPBR(lighting, surface);
                 result.rgb = MixFog(result.rgb, input.fogAndVertexLight.x);
                 result.rgb = ApplyWorldFog(result.rgb, input.positionWS);
                 result.a = 1;

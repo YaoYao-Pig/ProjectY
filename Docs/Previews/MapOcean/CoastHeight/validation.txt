@@ -1,0 +1,13 @@
+2026-11-02 — local coast height regression
+PASS high outlet 8; dry coast 2 -> exterior water 1.5; separate dry coast 4 -> exterior water 3.5.
+PASS real outlet and inland lake surface elevations remain exact; dry land blocks propagation.
+PASS inland lake 18 / bed -30 does not change an exterior dry coast's water height 3.5.
+PASS continuous terrain boundary corners participate in the local coastal height range.
+PASS enclosed courtyard/shaft edges do not affect exterior water.
+PASS uniform water 2.25 retains the single-plane fast path.
+PASS production GPU field readback and ShaderUtil shader-error check.
+PASS seed 862840973, generation version 11, 10000 cells: isolated low-coast preview inspected.
+PASS original scene and dirty state preserved; no entry into Play Mode.
+Validation used Tools/Tests/map_boundary_height.cs plus an isolated production-renderer preview.
+Project compilation was requested once for the initial uniform-height implementation and once after the user selected local coast heights; both completed without console errors.
+Not measured: Play Mode GPU frame time; in-game lighting/interaction acceptance.

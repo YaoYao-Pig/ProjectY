@@ -1,0 +1,230 @@
+{
+  "version": 1,
+  "name": "PersonalGrowthChoiceTable",
+  "description": "每个个人成长阶段的二择一分支。最终阶段只替换该人此前选中的本系列特质，保留其他特质。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "成长选项稳定ID",
+      "min": 1
+    },
+    {
+      "name": "stageId",
+      "type": "int",
+      "description": "所属成长阶段",
+      "ref": "PersonalGrowthStageTable"
+    },
+    {
+      "name": "title",
+      "type": "text",
+      "description": "选择标题"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "选择说明"
+    },
+    {
+      "name": "history",
+      "type": "text",
+      "description": "选择后的个人经历"
+    },
+    {
+      "name": "traitId",
+      "type": "int",
+      "description": "选择后获得的经历专属特质",
+      "ref": "CombatTraitTable"
+    },
+    {
+      "name": "skillIds",
+      "type": "int[]",
+      "description": "选择后授予的已有技能；空或仅一个ID",
+      "ref": "CombatSkillTable"
+    },
+    {
+      "name": "replacePreviousTrait",
+      "type": "bool",
+      "description": "第二阶段替换第一阶段实际选中的个人特质"
+    }
+  ],
+  "rows": [
+    {
+      "id": 111,
+      "stageId": 11,
+      "title": "先学会撑住",
+      "description": "把有限的精力放在长途跋涉和自我照料上，遇到困难时还能留有余力。",
+      "history": "在第一次共同胜利后，决定先练出面对困境的耐力。",
+      "traitId": 2001,
+      "replacePreviousTrait": false,
+      "skillIds": []
+    },
+    {
+      "id": 112,
+      "stageId": 11,
+      "title": "让双手更有用",
+      "description": "向同行者请教修补与营造，把谋生的念头变成手上的细活。",
+      "history": "在第一次共同胜利后，把安身的希望寄托在实用手艺上。",
+      "traitId": 2002,
+      "replacePreviousTrait": false,
+      "skillIds": []
+    },
+    {
+      "id": 121,
+      "stageId": 12,
+      "title": "磨出自救本领",
+      "description": "把耐力与战场喘息练在一起，在负伤之后有办法重新站稳。",
+      "history": "多次共战之后，选择了在伤痛中恢复的生存方向。",
+      "traitId": 2003,
+      "replacePreviousTrait": true,
+      "skillIds": [
+        2512
+      ]
+    },
+    {
+      "id": 122,
+      "stageId": 12,
+      "title": "为队伍搭起屏障",
+      "description": "专心练习营造，让随身木料也能成为阻止敌人的阵地。",
+      "history": "多次共战之后，选择用营造本领给队伍争取余地。",
+      "traitId": 2004,
+      "replacePreviousTrait": true,
+      "skillIds": [
+        301
+      ]
+    },
+    {
+      "id": 211,
+      "stageId": 21,
+      "title": "追问技艺的原理",
+      "description": "反复梳理刚学会的技艺，培养专注推演的习惯。",
+      "history": "掌握入队后的第一门新技艺时，开始认真钻研背后的原理。",
+      "traitId": 2005,
+      "replacePreviousTrait": false,
+      "skillIds": []
+    },
+    {
+      "id": 212,
+      "stageId": 21,
+      "title": "练习观察变化",
+      "description": "从同一招在不同情境中的效果入手，留意别人忽略的细节。",
+      "history": "掌握入队后的第一门新技艺时，决定从观察实战细节寻找答案。",
+      "traitId": 2006,
+      "replacePreviousTrait": false,
+      "skillIds": []
+    },
+    {
+      "id": 221,
+      "stageId": 22,
+      "title": "形成静心回路",
+      "description": "用反复研习建立回收施法精力的方法；实际施放仍需要相应触媒。",
+      "history": "把新学的技艺带过战场后，形成了偏重奥术续航的研究方向。",
+      "traitId": 2007,
+      "replacePreviousTrait": true,
+      "skillIds": [
+        2308
+      ]
+    },
+    {
+      "id": 222,
+      "stageId": 22,
+      "title": "把观察变成标记",
+      "description": "将对敌人动作的理解变成明确标记，为下一次武器攻击创造机会。",
+      "history": "把新学的技艺带过战场后，选择以观察和标记帮助同伴。",
+      "traitId": 2008,
+      "replacePreviousTrait": true,
+      "skillIds": [
+        2412
+      ]
+    },
+    {
+      "id": 311,
+      "stageId": 31,
+      "title": "练好照料的底子",
+      "description": "先让自己能够承受奔走与救护的劳累，才能持续照顾身边的人。",
+      "history": "在共战或救援中感受到牵挂的重量，开始锻炼照料同伴的体魄。",
+      "traitId": 2009,
+      "replacePreviousTrait": false,
+      "skillIds": []
+    },
+    {
+      "id": 312,
+      "stageId": 31,
+      "title": "先稳住防线",
+      "description": "留意敌人的来路与同伴的位置，把守护练成防守时的习惯。",
+      "history": "在共战或救援中感受到牵挂的重量，决定先学会稳住防线。",
+      "traitId": 2010,
+      "replacePreviousTrait": false,
+      "skillIds": []
+    },
+    {
+      "id": 321,
+      "stageId": 32,
+      "title": "学会战地救护",
+      "description": "把守护落实为救治本领，帮助受伤的同伴继续战斗。",
+      "history": "在持续共战或危急救援之后，选择用战地救护回应守护的愿望。",
+      "traitId": 2011,
+      "replacePreviousTrait": true,
+      "skillIds": [
+        107
+      ]
+    },
+    {
+      "id": 322,
+      "stageId": 32,
+      "title": "践行护送之誓",
+      "description": "把防守的重心放在近旁同伴身上，以承誓和护卫抵住下一次威胁。",
+      "history": "在持续共战或危急救援之后，选择站在同伴身边承担防守。",
+      "traitId": 2012,
+      "replacePreviousTrait": true,
+      "skillIds": [
+        2214
+      ]
+    },
+    {
+      "id": 411,
+      "stageId": 41,
+      "title": "练习收住锋芒",
+      "description": "仔细打磨近身技艺，学会在碰撞之前控制动作和节奏。",
+      "history": "并肩赢下第一场战斗后，选择从克制锋芒开始建立默契。",
+      "traitId": 2013,
+      "replacePreviousTrait": false,
+      "skillIds": []
+    },
+    {
+      "id": 412,
+      "stageId": 41,
+      "title": "练习说清意图",
+      "description": "在训练中把观察和计划说给同伴听，让彼此能够及时响应。",
+      "history": "并肩赢下第一场战斗后，选择用清晰的沟通建立默契。",
+      "traitId": 2014,
+      "replacePreviousTrait": false,
+      "skillIds": []
+    },
+    {
+      "id": 421,
+      "stageId": 42,
+      "title": "以稳健的迎击应敌",
+      "description": "让对手先暴露空隙，在架势中削弱近身攻击并留下反击机会。",
+      "history": "多次共战并掌握新技艺后，选择以稳健迎击掌握交锋节奏。",
+      "traitId": 2015,
+      "replacePreviousTrait": true,
+      "skillIds": [
+        2210
+      ]
+    },
+    {
+      "id": 422,
+      "stageId": 42,
+      "title": "带同伴一起脱险",
+      "description": "把沟通练成及时的整队号令，为同伴提供速度与一次护身机会。",
+      "history": "多次共战并掌握新技艺后，选择以整队号令回应同伴的信任。",
+      "traitId": 2016,
+      "replacePreviousTrait": true,
+      "skillIds": [
+        2521
+      ]
+    }
+  ]
+}

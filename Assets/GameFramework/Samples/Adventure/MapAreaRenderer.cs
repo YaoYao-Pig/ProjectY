@@ -49,6 +49,7 @@ namespace ProjectY.Samples
         private TownWaterRenderer townWater;
         private readonly Shader shader;
         private readonly MapAreaViewData map;
+        private readonly MapBoundaryRenderer boundary;
         private readonly bool[] known, visible;
         private readonly bool[] terrainShown;
         private readonly bool[] terrainCut;
@@ -71,7 +72,7 @@ namespace ProjectY.Samples
         {
             if (shader == null || prefab == null || !SystemInfo.supportsInstancing) throw new InvalidOperationException("MapArea 缺少实例渲染资源。");
             this.map = map; this.shader = shader;
-            townWater=new TownWaterRenderer(shader,map);
+            var presentation = MapAreaPresentationSettings.Load();
             var filter = prefab.GetComponent<MeshFilter>(); var source = prefab.GetComponent<MeshRenderer>();
             if (filter == null || source == null || filter.sharedMesh == null) throw new InvalidOperationException("MapArea 柱模型缺少 Mesh。");
             var sourceMaterials = source.sharedMaterials;
@@ -97,6 +98,8 @@ namespace ProjectY.Samples
                 bounds.Encapsulate(map.Cells[i].Position + Vector3.up * map.Cells[i].WallHeight);
             }
             bounds.Expand(map.Radius * 2); Bounds = bounds;
+            boundary = new MapBoundaryRenderer(map);
+            townWater = new TownWaterRenderer(map, boundary);
             // 陈设也按模型材质槽实例化绘制，不为每件物品生成场景对象。
             foreach (var asset in map.PropAssets)
             {
@@ -144,6 +147,29 @@ namespace ProjectY.Samples
                                 Smoothness = materials[slot].HasProperty("_Smoothness") ? materials[slot].GetFloat("_Smoothness") : .08f };
                             batch.Properties.SetFloat("_Metallic", batch.Metallic);
                             batch.Properties.SetFloat("_Smoothness", batch.Smoothness);
+                            var detail = presentation.Detail(materials[slot]);
+                            batch.Properties.SetVector("_DetailPattern", detail == null ? Vector4.zero : detail.pattern);
+                            batch.Properties.SetFloat("_DetailRelief", detail == null ? 0 : detail.relief);
+                            var sourceMaterial = materials[slot];
+                            var baseMap = sourceMaterial.HasProperty("_BaseMap") ? sourceMaterial.GetTexture("_BaseMap") : null;
+                            var normalMap = sourceMaterial.HasProperty("_BumpMap") ? sourceMaterial.GetTexture("_BumpMap") : null;
+                            var metallicMap = sourceMaterial.HasProperty("_MetallicGlossMap") ? sourceMaterial.GetTexture("_MetallicGlossMap") : null;
+                            batch.Properties.SetTexture("_BaseMap", baseMap != null ? baseMap : Texture2D.whiteTexture);
+                            batch.Properties.SetTexture("_BumpMap", normalMap != null ? normalMap : Texture2D.normalTexture);
+                            batch.Properties.SetTexture("_MetallicGlossMap", metallicMap != null ? metallicMap : Texture2D.whiteTexture);
+                            var scale = sourceMaterial.HasProperty("_BaseMap") ? sourceMaterial.GetTextureScale("_BaseMap") : Vector2.one;
+                            var offset = sourceMaterial.HasProperty("_BaseMap") ? sourceMaterial.GetTextureOffset("_BaseMap") : Vector2.zero;
+                            batch.Properties.SetVector("_BaseMap_ST", new Vector4(scale.x, scale.y, offset.x, offset.y));
+                            batch.Properties.SetVector("_MaterialMaps", new Vector4(baseMap != null ? 1 : 0,
+                                normalMap != null && sourceMaterial.IsKeywordEnabled("_NORMALMAP") ? 1 : 0,
+                                sourceMaterial.HasProperty("_BumpScale") ? sourceMaterial.GetFloat("_BumpScale") : 1,
+                                metallicMap != null && sourceMaterial.IsKeywordEnabled("_METALLICSPECGLOSSMAP") ? 1 : 0));
+                            var light = presentation.Light(asset.Id);
+                            if (light != null && Array.IndexOf(light.emissionSlots, slot) >= 0)
+                            {
+                                batch.Emission = light.color * light.emission;
+                                batch.Properties.SetVector("_DetailPattern", Vector4.zero);
+                            }
                             propBatches.Add(batch);
                         }
                         batch.Instances.Add(prop);
@@ -209,7 +235,7 @@ namespace ProjectY.Samples
                         cell.CutawayGroup > 0 || cell.Layer > 0 ? cell.Position.y : 0;
                     var position = new Vector3(cell.Position.x, top, cell.Position.z);
                     batch.Matrices[i] = Matrix4x4.TRS(position, Quaternion.identity,
-                        !cell.RenderGround || terrainCut[index] || discovered && SurfaceCell(cell) ? Vector3.zero :
+                        !cell.RenderGround || terrainCut[index] || discovered && (SurfaceCell(cell) || cell.Kind == "water") ? Vector3.zero :
                         new Vector3(map.Radius, Mathf.Max(.2f, top - ColumnBottom(cell, top)), map.Radius));
                     var color = !discovered ? new Color(.025f, .035f, .045f) : cell.Color;
                     if (discovered && cell.Kind == "entry") color = new Color(.30f, .69f, .61f);
@@ -248,7 +274,7 @@ namespace ProjectY.Samples
                 batch.Properties.SetVectorArray("_EmissionColor", batch.Emissions);
             }
         }
-        private bool SurfaceCell(MapAreaViewData.Cell cell) => cell.RenderGround && (map.IsTown || cell.UsesSurfaceMesh);
+        private bool SurfaceCell(MapAreaViewData.Cell cell) => cell.RenderGround && cell.Kind != "water" && (map.IsTown || cell.UsesSurfaceMesh);
         private bool IsCut(int interiorId, bool cutaway, int layer, int group, int cutawayLayer)
         {
             if (group > 0 && groupLayers.TryGetValue(group, out var groupFloor) && cutawayLayer > groupFloor) return true;
@@ -258,6 +284,7 @@ namespace ProjectY.Samples
         public bool IsCellShown(int index) => terrainShown[index];
         public void Draw(Camera camera)
         {
+            boundary.Draw(camera);
             townSurface?.Draw(camera);
             townWater.Draw(camera);
             foreach (var batch in batches) for (var slot = 0; slot < mesh.subMeshCount; slot++)
@@ -318,6 +345,7 @@ namespace ProjectY.Samples
         }
         public void Dispose()
         {
+            boundary.Dispose();
             townSurface?.Dispose();
             townWater.Dispose();
             if (Application.isPlaying) Object.Destroy(material); else Object.DestroyImmediate(material);

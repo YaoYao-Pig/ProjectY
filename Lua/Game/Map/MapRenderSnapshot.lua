@@ -29,7 +29,7 @@ return function(map)
         assert(first and first.weight > 0, 'Render cell requires a positive biome weight')
         local corners
         if cell.surfaceCorners then corners={};for j,height in ipairs(cell.surfaceCorners) do corners[j]=height end end
-        result.cells[i] = { q = cell.q, r = cell.r, townId = cell.townId or 0,regionId=cell.regionId,surfaceCorners=corners,
+        result.cells[i] = { q = cell.q, r = cell.r, townId = cell.townId or 0,regionId=cell.regionId,wonderId=cell.wonderId or 0,surfaceCorners=corners,
             x = x, y = y, z = z, hasWater = cell.waterLevel ~= nil,
             waterLevel = cell.waterLevel or 0, waterDepth = cell.waterDepth or 0,
             isRiver = cell.waterKind == 'river', riverId = cell.riverId or 0,

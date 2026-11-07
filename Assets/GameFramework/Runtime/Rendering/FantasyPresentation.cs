@@ -22,6 +22,8 @@ namespace ProjectY.Rendering
         private readonly GameObject volumeObject;
         private readonly Volume volume;
         private readonly WorldVisualStyles styles;
+        private VolumeProfile sessionProfile;
+        private float enclosure, atmosphereStrength;
         public WorldVisualStyle Style { get; private set; }
         public WorldLightingLook Lighting => Style == WorldVisualStyle.PixelInk ? WorldLightingLook.Neutral : styles.fantasyLighting;
         public Material SkyboxTemplate => styles.fantasySkybox;
@@ -65,12 +67,30 @@ namespace ProjectY.Rendering
             pipeline.hideFlags = HideFlags.HideAndDontSave;
             if (previous != null) pipeline.shadowDistance = previous.shadowDistance;
             QualitySettings.renderPipeline = pipeline;
-            volume.sharedProfile = profile;
+            ReleaseProfile();
+            sessionProfile = ScriptableObject.CreateInstance<VolumeProfile>();
+            sessionProfile.hideFlags = HideFlags.HideAndDontSave;
+            foreach (var component in profile.components) sessionProfile.components.Add(Object.Instantiate(component));
+            volume.sharedProfile = sessionProfile;
+            atmosphereStrength = sessionProfile.TryGet<FantasyAtmosphere>(out var atmosphere) ? atmosphere.strength.value : 0;
+            SetEnclosure(enclosure);
             bool pixel = style == WorldVisualStyle.PixelInk;
             cameraData.antialiasing = pixel ? AntialiasingMode.None : AntialiasingMode.SubpixelMorphologicalAntiAliasing;
             cameraData.dithering = !pixel;
             Style = style;
             if (previous != null) Remove(previous);
+        }
+
+        public void SetEnclosure(float value)
+        {
+            enclosure = Mathf.Clamp01(value);
+            if (sessionProfile.TryGet<FantasyAtmosphere>(out var atmosphere)) atmosphere.strength.value = atmosphereStrength * (1-enclosure);
+        }
+        private void ReleaseProfile()
+        {
+            if (sessionProfile == null) return;
+            foreach (var component in sessionProfile.components) Remove(component);
+            Remove(sessionProfile); sessionProfile = null;
         }
 
         public static void ApplyToActive(WorldVisualStyle style)
@@ -86,6 +106,7 @@ namespace ProjectY.Rendering
             active.Remove(this);
             QualitySettings.renderPipeline = originalQualityPipeline;
             Remove(pipeline);
+            ReleaseProfile();
             if (volumeObject != null) Remove(volumeObject);
             // Scene teardown can destroy the camera before its owning world controller.
             if (camera == null || cameraData == null) return;

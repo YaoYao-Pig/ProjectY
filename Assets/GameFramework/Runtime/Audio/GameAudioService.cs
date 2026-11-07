@@ -253,6 +253,10 @@ namespace ProjectY.Audio
             foreach (var effect in _effects.Values) effect.NextAllowedTime = _elapsed;
         }
 
+        internal float MasterVolume => _masterVolume;
+        internal float MusicVolumeSetting => _musicVolume;
+        internal float EffectsVolume => _effectsVolume;
+
         public void SetVolumes(float master, float music, float effects)
         {
             ThrowIfDisposed();

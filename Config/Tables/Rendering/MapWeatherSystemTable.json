@@ -1,0 +1,34 @@
+{
+  "version": 1,
+  "name": "MapWeatherSystemTable",
+  "description": "按世界种子与绝对游戏分钟查询的区域天气及可视特效预算",
+  "key": "id",
+  "fields": [
+    { "name": "id", "type": "int", "description": "配置编号", "min": 1, "max": 1 },
+    { "name": "regionHexes", "type": "float", "description": "天气区域尺度，以大地图地格半径为单位", "min": 1, "max": 256 },
+    { "name": "evolutionMinutes", "type": "float", "description": "天气形态演化周期，绝对游戏分钟", "min": 1, "max": 10080 },
+    { "name": "windX", "type": "float", "description": "天气沿世界 X 轴的移动速度，世界单位每游戏分钟", "min": -100, "max": 100 },
+    { "name": "windZ", "type": "float", "description": "天气沿世界 Z 轴的移动速度，世界单位每游戏分钟", "min": -100, "max": 100 },
+    { "name": "maxRainParticles", "type": "int", "description": "相机附近同时存活的雨滴粒子上限", "min": 1, "max": 8192 },
+    { "name": "maxSplashParticles", "type": "int", "description": "相机附近同时存活的水花粒子上限", "min": 0, "max": 1024 },
+    { "name": "maxClouds", "type": "int", "description": "可视范围内云团实例上限", "min": 1, "max": 512 },
+    { "name": "rainRate", "type": "float", "description": "雨强为一时每真实秒最多发射的雨滴数", "min": 1, "max": 4096 },
+    { "name": "refreshSeconds", "type": "float", "description": "可视天气分布重采样间隔，真实秒", "min": 0.05, "max": 2 },
+    { "name": "cloudSpacingHexes", "type": "float", "description": "大地图云团采样间距，以地格半径为单位", "min": 1, "max": 32 }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "regionHexes": 18,
+      "evolutionMinutes": 240,
+      "windX": 0.7,
+      "windZ": 0.25,
+      "maxRainParticles": 1800,
+      "maxSplashParticles": 128,
+      "maxClouds": 96,
+      "rainRate": 950,
+      "refreshSeconds": 0.25,
+      "cloudSpacingHexes": 5
+    }
+  ]
+}

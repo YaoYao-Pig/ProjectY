@@ -20,7 +20,8 @@ using (var lua = new XLua.LuaEnv())
             data.Equipment.Grid:Define(item.id,item.width,item.height)
             data.Equipment.Grid:Configure(3,3)
             data.Equipment:AddStack(item.id,1)
-            local state=require('Game.Adventure.Torch').Snapshot({config=config,data=data})
+            local loadout=setmetatable({data=CS.ProjectY.Data.CampLoadoutData.For(CS.ProjectY.Data.CampData.For(data)),rule=config:GetTable('CampLoadoutTable'):Get(1)},require('Game.Camp.CampLoadout'))
+            local state=require('Game.Adventure.Torch').Snapshot({config=config,data=data,camp={loadout=loadout}})
             assert(state.available and state.enabled and state.count==1)
             return require('Game.Rendering.MapPresentation').Snapshot(config),item.iconPath,asset.prefabPath,state.enabled,item.id,item.assetId
         ", "@torch_editmode_config");
@@ -65,7 +66,7 @@ try
     var sunObject = new GameObject("Torch Check Sun"); sunObject.transform.SetParent(host.transform, false);
     var sun = sunObject.AddComponent<Light>(); sun.type = LightType.Directional;
     environment = new ProjectY.Samples.MapEnvironmentController(lighting, sun, camera, host.transform);
-    var layout = new ProjectY.Samples.MapAreaViewData { Cells = new[] { new ProjectY.Samples.MapAreaViewData.Cell { Position = Vector3.zero, InteriorId = 0 } } };
+    var layout = new ProjectY.Samples.MapAreaViewData { Props = new ProjectY.Samples.MapAreaViewData.Prop[0], Cells = new[] { new ProjectY.Samples.MapAreaViewData.Cell { Position = Vector3.zero, InteriorId = 0 } } };
     environment.SetArea(layout); environment.Running = false; environment.Hour = 0;
     environment.Tick(3, null); environment.ApplyCameraFocus(Vector3.zero);
     // Reflection is limited to test inspection of the owned light, never used as a gameplay binding.
@@ -83,6 +84,9 @@ try
     environment.SetTorch(true, leader); environment.SetArea(null);
     if (torch.enabled) throw new System.Exception("Leaving the local map retained its torch light");
     environment.SetTorch(true, leader); if (torch.enabled) throw new System.Exception("World map must not enable the local torch");
+    environment.SetWorldTorch(true,leader);
+    if(!torch.enabled || Vector3.Distance(torch.transform.position,leader+Vector3.up*lighting.TorchHeight)>.001f)throw new System.Exception("World loadout light did not follow the party");
+    environment.SetWorldTorch(false,leader);if(torch.enabled)throw new System.Exception("World loadout light did not switch off");
     environment.SetArea(layout);
 
     // Compare the real map shader with only the portable light changed. Preview renderer disables grading/SSAO.
@@ -116,6 +120,12 @@ try
     offBrightness = measure(false); onBrightness = measure(true);
     if (offBrightness <= .001 || onBrightness <= offBrightness + .01 || onBrightness <= offBrightness * 1.05)
         throw new System.Exception("Torch did not increase measured surface brightness: off=" + offBrightness + ", on=" + onBrightness);
+    environment.SetArea(null);environment.SetWorldTorch(true,Vector3.zero);
+    ProjectY.Rendering.UrpCameraRendering.Render(camera,request);
+    RenderTexture.active=target;pixels.ReadPixels(new Rect(0,0,128,128),0,0);pixels.Apply();
+    var worldColors=pixels.GetPixels();double worldSum=0;
+    for(int y=48;y<80;y++)for(int x=48;x<80;x++){var c=worldColors[y*128+x];worldSum+=c.r*.2126+c.g*.7152+c.b*.0722;}
+    if(worldSum/1024<=offBrightness+.01)throw new System.Exception("World loadout point light did not illuminate the production map shader");
     environment.Dispose(); environment = null;
     destroyed = torch == null; if (!destroyed) throw new System.Exception("Dispose leaked the torch GameObject");
     controllerRestored = restored(); if (!controllerRestored) throw new System.Exception("Controller did not restore the original RenderSettings/pipeline");
@@ -128,7 +138,8 @@ finally
         // Failure cleanup is explicit even if construction, rendering or a check throws.
         RenderTexture.active = originalTarget; if (camera != null) camera.targetTexture = null;
         if (pixels != null) UnityEngine.Object.DestroyImmediate(pixels);
-        if (target != null) { target.Release(); UnityEngine.Object.DestroyImmediate(target); }
+        if (camera != null) camera.targetTexture = null;
+    if (target != null) { target.Release(); UnityEngine.Object.DestroyImmediate(target); }
         if (material != null) UnityEngine.Object.DestroyImmediate(material);
         RenderSettings.ambientMode = originalAmbientMode; RenderSettings.ambientSkyColor = originalSky;
         RenderSettings.ambientEquatorColor = originalEquator; RenderSettings.ambientGroundColor = originalGround;

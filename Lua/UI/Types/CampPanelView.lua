@@ -1,13 +1,13 @@
 ---@meta
 -- Generated from LuaReference. Do not edit; never require this file.
 ---@class CampPanelView
----@field Root CS.UnityEngine.RectTransform
----@field Title CS.UnityEngine.UI.Text
----@field Caption CS.UnityEngine.UI.Text
----@field Close CS.UnityEngine.UI.Button
----@field Content CS.UnityEngine.RectTransform
----@field Scroll CS.UnityEngine.UI.ScrollRect
----@field Hint CS.UnityEngine.UI.Text
----@field Style CS.ProjectY.UI.NarrativeView
+---@field Camp CS.ProjectY.UI.CampPanelView
+---@field Scene CS.ProjectY.UI.CampSceneView
+---@field ItemPreview CS.ProjectY.UI.CampItemPreview
+---@field Inventory CS.ProjectY.UI.InventoryPanelView
+---@field Warehouse CS.ProjectY.UI.CampWarehouseView
+---@field Header CS.UnityEngine.RectTransform
+---@field Loadout CS.UnityEngine.UI.Button
+---@field Roster CS.UnityEngine.UI.Button
 local View = {}
 return View

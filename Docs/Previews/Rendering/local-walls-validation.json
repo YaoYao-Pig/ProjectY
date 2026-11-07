@@ -1,0 +1,35 @@
+{
+  "scope": "Native ModelImporter material remapping and production MapArea wall closeups in an isolated PreviewScene",
+  "models": 14,
+  "remappedSlots": 21,
+  "materialBindingsAfter": 37,
+  "geometryAndGuidsPreserved": true,
+  "csharpCompilationRequests": 0,
+  "playMode": false,
+  "wallRoi": [
+    0,
+    350,
+    750,
+    470
+  ],
+  "wallMeanAbsoluteRgbDifference": [
+    10.569622222222222,
+    8.007433333333333,
+    4.428011111111111
+  ],
+  "images": {
+    "before": "local-wall-interior-before.png",
+    "masonry": "local-wall-interior-after.png",
+    "timber": "local-wall-tavern-after.png",
+    "dungeon": "local-wall-dungeon-after.png"
+  },
+  "limits": [
+    "No Play Mode traversal",
+    "Relief changes shading normals, not wall geometry"
+  ],
+  "dungeonWall": {
+    "surfaceId": 24,
+    "pattern": 9,
+    "productionLayout": true
+  }
+}

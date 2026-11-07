@@ -2,12 +2,17 @@ local LuaLanguage = require('Language')
 local Class=require('Core.Class')
 local Panel=require('UI.UIPanelCtrl')
 local Model=require('Game.Adventure.MainHudModel')
+local WeatherDialModel=require('Game.Adventure.WeatherDialModel')
 local Widgets=require('UI.GrowthWidgets')
 local Feedback=require('Game.Battle.BattleFeedback')
 local DiceChecks=require('Game.Presentation.DiceChecks')
 local HUD=Class('MainHudCtr',Panel)
 function HUD:Bind()
     self.adventure=self.context.systems:Get('Adventure');self.view.HUD:Prepare()
+    self.weatherDial=WeatherDialModel.New(self.adventure)
+    self.view.WeatherDial:Configure(self.weatherDial:Periods())
+    self.mapHud=self:AddWidget(require('UI.Widget.WorldMapHud'),self.view.MapHud)
+    self.view.MapTransition:SetProgress(0)
     self.party,self.health={},{}
     self.skills={};self.view.HUD:SetCharacterSkillBar(self.view.CharacterSkills)
     self:Listen(self.view.MenuToggle,function() self.menuOpen=not self.menuOpen;self:Refresh() end)
@@ -46,6 +51,11 @@ function HUD:Bind()
     self:Listen(self.view.Environment,function() self.demo:ToggleEnvironment() end)
     self:Listen(self.view.Interact,function() local row=self.model.interaction;self.demo:SendCommand(row.command,row.a or 0,row.b or 0) end)
 end
+function HUD:OnBack()
+    self.menuOpen=false;self.view.Menu.gameObject:SetActive(false)
+    self.context.systems:Get('UI'):Open('PauseMenu',{demo=self.demo})
+    return true
+end
 function HUD:RefreshSiteTags()
     self.view.SiteTagsText.text=self.view.SiteTags.isOn and LuaLanguage.UIMainHudHideSiteTags or LuaLanguage.UIMainHudShowSiteTags
 end
@@ -53,7 +63,7 @@ function HUD:OnShow(args)
     self.demo=assert(args.demo);self.demo:SetMainHud(self.view.HUD);self.navigation=false;self.menuOpen=false
     self.visibleScope:Add(self.adventure.battle.Changed:Subscribe(function(event)
         Feedback.Changed(self.view.BattleFeedback,event);self.healthDirty=true
-        if self.adventure.data.Phase~='battle' then
+        if event.kind=='death_door_check' or self.adventure.data.Phase~='battle' then
             local check=DiceChecks.FromBattleEvent(event)
             if check then self:ShowCheck(check) end
         end
@@ -64,7 +74,9 @@ function HUD:OnShow(args)
         else self.missionSettlement=self.context.systems:Get('UI'):Open('MissionSettlement',{receipt=receipt,font=self.demo.MainHudFont}) end
     end))
     self.view.HealthTooltip.gameObject:SetActive(false)
-    self.skillPage=1;self.skillActor=nil;self.lastPhase=nil;self.clockMinute=nil;self:Refresh();self:Clock()
+    self.view.WeatherDialGroup.alpha=0
+    self.weatherDial:Reset();self.view.WeatherDial:Configure(self.weatherDial:Periods());self.view.WeatherDial:ResetVisual()
+    self.skillPage=1;self.skillActor=nil;self.lastPhase=nil;self.clockMinute=nil;self:Refresh();self:Clock(0)
 end
 function HUD:ShowCheck(check)
     if self.diceRoll and self.diceRoll.visible then self.diceRoll:Enqueue(check)
@@ -98,7 +110,7 @@ function HUD:Refresh()
     end
     self.view.Inventory.interactable=exploring;self.view.Missions.interactable=exploring;self.view.Growth.interactable=exploring
     self.view.Factions.interactable=exploring
-    self.view.Location.text=model.title;self.view.Subtitle.text=model.subtitle;self.view.Coins.text=string.format(LuaLanguage.UIMainHudCoinsText, (model.coins))
+    self.view.Location.text=model.title;self.view.Subtitle.text=model.subtitle;self.view.Coins.text=model.food and string.format(LuaLanguage.EconomyHudResources,model.coins,model.food) or string.format(LuaLanguage.UIMainHudCoinsText,model.coins)
     self.view.NavigationTitle.text=model.phase=='map' and LuaLanguage.UIMainHudNavigationTitleText2 or LuaLanguage.UIMainHudNavigationTitleText
     self.view.Leave.gameObject:SetActive(model.phase=='area');self.view.Stop.gameObject:SetActive(model.phase=='area')
     self.view.CameraMode.gameObject:SetActive(false);self.view.Restart.gameObject:SetActive(model.phase=='map')
@@ -111,9 +123,11 @@ function HUD:Refresh()
     end
     local errorText=self.demo.LastError or '';self.view.Hint.text=errorText;self.view.Hint.gameObject:SetActive(errorText~='')
     Widgets.Rows(self,'NavigationRows','HudRow',model.rows,function(row) self.demo:SendCommand(row.command,row.a or 0,row.b or 0) end)
+    model.menu[#model.menu+1]={title=LuaLanguage.InspectionTitle,body=LuaLanguage.InspectionSubtitle,command='unit_details',available=exploring or battle}
     Widgets.Rows(self,'MenuRows','HudRow',model.menu,function(row)
         self.menuOpen=false
-        if row.command=='start' then self.demo:StartExpedition()
+        if row.command=='unit_details' then self.context.systems:Get('UI'):Open('UnitDetails',{demo=self.demo})
+        elseif row.command=='start' then self.demo:StartExpedition()
         else self.demo:SendCommand(row.command,row.a or 0,row.b or 0) end
         self:Refresh()
     end)
@@ -164,17 +178,24 @@ function HUD:Refresh()
     for i=math.min(4,#rows)+1,#self.skills do self.skills[i]:SetData(nil) end
     self.revision=self.demo.BattleHUDRevision;self.journalCount=self.adventure.data.JournalCount;self.healthDirty=false
 end
-function HUD:Clock()
-    local minutes=math.floor(self.adventure.narrative.data.Minutes)
+function HUD:Clock(unscaledDt)
+    local totalMinutes,cloud,rain=self.weatherDial:Read(unscaledDt)
+    self.view.WeatherDial:SetState(totalMinutes,cloud,rain)
+    local minutes=math.floor(totalMinutes)
     if self.clockMinute==minutes then return end
     self.clockMinute=minutes;local day=minutes%1440
     self.view.ClockTime.text=string.format('%02d:%02d',day//60,day%60)
     self.view.ClockDay.text=string.format(LuaLanguage.UIMainHudClockDayText, (minutes//1440+1))
-    self.view.ClockNeedle.localEulerAngles=CS.UnityEngine.Vector3(0,0,-day/1440*360)
 end
-function HUD:Tick()
+function HUD:Tick(_,unscaledDt)
+    local overview=CS.ProjectY.Samples.WorldMapOverviewBridge.Progress(self.demo)
+    self.view.MapTransition:SetProgress(overview)
     self.view.Group.alpha=self.adventure.narrative.data.DialogueOpen and 0 or 1
-    self:Clock()
+    if self.view.Group.alpha>0 and overview<1 then
+        self:Clock(unscaledDt)
+        self.view.WeatherDial:TickVisual(unscaledDt)
+        self.view.WeatherDialGroup.alpha=1
+    end
     self.battleContent.view.Group.interactable=self.view.Group.interactable
     if self.healthDirty or self.revision~=self.demo.BattleHUDRevision or self.journalCount~=self.adventure.data.JournalCount then self:Refresh() end
     local hint=self.demo.SelectedCharacterSkill~=0 and LuaLanguage.UIMainHudSkillHintText2 or LuaLanguage.UIMainHudSkillHintText
@@ -197,6 +218,8 @@ function HUD:Tick()
     self.healthHover=hovered;self.healthTooltipRow=hovered and hovered.row
 end
 function HUD:OnHide()
+    self.view.WeatherDialGroup.alpha=0
+    self.view.MapTransition:SetProgress(0)
     self.view.HealthTooltip.gameObject:SetActive(false);self.healthHover=nil;self.healthTooltipRow=nil
     if self.demo then self.demo:SetMainHud(nil);self.demo=nil end
 end

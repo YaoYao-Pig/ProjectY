@@ -15,6 +15,7 @@ namespace ProjectY.Data
         public string WorldName { get; internal set; }
         public string SavedAt { get; internal set; }
         public string SavedAtUtc { get; internal set; }
+        public string CreatedAtUtc { get; internal set; }
         public uint Seed { get; internal set; }
         public int TargetCells { get; internal set; }
         public int RecipeId { get; internal set; }
@@ -33,8 +34,8 @@ namespace ProjectY.Data
     [Serializable] internal sealed class CatalogExpedition { public int recipeId,targetCells; }
     [Serializable] internal sealed class CatalogDocument
     {
-        public int version; public uint seed; public string savedAt, worldName;
-        public CatalogActor[] actors; public CatalogExpedition expedition;
+        public int version; public uint seed; public string savedAt, worldName, createdAt;
+        public CatalogActor[] actors; public PartyRosterSave roster; public CatalogExpedition expedition;
     }
 
     public sealed partial class CharacterSaveService
@@ -55,7 +56,7 @@ namespace ProjectY.Data
             do { id=Guid.NewGuid().ToString("N"); }
             while(File.Exists(SlotPath(id)) || File.Exists(SlotPath(id)+".tmp") || File.Exists(SlotPath(id)+".bak"));
             currentSlotId=id;HasSave=false;Status="新远征已创建，尚未保存";
-            currentWorldName=(worldName ?? "").Trim();
+            currentWorldName=(worldName ?? "").Trim();currentCreatedAt=DateTime.UtcNow.ToString("o",CultureInfo.InvariantCulture);
             return id;
         }
 
@@ -94,14 +95,15 @@ namespace ProjectY.Data
                 SetTime(entry,new DateTimeOffset(file.LastWriteTimeUtc));
                 if(file.Length<=0 || file.Length>32*1024*1024)throw new InvalidDataException("存档大小无效（上限32 MiB）。");
                 var document=JsonUtility.FromJson<CatalogDocument>(File.ReadAllText(path,Encoding.UTF8));
-                if(document==null || document.version<1 || document.version>26)throw new InvalidDataException("不支持的存档版本。");
-                if(document.actors==null || document.actors.Length<1 || document.actors.Length>4 ||
+                if(document==null || document.version<1 || document.version>50)throw new InvalidDataException("不支持的存档版本。");
+                if(document.actors==null || document.actors.Length<1 || document.actors.Length>(document.version>=43?10:4) ||
                     document.actors.Any(actor=>actor==null || actor.id<=0 || actor.growth==null || actor.growth.level<1) ||
                     document.actors.Select(actor=>actor.id).Distinct().Count()!=document.actors.Length)
                     throw new InvalidDataException("存档队伍摘要无效。");
                 entry.Seed=document.seed;
                 entry.WorldName=(document.worldName ?? "").Trim();
-                entry.HasWorld=document.version==9 || document.version==11 || document.version==12 || document.version==14 || document.version==16 || document.version==18 || document.version==20 || document.version==22 || document.version==24 || document.version==26;
+                entry.CreatedAtUtc=NormalizeCreationTime(document.createdAt,path);
+                entry.HasWorld=document.version==9 || document.version==11 || document.version==12 || document.version==14 || document.version==16 || document.version==18 || document.version==20 || document.version==22 || document.version==24 || document.version==26 || document.version==28 || document.version==30 || document.version==32 || document.version==34 || document.version==36 || document.version==38 || document.version==40 || document.version==42 || document.version==44 || document.version==46 || document.version==48 || document.version==50;
                 if(entry.HasWorld)
                 {
                     if(document.expedition==null || document.expedition.recipeId<1 || document.expedition.targetCells<0 || document.expedition.targetCells>100000)
@@ -109,6 +111,10 @@ namespace ProjectY.Data
                     entry.RecipeId=document.expedition.recipeId;entry.TargetCells=document.expedition.targetCells;
                 }
                 entry.PartyCount=document.actors.Length;
+                if(document.version>=43 && (document.roster==null || document.roster.activeCount<1 || document.roster.activeCount>4 ||
+                    document.roster.activeCount>entry.PartyCount || entry.PartyCount-document.roster.activeCount>6 ||
+                    !document.actors.Any(actor=>actor.id==document.roster.protagonistId)))
+                    throw new InvalidDataException(ProjectY.UI.LuaLanguage.Get("RosterSaveInvalid"));
                 entry.PartySummary=entry.PartyCount+"名队员 · "+string.Join(" / ",document.actors.Select(actor=>"Lv"+actor.growth.level));
                 if(DateTimeOffset.TryParse(document.savedAt,CultureInfo.InvariantCulture,DateTimeStyles.None,out var savedAt))SetTime(entry,savedAt);
                 entry.CanLoad=true;

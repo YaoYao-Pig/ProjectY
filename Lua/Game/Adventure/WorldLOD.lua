@@ -9,13 +9,13 @@ function LOD.New(parties)
     -- Immutable land topology is shared by every coarse query; no distant Dijkstra per update.
     local map=parties.map
     for _,cell in ipairs(map:GetCells()) do
-        if not cell.waterLevel and not self.components[cell] then
+        if not cell.waterLevel and not cell.worldTravelBlocked and not self.components[cell] then
             group=group+1;self.components[cell]=group
             local queue,head={cell},1
             while head<=#queue do
                 local current=queue[head];head=head+1
                 for _,other in ipairs(parties.paths.neighbors[current]) do
-                    if not other.waterLevel and not self.components[other] and math.abs(current.height-other.height)<=self.adventure.travel.maxStep then
+                    if not other.waterLevel and not other.worldTravelBlocked and not self.components[other] and math.abs(current.height-other.height)<=self.adventure.travel.maxStep then
                         self.components[other]=group;queue[#queue+1]=other
                     end
                 end
@@ -41,6 +41,15 @@ function LOD:Calibrate(party)
         party:SetMemberStrength(i,self.adventure.factions.rules:FullPower(actor,self.adventure.battle.stats))
     end
 end
+function LOD:RegisterParty(party)
+    if not party.StrengthReady then self:Calibrate(party) end
+    local home=party.HomeSiteId
+    if home>0 then
+        local members=self.homeParties[home];if not members then members={};self.homeParties[home]=members end
+        members[#members+1]=party
+    end
+    if party.Lod==1 and party.Role~='garrison' then self.nearParties[party.Id]=party end
+end
 function LOD:Initialize()
     self.siteRows={};self.homeParties={};self.nearParties={}
     local factions=self.adventure.factions
@@ -50,19 +59,14 @@ function LOD:Initialize()
             guard=assert(self.parties.data:Find(state.GuardPartyId))}
     end
     for i=0,self.parties.data.Count-1 do local party=self.parties.data:GetAt(i)
-        if not party.StrengthReady then self:Calibrate(party) end
-        local home=party.HomeSiteId
-        if home>0 then
-            local members=self.homeParties[home];if not members then members={};self.homeParties[home]=members end
-            members[#members+1]=party
-        end
+        self:RegisterParty(party)
     end
     if not self.parties.data.ScheduleInitialized then
         local player=self.adventure.travel.data;local rule=self.rule
         self.parties.data:Due(self.parties.data.Clock,player.AnchorQ,player.AnchorR,rule.nearRadius,rule.mediumRadius,rule.hysteresis,rule.mediumMinutes,rule.farMinutes)
     end
     for i=0,self.parties.data.Count-1 do local party=self.parties.data:GetAt(i)
-        if party.Lod==1 and party.Role~='garrison' then self.nearParties[party.Id]=party end
+        if party.Lod==1 and party.Role~='garrison' then self.nearParties[party.Id]=party else self.nearParties[party.Id]=nil end
     end
 end
 function LOD:MaterializeTravel(party,minute)

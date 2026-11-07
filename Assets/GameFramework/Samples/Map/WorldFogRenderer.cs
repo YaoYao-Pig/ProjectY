@@ -22,13 +22,21 @@ namespace ProjectY.Samples
         private readonly Material material;
         private WorldMapExplorationData data;
         private int revision = -1, knownCount;
+        private readonly Dictionary<int,List<int>> wonderCells=new Dictionary<int,List<int>>();
+        private readonly HashSet<int> knownWonders=new HashSet<int>(),visibleWonders=new HashSet<int>();
         internal Material Material => material;
         private static long Key(int q,int r) => ((long)q << 32) | (uint)r;
         internal WorldFogRenderer(MapPreviewData map,Transform parent)
         {
             this.map=map;
             var box=new Bounds(map.Cells[0].Position,Vector3.zero);
-            for(int i=0;i<map.Cells.Length;i++){box.Encapsulate(map.Cells[i].Position);cells.Add(Key(map.Cells[i].Q,map.Cells[i].R),i);}
+            for(int i=0;i<map.Cells.Length;i++)
+            {
+                var cell=map.Cells[i];box.Encapsulate(cell.Position);cells.Add(Key(cell.Q,cell.R),i);
+                if(cell.WonderId<=0)continue;
+                if(!wonderCells.TryGetValue(cell.WonderId,out var footprint)){footprint=new List<int>();wonderCells.Add(cell.WonderId,footprint);}
+                footprint.Add(i);
+            }
             box.Expand(map.Radius*4);
             bounds=new Vector4(box.min.x,box.min.z,1/box.size.x,1/box.size.z);
             int width=Mathf.Clamp(Mathf.CeilToInt(box.size.x/map.Radius*2),32,1024);
@@ -77,6 +85,8 @@ namespace ProjectY.Samples
             return cells.TryGetValue(Key(iq,ir),out int cell)?cell:-1;
         }
         internal bool Known(int cell) => cell<0 || data==null || data.IsKnown(cell+1);
+        internal bool WonderKnown(int id) => id>0 && (data==null || knownWonders.Contains(id));
+        internal bool WonderVisible(int id) => id>0 && (data==null || visibleWonders.Contains(id));
         internal bool VisibleAt(Vector3 point) {int cell=CellAt(point);return cell>=0 && data!=null && data.IsVisible(cell+1);}
         internal void Bind(Material target)
         {target.SetTexture("_WorldFogMask",mask);target.SetVector("_WorldFogBounds",bounds);target.SetFloat("_WorldFogEnabled",1);}
@@ -91,6 +101,14 @@ namespace ProjectY.Samples
             if(ReferenceEquals(data,value) && revision==value.Revision)return;
             bool reset=!ReferenceEquals(data,value) || value.KnownCount<knownCount;
             data=value;
+            knownWonders.Clear();visibleWonders.Clear();
+            foreach(var wonder in wonderCells)
+                foreach(var cell in wonder.Value)
+                {
+                    if(data.IsKnown(cell+1))knownWonders.Add(wonder.Key);
+                    if(data.IsVisible(cell+1))visibleWonders.Add(wonder.Key);
+                    if(knownWonders.Contains(wonder.Key) && visibleWonders.Contains(wonder.Key))break;
+                }
             if(reset)
             {
                 for(int i=0;i<pixels.Length;i++){pixels[i].r=0;pixels[i].g=0;}

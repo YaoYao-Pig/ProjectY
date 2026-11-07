@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 -- Optional encounter-owned policy; mutable health, movement and action budgets remain on actors.
 local Hex=require('Game.Map.HexGrid')
 local Preservation={}
@@ -37,7 +38,7 @@ function Preservation.Step(battle,actor,enemies)
     if #battle:OpportunityAttackers(actor)==0 and (not guard or actor.AP>=moveCost+guard.cost) then
         local allies,hostiles={},{}
         for _,other in ipairs(battle:Units()) do
-            if other.HP>0 and other.Id~=actor.Id and battle:IsAllied(actor,other) then
+            if Life.Alive(other) and other.Id~=actor.Id and battle:IsAllied(actor,other) then
                 for _,cell in ipairs(assert(battle.stats.animals:Cells(other,battle.board))) do allies[#allies+1]=cell end
             end
         end

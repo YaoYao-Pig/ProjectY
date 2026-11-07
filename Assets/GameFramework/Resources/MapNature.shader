@@ -104,6 +104,7 @@ Shader "ProjectY/Map Nature"
             #pragma multi_compile _ _MAIN_LIGHT_SHADOWS _MAIN_LIGHT_SHADOWS_CASCADE _MAIN_LIGHT_SHADOWS_SCREEN
             #pragma multi_compile_fragment _ _SHADOWS_SOFT
             #include "Packages/com.unity.render-pipelines.universal/ShaderLibrary/Lighting.hlsl"
+            #include "MapWeather.hlsl"
             #include "WorldFogSampling.hlsl"
             half4 NatureFragment(NatureVaryings input, FRONT_FACE_TYPE face : FRONT_FACE_SEMANTIC) : SV_Target
             {
@@ -119,6 +120,7 @@ Shader "ProjectY/Map Nature"
                     float4 shadow = TransformWorldToShadowCoord(input.positionWS);
                 #endif
                 Light mainLight = GetMainLight(shadow);
+                mainLight.color *= ProjectYWeatherAttenuation(input.positionWS);
                 half diffuse = saturate(dot(normal, mainLight.direction) * 0.72 + 0.28);
                 half3 color = albedo * (SampleSH(normal) + mainLight.color * diffuse
                     * mainLight.distanceAttenuation * mainLight.shadowAttenuation);

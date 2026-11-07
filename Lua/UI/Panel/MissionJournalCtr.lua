@@ -103,7 +103,8 @@ function Journal:Refresh()
             if selected.contractId then command=selected.status=='inactive' and 'town_mission_accept' or 'town_mission_claim';id=selected.contractId end
             local reason=selected.reason or ''
             if reason=='' then reason=selected.status=='inactive' and LuaLanguage.MissionAcceptHint or LuaLanguage.MissionClaimHint end
-            self.view.PrimaryText.DefaultText=selected.status=='inactive' and LuaLanguage.UIMissionJournalTitle7 or selected.contractId and LuaLanguage.UIMissionJournalTitle6 or LuaLanguage.UIMissionJournalTitle5
+            local claimText=selected.contractId and (selected.kind=='escort' and LuaLanguage.TownEscortComplete or LuaLanguage.UIMissionJournalTitle6) or LuaLanguage.UIMissionJournalTitle5
+            self.view.PrimaryText.DefaultText=selected.status=='inactive' and LuaLanguage.UIMissionJournalTitle7 or claimText
             self.view.PrimaryHint.DefaultText=Rich.Escape(reason)
             self.view.PrimaryAction.gameObject:SetActive(true);self.view.PrimaryAction.interactable=selected.status~='ready' or selected.claimable
             self.primaryAction=function() self.demo:SendCommand(command,id,0) end

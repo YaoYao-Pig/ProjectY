@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 local L=require('Language')
 local Hex=require('Game.Map.HexGrid')
 local Board=require('Game.Battle.BattleBoard')
@@ -43,7 +44,7 @@ function Duels:Plan(actor)
 end
 function Duels:CanUse(actor,id)
     local adventure=self.adventure
-    if adventure.data.Phase~='area' or id~=actor.Id or actor.HP<=0 then return false,L.ProfessionDuelUnavailable end
+    if adventure.data.Phase~='area' or id~=actor.Id or not Life.Alive(actor) then return false,L.ProfessionDuelUnavailable end
     if actor.MountedAnimal then return false,L.ProfessionDuelNoMount end
     if actor.HP<=math.ceil(actor.MaxHP*self.rule.minimumHealthPercent/100)then return false,L.ProfessionDuelLowHealth end
     if adventure.player.Coins<self.rule.lossCoins then return false,L.ProfessionDuelDeposit end
@@ -57,7 +58,7 @@ function Duels:Use(actor,id)
     local adventure=self.adventure;local battle=adventure.battle;local plan=assert(self:Plan(actor))
     local enemy=CS.ProjectY.Data.CombatActorData(9000000+actor.Id,self.encounter.enemyIds[1])
     local birthSeed=(adventure.data.Seed ~ (adventure.professionExploration:Day()*65537) ~ (adventure.data.Areas.ActiveSiteId*104729))&0xffffffff
-    battle.stats.birth:Initialize(enemy,birthSeed)
+    battle.stats.birth:InitializeEnemy(enemy,birthSeed)
     enemy:Deploy(2,plan.target.q,plan.target.r)
     local pool=battle.appearances:Group(self.encounter.appearancePoolId,(adventure.data.Seed ~ enemy.Id)&0xffffffff)
     battle.appearances:Assign(enemy,pool);adventure.equipment:InitializeEnemy(enemy)

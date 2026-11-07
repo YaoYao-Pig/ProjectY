@@ -207,6 +207,7 @@ function Draft:Build(progress)
     if progress then progress(.87, '布置水上遗址') end
     self.waterSites:Build(map)
     if map.generationVersion>=9 then require('Game.Map.MapDocks').Build(map,self.config) end
+    if map.generationVersion>=11 then require('Game.Map.TownEconomyProfile').Build(map,self.config) end
     if progress then progress(.9, '整理区域边界') end
     for index, cell in ipairs(map.cells) do
         for direction = 1, 6 do
@@ -296,7 +297,7 @@ function Generator:RegisterRegion(regionType, convertType, instanceType)
     self.registrations[regionType] = { convert = convertType(), instance = instanceType }
 end
 local function generate(self, seed, regionIds, targetCells, progress, seededRegions, generationVersion)
-    assert(generationVersion == 5 or generationVersion == 6 or generationVersion == 7 or generationVersion == 8 or generationVersion == 9 or generationVersion == 10, 'Unsupported map generation version')
+    assert(generationVersion == 5 or generationVersion == 6 or generationVersion == 7 or generationVersion == 8 or generationVersion == 9 or generationVersion == 10 or generationVersion == 11, 'Unsupported map generation version')
     local random = Random(seed)
     if targetCells ~= nil then
         positiveInteger(targetCells, 'Target cells')
@@ -349,11 +350,11 @@ local function generate(self, seed, regionIds, targetCells, progress, seededRegi
 end
 -- regionIds 为有序、连续的配置 ID 数组；重复 ID 表示生成多个独立实例。
 function Generator:Generate(seed, regionIds, targetCells, progress, generationVersion)
-    return generate(self, seed, regionIds, targetCells, progress, false, generationVersion or 10)
+    return generate(self, seed, regionIds, targetCells, progress, false, generationVersion or 11)
 end
 -- 全部区域配置自动进入候选池；先按 ID 排序，保证配表行序不影响同种子结果。
 function Generator:GenerateSeeded(seed, targetCells, progress, regionIds, generationVersion)
-    generationVersion = generationVersion or 10
+    generationVersion = generationVersion or 11
     if regionIds == nil then
         regionIds = {}
         for _, row in ipairs(self.regionTable:All()) do

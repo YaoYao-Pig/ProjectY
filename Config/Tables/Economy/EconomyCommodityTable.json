@@ -1,0 +1,177 @@
+{
+  "version": 1,
+  "name": "EconomyCommodityTable",
+  "description": "六类地区商品；地貌表示首版生产潜力。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "商品分类编号",
+      "min": 1
+    },
+    {
+      "name": "itemId",
+      "type": "int",
+      "description": "实际背包物品",
+      "ref": "EquipmentItemTable"
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "分类名称"
+    },
+    {
+      "name": "richTag",
+      "type": "text",
+      "description": "高资源强度标签"
+    },
+    {
+      "name": "poorTag",
+      "type": "text",
+      "description": "低资源强度标签"
+    },
+    {
+      "name": "basePrice",
+      "type": "int",
+      "description": "基础价格",
+      "min": 1
+    },
+    {
+      "name": "food",
+      "type": "bool",
+      "description": "是否可作为每日食物消耗"
+    },
+    {
+      "name": "regionTypes",
+      "type": "int[]",
+      "description": "产地地貌类型"
+    },
+    {
+      "name": "regionWeights",
+      "type": "float[]",
+      "description": "对应地貌生产潜力"
+    },
+    {
+      "name": "waterWeight",
+      "type": "float",
+      "description": "可接近水域的渔业潜力",
+      "min": 0,
+      "max": 1
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "itemId": 9100,
+      "name": "粮食",
+      "richTag": "粮食充足",
+      "poorTag": "农业薄弱",
+      "basePrice": 4,
+      "food": true,
+      "regionTypes": [
+        1
+      ],
+      "regionWeights": [
+        1.0
+      ],
+      "waterWeight": 0
+    },
+    {
+      "id": 2,
+      "itemId": 9101,
+      "name": "渔获",
+      "richTag": "渔业兴盛",
+      "poorTag": "渔获依赖进口",
+      "basePrice": 5,
+      "food": true,
+      "regionTypes": [],
+      "regionWeights": [],
+      "waterWeight": 1.0
+    },
+    {
+      "id": 3,
+      "itemId": 81,
+      "name": "木材",
+      "richTag": "森林资源丰富",
+      "poorTag": "木材依赖进口",
+      "basePrice": 3,
+      "food": false,
+      "regionTypes": [
+        5,
+        8
+      ],
+      "regionWeights": [
+        1.0,
+        0.7
+      ],
+      "waterWeight": 0
+    },
+    {
+      "id": 4,
+      "itemId": 9102,
+      "name": "矿石",
+      "richTag": "矿业资源丰富",
+      "poorTag": "矿石依赖进口",
+      "basePrice": 9,
+      "food": false,
+      "regionTypes": [
+        2,
+        6,
+        12,
+        13,
+        10
+      ],
+      "regionWeights": [
+        1.0,
+        0.5,
+        0.8,
+        0.7,
+        0.5
+      ],
+      "waterWeight": 0
+    },
+    {
+      "id": 5,
+      "itemId": 9103,
+      "name": "纺织品",
+      "richTag": "纤维原料丰富",
+      "poorTag": "纺织原料不足",
+      "basePrice": 8,
+      "food": false,
+      "regionTypes": [
+        1,
+        5,
+        7
+      ],
+      "regionWeights": [
+        0.8,
+        0.3,
+        0.5
+      ],
+      "waterWeight": 0
+    },
+    {
+      "id": 6,
+      "itemId": 9104,
+      "name": "药草",
+      "richTag": "药草资源丰富",
+      "poorTag": "药草依赖进口",
+      "basePrice": 7,
+      "food": false,
+      "regionTypes": [
+        5,
+        7,
+        11,
+        8
+      ],
+      "regionWeights": [
+        0.8,
+        1.0,
+        0.7,
+        0.6
+      ],
+      "waterWeight": 0
+    }
+  ]
+}

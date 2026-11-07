@@ -15,7 +15,7 @@ namespace ProjectY.Data
     [Serializable]
     public sealed class PawnCustomizationRules
     {
-        [Serializable] public sealed class Module { public string id, slot, race, sex, label; }
+        [Serializable] public sealed class Module { public string id, slot, race, sex, label, source, texture, skinBase; }
         [Serializable] public sealed class Race { public string id, label; public string[] colors; }
         public int version;
         public Module[] modules;
@@ -68,6 +68,17 @@ namespace ProjectY.Data
         }
         public Color Tint(string role, PawnCustomizationData value, Color original)
         {
+            var head = Array.Find(modules, m => m.id == value.head);
+            if (head != null && !string.IsNullOrEmpty(head.skinBase) && (role == "Skin" || role.StartsWith("HeadSculpt_", StringComparison.Ordinal)))
+            {
+                var palette = Array.Find(races, r => r.id == value.race).colors;
+                Color baseline, selected, face;
+                if (!ColorUtility.TryParseHtmlString(palette[0], out baseline) || !ColorUtility.TryParseHtmlString(palette[value.skin], out selected) ||
+                    !ColorUtility.TryParseHtmlString(head.skinBase, out face)) throw new InvalidOperationException("Invalid sculpt skin palette.");
+                var multiplier = new Color(Mathf.Clamp(selected.r / Mathf.Max(.01f, baseline.r), .55f, 1.45f),
+                    Mathf.Clamp(selected.g / Mathf.Max(.01f, baseline.g), .55f, 1.45f), Mathf.Clamp(selected.b / Mathf.Max(.01f, baseline.b), .55f, 1.45f), 1);
+                return role == "Skin" ? face * multiplier : multiplier;
+            }
             string hex;
             switch (role)
             {

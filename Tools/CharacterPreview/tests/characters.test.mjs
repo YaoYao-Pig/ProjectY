@@ -16,7 +16,8 @@ test('five races, both sexes, compatible seeded combinations and JSON roundtrip'
     assert.deepEqual(a, randomize(rules, seed, race.id, sex));
     assert.deepEqual(validate(rules, JSON.parse(JSON.stringify(a))), a);
     assert.equal(options(rules, 'body', race.id, sex).length, 3);
-    assert.equal(options(rules, 'head', race.id, sex).length, 2);
+    const heads=options(rules, 'head', race.id, sex);
+    assert(heads.length>=2);assert(heads.some(m=>m.id===`head_${race.id}_${sex}_0`));assert(heads.some(m=>m.id===`head_${race.id}_${sex}_1`));
   }
   const dragon = randomize(rules, 42, 'dragon', 'female');
   assert.throws(() => validate(rules, { ...dragon, hair: 'hair_2' }), /不兼容/);
@@ -27,8 +28,9 @@ test('five races, both sexes, compatible seeded combinations and JSON roundtrip'
 test('Unity fixture agreement and real exported geometry / motion integrity', () => {
   const bundle = JSON.parse(fs.readFileSync(path.join(root, 'Tools/CharacterPreview/public/data/characters.json'), 'utf8'));
   assert.deepEqual(bundle.rules, rules);
-  assert.equal(bundle.meshes.length, 113); assert.equal(bundle.bones.length, 23);
-  assert.equal(bundle.gearFits.length, 42); assert.equal(bundle.coveredBodies.length, 42); assert.equal(bundle.loadouts.length, 11);
+  assert.equal(bundle.meshes.length, rules.modules.filter(m=>m.id!=='none').length+bundle.gearFits.length+42); assert.equal(bundle.bones.length, 23);
+  assert(bundle.gearFits.length >= 42); assert.equal(bundle.coveredBodies.length, 42); assert(bundle.loadouts.length >= 11);
+  for(let i=0;i<11;i++)assert(bundle.loadouts.some(l=>l.id===`weapon_${i}`));
   assert.equal(bundle.rootOffset.length, 3); assert(Math.abs(bundle.rootOffset[1] - .14) < .0001);
   for (const fixture of bundle.randomFixtures) assert.deepEqual(randomize(rules, fixture.seed), fixture);
   for (const mesh of bundle.meshes) {

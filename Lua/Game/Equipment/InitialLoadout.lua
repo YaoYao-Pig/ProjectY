@@ -44,6 +44,7 @@ function Loadout:ApplyEnemy(data,actor,acquisition)
         main,off=self.rules:TemplateLoadout(actor.TemplateId)
         if off~=0 and self.rules.items:Get(off).kind=='wearable' then items[1]=off;slots[1]='offhand';off=0 end
     end
+    if actor.HasInitialAttributes then main,off,items,slots=self.rules.enemyProfessions:Loadout(actor,main,off,items,slots)end
     local issued
     if acquisition then main,off,items,slots,issued=acquisition:EnemyLoadout(actor,main,off,items,slots) end
     state.Initialize(data,actor.Id,main,off,items,slots)

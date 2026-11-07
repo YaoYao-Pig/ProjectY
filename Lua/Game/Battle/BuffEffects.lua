@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 -- Buff composition uses the existing effect executor; counters/snapshots stay on the actor's C# instances.
 local Buffs={};Buffs.__index=Buffs
 function Buffs.New(owner)return setmetatable({owner=owner,rules=owner.stats.buffs},Buffs)end
@@ -65,7 +66,7 @@ function Buffs:Apply(plan,impact)
 end
 function Buffs:Periodic(row,instance,target)
     for _,id in ipairs(row.periodicEffectIds)do
-        if not find(target,instance.Id) or target.HP<=0 then return end
+        if not find(target,instance.Id) or not Life.Alive(target) then return end
         self.owner:ApplyPrepared({definition=self.rules.effects:Get(id),target=target,amount=CS.ProjectY.Data.GameBuffState.Amount(instance,id)*instance.Stacks,
             sourceId=instance.SourceId,sourceName=instance.SourceName,label=row.name,attackHit=false},{damageColor=row.color},true)
     end

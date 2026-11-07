@@ -1,0 +1,19 @@
+{
+  "version":1,"name":"MoraleRuleTable","description":"勇气与数值士气的通用规则。","key":"id",
+  "fields":[
+    {"name":"id","type":"int","min":1,"description":"规则 ID，使用 1"},
+    {"name":"baseCourage","type":"int","min":0,"description":"所有角色的基础勇气，叠加角色属性、成长、装备和称号"},
+    {"name":"maximum","type":"formula","variables":["courage"],"description":"士气上限公式，随后叠加称号的上限加成"},
+    {"name":"initialPercent","type":"int","min":1,"max":100,"description":"每场战斗起始士气百分比"},
+    {"name":"minimumChance","type":"int","min":0,"max":100,"description":"勇气检定最低成功率"},
+    {"name":"maximumChance","type":"int","min":0,"max":100,"description":"勇气检定最高成功率"},
+    {"name":"supportRadius","type":"int","min":1,"description":"近身友军支持与敌军压力的距离"},
+    {"name":"witnessRadius","type":"int","min":1,"description":"见证倒地或溃逃事件的距离"},
+    {"name":"allyBonus","type":"int","min":0,"description":"附近每名未逃跑友军增加的检定成功率"},
+    {"name":"enemyPenalty","type":"int","min":0,"description":"附近每名敌军降低的检定成功率"},
+    {"name":"woundPercent","type":"int","min":1,"max":100,"description":"单次实际损失达到最大生命的此百分比时进行受伤检定"},
+    {"name":"rallyDistance","type":"int","min":0,"description":"最近敌人超过此距离才可在回合开始尝试重整"}
+  ],"rows":[
+    {"id":1,"baseCourage":40,"maximum":"50 + courage","initialPercent":75,"minimumChance":5,"maximumChance":95,"supportRadius":1,"witnessRadius":4,"allyBonus":5,"enemyPenalty":3,"woundPercent":15,"rallyDistance":1}
+  ]
+}

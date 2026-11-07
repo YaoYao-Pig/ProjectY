@@ -44,6 +44,9 @@ function Npcs:Schedule(id)
     error('No NPC schedule for current time')
 end
 function Npcs:ActorName(actor)
+    local people=self.story.adventure.people
+    local person=people and people:ForActor(actor)
+    if person then return people:Name(person)end
     for _,npc in ipairs(self.story.rules.npcs:All()) do
         if self.story.data:GetValue('recruited:'..npc.id)==actor.Id then return npc.name end
     end
@@ -60,6 +63,9 @@ function Npcs:SyncPresence()
             elseif story.rules.npcs:Get(npc.narrativeId).recruitable then
                 present=service and story.adventure.factions:NpcAvailable(siteId,npc.narrativeId)
             end
+        elseif story.adventure.people and story.adventure.people:ResidentJoined(siteId,npc.stableId)then
+            local dialogue=story.adventure.peopleDialogue
+            present=service and dialogue:Active() and dialogue:Person().Key=='resident:'..siteId..':'..npc.stableId
         end
         state:SetNpcPresent(npc.id,present)
     end
@@ -132,7 +138,7 @@ function Npcs:PrepareDeployment(recruits)
         local actor=adventure.areas:PartyActor(id);local anchor=area.cells[index]
         for _,part in ipairs(assert(adventure.battle.stats.animals:Cells(actor,area,anchor.q,anchor.r,anchor.layer))) do occupied[part.index]=true end
     end
-    for _, recruit in ipairs(recruits) do
+    for _, recruit in ipairs(recruits) do if not recruit.reserve then
         local queue,head,seen = {state.CellIndex},1,{[state.CellIndex]=0}
         local found
         while head <= #queue and not found do
@@ -144,10 +150,11 @@ function Npcs:PrepareDeployment(recruits)
         end
         if not found then return nil,'附近没有可供新队员站立的位置，请到开阔处再领取' end
         occupied[found]=true;ids[#ids+1]=recruit.actorId;cells[#cells+1]=found
-    end
+    end end
     return {ids=ids,cells=cells}
 end
 function Npcs:Recruit(prepared)
+    self.story:TickBuffs()
     local adventure=self.story.adventure
     if prepared.existing then
         CS.ProjectY.Data.EncounterRecruitment.Validate(adventure.data,prepared.group,prepared.actor)

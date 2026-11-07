@@ -1,0 +1,75 @@
+{
+  "date": "2026-10-27",
+  "unityVersion": "2022.3.55f1c1",
+  "agentStartedPlayMode": false,
+  "playerSavesTouched": false,
+  "projectCompilationRequestsAcrossImplementation": 6,
+  "native": {
+    "registered": [
+      "StartMenu",
+      "CampaignSaveEntry"
+    ],
+    "localizedBindings": 34,
+    "missingScripts": 0,
+    "leakedStages": 0,
+    "activeScene": "Assets/GameFramework/Samples/Adventure/AdventureDemo.unity",
+    "sceneDirty": false,
+    "playing": false
+  },
+  "menuUI": {
+    "passed": true,
+    "report": "PASS home owns a real stage, explicit bindings and modal pause\nPASS camera transition gates repeated actions and returns to home\nPASS creation preserves twelve origins, kits, uint seeds and world sizes\nPASS save selection is separate from load and corrupted entries stay visible\nPASS per-cell deletion confirms, cancellation is inert, corruption can be deleted\nPASS settings apply explicitly; About and quit stay modal\nPASS directory errors, empty lists, cached reopen and release",
+    "playMode": false,
+    "playerSavesTouched": false,
+    "previewDirectory": "Docs/Previews/MainMenu"
+  },
+  "snapshotAndDeletion": {
+    "passed": true,
+    "checks": [
+      "creation order and bounded header reads",
+      "binary snapshot round trip and size budget",
+      "corrupt cache isolation",
+      "single-slot deletion, next-world selection and path protection",
+      "100,000-cell input produces fixed-size presentation data",
+      "invalid creation metadata is explicit and localized",
+      "last-world deletion returns empty-world state"
+    ],
+    "playMode": false,
+    "playerSavesTouched": false
+  },
+  "cameraOwnership": {
+    "passed": true,
+    "checks": "active display camera with zero gameplay culling, mask/clear/enabled restoration, repeated open, originally disabled camera, destroyed camera cleanup",
+    "playMode": false
+  },
+  "realCreationAndRestoration": {
+    "passed": true,
+    "realPrefab": true,
+    "cells": 2500,
+    "checkpoints": 40,
+    "renderSteps": 13,
+    "restoreCheckpoints": 89,
+    "namedSave": true,
+    "restoredArea": true,
+    "menuSnapshot": true,
+    "creationTimePreserved": true,
+    "playMode": false
+  },
+  "screenshots": [
+    "home.png",
+    "create.png",
+    "load.png",
+    "delete.png",
+    "transition.png"
+  ],
+  "limitations": [
+    "No Player build or prolonged Play-mode acceptance test was run.",
+    "User supplied a Play screenshot; the display-camera fix was checked through an isolated native camera lifecycle test."
+  ],
+  "sourceChecks": [
+    "Lua syntax and menu localization templates passed",
+    "UI localization audit: 146 sources / 304 prefab keys passed",
+    "Language lookup regression passed",
+    "ForAI links checked separately"
+  ]
+}

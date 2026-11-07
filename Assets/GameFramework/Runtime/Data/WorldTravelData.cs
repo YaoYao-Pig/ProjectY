@@ -26,7 +26,7 @@ namespace ProjectY.Data
         private readonly List<WorldTravelStep> route=new List<WorldTravelStep>();
         private readonly List<WorldTravelStop> stops=new List<WorldTravelStop>();
         private int index,firstStopId;
-        private double elapsed,sinceCheck;
+        private double elapsed,sinceCheck,checkInterval;
         private uint random;
         public static WorldTravelData For(AdventureData adventure) => adventure.Travel;
         public int Q { get; private set; }
@@ -49,7 +49,7 @@ namespace ProjectY.Data
         public void Reset(uint seed,int q,int r,int nextSiteId)
         {
             if(nextSiteId<1)throw new ArgumentOutOfRangeException(nameof(nextSiteId));
-            route.Clear();stops.Clear();index=0;elapsed=sinceCheck=0;Q=q;R=r;firstStopId=nextSiteId;
+            route.Clear();stops.Clear();index=0;elapsed=sinceCheck=checkInterval=0;Q=q;R=r;firstStopId=nextSiteId;
             random=seed^0x6d2b79f5u;if(random==0)random=1;
             TargetSiteId=0;Speed=1;Paused=false;Message="";Revision++;
         }
@@ -88,12 +88,15 @@ namespace ProjectY.Data
         public void SetSpeed(int value)
         { if(value!=1 && value!=2 && value!=4)throw new ArgumentOutOfRangeException(nameof(value));Speed=value;Revision++; }
         public double Step(double budget)
+            => StepAtRate(budget,1);
+        internal double StepAtRate(double budget,double multiplier)
         {
             if(double.IsNaN(budget) || double.IsInfinity(budget) || budget<0)throw new ArgumentOutOfRangeException(nameof(budget));
+            if(double.IsNaN(multiplier) || double.IsInfinity(multiplier) || multiplier<=0)throw new ArgumentOutOfRangeException(nameof(multiplier));
             if(!Active || Paused || budget==0)return 0;
-            var step=route[index];double spent=Math.Min(budget,step.Minutes-elapsed);
-            elapsed+=spent;sinceCheck+=spent;
-            if(elapsed>=step.Minutes) { Q=step.Q;R=step.R;index++;elapsed=0; }
+            var step=route[index];double remaining=(step.Minutes-elapsed)/multiplier,spent=Math.Min(budget,remaining);
+            elapsed+=spent*multiplier;sinceCheck+=spent;
+            if(spent>=remaining) { Q=step.Q;R=step.R;index++;elapsed=0; }
             Revision++;return spent;
         }
         public double AdvanceRoute(double budget)
@@ -134,6 +137,16 @@ namespace ProjectY.Data
             if(interval<=0 || double.IsNaN(interval) || double.IsInfinity(interval))throw new ArgumentOutOfRangeException(nameof(interval));
             if(sinceCheck<interval)return false;sinceCheck-=interval;return true;
         }
+        /// <summary>One persisted random interval per check; overdue travel never creates a burst of checks.</summary>
+        public bool CheckDue(double minimum,double maximum)
+        {
+            if(minimum<=0 || double.IsNaN(minimum) || double.IsInfinity(minimum) ||
+                maximum<minimum || double.IsNaN(maximum) || double.IsInfinity(maximum))
+                throw new ArgumentOutOfRangeException(nameof(maximum));
+            if(checkInterval==0)checkInterval=minimum==maximum?minimum:minimum+(maximum-minimum)*(Roll(1000001)-1)/1000000.0;
+            if(sinceCheck<checkInterval)return false;
+            sinceCheck=checkInterval=0;return true;
+        }
         /// <summary>Water travel advances the world clock without accumulating land encounter checks.</summary>
         public void DiscardEncounterTime() { sinceCheck=0; }
         public int Roll(int maximum)
@@ -147,7 +160,7 @@ namespace ProjectY.Data
             if(eventId<0 || encounterId<0 || (eventId==0)==(encounterId==0) || Progress!=0)
                 throw new ArgumentException("Travel stop needs exactly one event or encounter at a completed step.");
             var stop=new WorldTravelStop(firstStopId+stops.Count,Q,R,eventId,encounterId);stops.Add(stop);
-            sinceCheck=0;Paused=true;Revision++;return stop;
+            sinceCheck=checkInterval=0;Paused=true;Revision++;return stop;
         }
         public WorldTravelStop AddWorldStop(int q,int r,int eventId,int encounterId)
         {

@@ -6,11 +6,13 @@
 
 ## 正文
 
+- [雕刻头部](HeadSculpt.md)已以十个新 ID 加入正式外观目录；原 29 个模块保留，当前共 39 个可见模块。新头使用独立贴图和六个确定性形态键；旧存档仍按已保存 ID 还原。穿戴物在原资源上增加[自动适配](EquipmentAutoFit.md)。
+
 - 首批 29 个 Blender 模块：男女各三档身体、五族男女各两种脸、三种发型；另有明确的无发选项。种族为人类、精灵、哥布林、龙人、兽人。角色维持相同关节位置、四肢长度与身高，以头脸和轮廓区别；没有尾翼、表情骨骼或自由滑杆。
 - 源文件位于 `Art/PawnCustomization/Source`，FBX 经 `Staging` 进入 `Assets/DynamicAsset/PawnCustomization`；沿用现有[棋子动画](PawnAnimation.md)的 23 骨参考姿势。新增模块不得改名、重排层级或应用未核实的骨架变换。
 - 当前头脸/发型源为 `PawnCustomizationStylized.blend`：20 个头脸采用收窄下颌、杏仁眼与较小鼻型，3 种发型使用有厚度的分束几何；保留全部模块 ID、六种身体、23 骨参考姿势与装备接口。`PawnCustomization.blend` 保留为旧版来源；继续修改应使用当前源，不重放旧版初始化脚本。
-- `Integration/catalog.json` 是制作目录；`PawnCustomizationAssets.Build` 读取它与实际 FBX，校验 bind pose，按骨名重映射并生成规范坐标下的 Mesh、独立 URP Lit 材质和 `PawnCustomization.asset`。已有 Mesh/目录资源更新保留 GUID；运行时换色使用 `_BaseColor`，参见[渲染管线](../Framework/Rendering.md)。
-- Mesh 拓扑变化必须显式清空并重建顶点/法线/UV/权重/索引缓冲，不能直接 `EditorUtility.CopySerialized` 到旧 Mesh（会留下旧顶点布局配新索引而破面）。基础模块与 42 个遮挡网格统一使用 `PawnCustomizationAssets.SaveAsset`，保留 GUID。FBX 的 `PC_*` 材质必须 remap 到本目录同名角色材质，避免 URP 抽取材质的 GUID 前缀破坏 Skin/Hair 换色角色名。
+- `Integration/catalog.json` 是制作目录；可选 `source/texture/skinBase` 为新头指定独立 FBX、贴图和肤色基准。`Build` 支持多来源；`HeadSculptAssets.Sync` 只同步新增头，保留旧部件、装备和默认外观。导入校验 bind pose 并按骨名重映射，已有 Mesh/目录更新保留 GUID；换色使用 `_BaseColor`，参见[渲染管线](../Framework/Rendering.md)。
+- Mesh 拓扑变化必须显式重建缓冲，不能直接 `EditorUtility.CopySerialized` 到旧 Mesh。`SaveAsset` 也保留形态帧，`ImportPart` 同时转换形态增量；基础模块、贴合和遮挡网格共用该入口并保留 GUID。`PC_*` 材质映射到独立角色材质，新头按 `texture` 设置 `_BaseMap`。
 - `PawnCustomizationData/PawnCustomizationRules` 归 Runtime/Data；保存版本、种子、种族、男女、实际身体/脸/发型 ID、三类颜色索引。`Rules.Randomize(seed, race?, sex?)` 使用局部 uint32 状态，根据目录筛选可用模块；龙人只允许短脊或无发。同步菜单生成 Resources 的只读目录，`CharacterAppearanceService` 校验并写入 `CombatActorData.CustomizationJson`，不在视图中随机。
 - `PawnCustomizationView` 绑定实际骨骼和三个蒙皮显示节点；`PawnView.ApplyAppearance` 接收 `PawnAppearanceData.Customization`。战斗、探索和背包快照传递同一个 `customizationJson`；未提供的 Humanoid 按身体部件 ID 读取 `BodyDefaults`，同样走模块、贴合装备与遮挡网格。显式外观优先，显示层不随机、不改存档；动物继续使用静态资源。
 - `Integration/body-defaults.json` 显式配置旧身体 1/15/19 与居民/工匠 17/18 的默认模块与颜色。`SyncBodyDefaults` 只更新目录和动画支持 ID；完整模块同步也导入该配置。修改后通过 `PawnAssetMenu.BuildPrefabs` 重建 Rig、人物装配和城镇样例，不必保存当前场景或重做模型。
@@ -19,7 +21,7 @@
 - [角色存档](CharacterSave.md)保存完整描述及角色/背包状态。网页 JSON 仍只表示外观；装备所有权由 EquipmentData 保存，网页试穿不改写存档。
 - 新增 `PawnGearFits.blend` 和 42 个装备贴合网格：五族三种头饰、六种身体的三类护甲和披风、通用裤靴与箭袋。头饰为耳角留空间；穿戴覆盖区选择预生成的身体网格（42 个遮挡版本），覆盖头发时保留外观选择，卸下恢复。已绑定蒙皮的贴合装备要求穿戴偏移为零，偏移应在源参考姿势中制作。
 - `PawnPartTable.equipmentItemId` 将旧模板手持物接入真实装备目录和[动作模组](EquipmentMotion.md)；盾牌及左右戒指沿骨骼挂点，武器含符文/弹匣/推进器使用真实 Prefab。装备匹配、身体遮挡与随机外观各有独立职责。
-- 最小检查菜单 `Project Y/角色/验证模块化角色与网页蒙皮` 在独立 PreviewScene 检查 Avatar、60 套脸/体型组合与 180 个动作采样，比较实际 BakeMesh 和导出所用蒙皮公式，保存 `Integration/unity-validation.json` 与五族男女截图。数学一致性不替代装备穿模或落脚效果的视觉验收。
+- 新头的最小检查使用 [head_sculpt_integration.cs](../../Tools/Tests/head_sculpt_integration.cs)，先应用形态增量再比对实际蒙皮。旧菜单 `Project Y/角色/验证模块化角色与网页蒙皮` 的 `CompareSkin` 只计算基础顶点，不适用于含非零形态权重的新头；本轮未运行该全量菜单。数学一致性不替代穿模或落脚效果的视觉验收。
 - 装备检查 `PawnGearValidation.RunRace` 覆盖每族 132 套装备组合和 3,960 个待机/移动/完整攻击采样，检查骨骼、握点及武器/头部凸包相交；`RunLegacy` 覆盖 360 套旧模板装配。检查结果是所采样动作的证据，不是任意新资产/新动画的自动兼容保证。未启动新的 Play 验收。
 
 ## 关键入口

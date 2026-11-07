@@ -9,7 +9,7 @@ namespace ProjectY.Data
         {
             if (actor == null || double.IsNaN(now) || double.IsInfinity(now) || now < 0 || workMinutes < 1)
                 throw new ArgumentException("Invalid profession care request.");
-            if (actor.HP <= 0) return false;
+            if (!DeathDoorState.Alive(actor)) return false;
             foreach (var part in actor.BodyInjuries)
                 if (!part.permanent && part.recoveryAmount > 0 && part.recoveryAt > now + workMinutes) return true;
             return false;

@@ -29,8 +29,23 @@ export function randomize(rules, seed, race, sex) {
   return validate(rules, value);
 }
 export function tint(rules, descriptor, role, fallback) {
+  const head = rules.modules.find(m => m.id === descriptor.head);
+  if (head?.skinBase && (role === 'Skin' || role.startsWith('HeadSculpt_'))) {
+    const palette = rules.races.find(r => r.id === descriptor.race).colors;
+    const rgb = hex => [1,3,5].map(i => parseInt(hex.slice(i,i+2),16)/255);
+    const base = rgb(palette[0]), selected = rgb(palette[descriptor.skin]), face = rgb(head.skinBase);
+    const factor = base.map((c,i)=>Math.max(.55,Math.min(1.45,selected[i]/Math.max(.01,c))));
+    return role === 'Skin' ? face.map((c,i)=>c*factor[i]) : factor;
+  }
   if (role === 'Skin') return rules.races.find(r => r.id === descriptor.race).colors[descriptor.skin];
   if (role === 'Hair') return rules.hairColors[descriptor.hairColor];
   if (role === 'Cloth') return rules.clothColors[descriptor.clothColor];
   return fallback;
+}
+
+export const headShapeNames = ['jaw_width','face_length','nose_width','nose_length','cheek_depth','ear_length'];
+export function headShapeWeights(seed, id) {
+  let hash=2166136261;for(const c of id){hash^=c.charCodeAt(0);hash=Math.imul(hash,16777619)>>>0;}
+  let state=((seed>>>0)^hash)>>>0;if(!state)state=0x9e3779b9;
+  return headShapeNames.map(()=>{state^=state<<13;state^=state>>>17;state^=state<<5;return Math.fround(((state>>>0)/4294967295*2-1)*.6);});
 }

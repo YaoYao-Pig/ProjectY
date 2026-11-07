@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 -- Read-only projectile queries. Exploration keeps the map's full CanSee contract.
 local Hex=require('Game.Map.HexGrid')
 local Trajectory={}
@@ -12,10 +13,10 @@ local function occupant(value,cell)
     if value==true then return terrain(cell) end
     if type(value)=='table' and value.kind then
         assert(value.key,'Projectile occupant needs a stable key')
-        if value.kind=='actor' and (value.actor.HP<=0 or value.actor.AnimalOwnerId and value.actor.AnimalOwnerId~=0 and not CS.ProjectY.Data.AnimalCompanionState.Independent(value.actor)) then return nil end
+        if value.kind=='actor' and (not Life.Alive(value.actor) or value.actor.AnimalOwnerId and value.actor.AnimalOwnerId~=0 and not CS.ProjectY.Data.AnimalCompanionState.Independent(value.actor)) then return nil end
         local result={};for key,item in pairs(value)do result[key]=item end;result.cell=cell;return result
     end
-    if value.HP<=0 or value.AnimalOwnerId and value.AnimalOwnerId~=0 and not CS.ProjectY.Data.AnimalCompanionState.Independent(value) then return nil end
+    if not Life.Alive(value) or value.AnimalOwnerId and value.AnimalOwnerId~=0 and not CS.ProjectY.Data.AnimalCompanionState.Independent(value) then return nil end
     return {kind='actor',key='actor:'..value.Id,actor=value,cell=cell}
 end
 local function touches(physical,origin,target)
@@ -30,6 +31,7 @@ function Trajectory.Trace(board,origin,target,mode,occupied,guided)
     local result={reachable=false,blockers={}}
     if not origin or not target or (origin.layer or 0)~=(target.layer or 0) or
         not board:Find(origin.q,origin.r,origin.layer) or not board:Find(target.q,target.r,target.layer) then return result end
+    if board.spellcasting and board.spellcasting:BlocksSight(board.spellBattle,origin,target)then return result end
     local area=board.area or (board.CanTrace and board)
     if mode=='sight' and not guided then result.reachable=not area or area:CanSee(origin,target);return result end
     local distance=Hex.Distance(origin.q,origin.r,target.q,target.r)

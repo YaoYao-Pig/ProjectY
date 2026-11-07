@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 -- Profession exploration acts on real area objects; persistent facts belong to NarrativeData.
 local L=require('Language')
 local Hex=require('Game.Map.HexGrid')
@@ -103,7 +104,7 @@ function Exploration:ObserveTracks()
     local siteId=adventure.data.Areas.ActiveSiteId;local data=self:Data()
     for i=0,state.EncounterCount-1 do local group=state:GetEncounterAt(i)
         for j=0,group.EnemyCount-1 do local actor=group:GetEnemyAt(j)
-            if actor.HP>0 and actor.AnimalOwnerId==0 and adventure.battle.stats.animals.byUnit[actor.TemplateId] then
+            if Life.Alive(actor) and actor.AnimalOwnerId==0 and adventure.battle.stats.animals.byUnit[actor.TemplateId] then
                 local cell=area:Find(actor.Q,actor.R)
                 if cell and self:Visible(cell.index) then
                     local key=fact('track',siteId,actor.Id);local old=data:GetValue(key..'_current')
@@ -144,7 +145,7 @@ function Exploration:CanUse(actor,targetId,row)
     elseif row.kind=='rumor' then local result,reason=self:Rumor(actor,row);if not result then return false,reason end
     elseif row.kind=='care' then
         local target=self:Actor(targetId)
-        if not target or target.HP<=0 or not self:Near(actor,self:Origin(target),row.range,false) then return false,L.ProfessionExploreCareTarget end
+        if not target or not Life.Alive(target) or not self:Near(actor,self:Origin(target),row.range,false) then return false,L.ProfessionExploreCareTarget end
         if self:Data():GetValue(fact('care_day',target.Id))==self:Day() then return false,L.ProfessionExploreDaily end
         if not CS.ProjectY.Data.ProfessionExplorationState.CanCare(target,self:Data().Minutes,row.minutes) then return false,L.ProfessionExploreNoRecovery end
         if self.adventure.equipment.data:CountItem(row.itemId)<row.itemCount then return false,L.ProfessionExploreCareMaterial end
@@ -200,7 +201,7 @@ function Exploration:RegisterHandlers(skills)
             Targets=function(actor)
                 if row.kind~='care' then return {actor.Id} end
                 local targets={};for i=0,self.adventure.data.PartyCount-1 do local target=self.adventure.data:GetPartyAt(i)
-                    if target.HP>0 and self:Origin(target) then targets[#targets+1]=target.Id end
+                    if Life.Alive(target) and self:Origin(target) then targets[#targets+1]=target.Id end
                 end
                 return targets
             end})

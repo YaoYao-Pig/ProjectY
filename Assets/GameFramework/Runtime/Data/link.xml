@@ -1,9 +1,22 @@
 <linker>
   <assembly fullname="Assembly-CSharp">
+    <type fullname="ProjectY.Data.TownEconomyData" preserve="all" />
+    <type fullname="ProjectY.Data.TownEconomy" preserve="all" />
+    <type fullname="ProjectY.Data.CommodityStock" preserve="all" />
+    <type fullname="ProjectY.Data.InvestmentCandle" preserve="all" />
+    <type fullname="ProjectY.Data.UpkeepAccount" preserve="all" />
+    <type fullname="ProjectY.Data.EconomyRules" preserve="all" />
+    <type fullname="ProjectY.Data.PartyRoster" preserve="all" />
+    <type fullname="ProjectY.Data.SpecialSkillBattleState" preserve="all" />
+    <type fullname="ProjectY.Data.SpecialSkillObservation" preserve="all" />
+    <type fullname="ProjectY.Data.CampLoadoutData" preserve="all" />
+    <type fullname="ProjectY.Data.WorldTravelProgress" preserve="all" />
     <type fullname="ProjectY.Data.BodyHealth" preserve="all" />
     <type fullname="ProjectY.Data.ExpeditionPersistence" preserve="all" />
     <type fullname="ProjectY.Data.GameBuffState" preserve="all" />
     <type fullname="ProjectY.Data.WorldTravelData" preserve="all" />
+    <type fullname="ProjectY.Data.WorldWeatherField" preserve="all" />
+    <type fullname="ProjectY.Data.WeatherSample" preserve="all" />
     <type fullname="ProjectY.Data.WorldMapExplorationData" preserve="all" />
     <type fullname="ProjectY.Data.WorldPartiesData" preserve="all" />
     <type fullname="ProjectY.Data.WorldPartyData" preserve="all" />
@@ -24,6 +37,12 @@
     <type fullname="ProjectY.Data.PartyBondData" preserve="all" />
     <type fullname="ProjectY.Data.PartyHonorData" preserve="all" />
     <type fullname="ProjectY.Data.EquipmentConditionData" preserve="all" />
+    <type fullname="ProjectY.Data.EquipmentLegacyData" preserve="all" />
+    <type fullname="ProjectY.Data.EquipmentDeedData" preserve="all" />
+    <type fullname="ProjectY.Data.EquipmentForgeState" preserve="all" />
+    <type fullname="ProjectY.Data.EquipmentLegacyBattleData" preserve="all" />
+    <type fullname="ProjectY.Data.EquipmentLegacyBattleEntry" preserve="all" />
+    <type fullname="ProjectY.Data.EquipmentSpiritSession" preserve="all" />
     <type fullname="ProjectY.Data.EquipmentAffixData" preserve="all" />
     <type fullname="ProjectY.Data.EquipmentAmmunition" preserve="all" />
     <type fullname="ProjectY.Data.EquipmentCombatState" preserve="all" />
@@ -34,6 +53,13 @@
     <type fullname="ProjectY.Data.AnimalCompanionState" preserve="all" />
     <type fullname="ProjectY.Data.AnimalSpeechState" preserve="all" />
     <type fullname="ProjectY.Data.ProfessionCombatState" preserve="all" />
+    <type fullname="ProjectY.Data.SpellcastingState" preserve="all" />
+    <type fullname="ProjectY.Data.TitleState" preserve="all" />
+    <type fullname="ProjectY.Data.ReputationState" preserve="all" />
+    <type fullname="ProjectY.Data.TitleCombatState" preserve="all" />
+    <type fullname="ProjectY.Data.MoraleState" preserve="all" />
+    <type fullname="ProjectY.Data.DeathDoorState" preserve="all" />
+    <type fullname="ProjectY.Data.SpellFieldData" preserve="all" />
     <type fullname="ProjectY.Data.LegendaryEquipmentState" preserve="all" />
     <type fullname="ProjectY.Data.ProfessionTrapData" preserve="all" />
     <type fullname="ProjectY.Data.ProfessionExplorationState" preserve="all" />
@@ -41,6 +67,9 @@
     <type fullname="ProjectY.Data.CampaignSaves" preserve="all" />
     <type fullname="ProjectY.Data.CharacterBirthState" preserve="all" />
     <type fullname="ProjectY.Data.SkillSynergyDiscovery" preserve="all" />
+    <type fullname="ProjectY.Data.UnitInspections" preserve="all" />
+    <type fullname="ProjectY.Data.UnitInspectionData" preserve="all" />
+    <type fullname="ProjectY.Data.UnitInspectionRecord" preserve="all" />
     <type fullname="ProjectY.Data.WaterTravelData" preserve="all" />
     <type fullname="ProjectY.Data.WaterDockData" preserve="all" />
     <type fullname="ProjectY.Data.TownMissionData" preserve="all" />

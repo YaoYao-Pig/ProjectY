@@ -1,0 +1,11 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class SpellRecipeTableRow
+---@field id number 技能ID
+---@field cost number 基础施法点消耗
+---@field boostLimit number 额外强化投入上限
+---@field ingredientIds number[] 所有基础技能同时掌握或装备授予后自动开放组合
+---@field fieldKind string 持续区域 fire/mist/mud；空为非区域
+---@field turns number 区域存续轮数
+---@field pulseEffectId number 区域进入/回合初效果；0无
+---@field recover number 即时恢复施法点
+return {["name"]="SpellRecipeTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\230\138\128\232\131\189ID",["ref"]="CombatSkillTable"},{["name"]="cost",["type"]="int",["description"]="\229\159\186\231\161\128\230\150\189\230\179\149\231\130\185\230\182\136\232\128\151",["min"]=0},{["name"]="boostLimit",["type"]="int",["description"]="\233\162\157\229\164\150\229\188\186\229\140\150\230\138\149\229\133\165\228\184\138\233\153\144",["min"]=0,["max"]=16},{["name"]="ingredientIds",["type"]="int[]",["description"]="\230\137\128\230\156\137\229\159\186\231\161\128\230\138\128\232\131\189\229\144\140\230\151\182\230\142\140\230\143\161\230\136\150\232\163\133\229\164\135\230\142\136\228\186\136\229\144\142\232\135\170\229\138\168\229\188\128\230\148\190\231\187\132\229\144\136",["ref"]="CombatSkillTable",["default"]={}},{["name"]="fieldKind",["type"]="string",["description"]="\230\140\129\231\187\173\229\140\186\229\159\159 fire/mist/mud\239\188\155\231\169\186\228\184\186\233\157\158\229\140\186\229\159\159",["default"]=""},{["name"]="turns",["type"]="int",["description"]="\229\140\186\229\159\159\229\173\152\231\187\173\232\189\174\230\149\176",["min"]=0,["max"]=20,["default"]=0},{["name"]="pulseEffectId",["type"]="int",["description"]="\229\140\186\229\159\159\232\191\155\229\133\165/\229\155\158\229\144\136\229\136\157\230\149\136\230\158\156\239\188\1550\230\151\160",["min"]=0,["default"]=0},{["name"]="recover",["type"]="int",["description"]="\229\141\179\230\151\182\230\129\162\229\164\141\230\150\189\230\179\149\231\130\185",["min"]=0,["default"]=0}},["fingerprint"]="6056e73da90056e029e5df3b1b594abd5ba19144ec205363bba250c677424c42"}

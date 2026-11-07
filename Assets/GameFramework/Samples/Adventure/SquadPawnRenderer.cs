@@ -36,7 +36,7 @@ namespace ProjectY.Samples
             foreach (var member in state.Members)
             {
                 var actor = Array.Find(party, value => value.Id == member.ActorId);
-                if (actor == null || actor.HP <= 0) throw new InvalidOperationException("探索成员与存活队伍不一致。");
+                if (actor == null || !actor.Alive) throw new InvalidOperationException("探索成员与存活队伍不一致。");
                 var pawn = pawns.Find(value => value.ActorId == member.ActorId);
                 if (pawn == null)
                 {
@@ -55,7 +55,7 @@ namespace ProjectY.Samples
                 if (!Array.Exists(state.Members, member => member.ActorId == pawn.ActorId))
                 {
                     var actor = Array.Find(party, value => value.Id == pawn.ActorId);
-                    if (actor == null || actor.HP > 0) throw new InvalidOperationException("Missing living squad member.");
+                    if (actor == null || actor.Alive) throw new InvalidOperationException("Missing living squad member.");
                     pawn.Actor = actor; pawn.Retiring = true; pawn.Motion.Skip();
                 }
         }
@@ -98,7 +98,7 @@ namespace ProjectY.Samples
         {
             int actorId=0;distance=float.PositiveInfinity;
             foreach(var pawn in pawns)
-                if(!pawn.Retiring && pawn.Actor.HP>0 && pawn.View.Raycast(ray,out var hit) && hit<distance)
+                if(!pawn.Retiring && pawn.Actor.Alive && pawn.View.Raycast(ray,out var hit) && hit<distance)
                 {actorId=pawn.ActorId;distance=hit;}
             return actorId;
         }

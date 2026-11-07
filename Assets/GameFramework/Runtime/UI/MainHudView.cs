@@ -18,6 +18,9 @@ namespace ProjectY.UI
             public Text[] Labels;
         }
         [SerializeField] private Layout layout;
+        [SerializeField, Min(80)] private float clockDiameter = 112;
+        [SerializeField, Min(0)] private float clockFooterHeight = 24;
+        [SerializeField] private RectTransform worldControls;
         [SerializeField] private BattleFeedbackSystem battleFeedback;
         internal BattleFeedbackSystem BattleFeedback => battleFeedback != null ? battleFeedback : throw new InvalidOperationException("MainHud battle feedback binding is missing.");
         private readonly List<UIFollower> followers=new List<UIFollower>();
@@ -32,6 +35,8 @@ namespace ProjectY.UI
         public void SetCharacterSkillBar(RectTransform value) {characterSkills=value;layoutDirty=true;ApplyLayout();}
         public Font Font => font!=null?font:(font=Font.CreateDynamicFontFromOSFont(new[]{"Microsoft YaHei","PingFang SC","Noto Sans CJK SC","Arial"},16));
         internal RectTransform PresentationRoot => layout.Root;
+        internal Canvas FollowerCanvas => layout.Canvas.rootCanvas;
+        internal event Action FollowersUpdated;
         public float WorldLeftInset => exploration&&navigation?Mathf.Min(Screen.width*.45f,526*layout.Canvas.rootCanvas.scaleFactor):0;
         public void Prepare()
         {
@@ -64,7 +69,7 @@ namespace ProjectY.UI
             layout.Common.offsetMin=layout.Common.offsetMax=Vector2.zero;
             var size=layout.Safe.rect.size;var w=Mathf.Max(480,size.x);var h=Mathf.Max(360,size.y);
             var narrow=w<1050;
-            Place(layout.Header,0,1,224,-18,Mathf.Max(170,w-380),48);
+            Place(layout.Header,0,1,224,-18,Mathf.Max(170,w-clockDiameter-268),48);
             Place(layout.Party,0,1,18,-18,190,352);
             layout.Party.localScale=Vector3.one*Mathf.Clamp((h-194)/352,.45f,1);
             layout.PartyGrid.constraintCount=1;layout.PartyGrid.cellSize=new Vector2(190,82);
@@ -72,20 +77,30 @@ namespace ProjectY.UI
             layout.NavigationScroll.sizeDelta=new Vector2(270,Mathf.Max(42,h-300));
             if(characterSkills!=null)Place(characterSkills,0,0,18,18,narrow?Mathf.Max(420,w-158):550,138);
             if(characterSkills!=null)layout.SkillGrid.cellSize=new Vector2((characterSkills.sizeDelta.x-42)/4,70);
-            Place(layout.Journal,1,0,-Mathf.Min(480,w-612)-18,18,Mathf.Min(480,w-612),138);
+            // Reserve the skill bar (568), a gap (18), and the right-side rail inset (124).
+            var journalWidth=Mathf.Min(480,w-710);
+            Place(layout.Journal,1,0,-journalWidth-124,18,journalWidth,138);
             layout.Journal.gameObject.SetActive(exploration&&!narrow);
             Place(layout.Interaction,.5f,0,-210,172,420,100);
             Place(layout.Hint,.5f,1,-Mathf.Min(560,w-400)/2,-76,Mathf.Min(560,w-400),42);
             // When the menu is open, share the width reduction with the battle HUD
             // instead of keeping a full-size menu beside tiny battle controls.
-            float commonScale=Mathf.Min(1,size.x/(menuOpen?1094:800),size.y/600);
+            float rightInset = clockDiameter + 30;
+            float menuInset = rightInset + 326;
+            float commonScale=Mathf.Min(1,size.x/(menuOpen?640+menuInset:Mathf.Max(800,640+rightInset)),size.y/600);
             if(commonScale<=0)return;
             layout.Clock.localScale=layout.Rail.localScale=layout.Menu.localScale=Vector3.one*commonScale;
-            Place(layout.Clock,1,1,-130*commonScale,-18*commonScale,112,112);
-            // The coin label extends 22 units below the clock face.
-            Place(layout.Rail,1,1,-112*commonScale,-166*commonScale,94,310);
-            Place(layout.Menu,1,1,-442*commonScale,-166*commonScale,314,Mathf.Min(410,size.y/commonScale-184));
-            if(battleHud!=null)battleHud.SetRightInset((menuOpen?454:142)*commonScale);
+            Place(layout.Clock,1,1,-(clockDiameter+18)*commonScale,-18*commonScale,clockDiameter,clockDiameter+clockFooterHeight);
+            Place(layout.Rail,1,1,-112*commonScale,-(30+clockDiameter+clockFooterHeight)*commonScale,94,310);
+            // The menu opens to the left of the entire clock, keeping its scroll area at full height.
+            Place(layout.Menu,1,1,-(rightInset+314)*commonScale,-166*commonScale,314,Mathf.Min(410,size.y/commonScale-184));
+            if(worldControls!=null)
+            {
+                worldControls.localScale=Vector3.one*commonScale;
+                worldControls.anchorMin=worldControls.anchorMax=worldControls.pivot=Vector2.one;
+                worldControls.anchoredPosition=new Vector2(-(clockDiameter+36)*commonScale,-82*commonScale);
+            }
+            if(battleHud!=null)battleHud.SetRightInset((menuOpen?menuInset:rightInset)*commonScale);
         }
         private static void Place(RectTransform r,float ax,float ay,float x,float y,float w,float h)
         {r.anchorMin=r.anchorMax=new Vector2(ax,ay);r.pivot=new Vector2(0,ay);r.anchoredPosition=new Vector2(x,y);r.sizeDelta=new Vector2(w,h);}
@@ -96,6 +111,7 @@ namespace ProjectY.UI
             {
                 if(follower!=null && follower.gameObject.activeInHierarchy) follower.Project();
             }
+            FollowersUpdated?.Invoke();
         }
         private void OnDestroy() {if(font!=null) {if(Application.isPlaying) Destroy(font);else DestroyImmediate(font);}}
 #if UNITY_EDITOR

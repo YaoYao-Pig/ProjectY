@@ -57,6 +57,7 @@ namespace ProjectY.Editor
             try
             {
                 if (root.transform.childCount == 0) build(root);
+                if(name=="CharacterGrowth")GrowthSkillDetailAssets.Apply(root);
                 var view = root.GetComponent<StoryGrowthView>();
                 if (view != null)
                 {

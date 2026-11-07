@@ -1,6 +1,6 @@
 import * as THREE from 'three';
 import { OrbitControls } from './vendor/OrbitControls.js';
-import { options, randomize, validate, tint } from './rules.mjs';
+import { options, randomize, validate, tint, headShapeNames, headShapeWeights } from './rules.mjs';
 import { GripEditor } from './grip-editor.mjs';
 
 const $ = id => document.getElementById(id);
@@ -13,6 +13,12 @@ const gear = { head: '', chest: '', back: '', legs: false, feet: false, weapon: 
 const pawnPath = 'Assets/DynamicAsset/PawnLowPoly/Models/', equipmentPath = 'Assets/DynamicAsset/EquipmentDemo/Models/';
 let scene, camera, renderer, controls, character, bones, skeleton, platform;
 const geometryCache = new Map();
+const textureCache = new Map();
+function albedo(path) {
+  if (!path) return null;
+  if (!textureCache.has(path)) { const t = new THREE.TextureLoader().load(path); t.colorSpace = THREE.SRGBColorSpace; textureCache.set(path,t); }
+  return textureCache.get(path);
+}
 const previousPosition = new THREE.Vector3(), nextPosition = new THREE.Vector3(), previousRotation = new THREE.Quaternion(), nextRotation = new THREE.Quaternion();
 const previousScale = new THREE.Vector3(), nextScale = new THREE.Vector3();
 
@@ -27,7 +33,9 @@ function renderControls() {
     descriptor[key] = value;
     const build = descriptor.body.slice(-1), face = descriptor.head.slice(-1);
     descriptor.body = `body_${descriptor.sex}_${build}`;
-    descriptor.head = `head_${descriptor.race}_${descriptor.sex}_${face}`;
+    const candidate = `head_${descriptor.race}_${descriptor.sex}_${face}`;
+    const heads = options(rules, 'head', descriptor.race, descriptor.sex);
+    descriptor.head = heads.some(m => m.id === candidate) ? candidate : heads[0].id;
     if (!options(rules, 'hair', descriptor.race, descriptor.sex).some(m => m.id === descriptor.hair)) descriptor.hair = 'none';
     descriptor.skin = Math.min(descriptor.skin, rules.races.find(r => r.id === descriptor.race).colors.length - 1);
     apply();
@@ -50,6 +58,8 @@ function geometry(part) {
   const g = new THREE.BufferGeometry();
   g.setAttribute('position', new THREE.Float32BufferAttribute(part.positions, 3));
   g.setAttribute('normal', new THREE.Float32BufferAttribute(part.normals, 3));
+  if (part.uv?.length) g.setAttribute('uv', new THREE.Float32BufferAttribute(part.uv, 2));
+  if (part.shapes?.length) { g.morphTargetsRelative = true; g.morphAttributes.position = part.shapes.map(s => new THREE.Float32BufferAttribute(s.deltas,3)); }
   if (!part.rigid) { g.setAttribute('skinIndex', new THREE.Uint16BufferAttribute(part.joints, 4)); g.setAttribute('skinWeight', new THREE.Float32BufferAttribute(part.weights, 4)); }
   const indices = [];
   part.groups.forEach((group, i) => { g.addGroup(indices.length, group.indices.length, i); indices.push(...group.indices); });
@@ -59,7 +69,7 @@ function apply() {
   validate(bundle.rules, descriptor);
   let mask = 0, coveredHair = false;
   const fits = [gear.head, gear.chest, gear.back, gear.legs ? equipmentPath + 'Equip_Trousers.fbx' : '', gear.feet ? equipmentPath + 'Equip_Boots.fbx' : ''].filter(Boolean).map(path => {
-    const fit = bundle.gearFits.find(f => f.sourcePath === path && (!f.body || f.body === descriptor.body) && (!f.race || f.race === descriptor.race));
+    const fit = bundle.gearFits.find(f => f.sourcePath === path && (!f.head || f.head === descriptor.head) && (!f.body || f.body === descriptor.body) && (!f.race || f.race === descriptor.race));
     if (!fit) throw new Error('当前体型或种族缺少装备贴合资源：' + path);
     mask |= fit.coverage; coveredHair ||= fit.hideHair; return fit;
   });
@@ -77,9 +87,13 @@ function apply() {
     const materials = part.groups.map(group => {
       const color = fits.some(f => f.id === part.id) ? group.material.color : tint(bundle.rules, descriptor, group.material.role, group.material.color);
       const c = typeof color === 'string' ? new THREE.Color(color) : new THREE.Color().setRGB(...color, THREE.SRGBColorSpace);
-      return new THREE.MeshStandardMaterial({ color: c, roughness: .88, metalness: 0 });
+      return new THREE.MeshStandardMaterial({ color: c, map: albedo(group.material.texture), roughness: .88, metalness: 0 });
     });
     const mesh = part.rigid ? new THREE.Mesh(geometry(part), materials) : new THREE.SkinnedMesh(geometry(part), materials); mesh.name = part.id;
+    if (part.id === descriptor.head && part.shapes?.length) {
+      const values = headShapeWeights(descriptor.seed, descriptor.head);
+      part.shapes.forEach((s,i)=>{const index=headShapeNames.indexOf(s.name.split('.').at(-1));mesh.morphTargetInfluences[i]=index<0?0:values[index];});
+    }
     if (!part.rigid) mesh.bind(skeleton, new THREE.Matrix4()); mesh.frustumCulled = false; mesh.castShadow = true; mesh.receiveShadow = true;
     character.add(mesh); return mesh;
   });
@@ -191,7 +205,7 @@ async function checkSources() {
   if (response.status === 404) { $('source').textContent = '独立资源包 · 导出于 ' + new Date(bundle.exportedAt).toLocaleString('zh-CN'); return; }
   if (!response.ok) throw new Error('无法核对资源来源');
   const state = await response.json();
-  $('source').textContent = state.stale ? `源资源有 ${state.changed.length} 项变化，请在 Unity 重新同步并导出` : `Unity ${bundle.unityVersion} · 29 个角色模块 / ${bundle.gearFits.length} 个装备适配 · 已同步`;
+  $('source').textContent = state.stale ? `源资源有 ${state.changed.length} 项变化，请在 Unity 重新同步并导出` : `Unity ${bundle.unityVersion} · ${bundle.rules.modules.filter(m=>m.id!=='none').length} 个角色模块 / ${bundle.gearFits.length} 个装备适配 · 已同步`;
   $('source').style.color = state.stale ? '#946338' : '';
   $('provenance').textContent = `导出时间：${new Date(bundle.exportedAt).toLocaleString('zh-CN')}\n${bundle.source}\n` + bundle.meshes.map(m => m.path).join('\n') + (state.stale ? '\n已变化：\n' + state.changed.join('\n') : '');
 }

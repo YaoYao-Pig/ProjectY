@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 -- 动物配置与即时查询。生命、归属、随机数及亲密度只保存在 CombatActorData。
 local Hex=require('Game.Map.HexGrid')
 local Check=require('Game.CheckRoll')
@@ -112,8 +113,8 @@ function Rules:TameChance(source,target,stats,hostile)
 end
 function Rules:CanTame(source,target)
     if CS.ProjectY.Data.AnimalCompanionState.Bound(source) then return false,require('Language').ProfessionAlreadyBoundAnimal end
-    if source.HP<=0 or source.Team~=1 then return false,require('Language').AnimalSpeechLivingCaster end
-    if not target or target.HP<=0 or not self.byUnit[target.TemplateId] or target.AnimalOwnerId~=0 then return false,require('Language').AnimalSpeechWildTarget end
+    if not Life.Alive(source) or source.Team~=1 then return false,require('Language').AnimalSpeechLivingCaster end
+    if not target or not Life.Alive(target) or not self.byUnit[target.TemplateId] or target.AnimalOwnerId~=0 then return false,require('Language').AnimalSpeechWildTarget end
     if target.TameRetryTurns>0 then return false,string.format(require('Language').AnimalSpeechRetry,target.TameRetryTurns) end
     return true
 end
@@ -135,7 +136,7 @@ function Rules:Tame(source,target,stats,hostile)
 end
 function Rules:BattleBond(actor)
     local mount=CS.ProjectY.Data.AnimalCompanionState.Bound(actor)
-    if mount and mount.HP>0 then
+    if mount and Life.Alive(mount) then
         local species=self.species:Get(mount.AnimalSpeciesId)
         mount:AddAnimalBond(species.bondPerBattle,species.maximumBond)
     end

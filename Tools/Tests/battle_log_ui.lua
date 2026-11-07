@@ -5,11 +5,12 @@ local originalPresenter=package.loaded['UI.SkillTipPresenter']
 package.loaded['UI.SkillTipPresenter']={New=function()return {Hide=function()end}end}
 local original=Model.Build
 local model={actorId=1,phase='combat',player=true,round=1,maxRounds=18,encounter='Test',moveRemaining=3,
-    moved=false,moveAvailable=true,skills={},items={},party={},turns={},logs={}}
+    moved=false,moveAvailable=true,castingPoints=0,castingPointMax=0,castingPointRegen=0,skills={},items={},party={},turns={},logs={}}
 for i=1,80 do model.logs[i]='<color=#70B8E8><size=16>Actor '..i..'</size></color> → <color=#EF8D85>Target</color> <b>12</b> · 75%' end
 Model.Build=function()return model end
 local projection
-CS={ProjectY={Samples={BattleTargetSelection={Active=function()return false end,NeedsLanding=function()return false end,Hint=function()return ''end}},
+CS={ProjectY={Samples={BattleTargetSelection={Active=function()return false end,NeedsLanding=function()return false end,
+    NeedsBodyPart=function()return false end,ChoosingBodyPart=function()return false end,Hint=function()return ''end}},
     UI={BattleLogPresentation={Set=function(view,expanded,recent,full,count)
         projection={view=view,expanded=expanded,recent=recent,full=full,count=count}
     end}}}}
@@ -18,7 +19,10 @@ local function node()
 end
 local view={HUD={Prepare=function()end,Compact=false},SkillSlots={},ItemSlots={},PartySlots={},TurnSlots={}}
 for _,key in ipairs({'EndTurn','Move','Focus','Auto','LogToggle','LogOpen','LogClose','Previous','Next','Encounter','Round','SkillTitle','ItemTitle',
-    'EndTurnText','MoveText','FocusText','AutoText','LogToggleText','Hint','Tooltip'})do view[key]=node()end
+    'EndTurnText','MoveText','FocusText','AutoText','LogToggleText','Hint','Tooltip',
+    'CastingPanel','CastingStatus','CastingDetail','CastingLess','CastingMore','CastingLessText','CastingMoreText',
+    'AnatomyPanel','AnatomyTitle','AnatomyHelp','SkillControls','ItemControls'})do view[key]=node()end
+for part=0,5 do view['AnatomyPart'..part]=node();view['AnatomyPart'..part..'Text']=node()end
 local battle={Changed={Subscribe=function()return{}end}}
 local config={GetTable=function(_,name)
     if name=='BattleHUDTable' then return {Get=function()return {itemIconIds={1,1,1,1}}end}end

@@ -10,7 +10,7 @@ namespace ProjectY.Samples
         public sealed class Asset { public int Id; public string Path, TintMaterial; public float ReferenceHeight; }
         public sealed class Cell
         {
-            public int Q, R, TownId, RegionId;
+            public int Q, R, TownId, RegionId, WonderId;
             public float[] SurfaceCorners, SurfaceEdgeBottoms;
             public Vector3 Position; public Color Color; public bool HasWater, IsRiver; public float WaterLevel, WaterDepth;
             public int TerrainAssetId, WaterAssetId, RiverId; public int FlowTo = -1; public int[] Neighbors;
@@ -93,7 +93,7 @@ namespace ProjectY.Samples
                 }
             }
             return new Cell { Q = row.Get<int>("q"), R = row.Get<int>("r"), TownId = row.Get<int>("townId"),
-                RegionId=row.Get<int>("regionId"),SurfaceCorners=corners,
+                RegionId=row.Get<int>("regionId"),WonderId=row.Get<int>("wonderId"),SurfaceCorners=corners,
                 Position = new Vector3(row.Get<float>("x"), row.Get<float>("y"), row.Get<float>("z")),
                 HasWater = row.Get<bool>("hasWater"), WaterLevel = row.Get<float>("waterLevel"), Color = color,
                 IsRiver = row.Get<bool>("isRiver"), RiverId = row.Get<int>("riverId"),

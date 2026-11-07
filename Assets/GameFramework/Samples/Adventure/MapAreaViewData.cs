@@ -42,6 +42,7 @@ namespace ProjectY.Samples
         {
             public string Name, Theme;
             public uint Seed;
+            public float WeatherX, WeatherZ;
             public int CellIndex, EntryIndex, GoalIndex, Revision, RoomCount, WalkableCount, SourceRegionId, PropCount;
             public int[] Known, Visible, Route;
             public Member[] Members;
@@ -284,6 +285,7 @@ namespace ProjectY.Samples
                     EncounterCount = area.Get<int>("encounterCount"), ClearedEncounters = area.Get<int>("clearedEncounters"),
                     InteractionKind = area.Get<int>("interactionKind"), InteractionId = area.Get<int>("interactionId"),
                     Name = area.Get<string>("name"), Theme = area.Get<string>("theme"), Seed = area.Get<uint>("seed"),
+                    WeatherX = area.Get<float>("weatherX"), WeatherZ = area.Get<float>("weatherZ"),
                     CellIndex = area.Get<int>("cellIndex") - 1, EntryIndex = area.Get<int>("entryIndex") - 1,
                     GoalIndex = area.Get<int>("goalIndex") - 1, Revision = area.Get<int>("revision"), RoomCount = area.Get<int>("roomCount"),
                     WalkableCount = area.Get<int>("walkableCount"), SourceRegionId = area.Get<int>("sourceRegionId"), PropCount = area.Get<int>("propCount"),

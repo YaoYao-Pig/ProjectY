@@ -1,0 +1,14 @@
+{
+  "version": 1,
+  "name": "CampLoadoutTable",
+  "description": "营地队伍装备的大地图收益与夜间照明时段。",
+  "key": "id",
+  "fields": [
+    { "name": "id", "type": "int", "description": "规则编号", "min": 1 },
+    { "name": "speedMultiplier", "type": "float", "description": "坐骑槽的大地图陆路行军速度倍率", "min": 1 },
+    { "name": "visionBonus", "type": "int", "description": "宠物槽增加的大地图可见半径，六边形格数", "min": 0, "max": 16 },
+    { "name": "nightStart", "type": "int", "description": "火把在大地图开始照明的小时（包含）", "min": 0, "max": 23 },
+    { "name": "nightEnd", "type": "int", "description": "火把在大地图结束照明的小时（不包含）", "min": 0, "max": 23 }
+  ],
+  "rows": [{ "id": 1, "speedMultiplier": 1.25, "visionBonus": 2, "nightStart": 18, "nightEnd": 6 }]
+}

@@ -81,6 +81,7 @@ namespace ProjectY.Data
             Team = team; Q = q; R = r; AP = 0; Guard = 0; Moved = false; MainUsed = false;movementSpent=0;
             cooldowns.Clear(); ActionTemplateId = 0; presentationActions.Clear();
             ProfessionMarks.Clear();
+            CastingBoosts.Clear();
         }
         public void BeginTurn(int points)
         {
@@ -89,21 +90,21 @@ namespace ProjectY.Data
         }
         public void BeginDeploymentTurn(int points)
         {
-            if (HP == 0 || points < 1) throw new InvalidOperationException("Invalid actor turn.");
+            if (!DeathDoorState.Alive(this) || points < 1) throw new InvalidOperationException("Invalid actor turn.");
             AP = points; Moved = false; MainUsed = false; Guard = 0;movementSpent=0;
         }
         internal void AdvanceSkillCooldowns()
         {foreach(var id in new List<int>(cooldowns.Keys))SetCooldown(id,Math.Max(0,cooldowns[id]-1));}
         public void Move(int q, int r, int cost)
         {
-            if (HP == 0 || Moved || cost < 0 || AP < cost) throw new InvalidOperationException("Invalid move budget.");
+            if (!DeathDoorState.Alive(this) || Moved || cost < 0 || AP < cost) throw new InvalidOperationException("Invalid move budget.");
             Q = q; R = r; AP -= cost; Moved = true;
             MovementStyle="walk";MovementSequence++;
         }
         internal void MoveSegment(int q,int r,int moveAP,int pathCost,int moveRange)
         {
             int cost=movementSpent==0?moveAP:0;
-            if(HP==0 || Moved || moveAP<0 || pathCost<1 || moveRange<1 || pathCost>moveRange-movementSpent || AP<cost || (q==Q && r==R))
+            if(!DeathDoorState.Alive(this) || Moved || moveAP<0 || pathCost<1 || moveRange<1 || pathCost>moveRange-movementSpent || AP<cost || (q==Q && r==R))
                 throw new InvalidOperationException("Invalid movement segment.");
             Q=q;R=r;AP-=cost;movementSpent+=pathCost;Moved=movementSpent==moveRange;
             MovementStyle="walk";MovementSequence++;
@@ -111,7 +112,7 @@ namespace ProjectY.Data
         public void SpendAction(string kind, int cost)
         {
             if (kind != "main" && kind != "secondary") throw new ArgumentException("Unknown action kind.", nameof(kind));
-            if (HP == 0 || cost < 0 || AP < cost || (kind == "main" && MainUsed))
+            if (!DeathDoorState.Alive(this) || cost < 0 || AP < cost || (kind == "main" && MainUsed))
                 throw new InvalidOperationException("Invalid action budget.");
             AP -= cost;
             // Acting commits the turn to actions; skip any unused normal move without charging its AP or animating a step.
@@ -120,8 +121,8 @@ namespace ProjectY.Data
         }
         internal int ApplyExertion(int amount)
         {
-            if(amount<0||HP==0)throw new ArgumentOutOfRangeException(nameof(amount));
-            return DamageBody(Math.Min(amount,HP-1),-1,0,false);
+            if(amount<0||!DeathDoorState.Alive(this))throw new ArgumentOutOfRangeException(nameof(amount));
+            return DamageBody(Math.Min(amount,Math.Max(0,HP-1)),-1,0,false);
         }
         public int Damage(int amount)
         {
@@ -137,7 +138,7 @@ namespace ProjectY.Data
         public int Heal(int amount)
         {
             if (amount < 0) throw new ArgumentOutOfRangeException(nameof(amount));
-            if (HP == 0) return 0; // 普通治疗不复活；营地 Restore 明确允许恢复倒地角色。
+            if (!DeathDoorState.Alive(this)) return 0;
             return HealBody(amount);
         }
         public void SetGuard(int amount)
@@ -151,6 +152,6 @@ namespace ProjectY.Data
                 throw new InvalidOperationException("Only defeated independent defenders can be replenished.");
             DropResolved = false; cooldowns.Clear(); Restore();
         }
-        public void Restore() { HP = MaxHP; Guard = 0; }
+        public void Restore() { if(PermanentlyDead)return; HP = MaxHP; Guard = 0;DeathDoorState.Rested(this); }
     }
 }

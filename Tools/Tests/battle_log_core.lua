@@ -44,13 +44,19 @@ end
 CS={ProjectY={Data={GameBuffState={Configure=function(row,ids,amounts,expiry,nextTick)
     row.ids={table.unpack(ids)};row.amounts={table.unpack(amounts)};row.expiry=expiry;row.nextTick=nextTick
 end,Amount=function(row,id)for i,v in ipairs(row.ids)do if v==id then return row.amounts[i]end end;error('Missing fixture amount')end}}}}
+-- These scalar actors have no title, morale modifier, companion or death-door state.
+CS.ProjectY.Data.TitleState={Equipped=function()return 0 end}
+CS.ProjectY.Data.MoraleState={Active=function()return false end}
+CS.ProjectY.Data.DeathDoorState={Alive=function(row)return row.HP>0 end,Dead=function(row)return row.HP<=0 end,
+    Entered=function()return false end,Used=function()return false end,Enabled=function()return false end,Survived=function()return 0 end}
+CS.ProjectY.Data.AnimalCompanionState={Bound=function()return nil end,Independent=function()return false end}
 local stats=require('Game.Battle.CombatStats')(config)
 -- Isolate chance reporting from the separate body-location random stream.
 stats.injuries.ApplyAttribute=function(_,_,_,value)return value end
 stats.injuries.DamageHit=function(_,_,target,_,amount)return target:Damage(amount)end
 local EmptyGrowth=assert(loadfile('Tools/Tests/growth_empty.lua'))()
 local function actor(id,hp)
-    local row={Id=id,TemplateId=id==1 and 1 or 4,Team=id==1 and 1 or 2,HP=hp or 50,MaxHP=50,Guard=3,TraitCount=0,Growth=EmptyGrowth(),Effects=collection()}
+    local row={Id=id,TemplateId=id==1 and 1 or 4,Team=id==1 and 1 or 2,AnimalOwnerId=0,HP=hp or 50,MaxHP=50,Guard=3,TraitCount=0,Growth=EmptyGrowth(),Effects=collection()}
     function row:Damage(amount)local used=math.min(self.HP,amount);self.HP=self.HP-used;return used end
     function row:Heal(amount)if self.HP==0 then return 0 end;local used=math.min(amount,self.MaxHP-self.HP);self.HP=self.HP+used;return used end
     function row:SetMaxHP(value)self.MaxHP=value;self.HP=math.min(self.HP,value)end
@@ -117,7 +123,7 @@ print('PASS damage HP fraction uses committed maximum health after equipment wea
 local Battle=require('Game.Battle.BattleSystem')
 local logLines,notices={},{}
 local units={source,target}
-local battle=setmetatable({stats=stats,data={UnitCount=2,GetUnitAt=function(_,i)return units[i+1]end,AddLog=function(_,line)logLines[#logLines+1]=line end},
+local battle=setmetatable({stats=stats,morale=stats.morale,data={UnitCount=2,GetUnitAt=function(_,i)return units[i+1]end,AddLog=function(_,line)logLines[#logLines+1]=line end},
     Changed={Emit=function(_,event)notices[#notices+1]=event end}},{__index=Battle})
 local function chance(chance,roll,passed,label)
     battle:ChanceLog(source,target,skill,label or '命中',chance,roll,passed,{shot=2,successLabel='命中',failureLabel='落空'})

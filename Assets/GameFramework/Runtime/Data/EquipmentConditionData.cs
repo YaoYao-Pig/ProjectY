@@ -39,5 +39,6 @@ namespace ProjectY.Data
             return before - Current;
         }
         internal void Repair() { Current = Maximum; ThresholdArmed = true; }
+        internal void Reforge() { Current = Maximum = BaseMaximum = 100; ThresholdArmed = true; }
     }
 }

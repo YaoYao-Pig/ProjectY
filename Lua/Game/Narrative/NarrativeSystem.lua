@@ -72,6 +72,7 @@ function Story:Claim(kind,id)
     local plan,reason = Actions.Prepare(self,row.actionIds); if not plan then return false,reason end
     local rewards = Actions.Apply(self,plan)
     self.data:Complete(kind,id)
+    Rewards.Append(rewards,Rewards.TitleReputation(self.adventure.titles:Complete(kind,id)))
     if #rewards > 0 or kind == 'mission' or not row.autoComplete then
         self.RewardSettled:Emit({title=row.name,kind=kind,id=id,rows=rewards})
     end
@@ -123,14 +124,21 @@ function Story:AdvanceMinutes(minutes)
 end
 function Story:TickBuffs()
     local now=self.data.Minutes
+    if self.adventure.economy then self.adventure.economy:Advance(now) end
+    if self.adventure.camp then self.adventure.camp.roster:Advance(now) end
     if self.lastBuffMinute==now then return end
     self.lastBuffMinute=now
     local adventure=self.adventure;local changed={}
-    local function visit(actor)
+    local function visit(actor,reserve)
         local recovered=CS.ProjectY.Data.BodyHealth.AdvanceRecovery(actor,now)>0
-        if adventure.battle.gameEffects:TickWorldActor(actor,now) or recovered then changed[#changed+1]=actor end
+        local casting=adventure.battle.spellcasting:AdvanceWorld(actor,now,adventure.data.Phase=='map' or adventure.data.Phase=='area')
+        local affected=adventure.battle.gameEffects:TickWorldActor(actor,now) or recovered or casting
+        if affected and not reserve then changed[#changed+1]=actor end
     end
-    for i=0,adventure.data.PartyCount-1 do visit(adventure.data:GetPartyAt(i)) end
+    for i=0,CS.ProjectY.Data.PartyRoster.Count(adventure.data)-1 do
+        local actor=CS.ProjectY.Data.PartyRoster.At(adventure.data,i)
+        visit(actor,CS.ProjectY.Data.PartyRoster.IsReserve(adventure.data,actor.Id))
+    end
     if adventure.data.Phase=='area' then local state=adventure.data.Areas.Active
         for i=0,state.EncounterCount-1 do local group=state:GetEncounterAt(i)
             for j=0,group.EnemyCount-1 do local actor=group:GetEnemyAt(j);if actor.AnimalOwnerId==0 then visit(actor) end end
@@ -147,7 +155,7 @@ function Story:Rows()
         local status = self.data:Status('mission',row.id)
         local available,reason = self:CanAccept(row.id)
         if status ~= 'inactive' or available then
-            local item = {id=row.id,name=row.name,description=row.description,category=row.category,status=status,reason='',quests={},rewards=Rewards.Preview(self,row.actionIds)}
+            local item = {id=row.id,name=row.name,description=row.description,category=row.category,status=status,reason='',quests={},rewards=Rewards.Preview(self,row.actionIds,'mission')}
             if status == 'ready' then local plan; plan,item.reason = Actions.Prepare(self,row.actionIds); item.claimable = plan ~= nil end
             for _, quest in ipairs(self.rules.questsByMission[row.id] or {}) do
                 local questStatus = self.data:Status('quest',quest.id)

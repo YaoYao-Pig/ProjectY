@@ -58,6 +58,7 @@ function Presenter:Refresh()
     view.HealthPartName.text=selected.name
     local effects=Presenter.ModifierText(selected.modifiers)
     local description=selected.description
+    if self.part==2 or self.part==3 then description=description..'\n'..LuaLanguage.BodyArmEquipmentNote end
     local recoveryAt=CS.ProjectY.Data.BodyHealth.RecoveryAt(actor,self.part)
     if recoveryAt>0 then
         local hours=math.ceil(math.max(0,recoveryAt-panel.system.adventure.Narrative.Minutes)/60)

@@ -48,6 +48,7 @@ function Model:Buy(entryId,version,count)
     end
     local entry=stock:Find(entryId)
     if not entry then return false,LuaLanguage.UIShopText7 end
+    if adventure.economy.byItem[entry.ItemId] and adventure.economy.data:FindTown(stock.SiteId) then return false,LuaLanguage.EconomyUseMarket end
     local item=self.rules.items:Get(entry.ItemId);local ammo,capacity,rounds=0,0,0
     if item.kind=='magazine' then local mag=adventure.equipment.rules.magazines:Get(item.id);ammo,capacity,rounds=mag.ammoItemId,mag.capacity,mag.spawnRounds end
     reason=self.data:Buy(entryId,count,version,adventure.equipment.data,adventure.player,item.kind,ammo,capacity,rounds)
@@ -67,8 +68,11 @@ function Model:Snapshot()
         if reason=='' and not adventure.equipment:CanGrant({entry.ItemId},{1}) then reason=LuaLanguage.UIShopReason end
         local name=item.name
         if item.kind=='weapon' or item.kind=='wearable' then name=string.format(LuaLanguage.UIShopName2, (name)) end
-        rows[#rows+1]={id=entry.EntryId,name=name,width=item.width,height=item.height,price=entry.Price,count=entry.Count,reason=reason,available=reason==''}
+        if not adventure.economy.byItem[entry.ItemId] or not adventure.economy.data:FindTown(stock.SiteId) then
+            rows[#rows+1]={id=entry.EntryId,name=name,width=item.width,height=item.height,price=entry.Price,count=entry.Count,reason=reason,available=reason==''}
+        end
     end
-    return {name=name,template=template.name,coins=adventure.player.Coins,refreshDay=(stock.Period+1)*template.refreshDays+1,rows=rows,version=self.data.Revision}
+    adventure.economy:MarketRows(stock.SiteId,rows,service,serviceReason)
+    return {name=name,template=template.name,marketTags=adventure.economy:Tags(stock.SiteId),economyVersion=adventure.economy.data.Revision,coins=adventure.player.Coins,refreshDay=(stock.Period+1)*template.refreshDays+1,rows=rows,version=self.data.Revision}
 end
 return Model

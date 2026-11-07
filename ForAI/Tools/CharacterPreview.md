@@ -16,7 +16,7 @@
 - `/api/grips` 从当前源表读取，PUT 只更新指定行的 main/off Position/Rotation；要求本机 Host/Origin、会话令牌、有限 Vector3 和版本一致，复用现有配置校验与原子写入。冲突/保存失败保留草稿并停止自动重试，重读会提示丢弃未保存草稿。仅数值变化不触发 Unity 编译。
 - `/api/hold-adjustments` 的 PUT 按 weaponId/moduleId/hand 更新专属旋转，rotationOffset=null 删除该组合覆盖；复用同一保存队列、令牌与版本，版本包含握点/武器/模组/修正表。重复组合与非法向量拒绝保存；修改某组合不会改写几何握点或其他组合。
 - “导出游戏配置”调用现有导表器生成游戏产物；游戏配置缓存无热重载，重新加载后生效。网页读取源表即可预览保存的握点，Unity 最终动作采样仍通过“导出角色网页资源”刷新。
-- 资源包包含 29 个基础模块、42 个装备贴合网格和 42 个身体遮挡网格。武器等刚体逐帧记录实际挂点修正后的变换，不近似为固定绑手骨；骨骼和刚体都转换坐标，浏览器在采样之间插值。
+- 当前资源包包含 39 个基础模块、132 个按头型/体型导出的自动贴合预览和 42 个身体遮挡网格；十个新头附带 UV、albedo 与六个形态增量，浏览器与 Unity 使用相同种子规则。武器等刚体逐帧记录实际挂点修正后的变换，不近似为固定绑手骨；骨骼和刚体都转换坐标，浏览器在采样之间插值。
 - 网页用同一目录与 uint32 随机算法，使用 Unity 导出的固定种子结果校对；从 Unity 左手坐标转换到网页右手坐标时同步转换顶点、法线、bind pose、姿势，并反转三角形绕序。不能把 Blender 单独生成的几何替代这一导出链路。
 - `public/` 可独立部署为静态站点，不依赖 Editor，也不访问 CDN；Three.js 0.180.0 模块和 MIT LICENSE 本地分发。光照由浏览器渲染，不承诺与 Unity 逐像素一致。待机展示台属于预览布景，播放动作时隐藏以避免遮住真实姿势。
 - 导出包记录 Unity 来源依赖及 SHA-256。本地服务 `/api/source-status` 检测文件修改/缺失；网页提示重新同步导出。资源包不会随模型修改自动更新；独立部署时没有工程源文件，明确显示无法校对源工程。
@@ -26,6 +26,8 @@
 - 最小检查 `node --test Tools/CharacterPreview/tests/characters.test.mjs Tools/CharacterPreview/tests/grips.test.mjs` 覆盖资源、随机、来源、服务边界、临时工程写回/冲突/导表、缩放坐标、双臂骨长、附件归属和武器旋转隔离；要求新版导出包。Lua 解析用 `python Tools/Tests/run_lua.py Tools/Tests/equipment_motion.lua`。交互另用浏览器确认拖拽、组合切换和保存。
 
 ## 关键入口
+
+- [新头定向检查](../../Tools/CharacterPreview/tests/head-sculpt.test.mjs)：新旧 ID 共存、男女随机可达、贴图与实际 Unity 形态权重对照。本轮只运行该文件与 `characters.test.mjs`，未扩大到握点写入或全量游戏回归。
 
 - [使用说明](../../Tools/CharacterPreview/README.md) / [注册表](../../Tools/WebServices/services.json) / [服务](../../Tools/CharacterPreview/server.mjs)。
 - [页面](../../Tools/CharacterPreview/public/index.html) / [预览与交互](../../Tools/CharacterPreview/public/app.mjs) / [随机规则](../../Tools/CharacterPreview/public/rules.mjs)。

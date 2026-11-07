@@ -153,6 +153,14 @@ namespace ProjectY.Data
             AbstractArrivalAt=row.abstractArrivalAt;AbstractMinStepMinutes=row.abstractMinStepMinutes;
         }
         internal void AddPreparedMember(CombatActorData actor) {members.Add(actor);memberStrengths.Add(0);}
+        internal void ReleasePerson(CombatActorData actor)
+        {
+            int index=members.IndexOf(actor);
+            if(index<0 || BattleSiteId!=0 || Defeated || LivingCount<=1 || actor.HP<=0)
+                throw new InvalidOperationException(ProjectY.UI.LuaLanguage.Get("PeopleRecruitInvalid"));
+            if(memberStrengths[index]>0)calibratedMembers--;
+            memberStrengths.RemoveAt(index);members.RemoveAt(index);Owner.Changed();
+        }
     }
 
     public sealed class WorldPartiesData

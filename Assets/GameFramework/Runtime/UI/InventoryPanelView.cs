@@ -50,6 +50,7 @@ namespace ProjectY.UI
         private Font font;
         public Font Font => font??(font=UnityEngine.Font.CreateDynamicFontFromOSFont(new[]{"Microsoft YaHei","Noto Sans CJK SC","Arial"},16));
         private Item dragging;
+        public bool IsDragging => dragging!=null;
         private Image dragIcon;
         private IInventoryGridTarget otherGrid;
         internal void SetOtherGrid(IInventoryGridTarget value) {otherGrid=value;}

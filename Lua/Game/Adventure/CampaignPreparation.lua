@@ -7,6 +7,7 @@ function Preparation.Check(adventure)
     if adventure.parties.data.IsOpen then return Language.CampaignCloseParty end
     if adventure.camp.data.IsOpen then return Language.CampaignCloseCamp end
     if adventure.shop.data.IsOpen then return Language.CampaignCloseShop end
+    if adventure.economy.data.ActiveBankSite~=0 then return Language.EconomyCloseBank end
     if adventure.narrative.data.DialogueOpen then return Language.CampaignCloseDialogue end
     if adventure.equipment.worldLoot.session.Active then return Language.CampaignCloseLoot end
 end

@@ -1,7 +1,9 @@
 local Rewards = require('Game.Narrative.MissionRewards')
+local Language = require('Language')
+local Roster = CS.ProjectY.Data.PartyRoster
 local Actions = {}
 function Actions.Prepare(story, ids)
-    local plan = {steps={}, items={}, counts={}, recruits={}, experience={}, coins=story.adventure.player.Coins, members=story.adventure.data.PartyCount, facts={}, progress={}}
+    local plan = {steps={}, items={}, counts={}, recruits={}, experience={}, coins=story.adventure.player.Coins, members=Roster.Count(story.adventure.data), facts={}, progress={}}
     local function append(id)
         local row = story.rules.actions:Get(id); local kind = row.kind
         if kind == 'accept_mission' then
@@ -20,9 +22,10 @@ function Actions.Prepare(story, ids)
         elseif kind == 'recruit_npc' then
             local key = 'recruited:'..row.targetId
             if plan.facts[key] or story.data:GetValue(key) ~= 0 then return false, '这位同行者已经入队' end
-            if plan.members >= story.adventure.recipe.maxPartySize then return false, '队伍已满，任务保持待领取' end
+            if plan.members >= Roster.ActiveLimit+Roster.ReserveLimit then return false, Language.RosterRecruitFull end
             local prepared,reason = story.npcs:PrepareRecruit(row.targetId, plan.members + 1)
             if not prepared then return false,reason end
+            prepared.reserve=story.adventure.data.PartyCount+#plan.recruits>=Roster.ActiveLimit
             plan.members = plan.members + 1; plan.facts[key] = prepared.actorId
             plan.recruits[#plan.recruits+1] = prepared
             if not prepared.existing then
@@ -76,14 +79,17 @@ function Actions.Apply(story, plan)
         if step.kind == 'accept' then story.data:Begin('mission',step.id)
         elseif step.kind == 'complete' then
             story.data:Complete('mission',step.id)
+            reward=Rewards.TitleReputation(story.adventure.titles:Complete('mission',step.id))
             local receipt = {kind='mission',id=step.id,title=story.rules.missions:Get(step.id).name,rows={}}
             for i=step.firstStep,index-1 do Rewards.Append(receipt.rows,applied[i]) end
+            Rewards.Append(receipt.rows,reward)
             settlements[#settlements+1] = receipt
         elseif step.kind == 'recruit' then
             story.npcs:Recruit(step.prepared); reward = Rewards.Row(story,step.row,1)
         elseif step.kind == 'fact' then
             local before = story.data:GetValue(step.key)
             story.data:SetValue(step.key,step.value)
+            if before~=step.value and story.adventure.forge then story.adventure.forge:WitnessResolution(step.key,step.value) end
             reward = Rewards.Row(story,step.row,step.value-before)
         elseif step.kind == 'grant_item' then
             assert(story.adventure.equipment:Grant(step.row.targetId,step.row.value))

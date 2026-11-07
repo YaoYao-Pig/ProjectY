@@ -1,4 +1,5 @@
 local LuaLanguage = require('Language')
+local Identity=require('Game.Presentation.CharacterIdentity')
 local Class=require('Core.Class')
 local Panel=require('UI.UIPanelCtrl')
 local Text=require('Game.Equipment.EquipmentPresentation')
@@ -86,7 +87,7 @@ function Workbench:Refresh()
         local active=i<=self.system.adventure.PartyCount
         self.view['Actor'..i].gameObject:SetActive(active)
         if active then local member=self.system.adventure:GetPartyAt(i-1)
-            self.view['ActorText'..i].text=(member.Id==self.actorId and '● ' or '')..self.stats:Template(member).name
+            self.view['ActorText'..i].text=Identity.Format(Identity.Read(self.stats,member),18,12,'E3BE73',member.Id==self.actorId and '● ' or '')
         end
     end
     self.view.Title.text=Text.Name(self.rules,weapon)

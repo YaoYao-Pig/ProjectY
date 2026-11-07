@@ -16,6 +16,10 @@ function Text.Signed(label,value,suffix)
 end
 function Text.Name(rules,item)
     local legendary=rules.affixes:Legendary(item)
+    if rules.items:Get(item.ItemId).kind=='weapon' then
+        local legacy=CS.ProjectY.Data.EquipmentLegacyData.Of(item)
+        if legacy.PathId>0 then return Text.Paint('◆ '..string.format(LuaLanguage.ForgeNamedWeapon,rules.forge.paths:Get(legacy.PathId).name,rules.affixes:Name(item)),Text.colors.accent) end
+    end
     return Text.Paint((legendary and '◆ ' or '● ')..rules.affixes:Name(item),legendary and legendary.color or rules.affixes:Color(item))
 end
 function Text.Affix(rules,item)
@@ -61,13 +65,23 @@ function Text.Attributes(rules,item)
     local lines={Text.Heading(LuaLanguage.UIEquipmentPresentationLines4)};local definition=rules.items:Get(item.ItemId)
     if definition.kind=='weapon' then
         local weapon=rules.weapons:Get(item.ItemId)
-        lines[#lines+1]=Text.Value(LuaLanguage.UISkillTipText12,string.format('× %.2f',weapon.damageMultiplier*rules.affixes:Of(item).damageMultiplier*rules:Condition(item).Efficiency))
+        local legacy=CS.ProjectY.Data.EquipmentLegacyData.Of(item);local growth=1
+        if legacy.Forged then
+            growth=growth+assert(rules.forge:Recipe(item.ItemId)).damageBonus
+            if legacy.WishState==2 then growth=growth+rules.forge.paths:Get(legacy.PathId).wishDamageBonus end
+        end
+        lines[#lines+1]=Text.Value(LuaLanguage.UISkillTipText12,string.format('× %.2f',weapon.damageMultiplier*rules.affixes:Of(item).damageMultiplier*rules:Condition(item).Efficiency*growth))
         lines[#lines+1]=Text.Note(string.format(LuaLanguage.EquipmentWeaponArmor,weapon.armorPenetration,weapon.armorDamageMultiplier))
         lines[#lines+1]=Text.Note(LuaLanguage.EquipmentArmorRule)
     end
     for _,attribute in ipairs(rules.attributes:All()) do
         local value=rules:ItemAttributeBonus(item,attribute.code)
         if value~=0 then lines[#lines+1]=Text.Signed(attribute.name,value) end
+    end
+    for _,bonus in ipairs(rules.visualEffectConfig:GetTable('SpellcastingBonusTable'):All())do
+        if bonus.itemId==item.ItemId then
+            lines[#lines+1]=Text.Note(string.format(LuaLanguage.SpellcastingEquipmentBonus,bonus.capacity,bonus.regeneration))
+        end
     end
     if #lines==1 then lines[#lines+1]=Text.Note(LuaLanguage.UIEquipmentPresentationLinesLines110) end
     lines[#lines+1]=Text.Note(LuaLanguage.UIEquipmentPresentationLinesLines19)
@@ -102,7 +116,20 @@ function Text.Details(rules,item,actor,stats)
         local slots={head=LuaLanguage.UIEquipmentPresentationHead,body=LuaLanguage.UIEquipmentPresentationBody,legs=LuaLanguage.UIEquipmentPresentationLegs,feet=LuaLanguage.UIEquipmentPresentationFeet,offhand=LuaLanguage.UIEquipmentPresentationOffhand,ring=LuaLanguage.UIEquipmentPresentationRing}
         category=assert(slots[rules.wearables:Get(item.ItemId).slot])
     end
-    return table.concat({Text.Note(category),Text.Abilities(rules,item),Text.Attributes(rules,item),Text.Affix(rules,item),Text.Condition(rules,item),Text.Requirements(rules,item,actor,stats)},'\n\n')
+    local parts={Text.Note(category),Text.Abilities(rules,item),Text.Attributes(rules,item),Text.Affix(rules,item),Text.Condition(rules,item),Text.Requirements(rules,item,actor,stats)}
+    if kind=='weapon' then
+        local legacy=CS.ProjectY.Data.EquipmentLegacyData.Of(item)
+        if legacy.Forged then
+            local lines={Text.Heading(LuaLanguage.ForgeLegacyHeading),Text.Note(string.format(LuaLanguage.ForgeForgedDetail,math.floor(rules.forge:Recipe(item.ItemId).damageBonus*100+.5)))}
+            if legacy.PathId>0 then local path=rules.forge.paths:Get(legacy.PathId);lines[#lines+1]=Text.Paint(path.name,Text.colors.accent);lines[#lines+1]=Text.Note(path.description) end
+            if legacy.Awakened then
+                local wish=legacy.WishState==2 and LuaLanguage.ForgeWishComplete or legacy.WishState==1 and LuaLanguage.ForgeWishActive or LuaLanguage.ForgeWishUnaccepted
+                lines[#lines+1]=Text.Note(string.format(LuaLanguage.ForgeSpiritState,wish))
+            end
+            parts[#parts+1]=table.concat(lines,'\n')
+        end
+    end
+    return table.concat(parts,'\n\n')
 end
 function Text.Attachment(rules,itemId)
     local row=rules.runes:Get(itemId)

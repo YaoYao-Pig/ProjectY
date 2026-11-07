@@ -1,0 +1,133 @@
+{
+  "version": 1,
+  "name": "SpellRecipeTable",
+  "description": "法术投入、组合配方与真实战斗区域",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "技能ID",
+      "ref": "CombatSkillTable"
+    },
+    {
+      "name": "cost",
+      "type": "int",
+      "description": "基础施法点消耗",
+      "min": 0
+    },
+    {
+      "name": "boostLimit",
+      "type": "int",
+      "description": "额外强化投入上限",
+      "min": 0,
+      "max": 16
+    },
+    {
+      "name": "ingredientIds",
+      "type": "int[]",
+      "description": "所有基础技能同时掌握或装备授予后自动开放组合",
+      "ref": "CombatSkillTable",
+      "default": []
+    },
+    {
+      "name": "fieldKind",
+      "type": "string",
+      "description": "持续区域 fire/mist/mud；空为非区域",
+      "default": ""
+    },
+    {
+      "name": "turns",
+      "type": "int",
+      "description": "区域存续轮数",
+      "min": 0,
+      "max": 20,
+      "default": 0
+    },
+    {
+      "name": "pulseEffectId",
+      "type": "int",
+      "description": "区域进入/回合初效果；0无",
+      "min": 0,
+      "default": 0
+    },
+    {
+      "name": "recover",
+      "type": "int",
+      "description": "即时恢复施法点",
+      "min": 0,
+      "default": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 2301,
+      "cost": 2,
+      "boostLimit": 3
+    },
+    {
+      "id": 2302,
+      "cost": 2,
+      "boostLimit": 3
+    },
+    {
+      "id": 2303,
+      "cost": 1,
+      "boostLimit": 2
+    },
+    {
+      "id": 2304,
+      "cost": 5,
+      "boostLimit": 3,
+      "ingredientIds": [
+        2301,
+        2302
+      ],
+      "fieldKind": "fire",
+      "turns": 3,
+      "pulseEffectId": 804
+    },
+    {
+      "id": 2305,
+      "cost": 3,
+      "boostLimit": 0,
+      "ingredientIds": [
+        2301,
+        2303
+      ],
+      "fieldKind": "mist",
+      "turns": 3,
+      "pulseEffectId": 2305
+    },
+    {
+      "id": 2306,
+      "cost": 3,
+      "boostLimit": 0,
+      "ingredientIds": [
+        2302,
+        2303
+      ],
+      "fieldKind": "mud",
+      "turns": 3,
+      "pulseEffectId": 2306
+    },
+    {
+      "id": 2307,
+      "cost": 7,
+      "boostLimit": 3,
+      "ingredientIds": [
+        2304,
+        104
+      ],
+      "fieldKind": "fire",
+      "turns": 3,
+      "pulseEffectId": 804
+    },
+    {
+      "id": 2308,
+      "cost": 0,
+      "boostLimit": 0,
+      "recover": 3
+    }
+  ]
+}

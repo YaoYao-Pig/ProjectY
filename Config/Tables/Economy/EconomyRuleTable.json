@@ -1,0 +1,159 @@
+{
+  "version": 1,
+  "name": "EconomyRuleTable",
+  "description": "城镇贸易、银行与队伍每日运营规则。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "规则编号",
+      "min": 0
+    },
+    {
+      "name": "radius",
+      "type": "int",
+      "description": "城镇可达资源搜索半径",
+      "min": 0
+    },
+    {
+      "name": "foodBase",
+      "type": "int",
+      "description": "每名人形队员每日基础食物",
+      "min": 0
+    },
+    {
+      "name": "foodLevelStep",
+      "type": "int",
+      "description": "每提升多少级增加一份食物",
+      "min": 0
+    },
+    {
+      "name": "wageBase",
+      "type": "int",
+      "description": "队员基础日薪",
+      "min": 0
+    },
+    {
+      "name": "wagePerLevel",
+      "type": "int",
+      "description": "每级增加日薪",
+      "min": 0
+    },
+    {
+      "name": "animalFoodBase",
+      "type": "int",
+      "description": "动物每个占地格的基础食物",
+      "min": 0
+    },
+    {
+      "name": "termDays",
+      "type": "int",
+      "description": "投资期限，游戏日",
+      "min": 0
+    },
+    {
+      "name": "investmentLimit",
+      "type": "int",
+      "description": "每城同时可投入的本金上限",
+      "min": 0
+    },
+    {
+      "name": "maximumLossPercent",
+      "type": "int",
+      "description": "投资最大本金损失百分比",
+      "min": 0
+    },
+    {
+      "name": "maximumGainPercent",
+      "type": "int",
+      "description": "单期最大盈利百分比",
+      "min": 0
+    },
+    {
+      "name": "historyDays",
+      "type": "int",
+      "description": "保留真实日K线数量",
+      "min": 0
+    },
+    {
+      "name": "marketTarget",
+      "type": "int",
+      "description": "常态参考库存",
+      "min": 0
+    },
+    {
+      "name": "marketCapacity",
+      "type": "int",
+      "description": "市场单商品容量",
+      "min": 0
+    },
+    {
+      "name": "sellMultiplier",
+      "type": "float",
+      "description": "收购折扣",
+      "min": 0
+    },
+    {
+      "name": "hungerPenalty",
+      "type": "float",
+      "description": "每个饥饿日的状态减益比例",
+      "min": 0
+    },
+    {
+      "name": "debtPenalty",
+      "type": "float",
+      "description": "每欠一天日薪的状态减益比例",
+      "min": 0
+    },
+    {
+      "name": "maximumPenalty",
+      "type": "float",
+      "description": "状态减益上限",
+      "min": 0
+    },
+    {
+      "name": "starterFood",
+      "type": "int",
+      "description": "新远征初始口粮",
+      "min": 0
+    },
+    {
+      "name": "bankFacilityId",
+      "type": "int",
+      "description": "银行设施配置",
+      "min": 0
+    },
+    {
+      "name": "bankRoyalPlacementId",
+      "type": "int",
+      "description": "王城银行地块预设",
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "radius": 12,
+      "foodBase": 2,
+      "foodLevelStep": 5,
+      "wageBase": 2,
+      "wagePerLevel": 2,
+      "animalFoodBase": 3,
+      "termDays": 7,
+      "investmentLimit": 1000,
+      "maximumLossPercent": 30,
+      "maximumGainPercent": 15,
+      "historyDays": 60,
+      "marketTarget": 80,
+      "marketCapacity": 320,
+      "sellMultiplier": 0.8,
+      "hungerPenalty": 0.05,
+      "debtPenalty": 0.03,
+      "maximumPenalty": 0.4,
+      "starterFood": 60,
+      "bankFacilityId": 14,
+      "bankRoyalPlacementId": 9001
+    }
+  ]
+}

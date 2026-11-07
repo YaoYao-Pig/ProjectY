@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 -- Named equipment rules. Persistent inventory and encounter counters remain in C#.
 local Hex=require('Game.Map.HexGrid')
 local L=require('Language')
@@ -97,7 +98,7 @@ end
 function Legendary:Nearby(actor,hostile)
     local count=0
     for _,other in ipairs(self.battle:Units())do
-        if other~=actor and other.HP>0 and (hostile and self.battle:IsHostile(actor,other) or not hostile and self.battle:IsAllied(actor,other))
+        if other~=actor and Life.Alive(other) and (hostile and self.battle:IsHostile(actor,other) or not hostile and self.battle:IsAllied(actor,other))
             and self.battle.stats.animals:Distance(actor,other,self.battle.board)==1 then count=count+1 end
     end
     return count
@@ -243,7 +244,7 @@ function Legendary:BeforeHit(context)
     context.legendaryResonance=context.row and (context.row.mechanic=='encore'and self.battle.professions:Status(target,'resonance')
         or (context.row.mechanic=='discord'or context.row.mechanic=='beat'and context.row.statusTag=='resonance')and self.battle.professions:Status(source,'resonance'))
     local debt=self:Status(target,'debt');local partner=debt and self.battle:FindUnit(mark(target,'debt_partner'))
-    if partner and partner.HP>0 and self:Status(partner,'debt')then context.legendaryDebt={partner=partner,owner=debt.SourceId}end
+    if partner and Life.Alive(partner) and self:Status(partner,'debt')then context.legendaryDebt={partner=partner,owner=debt.SourceId}end
 end
 function Legendary:Mitigate(target,amount,impact,existingWard)
     self:Sync(target)
@@ -253,7 +254,7 @@ function Legendary:Mitigate(target,amount,impact,existingWard)
     if stance and context and context.weapon and self.battle:IsHostile(context.source,target)
         and self.battle.stats.animals:Distance(context.source,target,self.battle.board)==1 then
         self:Remove(target,'duel');amount=math.floor(amount*(100-self.byKind.duel.values[1])/100)
-        if context.source.HP>0 then self.battle.professions:ApplyStatus(target,context.source,'exposed',true)end
+        if Life.Alive(context.source) then self.battle.professions:ApplyStatus(target,context.source,'exposed',true)end
     end
     return math.max(0,amount-reduction)
 end
@@ -272,9 +273,9 @@ function Legendary:AfterHit(context)
     if context.damageResolved then
         if context.legendaryHarvestHit then put(source,'harvest_round',self.battle.data.Round)end
         if context.legendaryOath then self:Remove(source,'oath')end
-        if main(skill)and context.weapon and self:PrimaryAttack(source,skill)and source.HP>0 and self:Equipped(source,'bulwark')
+        if main(skill)and context.weapon and self:PrimaryAttack(source,skill)and Life.Alive(source) and self:Equipped(source,'bulwark')
             and self:Nearby(source,true)>=self.byKind.bulwark.values[1]and once(source,'bulwark_round',self.battle.data.Round)then source:SetGuard(self.byKind.bulwark.values[2])end
-        if main(skill)and skill.skillGroup=='spell'and source.HP>0 and self:Equipped(source,'theorem')and not(row and row.kind=='theorem')and not skill.legendaryElementRecorded then
+        if main(skill)and skill.skillGroup=='spell'and Life.Alive(source) and self:Equipped(source,'theorem')and not(row and row.kind=='theorem')and not skill.legendaryElementRecorded then
             for _,id in ipairs(skill.effectIds)do local effect=self.battle.effects:Get(id)
                 if effect.kind=='damage'then
                     local code=assert(self.elements[effect.damageType],'Unregistered legendary damage type')
@@ -283,35 +284,35 @@ function Legendary:AfterHit(context)
                 end
             end
         end
-        local consumed=(context.legendaryConsumed or 0)>0 or target.HP==0 and #context.consume>0
-        if source.HP>0 and self:Equipped(source,'distill')and consumed and context.row
+        local consumed=(context.legendaryConsumed or 0)>0 or not Life.Alive(target) and #context.consume>0
+        if Life.Alive(source) and self:Equipped(source,'distill')and consumed and context.row
             and (context.row.statusTag=='burning'or context.row.statusTag=='poison')and self.battle:IsHostile(source,target)
             and mark(source,'samples')<self.byKind.distill.values[1]and not self:Status(source,'distill',1)and not self:Status(source,'distill',2)then
             put(source,'samples',mark(source,'samples')+1);self:Apply(source,source,'distill',context.row.statusTag=='burning'and 1 or 2,true)
         end
         if context.legendaryProtected and (context.legendaryLost or 0)>0 then
-            if target.HP>0 and self:Equipped(target,'oath')and once(target,'oath_round',self.battle.data.Round)then self:Apply(target,target,'oath',1,true)end
-            if self:Equipped(target,'homecoming')and context.legendaryProtected.HP>0 and once(target,'homecoming_round',self.battle.data.Round)then self:Apply(target,context.legendaryProtected,'homecoming',1,true)end
+            if Life.Alive(target) and self:Equipped(target,'oath')and once(target,'oath_round',self.battle.data.Round)then self:Apply(target,target,'oath',1,true)end
+            if self:Equipped(target,'homecoming')and Life.Alive(context.legendaryProtected) and once(target,'homecoming_round',self.battle.data.Round)then self:Apply(target,context.legendaryProtected,'homecoming',1,true)end
         end
         if context.legendaryDebt and (context.legendaryLost or 0)>0 then self:DebtDamage(context)end
     end
-    if source.HP>0 and context.legendaryResonance and self:Equipped(source,'chorus')and once(source,'chorus_round',self.battle.data.Round)then self:Apply(source,source,'chorus')end
-    if not row or source.HP<=0 then return end
+    if Life.Alive(source) and context.legendaryResonance and self:Equipped(source,'chorus')and once(source,'chorus_round',self.battle.data.Round)then self:Apply(source,source,'chorus')end
+    if not row or not Life.Alive(source) then return end
     if row.kind=='bulwark'or row.kind=='lance'then
-        local cell=target.HP>0 and self.battle.professions:ForcedLanding(source,target,'push');if cell then self.battle.professions:Move(target,cell)end
+        local cell=Life.Alive(target) and self.battle.professions:ForcedLanding(source,target,'push');if cell then self.battle.professions:Move(target,cell)end
     elseif row.kind=='oath'or row.kind=='homecoming'then
         self.battle.professions:ApplyStatus(source,target,'interpose');source:SetGuard(row.values[2])
     elseif row.kind=='chorus'then self.battle.professions:ApplyStatus(source,target,'resonance',true)
     elseif row.kind=='duel'then self:Apply(source,source,'duel')
-    elseif row.kind=='harvest'and target.HP>0 then self:Apply(source,target,'harvest',1,true)
+    elseif row.kind=='harvest'and Life.Alive(target) then self:Apply(source,target,'harvest',1,true)
     elseif row.kind=='debt'then skill.legendaryLinked=skill.legendaryLinked or {};if self:Apply(source,target,'debt')then skill.legendaryLinked[#skill.legendaryLinked+1]=target end
     elseif row.kind=='banner'then self:Apply(source,target,'banner',1,true)end
 end
 function Legendary:DebtDamage(context)
     local link=context.legendaryDebt;local target=link.partner;self:ClearLink(context.target)
-    if target.HP<=0 then return end
+    if not Life.Alive(target) then return end
     local row=self.byKind.debt;local owner=self.battle:FindUnit(link.owner)
-    if not owner or owner.HP<=0 or not self:Equipped(owner,'debt')then return end
+    if not owner or not Life.Alive(owner) or not self:Equipped(owner,'debt')then return end
     local budget=(context.conditionalBudget or 0)*(context.legendaryCritical or 1)
     local amount=math.min(math.floor(context.legendaryLost*row.values[1]/100),math.floor(target.MaxHP*row.values[2]/100),math.floor(budget))
     local effect=copy(self.battle.effects:Get(row.effectIds[2]))
@@ -322,7 +323,7 @@ function Legendary:DebtDamage(context)
     self.battle.gameEffects:Execute(effect,target,amount,owner.Id,self.battle.stats:Template(owner).name,self.battle.skills:Get(row.skillIds[1]).name,owner,true,{legendaryDebt=true,damageType=effect.damageType},false,nil)
 end
 function Legendary:AfterAction(source,skill)
-    if source.HP>0 and (skill.legendaryHealing or 0)>0 and self:Equipped(source,'dawn')and once(source,'dawn_round',self.battle.data.Round)then
+    if Life.Alive(source) and (skill.legendaryHealing or 0)>0 and self:Equipped(source,'dawn')and once(source,'dawn_round',self.battle.data.Round)then
         source:SetGuard(math.min(self.byKind.dawn.values[2],math.floor(skill.legendaryHealing*self.byKind.dawn.values[1]/100)))
     end
     if skill.legendaryLinked and #skill.legendaryLinked==2 then
@@ -330,7 +331,7 @@ function Legendary:AfterAction(source,skill)
         for _,target in ipairs({a,b})do put(target,'debt_owner',source.Id);put(target,'debt_deadline',mark(source,'turn')+1)end
     elseif skill.legendaryLinked then for _,target in ipairs(skill.legendaryLinked)do self:ClearLink(target)end end
     for _,entry in ipairs(skill.legendaryBannerMoves or {})do
-        if entry.actor.HP>0 and self.battle.professions:CanStep(entry.actor,entry.cell,self.battle:Occupied(entry.actor.Id))then self.battle.professions:Move(entry.actor,entry.cell)end
+        if Life.Alive(entry.actor) and self.battle.professions:CanStep(entry.actor,entry.cell,self.battle:Occupied(entry.actor.Id))then self.battle.professions:Move(entry.actor,entry.cell)end
     end
 end
 function Legendary:StructureDamage(source,amount)
@@ -403,7 +404,7 @@ function Legendary:Walk(actor,path,opportunity,requiresMount)
     local actual={path[1]}
     for i=2,#path do
         if opportunity=='each_step'or opportunity=='start'and i==2 then require('Game.Battle.OpportunityAttacks').Resolve(self.battle,actor)end
-        if actor.HP<=0 or self.battle.data.Winner~=''or self.battle.stats.buffs:Skipping(actor)or requiresMount and not actor.MountedAnimal then return false,actual end
+        if not Life.Alive(actor) or self.battle.data.Winner~=''or self.battle.stats.buffs:Skipping(actor)or requiresMount and not actor.MountedAnimal then return false,actual end
         if not self:StepAt(actor,self.battle.board:Find(actor.Q,actor.R),path[i],self.battle:Occupied(actor.Id))then return false,actual end
         state().Move(actor,path[i].q,path[i].r);actual[#actual+1]=path[i]
         if self.battle.professions:OnMoved(actor,true)then self:Moved(actor,actual,false);return false,actual end
@@ -423,9 +424,9 @@ function Legendary:UseMovement(source,skill,target,landing)
         CS.ProjectY.Data.AnimalCompanionState.Attacked(source,self.battle.data.Round)
     end
     local arrived=self:Walk(actor,path,row.kind=='beast'and 'each_step'or 'start',row.kind=='lance')
-    if not arrived or target.HP<=0 or row.kind=='lance'and not source.MountedAnimal then
+    if not arrived or not Life.Alive(target) or row.kind=='lance'and not source.MountedAnimal then
         if row.kind=='beast'then CS.ProjectY.Data.AnimalCompanionState.ReleaseDefeated(source)end
-        if source.HP>0 then self:Remove(source,'lance')end
+        if Life.Alive(source) then self:Remove(source,'lance')end
         self.battle:CheckWinner();return true
     end
     local attack=skill

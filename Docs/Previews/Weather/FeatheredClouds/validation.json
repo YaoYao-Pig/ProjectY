@@ -1,0 +1,40 @@
+{
+  "worldCellCount": 2500,
+  "townCellCount": 4132,
+  "reports": [
+    {
+      "view": "world-rain",
+      "rain": 502,
+      "splashes": 128,
+      "clouds": 36,
+      "cloudMin": 249,
+      "cloudMax": 249,
+      "rainMin": 255,
+      "rainMax": 255,
+      "refreshes": 1
+    },
+    {
+      "view": "town-rain-shelter",
+      "rain": 505,
+      "splashes": 128,
+      "clouds": 36,
+      "cloudMin": 249,
+      "cloudMax": 249,
+      "rainMin": 255,
+      "rainMax": 255,
+      "refreshes": 1
+    },
+    {
+      "shelteredCells": 184,
+      "cloudOpticalDensity": 3.2,
+      "scope": "Cloud feathering and silhouette; world and town rain only",
+      "isolation": "No Play, scene saves, player saves or full-game startup"
+    }
+  ],
+  "outputs": [
+    "Docs/Previews/Weather/FeatheredClouds/world-rain.png",
+    "Docs/Previews/Weather/FeatheredClouds/town-rain-shelter.png"
+  ],
+  "playMode": false,
+  "gpuPerformanceMeasured": false
+}

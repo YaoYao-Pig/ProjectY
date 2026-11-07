@@ -1,4 +1,6 @@
+local Life=require('Game.Battle.ActorLife')
 local LuaLanguage = require('Language')
+local Identity=require('Game.Presentation.CharacterIdentity')
 -- 仅构造 HUD 投影；按钮仍走远征命令，位置/血量/消费均不复制为可变业务状态。
 local Model={}
 function Model.Build(adventure)
@@ -6,6 +8,9 @@ function Model.Build(adventure)
     local model={phase=data.Phase,title=LuaLanguage.UIMainHudTitle17,subtitle=LuaLanguage.UIMainHudSubtitle3,coins=adventure.player.Coins,
         rows={},menu={},party={},health={},logs={},interaction=nil,town=false}
     local function actor(row)
+        stats.spellcasting:Sync(row)
+        local casting=CS.ProjectY.Data.SpellcastingState
+        local morale,moraleMaximum,moraleName=stats.morale:Projection(row)
         local mount=row.MountedAnimal
         local name=adventure.narrative and adventure.narrative.npcs:ActorName(row) or stats:Template(row).name
         local effects=adventure.battle.gameEffects:Rows(row)
@@ -14,9 +19,17 @@ function Model.Build(adventure)
             effects[#effects+1]=effect
         end end
         return {id=row.Id,name='Lv.'..row.Growth.Level..' '..name..(mount and (' · '..stats:Template(mount).name) or ''),
+            identity=Identity.Read(stats,row,name),
             hp=mount and mount.HP or row.HP,maxHP=mount and mount.MaxHP or row.MaxHP,healthId=mount and mount.Id or row.Id,
+            healthKnown=not stats.inspection or stats.inspection:Known(mount or row,'health'),
+            riderHealthKnown=not stats.inspection or stats.inspection:Known(row,'health'),
+            apKnown=not stats.inspection or stats.inspection:Known(row,'actionPoints'),
+            castingKnown=not stats.inspection or stats.inspection:Known(row,'casting'),
             team=data.Phase=='battle' and adventure.battle:PresentationTeam(row) or row.Team,
             ap=row.AP,maxAP=stats:Template(row).actionPoints,effects=effects,
+            alive=Life.Alive(row),deathDoor=Life.Entered(row),dead=Life.Dead(row),
+            castingPoints=casting.Current(row),castingPointMax=casting.Maximum(row),castingPointRegen=casting.Regen(row),
+            morale=morale,moraleMaximum=moraleMaximum,moraleName=moraleName,
             riderHP=mount and row.HP or nil,riderMaxHP=mount and row.MaxHP or nil}
     end
     for i=0,data.PartyCount-1 do
@@ -42,7 +55,7 @@ function Model.Build(adventure)
         for key,speed in ipairs({1,2,4}) do model.rows[#model.rows+1]={title=string.format(LuaLanguage.UIMainHudTitle12, (travel.speed==speed and '● ' or ''), (speed)),body=string.format(LuaLanguage.UIMainHudBody16, (key)),command='travel_speed',a=speed,available=true} end
         local groups={dungeon={},forest={},battlefield={},town={},event={},nature={}}
         for _,site in ipairs(adventure.sites) do
-            if adventure.fog:Known(site.q,site.r,site.naturalKind=='HighMountain' and site.source.regionId or nil) and (not site.travelStop or adventure.areas:AreaId(site)) then
+            if adventure.fog:Known(site.q,site.r,site.naturalKind=='HighMountain' and site.source.regionId or nil,site.worldWonderId) and (not site.travelStop or adventure.areas:AreaId(site)) then
             local ok,reason;local kind='event'
             local areaId=adventure.areas:AreaId(site)
             if areaId then
@@ -86,16 +99,16 @@ function Model.Build(adventure)
             end
         end
         if data.Phase=='battle' or (data.Phase=='area' and area.areaType==areas.forestType) then
-            for i=0,data.PartyCount-1 do local member=data:GetPartyAt(i);if member.HP>0 then model.health[#model.health+1]=actor(member) end end
+            for i=0,data.PartyCount-1 do local member=data:GetPartyAt(i);if Life.Alive(member) then model.health[#model.health+1]=actor(member) end end
             local visible={};for i=0,state.VisibleCount-1 do visible[state:GetVisibleAt(i)]=true end
             for i=0,state.EncounterCount-1 do local group=state:GetEncounterAt(i)
                 for j=0,group.EnemyCount-1 do local enemy=group:GetEnemyAt(j);local cell=area:Find(enemy.Q,enemy.R)
-                    if enemy.HP>0 and enemy.AnimalOwnerId==0 and visible[cell.index] then model.health[#model.health+1]=actor(enemy) end
+                    if Life.Alive(enemy) and enemy.AnimalOwnerId==0 and visible[cell.index] then model.health[#model.health+1]=actor(enemy) end
                 end
             end
         end
     elseif data.Phase=='battle' then
-        for _,unit in ipairs(adventure.battle:Units()) do if unit.HP>0 then local row=actor(unit);row.screen=true;model.health[#model.health+1]=row end end
+        for _,unit in ipairs(adventure.battle:Units()) do if Life.Alive(unit) then local row=actor(unit);row.screen=true;model.health[#model.health+1]=row end end
     end
     if data.Phase=='map' or data.Phase=='area' then
         if data.Phase=='map' then
@@ -106,6 +119,20 @@ function Model.Build(adventure)
         model.menu[#model.menu+1]={title=torch.label,body=LuaLanguage.UIMainHudBody3,command='torch_toggle',available=torch.available}
         model.menu[#model.menu+1]={title=LuaLanguage.UIMainHudTitle2,body=string.format(LuaLanguage.UIMainHudBody2, (adventure.characterSaves.Status)),command='save_characters',available=true}
         model.menu[#model.menu+1]={title=LuaLanguage.UIMainHudTitle,body=LuaLanguage.UIMainHudBody,command='campaign_load_menu',available=true}
+    end
+    local economy=adventure.economy
+    if economy then
+        local summary=economy:Summary();model.food=summary.food
+        if data.Phase=='map' or data.Phase=='area' then
+            local details={}
+            for _,row in ipairs(summary.rows) do local account=economy.data:FindAccount(row.actor.Id)
+                details[#details+1]=string.format(LuaLanguage.EconomyMemberCost,stats:Template(row.actor).name,row.food,row.wage,account and account.HungryDays or 0,account and account.Arrears or 0)
+            end
+            table.insert(model.rows,1,{title=string.format(LuaLanguage.EconomyUpkeepTitle,summary.food,summary.dailyFood,summary.dailyWages),
+                body=string.format(LuaLanguage.EconomyUpkeepBody,summary.debt,summary.hungry)..'\n'..table.concat(details,'\n'),
+                command='economy_pay_wages',a=0,b=economy.data.Revision,available=summary.debt>0 and adventure.player.Coins>0})
+        end
+        if model.town then model.subtitle=economy:Tags(data.Areas.ActiveSiteId) end
     end
     local entries=adventure.growth.chronicle:Rows()
     for i=1,math.min(2,#entries) do

@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 local L=require('Language')
 local Hex=require('Game.Map.HexGrid')
 local Dice=require('Game.Presentation.DiceChecks')
@@ -24,7 +25,7 @@ function Speech:Active() return state().Target(self.story.data)~=nil end
 function Speech:Companions()
     local result={}
     for i=0,self.adventure.data.PartyCount-1 do local owner=self.adventure.data:GetPartyAt(i)
-        if bound(owner) and bound(owner).HP>0 then result[#result+1]=owner end
+        if bound(owner) and Life.Alive(bound(owner)) then result[#result+1]=owner end
     end
     return result
 end
@@ -38,7 +39,7 @@ function Speech:Knows(actor,id)
     return false
 end
 function Speech:CanCast(actor)
-    if not actor or actor.HP<=0 or actor.Team~=1 then return false,L.AnimalSpeechLivingCaster end
+    if not actor or not Life.Alive(actor) or actor.Team~=1 then return false,L.AnimalSpeechLivingCaster end
     if not self:Knows(actor,self.rule.skillId)then return false,L.AnimalSpeechNotLearned end
     return self.adventure.battle.stats.equipment:CheckSkillEquipment(actor,self.skill,self.adventure.battle.stats)
 end
@@ -51,7 +52,7 @@ function Speech:FindTarget(id)
     if self.adventure.data.Phase=='area' then return self.adventure.areas:FindAnimal(id) end
 end
 function Speech:ValidTarget(target)
-    if not target or target.HP<=0 or not self.animals.byUnit[target.TemplateId] then return false,L.AnimalSpeechTarget end
+    if not target or not Life.Alive(target) or not self.animals.byUnit[target.TemplateId] then return false,L.AnimalSpeechTarget end
     return true
 end
 function Speech:Targets(actor)
@@ -63,7 +64,7 @@ function Speech:Targets(actor)
         end
     end
     for i=0,self.adventure.data.PartyCount-1 do local owner=self.adventure.data:GetPartyAt(i)
-        if bound(owner) and bound(owner).HP>0 then result[#result+1]=owner.Id end
+        if bound(owner) and Life.Alive(bound(owner)) then result[#result+1]=owner.Id end
     end
     return result
 end
@@ -146,7 +147,7 @@ function Speech:CanDiscuss()
     end
     if target.TameRetryTurns>0 then return false,string.format(L.AnimalSpeechRetry,target.TameRetryTurns)end
     local actor=self.adventure.characterSkills:Actor(self.story.data.DialogueActorId)
-    if not actor or actor.HP<=0 then return false,L.AnimalSpeechLivingCaster end
+    if not actor or not Life.Alive(actor) then return false,L.AnimalSpeechLivingCaster end
     return true
 end
 function Speech:CanTame(actor)

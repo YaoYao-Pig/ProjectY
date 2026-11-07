@@ -38,5 +38,29 @@
 ---@field SkillTip CS.ProjectY.UI.SkillTooltipView
 ---@field TurnList CS.ProjectY.UI.LuaReference
 ---@field TurnTemplate CS.ProjectY.UI.LuaReference
+---@field CastingStatus CS.UnityEngine.UI.Text
+---@field CastingDetail CS.UnityEngine.UI.Text
+---@field CastingLess CS.UnityEngine.UI.Button
+---@field CastingLessText CS.UnityEngine.UI.Text
+---@field CastingMore CS.UnityEngine.UI.Button
+---@field CastingMoreText CS.UnityEngine.UI.Text
+---@field CastingPanel CS.UnityEngine.RectTransform
+---@field AnatomyPanel CS.UnityEngine.RectTransform
+---@field AnatomyTitle CS.UnityEngine.UI.Text
+---@field AnatomyHelp CS.UnityEngine.UI.Text
+---@field SkillControls CS.UnityEngine.RectTransform
+---@field ItemControls CS.UnityEngine.RectTransform
+---@field AnatomyPart0 CS.UnityEngine.UI.Button
+---@field AnatomyPart0Text CS.UnityEngine.UI.Text
+---@field AnatomyPart1 CS.UnityEngine.UI.Button
+---@field AnatomyPart1Text CS.UnityEngine.UI.Text
+---@field AnatomyPart2 CS.UnityEngine.UI.Button
+---@field AnatomyPart2Text CS.UnityEngine.UI.Text
+---@field AnatomyPart3 CS.UnityEngine.UI.Button
+---@field AnatomyPart3Text CS.UnityEngine.UI.Text
+---@field AnatomyPart4 CS.UnityEngine.UI.Button
+---@field AnatomyPart4Text CS.UnityEngine.UI.Text
+---@field AnatomyPart5 CS.UnityEngine.UI.Button
+---@field AnatomyPart5Text CS.UnityEngine.UI.Text
 local View = {}
 return View

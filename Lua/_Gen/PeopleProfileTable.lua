@@ -1,0 +1,15 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class PeopleProfileTableRow
+---@field id number 稳定动机ID
+---@field kind "livelihood"|"apprentice"|"guardian"|"respect" 招募规则
+---@field name string 人物动机与对白：name
+---@field background string 人物动机与对白：background
+---@field opening string 人物动机与对白：opening
+---@field request string 人物动机与对白：request
+---@field joinedText string 人物动机与对白：joinedText
+---@field residentTemplateIds number[] 适用普通居民模板
+---@field fee number 付费路线金币
+---@field mentorSkills number 导师已学技能数
+---@field victories number 战阵认同所需真实胜利
+---@field trustRequired number 关系路线所需信任
+return {["name"]="PeopleProfileTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\168\179\229\174\154\229\138\168\230\156\186ID",["min"]=1,["max"]=4},{["name"]="kind",["type"]="enum",["description"]="\230\139\155\229\139\159\232\167\132\229\136\153",["values"]={"livelihood","apprentice","guardian","respect"}},{["name"]="name",["type"]="text",["description"]="\228\186\186\231\137\169\229\138\168\230\156\186\228\184\142\229\175\185\231\153\189\239\188\154name"},{["name"]="background",["type"]="text",["description"]="\228\186\186\231\137\169\229\138\168\230\156\186\228\184\142\229\175\185\231\153\189\239\188\154background"},{["name"]="opening",["type"]="text",["description"]="\228\186\186\231\137\169\229\138\168\230\156\186\228\184\142\229\175\185\231\153\189\239\188\154opening"},{["name"]="request",["type"]="text",["description"]="\228\186\186\231\137\169\229\138\168\230\156\186\228\184\142\229\175\185\231\153\189\239\188\154request"},{["name"]="joinedText",["type"]="text",["description"]="\228\186\186\231\137\169\229\138\168\230\156\186\228\184\142\229\175\185\231\153\189\239\188\154joinedText"},{["name"]="residentTemplateIds",["type"]="int[]",["description"]="\233\128\130\231\148\168\230\153\174\233\128\154\229\177\133\230\176\145\230\168\161\230\157\191",["ref"]="MapAreaTownNpcTable"},{["name"]="fee",["type"]="int",["description"]="\228\187\152\232\180\185\232\183\175\231\186\191\233\135\145\229\184\129",["min"]=0},{["name"]="mentorSkills",["type"]="int",["description"]="\229\175\188\229\184\136\229\183\178\229\173\166\230\138\128\232\131\189\230\149\176",["min"]=0},{["name"]="victories",["type"]="int",["description"]="\230\136\152\233\152\181\232\174\164\229\144\140\230\137\128\233\156\128\231\156\159\229\174\158\232\131\156\229\136\169",["min"]=0},{["name"]="trustRequired",["type"]="int",["description"]="\229\133\179\231\179\187\232\183\175\231\186\191\230\137\128\233\156\128\228\191\161\228\187\187",["min"]=0,["max"]=100}},["fingerprint"]="61d8c3857720ef29d3b1637bb9986ced7ad92fa26514a8258aad6f7c3ed11810"}

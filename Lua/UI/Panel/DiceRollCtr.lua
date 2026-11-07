@@ -44,7 +44,7 @@ function Dice:Result()
     else
         assert(type(self.check.passed)=='boolean','A settled check needs a boolean outcome')
         self.view.Result.text='<color='..(self.check.passed and '#79E6C3' or '#ED897C')..'>'..
-            self.check.reading..'  ·  '..(self.check.passed and LuaLanguage.DiceSuccess or LuaLanguage.DiceFailure)..'</color>'
+            self.check.reading..'  ·  '..(self.check.passed and (self.check.successLabel or LuaLanguage.DiceSuccess) or (self.check.failureLabel or LuaLanguage.DiceFailure))..'</color>'
     end
     self.view.Continue.interactable=true;self.view.Reveal.gameObject:SetActive(false)
 end

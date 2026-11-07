@@ -1,0 +1,78 @@
+{
+  "PeopleGrowthWins": {
+    "default": "共同胜利 %d/%d",
+    "description": "个人成长条件进度；已完成次数、需要次数"
+  },
+  "PeopleGrowthRescues": {
+    "default": "危急救援 %d/%d",
+    "description": "个人成长条件进度；已完成次数、需要次数"
+  },
+  "PeopleGrowthLearning": {
+    "default": "正式研习 %d/%d",
+    "description": "个人成长条件进度；已完成次数、需要次数；不含赠技"
+  },
+  "PeopleGrowthAny": {
+    "default": "满足任一经历：%s",
+    "description": "个人成长任一门槛；完整计数项列表"
+  },
+  "PeopleGrowthAll": {
+    "default": "所需经历：%s",
+    "description": "个人成长全部门槛；完整计数项列表"
+  },
+  "PeopleGrowthSeparator": {
+    "default": "；",
+    "description": "个人成长计数项之间的分隔符"
+  },
+  "PeopleGrowthTrait": {
+    "default": "获得特质「%s」：%s",
+    "description": "个人成长奖励；特质名、特质配置描述"
+  },
+  "PeopleGrowthReplaces": {
+    "default": "替换此前选择的特质「%s」，其原加成不再保留。",
+    "description": "个人成长替换奖励说明；原特质名"
+  },
+  "PeopleGrowthSkill": {
+    "default": "掌握技能「%s」：%s",
+    "description": "个人成长技能奖励；技能名、技能配置描述"
+  },
+  "PeopleGrowthSkillKnown": {
+    "default": "已掌握技能「%s」：%s。本次仍获得新的特质，技能不重复授予。",
+    "description": "个人成长已有技能说明；技能名、技能配置描述"
+  },
+  "PeopleGrowthCompleted": {
+    "default": "个人成长已完成",
+    "description": "人物已完成首版两个个人成长阶段的状态"
+  },
+  "PeopleGrowthNotReady": {
+    "default": "还需要更多真实经历。",
+    "description": "个人成长计数门槛尚未满足"
+  },
+  "PeopleGrowthActorUnavailable": {
+    "default": "这名角色当前无法作出成长选择。",
+    "description": "个人成长目标不在队伍、未入队或已经死亡"
+  },
+  "PeopleGrowthChoiceBody": {
+    "default": "%s\n\n%s\n\n%s",
+    "description": "个人成长选项正文；配置说明、进度、实际奖励"
+  },
+  "PeopleGrowthExploreOnly": {
+    "default": "请在探索间隙作出成长选择。",
+    "description": "战斗等非探索状态禁止个人成长选择"
+  },
+  "PeopleGrowthInvalidChoice": {
+    "default": "这个成长选项已失效，请重新查看。",
+    "description": "个人成长阶段或选项不一致、重复提交"
+  },
+  "PeopleGrowthMemory": {
+    "default": "%s\n%s",
+    "description": "个人成长经历；配置经历正文、实际奖励"
+  },
+  "PeopleGrowthJourney": {
+    "default": "旅途中",
+    "description": "个人成长当前无地点时的经历地点"
+  },
+  "PeopleGrowthHistoryEntry": {
+    "default": "%s：%s",
+    "description": "已保存的个人成长选择；选择标题、配置经历正文"
+  }
+}

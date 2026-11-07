@@ -83,6 +83,11 @@ function Panel:GoToNpc(id)
     self.demo:SendCommand('gm_goto_npc',id,0)
     if self.demo.BattleHUDRevision==previous then self.view.Result.text=LuaLanguage.UIGMResultText3;return end
     local errorText=self.demo.LastError
+    if (not errorText or errorText=='') and self.gm.npcs.story.rules.npcs:Get(id).locationKind=='event' then
+        local site=self.gm.adventure.specialEvents:SiteForNpc(id)
+        self.view.Result.text=string.format(LuaLanguage.GmNpcEventEntered,site.name)
+        self:Close();return
+    end
     self.view.Result.text=errorText and errorText~='' and errorText or (string.format(LuaLanguage.UIGMResultText5, (self.gm.npcs.story.rules.npcs:Get(id).name)))
     self:RefreshNpcs()
 end

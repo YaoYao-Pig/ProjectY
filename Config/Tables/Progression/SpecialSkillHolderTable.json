@@ -1,0 +1,67 @@
+{
+  "version": 1,
+  "name": "SpecialSkillHolderTable",
+  "description": "配置单位模板或具名 NPC 原本掌握的特殊技能；unitTemplateId 与 npcId 恰有一个为正数，0 表示不按该来源匹配。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "特殊技能原始持有者配置 ID",
+      "min": 1
+    },
+    {
+      "name": "unitTemplateId",
+      "type": "int",
+      "description": "CombatUnitTable 单位模板 ID；0 表示不按模板匹配，与 npcId 二选一，由特殊技能规则校验正数引用",
+      "min": 0
+    },
+    {
+      "name": "npcId",
+      "type": "int",
+      "description": "NpcTable 具名 NPC ID；0 表示不按 NPC 匹配，与 unitTemplateId 二选一，由特殊技能规则校验正数引用",
+      "min": 0
+    },
+    {
+      "name": "skillIds",
+      "type": "int[]",
+      "description": "原始持有的特殊技能 ID；同一持有者不重复配置",
+      "ref": "SpecialSkillTable",
+      "min": 1
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "unitTemplateId": 705,
+      "npcId": 0,
+      "skillIds": [
+        2701
+      ]
+    },
+    {
+      "id": 2,
+      "unitTemplateId": 706,
+      "npcId": 0,
+      "skillIds": [
+        2702
+      ]
+    },
+    {
+      "id": 3,
+      "unitTemplateId": 0,
+      "npcId": 202,
+      "skillIds": [
+        2702
+      ]
+    },
+    {
+      "id": 4,
+      "unitTemplateId": 0,
+      "npcId": 204,
+      "skillIds": [
+        2703
+      ]
+    }
+  ]
+}

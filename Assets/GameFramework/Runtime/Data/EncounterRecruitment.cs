@@ -8,11 +8,11 @@ namespace ProjectY.Data
         public static void Validate(AdventureData data, MapAreaEncounterData group, CombatActorData actor)
         {
             if (data == null || group == null || actor == null) throw new ArgumentNullException("Event recruit");
-            if ((data.Phase != "map" && data.Phase != "area") || data.PartyCount >= 4 || actor.HP <= 0 ||
+            if ((data.Phase != "map" && data.Phase != "area") || PartyRoster.Count(data) >= PartyRoster.ActiveLimit+PartyRoster.ReserveLimit || actor.HP <= 0 ||
                 actor.Team != 4 || actor.AnimalOwnerId != 0 || group.PartyId != 0 || group.Detached || group.EnemyCount <= 1)
                 throw new InvalidOperationException("The encounter ally cannot join this squad.");
-            for (int i = 0; i < data.PartyCount; i++)
-                if (data.GetPartyAt(i).Id == actor.Id) throw new InvalidOperationException("Duplicate recruit identity.");
+            for (int i = 0; i < PartyRoster.Count(data); i++)
+                if (PartyRoster.At(data,i).Id == actor.Id) throw new InvalidOperationException("Duplicate recruit identity.");
             if (!group.ContainsRecruit(actor) || data.Areas.RecruitEncounterOwner(group) == null || !data.Equipment.CombatInitialized(actor.Id))
                 throw new InvalidOperationException("Event recruit must belong to this expedition and retain its combat equipment.");
         }

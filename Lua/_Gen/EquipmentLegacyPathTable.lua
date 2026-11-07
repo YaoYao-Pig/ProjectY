@@ -1,0 +1,17 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class EquipmentLegacyPathTableRow
+---@field id number 成长路线身份
+---@field kind string 稳定能力身份
+---@field name string 路线及武器称号
+---@field description string 能力与限制
+---@field deedIds number[] 任一事迹满足即可选择
+---@field damageBonus number 对敌对具名传奇的条件伤害倍率
+---@field guardValue number 首轮本人行动开始时护卫
+---@field wishDamageBonus number 完成器灵愿望后的本剑伤害倍率
+---@field spiritOpening string 器灵开场
+---@field personality string 器灵性格
+---@field wish string 器灵首次愿望
+---@field wishAccepted string 接受愿望回应
+---@field wishProgress string 愿望进行中回应
+---@field wishCompleted string 愿望完成回应
+return {["name"]="EquipmentLegacyPathTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\230\136\144\233\149\191\232\183\175\231\186\191\232\186\171\228\187\189",["min"]=1},{["name"]="kind",["type"]="string",["description"]="\231\168\179\229\174\154\232\131\189\229\138\155\232\186\171\228\187\189"},{["name"]="name",["type"]="text",["description"]="\232\183\175\231\186\191\229\143\138\230\173\166\229\153\168\231\167\176\229\143\183"},{["name"]="description",["type"]="text",["description"]="\232\131\189\229\138\155\228\184\142\233\153\144\229\136\182"},{["name"]="deedIds",["type"]="int[]",["description"]="\228\187\187\228\184\128\228\186\139\232\191\185\230\187\161\232\182\179\229\141\179\229\143\175\233\128\137\230\139\169",["ref"]="EquipmentDeedTable"},{["name"]="damageBonus",["type"]="float",["description"]="\229\175\185\230\149\140\229\175\185\229\133\183\229\144\141\228\188\160\229\165\135\231\154\132\230\157\161\228\187\182\228\188\164\229\174\179\229\128\141\231\142\135",["min"]=0},{["name"]="guardValue",["type"]="int",["description"]="\233\166\150\232\189\174\230\156\172\228\186\186\232\161\140\229\138\168\229\188\128\229\167\139\230\151\182\230\138\164\229\141\171",["min"]=0},{["name"]="wishDamageBonus",["type"]="float",["description"]="\229\174\140\230\136\144\229\153\168\231\129\181\230\132\191\230\156\155\229\144\142\231\154\132\230\156\172\229\137\145\228\188\164\229\174\179\229\128\141\231\142\135",["min"]=0},{["name"]="spiritOpening",["type"]="text",["description"]="\229\153\168\231\129\181\229\188\128\229\156\186"},{["name"]="personality",["type"]="text",["description"]="\229\153\168\231\129\181\230\128\167\230\160\188"},{["name"]="wish",["type"]="text",["description"]="\229\153\168\231\129\181\233\166\150\230\172\161\230\132\191\230\156\155"},{["name"]="wishAccepted",["type"]="text",["description"]="\230\142\165\229\143\151\230\132\191\230\156\155\229\155\158\229\186\148"},{["name"]="wishProgress",["type"]="text",["description"]="\230\132\191\230\156\155\232\191\155\232\161\140\228\184\173\229\155\158\229\186\148"},{["name"]="wishCompleted",["type"]="text",["description"]="\230\132\191\230\156\155\229\174\140\230\136\144\229\155\158\229\186\148"}},["fingerprint"]="bbf92b8f1a58af66c4c224578aa188504af04c4beae8220628be3ef1f09419d3"}

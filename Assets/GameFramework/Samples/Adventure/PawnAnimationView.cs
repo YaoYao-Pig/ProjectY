@@ -18,7 +18,7 @@ namespace ProjectY.Samples
         [SerializeField] private Transform head;
         private readonly Queue<CombatActorData.PresentationAction> pending = new Queue<CombatActorData.PresentationAction>();
         private readonly Dictionary<string, Transform> anchors = new Dictionary<string, Transform>();
-        private bool initialized, ready, dying, dead, reactionPending, moving;
+        private bool initialized, ready, dying, dead, reactionPending, moving,wasAlive;
         private int sequence, hp, poseId = -1, motionModuleId = -1;
         private float remaining, reactionDelay, deadElapsed;
         private string currentState, idleState = "Idle", actionState;
@@ -108,18 +108,18 @@ namespace ProjectY.Samples
             fixedFacing=actor.FixedFootprint;
             if (!initialized)
             {
-                hp = actor.HP; sequence = actor.ActionSequence; initialized = true;
+                hp = actor.HP; wasAlive=actor.Alive; sequence = actor.ActionSequence; initialized = true;
                 return; // A newly revealed actor must not replay historical actions.
             }
             foreach (var action in actor.Actions)
                 if (action.Sequence > sequence) pending.Enqueue(action);
             sequence = actor.ActionSequence;
             facing = target;
-            if (actor.HP < hp)
+            if (actor.HP < hp || wasAlive && !actor.Alive)
             {
-                reactionPending = true; reactionDelay = impactDelay; dying = actor.HP <= 0;
+                reactionPending = true; reactionDelay = impactDelay; dying = !actor.Alive;
             }
-            hp = actor.HP;
+            hp = actor.HP;wasAlive=actor.Alive;
         }
         public void Tick(float deltaTime, float speed, Transform owner)
         {

@@ -85,8 +85,9 @@
     {
       "name": "townRadius",
       "type": "int",
-      "description": "距城镇入口的最大六边形格数；0 不限制城镇距离",
-      "min": 0
+      "description": "旧配置兼容字段；特殊事件保证生成，不再使用城镇距离筛选",
+      "min": 0,
+      "default": 0
     },
     {
       "name": "objective",
@@ -170,11 +171,18 @@
       "allyUnitId": 910,
       "allyIndex": 4,
       "missionId": 1001,
-      "townRadius": 3,
+      "townRadius": 0,
       "objective": "审判目标：击败控方斗士，同时保证骑士存活。骑士自主行动，请支援他。",
       "successText": "审判获胜，骑士活了下来。他愿意与你同行。打开任务手记，在招募任务「骑士审判」中邀请他入队；队伍已满时资格会保留。",
       "deathText": "控方斗士已败，但骑士没能活到审判结束。他的死亡已成定局，无法再招募。",
-      "failureText": "你们未能赢得比武审判。骑士被判有罪并处决，无法再招募。"
+      "failureText": "你们未能赢得比武审判。骑士被判有罪并处决，无法再招募。",
+      "allyParticipates": true,
+      "killAllyOnFailure": true,
+      "initialHealthPercent": 100,
+      "initialInjuryPartIds": [],
+      "initialInjuryTypeIds": [],
+      "initialInjuryDamage": [],
+      "injuryRecoveryMinutes": []
     },
     {
       "id": 2,

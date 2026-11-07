@@ -12,12 +12,13 @@ local function indexMap(map)
 end
 function Fog:Bind(map)
     self.map=map;self.indices=indexMap(map);self.lastQ=nil;self.lastR=nil;self.fullVision=false
-    self.knownRegions={};self.indexedKnownCount=0
+    self.knownRegions={};self.knownWonders={};self.indexedKnownCount=0
 end
-function Fog:Cells(indices,q,r)
+function Fog:Cells(indices,q,r,radius)
+    radius=radius or self.radius
     local cells={}
-    for dr=-self.radius,self.radius do
-        for dq=math.max(-self.radius,-dr-self.radius),math.min(self.radius,-dr+self.radius) do
+    for dr=-radius,radius do
+        for dq=math.max(-radius,-dr-radius),math.min(radius,-dr+radius) do
             local index=indices[Hex.Key(q+dq,r+dr)]
             if index then cells[#cells+1]=index end
         end
@@ -27,8 +28,9 @@ end
 function Fog:Update()
     if self.fullVision then return end
     local travel=self.adventure.travel.data
-    if self.lastQ==travel.Q and self.lastR==travel.R then return end
-    self.data:Reveal(self:Cells(self.indices,travel.Q,travel.R));self.lastQ=travel.Q;self.lastR=travel.R
+    local radius=self.radius+self.adventure.camp.loadout:VisionBonus()
+    if self.lastQ==travel.Q and self.lastR==travel.R and self.lastRadius==radius then return end
+    self.data:Reveal(self:Cells(self.indices,travel.Q,travel.R,radius));self.lastQ=travel.Q;self.lastR=travel.R;self.lastRadius=radius
 end
 function Fog:RevealAll()
     assert(self.map,'Bind a world map before revealing it')
@@ -45,18 +47,20 @@ end
 function Fog:Reset(map)
     self:Bind(map);self.data:Reset(#map:GetCells());self:Update()
 end
-function Fog:Known(q,r,regionId)
+function Fog:Known(q,r,regionId,wonderId)
     local index=self.indices[Hex.Key(q,r)]
     if index~=nil and self.data:IsKnown(index) then return true end
-    if not regionId then return false end
+    if not regionId and not wonderId then return false end
     -- Derived query index only. Discovery remains in native Data and is append-only between Bind/Reset.
     local count=self.data.KnownCount
-    if count<self.indexedKnownCount then self.knownRegions={};self.indexedKnownCount=0 end
+    if count<self.indexedKnownCount then self.knownRegions={};self.knownWonders={};self.indexedKnownCount=0 end
     for i=self.indexedKnownCount,count-1 do
         local cell=self.map.cells[self.data:GetKnownAt(i)]
         self.knownRegions[cell.regionId]=true
+        if cell.wonderId then self.knownWonders[cell.wonderId]=true end
     end
     self.indexedKnownCount=count
+    if wonderId then return self.knownWonders[wonderId]==true end
     return self.knownRegions[regionId]==true
 end
 function Fog:Visible(q,r)
@@ -68,6 +72,6 @@ function Fog:Prepare(map,prepared)
     assert(data.CellCount==#map:GetCells(),'存档大地图探索范围与地图不符')
     local travel=CS.ProjectY.Data.ExpeditionPersistence.Travel(prepared)
     assert(map:FindCell(travel.Q,travel.R),'存档旅行位置不在地图内')
-    data:Reveal(self:Cells(indexMap(map),travel.Q,travel.R))
+    data:Reveal(self:Cells(indexMap(map),travel.Q,travel.R,self.radius+self.adventure.camp.loadout:VisionBonus(prepared)))
 end
 return Fog

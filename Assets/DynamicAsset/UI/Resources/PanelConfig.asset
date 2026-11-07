@@ -551,9 +551,9 @@ MonoBehaviour:
     Kind: 0
     Layer: Popup
     Modal: 1
-    ModalDimAlpha: 0.65
+    ModalDimAlpha: 0
     Cache: 1
-    CloseOnBack: 1
+    CloseOnBack: 0
     IsWorldUI: 0
     SupportsHotSwitch: 0
     PauseWorldOnOpen: 1
@@ -577,7 +577,7 @@ MonoBehaviour:
     Kind: 0
     Layer: Popup
     Modal: 1
-    ModalDimAlpha: 0.82
+    ModalDimAlpha: 0
     Cache: 1
     CloseOnBack: 0
     IsWorldUI: 0
@@ -702,3 +702,81 @@ MonoBehaviour:
     PauseWorldOnOpen: 1
     CloseOnSceneChange: 1
     Prefab: {fileID: 350638124208630628, guid: a91acc35c7d8d38478e55f4338687413, type: 3}
+  - Name: CampaignSaveEntry
+    Module: Adventure
+    Kind: 1
+    Layer: Main
+    Modal: 0
+    ModalDimAlpha: 0.65
+    Cache: 1
+    CloseOnBack: 1
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 7636906596411638503, guid: e8568bb7e691cfa43bc0ed9341d843d2, type: 3}
+  - Name: Bank
+    Module: Economy
+    Kind: 0
+    Layer: Popup
+    Modal: 1
+    ModalDimAlpha: 0.65
+    Cache: 1
+    CloseOnBack: 1
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 1
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 9017901391668951832, guid: 9e1b692e7c7a41b4e9fa4ca3a1c79ebd, type: 3}
+  - Name: InspectionTarget
+    Module: Adventure
+    Kind: 1
+    Layer: Popup
+    Modal: 0
+    ModalDimAlpha: 0.68
+    Cache: 1
+    CloseOnBack: 1
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 0
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 897193546107594084, guid: 065f5efbb3969184cb92985228011500, type: 3}
+  - Name: UnitDetails
+    Module: Adventure
+    Kind: 0
+    Layer: Popup
+    Modal: 1
+    ModalDimAlpha: 0.68
+    Cache: 1
+    CloseOnBack: 1
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 1
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 3145125816407680773, guid: d007a56b227cdf34a8ca060d7f0c0e5a, type: 3}
+  - Name: TitleForge
+    Module: Adventure
+    Kind: 0
+    Layer: Popup
+    Modal: 1
+    ModalDimAlpha: 0.72
+    Cache: 1
+    CloseOnBack: 1
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 1
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 8088932696805622957, guid: 8eac4c6d0eb625f48a0ac14972033799, type: 3}
+  - Name: PauseMenu
+    Module: Adventure
+    Kind: 0
+    Layer: Popup
+    Modal: 1
+    ModalDimAlpha: 0.3
+    Cache: 1
+    CloseOnBack: 1
+    IsWorldUI: 0
+    SupportsHotSwitch: 0
+    PauseWorldOnOpen: 1
+    CloseOnSceneChange: 1
+    Prefab: {fileID: 7766243805493956519, guid: 2cc88e3e7117c834d8e88a7639c3af73, type: 3}

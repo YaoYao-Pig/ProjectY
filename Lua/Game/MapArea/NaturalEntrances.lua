@@ -37,7 +37,10 @@ function Entrances.Build(map,config,definitions,anchor)
         for _,cell in ipairs(wonder.entrances) do
             if seen[cell] and (not selected or seen[cell]<seen[selected]) then selected=cell end
         end
-        if selected then add(selected,definitions:Get(wonder.areaId),wonder.pointId,'GiantTree',0,0,wonder.name) end
+        if selected then
+            add(selected,definitions:Get(wonder.areaId),wonder.pointId,'GiantTree',0,0,wonder.name)
+            result[#result].worldWonderId=wonder.id
+        end
     end
     return result
 end

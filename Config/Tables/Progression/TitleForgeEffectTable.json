@@ -1,0 +1,404 @@
+{
+  "version": 1,
+  "name": "TitleForgeEffectTable",
+  "description": "自定义称号可选效果、单档价格及上限；属性覆盖GrowthAttributeTable全部条目。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "min": 1,
+      "description": "稳定效果ID"
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "效果名称"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "每档效果及触发条件"
+    },
+    {
+      "name": "category",
+      "type": "enum",
+      "values": [
+        "primary",
+        "combat",
+        "life",
+        "special",
+        "negative"
+      ],
+      "description": "界面分组"
+    },
+    {
+      "name": "kind",
+      "type": "enum",
+      "values": [
+        "attribute",
+        "damage_percent",
+        "kill_heal_percent",
+        "kill_morale",
+        "low_health_damage_percent",
+        "turn_heal_percent",
+        "damage_taken_percent"
+      ],
+      "description": "效果执行类型"
+    },
+    {
+      "name": "attribute",
+      "type": "string",
+      "description": "属性代码，仅attribute填写"
+    },
+    {
+      "name": "amount",
+      "type": "int",
+      "description": "每档有符号效果数值"
+    },
+    {
+      "name": "cost",
+      "type": "int",
+      "min": 1,
+      "description": "每档声望费用，负面表示可抵扣金额"
+    },
+    {
+      "name": "maxRank",
+      "type": "int",
+      "min": 1,
+      "max": 100,
+      "description": "最高可选档位"
+    },
+    {
+      "name": "negative",
+      "type": "bool",
+      "description": "是否为负面抵扣项"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "name": "体力",
+      "description": "每档体力 +1。",
+      "category": "primary",
+      "kind": "attribute",
+      "attribute": "vitality",
+      "amount": 1,
+      "cost": 20,
+      "maxRank": 5,
+      "negative": false
+    },
+    {
+      "id": 2,
+      "name": "耐力",
+      "description": "每档耐力 +1。",
+      "category": "primary",
+      "kind": "attribute",
+      "attribute": "endurance",
+      "amount": 1,
+      "cost": 20,
+      "maxRank": 5,
+      "negative": false
+    },
+    {
+      "id": 3,
+      "name": "智力",
+      "description": "每档智力 +1。",
+      "category": "primary",
+      "kind": "attribute",
+      "attribute": "intellect",
+      "amount": 1,
+      "cost": 20,
+      "maxRank": 5,
+      "negative": false
+    },
+    {
+      "id": 4,
+      "name": "力量",
+      "description": "每档力量 +1。",
+      "category": "primary",
+      "kind": "attribute",
+      "attribute": "strength",
+      "amount": 1,
+      "cost": 20,
+      "maxRank": 5,
+      "negative": false
+    },
+    {
+      "id": 5,
+      "name": "速度",
+      "description": "每档速度 +1。",
+      "category": "primary",
+      "kind": "attribute",
+      "attribute": "speed",
+      "amount": 1,
+      "cost": 20,
+      "maxRank": 5,
+      "negative": false
+    },
+    {
+      "id": 6,
+      "name": "防御",
+      "description": "每档防御 +1。",
+      "category": "primary",
+      "kind": "attribute",
+      "attribute": "defense",
+      "amount": 1,
+      "cost": 20,
+      "maxRank": 5,
+      "negative": false
+    },
+    {
+      "id": 7,
+      "name": "剑",
+      "description": "每档剑 +1。",
+      "category": "combat",
+      "kind": "attribute",
+      "attribute": "sword",
+      "amount": 1,
+      "cost": 20,
+      "maxRank": 5,
+      "negative": false
+    },
+    {
+      "id": 8,
+      "name": "长柄武器",
+      "description": "每档长柄武器 +1。",
+      "category": "combat",
+      "kind": "attribute",
+      "attribute": "polearm",
+      "amount": 1,
+      "cost": 20,
+      "maxRank": 5,
+      "negative": false
+    },
+    {
+      "id": 9,
+      "name": "空手",
+      "description": "每档空手 +1。",
+      "category": "combat",
+      "kind": "attribute",
+      "attribute": "unarmed",
+      "amount": 1,
+      "cost": 20,
+      "maxRank": 5,
+      "negative": false
+    },
+    {
+      "id": 10,
+      "name": "法杖",
+      "description": "每档法杖 +1。",
+      "category": "combat",
+      "kind": "attribute",
+      "attribute": "staff",
+      "amount": 1,
+      "cost": 20,
+      "maxRank": 5,
+      "negative": false
+    },
+    {
+      "id": 11,
+      "name": "匕首",
+      "description": "每档匕首 +1。",
+      "category": "combat",
+      "kind": "attribute",
+      "attribute": "dagger",
+      "amount": 1,
+      "cost": 20,
+      "maxRank": 5,
+      "negative": false
+    },
+    {
+      "id": 12,
+      "name": "弓箭",
+      "description": "每档弓箭 +1。",
+      "category": "combat",
+      "kind": "attribute",
+      "attribute": "bow",
+      "amount": 1,
+      "cost": 20,
+      "maxRank": 5,
+      "negative": false
+    },
+    {
+      "id": 13,
+      "name": "双手武器",
+      "description": "每档双手武器 +1。",
+      "category": "combat",
+      "kind": "attribute",
+      "attribute": "greatsword",
+      "amount": 1,
+      "cost": 20,
+      "maxRank": 5,
+      "negative": false
+    },
+    {
+      "id": 14,
+      "name": "枪械",
+      "description": "每档枪械 +1。",
+      "category": "combat",
+      "kind": "attribute",
+      "attribute": "firearms",
+      "amount": 1,
+      "cost": 20,
+      "maxRank": 5,
+      "negative": false
+    },
+    {
+      "id": 15,
+      "name": "侦察",
+      "description": "每档侦察 +1。",
+      "category": "life",
+      "kind": "attribute",
+      "attribute": "scouting",
+      "amount": 1,
+      "cost": 20,
+      "maxRank": 5,
+      "negative": false
+    },
+    {
+      "id": 16,
+      "name": "巧匠",
+      "description": "每档巧匠 +1。",
+      "category": "life",
+      "kind": "attribute",
+      "attribute": "crafting",
+      "amount": 1,
+      "cost": 20,
+      "maxRank": 5,
+      "negative": false
+    },
+    {
+      "id": 17,
+      "name": "厨艺",
+      "description": "每档厨艺 +1。",
+      "category": "life",
+      "kind": "attribute",
+      "attribute": "cooking",
+      "amount": 1,
+      "cost": 20,
+      "maxRank": 5,
+      "negative": false
+    },
+    {
+      "id": 18,
+      "name": "动物亲和",
+      "description": "每档动物亲和 +1。",
+      "category": "life",
+      "kind": "attribute",
+      "attribute": "animalAffinity",
+      "amount": 1,
+      "cost": 20,
+      "maxRank": 5,
+      "negative": false
+    },
+    {
+      "id": 19,
+      "name": "魅力",
+      "description": "每档魅力 +1。",
+      "category": "life",
+      "kind": "attribute",
+      "attribute": "charisma",
+      "amount": 1,
+      "cost": 20,
+      "maxRank": 5,
+      "negative": false
+    },
+    {
+      "id": 20,
+      "name": "勇气",
+      "description": "每档勇气 +1。",
+      "category": "combat",
+      "kind": "attribute",
+      "attribute": "courage",
+      "amount": 1,
+      "cost": 20,
+      "maxRank": 5,
+      "negative": false
+    },
+    {
+      "id": 101,
+      "name": "伤害强化",
+      "description": "每档攻击技能伤害 +5%。",
+      "category": "special",
+      "kind": "damage_percent",
+      "attribute": "",
+      "amount": 5,
+      "cost": 30,
+      "maxRank": 3,
+      "negative": false
+    },
+    {
+      "id": 102,
+      "name": "饮血",
+      "description": "每档击杀敌人回复 3% 最大生命，每个自身回合最多触发 2 次；0 生命时不触发。",
+      "category": "special",
+      "kind": "kill_heal_percent",
+      "attribute": "",
+      "amount": 3,
+      "cost": 60,
+      "maxRank": 3,
+      "negative": false
+    },
+    {
+      "id": 103,
+      "name": "战意",
+      "description": "每档击杀敌人额外恢复 5 点士气，每个自身回合最多触发 2 次；0 生命时不触发。",
+      "category": "special",
+      "kind": "kill_morale",
+      "attribute": "",
+      "amount": 5,
+      "cost": 25,
+      "maxRank": 3,
+      "negative": false
+    },
+    {
+      "id": 104,
+      "name": "背水",
+      "description": "生命大于 0 且低于 30% 时，每档攻击技能伤害额外增加 10%。",
+      "category": "special",
+      "kind": "low_health_damage_percent",
+      "attribute": "",
+      "amount": 10,
+      "cost": 45,
+      "maxRank": 3,
+      "negative": false
+    },
+    {
+      "id": 105,
+      "name": "复苏",
+      "description": "战斗中自身回合结束时，每档回复 2% 最大生命；0 生命时不触发。",
+      "category": "special",
+      "kind": "turn_heal_percent",
+      "attribute": "",
+      "amount": 2,
+      "cost": 80,
+      "maxRank": 3,
+      "negative": false
+    },
+    {
+      "id": 201,
+      "name": "脆弱",
+      "description": "每档受到的伤害 +5%。",
+      "category": "negative",
+      "kind": "damage_taken_percent",
+      "attribute": "",
+      "amount": 5,
+      "cost": 25,
+      "maxRank": 3,
+      "negative": true
+    },
+    {
+      "id": 202,
+      "name": "怯懦",
+      "description": "每档勇气 −3。",
+      "category": "negative",
+      "kind": "attribute",
+      "attribute": "courage",
+      "amount": -3,
+      "cost": 15,
+      "maxRank": 3,
+      "negative": true
+    }
+  ]
+}

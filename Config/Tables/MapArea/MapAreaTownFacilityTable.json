@@ -32,7 +32,8 @@
         "warehouse",
         "stable",
         "watchtower",
-        "dock"
+        "dock",
+        "bank"
       ]
     },
     {
@@ -212,6 +213,17 @@
       "lotIds": [],
       "npcTemplateId": 4,
       "interactionRadius": 2
+    },
+    {
+      "id": 14,
+      "name": "城镇银行",
+      "kind": "bank",
+      "description": "在柜台查看当地商贸投资的日K线、风险和到期结算。本金可能部分亏损。",
+      "lotIds": [
+        33
+      ],
+      "npcTemplateId": 5,
+      "interactionRadius": 1
     }
   ]
 }

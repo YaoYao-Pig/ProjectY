@@ -1,0 +1,13 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class TitleForgeEffectTableRow
+---@field id number 稳定效果ID
+---@field name string 效果名称
+---@field description string 每档效果及触发条件
+---@field category "primary"|"combat"|"life"|"special"|"negative" 界面分组
+---@field kind "attribute"|"damage_percent"|"kill_heal_percent"|"kill_morale"|"low_health_damage_percent"|"turn_heal_percent"|"damage_taken_percent" 效果执行类型
+---@field attribute string 属性代码，仅attribute填写
+---@field amount number 每档有符号效果数值
+---@field cost number 每档声望费用，负面表示可抵扣金额
+---@field maxRank number 最高可选档位
+---@field negative boolean 是否为负面抵扣项
+return {["name"]="TitleForgeEffectTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["min"]=1,["description"]="\231\168\179\229\174\154\230\149\136\230\158\156ID"},{["name"]="name",["type"]="text",["description"]="\230\149\136\230\158\156\229\144\141\231\167\176"},{["name"]="description",["type"]="text",["description"]="\230\175\143\230\161\163\230\149\136\230\158\156\229\143\138\232\167\166\229\143\145\230\157\161\228\187\182"},{["name"]="category",["type"]="enum",["values"]={"primary","combat","life","special","negative"},["description"]="\231\149\140\233\157\162\229\136\134\231\187\132"},{["name"]="kind",["type"]="enum",["values"]={"attribute","damage_percent","kill_heal_percent","kill_morale","low_health_damage_percent","turn_heal_percent","damage_taken_percent"},["description"]="\230\149\136\230\158\156\230\137\167\232\161\140\231\177\187\229\158\139"},{["name"]="attribute",["type"]="string",["description"]="\229\177\158\230\128\167\228\187\163\231\160\129\239\188\140\228\187\133attribute\229\161\171\229\134\153"},{["name"]="amount",["type"]="int",["description"]="\230\175\143\230\161\163\230\156\137\231\172\166\229\143\183\230\149\136\230\158\156\230\149\176\229\128\188"},{["name"]="cost",["type"]="int",["min"]=1,["description"]="\230\175\143\230\161\163\229\163\176\230\156\155\232\180\185\231\148\168\239\188\140\232\180\159\233\157\162\232\161\168\231\164\186\229\143\175\230\138\181\230\137\163\233\135\145\233\162\157"},{["name"]="maxRank",["type"]="int",["min"]=1,["max"]=100,["description"]="\230\156\128\233\171\152\229\143\175\233\128\137\230\161\163\228\189\141"},{["name"]="negative",["type"]="bool",["description"]="\230\152\175\229\144\166\228\184\186\232\180\159\233\157\162\230\138\181\230\137\163\233\161\185"}},["fingerprint"]="0f00c81b132b6e02bff2c509301d86c009d72fd31cc7aea1fe7bd589221c1aeb"}

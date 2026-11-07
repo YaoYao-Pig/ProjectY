@@ -3,6 +3,7 @@ local Class=require('Core.Class')
 local Panel=require('UI.UIPanelCtrl')
 local Model=require('Game.Equipment.InventoryModel')
 local Text=require('Game.Equipment.EquipmentPresentation')
+local Identity=require('Game.Presentation.CharacterIdentity')
 local Inventory=Class('InventoryCtr',Panel)
 function Inventory:Bind()
     self.system=self.context.systems:Get('Equipment');self.stats=self.context.systems:Get('Battle').stats
@@ -71,7 +72,7 @@ function Inventory:Refresh()
         local active=i<=self.system.adventure.PartyCount;self.view['Actor'..i].gameObject:SetActive(active)
         if active then
             local actor=self.system.adventure:GetPartyAt(i-1)
-            self.view['ActorText'..i].text=(actor.Id==self.actorId and '◆ ' or '')..self.stats:Template(actor).name
+            self.view['ActorText'..i].text=Identity.Format(Identity.Read(self.stats,actor),18,12,'E3BE73',actor.Id==self.actorId and '◆ ' or '')
         end
     end
     local actor=self.system:Actor(self.actorId);local lines={}

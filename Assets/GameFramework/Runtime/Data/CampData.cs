@@ -14,6 +14,9 @@ namespace ProjectY.Data
     [LuaCallCSharp]
     public sealed class CampStackData
     {
+        public int Id { get; internal set; }
+        internal string EquipmentKey { get; set; } = "";
+        public string Key => EquipmentKey.Length==0 ? "c"+Id : EquipmentKey;
         public int ItemId { get; internal set; }
         public int Count { get; internal set; }
     }
@@ -28,7 +31,7 @@ namespace ProjectY.Data
 
     /// <summary>营地等级、堆叠仓储和生产订单；所有资源交易先检查再提交。</summary>
     [LuaCallCSharp]
-    public sealed class CampData
+    public sealed partial class CampData
     {
         private readonly List<CampLevelData> levels = new List<CampLevelData>();
         private readonly List<CampStackData> storage = new List<CampStackData>();
@@ -45,11 +48,11 @@ namespace ProjectY.Data
         public CampStackData GetStorageAt(int index) => storage[index];
         public CampJobData GetJobAt(int index) => jobs[index];
         public int GetLevel(int facility) => levels.Find(row => row.FacilityId == facility)?.Level ?? 0;
-        public int Stored(int item) => storage.Find(row => row.ItemId == item)?.Count ?? 0;
+        public int Stored(int item) => storage.Where(row => row.ItemId == item && row.EquipmentKey.Length==0).Sum(row => row.Count);
         public CampJobData JobFor(int facility) => jobs.Find(row => row.FacilityId == facility);
         public void Open() { if (IsOpen) throw new InvalidOperationException("Camp is already open."); IsOpen = true; Revision++; }
         public void Close() { if (IsOpen) { IsOpen = false; Revision++; } }
-        public void Clear() { IsOpen = false; levels.Clear(); storage.Clear(); jobs.Clear(); Revision++; }
+        public void Clear() { IsOpen = false; levels.Clear(); storage.Clear(); jobs.Clear(); ClearWarehouse(); Loadout.Restore(new CampLoadoutSave()); Revision++; }
         // 玩家失败原因返回 LuaTxt 语言键，由 CampModel 在显示边界解析。
         private string Session(int revision) => !IsOpen ? "UICampText6" : revision != Revision ? "UICampText5" : "";
         private static bool ValidTime(double value) => !double.IsNaN(value) && !double.IsInfinity(value) && value >= 0 && value <= 1000000000;
@@ -80,9 +83,13 @@ namespace ProjectY.Data
         }
         private void RemoveStored(int item, int count)
         {
-            var row = storage.Find(value => value.ItemId == item);
-            row.Count -= count;
-            if (row.Count == 0) storage.Remove(row);
+            if(count<1 || Stored(item)<count) throw new InvalidOperationException("Invalid warehouse consumption.");
+            foreach(var row in storage.Where(value=>value.ItemId==item && value.EquipmentKey.Length==0).OrderBy(value=>value.Id).ToArray())
+            {
+                int used=Math.Min(row.Count,count);row.Count-=used;count-=used;
+                if(row.Count==0) { Warehouse.Remove(row.Key);storage.Remove(row); }
+                if(count==0) break;
+            }
         }
         private static void SpendCoins(PlayerData player, int coins)
         {
@@ -147,9 +154,18 @@ namespace ProjectY.Data
             if (item < 1 || count < 1 || capacity < 0) return "CampInvalidDeposit";
             if (equipment.CountItem(item) < count) return "CampBackpackInsufficient";
             if ((long)StoredTotal + count > capacity) return "CampWarehouseFull";
+            equipment.ValidateStackConsumption(item,count);
+            EnsureWarehouse(equipment.Grid);
+            var row = storage.Find(value => value.ItemId == item && value.EquipmentKey.Length==0);
+            if(row==null)
+            {
+                Warehouse.CopyShape(equipment.Grid,item);
+                row=new CampStackData {Id=NextWarehouseId(),ItemId=item};
+                if(!Warehouse.Exchange(Array.Empty<string>(),new[]{row.Key},new[]{item},false))return "CampWarehouseGridFull";
+                if(!Warehouse.Exchange(Array.Empty<string>(),new[]{row.Key},new[]{item},true))throw new InvalidOperationException("Validated warehouse placement failed.");
+                nextWarehouseId++;storage.Add(row);
+            }
             equipment.ConsumeStack(item, count);
-            var row = storage.Find(value => value.ItemId == item);
-            if (row == null) { row = new CampStackData { ItemId = item }; storage.Add(row); }
             row.Count += count; Revision++; return "";
         }
         public string Withdraw(int item, int count, int revision, string kind, EquipmentData equipment)
@@ -169,13 +185,16 @@ namespace ProjectY.Data
             narrative.AdvanceMinutes(minutes); Revision++; return "";
         }
         internal CampSave Capture() => new CampSave {
+            gridVersion=2,nextPileId=nextWarehouseId,loadout=Loadout.Capture(),
             levels = levels.Select(row => new CampLevelSave { facility = row.FacilityId, level = row.Level }).ToArray(),
-            storage = storage.Select(row => new CampStackSave { item = row.ItemId, count = row.Count }).ToArray(),
+            storage = storage.Select(CaptureWarehouseStack).ToArray(),
             jobs = jobs.Select(row => new CampJobSave { facility = row.FacilityId, recipe = row.RecipeId, startedAt = row.StartedAt, readyAt = row.ReadyAt }).ToArray() };
         internal static CampData Prepare(CampSave save)
         {
             var data = new CampData();
             if (save == null) return data; // 仅由存档版本迁移显式传入 null。
+            if(save.loadout!=null)data.Loadout.Restore(save.loadout);
+            SaveCheck.Require(save.gridVersion>=0 && save.gridVersion<=2,"camp.gridVersion");
             foreach (var row in SaveCheck.Rows(save.levels, 100, "营地设施"))
             {
                 SaveCheck.Require(row != null && row.facility > 0 && row.level > 0 && row.level <= 100 && data.GetLevel(row.facility) == 0, "营地设施等级或重复设施");
@@ -184,10 +203,15 @@ namespace ProjectY.Data
             long total = 0;
             foreach (var row in SaveCheck.Rows(save.storage, 10000, "营地仓库"))
             {
-                SaveCheck.Require(row != null && row.item > 0 && row.count > 0 && data.Stored(row.item) == 0, "营地物品数量或重复物品");
+                SaveCheck.Require(row != null && row.item > 0 && row.count > 0 && (save.gridVersion>0 || data.Stored(row.item)==0), "营地物品数量或重复物品");
                 total += row.count; SaveCheck.Require(total <= int.MaxValue, "营地仓库总量");
-                data.storage.Add(new CampStackData { ItemId = row.item, Count = row.count });
+                int id=save.gridVersion==0?data.storage.Count+1:row.id;
+                SaveCheck.Require(id>0 && !data.storage.Any(value=>value.Id==id),"营地独立堆标识");
+                string gear=row.equipmentKey??"";
+                SaveCheck.Require(gear.Length==0 || save.gridVersion==2 && row.count==1 && EquipmentKind(gear)!=null && !data.storage.Any(value=>value.Key==gear),"camp.storage.equipmentKey");
+                data.storage.Add(new CampStackData { Id=id,ItemId = row.item, Count = row.count,EquipmentKey=gear });
             }
+            data.PrepareWarehouse(save);
             foreach (var row in SaveCheck.Rows(save.jobs, 100, "营地生产"))
             {
                 SaveCheck.Require(row != null && row.facility > 0 && row.recipe > 0 && data.GetLevel(row.facility) > 0 && data.JobFor(row.facility) == null &&
@@ -197,11 +221,11 @@ namespace ProjectY.Data
             return data;
         }
         internal void TakePrepared(CampData source)
-        { Clear(); levels.AddRange(source.levels); storage.AddRange(source.storage); jobs.AddRange(source.jobs); }
+        { Clear(); levels.AddRange(source.levels); storage.AddRange(source.storage); jobs.AddRange(source.jobs); CopyWarehouse(source); Loadout.Restore(source.Loadout.Capture()); }
     }
     [Serializable] internal sealed class CampLevelSave { public int facility, level; }
-    [Serializable] internal sealed class CampStackSave { public int item, count; }
+    [Serializable] internal sealed class CampStackSave { public int id,item,count,x,y; public bool rotated; public string equipmentKey; }
     [Serializable] internal sealed class CampJobSave { public int facility, recipe; public double startedAt, readyAt; }
-    [Serializable] internal sealed class CampSave { public CampLevelSave[] levels; public CampStackSave[] storage; public CampJobSave[] jobs; }
+    [Serializable] internal sealed class CampSave { public int gridVersion,nextPileId; public CampLevelSave[] levels; public CampStackSave[] storage; public CampJobSave[] jobs; public CampLoadoutSave loadout; }
     public sealed partial class AdventureData { internal CampData Camp { get; } = new CampData(); }
 }

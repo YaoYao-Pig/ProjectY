@@ -1,5 +1,7 @@
+local Life=require('Game.Battle.ActorLife')
 -- 容器是场景目标，不伪装为战斗角色；共用技能预算、伤害公式和原库存。
 local Hex=require('Game.Map.HexGrid')
+local SkillShape=require('Game.Battle.SkillShape')
 local Random=require('Game.Map.SeededRandom')
 local Trajectory=require('Game.Battle.SkillTrajectory')
 local Instructions=require('Game.Battle.EffectInstructions')
@@ -64,13 +66,19 @@ function Combat:Target(actor,skill,id,battle)
     end
     local best,distance,shotOrigin
     local nearest=math.huge
+    local targetParts={}
+    for i=0,physical.CellCount-1 do local target=area.cells[physical:GetCellAt(i)]
+        if target.layer==origin.layer and (not battle or battle.board.byIndex[target.index])then targetParts[#targetParts+1]=target end
+    end
     for i=0,physical.CellCount-1 do local target=area.cells[physical:GetCellAt(i)]
         if target.layer==origin.layer and (not battle or battle.board.byIndex[target.index]) then
             local bonus=battle and battle.construction and battle.construction:RangeBonusAt(battle.board,actor,target,skill) or 0
             bonus=math.max(bonus,self.adventure.battle.stats.heightAdvantage:RangeBonus(origin,target,skill))
             for _,part in ipairs(parts) do local range=Hex.Distance(part.q,part.r,target.q,target.r)
                 nearest=math.min(nearest,range)
-                if range>=skill.minRange and range<=skill.range+bonus and Trajectory.CanReach(board,part,target,skill.trajectory,occupied,skill.guided) and (not distance or range<distance) then best,distance,shotOrigin=target,range,part end
+                if SkillShape.Footprints(skill.rangeShape,parts,targetParts,skill.range+bonus,skill.minRange)
+                    and SkillShape.Contains(skill.rangeShape,part.q,part.r,target.q,target.r,skill.range+bonus,skill.minRange)
+                    and Trajectory.CanReach(board,part,target,skill.trajectory,occupied,skill.guided) and (not distance or range<distance) then best,distance,shotOrigin=target,range,part end
             end
         end
     end
@@ -92,11 +100,12 @@ function Combat:Splash(actor,skill,center,exceptId,limit,battle)
         if container.Id~=exceptId then
             local ok,_,_,cell,origin=self:Target(actor,skill,container.Id,battle)
             if ok and cell.layer==center.layer then
-                local distance=math.huge;local physical=self.loot:Physical(container)
+                local distance=math.huge;local inShape=false;local physical=self.loot:Physical(container)
                 for j=0,physical.CellCount-1 do local part=area.cells[physical:GetCellAt(j)]
                     distance=math.min(distance,Hex.Distance(center.q,center.r,part.q,part.r))
+                    if SkillShape.Contains(skill.splashShape,center.q,center.r,part.q,part.r,skill.splashRadius,0)then inShape=true end
                 end
-                if distance<=skill.splashRadius then candidates[#candidates+1]={container=container,distance=distance,cell=cell,origin=origin} end
+                if inShape then candidates[#candidates+1]={container=container,distance=distance,cell=cell,origin=origin} end
             end
         end
     end
@@ -143,7 +152,7 @@ function Combat:Apply(plans,actor,skill,roll,battle,shot)
     if #plans==0 then return end
     local owner=self.adventure.battle
     for _,plan in ipairs(plans)do
-        if actor.HP<=0 then break end
+        if not Life.Alive(actor) then break end
         if not plan.physical.Destroyed then
             local context=self:ShotContext(actor,battle,plan.origin)
             if not plan.interceptions then self:PrepareShots({plan},actor,skill,battle) end
@@ -170,15 +179,21 @@ function Combat:CanBattle(battle,skillId,id)
     return self:Target(battle:Active(),battle:Skill(battle:Active(),skillId),id,battle)
 end
 function Combat:Battle(battle,skillId,id)
+    return battle:ObserveSkillUse(battle:FindUnit(battle.data.ActiveId),skillId,function()
+        return self:BattleInternal(battle,skillId,id)
+    end)
+end
+function Combat:BattleInternal(battle,skillId,id)
     local ok,reason,container,cell,origin=self:CanBattle(battle,skillId,id);if not ok then return false,reason end
     local actor=battle:Active();local skill=battle:Skill(actor,skillId)
     local plans={self:Prepare(actor,skill,container,cell,origin)}
-    for _,plan in ipairs(self:Splash(actor,skill,cell,id,skill.maxTargets-1,battle)) do plans[#plans+1]=plan end
+    if skill.maxTargets>1 and not SkillShape.Contains(skill.splashShape,cell.q,cell.r,cell.q,cell.r,skill.splashRadius,0)then plans={}end
+    for _,plan in ipairs(self:Splash(actor,skill,cell,id,skill.maxTargets-#plans,battle)) do plans[#plans+1]=plan end
     local program={};local remaining=skill.maxTargets-#plans
     if remaining>0 and skill.splashRadius>0 then
         local targets={}
         for _,unit in ipairs(battle:Units()) do
-            if battle:CanUseSkill(skillId,unit.Id) and Hex.Distance(cell.q,cell.r,unit.Q,unit.R)<=skill.splashRadius then targets[#targets+1]=unit end
+            if battle:CanUseSkill(skillId,unit.Id) and SkillShape.Contains(skill.splashShape,cell.q,cell.r,unit.Q,unit.R,skill.splashRadius,0) then targets[#targets+1]=unit end
         end
         table.sort(targets,function(a,b)
             local da,db=Hex.Distance(cell.q,cell.r,a.Q,a.R),Hex.Distance(cell.q,cell.r,b.Q,b.R)
@@ -201,7 +216,7 @@ end
 function Combat:CanArea(actor,skillId,id)
     local adventure=self.adventure;local battle=adventure.battle
     if adventure.data.Phase~='area' or self.loot.session.Active then return false,'当前不能攻击容器' end
-    if actor.HP<=0 then return false,'角色已倒地' end
+    if not Life.Alive(actor) then return false,'角色已倒地' end
     local owns=false;for _,skill in ipairs(battle:SkillIds(actor)) do if skill==skillId then owns=true;break end end
     if not owns then return false,'角色没有这个技能' end
     local skill=battle:Skill(actor,skillId)
@@ -210,6 +225,7 @@ function Combat:CanArea(actor,skillId,id)
     if not allowed then return false,why end
     if actor:GetCooldown(skillId)>0 then return false,'技能仍在冷却中' end
     local ok,reason=battle.stats.equipment:CheckAmmo(actor,skill);if not ok then return false,reason end
+    local casting,castingWhy=battle.spellcasting:Budget(actor,skill);if not casting then return false,castingWhy end
     return self:Target(actor,skill,id)
 end
 function Combat:Area(actor,skillId,id)
@@ -219,7 +235,7 @@ function Combat:Area(actor,skillId,id)
     for _,plan in ipairs(self:Splash(actor,skill,cell,id,skill.maxTargets-1)) do plans[#plans+1]=plan end
     local random=Random((areas:ActiveLayout().seed ~ (areas.data.Active.WorldRound*65537) ~ actor.Id*719 ~ id*104729) & 0xffffffff)
     self:PrepareShots(plans,actor,skill)
-    areas:Stop();battle.stats.equipment:Consume(actor,skill);actor:RecordAction(skill.actionTemplate,skill.shots,cell.q,cell.r)
+    areas:Stop();battle.spellcasting:Commit(actor,skill);battle.stats.equipment:Consume(actor,skill);actor:RecordAction(skill.actionTemplate,skill.shots,cell.q,cell.r)
     for shot=1,skill.shots do self:Apply(plans,actor,skill,function()return random:Integer(0,9999)/100 end,nil,shot) end
     areas:SpendWorkRounds(1);actor:SetCooldown(skillId,skill.cooldownTurns)
     if areas:RefreshLivingSquad() then areas:RevealSquad(areas:ActiveLayout(),areas.data.Active) end

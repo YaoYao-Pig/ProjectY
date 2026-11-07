@@ -13,6 +13,7 @@ function Town.Validate(row)
     assert(row.bridgeWidth%2==1 and row.rampLength>=4,'Town bridge width must be odd and ramps need sufficient run')
 end
 function Town.Generate(area,row,random,config)
+    row=require('Game.Economy.BankTownLayout').Recipe(area,row,config)
     Town.Validate(row)
     if #row.royalLayoutIds>0 then return require('Game.MapArea.RoyalTownGenerator').Generate(area,row,random,config) end
     local lots=config:GetTable('MapAreaTownLotTable');local definitions=config:GetTable('MapAreaTownFacilityTable')

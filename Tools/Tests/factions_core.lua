@@ -6,7 +6,7 @@ local Factions=require('Game.Adventure.WorldFactions')
 local Conflicts=require('Game.Adventure.WorldConflicts')
 local Parties=require('Game.Adventure.WorldParties')
 local previousCS=CS
-CS={ProjectY={Data={WorldFactionsData={For=function(data)return assert(data.factionData)end},FactionPersistence={
+CS={ProjectY={Data={DeathDoorState={Alive=function(actor)return actor.HP>0 end},WorldFactionsData={For=function(data)return assert(data.factionData)end},FactionPersistence={
     Find=function(areas,id)return areas:Find(id)end,
     PartyId=function(group)return group.PartyId end,
     DetachParty=function(group)group:DetachParty()end}}}}
@@ -108,6 +108,7 @@ local function strategy()
     local pd={Count=3,GetAt=function(_,i)return list[i+1]end,Find=function(_,id)return list[id]end}
     local map={GetCell=function(_,q,r)return {q=q,r=r}end}
     local parties=setmetatable({data=pd,map=map,definitions={Get=function()return {detectRadius=20,speed=1}end},route=true,pathCalls=0},Parties)
+    function parties:Recruit()end -- Population budgets are covered by world_population.lua.
     function parties:Path(from,to)
         self.pathCalls=self.pathCalls+1
         if not self.route then return nil end
@@ -324,13 +325,37 @@ local function contactFixture()
     return c,a,b,adventure,factions
 end
 
-test('hostile NPC contact is reachable, protected, tile-aligned and deduplicated',function()
+test('hostile NPC contact is reachable, protected and deduplicated while moving',function()
     local c,a,b,adv,f=contactFixture()
     adv.parties.reachable=false;c:Contacts(100);equal(c.started,0)
-    adv.parties.reachable=true;b.Travel.Progress=.5;c:Contacts(100);equal(c.started,0)
-    b.Travel.Progress=0;b.SafeUntil=101;c:Contacts(100);equal(c.started,0)
+    adv.parties.reachable=true;b.Travel.Progress=.4;b.SafeUntil=101;c:Contacts(100);equal(c.started,0)
     b.SafeUntil=0;f.hostile=false;c:Contacts(100);equal(c.started,0)
     f.hostile=true;c:Contacts(100);c:Contacts(100);equal(c.started,1)
+end)
+
+test('moving NPCs use the nearest endpoint without crossing blocked edges',function()
+    local c,a,b,adv=contactFixture()
+    a.Travel.Progress=.6;b.Travel.Q=2;b.Travel.Progress=.2
+    function a.Travel:GetStepAt(i)equal(i,0);return {Q=1,R=0}end
+    local passable=false
+    function adv.travel:Cost()return passable and 1 or nil end
+    c:Contacts(100);equal(c.started,0,'Adjacent endpoints across a blocked edge must not fight')
+    passable=true;c:Contacts(101);equal(c.started,1,'Fractional movement must not prevent reachable NPC combat')
+end)
+
+test('a nearby player joins the existing caravan battle without replacing wounded participants',function()
+    local c,_,caravan,adv,f=contactFixture();local conflict={SiteId=99,Phase='active'}
+    caravan.BattleSiteId=99;caravan.unit.HP=17
+    local p=setmetatable(adv.parties,Parties);p.adventure=adv;p.map=adv.map
+    adv.data={Phase='map'};adv.factions=f;adv.travel.data={Q=1,R=0,Progress=0}
+    p.data.IsOpen=true;p.data.ContactId=caravan.Id
+    function p.data:Close()self.IsOpen=false end
+    function f.data:FindConflict(id)equal(id,99);return conflict end
+    f.conflicts=c
+    local joined=0
+    function c:Enter(record)equal(record,conflict);equal(caravan.unit.HP,17);joined=joined+1;return true end
+    assert(p:Command('world_join'));equal(joined,1);equal(p.data.IsOpen,false)
+    p.data.IsOpen=true;conflict.Phase='resolved';assert(not p:Command('world_join'));equal(joined,1)
 end)
 
 test('dead garrisons cannot be engaged during recovery',function()

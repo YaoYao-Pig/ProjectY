@@ -1,0 +1,16 @@
+COMPLETED 2026-10-27
+
+The scene menu is installed and the active Lua controller is restored.
+Production sources are under Assets/GameFramework and Lua/UI.
+Saved native resources are Assets/DynamicAsset/MainMenu/MainMenuStage.prefab,
+Assets/DynamicAsset/UI/Prefabs/Adventure/StartMenuPanel.prefab and
+Assets/DynamicAsset/UI/Prefabs/Adventure/CampaignSaveEntryWidget.prefab.
+
+This directory contains obsolete task-owned staging copies. DO NOT apply them.
+The cleanup command was rejected by automatic approval policy, so the directory
+is retained. It is outside Assets and is not part of Unity compilation.
+
+Current documentation: ForAI/Business/StartMenu.md.
+Verified native screenshots and test evidence: Docs/Previews/MainMenu.
+Tests used isolated PreviewScenes and temporary save paths. The agent never
+started Play Mode or accessed player save files. No Player build was run.

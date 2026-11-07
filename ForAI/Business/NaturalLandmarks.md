@@ -14,6 +14,8 @@
 - `variantAssetIds` 是巨树完整外形池：1106 保留原雕刻巨树，1109 为偏心长枝与丰茂侧冠的奇幻变体；空池使用 `assetId`。使用独立位置噪声选择，种子与配置不变时重建外形一致；两种模型共享相同占地与局部根区，外形选择不改变地格、入口身份或保存的探索状态。
 - `NaturalEntrances.Build` 在营地最终确定后，以实际旅行高差和阻挡做连通搜索；只为可达的山脚/谷缘候选与巨树外圈建立入口。高山/峡谷身份为 `300000+region.instanceId`，巨树为 `400000+wonder.id`；自然地点追加在既有地点之后。
 - 高山作为完整Region范围的特殊地点：`worldRegionId` 让范围内已发现格共用一个入口，点击坡面或峰顶仍沿大地图陆路走到固定可达山脚，再进入副本。发现任何一块山坡即可识别地点，未知格仍不能点击；`WorldFog` 的Region查询只是基于原生发现列表的增量索引，不新增权威探索状态。
+- 巨树使用独立 `worldWonderId`，由格子的 `wonderId` 聚合真实271格占地，并保留外圈入口格可点击；跨Region的根系仍归同一棵树，不能用入口所在Region代替占地。点击根系区块或真实树干/树冠，统一走 `Visit → Plan → Arrive → EnterSite`，目的地始终是可达外圈树脚，抵达后进入地图72。不会把根系中心改成可走格或传送队伍。
+- 发现任一根系占地即可识别巨树；已发现的整棵树作为地标显示，离开视野后变为灰色记忆，地面仍逐格保留迷雾。Lua发现索引和渲染侧索引都只从原生已发现格派生。模型拾取以实际三角形BVH检查，树冠间隙不按包围盒命中，前方地形/建筑按最近距离遮挡；原款与奇幻款都使用同一入口契约。
 - 峡谷首次成功进入消耗共享背包的麻绳（物品 82）一根，未进入/失败/没绳不会扣除。原生 `AdventureData.HasVisited` 是固定绳索已建立的唯一持久依据；重进及继续远征均免费，不维护第二套 Lua 状态。入口说明使用 Language/LuaTxt。当前交互复用到达地点后进入小地图，不播放攀爬动画。
 - 局部地图均有独立策略：HighMountain=9/地图70，Canyon=10/地图71，GiantTree=11/地图72；主题覆盖全部13种地貌供边界混色。`NaturalTerrain` 只共享角点、步道渐变、对称通行边和入口连通域，不套地牢房间算法。
 - 高山局部v2先生成登顶主路，再以主路/平台/山脊约束山体高程。入口→4级平台→最高峰净爬升48米；主路和实际最短路径都不下降，短平台可走平。只开放道路/平台，路线进度约束阻止跨折返捷径，仍可原路下山。最终每格 `corners` 均等于该格中心高度，走既有平顶六角柱渲染；相邻小步高表现攀登，不以连续坡面焊掉六角顶面。`ascentRoute/ascentStages` 是静态生成与预览数据，宽肩高度过渡防止路面被切成深沟。参数新增字段不改旧值，显式 `source.generationVersion<=7` 继续走 `HighMountainLegacyGenerator`。
@@ -34,3 +36,4 @@
 - [编辑态实景预览](../../Tools/Tests/terrain_wonders_preview.cs) / [预览输入](../../Tools/Tests/terrain_wonders_preview.lua)：现有 Editor 中独立 PreviewScene 检查真实渲染与模型，输出 `Docs/Previews/TerrainWonders/`，包括关闭装饰的高山对照；不进入 Play 或写玩家存档。
 - [原生状态边界检查](../../Tools/Tests/natural_entry_state.cs)：真实 C# 库存/visited 配合生产 `Enter` 规则，验证首次扣绳、重复进入、JSON恢复免扣和新旧地图版本字段；只使用独立 LuaEnv 与内存序列化，不写玩家文件。
 - v8专项：[单调攀登与旧版指纹](../../Tools/Tests/high_mountain_ascent.lua)、[山体发现查询](../../Tools/Tests/mountain_site_discovery.lua)。前者验证真实寻路、六角平顶面及旧版一致性；地点完整占地、悬停/标签/遮罩回归见[world_sites_editmode.cs](../../Tools/Tests/world_sites_editmode.cs)。
+- 巨树入口专项：[布局/发现/到达派发](../../Tools/Tests/giant_tree_sites.lua)、[原生区块与模型拾取](../../Tools/Tests/giant_tree_sites_editmode.cs)、[真实根区进入与重进](../../Tools/Tests/giant_tree_area_entry.lua)。原生检查使用独立PreviewScene或LuaEnv，不进入Play、不写玩家存档。

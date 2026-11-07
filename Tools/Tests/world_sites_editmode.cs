@@ -47,7 +47,9 @@ try
     var reference=canvasObject.AddComponent<ProjectY.UI.LuaReference>();
     var toggleObject=new GameObject("SiteTags",typeof(RectTransform),typeof(UnityEngine.UI.Toggle));toggleObject.transform.SetParent(canvasObject.transform,false);
     var siteTags=toggleObject.GetComponent<UnityEngine.UI.Toggle>();siteTags.isOn=true;
-    reference.SetEditorBindings(new ProjectY.UI.LuaReference.Entry("SiteTags",siteTags));
+    var mapHudObject=new GameObject("MapHud",typeof(RectTransform),typeof(ProjectY.UI.LuaReference));mapHudObject.transform.SetParent(canvasObject.transform,false);
+    var mapHud=mapHudObject.GetComponent<ProjectY.UI.LuaReference>();mapHud.SetEditorBindings(new ProjectY.UI.LuaReference.Entry("SiteTags",siteTags));
+    reference.SetEditorBindings(new ProjectY.UI.LuaReference.Entry("SiteTags",siteTags),new ProjectY.UI.LuaReference.Entry("MapHud",mapHud));
     var hud=canvasObject.GetComponent<ProjectY.UI.MainHudView>();hud.SetEditorBindings(new ProjectY.UI.MainHudView.Layout{Root=(RectTransform)canvas.transform,Canvas=canvas,Labels=new UnityEngine.UI.Text[0]});
     var type=typeof(ProjectY.Samples.AdventureRuntimeDemo).Assembly.GetType("ProjectY.Samples.WorldSiteView",true);
     siteView=(System.IDisposable)System.Activator.CreateInstance(type,flags,null,new object[]{hud,map,renderer},null);

@@ -59,13 +59,14 @@ namespace ProjectY.Data
         }
         internal int HealBody(int amount)
         {
+            if(PermanentlyDead)return 0;
             int missing=0;foreach(var row in BodyInjuries)if(!row.permanent)missing+=row.maximum-row.health;
             int actual=Math.Min(missing,amount),remaining=actual;
             if(actual==0)return 0;
             foreach(var row in BodyInjuries)if(!row.permanent)
             {int share=(int)((long)actual*(row.maximum-row.health)/missing);row.health+=share;remaining-=share;}
             foreach(var row in BodyInjuries)if(remaining>0 && !row.permanent && row.health<row.maximum){row.health++;remaining--;}
-            BodyRevision++;return actual;
+            BodyRevision++;DeathDoorState.Healed(this);return actual;
         }
         internal int DamageBody(int amount,int part,int kind,bool disableEmpty)
         {
@@ -85,7 +86,7 @@ namespace ProjectY.Data
                 foreach(var row in BodyInjuries){int share=(int)((long)spill*row.health/available);row.health-=share;remaining-=share;}
                 foreach(var row in BodyInjuries)if(remaining>0 && row.health>0){row.health--;remaining--;}
             }
-            BodyRevision++;return before-HP;
+            BodyRevision++;if(HP==0)EnterDeathDoor();return before-HP;
         }
         // Upgrade the old independent trauma/HP records while retaining permanent injuries and recovery schedules.
         internal static void MigrateBody(BodyInjurySave[] rows,int maximum,ref int health)

@@ -1,0 +1,34 @@
+{
+  "verifyFix": true,
+  "mapCells": 2500,
+  "knownCells": 2500,
+  "visibleMemoryFixtureCells": 1,
+  "note": "One remote visible cell is required by Reveal; it is excluded from remembered terrain samples.",
+  "weakSunIntensity": 0.18,
+  "rememberedOverlayDifference": 0.00035236328100256861,
+  "wholeImageDifference": 0.00026612878905401464,
+  "unknownOverlayDifference": 0.16883721270715207,
+  "memoryLuminanceMean": 0.17493986852260612,
+  "memoryLuminanceStdDev": 0.031685263243213774,
+  "memoryChroma": 0.0,
+  "visibleChroma": 0.013342213499286824,
+  "noMemoryVeil": true,
+  "readableMemory": true,
+  "unknownCovered": true,
+  "colorPreserved": true,
+  "samples": {
+    "memory": 19734,
+    "unknown": 6090,
+    "mixedMemory": 6843,
+    "visible": 3357
+  },
+  "outputs": [
+    "Docs/Previews/WorldFogMemory/after/memory-fog-on.png",
+    "Docs/Previews/WorldFogMemory/after/memory-fog-off.png",
+    "Docs/Previews/WorldFogMemory/after/three-states-fog-on.png",
+    "Docs/Previews/WorldFogMemory/after/three-states-fog-off.png"
+  ],
+  "playMode": false,
+  "projectCompilationRequested": false,
+  "playerSaveAccess": false
+}

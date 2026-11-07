@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 local Class = require('Core.Class')
 local System = require('Core.LuaSystem')
 local Hex = require('Game.Map.HexGrid')
@@ -17,6 +18,7 @@ function Adventure:OnInit(context)
     self.data, self.player = context.services.Adventure, context.services.Player
     self.areas = context.systems:Get('MapArea')
     self.equipment = context.systems:Get('Equipment')
+    self.equipment.rules.specialSkills=self.battle.stats.specialSkills
     self.obstacles=require('Game.MapArea.ObstacleInteractions').New(config,self)
     self.areas.obstacles=self.obstacles
     self.construction=require('Game.Battle.Construction').New(config,self)
@@ -31,7 +33,12 @@ function Adventure:OnInit(context)
     require('Game.Adventure.ProfessionDuels').Register(self.characterSkills,self)
     self.shop=require('Game.Shop.ShopModel').New(self)
     self.camp=require('Game.Camp.CampModel').New(self)
+    self.forge=require('Game.Equipment.EquipmentForgeModel').New(self)
+    self.legacyCombat=require('Game.Equipment.EquipmentLegacyCombat').New(self)
+    self.spiritDialogue=require('Game.Equipment.EquipmentSpiritDialogue').New(self)
     self.partyStory=require('Game.Progression.PartyStory').New(self)
+    self.specialSkills=require('Game.Progression.SpecialSkills').New(self)
+    self.titles=require('Game.Progression.Titles').New(self)
     self.travel=require('Game.Adventure.WorldTravel').New(self)
     self.water=require('Game.Adventure.WaterTravel').New(self)
     self.specialEvents=require('Game.Adventure.SpecialEvents').New(self)
@@ -39,11 +46,18 @@ function Adventure:OnInit(context)
     self.fog=require('Game.Adventure.WorldFog').New(self)
     self.parties=require('Game.Adventure.WorldParties').New(self)
     self.factions=require('Game.Adventure.WorldFactions').New(self)
+    self.economy=require('Game.Economy.EconomyModel').New(self);self.battle.stats.economy=self.economy
     self.areas.factions=self.factions
+    self.people=require('Game.Adventure.People').New(self)
+    self.personalGrowth=require('Game.Progression.PersonalGrowth').New(self)
+    self.growth.personalGrowth=self.personalGrowth
+    self.peopleDialogue=require('Game.Narrative.PeopleDialogue').New(self)
+    self.inspection=require('Game.Adventure.UnitInspection').New(self)
+    self.battle.stats.inspection=self.inspection
     assert(self.recipe.maxPartySize<=4 and #self.recipe.partyIds > 0 and #self.recipe.partyIds <= self.recipe.maxPartySize, 'Invalid demo party size')
     assert(#self.recipe.buildingIds == #self.recipe.buildingEventIds, 'Building event mapping differs')
 end
-function Adventure:OnStart() self.partyStory:Start() end
+function Adventure:OnStart() self.partyStory:Start();self.specialSkills:Start();self.titles:Start();self.forge:Start();self.legacyCombat:Start();self.people:Start() end
 function Adventure:BuildWorld(seed,recipeId,targetCells,progress,generationVersion)
     local recipe = self.config:GetTable('AdventureDemoTable'):Get(recipeId or 1)
     if generationVersion==6 and not recipe.seededRegions then generationVersion=5 end
@@ -110,11 +124,13 @@ function Adventure:Start(seed,recipeId,targetCells,preparedWorld,initialProfessi
     local recipe=self.config:GetTable('AdventureDemoTable'):Get(recipeId or 1)
     seed=seed or recipe.seed
     local world=preparedWorld or self:BuildWorld(seed,recipe.id,targetCells)
+    local specialEventPlan=self.specialEvents:PlanWorld(world)
     self.equipment.worldLoot.session:Close()
     self.recipe=world.recipe
     self.areas:Clear();self.construction.data:Clear();self.data:Reset(seed)
     local map,sites=world.map,world.sites
     self.map, self.sites = map, sites
+    require('Game.Adventure.Weather').Bind(self)
     CS.ProjectY.Data.ExpeditionPersistence.Configure(self.data,self.construction.data,self.obstacles.data,self.recipe.id,world.targetCells)
     CS.ProjectY.Data.ExpeditionPersistence.SetGeneration(self.data,world.generationVersion)
     self.travel:Reset(map,sites)
@@ -122,6 +138,8 @@ function Adventure:Start(seed,recipeId,targetCells,preparedWorld,initialProfessi
     self.fog:Reset(map)
     self.parties:Bind(map,sites)
     self.partyStory:Reset()
+    self.specialSkills:Reset()
+    self.legacyCombat:Reset()
     for i, id in ipairs(self.recipe.partyIds) do
         local actor = self.data:AddPartyActor(i, id)
         self.characterAppearances:Party(actor,seed)
@@ -132,6 +150,8 @@ function Adventure:Start(seed,recipeId,targetCells,preparedWorld,initialProfessi
     self.equipment:StartPartyLoadouts()
     for i=0,self.data.PartyCount-1 do local actor=self.data:GetPartyAt(i);actor:SetMaxHP(self.battle.stats:MaximumHP(actor));actor:Restore() end
     if self.narrative then self.narrative:Start() end
+    self.economy:Bind(world,true)
+    self.specialEvents:EnsureGenerated(specialEventPlan)
     for i=0,self.data.PartyCount-1 do
         local actor=self.data:GetPartyAt(i)
         local main,off=self.equipment.data:Equipped(actor.Id),self.equipment.data:Offhand(actor.Id)
@@ -146,9 +166,11 @@ function Adventure:RestorePrepared(prepared,world)
     self.equipment.worldLoot.session:Close()
     self.areas:Clear();self.construction.data:Clear();self.data:Reset(prepared.Seed)
     self.recipe=world.recipe;self.map=world.map;self.sites=world.sites
+    require('Game.Adventure.Weather').Bind(self)
     CS.ProjectY.Data.ExpeditionPersistence.Configure(self.data,self.construction.data,self.obstacles.data,self.recipe.id,world.targetCells)
     CS.ProjectY.Data.ExpeditionPersistence.SetGeneration(self.data,world.generationVersion)
-    self.travel:Reset(world.map,world.sites);self.partyStory:Reset()
+    self.travel:Reset(world.map,world.sites);self.partyStory:Reset();self.legacyCombat:Reset()
+    self.specialSkills:Reset()
     self.water:Bind(world.map,world.sites,true)
     self.parties:Bind(world.map,world.sites)
     if self.narrative then self.narrative.lastBuffMinute=nil;self.narrative.npcs:BindWorld(world.sites) end
@@ -156,9 +178,11 @@ function Adventure:RestorePrepared(prepared,world)
     if prepared.LegacyNarrative and self.narrative then self.narrative:Start() end
     self.fog:Bind(world.map)
     self.characterSaves:Apply(prepared,self.data,self.player)
+    self.economy:Bind(world,false)
     self.water:Bind(world.map,world.sites,false)
     self.fog:Update()
     require('Game.Adventure.ExpeditionSave').RestoreLayouts(self,world)
+    self.specialEvents:EnsureGenerated(world.specialEventPlan)
     self.parties:Initialize()
     self.factions:ObserveWorld()
 end
@@ -192,6 +216,7 @@ end
 function Adventure:AreaCommand(command,a,b)
     if self.water.data.IsOpen then return false,require('Language').WaterCloseMenu end
     if self.shop.data.IsOpen then return false,'请先关闭商店' end
+    if self.economy.data.ActiveBankSite~=0 then return false,require('Language').EconomyCloseBank end
     if self.narrative and self.narrative.data.DialogueOpen then return false,'请先结束当前对话' end
     if command=='area_interact_nearest' then return require('Game.Adventure.InteractionPrompt').Execute(self) end
     if command=='area_tame' then return self.areas:Tame(a,b) end
@@ -207,15 +232,18 @@ function Adventure:AreaCommand(command,a,b)
         if ok and a==2 and self.narrative then
             local npc=self.areas:ActiveLayout().npcs[b]
             if npc.dockId then return self.water:Open(npc.dockId) end
+            if npc.facilityId and self.areas:ActiveLayout().facilities[npc.facilityId].kind=='bank' then return self.economy:OpenBank(npc.facilityId) end
             if npc.narrativeId and #self.narrative.rules.npcs:Get(npc.narrativeId).dialogueIds>0 then
                 ok,reason=self.narrative.dialogue:Open(npc.narrativeId,b)
                 if not ok then self.areas:CloseInteraction() end
                 return ok,reason
             end
             if self.shop.rules:Resolve(self.areas:ActiveLayout(),npc) then return self.shop:Open(b) end
+            if not npc.narrativeId then return self.peopleDialogue:OpenResident(npc,b) end
         end
         if ok and a==1 then
             local area=self.areas:ActiveLayout()
+            if area.facilities[b].kind=='bank' then return self.economy:OpenBank(b) end
             if area.facilities[b].kind=='dock' then return self.water:Open(area.facilities[b].dockId) end
             for _,npc in ipairs(area.npcs) do
                 if npc.facilityId==b and self.shop.rules:Resolve(area,npc) then
@@ -277,17 +305,23 @@ end
 function Adventure:SettleBattle()
     local result = self.data.Battle.Winner
     if result == '' then return end
-    if self.professionDuels:Settle(result) then return end
+    if CS.ProjectY.Data.ProfessionDuelState.Active(self.data) then
+        self.specialSkills:Settle(result,self.partyStory:Location())
+    end
+    if self.professionDuels:Settle(result) then self.legacyCombat:Reset();self.specialSkills:Reset();return end
     assert(self.data.Phase == 'battle', 'Battle result already consumed')
     self.data:BeginSettlement()
     local specialMessage=self.specialEvents:Settle(result)
     local encounter = self.battle.encounters:Get(self.data.Battle.EncounterId)
     local location = assert(self.sites[self.data.SiteId]).name
-    self.partyStory:Settle(result,location)
+    local settled=self.partyStory:Settle(result,location)
+    self.specialSkills:Settle(result,location)
+    if settled and result=='victory' then self.people:Victory()end
+    self.legacyCombat:Settle(result,location)
     self.growth.chronicle:Record('battle',nil,encounter.name,
         result=='victory' and '小队赢得了战斗。' or (result=='defeat' and '小队败退，带着伤势返回。' or '小队撤出了战斗。'),location,true)
     for _,actor in ipairs(self.battle:Units()) do
-        if actor.Team==1 and actor.AnimalOwnerId==0 and actor.HP>0 then self.battle.stats.animals:BattleBond(actor) end
+        if actor.Team==1 and actor.AnimalOwnerId==0 and Life.Alive(actor) then self.battle.stats.animals:BattleBond(actor) end
     end
     if result=='victory' then
         for _, actor in ipairs(self.battle:Units()) do
@@ -327,17 +361,23 @@ function Adventure:SettleBattle()
     end
 end
 function Adventure:BattleCommand(command, a, b)
+    local ui=self.context.services.UI
+    if ui and ui.IsWorldPaused then return false,require('Language').BattlePausedByWindow end
     if self.data.Phase ~= 'battle' then return false, '当前不在战斗中' end
     local actor = self.battle:Active()
     if command ~= 'ai' and actor.Team ~= 1 then return false, '等待敌方行动' end
     local ok, reason
-    if command == 'move' then ok, reason = self.battle:TryMove(a, b)
+    if self.battle.morale:Fleeing(actor) then self.battle.morale:Flee(self.battle,actor);ok=true
+    elseif command == 'move' then ok, reason = self.battle:TryMove(a, b)
     elseif command == 'move_cell' then
         if self.data.AreaEncounterId==0 then return false,'当前不是地牢战斗' end
         local cell=self.areas:ActiveLayout().cells[a]
         if not cell then return false,'无效地格' end
         ok,reason=self.battle:TryMove(cell.q,cell.r)
     elseif command == 'skill' then ok, reason = self.battle:TrySkill(a, b)
+    elseif command == 'skill_body_part' then
+        assert(b and b.Length==2,'Precision skill requires target id and body part index')
+        ok,reason=self.battle:TrySkillBodyPart(a,b[0],b[1])
     elseif command == 'skill_targets' then
         local ids={};for i=0,b.Length-1 do ids[#ids+1]=b[i] end
         ok,reason=self.battle:TrySkillTargets(a,ids)
@@ -358,12 +398,15 @@ function Adventure:BattleCommand(command, a, b)
     elseif command == 'ai' then ok, reason = self.battle:StepAI()
     else error('Unknown battle command: ' .. tostring(command)) end
     if ok then
+        if self.data.Battle.Winner=='' and not Life.Alive(self.battle:Active()) and not self.battle:CheckWinner() then self.battle:AdvanceTurn()end
+        if self.data.Battle.Winner=='' and self.battle.morale:Fleeing(self.battle:Active()) then self.battle.morale:Flee(self.battle,self.battle:Active())end
         if self.data.AreaEncounterId>0 then self.areas:RevealBattle(self.battle) end
         self:SettleBattle()
     end
     return ok, reason
 end
 function Adventure:Tick(dt)
+    self.forge:ReconcileMissions()
     if self.map then self.parties:SyncClock();self.factions:ObserveWorld();self.travel:Tick(dt) end
     if self.equipment.worldLoot.session.Active then return end
     if self.data.Phase=='battle' and self.data.Battle.Winner~='' then self:SettleBattle();return end
@@ -400,9 +443,11 @@ function Adventure:MapSnapshot()
     return result
 end
 function Adventure:Snapshot()
+    CS.ProjectY.Data.CampLoadoutData.Reconcile(self.data)
     self.fog:Update()
+    self.inspection:EncounterVisible()
     local result = {phase = self.data.Phase, coins = self.player.Coins, result = self.data.ResultText,
-        sites = {}, party = {}, units = {}, cells = {}, reachable = {}, skills = {}, logs = {}, choices = {}, traps = {},
+        sites = {}, party = {}, units = {}, cells = {}, reachable = {}, skills = {}, logs = {}, choices = {}, traps = {},spellFields={},
         eventTitle = '', eventText = '', encounter = '', round = 0, activeId = 0, radius = 0,battlePhase=self.data.Battle.Phase}
     result.travel=self.travel:Snapshot()
     result.water=self.water:WorldSnapshot()
@@ -438,14 +483,18 @@ function Adventure:Snapshot()
         if site.factionSite then available=true;reason=description;kind='town' end
         if conflict then available=conflict.Phase~='expired';reason=conflict.Phase=='active' and '双方正在交战，可按关系加入' or '战斗已结束，可搜刮战场';kind='battlefield' end
         local siteName=description and (site.name..' · '..description) or site.name
-        if self.fog:Known(site.q,site.r,site.naturalKind=='HighMountain' and site.source.regionId or nil) and (not site.travelStop or areaId or site.factionSite or special) and (not conflict or conflict.Phase~='expired') then result.sites[#result.sites + 1] = {id = site.id, name = siteName, x = site.x, y = site.y, z = site.z,
+        if self.fog:Known(site.q,site.r,site.naturalKind=='HighMountain' and site.source.regionId or nil,site.worldWonderId) and (not site.travelStop or areaId or site.factionSite or special) and (not conflict or conflict.Phase~='expired') then result.sites[#result.sites + 1] = {id = site.id, name = siteName, shortName=site.name, x = site.x, y = site.y, z = site.z,
             available = available, visited = self.data:HasVisited(site.id),areaConfigId=areaId or 0,reason=reason or '',
             kind=kind,q=site.q,r=site.r,
             worldRegionId=site.naturalKind=='HighMountain' and site.source.regionId or 0,
+            worldWonderId=site.worldWonderId or 0,
             worldTownId=site.areaConfigId and site.pointId and self.map:GetTowns()[site.pointId] and site.pointId or 0} end
     end
+    result.mapMarkers=self.data.Phase=='map' and require('Game.Adventure.WorldMapMarkers').Build(self,result.sites) or {}
     if self.data.Areas.ActiveSiteId>0 then
         result.area=self.areas:Snapshot(self.data.Phase=='battle' and self.battle or nil)
+        local weatherSite=assert(self.sites[self.data.Areas.ActiveSiteId],'Active area lacks a world weather origin')
+        result.area.weatherX=weatherSite.x;result.area.weatherZ=weatherSite.z
         local layout=self.areas:ActiveLayout()
         for _,member in ipairs(result.area.members) do
             local actor=self.areas:PartyActor(member.actorId)
@@ -485,15 +534,18 @@ function Adventure:Snapshot()
         for _, cell in ipairs(self.battle:Reachable()) do result.reachable[#result.reachable + 1] = cellView(cell) end
         if self.data.Phase == 'battle' then
             result.traps=self.battle.professions:TrapRows()
+            result.spellFields=self.battle.spellcasting:FieldRows(self.battle)
             for _, id in ipairs(self.battle:SkillIds(self.battle:Active())) do
+                if self.inspection:Known(self.battle:Active(),'skill:'..id)then
                 local skill, targets,previews = self.battle:Skill(self.battle:Active(),id), {},{}
                 for _, actor in ipairs(self.battle:Units()) do if self.battle:CanUseSkill(id, actor.Id) then
                     targets[#targets + 1] = actor.Id;previews[#previews+1]=self.battle:ShotPreview(self.battle:Active(),actor,skill)
                 end end
-                local targetCells,cellLandingOptions={},{}
+                local targetCells,cellLandingOptions,impactTargetCells={},{},{}
                 local needsCellLanding=self.battle:NeedsCellLanding(id)
                 for _,cell in ipairs(self.battle:SkillCells(id)) do
                     targetCells[#targetCells+1]=cell.index or 0
+                    impactTargetCells[#impactTargetCells+1]=cell
                     if needsCellLanding then
                         local cells={}
                         for _,landing in ipairs(self.battle:CellLandingCells(id,cell.q,cell.r)) do cells[#cells+1]=cellView(landing) end
@@ -504,6 +556,12 @@ function Adventure:Snapshot()
                 for _,cell in ipairs(self.battle:SkillRangeCells(id)) do rangeCells[#rangeCells+1]=assert(cell.index) end
                 local needsLanding=self.battle:NeedsSkillLanding(id)
                 local landingOptions={}
+                local bodyPartOptions={}
+                if skill.selectBodyPart then
+                    for _,targetId in ipairs(targets) do
+                        bodyPartOptions[#bodyPartOptions+1]={targetId=targetId,parts=self.battle:BodyPartOptions(id,targetId)}
+                    end
+                end
                 if needsLanding then
                     for _,targetId in ipairs(targets) do
                         local cells={}
@@ -511,11 +569,28 @@ function Adventure:Snapshot()
                         landingOptions[#landingOptions+1]={targetId=targetId,cells=cells}
                     end
                 end
+                local containerTargets=self.containerCombat:Targets(self.battle:Active(),id,self.battle)
+                local impactAreas={}
+                local function impact(center,targetId,containerId)
+                    local cells={}
+                    for _,cell in ipairs(self.battle:SkillImpactCells(skill,center))do cells[#cells+1]=assert(cell.index)end
+                    if #cells>0 then impactAreas[#impactAreas+1]={targetId=targetId or 0,containerId=containerId or 0,cellIndex=center.index,cells=cells}end
+                end
+                for _,targetId in ipairs(targets)do
+                    local actor=self.battle:FindUnit(targetId);impact(assert(self.battle.board:Find(actor.Q,actor.R)),targetId)
+                end
+                for _,cell in ipairs(impactTargetCells)do impact(cell)end
+                for _,containerId in ipairs(containerTargets)do
+                    local ok,_,_,cell=self.containerCombat:CanBattle(self.battle,id,containerId)
+                    assert(ok,'Container target changed during snapshot');impact(cell,0,containerId)
+                end
                 result.skills[#result.skills + 1] = {id = id, name = skill.name, description = skill.description,
                     cost = skill.cost, action = skill.action, targets = targets,targetCells=targetCells,rangeCells=rangeCells,
                     manualTargets=skill.manualTargets,maxTargets=skill.maxTargets,guided=skill.guided,targetPreviews=previews,
+                    selectBodyPart=skill.selectBodyPart,bodyPartOptions=bodyPartOptions,
                     needsLanding=needsLanding,landingOptions=landingOptions,needsCellLanding=needsCellLanding,cellLandingOptions=cellLandingOptions,
-                    containerTargets=self.containerCombat:Targets(self.battle:Active(),id,self.battle)}
+                    containerTargets=containerTargets,impactAreas=impactAreas}
+                end
             end
         end
         for i = 0, self.data.Battle.LogCount - 1 do result.logs[#result.logs + 1] = self.data.Battle:GetLogAt(i) end
@@ -525,10 +600,15 @@ function Adventure:Snapshot()
 end
 function Adventure:OnShutdown()
     if self.partyStory then self.partyStory:Dispose() end
+    if self.specialSkills then self.specialSkills:Dispose() end
+    if self.people then self.people:Dispose() end
+    if self.titles then self.titles:Dispose() end
+    if self.forge then self.forge:Dispose() end
+    if self.legacyCombat then self.legacyCombat:Dispose() end
     if self.camp then self.camp:Close() end
     if self.battle then self.battle.containerCombat=nil end
     if self.construction then self.construction.data:Clear();self.battle.construction=nil;self.areas.construction=nil end
-    self.map = nil; self.sites = nil
+    self.map = nil; self.sites = nil; self.weatherField = nil
     -- 配方或依赖读取失败时可能尚未取得会话数据，仍须允许启动回滚。
     if self.data then self.data:Reset(0); self.data = nil end
 end

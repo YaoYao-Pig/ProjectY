@@ -1,0 +1,95 @@
+{
+  "version": 1,
+  "name": "SpellcastingBonusTable",
+  "description": "天赋及实际装备提供的施法上限和回复",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "加成ID"
+    },
+    {
+      "name": "talentNodeId",
+      "type": "int",
+      "description": "天赋节点；0时按装备查找",
+      "default": 0,
+      "min": 0
+    },
+    {
+      "name": "itemId",
+      "type": "int",
+      "description": "实际装备物品；0时按天赋查找",
+      "default": 0,
+      "min": 0
+    },
+    {
+      "name": "capacity",
+      "type": "int",
+      "description": "每阶或每件上限加成",
+      "min": 0
+    },
+    {
+      "name": "regeneration",
+      "type": "int",
+      "description": "每阶或每件回合/非战斗回复加成",
+      "min": 0
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "加成说明"
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "talentNodeId": 302,
+      "capacity": 2,
+      "regeneration": 0,
+      "description": "每阶施法点上限+2。"
+    },
+    {
+      "id": 2,
+      "talentNodeId": 303,
+      "capacity": 0,
+      "regeneration": 1,
+      "description": "每阶每回合回复+1，非战斗回复速度同步提高。"
+    },
+    {
+      "id": 3,
+      "talentNodeId": 304,
+      "capacity": 3,
+      "regeneration": 0,
+      "description": "施法点上限+3。"
+    },
+    {
+      "id": 4,
+      "itemId": 54,
+      "capacity": 2,
+      "regeneration": 0,
+      "description": "学者指环：施法点上限+2。"
+    },
+    {
+      "id": 5,
+      "itemId": 601,
+      "capacity": 0,
+      "regeneration": 1,
+      "description": "潮汐法杖：每回合回复+1，非战斗回复速度同步提高。"
+    },
+    {
+      "id": 6,
+      "itemId": 602,
+      "capacity": 2,
+      "regeneration": 0,
+      "description": "熔炉法杖：施法点上限+2。"
+    },
+    {
+      "id": 7,
+      "itemId": 8007,
+      "capacity": 3,
+      "regeneration": 0,
+      "description": "高阶奥术触媒：施法点上限+3。"
+    }
+  ]
+}

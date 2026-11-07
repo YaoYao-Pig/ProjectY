@@ -22,6 +22,7 @@ namespace ProjectY
         private FrameworkServices services;
         internal Audio.GameAudioService Audio => services?.Audio ?? throw new InvalidOperationException("Audio service is not initialized.");
         internal void StopAudioEffects() => services?.Audio?.StopEffects();
+        internal bool WorldPaused => services?.UI != null && services.UI.IsWorldPaused;
         private bool stopping;
 #if UNITY_EDITOR
         private LuaFunction editorConsoleExecute;

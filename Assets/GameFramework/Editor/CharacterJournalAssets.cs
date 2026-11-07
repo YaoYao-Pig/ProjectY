@@ -264,6 +264,8 @@ namespace ProjectY.Editor
             Bind(root,"Hint",Label("Hint",page,"",294,618,878,22,12,Muted));
             style.SetEditorBindings(root.GetComponentsInChildren<Text>(true),CreateSkillArtBindings(),page);
             style.SetJournalTheme(codes.Select(code=>new StoryGrowthView.GlyphEntry {Code=code,Sprite=sprites[code]}).ToArray());
+            GrowthSkillDetailAssets.Apply(root);
+            TitleMoraleAssets.BuildTitles(root);
         }
         private static Button RootButton(GameObject root,float w,float h,Color color)
         {
@@ -341,7 +343,7 @@ namespace ProjectY.Editor
             switch(code)
             {
                 case "vitality":p=new float[]{32,12,12,34,12,34,12,45,12,45,22,51,22,51,32,42,32,42,42,51,42,51,52,45,52,45,52,34,52,34,32,12};break;
-                case "defense":case "endurance":case "shield":p=new float[]{14,49,32,55,32,55,50,49,50,49,47,27,47,27,32,10,32,10,17,27,17,27,14,49,32,18,32,45};break;
+                case "courage":case "defense":case "endurance":case "shield":p=new float[]{14,49,32,55,32,55,50,49,50,49,47,27,47,27,32,10,32,10,17,27,17,27,14,49,32,18,32,45};break;
                 case "intellect":case "staff":p=new float[]{32,55,38,38,38,38,55,32,55,32,38,26,38,26,32,9,32,9,26,26,26,26,9,32,9,32,26,38,26,38,32,55};break;
                 case "speed":case "dagger":p=new float[]{36,55,17,31,17,31,30,31,30,31,25,10,25,10,48,36,48,36,35,36,35,36,36,55};break;
                 case "scouting":p=new float[]{7,32,20,44,20,44,44,44,44,44,57,32,57,32,44,20,44,20,20,20,20,20,7,32,32,23,32,41,25,32,39,32};break;

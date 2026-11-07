@@ -1,0 +1,63 @@
+{
+  "version": 1,
+  "name": "SpellcastingRuleTable",
+  "description": "施法点基础容量、回复和加码规则",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "规则ID"
+    },
+    {
+      "name": "baseCapacity",
+      "type": "int",
+      "description": "首次获得奥术能力的点数上限",
+      "min": 1,
+      "max": 256
+    },
+    {
+      "name": "baseRegen",
+      "type": "int",
+      "description": "每正式回合回复；非战斗同倍率",
+      "min": 0,
+      "max": 256
+    },
+    {
+      "name": "minutesPerPoint",
+      "type": "float",
+      "description": "基础非战斗回复一点的游戏分钟",
+      "min": 0.01
+    },
+    {
+      "name": "defaultCost",
+      "type": "int",
+      "description": "未单独配方配置的奥术法术耗点",
+      "min": 0
+    },
+    {
+      "name": "defaultBoostLimit",
+      "type": "int",
+      "description": "默认最多额外投入",
+      "min": 0
+    },
+    {
+      "name": "damagePerPoint",
+      "type": "float",
+      "description": "每额外点直接伤害加成",
+      "min": 0,
+      "max": 1
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "baseCapacity": 6,
+      "baseRegen": 1,
+      "minutesPerPoint": 10,
+      "defaultCost": 1,
+      "defaultBoostLimit": 2,
+      "damagePerPoint": 0.25
+    }
+  ]
+}

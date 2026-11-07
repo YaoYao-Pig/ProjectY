@@ -36,6 +36,15 @@ namespace ProjectY.UI
 
         public void PlayIn() => Play("in");
         public void PlayOut() => Play("out");
+        // A shared transition timeline can be scrubbed in either direction without
+        // restarting clips or competing with the responsive layout of their children.
+        public void SampleNormalized(string clipName, float progress)
+        {
+            if (current == null || CurrentName != clipName) Play(clipName);
+            IsPlaying = false;
+            elapsed = Mathf.Clamp01(progress) * current.length;
+            Sample(elapsed);
+        }
         public void Play(string clipName)
         {
             EnsureClips();

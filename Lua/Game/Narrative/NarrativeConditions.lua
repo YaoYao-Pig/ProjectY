@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 return function(story)
     local conditions, rules = story.conditions, story.rules
     local function register(kind, evaluate, validate) conditions:Register(kind, evaluate, validate) end
@@ -81,7 +82,7 @@ return function(story)
         local best = 0
         for i=0,story.adventure.data.PartyCount-1 do
             local actor = story.adventure.data:GetPartyAt(i)
-            if actor.HP > 0 then best = math.max(best, story.adventure.battle.stats:Get(actor, attribute.code)) end
+            if Life.Alive(actor) then best = math.max(best, story.adventure.battle.stats:Get(actor, attribute.code)) end
         end
         return best >= row.value, row.reason..'（队伍最高 '..best..' / '..row.value..'）'
     end, function(row)

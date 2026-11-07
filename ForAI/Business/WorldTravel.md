@@ -6,7 +6,9 @@
 
 ## 正文
 
-- [特殊事件](SpecialEvents.md) 为候选事件追加城镇距离和唯一地点筛选；首次生成旅途地点后记录稳定身份，暂缓参与仍可从该地点重访。
+- [营地队伍装备](Camp.md) 的坐骑倍率通过 `WorldTravelProgress.Step` 作用于陆路边进度，路线仍保存原始地形耗时；世界时钟及遇敌累计只推进实际耗时。中途换装保留进度，剩余时间显示按当前倍率换算，水路和附着护送不受加速影响。
+
+- [特殊事件](SpecialEvents.md) 在每局提前追加唯一、可达的持久地点，不依赖城镇。行经未访问的事件格（含行程末格）时暂停原路线并进入正常事件；显式访问同样可触发。已预置/结算身份不进入随机池，普通随机事件与遇敌规则保持原契约。
 
 - 大地图探索按实际旅行位置更新，快照中的地点/移动队伍受[战争迷雾](WorldFog.md)过滤。MainHud 常驻时间按钮复用本模块，开始/暂停为幂等命令，倍速循环 1×/2×/4×；原空格切换与数字键仍保留，按钮只在大地图控制世界时间。
 
@@ -14,7 +16,7 @@
 - `Adventure.travel` 是 Lua 规则门面；`WorldTravelData.For(AdventureData)` 持有权威位置、当前边进度、剩余路线、目标、倍速、暂停状态和独立随机流。Lua 只保存配置、寻路图及 C# 遭遇记录导出的不可变地点投影。改路保留已行进的边及进度，从下一格重规划，不瞬移；无效路线不改现有行程。
 - 大地图通过 Narrative.AdvanceMinutes 结算世界时间及到期的长效 Buff，再触发到达/遭遇；新远征默认走时，小队原地待命或抵达普通地图格后仍继续流逝，抵达当帧未用完的预算继续作为待命时间消耗。空格暂停、UI 暂停租约、营地及队伍交互窗口会阻止移动和时间推进；进入事件或局部区域后停止本帧大地图计时。Narrative 的自动昼夜仅在局部探索阶段继续按原规则推进，避免大地图双重计时。倍速同时缩放移动与时间；改路、查看和暂停不重抽随机数。
 - `WorldTravelTable` 配基础耗时、现实秒到游戏分钟换算、道路倍率、高差成本/上限、检查间隔和触发率；`WorldTravelTerrainTable` 配地域耗时、战场障碍率、地面材质和障碍模型池。复用 MapPathfinder 算法，旅行代价与道路生成配置独立。水格不可步行，过陡邻边不可通过；v9 世界的客运、自有船与野外停靠由[码头与水上旅行](WaterTravel.md)接入，共用队伍位置与时钟，陆路代价不改变；仍没有跨河桥梁。
-- 随机检查只按实际行军分钟在走完一格时结算，原地待命不累积随机事件检查；可见敌人的接近与接触仍按世界时间结算，能够攻击静止小队。到达目标优先，最后一格不插入遭遇。`WorldTravelEventTable` 中 eventId 与 encounterId 必须恰好一个为正，可按地域筛选、加权抽取；普通事件复用现有选项和经历。没有存活队员时不触发途中遭遇，仍可返回原营地求援。
+- 随机检查只按实际行军分钟在走完一格时结算，原地待命不累积随机事件检查。`checkMinutes/checkMaxMinutes` 当前为1440/2880，每次随机间隔24–48行军小时，检查仍按35%概率和原权重池触发；到期检查及成功触发均重新计时，积压不连续补检，下次随机触发至少再行军一天。已抽间隔、累计时间和随机流随远征保存，旧档缺间隔时从原随机流初始化；水路清累计时间但不重抽既有间隔。可见敌人的接近与接触仍按世界时间结算，能够攻击静止小队；特殊剧情地点保持独立入口。到达目标优先，最后一格不插入遭遇。`WorldTravelEventTable` 中 eventId 与 encounterId 必须恰好一个为正，可按地域筛选、加权抽取；普通事件复用现有选项和经历。没有存活队员时不触发途中遭遇，仍可返回原营地求援。
 - 会话标志 `randomEncountersDisabled` 只在 `Check` 正常抽中 `encounterId>0` 后跳过 `Trigger`，保留随机流消费及非战斗事件权重；`Reset` 清除，具体开关与边界见 [GM 免随机遇敌](../Tools/GM.md)。
 - 遇敌直接由 map → resolving → Battlefield → battle，不伪造事件选项。以当前大地图地域和新地点 ID 生成独立小战场；地面/障碍随地形变化，森林复用已绑定的橡树、松树资源。相同世界种子与遭遇 ID 可复现，不同遭遇生成新地图；出生点与敌方部署保留连通。复用部署、战斗结算和搜刮，战场及未取战利品在本次远征保留，可重返。
 - `BattlefieldElevation` 在同一 layer 0 地表生成二至三级台地，实际 `height` 按 `MapAreaBattlefieldTable.heightStep` 抬高。峰顶平台清除障碍，所有邻接地格高差最多一级；不把出生格单独压平制造断崖，双方出生点仍能走到全部非阻挡格与最高峰。台地中心/层数随独立种子变化；高打低收益见[战斗](Battle.md)。
@@ -30,3 +32,4 @@
 - [台地生成](../../Lua/Game/MapArea/BattlefieldElevation.lua) / [台地配置](../../Config/Tables/Loot/MapAreaBattlefieldTable.json) / [连通性与高地收益检查](../../Tools/Tests/battlefield_elevation_core.lua)。
 
 - [连续世界时钟验收](../../Tools/Tests/world_clock_integration.lua) / [Edit Mode 宿主](../../Tools/Tests/world_clock_editmode.cs) / [结果](../../Art/WorldPartyLowPoly/Integration/world-clock-validation.txt)。
+- [随机行军间隔定向检查](../../Tools/Tests/world_travel_cadence.cs)：已有空闲 Editor 的隔离内存 Data，覆盖一天边界、24–48小时随机间隔、积压、JSON读档、旧字段兼容、水路重置、帧预算一致性及真实xLua重载；不读取玩家存档或进入Play。

@@ -1,3 +1,5 @@
+local Life=require('Game.Battle.ActorLife')
+local LuaLanguage=require('Language')
 local Hex=require('Game.Map.HexGrid')
 local Parties={};Parties.__index=Parties
 function Parties.New(adventure)
@@ -91,19 +93,53 @@ function Parties:Initialize()
                 factions:PrepareRoster(party,self.definitions:Get(party.DefinitionId).encounterId)
             end
         end
-        self:Spawn(true)
+        self:Spawn(true,true)
         self.data:CompleteFactionMigration();self.lod:Initialize();return
     end
     self:Spawn(false)
     self.data:Complete(self.adventure.narrative.data.Minutes);self.data:CompleteFactionMigration();self.lod:Initialize()
 end
-function Parties:Spawn(onlyMissingLegends)
+function Parties:CreateRoaming(row,cell,home,seed)
+    local factions=self.adventure.factions;local policy=factions.rules.policies:Get(row.factionId)
+    local party=self.data:Add(row.id,cell.q,cell.r,home and home.id or 0,seed)
+    party:ConfigureFaction(row.factionId,home and home.q or cell.q,home and home.r or cell.r,
+        policy.role=='wildlife' and 'wildlife' or policy.role=='raider' and 'raider' or 'patrol')
+    factions:PrepareRoster(party,row.encounterId);factions:InvalidatePower()
+    if self.lod and self.lod.homeParties then self.lod:RegisterParty(party) end
+    self:Roam(party);return party
+end
+function Parties:Recruit(site,minute,periods)
+    local factions=self.adventure.factions;local policy=factions.rules.policies:Get(site.FactionId)
+    if periods<=0 or policy.partyDefinitionId==0 or policy.role=='wildlife' or site.OccupierId>0 then return end
+    local row=self.definitions:Get(policy.partyDefinitionId)
+    if row.count==0 or self.legends:Find(row.id) then return end
+    local guard=assert(self.data:Find(site.GuardPartyId))
+    if guard.Defeated or guard.BattleSiteId>0 then return end
+    local active,ready=0,0
+    for i=0,self.data.Count-1 do local party=self.data:GetAt(i)
+        if party.DefinitionId==row.id and party.Role~='garrison' then
+            if not party.Defeated then if party.Mission~='occupy' then active=active+1 end
+            elseif party.HomeSiteId==site.SiteId then ready=math.max(ready,party.SafeUntil) end
+        end
+    end
+    if minute<ready then return end
+    local cost=#self.adventure.battle.encounters:Get(row.encounterId).enemyIds*policy.recruitCost
+    assert(cost>0,'Faction recruitment requires a nonempty roster')
+    local home=assert(self.sites[site.SiteId]);local cell=self.map:GetCell(home.q,home.r)
+    for _=1,math.min(periods,row.count-active) do
+        if self.data.Count>=4096 or not site:SpendReserve(cost) then break end
+        -- Replacements own new actors; defeated parties remain in their historical battlefields.
+        self:CreateRoaming(row,cell,home,(self.adventure.data.Seed ~ row.id*7919 ~ (self.data.Count+1)*104729)&0xffffffff)
+    end
+end
+function Parties:Spawn(onlyMissing,repairOrdinary)
     local factions=self.adventure.factions;local existing,used,wanted={},{},{}
     for i=0,self.data.Count-1 do local party=self.data:GetAt(i)
-        existing[party.DefinitionId]=true;used[#used+1]={q=party.Travel.Q,r=party.Travel.R}
+        if party.Role~='garrison' then existing[party.DefinitionId]=(existing[party.DefinitionId] or 0)+1 end
+        if not party.Defeated then used[#used+1]={q=party.Travel.Q,r=party.Travel.R} end
     end
     for _,row in ipairs(self.definitions:All()) do
-        if row.count>0 and (not onlyMissingLegends or self.legends:Find(row.id) and not existing[row.id]) then wanted[#wanted+1]=row end
+        if row.count>0 and (not onlyMissing or (self.legends:Find(row.id) or repairOrdinary and row.kind=='hostile') and (existing[row.id] or 0)<row.count) then wanted[#wanted+1]=row end
     end
     if #wanted==0 then return end
     local camp=assert(self.sites[1]);local candidates={}
@@ -112,10 +148,10 @@ function Parties:Spawn(onlyMissingLegends)
     end
     table.sort(candidates,function(a,b)return a.q<b.q or a.q==b.q and a.r<b.r end)
     for _,row in ipairs(wanted) do
-        local policy=factions.rules.policies:Get(row.factionId)
         local homes={}
         for i=0,factions.data.SiteCount-1 do local home=factions.data:GetSiteAt(i);if home.FactionId==row.factionId then homes[#homes+1]=home end end
-        for n=1,row.count do
+        for n=(onlyMissing and (existing[row.id] or 0) or 0)+1,row.count do
+            if self.data.Count>=4096 then return end
             if row.kind=='caravan' then
                 if #self.towns>1 and n<=#self.towns then
                     local home=self.towns[n];local destinations,route=self:TownRoute(home)
@@ -125,7 +161,7 @@ function Parties:Spawn(onlyMissingLegends)
                         party:SetDestination(destinations[1].id);self:Restock(party);assert(self:ApplyRoute(party,route))
                     end
                 end
-            elseif #homes>0 or policy.role=='wildlife' then
+            else
                 local home=#homes>0 and self.sites[homes[(n-1)%#homes+1].SiteId]
                 local selected
                 local first=math.min(#candidates,1+math.floor((n-1)*#candidates/math.max(1,row.count)))
@@ -145,9 +181,7 @@ function Parties:Spawn(onlyMissingLegends)
                 end
                 if selected then
                     used[#used+1]=selected
-                    local party=self.data:Add(row.id,selected.q,selected.r,home and home.id or 0,(self.adventure.data.Seed ~ (row.id*7919+n*104729)) & 0xffffffff)
-                    party:ConfigureFaction(row.factionId,home and home.q or selected.q,home and home.r or selected.r,policy.role=='wildlife' and 'wildlife' or policy.role=='raider' and 'raider' or 'patrol')
-                    factions:PrepareRoster(party,row.encounterId);self:Roam(party)
+                    self:CreateRoaming(row,selected,home,(self.adventure.data.Seed ~ (row.id*7919+n*104729)) & 0xffffffff)
                 end
             end
         end
@@ -178,7 +212,7 @@ function Parties:TickParty(party,minute,minutes)
         if not travel.Active and (travel.Q~=destination.q or travel.R~=destination.r) then
             assert(self:Plan(party,self.map:GetCell(destination.q,destination.r)),'Escort destination lost its route')
         end
-        if travel.Active then travel:AdvanceRoute(minutes or 1) end
+        if travel.Active then self.adventure.narrative.townMissions.escort:AdvanceParty(party,minute,minutes or 1) end
         return
     end
     local row=self.definitions:Get(party.DefinitionId);local travel=party.Travel;local player=self.adventure.travel.data
@@ -213,7 +247,7 @@ function Parties:AdvanceAnimalRetries(ticks,moving)
     for i=0,self.data.Count-1 do local party=self.data:GetAt(i)
         if not party.Defeated and party.BattleSiteId==0 then
             for j=0,party.MemberCount-1 do local actor=party:GetMemberAt(j)
-                if actor.HP>0 and actor.AnimalSpeciesId>0 and actor.AnimalOwnerId==0 then
+                if Life.Alive(actor) and actor.AnimalSpeciesId>0 and actor.AnimalOwnerId==0 then
                     for _=1,math.min(ticks,actor.TameRetryTurns) do actor:AdvanceTamingRound() end
                 end
             end
@@ -256,10 +290,12 @@ function Parties:CheckContact()
     if self.adventure.data.Phase~='map' or self.data.IsOpen or self.adventure.narrative.data.DialogueOpen or #self.adventure.events:LivingParty()==0 then return false end
     for i=0,self.data.Count-1 do local party=self.data:GetAt(i);local row=self.definitions:Get(party.DefinitionId)
         if not party.Defeated and party.Role~='garrison' and party.Mission~='occupy' and (self.data.TargetId==party.Id or party.BattleSiteId==0 and self.adventure.factions:Relation(0,party.FactionId)=='hostile' and self.data.Clock>=party.SafeUntil) and self:Near(party) then
+            local pursued=self.data.TargetId==party.Id
             self.adventure.travel.data:SetPaused(true);self.data:Open(party.Id)
             if self.legends:Find(party.DefinitionId) and party.BattleSiteId==0 then
                 assert(self.adventure.narrative.dialogue:OpenWorld(party));self.data:Close()
-            elseif self.adventure.factions:Relation(0,party.FactionId)=='hostile' then assert(self:Attack()) end
+            elseif self.adventure.factions:Relation(0,party.FactionId)=='hostile' and not
+                (pursued and self.adventure.people and self.adventure.people:CanParley(party))then assert(self:Attack()) end
             return true
         end
     end
@@ -307,6 +343,15 @@ function Parties:Command(command,id,revision,inventoryRevision)
     if not self.data.IsOpen or self.adventure.data.Phase~='map' then return false,'当前没有接触中的队伍' end
     local party=assert(self.data:Find(self.data.ContactId))
     if not self:Near(party) then return false,'请先追上商队' end
+    if command=='world_person' then
+        if revision~=self.data.Revision or not self.adventure.people:CanParley(party)then return false,LuaLanguage.PeopleWorldStale end
+        local found=false
+        for i=0,party.MemberCount-1 do if party:GetMemberAt(i).Id==id then found=true;break end end
+        if not found then return false,LuaLanguage.PeopleWorldStale end
+        local ok,reason=self.adventure.peopleDialogue:OpenTarget('actor:'..id)
+        if ok then self.data:Close()end
+        return ok,reason
+    end
     if command=='world_attack' then return self:Attack() end
     if command=='world_join' then
         local conflict=self.adventure.factions.data:FindConflict(party.BattleSiteId)
@@ -323,11 +368,18 @@ function Parties:Command(command,id,revision,inventoryRevision)
         if id<1 or id>party.CargoCount then return false,'无效商品' end
         local item=party:GetCargoAt(id-1);local definition=self.adventure.equipment.rules.items:Get(item.ItemId);local ammo,capacity,rounds=0,0,0
         if definition.kind=='magazine' then local mag=self.adventure.equipment.rules.magazines:Get(item.ItemId);ammo,capacity,rounds=mag.ammoItemId,mag.capacity,mag.spawnRounds end
-        reason=self.data:Buy(id-1,revision,assert(self.prices[item.ItemId]),equipment,self.adventure.player,ammo,capacity,rounds)
+        local price=self.adventure.economy:CaravanPrice(party,item.ItemId,1,true,assert(self.prices[item.ItemId]))
+        reason=self.data:Buy(id-1,revision,price,equipment,self.adventure.player,ammo,capacity,rounds)
+        if reason=='' and self.adventure.economy.byItem[item.ItemId] then self.adventure.economy.data:ExternalTrade(self.adventure.economy:CaravanSite(party),item.ItemId,1,true) end
     elseif command=='world_sell' then
         if inventoryRevision~=equipment.Revision or id<1 or id>equipment.Grid.Count then return false,'背包已变化，请重新选择' end
-        local place=equipment.Grid:GetAt(id-1);local price=math.floor(assert(self.prices[place.ItemId])*self.rule.sellMultiplier)
+        local place=equipment.Grid:GetAt(id-1);local itemId=place.ItemId;local count=1
+        for i=0,equipment.StackCount-1 do local stack=equipment:GetStackAt(i)
+            if CS.ProjectY.Data.InventoryStacks.Key(stack)==place.Key then count=stack.Count;break end
+        end
+        local price=self.adventure.economy:CaravanPrice(party,itemId,count,false,math.floor(assert(self.prices[itemId])*self.rule.sellMultiplier))
         reason=self.data:Sell(id-1,revision,inventoryRevision,price,equipment,self.adventure.player)
+        if reason=='' and self.adventure.economy.byItem[itemId] then self.adventure.economy.data:ExternalTrade(self.adventure.economy:CaravanSite(party),itemId,count,false) end
     else error('Unknown world party command: '..command) end
     return reason=='',reason
 end
@@ -366,6 +418,15 @@ end
 function Parties:ContactSnapshot()
     local party=assert(self.data:Find(self.data.ContactId));local row=self.definitions:Get(party.DefinitionId);local rows={}
     if not self.data.Trading then
+        if self.adventure.people and self.adventure.people:CanParley(party)then
+            for i=0,party.MemberCount-1 do local actor=party:GetMemberAt(i)
+                if Life.Alive(actor) and self.adventure.battle.stats:Template(actor).bodyInjuries then
+                    local person=self.adventure.people:ForActor(actor)
+                    rows[#rows+1]={name=string.format(LuaLanguage.PeopleWorldTalk,person and self.adventure.people:Name(person) or self.adventure.battle.stats:Template(actor).name),
+                        body=LuaLanguage.PeopleWorldTalkBody,command='world_person',id=actor.Id,available=true}
+                end
+            end
+        end
         local escort=self.adventure.narrative.townMissions.escort
         local mission=escort:ForParty(party.Id)
         if party.BattleSiteId>0 and self.adventure.factions.data:FindConflict(party.BattleSiteId) then
@@ -377,16 +438,16 @@ function Parties:ContactSnapshot()
         rows[#rows+1]={name='攻击这支队伍',body='进入战斗；胜利后可搜刮剩余货物。',command='world_attack',id=0,available=true}
     else
         for i=0,party.CargoCount-1 do local item=party:GetCargoAt(i)
-            if item.Count>0 then local definition=self.adventure.equipment.rules.items:Get(item.ItemId);local price=assert(self.prices[item.ItemId])
-                rows[#rows+1]={name='购买 · '..definition.name,body=price..' 金币 / 件  |  剩余 '..item.Count,
+            if item.Count>0 then local definition=self.adventure.equipment.rules.items:Get(item.ItemId);local price=self.adventure.economy:CaravanPrice(party,item.ItemId,1,true,assert(self.prices[item.ItemId]))
+                rows[#rows+1]={name=string.format(LuaLanguage.EconomyCaravanBuy,definition.name),body=string.format(LuaLanguage.EconomyCaravanBuyBody,price,item.Count),
                     command='world_buy',id=i+1,available=self.adventure.player.Coins>=price}
             end
         end
         local equipment=self.adventure.equipment
         local inventory=self.inventory:Rows(self.adventure.data:GetPartyAt(0).Id);local byKey={}
         for _,item in ipairs(inventory) do byKey[item.key]=item end
-        for i=0,equipment.data.Grid.Count-1 do local place=equipment.data.Grid:GetAt(i);local item=assert(byKey[place.Key]);local price=math.floor(assert(self.prices[item.itemId])*self.rule.sellMultiplier)
-            rows[#rows+1]={name='出售 · '..item.name..' ×'..item.count,body='出售这一堆 / 件，获得 '..price*item.count..' 金币',command='world_sell',id=i+1,available=true}
+        for i=0,equipment.data.Grid.Count-1 do local place=equipment.data.Grid:GetAt(i);local item=assert(byKey[place.Key]);local price=self.adventure.economy:CaravanPrice(party,item.itemId,item.count,false,math.floor(assert(self.prices[item.itemId])*self.rule.sellMultiplier))
+            rows[#rows+1]={name=string.format(LuaLanguage.EconomyCaravanSell,item.name,item.count),body=string.format(LuaLanguage.EconomyCaravanSellBody,price*item.count),command='world_sell',id=i+1,available=true}
         end
     end
     return {name=row.name,rows=rows,version=self.data.Revision,coins=self.adventure.player.Coins,inventoryRevision=self.adventure.equipment.data.Revision,

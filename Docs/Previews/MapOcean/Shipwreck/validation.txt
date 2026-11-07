@@ -1,0 +1,6 @@
+PASS local water geometry follows explicit WaterLevel; legacy water planes retain their surface elevation
+PASS local: 2 ocean triangles, field=569x392 (3568768 bytes), 16 warmed Draw calls allocate 0 bytes, uniform-height fast path=True
+PASS local: close-view animated water lighting affects 96646 water-colored pixels
+PASS local: opaque exterior, animated currents (103233 pixels), far zoom/rotation and perspective captures
+PASS exploration state unchanged; existing world fog shader compiled
+PASS original scene and Edit Mode preserved

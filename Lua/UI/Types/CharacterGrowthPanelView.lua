@@ -63,5 +63,20 @@
 ---@field Atlas CS.UnityEngine.UI.Button
 ---@field AtlasText CS.UnityEngine.UI.Text
 ---@field Skin CS.ProjectY.UI.LuaReference
+---@field CourseDetail CS.ProjectY.UI.GrowthSkillDetailView
+---@field TitlesTab CS.UnityEngine.UI.Button
+---@field TitlesTabText CS.UnityEngine.UI.Text
+---@field Titles CS.UnityEngine.RectTransform
+---@field TitleSummary CS.UnityEngine.UI.Text
+---@field TitleRowsScroll CS.UnityEngine.UI.ScrollRect
+---@field TitleRows CS.UnityEngine.RectTransform
+---@field TitleDetailScroll CS.UnityEngine.UI.ScrollRect
+---@field TitleDetail CS.UnityEngine.UI.Text
+---@field TitleEquip CS.UnityEngine.UI.Button
+---@field TitleEquipText CS.UnityEngine.UI.Text
+---@field TitleReputation CS.UnityEngine.UI.Text
+---@field TitleForge CS.UnityEngine.UI.Button
+---@field TitleForgeText CS.UnityEngine.UI.Text
+---@field TraitDetailScroll CS.UnityEngine.UI.ScrollRect
 local View = {}
 return View

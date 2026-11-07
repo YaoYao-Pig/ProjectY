@@ -1,6 +1,6 @@
 # GM 调试系统
 
-关键词：GM、GMSystem、调试命令、槽位、升级、获取技能、F8、NPC 搜索、查找 NPC、传送、定位、开全图、全图视野、秒杀、点选目标、投骰子、骰子组合、免随机遇敌、遇敌开关。
+关键词：GM、GMSystem、调试命令、槽位、升级、获取技能、F8、NPC 搜索、查找 NPC、传送、定位、开全图、全图视野、秒杀、点选目标、投骰子、骰子组合、免随机遇敌、遇敌开关、刷装备、装备目录、满包。
 
 ## 文档目录
 
@@ -11,6 +11,7 @@
 - `GMSystem` 是独立 LuaSystem，注册名 `GM`，依赖 Config/Growth/Narrative；负责命令分发、参数校验和队伍槽位解析。权威数据仍归现有 C# 状态，不在 GM 系统内复制角色或 NPC 位置。
 - `Execute('level_up', slot)` 将指定队员提升一级，补齐该级所需经验并调用正常 `GrowthSystem:AddExperience`；属性点、天赋点、研习机会与经历均遵循原配置，不加满血、不重置已有进度。配置等级上限时返回原因，不额外发奖。
 - `Execute('grant_skill', slot, skillId)` 按 CombatSkillTable ID 永久授予技能，绕过职业、前置与属性门槛，不消费主动学习机会；重复技能或无效 ID 返回原因，不改变当前职业。骑乘、触媒与技能阶段要求仍由使用规则检查。
+- `Execute('grant_equipment', itemId)` 校验已创建世界及物品类型后，调用正常 `EquipmentSystem:Grant(itemId,1)`；目录取全部 `weapon/wearable`（含具名传奇），支持名称/ID 子串搜索，不枚举材料、弹药或配件。品质和传奇唯一性沿原规则；满包返回本地化 `EquipmentGrantBagFull`，不新增物品或消耗实例 ID。后台命令、目录规则和浏览器控制器已实现；F8 按钮及浏览器 Prefab 绑定尚待原生接入，当前不能从面板打开。
 - F8 面板“开全图：关/开”切换全图视野，显示真实开关状态，不依赖队员槽位或技能输入；地图未创建时拒绝。`Execute('reveal_world')` / `Adventure.fog:RevealAll()` 开启大地图持续全亮，远处敌方队伍沿正常快照可见，移动、进出小地图后继续生效。`Execute('restore_world_vision')` / `Adventure.fog:RestoreVision()` 关闭并立即按当前旅行位置重算正常视野，无须移动；已探索地形保留灰色记忆，远处敌人重新按视野隐藏。两条命令分别幂等，均不改变局部地图视野。模式仅在当前世界会话有效，重新开局或读档恢复正常视野，全图已探索记录沿正常远征存档保留，命令不自动保存。
 - F8 面板“免随机遇敌：关/开”切换 `Execute('no_random_encounters', 0/1)`，0 关闭、1 开启；不依赖角色槽位，非法参数或未创建世界时拒绝。唯一会话开关归 `Adventure.travel.randomEncountersDisabled`，默认关闭，缓存重开面板显示真实状态，`Travel:Reset`（新开局/读档）复位。开启仅跳过行军随机池抽中的战斗，仍按原顺序消费随机数与检查间隔，不重抽成普通事件、不累积待触发战斗；关闭恢复后续正常抽取。普通事件、可见敌人接触、主动入战及已经开始的战斗沿原流程，命令不自动保存。
 - F8 面板“秒杀”发送宿主命令 `gm_begin_kill`，关闭面板后在当前战斗或小地图点选模型/占格；Esc、右键、重新打开 GM、切换阶段或执行其他业务命令取消，成功秒杀一次自动退出。三维拾取复用 `PickAreaActor`，旧二维战斗使用棋盘地格。空白或不允许的目标保持点选以便重选，当前动作播放完毕后才接受场景点击。
@@ -19,16 +20,18 @@
 - `Execute('roll_dice', {D6=2,D20=1})` 验证整组后使用独立 GM 随机序列，返回 `true, request`；不支持的骰型、非整数、负数及空/超限组合在抽数前拒绝。面板直接将请求交给现有 `DiceRoll` Overlay，复用实体动画、快速揭晓与继续按钮；只显示逐颗点数和合计，不附加检定成败。演出期间暂时隐藏 GM 内容、保留暂停租约，继续后恢复组合页；不改角色、奖励或玩法随机序列，也不自动保存。请求与演出契约见[实体骰子](../Business/Dice.md)。
 - 角色命令的槽位为当前队伍顺序的 1..PartyCount，内部才转换为零基索引；不能把槽位当作角色实例 ID。命令描述区分角色目标与 NPC 目标，`goto_npc` 的第一个参数是稳定 NPC 配置 ID，不经过槽位解析。未知命令、非整数、越界和空队伍均在修改前拒绝。
 - HUD 的 `GM F8` 按钮或 F8 打开独立 `GM` Panel；窗口为 Popup、模态、暂停世界、可缓存，Esc/关闭按钮/F8 关闭。左侧仍提供槽位升级与技能 ID 授予；技能 ID 默认 201（驯服），打开面板不自动执行命令。
-- 右侧“查找 NPC”按名称或 ID 子串过滤 [NpcTable](../Business/Narrative.md)，留空列出全部叙事 NPC；不把通用巡游居民的临时编号当作叙事身份。条目显示所属城镇、当前日程；当前区域中的目标另显示实际 q/r/层，其他城镇的实时占格在进入后读取。已招募显示队伍槽位，未生成出生城镇明确显示不可用，不创建替身。
-- 点击条目走 `DemoBridge → GMSystem.Execute('goto_npc', npcId)`：在 map/area 阶段进入目标城镇，寻找 NPC 真实占格的道路相邻格作为领队落点，并为全部存活队员（含坐骑完整 footprint）规划互不重叠的位置。禁止中断战斗/事件/对话；全队倒地不可传送。探索记录保留，绕过普通入城探索事件，不修改任务事实、奖励或 NPC 日程；跨城后附近空间不足时保留进入的目标城镇并在结果中明确说明。
-- 成功传送后停止路线并刷新视野，桥接的 `gmTeleport` 提示显示宿主清理旧区域渲染并按新快照重建，避免跨城套用旧布局或播放长距离移动动画；镜头切到近距离俯视并聚焦玩家和 NPC。关闭 GM 后按 E 使用正常距离校验交谈；不会自动接任务或做对话选择。
+- 右侧“查找 NPC”按名称或 ID 子串过滤 [NpcTable](../Business/Narrative.md)，留空列出全部叙事身份；`Target/Search/GoTo` 按 `locationKind` 分流。`town` 读取城镇安置、日程及真实居民占格；`event` 经 `SpecialEvents:SiteForNpc` 读取独立事件地点，显示大地图坐标与等待参与／救援成功／已结束状态，不读取城镇安置或日程。已招募身份显示队伍槽位；`world_party` 保留接近真实传奇队伍的提示；`animal` 是通用动物对白身份，显示动物交谈说明，不当作唯一出生角色。搜索没有生成、传送或发奖副作用。
+- 点击条目走 `DemoBridge → GMSystem.Execute('goto_npc', npcId)`，共用 map/area、非对话及存活队伍检查。城镇分支寻找真实居民相邻的合法整队占地（含坐骑），沿用原进城／部署／镜头流程；未生成城镇和部署不足明确返回原因。事件分支先通过 `SpecialEvents:CanEnter`，完成行进格后才可清除旧路线、`Relocate` 到独立地点、暂停旅行并更新视野，再用 `Adventure:EnterSite` 进入正常事件流程；不代选剧情、不发奖励。位于同一事件区域时直接成功，不离场重进。失败结局使用事件配置结果，成功后关闭 GM 让故事窗口接管；专属演员不调用城镇 `LocalNpc` 或城镇镜头。
+- 城镇传送成功后停止路线并刷新视野，桥接的 `gmTeleport` 提示显示宿主清理旧区域渲染并按新快照重建，避免跨城套用旧布局或播放长距离移动动画；镜头切到近距离俯视并聚焦玩家和 NPC。关闭 GM 后按 E 使用正常距离校验交谈；不会自动接任务或做对话选择。
 - `CharacterGrowthData.GrantSkill` 是直接授予状态接口，保证已学技能不重复、与候选集合互斥；保存沿用现有[角色存档](../Business/CharacterSave.md)。GM 本身不自动落盘，仍由“保存队伍”保存。
 - 初次制作依次通过 Unity MCP 执行 `Tools/GM/create_gm_ui.cs` 与 `extend_npc_ui.cs`，在同一 GM Prefab 上保存 LuaReference 绑定；重复执行不重复创建控件。`run_checks.cs` 在独立 PreviewScene 运行 `gm_integration.lua`，覆盖原命令回归、NPC 搜索、同城/跨城传送、不可用状态及实际列表按钮/暂停释放，并输出 `Docs/Previews/GM.png`；不进入 Play。`python -B Tools/Tests/run_lua.py Tools/Tests/gm_npc_core.lua` 另查阶段限制、完整占地回溯、居民/敌人占格拒绝。
 
 ## 关键入口
 
 - [GMSystem.lua](../../Lua/Game/GM/GMSystem.lua) / [系统注册](../../Lua/Game/Systems.lua) / [命令桥接](../../Lua/Game/Adventure/DemoBridge.lua)。
+- [刷装备规则](../../Lua/Game/GM/EquipmentCommands.lua) / [虚拟列表控制器](../../Lua/UI/Widget/GMEquipmentBrowser.lua) / [待执行的界面制作脚本](../../Tools/GM/extend_equipment_ui.cs)。`python -B Tools/Tests/run_lua.py Tools/Tests/gm_equipment_core.lua` 检查完整目录、搜索、类型边界、正常授予、容量拒绝及传奇唯一性；[真实入包与按钮检查](../../Tools/Tests/gm_equipment_integration.lua) 需完成原生绑定及 GMCtr 接入后，用现有 `run_checks.cs` 替换 Lua 路径执行。
 - [NpcCommands.lua](../../Lua/Game/GM/NpcCommands.lua)：搜索、目标解析与传送规划；[原生检查](../../Tools/Tests/gm_npc_core.lua)。
+- NPC 定位提示统一使用 `Language.GmNpc*`；`gm_npc_core.lua` 同时覆盖四种身份、事件位置和结局、搜索零副作用、未完成行进格拒绝、同场景幂等、正常事件入口、语言覆盖，以及仅事件成功时关闭 GM。独立事件地点的生成和保存由 [SpecialEvents.lua](../../Lua/Game/Adventure/SpecialEvents.lua) 管理，GM 只消费其查询与进入契约。
 - [GMCtr.lua](../../Lua/UI/Panel/GMCtr.lua) / [GMPanel.prefab](../../Assets/DynamicAsset/UI/Prefabs/GM/GMPanel.prefab) / [制作脚本](../../Tools/GM/create_gm_ui.cs)。
 - [NPC 控件与绑定制作](../../Tools/GM/extend_npc_ui.cs) / [GM 预览](../../Docs/Previews/GM.png)。
 - [全图视野开关与语言绑定制作](../../Tools/GM/extend_world_ui.cs)：经 Unity MCP 保存到现有 Prefab；[定向检查](../../Tools/Tests/gm_world_fog_integration.lua) 覆盖远处敌人快照、移动后全亮、静止关闭立即恢复视野/保留探索、开关幂等、重绑/新世界复位与缓存按钮状态，使用 `run_checks.cs` 执行时将 Lua 检查路径替换为该文件；[开关预览](../../Docs/Previews/GM-WorldVisionToggle.png)。

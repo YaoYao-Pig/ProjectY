@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 local Actions = require('Game.Narrative.NarrativeActions')
 local Dialogue = {}; Dialogue.__index = Dialogue
 function Dialogue.New(story) return setmetatable({story=story},Dialogue) end
@@ -41,7 +42,7 @@ function Dialogue:Participants(row)
     local story, result = self.story, {}
     for i=0,story.adventure.data.PartyCount-1 do
         local actor = story.adventure.data:GetPartyAt(i)
-        if actor.HP > 0 and story.conditions:Check(row.conditionId,{actor=actor}) then result[#result+1] = actor end
+        if Life.Alive(actor) and story.conditions:Check(row.conditionId,{actor=actor}) then result[#result+1] = actor end
     end
     return result
 end
@@ -63,6 +64,8 @@ end
 function Dialogue:Interjections()
     local story, result = self.story, {}
     assert(story.data.DialogueOpen,'No dialogue to display')
+    if story.adventure.peopleDialogue and story.adventure.peopleDialogue:Active()then return result end
+    if story.adventure.spiritDialogue and story.adventure.spiritDialogue:Active()then return result end
     if story.adventure.animalSpeech and story.adventure.animalSpeech:Active() and not story.adventure.animalSpeech:HasStory()then return result end
     for _, row in ipairs(story.rules.interjectionsByNode[story.data.DialogueNodeId] or {}) do
         if row.mode == 'optional' and not story.data:HasDialogueInterjection(row.id) then
@@ -75,6 +78,8 @@ function Dialogue:Interjections()
 end
 function Dialogue:Interject(id,actorId,version)
     local story = self.story
+    if story.adventure.peopleDialogue and story.adventure.peopleDialogue:Active()then return false,require('Language').PeopleDialogueNoInterjection end
+    if story.adventure.spiritDialogue and story.adventure.spiritDialogue:Active()then return false,require('Language').EquipmentSpiritNoInterjection end
     if not story.data.DialogueOpen or version ~= story.data.DialogueVersion then return false,'对话已推进，请选择当前选项' end
     if story.adventure.animalSpeech and story.adventure.animalSpeech:Active() and not story.adventure.animalSpeech:HasStory()then return false,require('Language').AnimalSpeechNotUnderstood end
     local row = story.rules.interjections:Find(id)
@@ -93,6 +98,8 @@ function Dialogue:Interject(id,actorId,version)
 end
 function Dialogue:CanContinue()
     local story = self.story
+    if story.adventure.peopleDialogue and story.adventure.peopleDialogue:Active()then return story.adventure.peopleDialogue:CanContinue()end
+    if story.adventure.spiritDialogue and story.adventure.spiritDialogue:Active()then return story.adventure.spiritDialogue:CanContinue()end
     if story.adventure.animalSpeech and story.adventure.animalSpeech:Active()then return story.adventure.animalSpeech:CanContinue()end
     if story.rules.npcs:Get(story.data.DialogueNpcId).locationKind == 'world_party' then
         local party = assert(story.adventure.parties.data:Find(story.data.DialogueLocalNpcId))
@@ -115,6 +122,8 @@ end
 function Dialogue:Choices()
     local story = self.story
     assert(story.data.DialogueOpen,'No dialogue to display')
+    if story.adventure.peopleDialogue and story.adventure.peopleDialogue:Active()then return story.adventure.peopleDialogue:Choices()end
+    if story.adventure.spiritDialogue and story.adventure.spiritDialogue:Active()then return story.adventure.spiritDialogue:Choices()end
     local speech=story.adventure.animalSpeech
     local animal=speech and speech:Active()
     local rows = animal and speech:Choices() or {}
@@ -131,6 +140,8 @@ function Dialogue:Choices()
 end
 function Dialogue:Choose(id,version)
     local story = self.story
+    if story.adventure.peopleDialogue and story.adventure.peopleDialogue:Active()then return story.adventure.peopleDialogue:Choose(id,version)end
+    if story.adventure.spiritDialogue and story.adventure.spiritDialogue:Active()then return story.adventure.spiritDialogue:Choose(id,version)end
     if not story.data.DialogueOpen or version ~= story.data.DialogueVersion then return false,'对话已推进，请选择当前选项' end
     local speech=story.adventure.animalSpeech
     if speech and speech:Active()then
@@ -156,6 +167,8 @@ end
 function Dialogue:Close(action)
     local story = self.story
     if not story.data.DialogueOpen then return true end
+    if story.adventure.peopleDialogue and story.adventure.peopleDialogue:Active()then return story.adventure.peopleDialogue:Close()end
+    if story.adventure.spiritDialogue and story.adventure.spiritDialogue:Active()then return story.adventure.spiritDialogue:Close()end
     if story.adventure.animalSpeech and story.adventure.animalSpeech:Active()then
         local bridge=CS.ProjectY.Data.AnimalSpeechState
         local context,partyId=bridge.Context(story.data),bridge.PartyId(story.data)

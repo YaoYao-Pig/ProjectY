@@ -29,6 +29,7 @@ namespace ProjectY.Data
         public int id, template, hp, maxHP, team, q, r, species, owner, bond, retry;
         public uint random; public bool drop,speechPending; public int speechModifier; public string appearance;
         public int[] traits; public InitialAttributesSave initialAttributes; public ProfessionAttributesSave[] professionAttributes; public GameEffectSave[] effects; public BodyInjurySave[] injuries;
+        public bool hasGrowth; public GrowthSave growth; public SpellcastingSave spellcasting; public TitleSave titles;
     }
     [Serializable] internal sealed class ContainerSave
     {
@@ -44,7 +45,7 @@ namespace ProjectY.Data
     [Serializable] internal sealed class TravelSave
     {
         public int q, r, target, firstStop, speed; public uint random;
-        public double elapsed, sinceCheck; public bool paused;
+        public double elapsed, sinceCheck, checkInterval; public bool paused;
         public TravelStepSave[] route; public TravelStopSave[] stops;
     }
     [Serializable] internal sealed class TravelStepSave { public int q, r; public double minutes; }
@@ -69,7 +70,7 @@ namespace ProjectY.Data
         public static int Generation(PreparedCharacterSave save) => save.Expedition == null || save.Expedition.generationVersion == 0 ? 6 : save.Expedition.generationVersion;
         public static void SetGeneration(AdventureData adventure, int version)
         {
-            if (version < 5 || version > 10) throw new ArgumentOutOfRangeException(nameof(version));
+            if (version < 5 || version > 11) throw new ArgumentOutOfRangeException(nameof(version));
             adventure.ExpeditionGeneration = version;
         }
         public static int Target(PreparedCharacterSave save) => save.Expedition?.targetCells ?? 0;
@@ -103,7 +104,7 @@ namespace ProjectY.Data
         internal static void Prepare(PreparedCharacterSave prepared, ExpeditionSave saved, EquipmentData definitions, CharacterAppearanceService appearances, HashSet<int> owners)
         {
             SaveCheck.Require(saved!=null && saved.recipeId>0 && saved.targetCells>=0 && saved.targetCells<=100000,"远征参数");
-            SaveCheck.Require(saved.generationVersion==0 || saved.generationVersion>=5 && saved.generationVersion<=10,"地图生成版本");
+            SaveCheck.Require(saved.generationVersion==0 || saved.generationVersion>=5 && saved.generationVersion<=11,"地图生成版本");
             SaveCheck.PositiveIds(saved.visited,"访问地点");SaveCheck.Rows(saved.triggers,100000,"故事触发");
             SaveCheck.Require(saved.triggers.All(s=>!string.IsNullOrEmpty(s)) && saved.triggers.Distinct().Count()==saved.triggers.Length,"重复故事触发");
             var rows=SaveCheck.Rows(saved.areas,10000,"探索地点");
@@ -345,7 +346,9 @@ namespace ProjectY.Data
         internal EnemySave CaptureEnemy()=>new EnemySave{id=Id,template=TemplateId,hp=HP,maxHP=MaxHP,team=Team,q=Q,r=R,
             species=AnimalSpeciesId,owner=AnimalOwnerId,bond=AnimalBond,retry=TameRetryTurns,random=animalRandom,drop=DropResolved,
             speechPending=AnimalSpeechPending,speechModifier=AnimalSpeechModifier,
-            appearance=CustomizationJson,traits=traits.ToArray(),initialAttributes=CaptureInitialAttributes(),professionAttributes=CaptureProfessionAttributes(),effects=Effects.Capture(),injuries=CaptureBody()};
+            appearance=CustomizationJson,traits=traits.ToArray(),initialAttributes=CaptureInitialAttributes(),professionAttributes=CaptureProfessionAttributes(),effects=Effects.Capture(),injuries=CaptureBody(),
+            hasGrowth=Growth.Initialized,growth=Growth.Initialized?Growth.CaptureSave():null,
+            spellcasting=Growth.Initialized?SpellcastingState.Capture(this):null,titles=Growth.Initialized?TitleState.Capture(this):null};
         internal static CombatActorData PrepareEnemy(EnemySave row,CharacterAppearanceService appearances,HashSet<int> owners)
         {
             SaveCheck.Require(row!=null && row.id>0 && owners.Add(row.id) && row.template>0 && row.maxHP>0 && row.maxHP<=1000000 && row.hp>=0 && row.hp<=row.maxHP &&
@@ -360,6 +363,9 @@ namespace ProjectY.Data
             actor.RestoreInitialAttributes(row.initialAttributes);
             actor.RestoreProfessionAttributes(row.professionAttributes);
             actor.traits.AddRange(row.traits);actor.Effects.Restore(row.effects);actor.RestoreBody(row.injuries);
+            if(row.hasGrowth)
+            {actor.Growth.RestoreSave(row.growth);SpellcastingState.Restore(actor,row.spellcasting);TitleState.Restore(actor,row.titles);}
+            else SaveCheck.Require(row.growth==null || !row.growth.initialized,ProjectY.UI.LuaLanguage.Get("PeopleSaveInvalid"));
             if(row.species==0 && !string.IsNullOrEmpty(row.appearance))appearances.Apply(actor,row.appearance);
             return actor;
         }
@@ -376,7 +382,7 @@ namespace ProjectY.Data
         {
             if(row==null || row.id==0)return null;
             SaveCheck.Require(row.id>0 && ids.Add(row.id) && row.owner==0 && row.hand=="" && row.condition!=null && affixPools.TryGetValue(row.itemId,out var pool) && pool.Ids.Contains(row.affixId),"容器武器");
-            var weapon=new EquipmentWeaponData(row.id,row.itemId){AffixId=row.affixId,MagazineId=row.magazine,Condition=row.condition.Restore()};
+            var weapon=new EquipmentWeaponData(row.id,row.itemId){AffixId=row.affixId,MagazineId=row.magazine,Condition=row.condition.Restore(),Legacy=EquipmentLegacyData.Prepare(row.legacy)};
             var sockets=new HashSet<int>();foreach(var rune in SaveCheck.Rows(row.runes,128,"容器配件")){SaveCheck.Require(rune!=null && rune.id>0 && rune.value>0 && sockets.Add(rune.id),"容器配件");weapon.SetRune(rune.id,rune.value);}return weapon;
         }
         internal EquipmentWearableData PrepareGroundWearable(WearableSave row,HashSet<int> ids)
@@ -443,14 +449,15 @@ namespace ProjectY.Data
     }
     public sealed partial class WorldTravelData
     {
-        internal TravelSave Capture()=>new TravelSave{q=Q,r=R,target=TargetSiteId,firstStop=firstStopId,speed=Speed,random=random,elapsed=elapsed,sinceCheck=sinceCheck,paused=Paused,
+        internal TravelSave Capture()=>new TravelSave{q=Q,r=R,target=TargetSiteId,firstStop=firstStopId,speed=Speed,random=random,elapsed=elapsed,sinceCheck=sinceCheck,checkInterval=checkInterval,paused=Paused,
             route=route.Skip(index).Select(s=>new TravelStepSave{q=s.Q,r=s.R,minutes=s.Minutes}).ToArray(),
             stops=stops.Select(s=>new TravelStopSave{id=s.Id,q=s.Q,r=s.R,eventId=s.EventId,encounter=s.EncounterId}).ToArray()};
         internal static WorldTravelData Prepare(TravelSave row)
         {
             SaveCheck.Require(row!=null && row.firstStop>0 && row.target>=0 && row.random!=0 && (row.speed==1 || row.speed==2 || row.speed==4) &&
-                !double.IsNaN(row.elapsed) && !double.IsInfinity(row.elapsed) && row.elapsed>=0 && !double.IsNaN(row.sinceCheck) && !double.IsInfinity(row.sinceCheck) && row.sinceCheck>=0,"旅行记录");
-            var next=new WorldTravelData{Q=row.q,R=row.r,TargetSiteId=row.target,firstStopId=row.firstStop,Speed=row.speed,random=row.random,elapsed=row.elapsed,sinceCheck=row.sinceCheck,Paused=true};
+                !double.IsNaN(row.elapsed) && !double.IsInfinity(row.elapsed) && row.elapsed>=0 && !double.IsNaN(row.sinceCheck) && !double.IsInfinity(row.sinceCheck) && row.sinceCheck>=0 &&
+                !double.IsNaN(row.checkInterval) && !double.IsInfinity(row.checkInterval) && row.checkInterval>=0,"旅行记录");
+            var next=new WorldTravelData{Q=row.q,R=row.r,TargetSiteId=row.target,firstStopId=row.firstStop,Speed=row.speed,random=row.random,elapsed=row.elapsed,sinceCheck=row.sinceCheck,checkInterval=row.checkInterval,Paused=true};
             int q=row.q,r=row.r;
             foreach(var step in SaveCheck.Rows(row.route,100000,"旅行路线"))
             {SaveCheck.Require(step!=null && !double.IsNaN(step.minutes) && !double.IsInfinity(step.minutes) && step.minutes>0 && Math.Max(Math.Abs(step.q-q),Math.Max(Math.Abs(step.r-r),Math.Abs(step.q-q+step.r-r)))==1,"旅行步长");next.route.Add(new WorldTravelStep(step.q,step.r,step.minutes));q=step.q;r=step.r;}
@@ -460,7 +467,7 @@ namespace ProjectY.Data
             SaveCheck.Require(row.target<row.firstStop+next.stops.Count,"旅行目的地");return next;
         }
         internal void TakePrepared(WorldTravelData next)
-        {route.Clear();route.AddRange(next.route);stops.Clear();stops.AddRange(next.stops);index=0;firstStopId=next.firstStopId;elapsed=next.elapsed;sinceCheck=next.sinceCheck;random=next.random;Q=next.Q;R=next.R;TargetSiteId=next.TargetSiteId;Speed=next.Speed;Paused=true;Message="已恢复当前位置 · 旅行已暂停";Revision++;}
+        {route.Clear();route.AddRange(next.route);stops.Clear();stops.AddRange(next.stops);index=0;firstStopId=next.firstStopId;elapsed=next.elapsed;sinceCheck=next.sinceCheck;checkInterval=next.checkInterval;random=next.random;Q=next.Q;R=next.R;TargetSiteId=next.TargetSiteId;Speed=next.Speed;Paused=true;Message="已恢复当前位置 · 旅行已暂停";Revision++;}
     }
     public sealed partial class ConstructionData
     {

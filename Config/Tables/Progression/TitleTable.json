@@ -1,0 +1,29 @@
+{
+  "version": 1,
+  "name": "TitleTable",
+  "description": "角色永久获得、单槽装备的称号；仅当前装备称号提供加成。",
+  "key": "id",
+  "fields": [
+    {"name":"id","type":"int","min":1,"description":"称号稳定 ID"},
+    {"name":"name","type":"text","description":"称号名称"},
+    {"name":"description","type":"text","description":"称号说明"},
+    {"name":"mode","type":"enum","values":["all","any"],"description":"满足全部或任一条件"},
+    {"name":"requirementIds","type":"int[]","ref":"TitleRequirementTable","description":"获得条件，至少一项"},
+    {"name":"attributeIds","type":"int[]","ref":"GrowthAttributeTable","description":"装备后的属性加算项"},
+    {"name":"attributeValues","type":"int[]","description":"与属性 ID 一一对应的有符号增量"},
+    {"name":"damagePercent","type":"int","min":-100,"max":1000,"description":"攻击技能伤害百分比增量；10 表示增加百分之十，持续伤害沿用施加时的技能快照"},
+    {"name":"moraleMaximum","type":"int","min":-10000,"max":10000,"description":"勇气计算后额外增加的士气上限"}
+  ],
+  "rows": [
+    {"id":1,"name":"初露锋芒","description":"你的武器已不再只属于训练场。每一次胜利，都让挥击更为坚定。","mode":"all","requirementIds":[1],"attributeIds":[4],"attributeValues":[1],"damagePercent":5,"moraleMaximum":0},
+    {"id":2,"name":"浴血老兵","description":"从五十次生死交锋中走来，伤痕已成为你稳住阵线的底气。","mode":"all","requirementIds":[2],"attributeIds":[6,20],"attributeValues":[2,2],"damagePercent":10,"moraleMaximum":0},
+    {"id":3,"name":"传奇猎手","description":"你亲手终结过传说中的强敌。如今，庞大的身影也无法轻易动摇你。","mode":"all","requirementIds":[3],"attributeIds":[20],"attributeValues":[2],"damagePercent":15,"moraleMaximum":5},
+    {"id":4,"name":"断月者","description":"血月巨狼的嚎声止于你的锋刃。你学会了比恐惧更快地迈出下一步。","mode":"all","requirementIds":[4],"attributeIds":[5,20],"attributeValues":[2,3],"damagePercent":5,"moraleMaximum":10},
+    {"id":5,"name":"破誓之刃","description":"你在正面交锋中击败了叛誓剑士。看穿致命锋芒之后，你也懂得如何守住自己。","mode":"all","requirementIds":[5],"attributeIds":[6],"attributeValues":[3],"damagePercent":10,"moraleMaximum":5},
+    {"id":6,"name":"驿路守望","description":"失踪驿使的故事终于有了答复。旅人记住了你，也把安心托付给你。","mode":"all","requirementIds":[6],"attributeIds":[6,19],"attributeValues":[1,1],"damagePercent":0,"moraleMaximum":10},
+    {"id":7,"name":"践诺者","description":"五次承诺，五次兑现。那些完成的托付，成为你面对困境时的支撑。","mode":"all","requirementIds":[7],"attributeIds":[20],"attributeValues":[2],"damagePercent":0,"moraleMaximum":10},
+    {"id":8,"name":"众望所归","description":"二十次托付之后，人们开始主动寻找你的名字。众人的信任让你更从容地迎向险境。","mode":"all","requirementIds":[8],"attributeIds":[19,20],"attributeValues":[3,3],"damagePercent":0,"moraleMaximum":15},
+    {"id":9,"name":"委托能手","description":"你熟悉交付货物、护送旅人和清理道路的辛劳，也懂得怎样让一桩委托圆满落幕。","mode":"all","requirementIds":[9],"attributeIds":[2,19],"attributeValues":[2,2],"damagePercent":0,"moraleMaximum":5},
+    {"id":10,"name":"护命者","description":"你曾三次把同伴从濒危之中拉回。只要还有人需要帮助，你就不会轻易退却。","mode":"all","requirementIds":[10],"attributeIds":[6,20],"attributeValues":[2,3],"damagePercent":0,"moraleMaximum":10}
+  ]
+}

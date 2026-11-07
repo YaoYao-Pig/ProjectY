@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 -- Commands share the owner's action budget; the animal remains a real C# actor.
 local Hex=require('Game.Map.HexGrid')
 local Language=require('Language')
@@ -36,13 +37,13 @@ function Beasts:Occupied(exclude)
     local battle=self.battle;local result={}
     for key,value in pairs(battle.board.externalOccupied or {})do result[key]=value end
     for _,actor in ipairs(battle:Units())do
-        if actor.HP>0 and not (exclude and exclude[actor.Id])then battle.stats.animals:Occupy(actor,battle.board,result)end
+        if Life.Alive(actor) and not (exclude and exclude[actor.Id])then battle.stats.animals:Occupy(actor,battle.board,result)end
     end
     return result
 end
 function Beasts:Partner(owner,row)
     local pet=state().Partner(owner)
-    if not pet or pet.HP<=0 or not self.battle:FindUnit(pet.Id)then return nil,Language.ProfessionCompanionRequired end
+    if not pet or not Life.Alive(pet) or not self.battle:FindUnit(pet.Id)then return nil,Language.ProfessionCompanionRequired end
     if self.battle.stats.buffs:Skipping(pet)then return nil,Language.ProfessionCompanionDisabled end
     local range=self.battle.legendary and self.battle.legendary:CommandRange(owner,row)or row.commandRange
     if self.battle.stats.animals:Distance(owner,pet,self.battle.board)>range then return nil,Language.ProfessionCompanionTooFar end
@@ -56,7 +57,7 @@ function Beasts:Deploy()
     for _,owner in ipairs(owners)do if owner.AnimalOwnerId==0 then
         state().ResetBattle(owner)
         local pet=state().Partner(owner)
-        if pet and pet.HP>0 then
+        if pet and Life.Alive(pet) then
             local occupied=self:Occupied();local candidates={}
             for _,cell in ipairs(battle.board.cells)do
                 local distance=Hex.Distance(owner.Q,owner.R,cell.q,cell.r)
@@ -75,13 +76,13 @@ function Beasts:Deploy()
 end
 function Beasts:BeginTurn(owner)
     local pet=state().Partner(owner);local battle=self.battle
-    if pet and pet.HP>0 and battle:FindUnit(pet.Id)and battle.data.Phase=='combat'then
+    if pet and Life.Alive(pet) and battle:FindUnit(pet.Id)and battle.data.Phase=='combat'then
         pet:BeginTurn(1);battle.gameEffects:TickActor(pet,'turn_start')
     end
 end
 function Beasts:EndTurn(owner)
     local pet=state().Partner(owner);local battle=self.battle
-    if pet and pet.HP>0 and battle:FindUnit(pet.Id)and battle.data.Phase=='combat'then battle.gameEffects:TickActor(pet,'turn_end')end
+    if pet and Life.Alive(pet) and battle:FindUnit(pet.Id)and battle.data.Phase=='combat'then battle.gameEffects:TickActor(pet,'turn_end')end
     state().ReleaseDefeated(owner)
 end
 function Beasts:Finish()
@@ -94,10 +95,10 @@ function Beasts:Finish()
 end
 function Beasts:CanUse(source,skill,target)
     local row=self.definitions:Get(skill.id);local battle=self.battle
-    if not target or target.HP<=0 then return false,Language.ProfessionCompanionInvalidTarget end
+    if not target or not Life.Alive(target) then return false,Language.ProfessionCompanionInvalidTarget end
     if row.kind=='scent'then
         local bound=state().Bound(source)
-        if not bound or bound.HP<=0 then return false,Language.ProfessionCompanionRequired end
+        if not bound or not Life.Alive(bound) then return false,Language.ProfessionCompanionRequired end
         if not battle:IsHostile(source,target)or battle.stats.animals:Distance(source,target,battle.board)>skill.range then return false,Language.ProfessionCompanionInvalidTarget end
         if not Trajectory.CanReach(battle.board,battle.board:Find(source.Q,source.R),battle.board:Find(target.Q,target.R),'sight')then return false,Language.ProfessionCompanionInvalidTarget end
         return true
@@ -146,7 +147,7 @@ function Beasts:OnHit(source,target,skill)
     elseif source.MountedAnimal and self.battle.stats.animals.bySkill[skill.id]then owner=source end
     if not owner or state().Scent(owner)~=target.Id then return end
     state().SetScent(owner,0)
-    if target.HP>0 then self.battle.gameEffects:Apply(self.byKind.scent.bleedEffectId,source,target)end
+    if Life.Alive(target) then self.battle.gameEffects:Apply(self.byKind.scent.bleedEffectId,source,target)end
 end
 function Beasts:CanUseAt(source,skill,q,r)
     local row=self.definitions:Get(skill.id);if row.kind~='move'then return false,Language.ProfessionCompanionInvalidTarget end
@@ -173,7 +174,7 @@ function Beasts:UseAt(source,skill,q,r)
     local battle=self.battle;local pet=assert(self:Partner(source,self.definitions:Get(skill.id)))
     self:Spend(source,skill,pet);state().Moved(source,battle.data.Round)
     Opportunity.Resolve(battle,pet)
-    if pet.HP<=0 or battle.data.Winner~=''or battle.stats.buffs:Skipping(pet)then state().ReleaseDefeated(source);return true end
+    if not Life.Alive(pet) or battle.data.Winner~=''or battle.stats.buffs:Skipping(pet)then state().ReleaseDefeated(source);return true end
     if battle.stats.animals:CanPlace(pet,battle.board,q,r,self:Occupied({[pet.Id]=true}))then
         CS.ProjectY.Data.ProfessionCombatState.Move(pet,q,r);battle.professions:OnMoved(pet)
     end
@@ -181,7 +182,7 @@ function Beasts:UseAt(source,skill,q,r)
 end
 function Beasts:LandingCells(source,skill,target)
     local row=self.definitions:Get(skill.id);if row.kind~='rescue'then return {}end
-    local pet=self:Partner(source,row);if not pet or not target or target.HP<=0 or target.MountedAnimal then return {}end
+    local pet=self:Partner(source,row);if not pet or not target or not Life.Alive(target) or target.MountedAnimal then return {}end
     local battle=self.battle;local result={};local origin=battle.board:Find(target.Q,target.R)
     if #assert(battle.stats.animals:Cells(target,battle.board))>1 then return result end
     for _,cell in ipairs(battle.board:Neighbors(origin))do
@@ -208,7 +209,7 @@ end
 function Beasts:AreaOccupied(adventure,exclude,layer)
     local area,active=adventure.areas:ActiveLayout(),adventure.data.Areas.Active;local occupied={}
     local function add(actor,cell)
-        if actor.HP>0 and not exclude[actor.Id]and cell and cell.layer==(layer or 0)then
+        if Life.Alive(actor) and not exclude[actor.Id]and cell and cell.layer==(layer or 0)then
             for _,part in ipairs(assert(self.battle.stats.animals:Cells(actor,area,cell.q,cell.r,cell.layer)))do occupied[Hex.Key(part.q,part.r)]=true end
         end
     end
@@ -228,7 +229,7 @@ function Beasts:AreaOccupied(adventure,exclude,layer)
 end
 function Beasts:ModePlan(adventure,actor)
     local pet=state().Bound(actor);local origin=self:AreaOrigin(adventure,actor)
-    if not pet or pet.HP<=0 or actor.HP<=0 or not origin then return nil,Language.ProfessionCompanionRequired end
+    if not pet or not Life.Alive(pet) or not Life.Alive(actor) or not origin then return nil,Language.ProfessionCompanionRequired end
     local area=adventure.areas:ActiveLayout();local occupied=self:AreaOccupied(adventure,{[actor.Id]=true,[pet.Id]=true},origin.layer)
     if state().Partner(actor)then
         local species=self.battle.stats.animals.species:Get(pet.AnimalSpeciesId)
@@ -263,8 +264,8 @@ function Beasts:FollowArea(adventure)
     if adventure.data.Phase~='area'then return end
     local area=adventure.areas:ActiveLayout()
     for i=0,adventure.data.PartyCount-1 do local owner=adventure.data:GetPartyAt(i);local pet=state().Partner(owner)
-        if pet and pet.HP<=0 then state().ReleaseDefeated(owner)
-        elseif pet and owner.HP>0 then
+        if pet and not Life.Alive(pet) then state().ReleaseDefeated(owner)
+        elseif pet and Life.Alive(owner) then
             local origin=self:AreaOrigin(adventure,owner)
             if origin then
                 local occupied=self:AreaOccupied(adventure,{[pet.Id]=true},origin.layer)

@@ -34,7 +34,7 @@ try
         check(plane.Raycast(ray, out distance), "Pointer must hit focus plane");
         var anchor = ray.GetPoint(distance);
         var delta = new Vector2(61,-37);
-        rig.Pan(-delta, viewport.height); apply(rig, viewport);
+        rig.Pan(-delta, viewport.height); rig.Tick(1); apply(rig, viewport);
         check(Vector2.Distance((Vector2)camera.WorldToScreenPoint(anchor), pointer + delta) < .35f, "Drag projection mismatch: pitch="+pitch+", yaw="+yaw+", size="+size+", viewport="+viewport);
         var stopped = rig.RenderFocus; rig.Tick(.5f);
         check(Vector3.Distance(rig.RenderFocus, stopped) < .001f, "No drift after manual pan");
@@ -56,7 +56,8 @@ try
         var b = new ProjectY.Samples.StrategyCameraRig {Zoom=15}; b.Snap();
         var viewport = new Rect(100,0,1180,720);
         for (int frame=0;frame<fps;frame++)
-        { a.PanKeyboard(Vector2.right,720,1f/fps); b.PanKeyboard(Vector2.one,720,1f/fps); }
+        { a.PanKeyboard(Vector2.right,720,1f/fps); b.PanKeyboard(Vector2.one,720,1f/fps); a.Tick(1f/fps); b.Tick(1f/fps); }
+        a.Tick(1); b.Tick(1);
         apply(a,viewport); float straight = Vector2.Distance((Vector2)camera.WorldToScreenPoint(Vector3.zero),viewport.center);
         apply(b,viewport); float diagonal = Vector2.Distance((Vector2)camera.WorldToScreenPoint(Vector3.zero),viewport.center);
         check(Mathf.Abs(straight - diagonal) < .2f && Mathf.Abs(straight - 396) < .2f, "Keyboard projected speed must match diagonals and frame rates");
@@ -66,14 +67,15 @@ try
 
     var motion = new ProjectY.Samples.StrategyCameraRig {Zoom=15}; motion.Snap();
     motion.Focus = new Vector3(100,3,40); motion.Tick(.02f);
-    var interrupted = motion.RenderFocus; motion.Pan(new Vector2(10,0),720); var manual = motion.RenderFocus; motion.Tick(1);
+    var interrupted = motion.RenderFocus; motion.Pan(new Vector2(10,0),720); var manual = motion.Focus;
+    check(Vector3.Distance(manual,motion.RenderFocus)>.1f,"Near camera must damp direct movement"); motion.Tick(1);
     check(Vector3.Distance(manual,motion.RenderFocus)<.001f && Vector3.Distance(interrupted,manual)<1,"Manual pan must cancel recenter target");
     motion.Scroll(100,new Vector2(500,300),new Rect(0,0,1000,600),3,80); motion.Tick(2);
     check(Mathf.Abs(motion.RenderZoom-3)<.001f,"Near zoom limit");
     motion.Scroll(-100,new Vector2(500,300),new Rect(0,0,1000,600),3,80); motion.Tick(2);
     check(Mathf.Abs(motion.RenderZoom-80)<.001f,"Far zoom limit");
     motion.Rotate(new Vector2(10000,10000)); motion.Tick(2);
-    check(motion.RenderPitch>=20 && motion.RenderPitch<=85,"Pitch limit");
+    check(motion.RenderPitch>=30 && motion.RenderPitch<=60,"Near pitch limit");
     motion.Focus=new Vector3(200,0,200); motion.Scroll(2,Vector2.zero,new Rect(0,0,1000,600),3,80); motion.Stop();
     var frozen=motion.RenderFocus; var frozenSize=motion.RenderZoom; motion.Tick(1);
     check(Vector3.Distance(frozen,motion.RenderFocus)<.001f && Mathf.Abs(frozenSize-motion.RenderZoom)<.001f,"Camera handoff must discard residual movement");
@@ -92,6 +94,26 @@ try
         }
     }
     check(savedScene.isDirty==wasDirty,"Active scene dirty state changed");
+    var modeSettings=new ProjectY.Samples.WorldMapCameraMode.Settings(); modeSettings.Validate();
+    var mode=new ProjectY.Samples.WorldMapCameraMode();
+    var overviewRig=new ProjectY.Samples.StrategyCameraRig(); overviewRig.Snap();
+    check(overviewRig.RenderPitch==45,"Default close camera must be 45 degrees");
+    mode.Tick(true,61,1,200,.2f,modeSettings);
+    check(mode.Active && mode.Progress>0 && mode.Progress<1,"Zooming out must start a timed transition");
+    float partial=mode.Progress; mode.Tick(true,55,1,200,0,modeSettings);
+    check(mode.Active && mode.Progress==partial,"Hysteresis must retain overview in the threshold band");
+    mode.Tick(true,47,1,200,.05f,modeSettings);
+    check(!mode.Active && mode.Progress<partial && mode.Progress>0,"Reversing wheel must reverse the same timeline continuously");
+    mode.Tick(true,70,1,200,1,modeSettings);overviewRig.OverviewBlend=mode.Blend;
+    check(overviewRig.RenderPitch==90 && overviewRig.RenderYaw==0,"Map camera must be exactly vertical and north-up");
+    overviewRig.Rotate(new Vector2(100,100));overviewRig.Stop();overviewRig.Tick(1);
+    check(overviewRig.RenderPitch==90 && overviewRig.Pitch==45,"Dragging or suspending the map cannot corrupt the close angle");
+    overviewRig.BeginPan();overviewRig.Pan(new Vector2(20,0),720);
+    check(overviewRig.RenderFocus==overviewRig.Focus,"Map panning is direct; close panning is damped");
+    mode.Tick(false,100,1,200,.1f,modeSettings);overviewRig.OverviewBlend=mode.Blend;
+    check(!mode.Active && mode.Progress==0 && overviewRig.RenderPitch==45,"Area/battle entry must immediately restore the close camera");
+    mode.Tick(true,25,1,20,1,modeSettings);
+    check(mode.Active,"Small maps must also be able to reach overview");
     return "PASS strategy camera: "+checks+" checks; projected drag/zoom, cropped/portrait viewport, 30/60/144 FPS, diagonal speed, limits, interruption, scene snap and fit";
 }
 finally

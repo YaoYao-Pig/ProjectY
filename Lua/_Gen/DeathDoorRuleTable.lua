@@ -1,0 +1,11 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class DeathDoorRuleTableRow
+---@field id number 规则 ID，使用1
+---@field diceSides number 初版固定使用一颗D20
+---@field fullMoraleDeathPercent number 满士气的死亡率
+---@field emptyMoraleDeathPercent number 零士气的死亡率
+---@field survivalMoraleLossPercent number 每次幸存扣除最大士气的百分比，向上取整
+---@field penaltyPerSurvival number 每次幸存增加的属性削减百分比
+---@field maximumPenalty number 累计属性削减上限
+---@field penaltyAttributeIds number[] 受衰弱影响的属性；不改变生命上限或勇气
+return {["name"]="DeathDoorRuleTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["min"]=1,["description"]="\232\167\132\229\136\153 ID\239\188\140\228\189\191\231\148\1681"},{["name"]="diceSides",["type"]="int",["min"]=20,["max"]=20,["description"]="\229\136\157\231\137\136\229\155\186\229\174\154\228\189\191\231\148\168\228\184\128\233\162\151D20"},{["name"]="fullMoraleDeathPercent",["type"]="int",["min"]=0,["max"]=100,["description"]="\230\187\161\229\163\171\230\176\148\231\154\132\230\173\187\228\186\161\231\142\135"},{["name"]="emptyMoraleDeathPercent",["type"]="int",["min"]=0,["max"]=100,["description"]="\233\155\182\229\163\171\230\176\148\231\154\132\230\173\187\228\186\161\231\142\135"},{["name"]="survivalMoraleLossPercent",["type"]="int",["min"]=0,["max"]=100,["description"]="\230\175\143\230\172\161\229\185\184\229\173\152\230\137\163\233\153\164\230\156\128\229\164\167\229\163\171\230\176\148\231\154\132\231\153\190\229\136\134\230\175\148\239\188\140\229\144\145\228\184\138\229\143\150\230\149\180"},{["name"]="penaltyPerSurvival",["type"]="int",["min"]=0,["max"]=100,["description"]="\230\175\143\230\172\161\229\185\184\229\173\152\229\162\158\229\138\160\231\154\132\229\177\158\230\128\167\229\137\138\229\135\143\231\153\190\229\136\134\230\175\148"},{["name"]="maximumPenalty",["type"]="int",["min"]=0,["max"]=100,["description"]="\231\180\175\232\174\161\229\177\158\230\128\167\229\137\138\229\135\143\228\184\138\233\153\144"},{["name"]="penaltyAttributeIds",["type"]="int[]",["ref"]="GrowthAttributeTable",["description"]="\229\143\151\232\161\176\229\188\177\229\189\177\229\147\141\231\154\132\229\177\158\230\128\167\239\188\155\228\184\141\230\148\185\229\143\152\231\148\159\229\145\189\228\184\138\233\153\144\230\136\150\229\139\135\230\176\148"}},["fingerprint"]="3ba9d1859ee630a41b9d3955c6f93281199872f1882a73a30d6b68322b3a2ef2"}

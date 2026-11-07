@@ -25,6 +25,9 @@ try
         try
         {
             ProjectY.Samples.MapPreviewData map;
+            string firstId=null,firstCreated=null;
+            var storePreview=typeof(ProjectY.Data.CharacterSaveService).GetMethod("StoreMenuPreview",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
+            var latestPreview=typeof(ProjectY.Data.CharacterSaveService).GetMethod("LatestMenuPreview",System.Reflection.BindingFlags.Instance|System.Reflection.BindingFlags.NonPublic);
             using (var data = (XLua.LuaTable)lua.DoString(System.IO.File.ReadAllText("Tools/Tests/loading_integration.lua"), "@loading_integration")[0])
                 map = ProjectY.Samples.MapPreviewData.Read(data);
             using (var fixture = lua.Global.Get<XLua.LuaTable>("LoadingFixture")) checkpoints = fixture.Get<int>("steps");
@@ -41,6 +44,12 @@ try
                 }
                 if (previous != 1 || renderSteps < 10 || renderer.Bounds.size.sqrMagnitude <= 0) throw new System.Exception("Renderer did not complete");
                 using (var state = (XLua.LuaTable)lua.DoString("return CommitLoadingFixture()")[0]) ProjectY.Samples.AdventureViewData.Read(state);
+                firstId=ProjectY.Data.CampaignSaves.CurrentId(services.CharacterSaves);
+                firstCreated=ProjectY.Data.CampaignSaves.List(services.CharacterSaves).Single(row=>row.Id==firstId).CreatedAtUtc;
+                if(string.IsNullOrEmpty(firstCreated))throw new System.Exception("New campaign did not persist its creation time.");
+                storePreview.Invoke(services.CharacterSaves,new object[]{ProjectY.Samples.CampaignPreviewCapture.Capture(map)});
+                var preview=(ProjectY.Data.WorldMenuSelection)latestPreview.Invoke(services.CharacterSaves,new object[0]);
+                if(preview.Id!=firstId||preview.Status!=1||preview.Snapshot.Seed!=map.Seed)throw new System.Exception("Committed world preview was not persisted.");
             }
             using (var data = (XLua.LuaTable)lua.DoString("return PrepareRestorationFixture()")[0])
                 map = ProjectY.Samples.MapPreviewData.Read(data);
@@ -54,6 +63,11 @@ try
                 {
                     var view=ProjectY.Samples.AdventureViewData.Read(state);
                     if(view.Area==null)throw new System.Exception("Saved local area was not restored");
+                    var saves=ProjectY.Data.CampaignSaves.List(services.CharacterSaves);
+                    if(saves.Single(row=>row.Id==firstId).CreatedAtUtc!=firstCreated)throw new System.Exception("Loading/resaving changed creation time.");
+                    storePreview.Invoke(services.CharacterSaves,new object[]{ProjectY.Samples.CampaignPreviewCapture.Capture(map)});
+                    var preview=(ProjectY.Data.WorldMenuSelection)latestPreview.Invoke(services.CharacterSaves,new object[0]);
+                    if(preview.Id==firstId)throw new System.Exception("Resaving an older world displaced the newest-created world.");
                 }
             }
         }
@@ -74,4 +88,4 @@ finally
 }
 if (UnityEngine.SceneManagement.SceneManager.GetActiveScene() != original || original.isDirty != dirty)
     throw new System.Exception("Loading validation changed the user's scene");
-return new { passed = true, realPrefab = true, cells = 2500, checkpoints, renderSteps, restoreCheckpoints, namedSave = true, restoredArea = true, playMode = false, temporary };
+return new { passed = true, realPrefab = true, cells = 2500, checkpoints, renderSteps, restoreCheckpoints, namedSave = true, restoredArea = true, menuSnapshot = true, creationTimePreserved = true, playMode = false, temporary };

@@ -49,6 +49,20 @@
       "description": "阴影强度",
       "min": 0,
       "max": 1
+    },
+    {
+      "name": "cloudCoverage",
+      "type": "float",
+      "description": "手动预览时的云量",
+      "min": 0,
+      "max": 1
+    },
+    {
+      "name": "rainIntensity",
+      "type": "float",
+      "description": "手动预览时的降雨强度",
+      "min": 0,
+      "max": 1
     }
   ],
   "rows": [
@@ -60,7 +74,9 @@
       "fogStart": 120,
       "fogEnd": 550,
       "tint": "#ffffff",
-      "shadowStrength": 0.75
+      "shadowStrength": 0.75,
+      "cloudCoverage": 0.12,
+      "rainIntensity": 0
     },
     {
       "id": 2,
@@ -70,7 +86,21 @@
       "fogStart": 55,
       "fogEnd": 320,
       "tint": "#d8e1e7",
-      "shadowStrength": 0.36
+      "shadowStrength": 0.36,
+      "cloudCoverage": 0.75,
+      "rainIntensity": 0
+    },
+    {
+      "id": 3,
+      "name": "雨天",
+      "sunMultiplier": 0.25,
+      "ambientMultiplier": 0.75,
+      "fogStart": 35,
+      "fogEnd": 250,
+      "tint": "#bbcbd9",
+      "shadowStrength": 0.2,
+      "cloudCoverage": 0.98,
+      "rainIntensity": 1
     }
   ]
 }

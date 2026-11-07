@@ -5,7 +5,8 @@ local originalBuild = Model.Build
 local originalPresenter = package.loaded['UI.SkillTipPresenter']
 package.loaded['UI.SkillTipPresenter'] = {New=function() return {Hide=function() end} end}
 CS = {UnityEngine={Color=function(r,g,b,a) return {r=r,g=g,b=b,a=a} end},
-    ProjectY={Samples={BattleTargetSelection={Active=function() return false end,NeedsLanding=function() return false end,Hint=function() return '' end}},
+    ProjectY={Samples={BattleTargetSelection={Active=function() return false end,NeedsLanding=function() return false end,
+        NeedsBodyPart=function()return false end,ChoosingBodyPart=function()return false end,Hint=function() return '' end}},
     UI={BattleLogPresentation={Set=function() end}}}}
 
 local function node()
@@ -14,15 +15,18 @@ end
 local view = {HUD={Prepare=function() end,SetHealth=function(_,image,value) image.fillAmount=value end,Font='TestFont',Compact=false},
     SkillSlots={},ItemSlots={},PartySlots={},TurnList={},TurnTemplate={}}
 for _,key in ipairs({'EndTurn','Move','Focus','Auto','LogToggle','LogOpen','LogClose','Previous','Next','Encounter','Round','SkillTitle','ItemTitle',
-    'EndTurnText','MoveText','FocusText','AutoText','LogToggleText','Hint','Tooltip'}) do view[key]=node() end
+    'EndTurnText','MoveText','FocusText','AutoText','LogToggleText','Hint','Tooltip',
+    'CastingPanel','CastingStatus','CastingDetail','CastingLess','CastingMore','CastingLessText','CastingMoreText',
+    'AnatomyPanel','AnatomyTitle','AnatomyHelp','SkillControls','ItemControls'}) do view[key]=node() end
+for part=0,5 do view['AnatomyPart'..part]=node();view['AnatomyPart'..part..'Text']=node()end
 local state = {actorId=1,phase='combat',round=1,ids={}}
 for i=1,12 do state.ids[i]=i end
 local hp = 25
 Model.Build = function()
     local result = {actorId=state.actorId,phase=state.phase,round=state.round,player=true,maxRounds=18,encounter='Test',
-        moveRemaining=3,moved=false,moveAvailable=true,skills={},items={},party={},turns={},logs={}}
+        moveRemaining=3,moved=false,moveAvailable=true,castingPoints=0,castingPointMax=0,castingPointRegen=0,skills={},items={},party={},turns={},logs={}}
     for _,id in ipairs(state.ids) do
-        result.turns[#result.turns+1]={id=id,name='Actor '..id,hp=hp,maxHP=30,team=id<=2 and 1 or 2,active=id==state.actorId,speed=id}
+        result.turns[#result.turns+1]={id=id,name='Actor '..id,identity={name='Actor '..id},hp=hp,maxHP=30,alive=hp>0,team=id<=2 and 1 or 2,active=id==state.actorId,speed=id}
     end
     return result
 end
@@ -105,7 +109,9 @@ local config={GetTable=function(_,name)
     assert(name=='BattleIconTable');return {Get=function() return {} end}
 end}
 local HUD = require('UI.Widget.BattleHUDContent')
-local controller=setmetatable({view=view,context={log=error,services={Adventure={}},systems={Get=function(_,name) return name=='Battle' and battle or config end}},
+local opened
+local ui={Open=function(_,name,args)assert(name=='UnitDetails');opened=args end}
+local controller=setmetatable({view=view,context={log=error,services={Adventure={}},systems={Get=function(_,name) return name=='Battle' and battle or name=='UI' and ui or config end}},
     visibleScope={Add=function() end}},{__index=HUD})
 local callbacks={}
 function controller:Listen(button,fn) assert(not callbacks[button]);callbacks[button]=fn end
@@ -124,7 +130,7 @@ local function visibleMatches()
     for index=list.first,list.last do
         local cell=list.cells[index-list.first+1]
         assert(cell.widget.row==controller.model.turns[index],'Visible cells must receive the current snapshot row')
-        assert(cell.widget.visible and cell.widget.view.Name.text==cell.widget.row.name,'Real BattleTurn must remain visible and populated after binding')
+        assert(cell.widget.visible and cell.widget.view.Name.text:find(cell.widget.row.name,1,true),'Real BattleTurn must remain visible and populated after binding')
     end
 end
 local function expectReset(change)
@@ -142,6 +148,7 @@ visibleMatches()
 list:ScrollTo(12)
 assert(list.first==9 and list.last==12 and list.cells[4].widget.row.id==12,'The last enemy must be reachable')
 list.cells[4].reference.entries.Button.onClick:Click();assert(focused==12,'Reused cells must focus their current actor')
+assert(opened.actorId==12 and opened.demo==demo,'The focused initiative card must open that exact unit detail')
 local rebuilds,rangeReads=#list.calls,list.rangeReads
 hp=11;controller:Refresh()
 assert(#list.calls==rebuilds and list.first==9 and list.rangeReads==rangeReads+1,'Content refresh must preserve the readers position')

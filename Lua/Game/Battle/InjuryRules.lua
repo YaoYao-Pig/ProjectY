@@ -38,6 +38,19 @@ function Rules:Severity(actor,index)
     local missing=maximum>0 and (1-state.HP(actor,index)/maximum)*100 or 0
     return math.max(state.Damage(actor,index),missing)
 end
+function Rules:HandDisabled(actor,index)
+    assert(index==2 or index==3,'Hand use requires an arm body part')
+    if not self.units:Get(actor.TemplateId).bodyInjuries then return false end
+    local state=CS.ProjectY.Data.BodyHealth
+    return state.Permanent(actor,index) or self:Severity(actor,index)>=self.orderedStages[3].minimumDamage
+end
+function Rules:HandsAllowed(actor,slot,hands)
+    assert(slot=='weapon' or slot=='offhand','Invalid hand slot')
+    assert(hands==1 or hands==2,'Invalid hand requirement')
+    if (slot=='offhand' or hands==2) and self:HandDisabled(actor,2) then return false,LuaLanguage.BodyLeftArmUnavailable end
+    if (slot=='weapon' or hands==2) and self:HandDisabled(actor,3) then return false,LuaLanguage.BodyRightArmUnavailable end
+    return true
+end
 function Rules:Penalty(actor,attribute)
     local state=CS.ProjectY.Data.BodyHealth;local revision=state.Revision(actor)
     local cached=self.penaltyCache[actor]
@@ -63,9 +76,19 @@ function Rules:Chance(health,maximum,amount,effect)
     return math.min(settings.maximumChance,math.floor(settings.baseChance+(1-health/maximum)*100*settings.missingHealthChanceScale
         +math.min(100,amount/maximum*100)*settings.damageChanceScale+effect.injuryChanceBonus))
 end
-function Rules:SelectHit(target,roll)
+function Rules:SelectHit(target,roll,partIndex)
     assert(target.HP>0 and not target.MountedAnimal,'Body hit needs live unmounted recipient')
     local state=CS.ProjectY.Data.BodyHealth;local total=0
+    if partIndex~=nil then
+        assert(type(partIndex)=='number' and partIndex%1==0 and partIndex>=0 and partIndex<=5,'Invalid targeted body part')
+        for _,part in ipairs(self.parts)do
+            if part.index==partIndex then
+                assert(state.MaximumHP(target,partIndex)>0,'Targeted body part has no capacity')
+                return {part=part}
+            end
+        end
+        error('Targeted body part is not configured')
+    end
     for _,part in ipairs(self.parts)do if state.MaximumHP(target,part.index)>0 then total=total+part.weight end end
     local locationRoll=assert(roll,'Body hits require the combat random stream')();local pick=locationRoll/100*total;local selected
     for _,part in ipairs(self.parts)do if state.MaximumHP(target,part.index)>0 then pick=pick-part.weight;if pick<0 then selected=part;break end end end

@@ -27,8 +27,9 @@ function Catalog.New(config)
     return self
 end
 
-function Catalog:Rich(text)
+function Catalog:Rich(text,linkTint)
     assert(type(text)=='string','Tooltip rich text must be a string')
+    local tint=linkTint and Color.Normalize(linkTint) or linkColor
     local unmatched=text:gsub('<link="([^"]+)">(.-)</link>',function(target,label)
         assert(not label:find('<link',1,true),'Tooltip links cannot contain nested links')
         local id=target:match('^term:([%w_%-]+)$')
@@ -38,11 +39,11 @@ function Catalog:Rich(text)
     end)
     assert(not unmatched:find('<link',1,true) and not unmatched:find('</link>',1,true),'Malformed tooltip link')
     return (text:gsub('<link="([^"]+)">(.-)</link>',function(target,label)
-        return '<link="'..target..'"><color='..linkColor..'><u>'..label..'</u></color></link>'
+        return '<link="'..target..'"><color='..tint..'><u>'..label..'</u></color></link>'
     end))
 end
 
-function Catalog:Description(skillId)
+function Catalog:Description(skillId,linkTint)
     local row=self.descriptions:Get(skillId);local tags={};local paragraphs={}
     assert(#row.tagIds>0,'Skill tooltip needs at least one category: '..skillId)
     for _,id in ipairs(row.tagIds)do
@@ -52,7 +53,7 @@ function Catalog:Description(skillId)
     if row.body~='' then paragraphs[#paragraphs+1]=row.body end
     for _,id in ipairs(row.fragmentIds)do paragraphs[#paragraphs+1]=self.texts:Get(id).body end
     assert(#paragraphs>0,'Skill tooltip needs an effect description: '..skillId)
-    return {tags=tags,body=self:Rich(table.concat(paragraphs,'\n'))}
+    return {tags=tags,body=self:Rich(table.concat(paragraphs,'\n'),linkTint)}
 end
 
 function Catalog:Term(id)

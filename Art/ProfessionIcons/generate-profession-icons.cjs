@@ -1,10 +1,11 @@
 // Hand-authored vector profession emblems. No external images or fonts are used.
-// Usage: node generate-profession-icons.cjs [path-to-sharp]
+// Usage: node generate-profession-icons.cjs [path-to-sharp] [only-profession-id]
 // The SVG sources remain editable; PNG output is regenerated at 256 x 256.
 const fs = require('node:fs');
 const path = require('node:path');
 const crypto = require('node:crypto');
 const sharp = require(process.argv[2] || 'sharp');
+const selectedId = process.argv[3] === undefined ? null : Number(process.argv[3]);
 
 const sourceDir = __dirname;
 const projectDir = path.resolve(sourceDir, '../..');
@@ -148,6 +149,31 @@ const professions = [
   ` },
 ];
 
+professions.push({ id: 14, name: 'ArcaneKnight', symbol: `
+  <path d="M72 77q56-23 112 0v61q-4 46-56 77-52-31-56-77Z" fill="${dark}"/>
+  <path d="M83 86q45-18 90 0v51q-4 38-45 65-41-27-45-65Z" stroke-width="3"/>
+  <path d="m128 30 13 23-5 94h-16l-5-94Z" fill="${ivory}"/>
+  <path d="M128 48v91" stroke-width="3"/>
+  <path d="M102 145h52v11h-52Z" fill="${gold}"/>
+  <path d="M122 157h12v29h-12Z" fill="${ivory}"/>
+  <path d="m128 185 9 9-9 9-9-9Z" fill="${gold}"/>
+  <ellipse cx="128" cy="109" rx="68" ry="24" transform="rotate(-24 128 109)" stroke="${ivory}" stroke-width="4"/>
+  <path d="m61 106 3 10 10 3-10 3-3 10-3-10-10-3 10-3Z" fill="${ivory}" stroke-width="3"/>
+  <path d="m193 72 3 10 10 3-10 3-3 10-3-10-10-3 10-3Z" fill="${ivory}" stroke-width="3"/>
+` });
+
+professions.push({ id: 15, name: 'Anatomist', symbol: `
+  <path d="M89 111V86q0-35 39-35t39 35v25l-14 11v22h-50v-22Z" fill="${ivory}"/>
+  <path d="M105 89q13-8 18 5-5 17-18 10Zm29 5q5-13 18-5v15q-13 7-18-10Z" fill="${dark}" stroke="${dark}" stroke-width="3"/>
+  <path d="m128 108-6 12h12Z" fill="${dark}" stroke="${dark}" stroke-width="2"/>
+  <path d="M112 133v11m11-11v11m11-11v11m11-11v11" stroke="${dark}" stroke-width="3"/>
+  <path d="m60 192 78-41 7 13-78 41Z" fill="${dark}"/>
+  <path d="m138 151 53-28q-1 26-46 41Z" fill="${ivory}"/>
+  <path d="m84 168 10-5m1 11 10-5m1 11 10-5" stroke-width="3"/>
+  <path d="M57 75v30m-15-15h30m126-34v24m-12-12h24" stroke="${ivory}" stroke-width="4"/>
+  <path d="M62 128v15m-7-8h14" stroke-width="3"/>
+` });
+
 function makeSvg(profession) {
   return `<svg xmlns="http://www.w3.org/2000/svg" width="256" height="256" viewBox="0 0 256 256">
   <title>${profession.name} profession emblem</title>
@@ -159,13 +185,16 @@ function makeSvg(profession) {
 }
 
 async function main() {
+  if (selectedId !== null && !professions.some(profession => profession.id === selectedId)) throw new Error('Unknown profession ID');
   fs.mkdirSync(outputDir, { recursive: true });
   const manifest = [];
   for (const profession of professions) {
     const svg = makeSvg(profession);
-    fs.writeFileSync(path.join(sourceDir, `profession-${profession.id}.svg`), svg);
     const outputPath = path.join(outputDir, `profession-${profession.id}.png`);
-    await sharp(Buffer.from(svg), { density: 288 }).resize(256, 256).png().toFile(outputPath);
+    if (selectedId === null || profession.id === selectedId) {
+      fs.writeFileSync(path.join(sourceDir, `profession-${profession.id}.svg`), svg);
+      await sharp(Buffer.from(svg), { density: 288 }).resize(256, 256).png().toFile(outputPath);
+    }
     const buffer = fs.readFileSync(outputPath);
     const { data, info } = await sharp(buffer).ensureAlpha().raw().toBuffer({ resolveWithObject: true });
     let pixels = 0;

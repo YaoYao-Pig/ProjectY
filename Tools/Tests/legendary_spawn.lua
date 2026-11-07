@@ -4,7 +4,7 @@ config:OnInit({services={ReadConfig=function(_,name)local f=assert(io.open('Asse
 local Hex=require('Game.Map.HexGrid');local EmptyGrowth=assert(loadfile('Tools/Tests/growth_empty.lua'))()
 local stats=require('Game.Battle.CombatStats')(config)
 -- Birth/body persistence has its own C# boundary tests; this fixture covers roster, species and traits.
-stats.birth={Initialize=function()end}
+stats.birth={InitializeEnemy=function()end}
 stats.injuries={ApplyAttribute=function(_,actor,name,value)return value end}
 local function fixture()
     local map={cells={},byKey={}}

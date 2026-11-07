@@ -1,14 +1,157 @@
 {
   "version": 1,
   "name": "PartyStoryRuleTable",
-  "description": "真实共同战斗和危急救援的关系与特质规则。救援不含自疗、部署和周期治疗，每场每对一次。",
+  "description": "队员关系：真实帮助、同轮协作、误伤与战外交谈；奖励限次、友伤债务及爱恋条件。",
   "key": "id",
   "fields": [
-    {"name":"id","type":"int","description":"规则 ID","min":1},
-    {"name":"rescueHealthPercent","type":"int","description":"被救者治疗前生命不高于最大生命的百分比","min":1,"max":99},
-    {"name":"rescueBond","type":"int","description":"真实救援增加的关系值","min":1,"max":100},
-    {"name":"victoryBond","type":"int","description":"共同胜利且双方存活增加的关系值","min":1,"max":100},
-    {"name":"removeTraitIds","type":"int[]","description":"真实获救后移除的特质","ref":"CombatTraitTable"}
+    {
+      "name": "id",
+      "type": "int",
+      "description": "规则 ID",
+      "min": 1
+    },
+    {
+      "name": "rescueHealthPercent",
+      "type": "int",
+      "description": "被救者治疗前生命不高于最大生命的百分比",
+      "min": 1,
+      "max": 99
+    },
+    {
+      "name": "rescueBond",
+      "type": "int",
+      "description": "真实救援增加的关系值",
+      "min": 1,
+      "max": 100
+    },
+    {
+      "name": "victoryBond",
+      "type": "int",
+      "description": "共同胜利且双方存活增加的关系值",
+      "min": 1,
+      "max": 100
+    },
+    {
+      "name": "removeTraitIds",
+      "type": "int[]",
+      "description": "真实获救后移除的特质",
+      "ref": "CombatTraitTable"
+    },
+    {
+      "name": "deathDoorBond",
+      "type": "int",
+      "description": "从零生命死门救回的关系奖励",
+      "min": 1,
+      "max": 100
+    },
+    {
+      "name": "healBond",
+      "type": "int",
+      "description": "普通有效治疗奖励",
+      "min": 1,
+      "max": 100
+    },
+    {
+      "name": "healLimit",
+      "type": "int",
+      "description": "每场每对普通治疗奖励次数",
+      "min": 1,
+      "max": 100
+    },
+    {
+      "name": "minimumHealPercent",
+      "type": "int",
+      "description": "有效治疗最低占目标最大生命百分比",
+      "min": 1,
+      "max": 100
+    },
+    {
+      "name": "cooperationBond",
+      "type": "int",
+      "description": "同轮先后攻击同一敌人的关系奖励",
+      "min": 1,
+      "max": 100
+    },
+    {
+      "name": "cooperationLimit",
+      "type": "int",
+      "description": "每场每对协作奖励次数",
+      "min": 1,
+      "max": 100
+    },
+    {
+      "name": "minimumHarm",
+      "type": "int",
+      "description": "一次误伤最低关系损失",
+      "min": 1,
+      "max": 100
+    },
+    {
+      "name": "maximumHarm",
+      "type": "int",
+      "description": "一次误伤最大关系损失，打入死门取此值",
+      "min": 1,
+      "max": 100
+    },
+    {
+      "name": "chatBond",
+      "type": "int",
+      "description": "每日交谈的关系收益",
+      "min": 1,
+      "max": 100
+    },
+    {
+      "name": "apologyBond",
+      "type": "int",
+      "description": "道歉的关系收益",
+      "min": 1,
+      "max": 100
+    },
+    {
+      "name": "apologyRelief",
+      "type": "int",
+      "description": "道歉减少的芥蒂",
+      "min": 1,
+      "max": 100
+    },
+    {
+      "name": "romanceMinimum",
+      "type": "int",
+      "description": "确认爱恋所需好感",
+      "min": 1,
+      "max": 100
+    },
+    {
+      "name": "romanceBattles",
+      "type": "int",
+      "description": "确认爱恋所需共同胜利次数",
+      "min": 1,
+      "max": 100
+    }
   ],
-  "rows": [{"id":1,"rescueHealthPercent":25,"rescueBond":25,"victoryBond":10,"removeTraitIds":[3,6]}]
+  "rows": [
+    {
+      "id": 1,
+      "rescueHealthPercent": 25,
+      "rescueBond": 12,
+      "victoryBond": 2,
+      "removeTraitIds": [
+        3,
+        6
+      ],
+      "deathDoorBond": 20,
+      "healBond": 3,
+      "healLimit": 2,
+      "minimumHealPercent": 5,
+      "cooperationBond": 3,
+      "cooperationLimit": 2,
+      "minimumHarm": 2,
+      "maximumHarm": 18,
+      "chatBond": 3,
+      "apologyBond": 2,
+      "apologyRelief": 8,
+      "romanceMinimum": 60,
+      "romanceBattles": 3
+    }
+  ]
 }

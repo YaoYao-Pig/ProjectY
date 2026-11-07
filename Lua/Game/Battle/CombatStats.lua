@@ -8,8 +8,11 @@ function Stats:ctor(config, equipmentData)
     self.effects = config:GetTable('CombatEffectTable')
     self.buffs = require('Game.Battle.BuffRules').New(config)
     self.growth = require('Game.Progression.GrowthRules').New(config)
+    self.specialSkills = require('Game.Progression.SpecialSkillRules').New(config)
+    self.equipment.specialSkills = self.specialSkills
+    self.titles = require('Game.Progression.TitleRules').New(config)
     self.birth = require('Game.Progression.CharacterBirth').New(config)
-    self.injuries = require('Game.Battle.InjuryRules').New(config)
+    self.injuries = self.equipment.injuries
     self.diseases = require('Game.Battle.DiseaseRules').New(config)
     self.animals = require('Game.Animals.AnimalRules').New(config)
     self.heightAdvantage=require('Game.Battle.HeightAdvantage').New(config)
@@ -26,11 +29,15 @@ function Stats:ctor(config, equipmentData)
         end
         self.attributes[row.id] = values
     end
+    self.spellcasting=require('Game.Battle.Spellcasting').New(config,self)
+    self.morale=require('Game.Battle.Morale').New(config,self)
+    self.deathDoor=require('Game.Battle.DeathDoor').New(config,self)
 end
 function Stats:Template(unit) return self.units:Get(unit.TemplateId) end
 function Stats:Get(unit, name, excludeEquipment, pendingEffect)
     -- 未训练的二级属性允许缺失，其基础值按契约为 0。
     local value = unit.HasInitialAttributes and unit:GetInitialAttribute(name) or (assert(self.attributes[unit.TemplateId])[name] or 0)
+    if name=='courage' then value=value+self.morale.rule.baseCourage end
     local profession=unit.InitialProfessionId
     if profession~=nil then
         local current=unit.Growth.CurrentProfessionId
@@ -56,7 +63,9 @@ function Stats:Get(unit, name, excludeEquipment, pendingEffect)
     end
     if pendingEffect and pendingEffect.attribute==name then value=value+pendingEffect.amount*pendingEffect.stacks end
     if pendingEffect and pendingEffect.buff then value=value+self.buffs:PendingBonus(pendingEffect,name) end
-    return self.injuries:ApplyAttribute(unit,name,math.max(0, value + self.growth:Bonus(unit,name) + (excludeEquipment and 0 or self.equipment:AttributeBonus(unit,name))))
+    value=self.injuries:ApplyAttribute(unit,name,math.max(0, value + self.growth:Bonus(unit,name) + self.titles:Bonus(unit,name) + (excludeEquipment and 0 or self.equipment:AttributeBonus(unit,name))))
+    value=self.economy and self.economy:ApplyAttribute(unit,name,value) or value
+    return self.deathDoor:Attribute(unit,name,self.morale:Attribute(unit,name,value))
 end
 function Stats:MoveRange(unit,template)
     local range=self.animals:MoveRange(unit,template)

@@ -1,0 +1,13 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class EconomyCommodityTableRow
+---@field id number 商品分类编号
+---@field itemId number 实际背包物品
+---@field name string 分类名称
+---@field richTag string 高资源强度标签
+---@field poorTag string 低资源强度标签
+---@field basePrice number 基础价格
+---@field food boolean 是否可作为每日食物消耗
+---@field regionTypes number[] 产地地貌类型
+---@field regionWeights number[] 对应地貌生产潜力
+---@field waterWeight number 可接近水域的渔业潜力
+return {["name"]="EconomyCommodityTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\229\149\134\229\147\129\229\136\134\231\177\187\231\188\150\229\143\183",["min"]=1},{["name"]="itemId",["type"]="int",["description"]="\229\174\158\233\153\133\232\131\140\229\140\133\231\137\169\229\147\129",["ref"]="EquipmentItemTable"},{["name"]="name",["type"]="text",["description"]="\229\136\134\231\177\187\229\144\141\231\167\176"},{["name"]="richTag",["type"]="text",["description"]="\233\171\152\232\181\132\230\186\144\229\188\186\229\186\166\230\160\135\231\173\190"},{["name"]="poorTag",["type"]="text",["description"]="\228\189\142\232\181\132\230\186\144\229\188\186\229\186\166\230\160\135\231\173\190"},{["name"]="basePrice",["type"]="int",["description"]="\229\159\186\231\161\128\228\187\183\230\160\188",["min"]=1},{["name"]="food",["type"]="bool",["description"]="\230\152\175\229\144\166\229\143\175\228\189\156\228\184\186\230\175\143\230\151\165\233\163\159\231\137\169\230\182\136\232\128\151"},{["name"]="regionTypes",["type"]="int[]",["description"]="\228\186\167\229\156\176\229\156\176\232\178\140\231\177\187\229\158\139"},{["name"]="regionWeights",["type"]="float[]",["description"]="\229\175\185\229\186\148\229\156\176\232\178\140\231\148\159\228\186\167\230\189\156\229\138\155"},{["name"]="waterWeight",["type"]="float",["description"]="\229\143\175\230\142\165\232\191\145\230\176\180\229\159\159\231\154\132\230\184\148\228\184\154\230\189\156\229\138\155",["min"]=0,["max"]=1}},["fingerprint"]="9e72205010d76042ea7374d5f3a2d310595062956e4f6061c1b6c6f07c54f60d"}

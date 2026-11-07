@@ -15,6 +15,7 @@ namespace ProjectY.Samples
         private readonly HashSet<int> current=new HashSet<int>();
         private readonly List<int> removed=new List<int>();
         private bool sailing;
+        private bool overview;
         public WorldWaterView(Transform parent,WorldPartyView.Binding[] bindings)
         {
             root=new GameObject("WorldWaterTravel");root.transform.SetParent(parent,false);
@@ -38,6 +39,7 @@ namespace ProjectY.Samples
             sailing=water.ShowBoat;
             if(sailing && !pieces.ContainsKey(0))Place(0,water.BoatPath,water.BoatPosition,0,water.BoatScale);
             if(sailing)current.Add(0);
+            if(pieces.TryGetValue(0,out var boat))boat.Object.SetActive(!overview);
             removed.Clear();foreach(var pair in pieces)if(!current.Contains(pair.Key))removed.Add(pair.Key);
             foreach(var id in removed){Destroy(pieces[id].Object);pieces.Remove(id);}
         }
@@ -47,6 +49,11 @@ namespace ProjectY.Samples
             var target=piece.Object.transform;var delta=displayed-target.position;delta.y=0;
             if(delta.sqrMagnitude>.00001f)target.rotation=Quaternion.LookRotation(delta,Vector3.up);
             target.position=displayed;
+        }
+        public void SetOverview(bool value)
+        {
+            overview=value;
+            if(pieces.TryGetValue(0,out var boat))boat.Object.SetActive(!overview);
         }
         private static void Destroy(Object value){if(Application.isPlaying)Object.Destroy(value);else Object.DestroyImmediate(value);}
         public void Dispose(){Destroy(root);pieces.Clear();}

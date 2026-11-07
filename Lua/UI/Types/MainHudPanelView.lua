@@ -57,6 +57,8 @@
 ---@field MenuRows CS.UnityEngine.RectTransform
 ---@field MenuRowsScroll CS.UnityEngine.UI.ScrollRect
 ---@field ClockNeedle CS.UnityEngine.RectTransform
+---@field WeatherDial CS.ProjectY.UI.WeatherDialView
+---@field WeatherDialGroup CS.UnityEngine.CanvasGroup
 ---@field ClockTime CS.UnityEngine.UI.Text
 ---@field ClockDay CS.UnityEngine.UI.Text
 ---@field SkillPreviousText CS.UnityEngine.UI.Text
@@ -82,5 +84,7 @@
 ---@field FactionsText CS.UnityEngine.UI.Text
 ---@field SiteTags CS.UnityEngine.UI.Toggle
 ---@field SiteTagsText CS.UnityEngine.UI.Text
+---@field MapHud CS.ProjectY.UI.LuaReference
+---@field MapTransition CS.UnityEngine.Component
 local View = {}
 return View

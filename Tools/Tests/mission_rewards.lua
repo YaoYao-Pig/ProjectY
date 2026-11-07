@@ -1,4 +1,5 @@
 package.path = 'Lua/?.lua;' .. package.path
+CS={ProjectY={Data={PartyRoster={ActiveLimit=4,ReserveLimit=6,Count=function(data)return data.PartyCount end}}}}
 local Story = require('Game.Narrative.NarrativeSystem')
 local Actions = require('Game.Narrative.NarrativeActions')
 local Rewards = require('Game.Narrative.MissionRewards')
@@ -55,6 +56,12 @@ local function fixture()
         nodes=tableOf({[1]={id=1,dialogueId=1,choiceIds={1}},[2]={id=2,dialogueId=1,choiceIds={}}}),
         choices=tableOf({[1]={conditionId=0,actionIds={8,7,12},nextNodeId=2,text='领取'}})}
     story.adventure={data=world,equipment=equipment,player=player,growth=growth,recipe={maxPartySize=4},sites={[1]={name='河湾镇'}},areas={}}
+    local settlements={};story.adventure.renown=0
+    story.adventure.titles={CompletionReward=function(_,kind)return kind=='mission' and 60 or kind=='town' and 30 or 0 end,
+        Complete=function(self,kind,id)
+            local key=kind..':'..id;if settlements[key]then return 0 end;settlements[key]=true
+            local amount=self:CompletionReward(kind);story.adventure.renown=story.adventure.renown+amount;return amount
+        end}
     story.conditions={Check=function()return true end}
     story.Refresh=function()end
     story.CanAccept=function()return false end
@@ -79,7 +86,8 @@ do
     story.adventure.equipment.full=false
     assert(story:Claim('mission',100) and #receipts==1)
     local receipt=receipts[1]
-    assert(receipt.title=='测试任务' and receipt.kind=='mission' and receipt.id==100 and #receipt.rows==5)
+    assert(receipt.title=='测试任务' and receipt.kind=='mission' and receipt.id==100 and #receipt.rows==6)
+    assert(story.adventure.renown==60 and receipt.rows[6].name==require('Language').TitleReputation and receipt.rows[6].amount==60)
     assert(find(receipt.rows,'coins').amount==50 and story.adventure.player.Coins==150)
     assert(find(receipt.rows,'relation').amount==10 and find(receipt.rows,'reputation').amount==2)
     local experience=find(receipt.rows,'experience')
@@ -96,7 +104,7 @@ do
     story.data.states['mission:101']='ready'
     assert(story:Claim('quest',201) and #receipts==0)
     assert(story:Claim('quest',202) and #receipts==1 and #receipts[1].rows==0)
-    assert(story:Claim('mission',101) and #receipts==2 and #receipts[2].rows==0)
+    assert(story:Claim('mission',101) and #receipts==2 and #receipts[2].rows==1 and story.adventure.renown==60)
     assert(story:Claim('quest',203) and #receipts==3 and find(receipts[3].rows,'experience').amount==25)
 end
 
@@ -109,6 +117,7 @@ do
     dialogue.Enter=function(_,id)story.data:EnterDialogueNode(id)end
     local version=story.data.DialogueVersion
     assert(dialogue:Choose(1,version) and #receipts==1)
+    assert(story.adventure.renown==60 and receipts[1].rows[#receipts[1].rows].amount==60)
     assert(find(receipts[1].rows,'coins').amount==50 and actors[1].Growth.Experience==25)
     assert(not dialogue:Choose(1,version) and #receipts==1)
 end
@@ -152,13 +161,13 @@ do
         Refresh=function()end,NearPublisher=function()return true end,PublisherName=function()return '居民甲'end},TownMissions)
     local view=town:Rows(1,1)[1]
     assert(view.description=='交些补给' and view.publisher=='居民甲' and view.location=='河湾镇' and view.objective:find('补给'))
-    assert(#view.rewards==2 and view.turnInHint:find('原委托人'))
+    assert(#view.rewards==3 and view.turnInHint:find('原委托人'))
     actors[1].Growth.Experience=2147483647
     assert(not town:Claim(7) and story:ItemCount(22)==5 and #receipts==0 and mission.State=='ready')
     actors[1].Growth.Experience=0
     story.RewardSettled:Subscribe(function()assert(mission.State=='completed')end)
     assert(town:Claim(7) and #receipts==1 and story:ItemCount(22)==2)
-    assert(receipts[1].kind=='town' and receipts[1].title=='居民备料' and #receipts[1].rows==2)
+    assert(receipts[1].kind=='town' and receipts[1].title=='居民备料' and #receipts[1].rows==3 and story.adventure.renown==30)
     assert(not town:Claim(7) and #receipts==1 and story:ItemCount(22)==2)
 end
 

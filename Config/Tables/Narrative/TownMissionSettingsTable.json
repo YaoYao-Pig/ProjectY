@@ -33,6 +33,26 @@
       "type": "int",
       "description": "抵达时玩家距商队的最大格数",
       "min": 0
+    },
+    {
+      "name": "escortAmbushChecks",
+      "type": "int",
+      "description": "护送沿途袭击判定次数上限",
+      "min": 1,
+      "max": 3
+    },
+    {
+      "name": "escortAmbushChance",
+      "type": "int",
+      "description": "每个护送检查点触发袭击的百分比概率",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "escortAmbushPartyIds",
+      "type": "int[]",
+      "description": "护送袭击候选普通队伍；仍检查当前外交和地形",
+      "ref": "WorldPartyTable"
     }
   ],
   "rows": [
@@ -41,7 +61,10 @@
       "minOffers": 1,
       "maxOffers": 5,
       "escortPartyDefinitionId": 1,
-      "escortArrivalRadius": 1
+      "escortArrivalRadius": 1,
+      "escortAmbushChecks": 3,
+      "escortAmbushChance": 30,
+      "escortAmbushPartyIds": [2, 3, 4]
     }
   ]
 }

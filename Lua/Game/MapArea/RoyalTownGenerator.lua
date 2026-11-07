@@ -3,6 +3,7 @@ local Geometry=require('Game.MapArea.DungeonGeometry')
 local Royal={}
 function Royal.Generate(area,row,random,config)
     local recipe=config:GetTable('MapAreaRoyalTable'):Get(row.royalLayoutIds[random:Integer(1,#row.royalLayoutIds)])
+    recipe=require('Game.Economy.BankTownLayout').RoyalRecipe(area,recipe,config)
     local placements=config:GetTable('MapAreaRoyalPlacementTable');local lots=config:GetTable('MapAreaTownLotTable')
     local definitions=config:GetTable('MapAreaTownFacilityTable')
     area.props={};area.generationVersion=4;area.corridorRadius=row.streetRadius

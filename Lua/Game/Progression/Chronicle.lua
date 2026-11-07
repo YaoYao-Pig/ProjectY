@@ -11,12 +11,13 @@ function Chronicle.Format(template, values)
     return (template:gsub('{([%w_]+)}', function(key) return assert(values[key], 'Unknown story token: '..key) end))
 end
 function Chronicle:Values(actor, location, title, detail)
+    local function name(value)return self.stats.inspection and self.stats.inspection.targets:Name(value) or self.stats:Template(value).name end
     local names = {}
     for i = 0, self.data.PartyCount-1 do
         local other = self.data:GetPartyAt(i)
-        if not actor or other.Id ~= actor.Id then names[#names+1] = self.stats:Template(other).name end
+        if not actor or other.Id ~= actor.Id then names[#names+1] = name(other) end
     end
-    return {actor=actor and self.stats:Template(actor).name or '小队',location=location,title=title,detail=detail,
+    return {actor=actor and name(actor) or '小队',location=location,title=title,detail=detail,
         companions=#names > 0 and table.concat(names,'、') or '一路的见闻'}
 end
 function Chronicle:Record(kind, actor, title, detail, location, shared, eventId, choiceId)
@@ -29,7 +30,7 @@ function Chronicle:RecordPair(kind,actor,other,title,detail,location,delta)
     assert(actor and other and actor.Id~=other.Id,'A shared experience needs two different actors')
     local template=assert(self.templates[kind],'Unknown log kind: '..kind)
     local values=self:Values(actor,location,title,detail)
-    values.other=self.stats:Template(other).name
+    values.other=self.stats.inspection and self.stats.inspection.targets:Name(other) or self.stats:Template(other).name
     values.companions=values.other
     values.detail=Chronicle.Format(detail,values)
     self.data:RecordPair(kind,title,Chronicle.Format(template.template,values),location,0,0,actor.Id,other.Id,delta or 0)

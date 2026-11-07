@@ -5,7 +5,7 @@ using XLua;
 namespace ProjectY.Data
 {
     [LuaCallCSharp]
-    public sealed class BattleData
+    public sealed partial class BattleData
     {
         private readonly List<CombatActorData> units = new List<CombatActorData>();
         private readonly List<int> order = new List<int>();
@@ -33,8 +33,11 @@ namespace ProjectY.Data
         public string GetLogAt(int index) => logs[index];
         public void Clear()
         {
+            foreach(var actor in units)MoraleState.End(actor);
+            MoraleDefeated.Clear();
             units.Clear(); order.Clear(); logs.Clear();
             ProfessionTraps.Clear();
+            SpellcastingState.ClearFields(this);
             EncounterId = 0; MaxRounds = 0; Round = 0; ActiveId = 0; TurnIndex = 0; Winner = "";
             Phase = "idle";
         }
@@ -66,7 +69,7 @@ namespace ProjectY.Data
         }
         public void AddTurn(int id)
         {
-            if (order.Contains(id) || !units.Exists(unit => unit.Id == id && unit.HP > 0))
+            if (order.Contains(id) || !units.Exists(unit => unit.Id == id && DeathDoorState.Alive(unit)))
                 throw new InvalidOperationException("Invalid turn order actor.");
             order.Add(id);
         }

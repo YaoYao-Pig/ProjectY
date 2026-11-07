@@ -8,6 +8,10 @@
 
 ## 正文
 
+- 玩家角色的0HP不再等同退出战斗；回合、占格、技能目标与胜负使用 `ActorLife.Alive`，原始伤害和生命比例仍读HP。首击保护、死亡检定与永久死亡见[死门](DeathDoor.md)。
+
+- 战斗开始/结束与伤害、倒地、回合开始接入[勇气与士气](TitlesAndMorale.md)：命中、防御、自动逃跑及重整使用同一角色实例与战斗随机流。
+
 - 六职业共享状态、每轮被动、技能材料／减费、二阶段位移、承誓与绊索的契约见 [职业战斗与兼职联动](ProfessionCombat.md)。`ProfessionCombatTable`、`ProfessionBeastTable`、`ProfessionExplorationTable` 中有独立执行器的技能允许空 `effectIds`；不可把空效果误当成已实现技能。
 
 - 直接攻击造成的部位创伤、永久致残、移动/属性惩罚与治疗见[身体健康与创伤](BodyInjuries.md)；移动预算统一通过 `CombatStats.MoveRange` 查询，避免绕开腿伤。
@@ -15,6 +19,8 @@
 - `CombatUnitTable.traitIds` 声明创建时固有特质；`CombatTraitTable.onHitEffectIds` 为伤害攻击增加命中效果，敌我共享，防御与治疗不触发。配置、初始化及专属传奇机制见[传奇生物与具名人物](Legends.md)。
 
 - `CombatSkillTable.minRange`（默认 0）约束双方完整占地的最近距离；`fixedRange`（默认 false）禁止装备与高地延长射程。角色、自动追加目标及容器共用下限判定，失败不消耗 AP/随机流；具有近身禁区的 AI 通过 `ApproachCells` 寻找可攻击落点，可后退到有效距离。长枪配置见[装备](Equipment.md)，定向检查为 [spear_range.lua](../../Tools/Tests/spear_range.lua)。
+- `CombatSkillTable.rangeShape + range` 配置施法形态：`hex`（默认）为实心六边形、`line` 为六个轴方向的射线、`ring` 为距离恰好等于射程的最外一圈；0 格对应中心格。最小射程、完整占地、高地／工事加成和弹道继续生效，配置 `fixedRange=true` 可固定格数。共用 [SkillShape](../../Lua/Game/Battle/SkillShape.lua)，实际角色／地格／容器选择与 AI 寻位均受约束；仅更改预览不能放宽目标规则。
+- `splashShape + splashRadius` 配置落点影响形态，枚举同上，默认 `hex + 0`。自动多目标攻击按形态筛选目标，仍遵守原射程、目标资格和 `maxTargets`；半径大于 0 的环形只影响外围，落点中心的角色／容器不受击。追踪手选不自动扩散。[持续地表](Spellcasting.md) 同样将整片形态作为实际影响区。选中与悬停的高亮／辉光由[战斗 HUD](BattleHUD.md)消费同一几何查询。
 - 原地 3D 战斗的每次实际攻击触发短特写：参与者来自已结算的 `VisualEffects` hit/miss 记录，包含多目标和实际拦截者，不揭露未显示单位。慢动作、聚焦镜头、抬升与共享轮廓灰罩的生命周期见[主 HUD](MainHud.md)。二维旧棋盘不播放此 3D 特写。
 
 - 技能的方块粒子、实际拦截/逐发命中与失败表现通过只读结算事件接入，配置扩展和清理见[技能与物品方块特效](VisualEffects.md)。

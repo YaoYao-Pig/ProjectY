@@ -1,0 +1,14 @@
+{
+  "version":1,"name":"DeathDoorRuleTable","description":"玩家小队死门：零血仍存活，后续伤害进行D20死亡检定。","key":"id",
+  "fields":[
+    {"name":"id","type":"int","min":1,"description":"规则 ID，使用1"},
+    {"name":"diceSides","type":"int","min":20,"max":20,"description":"初版固定使用一颗D20"},
+    {"name":"fullMoraleDeathPercent","type":"int","min":0,"max":100,"description":"满士气的死亡率"},
+    {"name":"emptyMoraleDeathPercent","type":"int","min":0,"max":100,"description":"零士气的死亡率"},
+    {"name":"survivalMoraleLossPercent","type":"int","min":0,"max":100,"description":"每次幸存扣除最大士气的百分比，向上取整"},
+    {"name":"penaltyPerSurvival","type":"int","min":0,"max":100,"description":"每次幸存增加的属性削减百分比"},
+    {"name":"maximumPenalty","type":"int","min":0,"max":100,"description":"累计属性削减上限"},
+    {"name":"penaltyAttributeIds","type":"int[]","ref":"GrowthAttributeTable","description":"受衰弱影响的属性；不改变生命上限或勇气"}
+  ],
+  "rows":[{"id":1,"diceSides":20,"fullMoraleDeathPercent":10,"emptyMoraleDeathPercent":90,"survivalMoraleLossPercent":40,"penaltyPerSurvival":10,"maximumPenalty":50,"penaltyAttributeIds":[3,4,5,6,7,8,9,10,11,12,13,14]}]
+}

@@ -9,6 +9,11 @@ namespace ProjectY.Samples
     {
         public static bool Active(AdventureRuntimeDemo demo) => demo.IsSelectingBattleTargets;
         public static bool NeedsLanding(AdventureRuntimeDemo demo) => demo.IsSelectingBattleLandingSkill;
+        public static bool NeedsBodyPart(AdventureRuntimeDemo demo) => demo.IsSelectingBattleBodyPartSkill;
+        public static bool ChoosingBodyPart(AdventureRuntimeDemo demo) => demo.IsChoosingBattleBodyPart;
+        public static string BodyPartTitle(AdventureRuntimeDemo demo) => demo.BattleBodyPartTitle();
+        public static string BodyPartName(AdventureRuntimeDemo demo,int part) => demo.BattleBodyPartName(part);
+        public static void ChooseBodyPart(AdventureRuntimeDemo demo,int part) => demo.ChooseBattleBodyPart(part);
         public static int Count(AdventureRuntimeDemo demo) => demo.SelectedBattleTargetCount;
         public static int Limit(AdventureRuntimeDemo demo) => demo.BattleTargetLimit;
         public static string Hint(AdventureRuntimeDemo demo) => demo.BattleTargetHint();
@@ -23,27 +28,56 @@ namespace ProjectY.Samples
     {
         private readonly List<int> selectedBattleTargets=new List<int>();
         private int hoveredBattleTarget;
+        private int hoveredBattleCell=-1,hoveredBattleContainer;
         private AdventureViewData.Trap hoveredBattleTrap;
         private int landingTargetId;
+        private int bodyPartTargetId;
         private AdventureViewData.Cell landingSourceCell;
         private AdventureViewData.Cell[] battleLandingCells=Array.Empty<AdventureViewData.Cell>();
         private AdventureViewData.Skill ChosenBattleSkill => view?.Phase=="battle"?Array.Find(view.Skills,row=>row.Id==selectedSkill):null;
         internal bool IsSelectingBattleLandingSkill => ChosenBattleSkill?.NeedsLanding==true || ChosenBattleSkill?.NeedsCellLanding==true;
+        internal bool IsSelectingBattleBodyPartSkill => ChosenBattleSkill?.SelectBodyPart==true;
+        internal bool IsChoosingBattleBodyPart => IsSelectingBattleBodyPartSkill && bodyPartTargetId!=0;
         private bool IsChoosingBattleLanding => IsSelectingBattleLandingSkill && (landingTargetId!=0 || landingSourceCell!=null);
-        internal bool IsSelectingBattleTargets => ChosenBattleSkill?.ManualTargets==true || IsSelectingBattleLandingSkill;
+        internal bool IsSelectingBattleTargets => ChosenBattleSkill?.ManualTargets==true || IsSelectingBattleLandingSkill || IsSelectingBattleBodyPartSkill;
         internal int SelectedBattleTargetCount => selectedBattleTargets.Count;
         internal int BattleTargetLimit => ChosenBattleSkill?.MaxTargets ?? 0;
-        private void ClearBattleTargets() {selectedBattleTargets.Clear();hoveredBattleTarget=0;hoveredBattleTrap=null;landingTargetId=0;landingSourceCell=null;battleLandingCells=Array.Empty<AdventureViewData.Cell>();}
+        private void ClearBattleTargets() {selectedBattleTargets.Clear();hoveredBattleTarget=0;hoveredBattleCell=-1;hoveredBattleContainer=0;hoveredBattleTrap=null;landingTargetId=0;bodyPartTargetId=0;landingSourceCell=null;battleLandingCells=Array.Empty<AdventureViewData.Cell>();}
+        private int[] BattleImpactCells
+        {
+            get
+            {
+                var skill=ChosenBattleSkill;
+                if(skill==null || view.Active.Team!=1 || moveSelected || IsChoosingBattleLanding || AnimationBusy || pendingExitView!=null)return Array.Empty<int>();
+                foreach(var area in skill.ImpactAreas)
+                {
+                    if(area.TargetId!=0 && area.TargetId==hoveredBattleTarget)return area.Cells;
+                    if(area.ContainerId!=0 && area.ContainerId==hoveredBattleContainer)return area.Cells;
+                    if(area.TargetId==0 && area.ContainerId==0 && area.CellIndex==hoveredBattleCell)return area.Cells;
+                }
+                return Array.Empty<int>();
+            }
+        }
+        private void ClearBattleHover()
+        {SetBattleTargetHover(0);SetBattleCellHover(null);hoveredBattleContainer=0;}
         internal void CancelBattleTargets() => CancelBattleSkillSelection();
         internal void ConfirmBattleTargets()
         {
-            if(!IsSelectingBattleTargets || IsSelectingBattleLandingSkill || selectedBattleTargets.Count==0)return;
+            if(!IsSelectingBattleTargets || IsSelectingBattleLandingSkill || IsSelectingBattleBodyPartSkill || selectedBattleTargets.Count==0)return;
             SendCommandInternal("skill_targets",selectedSkill,0,0,selectedBattleTargets.ToArray());
         }
         internal void ChooseBattleTarget(int id)
         {
             var skill=ChosenBattleSkill;
             if(skill==null || view.Active.Team!=1 || pendingExitView!=null || AnimationBusy)return;
+            if(skill.SelectBodyPart)
+            {
+                if(Array.IndexOf(skill.Targets,id)<0){view.Error=LuaLanguage.Get("BattleSelectionInvalidTarget");BattleHUDRevision++;return;}
+                var option=Array.Find(skill.BodyPartOptions,row=>row.TargetId==id);
+                if(option==null || option.Parts.Length==0)throw new InvalidOperationException("Missing body part options for a valid precision target.");
+                bodyPartTargetId=id;selectedBattleTargets.Clear();selectedBattleTargets.Add(id);
+                hoveredBattleTarget=id;view.Error="";BattleHUDRevision++;return;
+            }
             if(skill.NeedsLanding)
             {
                 if(Array.IndexOf(skill.Targets,id)<0){view.Error=LuaLanguage.Get("BattleSelectionInvalidTarget");BattleHUDRevision++;return;}
@@ -64,6 +98,20 @@ namespace ProjectY.Samples
                 selectedBattleTargets.Add(id);
             }
             hoveredBattleTarget=id;view.Error="";BattleHUDRevision++;
+        }
+        private AdventureViewData.BodyPartChoice BattleBodyPart(int part)
+        {
+            if(!IsChoosingBattleBodyPart)return null;
+            var option=Array.Find(ChosenBattleSkill.BodyPartOptions,row=>row.TargetId==bodyPartTargetId);
+            return option==null?null:Array.Find(option.Parts,row=>row.Id==part);
+        }
+        internal string BattleBodyPartName(int part) => BattleBodyPart(part)?.Name ?? "";
+        internal string BattleBodyPartTitle() => IsChoosingBattleBodyPart?LuaLanguage.Format("AnatomyTargetTitle",TargetName(bodyPartTargetId)):"";
+        internal void ChooseBattleBodyPart(int part)
+        {
+            if(!IsChoosingBattleBodyPart || view.Active.Team!=1 || pendingExitView!=null || AnimationBusy)return;
+            if(BattleBodyPart(part)==null){view.Error=LuaLanguage.Get("AnatomyInvalidPart");BattleHUDRevision++;return;}
+            SendCommandInternal("skill_body_part",selectedSkill,0,0,new[]{bodyPartTargetId,part});
         }
         private bool IsBattleLandingCell(int q,int r) => IsChoosingBattleLanding && Array.Exists(battleLandingCells,cell=>cell.Q==q && cell.R==r);
         private void ChooseBattleCell(int cellIndex)
@@ -90,7 +138,14 @@ namespace ProjectY.Samples
             {ClearBattleTargets();selectedSkill=0;moveSelected=next.Reachable.Length>0;return;}
             var skill=Array.Find(next.Skills,row=>row.Id==selectedSkill);
             if(skill==null){ClearBattleTargets();selectedSkill=0;return;}
-            if(skill.NeedsCellLanding && landingSourceCell!=null)
+            if(skill.SelectBodyPart && skill.Targets.Length==0)
+            {ClearBattleTargets();selectedSkill=0;moveSelected=next.Reachable.Length>0;return;}
+            if(skill.SelectBodyPart && bodyPartTargetId!=0)
+            {
+                var option=Array.Find(skill.BodyPartOptions,row=>row.TargetId==bodyPartTargetId);
+                if(Array.IndexOf(skill.Targets,bodyPartTargetId)<0 || option==null || option.Parts.Length==0)ClearBattleTargets();
+            }
+            else if(skill.NeedsCellLanding && landingSourceCell!=null)
             {
                 var option=Array.Find(skill.CellLandingOptions,row=>row.Source.CellIndex==landingSourceCell.CellIndex);
                 if(option==null || option.Cells.Length==0)ClearBattleTargets();
@@ -108,7 +163,7 @@ namespace ProjectY.Samples
                 selectedBattleTargets.RemoveAll(id=>Array.IndexOf(skill.Targets,id)<0);
                 if(selectedBattleTargets.Count>skill.MaxTargets)selectedBattleTargets.RemoveRange(skill.MaxTargets,selectedBattleTargets.Count-skill.MaxTargets);
             }
-            if(!Array.Exists(next.Units,row=>row.Id==hoveredBattleTarget && row.HP>0))hoveredBattleTarget=0;
+            if(!Array.Exists(next.Units,row=>row.Id==hoveredBattleTarget && row.Alive))hoveredBattleTarget=0;
         }
         private void SetBattleTargetHover(int id)
         {
@@ -118,6 +173,7 @@ namespace ProjectY.Samples
         }
         private void SetBattleCellHover(AdventureViewData.Cell cell)
         {
+            hoveredBattleCell=cell==null?-1:cell.CellIndex;
             var trap=cell==null?null:Array.Find(view.Traps,row=>row.Q==cell.Q && row.R==cell.R);
             if(trap==hoveredBattleTrap)return;
             hoveredBattleTrap=trap;BattleHUDRevision++;
@@ -138,6 +194,7 @@ namespace ProjectY.Samples
         internal string BattleTargetHint()
         {
             var skill=ChosenBattleSkill;if(skill==null)return "";
+            if(skill.SelectBodyPart)return IsChoosingBattleBodyPart?LuaLanguage.Get("AnatomyChoosePartHint"):LuaLanguage.Get("AnatomyChooseTargetHint");
             if(skill.NeedsCellLanding)return LuaLanguage.Get(IsChoosingBattleLanding?"BattleSelectionConstructionLandingHint":"BattleSelectionConstructionHint");
             if(skill.NeedsLanding)return IsChoosingBattleLanding
                 ?LuaLanguage.Format("BattleSelectionLandingHint",TargetName(landingTargetId))
@@ -155,7 +212,7 @@ namespace ProjectY.Samples
             var text=RiskText(preview);
             if(preview.BlockerCount>0)text=LuaLanguage.Format("BattleSelectionBlockers",text,preview.BlockerCount);
             if(!string.IsNullOrEmpty(preview.Description))text+="\n"+preview.Description;
-            if(IsSelectingBattleLandingSkill)text+="\n"+BattleTargetHint();
+            if(IsSelectingBattleLandingSkill || IsSelectingBattleBodyPartSkill)text+="\n"+BattleTargetHint();
             else if(IsSelectingBattleTargets)text=LuaLanguage.Format("BattleSelectionMultipleHelp",text,BattleTargetLimit);
             return text;
         }

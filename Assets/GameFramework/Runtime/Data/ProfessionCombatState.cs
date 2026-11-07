@@ -9,7 +9,7 @@ namespace ProjectY.Data
         internal readonly Dictionary<string,int> ProfessionMarks=new Dictionary<string,int>();
         internal void StopProfessionMovement(){Moved=true;}
         internal void RelocateProfession(int q,int r)
-        {if(HP<=0)throw new InvalidOperationException("A defeated actor cannot relocate.");Q=q;R=r;Moved=true;MovementStyle="walk";MovementSequence++;}
+        {if(!DeathDoorState.Alive(this))throw new InvalidOperationException("A defeated actor cannot relocate.");Q=q;R=r;Moved=true;MovementStyle="walk";MovementSequence++;}
     }
     public sealed class ProfessionTrapData
     {

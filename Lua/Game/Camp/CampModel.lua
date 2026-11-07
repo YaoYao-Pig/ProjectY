@@ -9,8 +9,10 @@ local function arrays(ids,counts)
     return items,amounts
 end
 function Model.New(adventure)
-    return setmetatable({adventure=adventure,rules=require('Game.Camp.CampRules').New(adventure.config),
+    local self=setmetatable({adventure=adventure,rules=require('Game.Camp.CampRules').New(adventure.config),
         data=CS.ProjectY.Data.CampData.For(adventure.data)},Model)
+    self.loadout=require('Game.Camp.CampLoadout').New(self)
+    self.roster=require('Game.Camp.CampRoster').New(self);return self
 end
 function Model:Available()
     local adventure=self.adventure
@@ -129,6 +131,7 @@ function Model:Snapshot()
     for _,duration in ipairs({60,360,1440}) do
         add('wait',string.format(LuaLanguage.UICampText16, (duration//60)),LuaLanguage.UICampText15,'camp_wait',duration,minutes+duration<=1000000000)
     end
+    for _,row in ipairs(adventure.forge:Rows()) do rows[#rows+1]=row end
     return {version=data.Revision,coins=coins,minutes=minutes,capacity=capacity,stored=data.StoredTotal,jobs=data.JobCount,rows=rows}
 end
 return Model

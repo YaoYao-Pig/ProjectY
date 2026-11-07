@@ -1,5 +1,6 @@
 local Class=require('Core.Class')
 local System=require('Core.LuaSystem')
+local LuaLanguage=require('Language')
 local Equipment=Class('EquipmentSystem',System)
 function Equipment:OnInit(context)
     System.OnInit(self,context)
@@ -27,7 +28,7 @@ end
 function Equipment:Grant(itemId,count)
     local allowed,reason=self.acquisition:CanGrant({itemId},{count})
     if not allowed then return false,reason end
-    if not self:CanGrant({itemId},{count}) then return false,'背包空间不足，请先整理背包' end
+    if not self:CanGrant({itemId},{count}) then return false,LuaLanguage.EquipmentGrantBagFull end
     local item=self.rules.items:Get(itemId)
     if item.kind=='weapon' then for i=1,count do self.data:AddWeapon(itemId) end
     elseif item.kind=='magazine' then
@@ -64,7 +65,7 @@ function Equipment:StartPartyLoadouts()
     end
 end
 function Equipment:Actor(id)
-    for i=0,self.adventure.PartyCount-1 do local actor=self.adventure:GetPartyAt(i);if actor.Id==id then return actor end end
+    return CS.ProjectY.Data.PartyRoster.Find(self.adventure,id)
 end
 function Equipment:IsCarriedWeapon(weapon)
     return weapon.OwnerActorId==0 and self.data.Grid:Find('w'..weapon.Id)~=nil or self:Actor(weapon.OwnerActorId)~=nil
@@ -118,6 +119,9 @@ function Equipment:RefreshEquipmentHP(actor,stats)
     CS.ProjectY.Data.EquipmentCombatState.RefreshMaximum(actor,stats:MaximumHP(actor))
 end
 function Equipment:HandAllowed(actorId,weapon,slot)
+    local actor=assert(self:Actor(actorId),'Unknown equipment actor')
+    local allowed,reason=self.rules.injuries:HandsAllowed(actor,slot,weapon and self.rules.weapons:Get(weapon.ItemId).hands or 1)
+    if not allowed then return false,reason end
     local main=self.data:Equipped(actorId)
     if slot=='offhand' then
         if weapon and self.rules.weapons:Get(weapon.ItemId).hands~=1 then return false,'副手只接受单手武器或盾牌' end
@@ -145,7 +149,7 @@ function Equipment:Command(command,actorId,weaponId,socketId,value,ammoItemId)
     if command=='equip' or command=='equip_offhand' then
         local allowed,reason=self:HandAllowed(actorId,weapon,command=='equip' and 'weapon' or 'offhand')
         if not allowed then return false,reason end
-        allowed,reason=self.rules:CanEquip(actor,weapon.ItemId,self.context.systems:Get('Battle').stats)
+        allowed,reason=self.rules:CanEquip(actor,weapon.ItemId,self.context.systems:Get('Battle').stats,command=='equip' and 'weapon' or 'offhand')
         if not allowed then return false,reason end
         local previous=self:Actor(weapon.OwnerActorId);local ok
         if command=='equip' then ok=self.data:Equip(actorId,weaponId) else ok=self.data:EquipOffhand(actorId,weaponId) end

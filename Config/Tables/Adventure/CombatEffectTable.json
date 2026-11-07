@@ -3588,6 +3588,296 @@
       "injuryChanceBonus": 0,
       "sourceRequiredTags": [],
       "sourceForbiddenTags": []
+    },
+    {
+      "id": 2401,
+      "kind": "damage",
+      "amount": "max(1, floor(8 + strength + proficiency / 2 - defense - guard))",
+      "name": "破甲猛击",
+      "equipmentDamage": 9,
+      "killEquipmentDamage": 12,
+      "injuryTypeId": 1
+    },
+    {
+      "id": 2402,
+      "kind": "heal",
+      "amount": "4 + min(10, floor(sourceMissingHealth * 0.25))",
+      "name": "浴血回气",
+      "recipient": "source"
+    },
+    {
+      "id": 2403,
+      "kind": "modifier",
+      "amount": "3",
+      "name": "浴血雄心",
+      "description": "浴血雄心，持续2回合。",
+      "attribute": "strength",
+      "duration": "duration",
+      "durationTurns": 2,
+      "tickPhase": "turn_end"
+    },
+    {
+      "id": 2404,
+      "kind": "damage",
+      "amount": "max(1, floor(9 + strength + proficiency / 2 - defense - guard))",
+      "name": "裂阵终斩",
+      "equipmentDamage": 5,
+      "killEquipmentDamage": 10,
+      "injuryTypeId": 2
+    },
+    {
+      "id": 2431,
+      "kind": "guard",
+      "amount": "5",
+      "name": "铆接护持"
+    },
+    {
+      "id": 2432,
+      "kind": "modifier",
+      "amount": "2",
+      "name": "铆接护具",
+      "description": "铆接护具，持续2回合。",
+      "attribute": "defense",
+      "duration": "duration",
+      "durationTurns": 2,
+      "tickPhase": "turn_end"
+    },
+    {
+      "id": 2433,
+      "kind": "damage",
+      "amount": "max(1, floor(6 + proficiency - defense / 2 - guard))",
+      "name": "震荡铆钉",
+      "equipmentDamage": 4,
+      "damageType": "physical"
+    },
+    {
+      "id": 2441,
+      "kind": "guard",
+      "amount": "5",
+      "name": "守阵护持",
+      "recipient": "source"
+    },
+    {
+      "id": 2442,
+      "kind": "damage",
+      "amount": "max(1, floor(12 + strength + proficiency / 2 - defense - guard))",
+      "name": "荣光裁断",
+      "equipmentDamage": 5,
+      "damageType": "physical"
+    },
+    {
+      "id": 2443,
+      "kind": "apply_buff",
+      "amount": "0",
+      "name": "守阵护符",
+      "buffId": 12009,
+      "recipient": "source"
+    },
+    {
+      "id": 2451,
+      "kind": "damage",
+      "amount": "max(1, floor(6 + intellect + proficiency / 2 - defense / 2 - guard))",
+      "name": "燃油爆燃",
+      "damageType": "fire",
+      "damageColor": "#FFAF58"
+    },
+    {
+      "id": 2452,
+      "kind": "remove_buffs",
+      "amount": "0",
+      "name": "速凝解毒",
+      "removeTags": [
+        "poison",
+        "burning"
+      ]
+    },
+    {
+      "id": 2453,
+      "kind": "heal",
+      "amount": "5 + intellect",
+      "name": "速凝修复"
+    },
+    {
+      "id": 2461,
+      "kind": "heal",
+      "amount": "5 + proficiency",
+      "name": "静谧疗愈"
+    },
+    {
+      "id": 2462,
+      "kind": "damage",
+      "amount": "max(1, floor(7 + proficiency - defense / 2 - guard))",
+      "name": "裂帛终章",
+      "damageType": "arcane",
+      "damageColor": "#D6B6FF"
+    },
+    {
+      "id": 2471,
+      "kind": "heal",
+      "amount": "4 + min(6, floor(sourceMissingHealth * 0.2))",
+      "name": "惩戒回恩",
+      "recipient": "source"
+    },
+    {
+      "id": 2472,
+      "kind": "heal",
+      "amount": "8 + intellect",
+      "name": "苦难代祷"
+    },
+    {
+      "id": 2473,
+      "kind": "heal",
+      "amount": "10 + intellect",
+      "name": "圣约归还"
+    },
+    {
+      "id": 2481,
+      "kind": "damage",
+      "amount": "3",
+      "name": "血字代价",
+      "recipient": "source",
+      "damageType": "physical",
+      "affectsContainers": false
+    },
+    {
+      "id": 2482,
+      "kind": "heal",
+      "amount": "5 + floor(intellect / 2)",
+      "name": "血契回流",
+      "recipient": "source",
+      "requiredTags": [
+        "bleeding"
+      ],
+      "affectsContainers": false
+    },
+    {
+      "id": 2501,
+      "kind": "heal",
+      "amount": "6 + proficiency",
+      "name": "伙伴疗伤"
+    },
+    {
+      "id": 2502,
+      "kind": "modifier",
+      "amount": "3",
+      "name": "猎群振奋",
+      "description": "猎群振奋，持续2回合。",
+      "attribute": "strength",
+      "duration": "duration",
+      "durationTurns": 2,
+      "tickPhase": "turn_end"
+    },
+    {
+      "id": 2503,
+      "kind": "modifier",
+      "amount": "2",
+      "name": "猎群迅捷",
+      "description": "猎群迅捷，持续2回合。",
+      "attribute": "speed",
+      "duration": "duration",
+      "durationTurns": 2,
+      "tickPhase": "turn_end"
+    },
+    {
+      "id": 2511,
+      "kind": "heal",
+      "amount": "5 + min(8, floor(sourceMissingHealth * 0.25))",
+      "name": "田野喘息"
+    },
+    {
+      "id": 2531,
+      "kind": "guard",
+      "amount": "5",
+      "name": "符刃回护",
+      "recipient": "source",
+      "sourceRequiredTags": [
+        "enchantment"
+      ]
+    },
+    {
+      "id": 2532,
+      "kind": "modifier",
+      "amount": "2",
+      "name": "星盾回流",
+      "description": "星盾回流，持续2回合。",
+      "attribute": "intellect",
+      "duration": "duration",
+      "durationTurns": 2,
+      "tickPhase": "turn_end"
+    },
+    {
+      "id": 2533,
+      "kind": "damage",
+      "amount": "max(1, floor(8 + strength / 2 + intellect / 2 + proficiency / 2 - defense / 2 - guard))",
+      "name": "双相断奏",
+      "damageType": "lightning",
+      "damageColor": "#99DAFF",
+      "equipmentDamage": 4
+    },
+    {
+      "id": 2301,
+      "kind": "damage",
+      "amount": "max(1, floor(8 + intellect + proficiency / 2 - defense / 2 - guard))",
+      "name": "爆裂火球",
+      "damageType": "fire",
+      "damageColor": "#FFB04F"
+    },
+    {
+      "id": 2302,
+      "kind": "damage",
+      "amount": "max(1, floor(10 + intellect + proficiency / 2 - defense - guard))",
+      "name": "落石术",
+      "damageType": "physical",
+      "equipmentDamage": 5
+    },
+    {
+      "id": 2303,
+      "kind": "damage",
+      "amount": "max(1, floor(5 + intellect + proficiency / 2 - defense / 2 - guard))",
+      "name": "水流术",
+      "damageType": "water",
+      "damageColor": "#7AD9FF"
+    },
+    {
+      "id": 2304,
+      "kind": "damage",
+      "amount": "max(1, floor(15 + intellect + proficiency / 2 - defense / 2 - guard))",
+      "name": "陨石术",
+      "damageType": "fire",
+      "damageColor": "#FF9D36",
+      "equipmentDamage": 8
+    },
+    {
+      "id": 2305,
+      "kind": "apply_buff",
+      "amount": "0",
+      "name": "雾中潮湿",
+      "buffId": 12019
+    },
+    {
+      "id": 2306,
+      "kind": "apply_buff",
+      "amount": "0",
+      "name": "泥沼迟缓",
+      "buffId": 12016
+    },
+    {
+      "id": 2307,
+      "kind": "damage",
+      "amount": "max(1, floor(20 + intellect + proficiency / 2 - defense / 2 - guard))",
+      "name": "熔星术",
+      "damageType": "fire",
+      "damageColor": "#FFE287",
+      "equipmentDamage": 10
+    },
+    {
+      "id": 2491,
+      "kind": "damage",
+      "amount": "max(1, floor(7 + strength + proficiency / 2 - defense - guard))",
+      "name": "缝隙刺",
+      "equipmentDamage": 0,
+      "killEquipmentDamage": 0,
+      "injuryTypeId": 3
     }
   ]
 }

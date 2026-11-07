@@ -91,10 +91,16 @@ namespace ProjectY.Samples
                 ClearWorldSites();
                 mapRenderer.Dispose(); mapRenderer = candidate; candidate = null;
                 worldMap = map;
+                // The map is already committed. Cache only a bounded visual synopsis; never regenerate from the menu.
+                var menuSnapshot=CampaignPreviewCapture.Capture(map);
+                try{MenuSaveService.StoreMenuPreview(menuSnapshot);}
+                catch(Exception error) when(error is System.IO.IOException || error is UnauthorizedAccessException)
+                {Debug.LogWarning("Menu preview could not be saved: "+error.Message);}
+                environment.BindWeather(worldMap, (ProjectY.Data.WorldWeatherField)bootstrap.CallModule(Bridge, "weather_field")[0]);
                 SetView(next);
                 displayedTravel = view.Travel.Position; followTravel = false;
                 fatalError = null; campaignMenuError = "";
-                FitMap(); cameraRig.Snap(); cameraDragButton = -1;
+                InitializeTravelCamera();
                 ReportLoading(1, LuaLanguage.Get("CampaignLoadingReady"));
                 yield return null; // Present 100% before releasing the modal input blocker.
             }

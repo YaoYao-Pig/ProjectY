@@ -71,6 +71,7 @@ end
 function UI:Back()
     for i = #self.opened, 1, -1 do
         local entry = self.opened[i]
+        if entry.ctrl.OnBack and entry.ctrl:OnBack() then return true end
         if entry.definition.CloseOnBack ~= false then return self:Close(entry.name) end
         if entry.definition.Modal then return false end
     end

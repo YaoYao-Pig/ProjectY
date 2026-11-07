@@ -79,6 +79,10 @@ export function validateNarrative(tables) {
   for(const row of rows('TownMissionSettingsTable')) {
     requireRule(row.id===1&&row.minOffers>=1&&row.minOffers<=row.maxOffers&&row.maxOffers<=5,'Town mission settings: invalid daily count range');
     requireRule(get('WorldPartyTable',row.escortPartyDefinitionId).kind==='caravan','Town mission settings: escort requires caravan');
+    requireRule(Number.isInteger(row.escortAmbushChecks)&&row.escortAmbushChecks>=1&&row.escortAmbushChecks<=3,'Town mission settings: invalid escort ambush count');
+    requireRule(Number.isInteger(row.escortAmbushChance)&&row.escortAmbushChance>=0&&row.escortAmbushChance<=100,'Town mission settings: invalid escort ambush chance');
+    requireRule(row.escortAmbushPartyIds.length>0&&new Set(row.escortAmbushPartyIds).size===row.escortAmbushPartyIds.length,'Town mission settings: missing or duplicate escort ambush parties');
+    for(const id of row.escortAmbushPartyIds)requireRule(get('WorldPartyTable',id).kind==='hostile'&&!rows('LegendaryEncounterTable').some(legend=>legend.id===id),'Town mission settings: escort ambush requires ordinary hostile party');
     requireRule(rows('TownMissionTable').filter(r=>r.kind!=='escort').length>=row.maxOffers,'Town missions: insufficient templates when no caravan route exists');
   }
   for(const node of rows('DialogueNodeTable')) {

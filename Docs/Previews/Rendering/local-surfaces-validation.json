@@ -1,0 +1,61 @@
+{
+  "scope": "Existing Unity Editor, isolated PreviewScene, production MapAreaRenderer and exported layouts/configuration",
+  "projectCompilationRequests": 1,
+  "playMode": false,
+  "shaderErrors": 0,
+  "materialBindings": 35,
+  "authoredLightRules": 8,
+  "sceneLightLimit": 4,
+  "sharedShadowLightBudget": 2,
+  "checks": {
+    "interior": {
+      "sources": 3,
+      "activeLights": 1,
+      "shadowPixelDelta": 0.0064589633376454,
+      "reliefPixelDelta": 0.0021322564482688902
+    },
+    "dungeon": {
+      "sources": 12,
+      "activeLights": 1,
+      "shadowPixelDelta": 0.002599855251319241,
+      "undergroundClockIndependent": true
+    },
+    "mine": {
+      "sources": 25,
+      "activeLights": 4,
+      "shadowPixelDelta": 0.002279052901430987,
+      "undergroundClockIndependent": true
+    },
+    "tavern": {
+      "sources": 3,
+      "activeLights": 1,
+      "shadowPixelDelta": 0.0038931924842181614
+    },
+    "hiddenSceneLightsAndFixturesSuppressed": true,
+    "sceneAndEnvironmentRestored": true,
+    "sourceFixtureHasOnlyTransformMeshFilterMeshRenderer": true,
+    "torch": {
+      "followAndSwitch": true,
+      "areaExit": true,
+      "destroyed": true,
+      "controllerRestored": true,
+      "brightnessRatio": 4.167593609173183
+    },
+    "pixelAndOutdoorMidnightLightMultipliersPreserved": true
+  },
+  "images": {
+    "interior": "local-surface-interior-after.png",
+    "interiorNoRelief": "local-surface-interior-no-relief.png",
+    "interiorNoShadows": "local-surface-interior-no-shadows.png",
+    "dungeon": "local-surface-dungeon-after.png",
+    "mine": "local-surface-mine-after.png",
+    "tavern": "local-surface-tavern-after.png",
+    "interiorBefore": "local-lighting-interior-surface-before.png"
+  },
+  "limits": [
+    "No Play Mode traversal",
+    "No Player build or GPU benchmark",
+    "Relief changes shading normals, not geometry or navigation; no parallax or displaced silhouette",
+    "Independent dungeon bitmap library is not automatically assigned to generated terrain"
+  ]
+}

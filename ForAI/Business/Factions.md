@@ -20,7 +20,8 @@
 - 决策先排除不敌对、不可达、超程、留守不足、储备不足、路线威胁过高与保护期，再比较优势、收益、行程、安全和行为偏好。现有任务有评分优势；目标失效清除旧路径。攻城使用局部战力与防御系数，不能直接用势力总实力决定开战。
 - 性能契约：距离与静态硬门槛在寻路前筛选，获选路线交给 `WorldParties:ApplyRoute`；不要给 `Plan` 加接收格子查询多返回值的可选尾参。玩家/势力实力共用失效边界；接触检测先做本次队伍查询快照和空间筛选，保持先攻顺序。暂停地图的未变化轮询通过 `DemoBridge` 返回 `unchanged`，C# 跳过完整读取与 HUD 同步；实际测量与边界见[性能修复](../../Docs/FactionPerformance.md)。
 - 商队避开停止服务的城镇；移动队受伤或取得货物后返回据点。补员/治疗消耗有限储备，驻军和已回家的移动队共用恢复节奏。劫获货物转移原实例；运回据点后消耗为有上限的补给，不复制物品。全灭移动队不会凭空在野外复活。
-- 敌对 NPC 队伍在实际可达的接触范围内创建唯一冲突，停止世界移动。近层后台按分钟推进同一批 Actor 的生命，中远层按 LOD 批量或摘要结算；默认至少 45 分钟后结算伤亡，最长 150 分钟后按剩余状态判定撤退/胜负。玩家加入后暂停该冲突后台结算，使用当前伤势；世界时间沿用战斗暂停规则。
+- 未被占领且有存活、非交战守军的据点可招募新的移动队：使用 `Recover` 剩余战略周期（当前每 30 分钟一次），每队消耗真实编制人数 × `recruitCost`，受储备、败队脱战保护期、`WorldPartyTable.count` 活跃游荡数与 4096 总实体上限约束；占据队不挤占游荡上限。旧败队及战场引用保留，新队拥有独立 Actor，并注册进 LOD 查询缓存。野生生态及传奇不走据点招募。
+- 敌对 NPC 队伍在实际可达的接触范围内创建唯一冲突，停止世界移动。移动位置按最近路段端点判断，不要求双方同时停在整格；仍检查接触半径、直接边通行与陆路路径，不能隔河或隔山开战。近层后台按分钟推进同一批 Actor 的生命，中远层按 LOD 批量或摘要结算；默认至少 45 分钟后结算伤亡，最长 150 分钟后按剩余状态判定撤退/胜负。玩家加入后暂停该冲突后台结算，使用当前伤势；世界时间沿用战斗暂停规则。
 - `WorldConflicts` 当前一场持有最多两支 NPC 队伍，玩家加入形成最多三方。关系逐对决定敌我；合作方由 AI 控制，仍与玩家 side 分开；主要敌方红色、盟军绿色、独立第三方黄色，即使第三方敌对也保持黄色。颜色不决定可攻击或可治疗对象，详见[战斗](Battle.md)。
 - 点击交战中的友好商队可选“参与这场战斗”，不会因此宣战；两方都不敌对时保持中立。主动攻击非敌对队伍降低玩家声望。战后 Actor、货物、掉落和关系只结算一次；幸存者脱离战场但保留伤势。
 - 攻陷不会改写原城镇/任务 NPC 身份。占据状态阻断交易、居民交互与招募；玩家再次进入原地点会进入该坐标的解放战场。只有玩家胜利才解除占据，原城镇随后可重新进入。解放后默认 24 游戏小时免袭，商品/可招募 NPC 从 35% 开始，72 小时恢复；参数均配表。库存每个补货实例、每次解放仅削减一次，见[商店](Shop.md)。
@@ -32,6 +33,7 @@
 
 - UI 最小检查：`python -B Tools/Tests/run_lua.py Tools/Tests/faction_tree.lua` 对真实导出配置检查遮蔽、已发现视角、双向关系、覆盖值、声望与几何边界；[faction_discovery.lua](../../Tools/Tests/faction_discovery.lua) 检查当前视野、已知灰雾、移动队/据点/NPC、离开视野保留与旅行中间步目击。[faction_tree_ui.lua](../../Tools/Tests/faction_tree_ui.lua) 用独立 LuaEnv 和保存的 Prefab 副本检查未知按钮禁用、重新打开后的揭示、切换、池复用及滚动复位；工厂与截图回调由 MCP 内存代码提供。另经内存代码验证真实 NarrativeData Capture→JSON→Prepare 保留发现、旧记录缺失为未知、新远征 Clear 清除发现。原生预览：[部分发现](../../Docs/Previews/Factions/faction-relations-discovery.png)、[全部发现的玩家视角](../../Docs/Previews/Factions/faction-relations-player.png)、[铁牙战团](../../Docs/Previews/Factions/faction-relations-orcs.png)。未启动或重启 Play，未执行完整实机流程。
 - 原生 Lua：`python -B Tools/Tests/run_lua.py Tools/Tests/factions_core.lua`、`faction_services.lua`、`battle_sides.lua`；对应外交、战略、后台生命周期、服务恢复及多方战斗。相关回归按改动选 `world_parties_core.lua`、`world_travel_core.lua`，不全量运行。
+- 本轮人口/接战修复定向通过 [world_population.lua](../../Tools/Tests/world_population.lua) 9 项、[factions_core.lua](../../Tools/Tests/factions_core.lua) 22 项及 [world_lod.lua](../../Tools/Tests/world_lod.lua) 12 项；覆盖移动接触、阻挡边拒绝、玩家介入同一带伤冲突及有偿新编制。未启动 Editor/Play，未做长期平衡验收。
 - `faction_data_editmode.cs` 为现有 Editor 的内存代码体，覆盖真实 Data、引用/随机流与存档拒绝、货物转移、商店幂等，不打开场景或用户存档。
 - `factions_editmode.cs` 在独立 PreviewScene/LuaEnv 与临时存档运行 `factions_integration.lua`，覆盖真实生成、后台伤亡、援助/三方战斗、NPC 攻陷、玩家解放与远征存读；结果写 `Art/FactionLowPoly/Integration/gameplay-validation.txt`。不进入 Play。
 - 本轮完成一次主动项目编译、上述真实数据检查与静态模型预览；未进行长时间 Play 和完整平衡性验收。

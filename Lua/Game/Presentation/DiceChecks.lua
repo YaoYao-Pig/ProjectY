@@ -53,6 +53,14 @@ function Checks.Resolved(title,result)
     return request
 end
 function Checks.FromBattleEvent(event)
+    if event.kind=='death_door_check' then
+        local data=assert(event.impact,'Death-door check needs its settled result')
+        assert(data.dieSides==20 and math.tointeger(data.roll) and data.roll>=1 and data.roll<=20 and type(data.passed)=='boolean','Invalid D20 death-door result')
+        assert(data.passed==(data.roll>data.deathFaces),'Death-door outcome and die disagree')
+        return {title=data.checkName,dice={{kind='D20',value=data.roll,label=LuaLanguage.DeathDoorDieLabel}},reading=tostring(data.roll),passed=data.passed,
+            detail=string.format(LuaLanguage.DeathDoorDiceRequirement,data.deathFaces,data.deathChance,data.morale,data.moraleMaximum),
+            successLabel=LuaLanguage.DeathDoorSurvived,failureLabel=LuaLanguage.DeathDoorDied}
+    end
     if event.kind~='check' then return end
     local data=assert(event.impact,'Check requires settled metadata')
     if data.check then return Checks.Resolved(data.checkName,data.check)end

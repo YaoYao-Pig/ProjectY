@@ -13,12 +13,14 @@ function GM:OnInit(context)
     self.npcs=require('Game.GM.NpcCommands').New(self.adventure,context.systems:Get('Narrative'))
     self.kill=require('Game.GM.KillCommands').New(self.adventure)
     self.dice=require('Game.GM.DiceCommands').New(CS.ProjectY.Data.ExpeditionPersistence.RandomSeed())
+    self.equipment=require('Game.GM.EquipmentCommands').New(self.adventure)
     self.commands={level_up={run=self.LevelUp,actor=true},grant_skill={run=self.GrantSkill,actor=true},
         reveal_world={run=self.RevealWorld},
         restore_world_vision={run=self.RestoreWorldVision},
         no_random_encounters={run=self.SetNoRandomEncounters},
         kill_target={run=function(gm,id)return gm.kill:Execute(id)end},
         roll_dice={run=function(gm,counts)return gm.dice:Roll(counts)end},
+        grant_equipment={run=function(gm,id)return gm.equipment:Grant(id)end},
         goto_npc={run=function(gm,id)return gm.npcs:GoTo(id)end}}
 end
 function GM:Slot(slot)
@@ -72,5 +74,5 @@ function GM:SetNoRandomEncounters(value)
     travel.randomEncountersDisabled=value==1
     return true,value==1 and LuaLanguage.GMNoRandomEncountersEnabled or LuaLanguage.GMNoRandomEncountersDisabled
 end
-function GM:OnShutdown() self.data=nil;self.growth=nil;self.skills=nil;self.commands=nil;self.npcs=nil;self.kill=nil;self.dice=nil;self.adventure=nil end
+function GM:OnShutdown() self.data=nil;self.growth=nil;self.skills=nil;self.commands=nil;self.npcs=nil;self.kill=nil;self.dice=nil;self.equipment=nil;self.adventure=nil end
 return GM

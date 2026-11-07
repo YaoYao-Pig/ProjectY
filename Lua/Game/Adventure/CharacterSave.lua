@@ -1,7 +1,23 @@
 -- 外部文件先完整准备和校验，再创建新地图并提交；失败不改当前队伍。
 local Save={}
+function Save.ValidateInspections(config,prepared)
+    local data=CS.ProjectY.Data.UnitInspections.Prepared(prepared)
+    if data.Count==0 then return end
+    local allowed={health=true,actionPoints=true,guard=true,casting=true}
+    for _,row in ipairs(config:GetTable('GrowthAttributeTable'):All()) do allowed['attribute:'..row.code]=true end
+    for _,row in ipairs(config:GetTable('CombatTraitTable'):All()) do allowed['trait:'..row.id]=true end
+    for _,row in ipairs(config:GetTable('CombatSkillTable'):All()) do allowed['skill:'..row.id]=true end
+    local reason=require('Language').InspectionSaveInvalid
+    for i=0,data.Count-1 do
+        local record=data:GetAt(i)
+        -- The observer may have died or left the roster; shared knowledge keeps its historical identity.
+        for j=0,record.FieldCount-1 do assert(allowed[record:GetFieldAt(j)],reason) end
+    end
+end
 function Save.Validate(adventure,prepared)
+    Save.ValidateInspections(adventure.config,prepared)
     require('Game.Adventure.Torch').ValidateSaved(prepared)
+    adventure.camp.loadout:ValidateSaved(prepared)
     adventure.camp.rules:ValidateSaved(CS.ProjectY.Data.CampData.Prepared(prepared),prepared.LegacyNarrative and 0 or prepared.Narrative.Minutes)
     adventure.partyStory:ValidateSaved(prepared)
     if adventure.shop then adventure.shop.rules:ValidateSaved(CS.ProjectY.Data.ShopData.Prepared(prepared),prepared.LegacyNarrative and 0 or prepared.Narrative.Minutes) end
@@ -11,11 +27,14 @@ function Save.Validate(adventure,prepared)
     local synergyDefinitions=config:GetTable('SkillSynergyTable')
     for i=0,discovered.Length-1 do synergyDefinitions:Get(discovered[i]) end
     local stats=require('Game.Battle.CombatStats')(config,prepared.Equipment)
+    require('Game.Adventure.UnitTraitMigration').Prepare(adventure,prepared,stats)
     local effects=require('Game.Battle.GameEffects').New(stats,config:GetTable('CombatEffectTable'))
+    if adventure.people then adventure.people:ValidateSaved(prepared,stats,effects)end
     local attributes={};for _,row in ipairs(config:GetTable('GrowthAttributeTable'):All()) do attributes[row.code]=true end
     for i=0,prepared.ActorCount-1 do
         local actor=prepared:GetActorAt(i);config:GetTable('CombatUnitTable'):Get(actor.TemplateId)
         stats.birth:Validate(actor)
+        stats.titles:ValidateSaved(actor)
         effects:ValidateSaved(actor)
         equipment:MotionModule(actor)
         assert(adventure.appearances.templates[actor.TemplateId],'存档角色没有外观模板')
@@ -43,6 +62,7 @@ function Save.Validate(adventure,prepared)
     for i=0,data.WeaponCount-1 do
         local weapon=data:GetWeaponAt(i);local definition=equipment.weapons:Get(weapon.ItemId)
         equipment.affixes:Of(weapon)
+        adventure.forge.rules:ValidateSaved(weapon)
         assert(equipment.items:Get(weapon.ItemId).kind=='weapon','存档武器类型无效')
         if weapon.Hand=='offhand' then assert(definition.hands==1,'双手武器不能在副手') end
         if weapon.Hand=='weapon' and definition.hands==2 then assert(not data:Offhand(weapon.OwnerActorId) and not data:Worn(weapon.OwnerActorId,'offhand'),'存档双手武器与副手冲突') end
@@ -63,6 +83,7 @@ function Save.Validate(adventure,prepared)
         assert(item.kind=='rune' or item.kind=='module' or item.kind=='ammo' or item.kind=='material' or item.kind=='consumable','存档堆叠类型无效') end
 end
 function Save.Write(adventure)
+    if adventure.economy.data.ActiveBankSite~=0 then return false,require('Language').EconomyCloseBank end
     if adventure.parties.data.IsOpen then return false,'请先结束队伍交互再保存' end
     if adventure.equipment.worldLoot.session.Active then return false,'请先关闭战利品窗口再保存' end
     if adventure.camp.data.IsOpen then return false,'请先关闭营地再保存' end

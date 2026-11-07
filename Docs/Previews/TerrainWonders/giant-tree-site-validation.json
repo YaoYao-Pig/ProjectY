@@ -1,0 +1,87 @@
+{
+  "task": "Giant tree territory click routes to existing reachable tree-foot area entrance",
+  "date": "2026-10-26",
+  "status": "PASS",
+  "unityCompilation": {
+    "initial": "Blocked by three existing, not-yet-imported MapLabelLayout/MapLabelCoordinator/MapHudLayout scripts",
+    "userApprovedTargetedImport": true,
+    "afterImport": "PASS",
+    "consoleErrors": 0
+  },
+  "checks": {
+    "layoutDiscoveryAndTravel": {
+      "script": "Tools/Tests/giant_tree_sites.lua",
+      "status": "PASS",
+      "seeds": [
+        42,
+        43
+      ],
+      "scope": "Wonder identity projection, discovery isolation/reset, actual blocked-root pathfinding and arrival dispatch to area 72"
+    },
+    "nativeAreaEntry": {
+      "script": "Tools/Tests/giant_tree_area_entry.lua",
+      "status": "PASS",
+      "scope": "Production area entry/deployment, 6 partial roots and 1 partial trunk, ordinary trees, re-entry state preserved"
+    },
+    "nativePicking": {
+      "script": "Tools/Tests/giant_tree_sites_editmode.cs",
+      "status": "PASS",
+      "models": [
+        {
+          "assetId": 1106,
+          "footprint": 272,
+          "regions": 2,
+          "trunkDistance": 107.550179,
+          "crownDistance": 108.95636,
+          "gapSamples": 49,
+          "gapHeight": 10.5,
+          "oneRootKnown": 1,
+          "foregroundHeight": 36.4400024,
+          "siteId": 77,
+          "areaId": 72,
+          "entrance": [
+            0,
+            10
+          ]
+        },
+        {
+          "assetId": 1109,
+          "footprint": 272,
+          "regions": 2,
+          "trunkDistance": 108.268692,
+          "crownDistance": 96.83628,
+          "gapSamples": 294,
+          "gapHeight": 13.708333,
+          "oneRootKnown": 1,
+          "foregroundHeight": 36.95974,
+          "siteId": 77,
+          "areaId": 72,
+          "entrance": [
+            0,
+            10
+          ]
+        }
+      ],
+      "output": "Docs/Previews/TerrainWonders/giant-tree-site-click.png",
+      "worldRegenerated": false,
+      "playMode": false
+    },
+    "localizationSources": {
+      "script": "Tools/Tests/ui_localization_sources.mjs",
+      "status": "PASS",
+      "sources": 142,
+      "references": 34,
+      "keys": 283
+    },
+    "documentationLinks": {
+      "status": "PASS",
+      "files": 2,
+      "links": 125,
+      "errors": 0
+    }
+  },
+  "editorScope": "Existing Editor in idle Edit Mode; independent PreviewScene and isolated LuaEnv/native data only. No Play Mode, Player, or full project tests.",
+  "sceneOrPlayerSaveWrites": false,
+  "modelsChanged": false,
+  "modelImporterChange": "Read/Write enabled on WorldTree_Colossal and WorldTree_FantasyBough for cached triangle BVH"
+}

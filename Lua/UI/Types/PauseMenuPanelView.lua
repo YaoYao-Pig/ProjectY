@@ -1,0 +1,29 @@
+---@meta
+-- Generated from LuaReference. Do not edit; never require this file.
+---@class PauseMenuPanelView
+---@field Root CS.UnityEngine.RectTransform
+---@field Canvas CS.UnityEngine.Canvas
+---@field Panel CS.ProjectY.UI.LuaPanel
+---@field Page CS.UnityEngine.RectTransform
+---@field Title CS.ProjectY.UI.UITxt
+---@field Actions CS.UnityEngine.CanvasGroup
+---@field Resume CS.UnityEngine.UI.Button
+---@field ResumeText CS.ProjectY.UI.UITxt
+---@field Save CS.UnityEngine.UI.Button
+---@field SaveText CS.ProjectY.UI.UITxt
+---@field Load CS.UnityEngine.UI.Button
+---@field LoadText CS.ProjectY.UI.UITxt
+---@field Settings CS.UnityEngine.UI.Button
+---@field SettingsText CS.ProjectY.UI.UITxt
+---@field Quit CS.UnityEngine.UI.Button
+---@field QuitText CS.ProjectY.UI.UITxt
+---@field Hint CS.ProjectY.UI.UITxt
+---@field QuitDialog CS.UnityEngine.RectTransform
+---@field QuitTitle CS.ProjectY.UI.UITxt
+---@field QuitPrompt CS.ProjectY.UI.UITxt
+---@field QuitCancel CS.UnityEngine.UI.Button
+---@field QuitCancelText CS.ProjectY.UI.UITxt
+---@field QuitConfirm CS.UnityEngine.UI.Button
+---@field QuitConfirmText CS.ProjectY.UI.UITxt
+local View = {}
+return View

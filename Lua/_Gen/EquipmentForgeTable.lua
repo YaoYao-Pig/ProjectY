@@ -1,0 +1,14 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class EquipmentForgeTableRow
+---@field id number 锻造规则身份
+---@field name string 工艺名称
+---@field description string 工艺说明
+---@field weaponIds number[] 适用武器模板
+---@field facilityId number 使用现有营地工作台
+---@field requiredLevel number 设施等级
+---@field coins number 锻造或重铸费用
+---@field itemIds number[] 仓库优先消费材料
+---@field itemCounts number[] 对应材料数量
+---@field damageBonus number 锻造对本武器直接攻击的额外倍率
+---@field spiritCameraId number 器灵对白仅复用面板宽度
+return {["name"]="EquipmentForgeTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\233\148\187\233\128\160\232\167\132\229\136\153\232\186\171\228\187\189",["min"]=1},{["name"]="name",["type"]="text",["description"]="\229\183\165\232\137\186\229\144\141\231\167\176"},{["name"]="description",["type"]="text",["description"]="\229\183\165\232\137\186\232\175\180\230\152\142"},{["name"]="weaponIds",["type"]="int[]",["description"]="\233\128\130\231\148\168\230\173\166\229\153\168\230\168\161\230\157\191",["ref"]="EquipmentWeaponTable"},{["name"]="facilityId",["type"]="int",["description"]="\228\189\191\231\148\168\231\142\176\230\156\137\232\144\165\229\156\176\229\183\165\228\189\156\229\143\176",["ref"]="CampFacilityTable"},{["name"]="requiredLevel",["type"]="int",["description"]="\232\174\190\230\150\189\231\173\137\231\186\167",["min"]=1},{["name"]="coins",["type"]="int",["description"]="\233\148\187\233\128\160\230\136\150\233\135\141\233\147\184\232\180\185\231\148\168",["min"]=0},{["name"]="itemIds",["type"]="int[]",["description"]="\228\187\147\229\186\147\228\188\152\229\133\136\230\182\136\232\180\185\230\157\144\230\150\153",["ref"]="EquipmentItemTable"},{["name"]="itemCounts",["type"]="int[]",["description"]="\229\175\185\229\186\148\230\157\144\230\150\153\230\149\176\233\135\143"},{["name"]="damageBonus",["type"]="float",["description"]="\233\148\187\233\128\160\229\175\185\230\156\172\230\173\166\229\153\168\231\155\180\230\142\165\230\148\187\229\135\187\231\154\132\233\162\157\229\164\150\229\128\141\231\142\135",["min"]=0},{["name"]="spiritCameraId",["type"]="int",["description"]="\229\153\168\231\129\181\229\175\185\231\153\189\228\187\133\229\164\141\231\148\168\233\157\162\230\157\191\229\174\189\229\186\166",["ref"]="DialogueCameraTable"}},["fingerprint"]="4cf1da7a5d3aef41bdd89894b3fbbe17b00637fd19d664789d6cf0fe5efe2f45"}

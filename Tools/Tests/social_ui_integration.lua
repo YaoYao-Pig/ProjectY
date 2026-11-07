@@ -24,23 +24,46 @@ local ok,err=xpcall(function()
     growth.chronicle:RecordPair('honor',first,second,'荣誉 · 守望者','完成三次真实危急救援。','石桥遗址',0)
     adapter={LastError=''}
     function adapter:SetGrowthOpen(value) self.growthOpen=value end
-    function adapter:SendCommand() error('Social projection is read-only') end
+    function adapter:SendCommand(command,a,b)
+        assert(command:sub(1,13)=='relationship_')
+        local accepted,reason=adventure.partyStory:Social(a,b,command:sub(14));self.LastError=accepted and '' or reason
+    end
     panel=ui:Open('CharacterGrowth',{demo=adapter})
-    test('existing trait-tag controls show relation stages and honor detail without new prefab bindings',function()
+    test('existing trait tags show stages and the bound detail scroll exposes complete memories',function()
         assert(Services.UI.IsWorldPaused and adapter.growthOpen)
         local relationship,honor
         for _,widget in ipairs(panel.pools.Traits) do if widget.row then
-            if widget.row.title:find('生死与共',1,true) then relationship=widget end
+            if widget.row.title:find('挚友',1,true) then relationship=widget end
             if widget.row.title=='★ 荣誉 · 守望者' then honor=widget end
         end end
         assert(relationship and honor and relationship.view.Button.interactable and honor.view.Button.interactable)
-        relationship.view.Button.onClick:Invoke();assert(panel.view.TraitDetail.text:find('关系 100 / 100',1,true))
-        honor.view.Button.onClick:Invoke();assert(panel.view.TraitDetail.text:find('3 / 3',1,true))
+        relationship.view.Button.onClick:Invoke();assert(panel.view.TraitDetail.text:find('好感 100',1,true))
+        CaptureRelationshipUI('relationship',panel.reference)
+        assert(panel.view.TraitDetailScroll.content.rect.height>panel.view.TraitDetailScroll.viewport.rect.height,'Long relationship memories must scroll')
+        panel.view.TraitDetailScroll.verticalNormalizedPosition=0
+        CaptureRelationshipUI('memories',panel.reference)
+        panel.pools.Traits[1].view.Button.onClick:Invoke()
+        for _,widget in ipairs(panel.pools.Traits) do if widget.row and widget.row.title=='★ 荣誉 · 守望者' then
+            widget.view.Button.onClick:Invoke();assert(panel.view.TraitDetail.text:find('3 / 3',1,true))
+        end end
         panel.view.HistoryTab.onClick:Invoke();local latest=panel.pools.HistoryRows[1].view.Title.text
         assert(latest:find('第2日 01:05',1,true) and latest:find('石桥遗址',1,true))
     end)
+    test('relationship UI previews and confirms a choice exactly once',function()
+        panel.view.OverviewTab.onClick:Invoke()
+        for _,widget in ipairs(panel.pools.Traits) do if widget.row and widget.row.relationId==second.Id then widget.view.Button.onClick:Invoke();break end end
+        for _,widget in ipairs(panel.pools.Traits) do if widget.row and widget.row.action=='romance' then widget.view.Button.onClick:Invoke();break end end
+        assert(not CS.ProjectY.Data.PartyRelationshipState.Romance(data.PartyBonds,first.Id,second.Id),'Preview must not mutate the relationship')
+        CaptureRelationshipUI('confirm',panel.reference)
+        local confirm
+        for _,widget in ipairs(panel.pools.Traits) do if widget.row and widget.row.confirm then confirm=widget;break end end
+        assert(confirm==panel.pools.Traits[2],'Confirmation must be visible in the first row');confirm.view.Button.onClick:Invoke()
+        assert(CS.ProjectY.Data.PartyRelationshipState.Romance(data.PartyBonds,first.Id,second.Id) and adapter.LastError=='')
+        assert(data.PartyBonds:Score(first.Id,second.Id)==100)
+        CaptureRelationshipUI('love',panel.reference)
+    end)
     test('individual histories exclude an uninvolved companion and cached reopen preserves relation display',function()
-        panel.view.Party3.onClick:Invoke();assert(panel.view.HistorySummary.text:find('留下 1 段经历',1,true))
+        panel.view.HistoryTab.onClick:Invoke();panel.view.Party3.onClick:Invoke();assert(panel.view.HistorySummary.text:find('留下 1 段经历',1,true))
         ui:Close('CharacterGrowth');assert(not Services.UI.IsWorldPaused and not adapter.growthOpen)
         panel=ui:Open('CharacterGrowth',{demo=adapter});assert(panel.actor.Id==first.Id)
         local found=false;for _,widget in ipairs(panel.pools.Traits) do if widget.row and widget.row.title=='★ 荣誉 · 守望者' then found=true end end

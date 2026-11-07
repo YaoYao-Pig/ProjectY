@@ -74,6 +74,7 @@ namespace ProjectY.Editor
             var serialized=new SerializedObject(numbers);var template=(DamageNumberPopup)serialized.FindProperty("template").objectReferenceValue;
             template.transform.SetParent(damage,false);((RectTransform)template.transform).anchoredPosition=Vector2.zero;
             numbers.SetEditorBindings(template,follower);Bind(reference,"DamageFollower",follower);
+            TitleMoraleAssets.BuildMorale(root);
         }
 
         private static void ConfigureRing(RectTransform rect,float radius,float thickness,Color color,bool filled,Transform parent=null)

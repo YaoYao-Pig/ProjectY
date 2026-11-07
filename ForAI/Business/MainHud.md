@@ -8,9 +8,24 @@
 
 ## 正文
 
+- `HudHealth.Morale` 在 HP 环外侧显示白色士气比例，规则与资源同步入口见[称号授勋与士气](TitlesAndMorale.md)。
+
+- [城镇经济](Economy.md)在资源栏显示随身食物，导航首项显示每日食物/工资、成员饥饿与欠薪；有余额和欠薪时可点击补发。城镇副标题显示地区资源标签。
+
+- 2026-10-27施法点原生迁移与21组点数／绑定检查已完成；`CastingPointRing` Prefab 必须保存 `CanvasRenderer`，不能只验证手工生成的mesh。Buff弧基准半径2.25为两行施法点留空，更多行继续动态外移；真实预览及资源规则见[施法点](Spellcasting.md)。
+
+- 法师施法点由 `CombatStats.spellcasting:Sync` 对齐角色资源后读取 `SpellcastingState.Current/Maximum/Regen`，MainHud 与 CombatSnapshot 只投影 `castingPoints/castingPointMax/castingPointRegen`，不推进回复时间。`HudHealth.CastingPoints` 显式绑定 [CastingPointRing](../../Assets/GameFramework/Runtime/UI/CastingPointRing.cs)：HP 外侧、Buff 弧内侧的绿色/灰色菱形点，每弧 12 点，超出自动增加外弧，并让 Buff 布局向外让位；上限为 0 隐藏，复用时还原间距。一次网格绘制，不逐帧创建点对象，也不截获射线。角色手记 Overview 首个状态条同步显示当前值、上限、回复与规则说明。
+- 施法 UI 原生资源迁移为 [apply_spellcasting_ui.cs](../../Tools/UI/apply_spellcasting_ui.cs)，须在相关 C# 编译完成后的空闲 Edit Mode 由 Unity MCP 执行，保存 HudHealth/BattleHUD 绑定及 View 提示；不修改场景或启动 Play。迁移后可运行 [spellcasting_ui_editmode.cs](../../Tools/Tests/spellcasting_ui_editmode.cs) 检查多弧网格、复用隐藏、Buff 间距与嵌套绑定；检查脚本存在不代表已执行。
+
+- 大地图拉远切换[俯瞰地图 HUD](CameraControls.md)：MainHud 根控制器、Group 与地点跟随层保持活动，只动画隐藏原有卡块；同根 MapHud Widget 提供图层开关和返回操作。Motion wrapper 包裹布局节点，`MainHudView` 继续控制内部 Rect。资源迁移见该模块，不能关闭整个 MainHud 来替代模式切换。
+
 - 剧情对话期间由 MainHud 自身按 Narrative.DialogueOpen 隐藏整组 HUD 表现，结束后恢复；只调整已绑定 CanvasGroup 的透明度，不关闭常驻控制器。输入仍由 UISystem 的模态规则管理，避免时钟、技能栏及队员卡穿透对白。
 
 - MainHud 常驻“开始／暂停／速度 1×・2×・4×／回到小队”按钮，全部由 LuaReference 显式绑定。开始/暂停为幂等命令 `travel_resume/travel_suspend`，速度按钮循环三档且不改变暂停状态；时间按钮只在大地图显示并控制旅行和世界时钟。“回到小队”复用 `hud_follow`，大地图与局部探索均可用。资源增量迁移为 `Project Y/UI/同步大地图时间与小队定位按钮`（[WorldFogHudAssets](../../Assets/GameFramework/Editor/WorldFogHudAssets.cs)），保留原布局，实际按钮与存读验证见[战争迷雾](WorldFog.md)。
+- 右上角采用 `WeatherDialV2` 素净分层表盘：192 像素直径，含时间/天数/金币的总布局为 192×246。`WeatherDial/WeatherDialGroup` 通过 LuaReference 显式绑定；原 `ClockNeedle/ClockTime/ClockDay/Coins` 组件身份保留。表框、指针和天气复用 v2 Sprite，纯色盘面由 `WeatherDialFace` 按配置小时精确生成三扇区与24刻度（当前384顶点），不把生成图里的近似扇区当作计时依据。
+- `WeatherDialModel` 读取 `NarrativeData.Minutes` 的小数分钟，并最多每0.25未缩放秒查询一次[权威天气](Weather.md)：大地图取队伍实际Q/R，局部图取ActiveSite的世界XZ；不跟随镜头位置。日/昏/夜边界由 `MapEnvironmentTable.dialDayKeyId/dialDuskKeyId/dialNightKeyId` 引用 `MapLightKeyTable.hour`（当前7/17/21）。数字时间与日期仍使用原格式/本地化模板，天气不用文字。
+- `WeatherDialView` 仅由 HUD 的可见 Tick 推进：指针跨午夜顺向插值，回退/长跳重新定位，天气浓淡渐变，云轻漂、雨滴循环及强雨图标内的低频双闪均为表现，不新增雷暴玩法或修改时钟。夜间晴空隐藏太阳。`WeatherDialGroup` 初始隐藏，在首次真实状态应用后显示，防止首次打开时所有素材叠亮；对话与完整俯瞰模式隐藏时停止动画/采样，恢复读取当前状态。盘面只在尺寸/阶段配置改变时重建，帧更新不创建对象或纹理。
+- 原生替换入口为 [apply_weather_dial_v2.cs](../../Tools/UI/apply_weather_dial_v2.cs)，保留现有83个绑定及 ClockMotion 包装层，追加新绑定并保存Prefab；旧UX布局工具检测到已安装表盘时保留其分层、轴心和页脚。新建/重建原始HUD后需重新运行该迁移。布局为新表盘及右侧按钮预留空间，日志按剩余宽度收缩。定向检查见 [数据投影](../../Tools/Tests/weather_dial_model.lua) / [原生界面、动效与尺寸](../../Tools/Tests/weather_dial_view_editmode.cs)，不代表完整Play验收。
 
 - [BattleCinematic](../../Assets/GameFramework/Samples/Adventure/BattleCinematic.cs) 与 [AdventureBattleCinematic](../../Assets/GameFramework/Samples/Adventure/AdventureBattleCinematic.cs) 只消费结算后的攻击事件。`AdventureRuntimeDemo.battleCinematicSettings` 调整开关、默认 .35 倍动作速度、过渡、运镜、抬升和灰罩强度；镜头按全部参与模型 bounds 取景。复用 `SceneFocusMask.Create(mainHud.PresentationRoot)` 的实际轮廓遮罩，不修改全局 Time.timeScale 或任何玩法位置。
 - 特写只收集当前启用且处于活动层级的 Renderer；未启用的换装/头发模块允许保留空材质槽，不进入提亮、遮罩或取景集合。[空材质占位回归](../../Tools/Tests/battle_cinematic_optional_renderers.cs) 使用真实 PawnRig 的禁用模块，检查开始特写、隐藏部件不被修改和退出恢复。

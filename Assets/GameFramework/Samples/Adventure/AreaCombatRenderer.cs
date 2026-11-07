@@ -16,6 +16,8 @@ namespace ProjectY.Samples
         public bool ActionBusy { get { foreach (var p in enemies.Values) if (p.View.PresentationBusy) return true; return false; } }
         private readonly Mesh ring;
         private readonly Material material;
+        private readonly Mesh highlight;
+        private readonly Material highlightMaterial;
         private readonly MaterialPropertyBlock properties = new MaterialPropertyBlock();
         private readonly List<int> removed = new List<int>();
         private readonly HashSet<int> known = new HashSet<int>();
@@ -25,6 +27,7 @@ namespace ProjectY.Samples
         private readonly HashSet<int> moves = new HashSet<int>();
         private readonly HashSet<int> targets = new HashSet<int>();
         private readonly HashSet<int> rangeCells = new HashSet<int>();
+        private readonly HashSet<int> impactCells = new HashSet<int>();
         private readonly HashSet<int> selectedTargets = new HashSet<int>();
         public AreaCombatRenderer(Transform parent, PawnView prefab, Shader shader, Func<PawnAppearanceData.Part, GameObject> resolve)
         {
@@ -43,6 +46,15 @@ namespace ProjectY.Samples
             }
             ring = new Mesh { name = "战术六边形轮廓", vertices = vertices, triangles = triangles };
             ring.RecalculateNormals(); ring.RecalculateBounds();
+            var rangeShader=Resources.Load<Shader>("Rendering/SkillRange");
+            if(rangeShader==null)throw new InvalidOperationException("Missing Rendering/SkillRange shader.");
+            highlightMaterial=new Material(rangeShader) {name="Skill range highlight and glow"};
+            const float extent=1.18f;
+            highlight=new Mesh {name="Skill range hex glow",
+                vertices=new[]{new Vector3(-extent,0,-extent),new Vector3(-extent,0,extent),new Vector3(extent,0,extent),new Vector3(extent,0,-extent)},
+                uv=new[]{new Vector2(-extent,-extent),new Vector2(-extent,extent),new Vector2(extent,extent),new Vector2(extent,-extent)},
+                triangles=new[]{0,1,2,0,2,3}};
+            highlight.RecalculateBounds();
         }
         public void SetState(MapAreaViewData.State state, MapAreaViewData layout)
         {
@@ -115,11 +127,18 @@ namespace ProjectY.Samples
         {
             int actorId=0;distance=float.PositiveInfinity;
             foreach(var pair in enemies)
-                if(!pair.Value.Retiring && pair.Value.Actor.HP>0 && pair.Value.View.Raycast(ray,out var hit) && hit<distance)
+                if(!pair.Value.Retiring && pair.Value.Actor.Alive && pair.Value.View.Raycast(ray,out var hit) && hit<distance)
                 {actorId=pair.Key;distance=hit;}
             return actorId;
         }
-        public void Draw(Camera camera, AdventureViewData view, MapAreaViewData layout, bool moving, int skillId,IReadOnlyList<int> chosenTargets,IReadOnlyList<AdventureViewData.Cell> landingCells=null)
+        private void Highlight(Camera camera,MapAreaViewData layout,int cell,Color color)
+        {
+            properties.SetColor("_Color",QualitySettings.activeColorSpace==ColorSpace.Linear?color.linear:color);
+            var position=layout.Cells[cell].Position+Vector3.up*.065f;
+            Graphics.DrawMesh(highlight,Matrix4x4.TRS(position,Quaternion.identity,Vector3.one*layout.Radius),highlightMaterial,0,camera,0,properties,
+                UnityEngine.Rendering.ShadowCastingMode.Off,false);
+        }
+        public void Draw(Camera camera, AdventureViewData view, MapAreaViewData layout, bool moving, int skillId,IReadOnlyList<int> chosenTargets,IReadOnlyList<AdventureViewData.Cell> landingCells=null,IReadOnlyList<int> impact=null)
         {
             if (view.Phase != "battle")
             {
@@ -127,7 +146,7 @@ namespace ProjectY.Samples
                     :neutralCells.Contains(cell)?new Color(.96f,.78f,.22f):new Color(.85f, .27f, .2f));
                 return;
             }
-            moves.Clear(); targets.Clear();selectedTargets.Clear();rangeCells.Clear();
+            moves.Clear(); targets.Clear();selectedTargets.Clear();rangeCells.Clear();impactCells.Clear();
             if (view.Active.Team == 1)
             {
                 if (moving) foreach (var cell in view.Reachable) moves.Add(cell.CellIndex);
@@ -139,6 +158,7 @@ namespace ProjectY.Samples
                     foreach(var cell in Array.Find(view.Units,actor=>actor.Id==id).OccupiedCells)selectedTargets.Add(cell);
                 if(skill!=null && landingCells==null) foreach(var index in skill.TargetCells) targets.Add(index-1);
                 if(landingCells!=null) foreach(var cell in landingCells)targets.Add(cell.CellIndex);
+                if(impact!=null)foreach(var index in impact)impactCells.Add(index-1);
             }
             foreach (var cell in view.Cells)
             {
@@ -151,9 +171,11 @@ namespace ProjectY.Samples
                 if (moves.Contains(index)) color = new Color(.24f, .76f, .51f);
                 if (rangeCells.Contains(index)) color = new Color(.48f, .64f, .94f);
                 if (targets.Contains(index)) color = new Color(.97f, .76f, .43f);
+                if (impactCells.Contains(index)) color = new Color(1f,.52f,.16f);
                 if (selectedTargets.Contains(index)) color = new Color(.31f, .91f, .83f);
                 if (view.Active.CellIndex == index) color = Color.white;
-                Mark(camera, layout, index, color);
+                if(rangeCells.Contains(index) || impactCells.Contains(index))Highlight(camera,layout,index,color);
+                else Mark(camera, layout, index, color);
             }
             foreach(var trap in view.Traps)
             {
@@ -178,6 +200,6 @@ namespace ProjectY.Samples
             if (value is GameObject gameObject) gameObject.SetActive(false);
             if (Application.isPlaying) UnityEngine.Object.Destroy(value); else UnityEngine.Object.DestroyImmediate(value);
         }
-        public void Dispose() { Destroy(root); Destroy(ring); Destroy(material); enemies.Clear(); }
+        public void Dispose() { Destroy(root); Destroy(ring); Destroy(material); Destroy(highlight);Destroy(highlightMaterial);enemies.Clear(); }
     }
 }

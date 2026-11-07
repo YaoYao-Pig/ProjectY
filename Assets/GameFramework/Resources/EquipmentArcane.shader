@@ -3,7 +3,7 @@ Shader "ProjectY/Equipment Arcane"
 {
     Properties
     {
-        _BaseColor ("Base Color", Color) = (1,1,1,1)
+        [MainColor] _BaseColor ("Base Color", Color) = (1,1,1,1)
         _Metallic ("Metallic", Range(0,1)) = .3
         _Smoothness ("Smoothness", Range(0,1)) = .4
         [HDR] _ArcaneColor ("Glow Color", Color) = (0.4,0.8,1,1)

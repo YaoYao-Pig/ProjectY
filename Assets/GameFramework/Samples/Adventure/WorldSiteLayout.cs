@@ -12,6 +12,7 @@ namespace ProjectY.Samples
         private readonly Dictionary<Vector2Int, int> indices = new Dictionary<Vector2Int, int>();
         private readonly Dictionary<int, int[]> townCells = new Dictionary<int, int[]>();
         private readonly Dictionary<int, int[]> regionCells = new Dictionary<int, int[]>();
+        private readonly Dictionary<int, int[]> wonderCells = new Dictionary<int, int[]>();
         private readonly List<Chunk> chunks = new List<Chunk>();
         private readonly float bottom;
         internal WorldSiteLayout(MapPreviewData source)
@@ -25,9 +26,15 @@ namespace ProjectY.Samples
             bottom -= map.Radius * 1.5f;
             var groups = new Dictionary<Vector2Int, Chunk>(); var towns = new Dictionary<int, List<int>>();
             var regions = new Dictionary<int, List<int>>();
+            var wonders = new Dictionary<int, List<int>>();
             for (var i = 0; i < map.Cells.Length; i++)
             {
                 var cell = map.Cells[i]; indices.Add(new Vector2Int(cell.Q, cell.R), i);
+                if(cell.WonderId>0)
+                {
+                    if(!wonders.TryGetValue(cell.WonderId,out var cells)){cells=new List<int>();wonders.Add(cell.WonderId,cells);}
+                    cells.Add(i);
+                }
                 if(cell.RegionId>0)
                 {
                     if(!regions.TryGetValue(cell.RegionId,out var cells)){cells=new List<int>();regions.Add(cell.RegionId,cells);}
@@ -49,9 +56,17 @@ namespace ProjectY.Samples
             }
             foreach (var entry in towns) townCells.Add(entry.Key, entry.Value.ToArray());
             foreach (var entry in regions) regionCells.Add(entry.Key, entry.Value.ToArray());
+            foreach (var entry in wonders) wonderCells.Add(entry.Key, entry.Value.ToArray());
         }
         internal int[] Footprint(AdventureViewData.Site site)
         {
+            if(site.WorldWonderId>0)
+            {
+                var cells=wonderCells[site.WorldWonderId];var entrance=indices[new Vector2Int(site.Q,site.R)];
+                if(Array.IndexOf(cells,entrance)>=0)return cells;
+                var result=new int[cells.Length+1];Array.Copy(cells,result,cells.Length);result[cells.Length]=entrance;
+                return result;
+            }
             if(site.WorldRegionId>0)return regionCells[site.WorldRegionId];
             if (site.WorldTownId > 0) return townCells[site.WorldTownId];
             return new[] { indices[new Vector2Int(site.Q, site.R)] };

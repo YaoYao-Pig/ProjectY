@@ -6,9 +6,14 @@ namespace ProjectY.Samples
     public sealed partial class AdventureRuntimeDemo
     {
         private readonly StrategyCameraRig cameraRig = new StrategyCameraRig();
+        [SerializeField] private StrategyCameraRig.Settings cameraSettings = new StrategyCameraRig.Settings();
+        [SerializeField] private WorldMapCameraMode.Settings worldMapCameraSettings = new WorldMapCameraMode.Settings();
+        private readonly WorldMapCameraMode worldMapMode = new WorldMapCameraMode();
         private int cameraDragButton = -1;
         private Vector2 cameraPointer;
         private bool cameraInputProcessed;
+        private bool keyboardPanning;
+        private CanvasGroup cameraInputGroup;
         private Vector3 focus { get => cameraRig.Focus; set => cameraRig.Focus = value; }
         private float zoom { get => cameraRig.Zoom; set => cameraRig.Zoom = value; }
         private float yaw { get => cameraRig.Yaw; set => cameraRig.Yaw = value; }
@@ -18,7 +23,7 @@ namespace ProjectY.Samples
         {
             get
             {
-                float inset = view.Phase == "battle" ? 0 : Mathf.Min(Screen.width * .7f, mainHud != null ? mainHud.WorldLeftInset : 0);
+                float inset = view.Phase == "battle" ? 0 : Mathf.Min(Screen.width * .7f, mainHud != null ? mainHud.WorldLeftInset : 0) * (1 - worldMapMode.Blend);
                 return new Rect(inset, 0, Screen.width - inset, Screen.height);
             }
         }
@@ -42,6 +47,8 @@ namespace ProjectY.Samples
 
         private void UpdateCameraInput()
         {
+            if (cameraInputGroup != null && !cameraInputGroup.interactable)
+            { cameraDragButton = -1; keyboardPanning = false; return; }
             cameraInputProcessed = true;
             var pointer = (Vector2)Input.mousePosition;
             var viewport = CameraViewport;
@@ -56,7 +63,7 @@ namespace ProjectY.Samples
                 if (cameraDragButton >= 0)
                 {
                     cameraPointer = pointer; cameraRig.Stop();
-                    if (cameraDragButton == 2) ReleaseCameraFollow();
+                    if (cameraDragButton == 2) { ReleaseCameraFollow(); cameraRig.BeginPan(); }
                 }
             }
             if (cameraDragButton >= 0)
@@ -64,13 +71,14 @@ namespace ProjectY.Samples
                 var delta = pointer - cameraPointer;
                 if (cameraDragButton == 2 && delta.sqrMagnitude > 0)
                 { ReleaseCameraFollow(); cameraRig.Pan(-delta, viewport.height); }
-                else if (cameraDragButton == 1) cameraRig.Rotate(delta);
+                else if (cameraDragButton == 1 && !worldMapMode.Visible) cameraRig.Rotate(delta);
                 cameraPointer = pointer;
             }
             else if (!pointerBlocked && Input.mouseScrollDelta.y != 0)
             {
                 var bounds = HasArea ? areaRenderer.Bounds : mapRenderer.Bounds;
-                float maxZoom = StrategyCameraRig.FitSize(bounds, yaw, pitch, viewport.width / viewport.height, 8) * 1.25f;
+                float maxZoom = Mathf.Max(StrategyCameraRig.FitSize(bounds, yaw, pitch, viewport.width / viewport.height, 8),
+                    StrategyCameraRig.FitSize(bounds, 0, 90, viewport.width / viewport.height, 8)) * 1.25f;
                 ReleaseCameraFollow();
                 cameraRig.Scroll(Input.mouseScrollDelta.y, pointer, viewport, 3, maxZoom);
             }
@@ -78,14 +86,21 @@ namespace ProjectY.Samples
             {
                 if (Input.GetKeyDown(KeyCode.F)) FitMap();
                 var input = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
-                if (input.sqrMagnitude > 0) { ReleaseCameraFollow(); cameraRig.PanKeyboard(input, viewport.height, Time.unscaledDeltaTime); }
+                if (input.sqrMagnitude > 0)
+                {
+                    ReleaseCameraFollow();
+                    if (!keyboardPanning) cameraRig.BeginPan();
+                    cameraRig.PanKeyboard(input, viewport.height, Time.unscaledDeltaTime);
+                }
+                keyboardPanning = input.sqrMagnitude > 0;
             }
+            else keyboardPanning = false;
         }
 
         private void OnApplicationFocus(bool hasFocus)
         {
             if (hasFocus) return;
-            cameraDragButton = -1; cameraRig.Stop();
+            cameraDragButton = -1; keyboardPanning = false; cameraRig.Stop();
         }
     }
 }

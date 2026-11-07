@@ -35,6 +35,10 @@ function Rules.New(config)
     return self
 end
 function Rules:IsStack(itemId) return stackKinds[self.items:Get(itemId).kind]==true end
+function Rules:IsStorable(itemId)
+    local kind=self.items:Get(itemId).kind
+    return stackKinds[kind]==true or kind=='weapon' or kind=='wearable' or kind=='magazine'
+end
 function Rules:ValidateItems(ids,counts,output)
     assert(#ids==#counts and (not output or #ids>0),'Camp item quantities differ')
     local seen={}
@@ -81,7 +85,7 @@ function Rules:ValidateSaved(data,minutes)
         self.facilities:Get(row.FacilityId);assert(self.byLevel[row.FacilityId][row.Level],'存档营地等级不在配置中')
     end
     assert(data.StoredTotal<=self:Capacity(data),'存档营地仓库超过容量')
-    for i=0,data.StorageCount-1 do assert(self:IsStack(data:GetStorageAt(i).ItemId),'存档仓库物品不能堆叠') end
+    for i=0,data.StorageCount-1 do assert(self:IsStorable(data:GetStorageAt(i).ItemId),'Unsupported saved warehouse item') end
     for i=0,data.JobCount-1 do local job=data:GetJobAt(i);local recipe=self.recipes:Get(job.RecipeId)
         assert(recipe.facilityId==job.FacilityId and data:GetLevel(job.FacilityId)>=recipe.requiredLevel,'存档生产订单与设施不一致')
         assert(job.StartedAt<=minutes and math.abs(job.ReadyAt-job.StartedAt-recipe.minutes)<0.001,'存档生产时长与配置不一致')

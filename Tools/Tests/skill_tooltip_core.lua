@@ -16,6 +16,7 @@ for _,skill in ipairs(config:GetTable('CombatSkillTable'):All()) do
     assert(#description.tags>0 and description.body~='','Missing configured skill presentation '..skill.id)
 end
 assert(catalog:Rich('<link="term:hit">命中</link>'):find('<u>',1,true))
+assert(catalog:Rich('<link="term:hit">命中</link>','#286C81'):find('<color=#286C81>',1,true),'Paper detail must support readable terminology colors')
 assert(not pcall(function()catalog:Rich('<link="term:missing_term">broken</link>')end),'Missing term links must fail')
 assert(catalog:Term('tracking').body:find('<link=',1,true),'Term drill-down must retain nested links')
 local base=config:GetTable('CombatSkillTable'):Get(6)
@@ -24,6 +25,33 @@ skill.damageScale=.7;skill.maxTargets=3;skill.appliedRuneIds={11}
 local row={skill=skill,cooldown=1,name=skill.name,available=true}
 local model=require('Game.Presentation.SkillTipModel').New(config)
 local data={}
+-- HUD startup constructs this same model for the complete catalog, not only the
+-- older profession manifest. Build every actual card, including composite spells.
+CS.ProjectY.Data.SpellcastingState={Boost=function(_,id)return id==2301 and 2 or 0 end}
+local casting=require('Game.Battle.Spellcasting').New(config,{effects=config:GetTable('CombatEffectTable')})
+local checked=0
+for _,definition in ipairs(config:GetTable('CombatSkillTable'):All())do
+    local effective={};for key,value in pairs(definition)do effective[key]=value end
+    effective.appliedRuneIds={};casting:Resolve({},effective)
+    local tip=model:Build({skill=effective,cooldown=0,name=effective.name,available=true},data)
+    assert(tip.title==definition.name and #tip.tags>0 and tip.body~='' and #tip.stats>0,'Incomplete HUD card '..definition.id)
+    if definition.id==2301 then
+        assert(effective.castingCost==4 and effective.castingBoost==2)
+        local shown=false
+        for _,entry in ipairs(tip.stats)do
+            if entry.label==require('Language').CastingPointLabel and entry.value=='4' then shown=true end
+        end
+        assert(shown,'Explosive fireball tooltip must expose the resolved casting-point cost')
+    end
+    if effective.castingRecipe and #effective.castingRecipe>0 then
+        for _,ingredient in ipairs(effective.castingRecipe)do
+            assert(tip.body:find(config:GetTable('CombatSkillTable'):Get(ingredient).name,1,true),'Composite tooltip lost an ingredient '..definition.id)
+        end
+    end
+    checked=checked+1
+end
+assert(writes==0,'Building the complete HUD catalog must not discover synergies')
+print('PASS real HUD tooltip model builds every configured skill card: '..checked)
 local page=model:Build(row,data)
 assert(writes==0 and #page.synergies>0,'Browsing cannot discover synergies')
 for _,entry in ipairs(page.synergies) do assert(not entry.known and entry.name=='' and entry.body=='' and not entry.active,'Locked text leaked') end

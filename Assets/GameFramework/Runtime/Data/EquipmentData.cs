@@ -29,6 +29,7 @@ namespace ProjectY.Data
     {
         internal int AffixId = 1;
         internal EquipmentConditionData Condition = new EquipmentConditionData();
+        internal EquipmentLegacyData Legacy = new EquipmentLegacyData();
         private readonly Dictionary<int, int> runes = new Dictionary<int, int>();
         public int Id { get; }
         public int ItemId { get; }
@@ -83,13 +84,13 @@ namespace ProjectY.Data
             return count;
         }
         public int MagazineWeapon(int id) => weapons.Find(x => x.MagazineId == id)?.Id ?? 0;
-        public void Clear() { stacks.Clear(); weapons.Clear(); magazines.Clear(); wearables.Clear(); combatOwners.Clear(); Grid.Clear(); nextId = 1; nextPileId = 1; Revision++; }
+        public void Clear() { stacks.Clear(); weapons.Clear(); magazines.Clear(); wearables.Clear(); combatOwners.Clear(); CampEquipmentKeys.Clear(); Grid.Clear(); nextId = 1; nextPileId = 1; Revision++; }
         private void Reserve(string key,int itemId)
         {
             if(!Grid.Exchange(Array.Empty<string>(),new[]{key},new[]{itemId},true)) throw new InvalidOperationException("Inventory is full.");
         }
         private bool Exchange(string outgoing,string incoming,int itemId,bool commit=true)
-        { return Grid.Exchange(outgoing==null?Array.Empty<string>():new[]{outgoing},incoming==null?Array.Empty<string>():new[]{incoming},incoming==null?Array.Empty<int>():new[]{itemId},commit); }
+        { return (outgoing==null||!CampEquipmentKeys.Contains(outgoing)) && Grid.Exchange(outgoing==null?Array.Empty<string>():new[]{outgoing},incoming==null?Array.Empty<string>():new[]{incoming},incoming==null?Array.Empty<int>():new[]{itemId},commit); }
         public bool Move(string key,int x,int y,bool rotated)
         {
             var place=Grid.Find(key);
@@ -111,6 +112,7 @@ namespace ProjectY.Data
         }
         public bool ReturnToBag(string key,int actorId,int x,int y,bool rotated)
         {
+            if(CampEquipmentKeys.Contains(key))return false;
             if(string.IsNullOrEmpty(key) || key.Length<2 || !int.TryParse(key.Substring(1),out int id)) return false;
             if(key[0]=='w')
             {
@@ -228,6 +230,7 @@ namespace ProjectY.Data
         }
         public bool SetRune(int weaponId, int socketId, int itemId)
         {
+            if(CampEquipmentKeys.Contains("w"+weaponId))return false;
             if (socketId < 1 || itemId < 0) throw new ArgumentOutOfRangeException(nameof(socketId));
             var weapon = GetWeapon(weaponId); var old = weapon.GetRune(socketId);
             if (old == itemId) return true;
@@ -254,6 +257,7 @@ namespace ProjectY.Data
         }
         public bool CanAttachMagazine(int weaponId,int magazineId)
         {
+            if(CampEquipmentKeys.Contains("w"+weaponId)||CampEquipmentKeys.Contains("m"+magazineId))return false;
             var weapon=GetWeapon(weaponId);
             if(weapon.MagazineId==magazineId) return true;
             if(magazineId!=0) {GetMagazine(magazineId);if(MagazineWeapon(magazineId)!=0) return false;}
@@ -261,6 +265,7 @@ namespace ProjectY.Data
         }
         public bool AttachMagazine(int weaponId, int magazineId)
         {
+            if(CampEquipmentKeys.Contains("w"+weaponId)||CampEquipmentKeys.Contains("m"+magazineId))return false;
             var weapon = GetWeapon(weaponId);
             if (magazineId != 0)
             {

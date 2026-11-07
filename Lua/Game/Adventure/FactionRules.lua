@@ -1,3 +1,4 @@
+local Life=require('Game.Battle.ActorLife')
 -- Diplomacy and strategic scoring are pure queries. Mutable facts belong to WorldFactionsData.
 local Rules={};Rules.__index=Rules
 local function clamp(value,lo,hi) return math.max(lo,math.min(hi,value)) end
@@ -46,7 +47,7 @@ function Rules:FullPower(actor,stats)
     return actor.MaxHP*.25+attack*2+defense+template.actionPoints*3
 end
 function Rules:Power(actor,stats)
-    if actor.HP==0 then return 0 end
+    if not Life.Alive(actor) then return 0 end
     return self:FullPower(actor,stats)*actor.HP/actor.MaxHP
 end
 -- A hard gate cannot be outweighed by loot. Comparable curves avoid counting an army twice.

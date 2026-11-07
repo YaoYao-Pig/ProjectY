@@ -1,0 +1,128 @@
+{
+  "version": 1,
+  "name": "SpecialSkillTable",
+  "description": "特殊技能的传授与战后观摩领悟规则；原始持有者由 SpecialSkillHolderTable 配置，不占职业课程或学习机会。",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "特殊技能 ID，与战斗技能共用身份",
+      "ref": "CombatSkillTable",
+      "min": 1
+    },
+    {
+      "name": "teachable",
+      "type": "bool",
+      "description": "原始持有者入队后是否允许向满足条件的队员传授"
+    },
+    {
+      "name": "reteachable",
+      "type": "bool",
+      "description": "通过传授或观摩学会者是否允许继续传授；仍须开启 teachable"
+    },
+    {
+      "name": "relationMinimum",
+      "type": "int",
+      "description": "传授双方所需的最低队员关系值",
+      "min": 0,
+      "max": 100
+    },
+    {
+      "name": "attributeNames",
+      "type": "string[]",
+      "description": "学习者必须全部达到的属性代码，与 attributeValues 一一对应"
+    },
+    {
+      "name": "attributeValues",
+      "type": "int[]",
+      "description": "对应属性的最低值；传授与观摩学习共同遵守",
+      "min": 0
+    },
+    {
+      "name": "observationAttribute",
+      "type": "string",
+      "description": "本场见过他人实际使用后，用于战后领悟检定的属性代码"
+    },
+    {
+      "name": "observationMinimum",
+      "type": "int",
+      "description": "战后观摩领悟所需的最低检定属性值",
+      "min": 0
+    },
+    {
+      "name": "observationBaseChance",
+      "type": "float",
+      "description": "达到观摩门槛时的基础领悟概率，0至1",
+      "min": 0,
+      "max": 1
+    },
+    {
+      "name": "observationPerPoint",
+      "type": "float",
+      "description": "检定属性每超过观摩门槛一点增加的概率，0至1",
+      "min": 0,
+      "max": 1
+    },
+    {
+      "name": "observationMaxChance",
+      "type": "float",
+      "description": "单场战后领悟概率上限，0至1；同一技能只检定一次",
+      "min": 0,
+      "max": 1
+    }
+  ],
+  "rows": [
+    {
+      "id": 2701,
+      "teachable": true,
+      "reteachable": false,
+      "relationMinimum": 60,
+      "attributeNames": [
+        "strength"
+      ],
+      "attributeValues": [
+        8
+      ],
+      "observationAttribute": "strength",
+      "observationMinimum": 12,
+      "observationBaseChance": 0.05,
+      "observationPerPoint": 0.02,
+      "observationMaxChance": 0.25
+    },
+    {
+      "id": 2702,
+      "teachable": true,
+      "reteachable": true,
+      "relationMinimum": 60,
+      "attributeNames": [
+        "bow"
+      ],
+      "attributeValues": [
+        8
+      ],
+      "observationAttribute": "bow",
+      "observationMinimum": 12,
+      "observationBaseChance": 0.05,
+      "observationPerPoint": 0.02,
+      "observationMaxChance": 0.25
+    },
+    {
+      "id": 2703,
+      "teachable": true,
+      "reteachable": true,
+      "relationMinimum": 60,
+      "attributeNames": [
+        "intellect"
+      ],
+      "attributeValues": [
+        8
+      ],
+      "observationAttribute": "intellect",
+      "observationMinimum": 12,
+      "observationBaseChance": 0.05,
+      "observationPerPoint": 0.02,
+      "observationMaxChance": 0.25
+    }
+  ]
+}

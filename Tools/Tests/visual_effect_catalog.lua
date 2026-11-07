@@ -37,7 +37,8 @@ end
 
 test('all exported profiles use supported patterns, finite bounds and HTML colors',function()
     local patterns={slash=true,thrust=true,burst=true,ring=true,shield=true,spiral=true,beam=true,arc=true,
-        rain=true,cross=true,column=true,scatter=true,rune=true,shards=true,tether=true,footprint=true}
+        rain=true,cross=true,column=true,scatter=true,rune=true,shards=true,tether=true,footprint=true,
+        fireball=true,rockfall=true,meteor=true,mist=true,lightning=true,wave=true,embers=true,mud=true}
     local bounds={count={1,128},lifetime={.05,8},size={.005,.5},radius={.01,4},height={.01,5},
         emission={0,8},speed={0,12},gravity={-5,12}}
     for _,profile in ipairs(profiles:All()) do

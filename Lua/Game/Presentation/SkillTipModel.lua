@@ -16,6 +16,17 @@ function Model:Build(row,adventure)
         result.stats[#result.stats+1]={label=self.catalog:Rich(label),value=tostring(value),color=color or '#E8DBC2'}
     end
     stat(LuaLanguage.UISkillTipText19,skill.cost..' AP','#F1D18A')
+    if skill.castingCost and skill.castingCost>0 then
+        stat(LuaLanguage.CastingPointLabel,skill.castingCost,'#78F0A5')
+        if skill.castingBoostLimit>0 then
+            stat(LuaLanguage.CastingBoostLabel,string.format(LuaLanguage.CastingBoostValue,skill.castingBoost,skill.castingBoostLimit),'#78F0A5')
+        end
+    end
+    if skill.castingRecipe and #skill.castingRecipe>0 then
+        local names={}
+        for _,id in ipairs(skill.castingRecipe) do names[#names+1]=self.skills:Get(id).name end
+        result.body=string.format(LuaLanguage.CastingRecipeDescription,result.body,table.concat(names,' + '))
+    end
     stat(LuaLanguage.UISkillTipText18,skill.action=='main' and LuaLanguage.BattleMain or LuaLanguage.BattleSecondary)
     stat(LuaLanguage.UISkillTipText17,skill.range==0 and LuaLanguage.UISkillTipSelf or string.format(LuaLanguage.UIStartMenuSize3, (skill.range)),'#8CCBDD')
     if skill.minRange>0 then stat(LuaLanguage.UISkillTipText16,string.format(LuaLanguage.UIStartMenuSize3, (skill.minRange)),'#8CCBDD') end

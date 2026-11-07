@@ -20,7 +20,6 @@ namespace ProjectY.UI
         {
             owner = host; Config = config;
             Canvas.renderMode = config.IsWorldUI ? RenderMode.WorldSpace : RenderMode.ScreenSpaceOverlay;
-            Canvas.overrideSorting = true;
             if (config.IsWorldUI) Canvas.worldCamera = Camera.main;
             else
             {
@@ -50,7 +49,14 @@ namespace ProjectY.UI
             gameObject.SetActive(value);
             RefreshPauseLease();
         }
-        internal void SetOrder(int order) => Canvas.sortingOrder = order;
+        internal void SetOrder(int order)
+        {
+            // Unity ignores overrideSorting on inactive nested canvases. UISystem assigns
+            // the order after SetVisible(true), when this override can actually take effect.
+            var canvas = Canvas;
+            canvas.overrideSorting = true;
+            canvas.sortingOrder = order;
+        }
         internal void SetInteractable(bool value)
         {
             var group = GetComponent<CanvasGroup>();

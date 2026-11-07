@@ -28,14 +28,14 @@ namespace ProjectY.Data
         }
         public void Record(string kind, string title, string body, string location, int eventId, int choiceId, int subjectId, bool shared)
         {
-            if (subjectId != 0 && !party.Exists(actor => actor.Id == subjectId)) throw new ArgumentException("Unknown chronicle subject.");
+            if (subjectId != 0 && PartyRoster.Find(this,subjectId)==null) throw new ArgumentException("Unknown chronicle subject.");
             if (!shared && subjectId == 0) throw new ArgumentException("A personal chronicle needs a subject.");
             var participants = shared ? party.ConvertAll(actor => actor.Id).ToArray() : new[] { subjectId };
             journal.Add(new ChronicleEntryData(journal.Count + 1, kind, title, body, location, eventId, choiceId, subjectId, Narrative.Minutes, 0, 0, participants));
         }
         public void RecordPair(string kind, string title, string body, string location, int eventId, int choiceId, int subjectId, int objectId, int relationDelta)
         {
-            if (subjectId == objectId || !party.Exists(actor => actor.Id == subjectId) || !party.Exists(actor => actor.Id == objectId))
+            if (subjectId == objectId || PartyRoster.Find(this,subjectId)==null || PartyRoster.Find(this,objectId)==null)
                 throw new ArgumentException("A pair chronicle needs two known party actors.");
             journal.Add(new ChronicleEntryData(journal.Count + 1, kind, title, body, location, eventId, choiceId, subjectId,
                 Narrative.Minutes, objectId, relationDelta, new[] { subjectId, objectId }));
@@ -67,7 +67,10 @@ namespace ProjectY.Data
         public bool HasVisited(int siteId) => visited.Contains(siteId);
         public void Reset(uint seed)
         {
-            Seed = seed; party.Clear(); visited.Clear(); journal.Clear(); storyTriggers.Clear(); Battle.Clear(); Areas.Clear(); Equipment.Clear(); Equipment.AffixSeed=seed; Narrative.Clear(); Shops.Clear(); Camp.Clear(); PartyBonds.Clear(); WorldParties.Clear(); SynergyDiscovery.Clear();
+            Inspections.Clear(seed);
+            People.Clear();
+            Reputation.Clear();
+            Seed = seed; party.Clear(); ClearRoster(); visited.Clear(); journal.Clear(); storyTriggers.Clear(); Battle.Clear(); Areas.Clear(); Equipment.Clear(); Equipment.AffixSeed=seed; Narrative.Clear(); Shops.Clear(); Economy.Clear(); Camp.Clear(); PartyBonds.Clear(); WorldParties.Clear(); SynergyDiscovery.Clear();
             EventReturnPhase = "map"; StoryTriggerKey = "";ProfessionDuelActorId=0;ProfessionDuelThreshold=0;
             EventActorId = 0; EventLocation = "";
             Phase = "map"; SiteId = 0; EventId = 0; ChoiceId = 0; AreaEncounterId = 0; ResultText = "";
@@ -80,21 +83,24 @@ namespace ProjectY.Data
         {
             RequirePhase("map");
             if (party.Count >= 4) throw new InvalidOperationException("The adventure squad supports at most four members.");
-            if (party.Exists(member => member.Id == id)) throw new InvalidOperationException("Duplicate party actor.");
-            var actor = new CombatActorData(id, templateId); party.Add(actor); return actor;
+            if (PartyRoster.Find(this,id)!=null) throw new InvalidOperationException("Duplicate party actor.");
+            var actor = new CombatActorData(id, templateId);DeathDoorState.Enable(actor); party.Add(actor); if(ProtagonistId==0)ProtagonistId=id; return actor;
         }
         public CombatActorData PrepareRecruitActor(int id, int templateId)
         {
-            if ((Phase != "map" && Phase != "area") || party.Count >= 4 || party.Exists(member => member.Id == id) || id <= 0 || templateId <= 0)
+            if ((Phase != "map" && Phase != "area") || PartyRoster.Count(this) >= PartyRoster.ActiveLimit+PartyRoster.ReserveLimit || PartyRoster.Find(this,id)!=null || id <= 0 || templateId <= 0)
                 throw new InvalidOperationException("Cannot recruit this actor into the current squad.");
             return new CombatActorData(id, templateId);
         }
         public void AddPreparedRecruit(CombatActorData actor)
         {
-            if (actor == null || !actor.Growth.Initialized || actor.HP <= 0 || party.Count >= 4 ||
-                (Phase != "map" && Phase != "area") || party.Exists(member => member.Id == actor.Id))
+            if (actor == null || !actor.Growth.Initialized || actor.HP <= 0 || PartyRoster.Count(this) >= PartyRoster.ActiveLimit+PartyRoster.ReserveLimit ||
+                (Phase != "map" && Phase != "area") || PartyRoster.Find(this,actor.Id)!=null)
                 throw new InvalidOperationException("Invalid prepared recruit.");
-            party.Add(actor);
+            var person=People.FindActor(actor.Id);
+            if(person!=null && !ReferenceEquals(person.Actor,actor))throw new InvalidOperationException(ProjectY.UI.LuaLanguage.Get("PeopleRecruitInvalid"));
+            DeathDoorState.Enable(actor);if(party.Count<PartyRoster.ActiveLimit)party.Add(actor);else ReserveActors.Add(actor);
+            People.MarkJoined(actor,Narrative.Minutes);
         }
         public void BeginEvent(int siteId, int eventId)
         {
