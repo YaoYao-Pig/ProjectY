@@ -1,0 +1,13 @@
+-- 由 Tools/ConfigEditor/exporter.mjs 自动生成，请勿手动修改。
+---@class SkillCraftModifierTableRow
+---@field id number 素材ID
+---@field skillId number 必须永久学会的源技能
+---@field name string 素材名称
+---@field description string 素材说明
+---@field kind "element"|"status" 素材类别
+---@field effectId number 附加效果；元素转换为0
+---@field damageType string 元素转换类型；状态为空
+---@field apCost number 附加AP
+---@field cooldown number 附加冷却
+---@field castingCost number 附加施法点，同时要求奥术触媒
+return {["name"]="SkillCraftModifierTable",["key"]="id",["fields"]={{["name"]="id",["type"]="int",["description"]="\231\180\160\230\157\144ID",["min"]=1},{["name"]="skillId",["type"]="int",["description"]="\229\191\133\233\161\187\230\176\184\228\185\133\229\173\166\228\188\154\231\154\132\230\186\144\230\138\128\232\131\189",["ref"]="CombatSkillTable"},{["name"]="name",["type"]="text",["description"]="\231\180\160\230\157\144\229\144\141\231\167\176"},{["name"]="description",["type"]="text",["description"]="\231\180\160\230\157\144\232\175\180\230\152\142"},{["name"]="kind",["type"]="enum",["description"]="\231\180\160\230\157\144\231\177\187\229\136\171",["values"]={"element","status"}},{["name"]="effectId",["type"]="int",["description"]="\233\153\132\229\138\160\230\149\136\230\158\156\239\188\155\229\133\131\231\180\160\232\189\172\230\141\162\228\184\1860",["min"]=0},{["name"]="damageType",["type"]="string",["description"]="\229\133\131\231\180\160\232\189\172\230\141\162\231\177\187\229\158\139\239\188\155\231\138\182\230\128\129\228\184\186\231\169\186"},{["name"]="apCost",["type"]="int",["description"]="\233\153\132\229\138\160AP",["min"]=0},{["name"]="cooldown",["type"]="int",["description"]="\233\153\132\229\138\160\229\134\183\229\141\180",["min"]=0},{["name"]="castingCost",["type"]="int",["description"]="\233\153\132\229\138\160\230\150\189\230\179\149\231\130\185\239\188\140\229\144\140\230\151\182\232\166\129\230\177\130\229\165\165\230\156\175\232\167\166\229\170\146",["min"]=0}},["fingerprint"]="62f06c548f0083a2d77bdbe6dd50105e8508f58d545300725e4757b278dd8ee3"}

@@ -53,6 +53,10 @@ function Effects:Magnitude(row,values,skill)
 end
 function Effects:Prepare(id,source,target,skill,distance)
     local row=self.definitions:Get(id)
+    if row.kind=='damage' and skill and skill.craftDamageType then
+        local converted={};for key,value in pairs(row)do converted[key]=value end
+        converted.damageType=skill.craftDamageType;row=converted
+    end
     local selected=target;target=row.recipient=='source' and source or target
     if row.kind=='apply_buff' then
         local plan=self.buffEffects:Prepare(row,source,target,skill,distance)

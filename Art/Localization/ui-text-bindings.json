@@ -2399,5 +2399,103 @@
     "type": "UITxt",
     "text": "交谈",
     "id": "PeopleDialogueTalk"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Adventure/SkillCraftPanel.prefab",
+    "node": "Page/Title",
+    "type": "Text",
+    "text": "自创技能",
+    "id": "SkillCraftTitle"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Adventure/SkillCraftPanel.prefab",
+    "node": "Page/Close/CloseText",
+    "type": "Text",
+    "text": "返回手记",
+    "id": "SkillCraftClose"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Adventure/SkillCraftPanel.prefab",
+    "node": "Page/NameLabel",
+    "type": "Text",
+    "text": "技能名称",
+    "id": "SkillCraftNameLabel"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Adventure/SkillCraftPanel.prefab",
+    "node": "Page/Name/NamePlaceholder",
+    "type": "Text",
+    "text": "为自己的技能取名",
+    "id": "SkillCraftNamePlaceholder"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Adventure/SkillCraftPanel.prefab",
+    "node": "Page/Permanent",
+    "type": "Text",
+    "text": "主体决定动作与范围；修饰改变属性或附加效果。跨职业组合要求各来源职业已精通。",
+    "id": "SkillCraftPermanent"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Adventure/SkillCraftPanel.prefab",
+    "node": "Page/Group_primary/Group_primaryText",
+    "type": "Text",
+    "text": "主体招式",
+    "id": "SkillCraftBodyTab"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Adventure/SkillCraftPanel.prefab",
+    "node": "Page/Group_combat/Group_combatText",
+    "type": "Text",
+    "text": "属性修饰",
+    "id": "SkillCraftElementTab"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Adventure/SkillCraftPanel.prefab",
+    "node": "Page/Group_life/Group_lifeText",
+    "type": "Text",
+    "text": "附加效果",
+    "id": "SkillCraftStatusTab"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Adventure/SkillCraftPanel.prefab",
+    "node": "Page/Group_special/Group_specialText",
+    "type": "Text",
+    "text": "已有作品",
+    "id": "SkillCraftSavedTab"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Adventure/SkillCraftPanel.prefab",
+    "node": "Page/Group_negative/Group_negativeText",
+    "type": "Text",
+    "text": "新建",
+    "id": "SkillCraftNewTab"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Adventure/SkillCraftPanel.prefab",
+    "node": "Templates/EffectTemplate/Minus/MinusText",
+    "type": "Text",
+    "text": "移除",
+    "id": "SkillCraftRemove"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Adventure/SkillCraftPanel.prefab",
+    "node": "Templates/EffectTemplate/Plus/PlusText",
+    "type": "Text",
+    "text": "选择",
+    "id": "SkillCraftSelect"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Adventure/SkillCraftPanel.prefab",
+    "node": "Page/PreviewTitle",
+    "type": "Text",
+    "text": "组合预览",
+    "id": "SkillCraftPreviewTitle"
+  },
+  {
+    "prefab": "Assets/DynamicAsset/UI/Prefabs/Adventure/SkillCraftPanel.prefab",
+    "node": "Page/Craft/CraftText",
+    "type": "Text",
+    "text": "创造技能",
+    "id": "SkillCraftCreate"
   }
 ]

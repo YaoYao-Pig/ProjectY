@@ -64,10 +64,10 @@ function Skills:Context() return self.adventure.data.Phase=='battle' and 'battle
 function Skills:CanUse(actorId,skillId,targetId)
     local actor=self:Actor(actorId)
     if not actor or not Life.Alive(actor) then return false,'请选择存活的队员' end
-    local skill=self.skills:Find(skillId);if not skill then return false,'未知技能' end
     local owns=false
     for _,id in ipairs(self.adventure.battle:SkillIds(actor)) do if id==skillId then owns=true;break end end
     if not owns then return false,'角色没有这个技能' end
+    local skill=self.adventure.battle.stats.skillCraft:Definition(actor,skillId)
     local context=self:Context()
     local usage=context=='battle' and self.adventure.battle.data.Phase=='deployment' and 'preparation' or context
     if not Supports(skill,usage) then return false,'此技能不能在当前阶段使用' end
@@ -91,7 +91,7 @@ end
 function Skills:Use(actorId,skillId,targetId)
     local ok,reason=self:CanUse(actorId,skillId,targetId);if not ok then return false,reason end
     if self:Context()=='battle' then
-        return self.adventure:BattleCommand(self.skills:Get(skillId).target=='cell' and 'skill_cell' or 'skill',skillId,targetId)
+        return self.adventure:BattleCommand(self.adventure.battle.stats.skillCraft:Definition(self:Actor(actorId),skillId).target=='cell' and 'skill_cell' or 'skill',skillId,targetId)
     end
     if self.skills:Get(skillId).affectsContainers then return self.adventure.containerCombat:Area(self:Actor(actorId),skillId,targetId) end
     local skill=self.skills:Get(skillId)
@@ -102,7 +102,7 @@ function Skills:Rows(actorId,context)
     local rows={}
     local usage=context=='battle' and self.adventure.battle.data.Phase=='deployment' and 'preparation' or context
     for _,id in ipairs(self.adventure.battle:SkillIds(actor)) do
-        local skill=self.skills:Get(id)
+        local skill=self.adventure.battle.stats.skillCraft:Definition(actor,id)
         if Supports(skill,usage) then
             local targets={}
             if context=='life' and self.adventure.data.Phase=='area' then

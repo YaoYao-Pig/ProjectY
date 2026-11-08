@@ -1,0 +1,43 @@
+---@meta
+-- Generated from LuaReference. Do not edit; never require this file.
+---@class SkillCraftPanelView
+---@field Root CS.UnityEngine.RectTransform
+---@field Canvas CS.UnityEngine.Canvas
+---@field Panel CS.ProjectY.UI.LuaPanel
+---@field Page CS.UnityEngine.RectTransform
+---@field Skin CS.ProjectY.UI.LuaReference
+---@field Title CS.UnityEngine.UI.Text
+---@field Close CS.UnityEngine.UI.Button
+---@field CloseText CS.UnityEngine.UI.Text
+---@field Owner CS.UnityEngine.UI.Text
+---@field Balance CS.UnityEngine.UI.Text
+---@field NameLabel CS.UnityEngine.UI.Text
+---@field NameText CS.UnityEngine.UI.Text
+---@field NamePlaceholder CS.UnityEngine.UI.Text
+---@field Name CS.UnityEngine.UI.InputField
+---@field Permanent CS.UnityEngine.UI.Text
+---@field Group_primary CS.UnityEngine.UI.Button
+---@field Group_primaryText CS.UnityEngine.UI.Text
+---@field Group_combat CS.UnityEngine.UI.Button
+---@field Group_combatText CS.UnityEngine.UI.Text
+---@field Group_life CS.UnityEngine.UI.Button
+---@field Group_lifeText CS.UnityEngine.UI.Text
+---@field Group_special CS.UnityEngine.UI.Button
+---@field Group_specialText CS.UnityEngine.UI.Text
+---@field Group_negative CS.UnityEngine.UI.Button
+---@field Group_negativeText CS.UnityEngine.UI.Text
+---@field EffectList CS.ProjectY.UI.LuaReference
+---@field HeaderTemplate CS.ProjectY.UI.LuaReference
+---@field EffectTemplate CS.ProjectY.UI.LuaReference
+---@field PreviewTitle CS.UnityEngine.UI.Text
+---@field PreviewScroll CS.UnityEngine.UI.ScrollRect
+---@field Preview CS.UnityEngine.UI.Text
+---@field PreviewContent CS.UnityEngine.RectTransform
+---@field PositiveCost CS.UnityEngine.UI.Text
+---@field DiscountCost CS.UnityEngine.UI.Text
+---@field TotalCost CS.UnityEngine.UI.Text
+---@field Craft CS.UnityEngine.UI.Button
+---@field CraftText CS.UnityEngine.UI.Text
+---@field Hint CS.UnityEngine.UI.Text
+local View = {}
+return View

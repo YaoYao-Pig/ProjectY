@@ -70,7 +70,7 @@ namespace ProjectY.Data
             adventure.Camp.ValidateEquipment(adventure.Equipment);
             CampLoadoutData.Reconcile(adventure);
             currentCreatedAt=NormalizeCreationTime(currentCreatedAt,path);
-            var document = new CharacterSaveDocument { createdAt=currentCreatedAt, version = expedition==null?49:50, savedAt = DateTime.UtcNow.ToString("o"), worldName = currentWorldName, seed = adventure.Seed,
+            var document = new CharacterSaveDocument { createdAt=currentCreatedAt, version = expedition==null?51:52, savedAt = DateTime.UtcNow.ToString("o"), worldName = currentWorldName, seed = adventure.Seed,
                 coins = player.Coins, playerLevel = player.Level, actors = Enumerable.Range(0, PartyRoster.Count(adventure)).Select(i => PartyRoster.At(adventure,i).CaptureSave()).ToArray(), roster=adventure.CaptureRoster(), equipment = adventure.Equipment.CaptureSave(actorIds), narrative = adventure.Narrative.Capture(), shops = adventure.Shops.Capture(),
                 economy=adventure.Economy.Capture(),camp=adventure.Camp.Capture(),partyStory=adventure.PartyBonds.Capture(),journal=adventure.CaptureJournal(),expedition=expedition,skillSynergies=adventure.SynergyDiscovery.Capture(),unitInspections=adventure.Inspections.Capture(),reputation=adventure.Reputation.Capture(),people=people };
             PrepareDocument(document, adventure.Equipment); // Reject incomplete state before touching a prior save.
@@ -97,7 +97,7 @@ namespace ProjectY.Data
         }
         private PreparedCharacterSave PrepareDocument(CharacterSaveDocument document, EquipmentData current)
         {
-            SaveCheck.Require(document != null && document.version >= 1 && document.version <= 50, "不支持的版本");
+            SaveCheck.Require(document != null && document.version >= 1 && document.version <= 52, "不支持的版本");
             EquipmentLegacyData.MigrateAndValidate(document);
             // Old saves did not record discoveries; installed runes must not implicitly reveal them on load.
             var synergies = document.version < 13 ? new SkillSynergyDiscoveryData() : SkillSynergyDiscoveryData.Prepare(document.skillSynergies);
@@ -107,6 +107,20 @@ namespace ProjectY.Data
             SaveCheck.Require(document.coins >= 0 && document.playerLevel >= 1, "玩家数值");
             var ids = new HashSet<int>(); var actors = SaveCheck.Rows(document.actors, document.version>=43?10:4, "队伍"); SaveCheck.Require(actors.Length > 0, "空队伍");
             // JsonUtility 的内联类不能可靠地保留 null；v2 使用显式存在标记，v1 由旧记录身份迁移。
+            if(document.version<51)foreach(var actor in actors)if(actor!=null && actor.growth!=null)actor.growth.skillCraft=new SkillCraftSave();
+            if(document.version<51 && document.people!=null && document.people.records!=null)
+                foreach(var person in document.people.records)if(person!=null && person.actor!=null && person.actor.growth!=null)person.actor.growth.skillCraft=new SkillCraftSave();
+            if(document.version<51 && document.expedition!=null)
+            {
+                if(document.expedition.areas!=null)foreach(var area in document.expedition.areas)
+                    if(area!=null && area.encounters!=null)foreach(var group in area.encounters)
+                        if(group!=null && group.actors!=null)foreach(var actor in group.actors)
+                            if(actor!=null && actor.hasGrowth && actor.growth!=null)actor.growth.skillCraft=new SkillCraftSave();
+                if(document.expedition.parties!=null && document.expedition.parties.parties!=null)
+                    foreach(var party in document.expedition.parties.parties)
+                        if(party!=null && party.members!=null)foreach(var actor in party.members)
+                            if(actor!=null && actor.hasGrowth && actor.growth!=null)actor.growth.skillCraft=new SkillCraftSave();
+            }
             if(document.version==1)foreach(var actor in actors)if(actor!=null)actor.hasMount=actor.mount!=null && actor.mount.id>0;
             if(document.version<3)foreach(var actor in actors)if(actor!=null)
             {actor.effects=Array.Empty<GameEffectSave>();if(actor.hasMount){SaveCheck.Require(actor.mount!=null,"缺少坐骑记录");actor.mount.effects=Array.Empty<GameEffectSave>();}}
@@ -231,7 +245,7 @@ namespace ProjectY.Data
             result.Camp.EnsureWarehouse(current.Grid);
             if(document.version>=33)SaveCheck.Require(document.camp.loadout!=null,"camp.loadout.missing");
             result.Camp.Loadout.ValidateAnimals(prepared.Take(result.Roster.activeCount));
-            if(document.version==9 || document.version==11 || document.version==12 || document.version==14 || document.version==16 || document.version==18 || document.version==20 || document.version==22 || document.version==24 || document.version==26 || document.version==28 || document.version==30 || document.version==32 || document.version==34 || document.version==36 || document.version==38 || document.version==40 || document.version==42 || document.version==44 || document.version==46 || document.version==48 || document.version==50)
+            if(document.version==9 || document.version==11 || document.version==12 || document.version==14 || document.version==16 || document.version==18 || document.version==20 || document.version==22 || document.version==24 || document.version==26 || document.version==28 || document.version==30 || document.version==32 || document.version==34 || document.version==36 || document.version==38 || document.version==40 || document.version==42 || document.version==44 || document.version==46 || document.version==48 || document.version==50 || document.version==52)
             {
                 SaveCheck.Require(document.expedition!=null,"缺少远征记录");
                 if(document.version<12)document.expedition.parties=null;

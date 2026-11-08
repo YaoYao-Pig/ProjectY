@@ -1,0 +1,48 @@
+{
+  "version": 1,
+  "name": "SkillCraftRuleTable",
+  "description": "职业使用熟练度与自创技能首版规则",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "规则ID",
+      "min": 1
+    },
+    {
+      "name": "practicePerUse",
+      "type": "int",
+      "description": "每次使用的整数熟练度单位",
+      "min": 1
+    },
+    {
+      "name": "practicePerLevel",
+      "type": "int",
+      "description": "每职业等级所需熟练度单位",
+      "min": 1
+    },
+    {
+      "name": "masteryLevel",
+      "type": "int",
+      "description": "精通等级",
+      "min": 2
+    },
+    {
+      "name": "maxModifiers",
+      "type": "int",
+      "description": "修饰槽数",
+      "min": 1,
+      "max": 2
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "practicePerUse": 1000,
+      "practicePerLevel": 10000,
+      "masteryLevel": 11,
+      "maxModifiers": 2
+    }
+  ]
+}

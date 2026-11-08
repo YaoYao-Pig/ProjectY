@@ -399,12 +399,16 @@ function Battle:SkillIds(actor)
     end
     ids=self.beasts:AddSkills(actor,self.professions:AddSkills(actor,ids))
     ids=self.legendary and self.legendary:AddSkills(actor,ids)or ids
-    return self.spellcasting:AddSkills(actor,ids)
+    ids=self.spellcasting:AddSkills(actor,ids)
+    return self.stats.skillCraft and self.stats.skillCraft:AddSkills(actor,ids) or ids
 end
 function Battle:Skill(actor,skillId)
     local skill=self.professions:Skill(actor,self.stats.buffs:ApplySkillModifiers(actor,self.stats.equipment:Skill(actor,skillId,self.stats)))
     skill=self.legendary and self.legendary:Skill(actor,skill)or skill
     skill=self.morale:Skill(actor,self.spellcasting:Resolve(actor,skill))
+    if skill.crafted and not skill.craftWide and (skill.maxTargets>1 or skill.splashRadius>0)then
+        skill.cost=skill.cost+1;skill.damageScale=skill.damageScale*.8;skill.craftWide=true
+    end
     if skill.selectBodyPart then
         -- A body selection belongs to exactly one recipient, even with multi-target weapon modifiers.
         skill.maxTargets=1;skill.splashRadius=0;skill.manualTargets=false
@@ -476,6 +480,9 @@ function Battle:ActionBudget(skill)
 end
 function Battle:SkillBudget(skillId)
     if self.data.Winner ~= '' then return false, '战斗已经结束' end
+    if require('Game.Progression.SkillCraft').IsCustom(skillId)then
+        local valid,reason=self.stats.skillCraft:FindDefinition(self:Active(),skillId);if not valid then return false,reason end
+    end
     local source=self:Active();local skill=self:Skill(source,skillId)
     if skill.skillKind=='item' then return false,'请从道具栏使用消耗品' end
     local owns = false
@@ -644,11 +651,14 @@ function Battle:ObserveSkillUse(source,skillId,execute,...)
     local observer=self.specialSkillObserver
     local observation=observer and source and observer:CaptureUse(source,skillId)
     local inspection=self.stats.inspection
-    local discovery=inspection and source and inspection:CaptureUse(source,skillId)
+    local custom=require('Game.Progression.SkillCraft').IsCustom(skillId)
+    local discovery=inspection and source and not custom and inspection:CaptureUse(source,skillId)
+    local practice=self.stats.skillCraft and self.stats.skillCraft:CaptureUse(source,skillId,self.data.Phase)
     local ok,reason=execute(self,...)
     if ok then
         if inspection then inspection:CommitUse(discovery)end
         if observer then observer:CommitUse(observation)end
+        if self.stats.skillCraft then self.stats.skillCraft:CommitUse(practice)end
         self.Changed:Emit({kind='skill_used',sourceId=assert(source).Id,skillId=skillId})
     end
     return ok,reason

@@ -1,0 +1,166 @@
+{
+  "version": 1,
+  "name": "SkillCraftModifierTable",
+  "description": "自创技能可提取部分与成本",
+  "key": "id",
+  "fields": [
+    {
+      "name": "id",
+      "type": "int",
+      "description": "素材ID",
+      "min": 1
+    },
+    {
+      "name": "skillId",
+      "type": "int",
+      "description": "必须永久学会的源技能",
+      "ref": "CombatSkillTable"
+    },
+    {
+      "name": "name",
+      "type": "text",
+      "description": "素材名称"
+    },
+    {
+      "name": "description",
+      "type": "text",
+      "description": "素材说明"
+    },
+    {
+      "name": "kind",
+      "type": "enum",
+      "description": "素材类别",
+      "values": [
+        "element",
+        "status"
+      ]
+    },
+    {
+      "name": "effectId",
+      "type": "int",
+      "description": "附加效果；元素转换为0",
+      "min": 0
+    },
+    {
+      "name": "damageType",
+      "type": "string",
+      "description": "元素转换类型；状态为空"
+    },
+    {
+      "name": "apCost",
+      "type": "int",
+      "description": "附加AP",
+      "min": 0
+    },
+    {
+      "name": "cooldown",
+      "type": "int",
+      "description": "附加冷却",
+      "min": 0
+    },
+    {
+      "name": "castingCost",
+      "type": "int",
+      "description": "附加施法点，同时要求奥术触媒",
+      "min": 0
+    }
+  ],
+  "rows": [
+    {
+      "id": 1,
+      "skillId": 2401,
+      "name": "破甲",
+      "description": "命中后施加破甲。",
+      "kind": "status",
+      "effectId": 1313,
+      "damageType": "",
+      "apCost": 1,
+      "cooldown": 1,
+      "castingCost": 0
+    },
+    {
+      "id": 2,
+      "skillId": 502,
+      "name": "流血",
+      "description": "命中后尝试造成流血。",
+      "kind": "status",
+      "effectId": 802,
+      "damageType": "",
+      "apCost": 1,
+      "cooldown": 1,
+      "castingCost": 0
+    },
+    {
+      "id": 3,
+      "skillId": 2301,
+      "name": "火焰",
+      "description": "将主体的直接伤害转换为火焰，保留主体的属性缩放。",
+      "kind": "element",
+      "effectId": 0,
+      "damageType": "fire",
+      "apCost": 1,
+      "cooldown": 1,
+      "castingCost": 1
+    },
+    {
+      "id": 4,
+      "skillId": 2303,
+      "name": "水流",
+      "description": "将主体的直接伤害转换为水属性，保留主体的属性缩放。",
+      "kind": "element",
+      "effectId": 0,
+      "damageType": "water",
+      "apCost": 1,
+      "cooldown": 1,
+      "castingCost": 1
+    },
+    {
+      "id": 5,
+      "skillId": 104,
+      "name": "点燃",
+      "description": "命中后尝试点燃目标。",
+      "kind": "status",
+      "effectId": 804,
+      "damageType": "",
+      "apCost": 1,
+      "cooldown": 1,
+      "castingCost": 1
+    },
+    {
+      "id": 6,
+      "skillId": 2411,
+      "name": "迟缓",
+      "description": "命中后施加迟缓。",
+      "kind": "status",
+      "effectId": 20016,
+      "damageType": "",
+      "apCost": 1,
+      "cooldown": 2,
+      "castingCost": 0
+    },
+    {
+      "id": 7,
+      "skillId": 2482,
+      "name": "中毒",
+      "description": "命中后尝试施加中毒。",
+      "kind": "status",
+      "effectId": 803,
+      "damageType": "",
+      "apCost": 1,
+      "cooldown": 1,
+      "castingCost": 0
+    },
+    {
+      "id": 8,
+      "skillId": 2303,
+      "name": "潮湿",
+      "description": "命中后施加潮湿；与点燃互斥。",
+      "kind": "status",
+      "effectId": 2305,
+      "damageType": "",
+      "apCost": 1,
+      "cooldown": 1,
+      "castingCost": 1
+    }
+  ]
+}

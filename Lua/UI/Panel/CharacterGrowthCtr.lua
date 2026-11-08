@@ -301,9 +301,10 @@ function Growth:Talents()
 end
 function Growth:Courses()
     local actor=self.actor;local rows={};local growth=actor.Growth
+    rows[#rows+1]={command='craft',title=LuaLanguage.SkillCraftOpen,body=LuaLanguage.SkillCraftEntryHint,color='805723'}
     local professions=self.rules.professions
     local current=professions.professions:Get(growth.CurrentProfessionId)
-    self.view.TreeTitle.text=string.format(LuaLanguage.UICharacterGrowthTreeTitleText, (current.name), (growth.PendingCount))
+    self.view.TreeTitle.text=self.stats.skillCraft:ProgressText(actor,current.id)
     self.courseTree=ProfessionTree.Build(professions,self.rules.atlas,growth.CurrentProfessionId)
     local shown=self.courseTree.byId
     local owned=self.rules.atlas:Owned(actor,self.stats)
@@ -344,7 +345,8 @@ function Growth:Courses()
         self.view.Invest.interactable=false;self.view.InvestText.text=LuaLanguage.UICharacterGrowthInvestTextText2
     end
     Widgets.Rows(self,'SkillRows','JournalSkill',rows,function(row)
-        if row.command=='select_course' then self:SelectCourse(row.id) end
+        if row.command=='select_course' then self:SelectCourse(row.id)
+        elseif row.command=='craft' then self.context.systems:Get('UI'):Open('SkillCraft',{demo=self.demo,actorId=actor.Id})end
     end)
 end
 function Growth:ProfessionBrowser()

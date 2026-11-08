@@ -21,7 +21,7 @@ function Attacks.Skill(battle,source,target)
         or battle.stats.buffs:Skipping(source) or battle.morale:Fleeing(source) or battle.stats.animals:Distance(source,target,battle.board)~=1 then return end
     local selected
     for _,id in ipairs(battle:SkillIds(source)) do
-        if battle.skills:Get(id).opportunityAttack then
+        if not require('Game.Progression.SkillCraft').IsCustom(id) and battle.skills:Get(id).opportunityAttack then
             local skill=battle:Skill(source,id)
             if skill.minRange<=1 and skill.range>=1 and battle.stats.equipment:CheckSkillEquipment(source,skill,battle.stats)
                 and Trajectory.CanReach(battle.board,assert(battle.board:Find(source.Q,source.R)),

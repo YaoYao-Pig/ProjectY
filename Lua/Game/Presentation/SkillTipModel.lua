@@ -10,7 +10,8 @@ function Model.New(config)
 end
 function Model:Build(row,adventure)
     local skill=assert(row.skill,'Skill tooltip requires a resolved skill')
-    local base=self.skills:Get(skill.id);local description=self.catalog:Description(skill.id)
+    local base=self.skills:Get(skill.sourceSkillId or skill.id);local description=self.catalog:Description(base.id)
+    if skill.crafted then description={body=skill.description,tags=description.tags}end
     local result={title=row.name,body=description.body,tags=description.tags,stats={},synergies={},breadcrumb=LuaLanguage.UISkillTipBreadcrumb2}
     local function stat(label,value,color)
         result.stats[#result.stats+1]={label=self.catalog:Rich(label),value=tostring(value),color=color or '#E8DBC2'}

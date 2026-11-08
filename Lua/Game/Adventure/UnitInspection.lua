@@ -151,7 +151,7 @@ function Inspection:Build(key,observerId)
     table.sort(ids)
     for _,id in ipairs(ids)do
         local known=target.owned or record~=nil and record:HasField('skill:'..id)
-        local skill=self.adventure.config:GetTable('CombatSkillTable'):Get(id)
+        local skill=self.adventure.battle.stats.skillCraft:Definition(target.actor,id)
         if skill.skillKind~='item'then
             result.skills[#result.skills+1]={known=known,title=known and skill.name or L.InspectionUnknown,
                 body=known and skill.description or L.InspectionUnknown}

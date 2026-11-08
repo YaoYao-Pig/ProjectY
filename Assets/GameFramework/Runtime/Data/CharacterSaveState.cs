@@ -11,6 +11,7 @@ namespace ProjectY.Data
     {
         public bool initialized; public int level, experience, attributePoints, talentPoints, potential; public uint randomState;
         public int currentProfessionId; public int[] professions;
+        public SkillCraftSave skillCraft;
         public AttributeEntry[] attributes; public IntEntry[] talents; public int[] trees, skills, pending, offers;
     }
     [Serializable] internal sealed class ActorSave
@@ -45,7 +46,7 @@ namespace ProjectY.Data
     public sealed partial class CharacterGrowthData
     {
         internal GrowthSave CaptureSave() => new GrowthSave { initialized = Initialized, level = Level, experience = Experience, attributePoints = AttributePoints,
-            talentPoints = TalentPoints, potential = LockedPotential, randomState = randomState, currentProfessionId = CurrentProfessionId, professions = professions.ToArray(),
+            talentPoints = TalentPoints, potential = LockedPotential, randomState = randomState, currentProfessionId = CurrentProfessionId, professions = professions.ToArray(), skillCraft=SkillCraftState.Capture(this),
             attributes = attributes.Select(p => new AttributeEntry { name = p.Key, value = p.Value }).ToArray(),
             talents = talentIds.Select(id => new IntEntry { id = id, value = talents[id] }).ToArray(), trees = trees.ToArray(), skills = skills.ToArray(), pending = pendingLevels.ToArray(), offers = offers.ToArray() };
         internal void RestoreSave(GrowthSave row)
@@ -60,6 +61,7 @@ namespace ProjectY.Data
             Initialized = true; Level = row.level; Experience = row.experience; AttributePoints = row.attributePoints; TalentPoints = row.talentPoints; LockedPotential = row.potential; randomState = row.randomState;
             CurrentProfessionId = row.currentProfessionId; professions.AddRange(row.professions);
             trees.AddRange(row.trees); skills.AddRange(row.skills); offers.AddRange(row.offers); foreach (int level in row.pending) pendingLevels.Enqueue(level); Revision++;
+            SkillCraftState.Restore(this,row.skillCraft);
         }
         public int AttributeCount => attributes.Count;
         public string GetAttributeNameAt(int index) => attributes.Keys.ElementAt(index);

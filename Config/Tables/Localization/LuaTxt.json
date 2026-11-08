@@ -9116,6 +9116,246 @@
       "id": "AnatomyCoreNotTargetedSkill",
       "txt": "此技能不能指定身体部位。",
       "desc": "部位命令用于不支持部位的技能"
+    },
+    {
+      "id": "SkillCraftTitle",
+      "txt": "自创技能",
+      "desc": "自创技能工坊标题"
+    },
+    {
+      "id": "SkillCraftOpen",
+      "txt": "自创技能工坊",
+      "desc": "角色技艺页入口"
+    },
+    {
+      "id": "SkillCraftEntryHint",
+      "txt": "职业达到11级后，可用已学招式和效果创造自己的技能。",
+      "desc": "工坊入口说明"
+    },
+    {
+      "id": "SkillCraftOwner",
+      "txt": "%s的自创技艺",
+      "desc": "参数为角色名"
+    },
+    {
+      "id": "SkillCraftMastered",
+      "txt": "%s · Lv.%d · 已精通",
+      "desc": "参数为职业名和等级"
+    },
+    {
+      "id": "SkillCraftProgress",
+      "txt": "%s · Lv.%d · %g/%g",
+      "desc": "参数为职业名、等级、本级熟练度、升级需求"
+    },
+    {
+      "id": "SkillCraftBodyLocked",
+      "txt": "主体招式需要永久学会，且其来源职业已精通。",
+      "desc": "主体资格失败"
+    },
+    {
+      "id": "SkillCraftModifierLocked",
+      "txt": "修饰素材需要永久学会对应技能，且其来源职业已精通。",
+      "desc": "修饰资格失败"
+    },
+    {
+      "id": "SkillCraftSlots",
+      "txt": "请选择1至2个不同的修饰部分。",
+      "desc": "组合槽位限制"
+    },
+    {
+      "id": "SkillCraftConflict",
+      "txt": "所选效果重复或互斥，请更换一个修饰部分。",
+      "desc": "兼容性提示"
+    },
+    {
+      "id": "SkillCraftDescription",
+      "txt": "「%s」\n主体：%s\n修饰：%s",
+      "desc": "参数为成品名称、主体名称、修饰名称列表"
+    },
+    {
+      "id": "SkillCraftSeparator",
+      "txt": "、",
+      "desc": "素材名称列表分隔"
+    },
+    {
+      "id": "SkillCraftExploreOnly",
+      "txt": "请在探索间隙创建或编辑技能。",
+      "desc": "创建阶段限制"
+    },
+    {
+      "id": "SkillCraftNameInvalid",
+      "txt": "请输入1至32个字符的技能名称，不可包含换行或控制字符。",
+      "desc": "名称校验提示"
+    },
+    {
+      "id": "SkillCraftDuplicate",
+      "txt": "已经保存了相同的组合，请在已有作品中编辑。",
+      "desc": "禁止复制绕过冷却"
+    },
+    {
+      "id": "SkillCraftFull",
+      "txt": "该角色最多保存128个自创技能。",
+      "desc": "作品数量上限"
+    },
+    {
+      "id": "SkillCraftUnknown",
+      "txt": "找不到该角色的自创技能。",
+      "desc": "作品身份错误"
+    },
+    {
+      "id": "SkillCraftSaved",
+      "txt": "自创技能已保存，可在战斗技能栏使用。",
+      "desc": "保存反馈"
+    },
+    {
+      "id": "SkillCraftMaterialSource",
+      "txt": "%s · %s",
+      "desc": "参数为源技能名与职业成长说明"
+    },
+    {
+      "id": "SkillCraftSavedHint",
+      "txt": "选择后可以修改主体、修饰与名称。",
+      "desc": "作品列表说明"
+    },
+    {
+      "id": "SkillCraftSelected",
+      "txt": "已选",
+      "desc": "素材选中状态"
+    },
+    {
+      "id": "SkillCraftEdit",
+      "txt": "编辑",
+      "desc": "编辑作品按钮"
+    },
+    {
+      "id": "SkillCraftSelect",
+      "txt": "选择",
+      "desc": "素材选择按钮"
+    },
+    {
+      "id": "SkillCraftRemove",
+      "txt": "移除",
+      "desc": "移除素材按钮"
+    },
+    {
+      "id": "SkillCraftDefaultName",
+      "txt": "自创·%s",
+      "desc": "默认名称，参数为主体招式名"
+    },
+    {
+      "id": "SkillCraftChooseBody",
+      "txt": "先选择一门已精通职业的主体招式。",
+      "desc": "无主体提示"
+    },
+    {
+      "id": "SkillCraftSlotCount",
+      "txt": "修饰槽：%d/%d",
+      "desc": "参数为已选数量与槽数"
+    },
+    {
+      "id": "SkillCraftBodySummary",
+      "txt": "主体：%s",
+      "desc": "参数为主体名"
+    },
+    {
+      "id": "SkillCraftModifierSummary",
+      "txt": "修饰：%s",
+      "desc": "参数为修饰名称列表"
+    },
+    {
+      "id": "SkillCraftUnselected",
+      "txt": "未选择",
+      "desc": "未选素材状态"
+    },
+    {
+      "id": "SkillCraftPreview",
+      "txt": "%s\n\n消耗：%d AP / %d施法点\n冷却：%d回合\n射程：%d格 / 最多%d目标\n基础伤害系数：×%.2f\n\n此处为组合基础值，实际施放还受装备、属性与状态影响。",
+      "desc": "参数为描述、AP、施法点、冷却、射程、目标数、伤害系数"
+    },
+    {
+      "id": "SkillCraftEquipmentPreview",
+      "txt": "%s\n\n当前装备限制：%s",
+      "desc": "参数为预览正文和装备限制原因"
+    },
+    {
+      "id": "SkillCraftFree",
+      "txt": "不消耗源技能或研习机会",
+      "desc": "创建代价说明"
+    },
+    {
+      "id": "SkillCraftUpdate",
+      "txt": "保存修改",
+      "desc": "更新作品按钮"
+    },
+    {
+      "id": "SkillCraftCreate",
+      "txt": "创造技能",
+      "desc": "创建作品按钮"
+    },
+    {
+      "id": "SkillCraftReady",
+      "txt": "确认组合后保存。新技能归当前角色所有。",
+      "desc": "可以提交组合"
+    },
+    {
+      "id": "SkillCraftBodyTab",
+      "txt": "主体招式",
+      "desc": "主体分类按钮"
+    },
+    {
+      "id": "SkillCraftElementTab",
+      "txt": "属性修饰",
+      "desc": "元素分类按钮"
+    },
+    {
+      "id": "SkillCraftStatusTab",
+      "txt": "附加效果",
+      "desc": "状态分类按钮"
+    },
+    {
+      "id": "SkillCraftSavedTab",
+      "txt": "已有作品",
+      "desc": "个人作品分类按钮"
+    },
+    {
+      "id": "SkillCraftNewTab",
+      "txt": "新建",
+      "desc": "清空表单按钮"
+    },
+    {
+      "id": "SkillCraftPermanent",
+      "txt": "主体决定动作与范围；修饰改变属性或附加效果。跨职业组合要求各来源职业已精通。",
+      "desc": "工坊规则简介"
+    },
+    {
+      "id": "SkillCraftNameLabel",
+      "txt": "技能名称",
+      "desc": "名称字段标题"
+    },
+    {
+      "id": "SkillCraftNamePlaceholder",
+      "txt": "为自己的技能取名",
+      "desc": "名称输入提示"
+    },
+    {
+      "id": "SkillCraftPreviewTitle",
+      "txt": "组合预览",
+      "desc": "预览标题"
+    },
+    {
+      "id": "SkillCraftClose",
+      "txt": "返回手记",
+      "desc": "关闭工坊按钮"
+    },
+    {
+      "id": "SkillCraftEffectDetails",
+      "txt": "%s\n\n主体效果：%s\n\n附加效果：\n%s",
+      "desc": "参数为组合来源、主体说明、修饰说明列表"
+    },
+    {
+      "id": "SkillCraftLocked",
+      "txt": "未解锁",
+      "desc": "素材尚未学习或来源职业尚未精通"
     }
   ]
 }

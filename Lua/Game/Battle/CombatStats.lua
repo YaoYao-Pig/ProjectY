@@ -8,6 +8,8 @@ function Stats:ctor(config, equipmentData)
     self.effects = config:GetTable('CombatEffectTable')
     self.buffs = require('Game.Battle.BuffRules').New(config)
     self.growth = require('Game.Progression.GrowthRules').New(config)
+    self.skillCraft = require('Game.Progression.SkillCraft').New(config,self.growth.professions)
+    self.equipment.skillCraft = self.skillCraft
     self.specialSkills = require('Game.Progression.SpecialSkillRules').New(config)
     self.equipment.specialSkills = self.specialSkills
     self.titles = require('Game.Progression.TitleRules').New(config)

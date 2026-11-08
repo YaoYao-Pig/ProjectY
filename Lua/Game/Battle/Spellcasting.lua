@@ -21,7 +21,7 @@ function Rules.New(config,stats)
     end
     return self
 end
-function Rules:IsSpell(skill)return skill.skillGroup=='spell' and skill.catalystKind=='arcane' end
+function Rules:IsSpell(skill)return skill.skillGroup=='spell' and skill.catalystKind=='arcane' or (skill.craftCastingCost or 0)>0 end
 function Rules:BaseIds(actor)return self.stats.equipment:SkillIds(actor,self.stats:Template(actor))end
 function Rules:AddSkills(actor,ids)
     local known={};for _,id in ipairs(ids)do known[id]=true end
@@ -63,6 +63,12 @@ function Rules:Sync(actor)
 end
 function Rules:Resolve(actor,skill)
     if not self:IsSpell(skill)then return skill end
+    if skill.crafted then
+        local recipe=self.recipes:Find(skill.sourceSkillId)
+        local baseCost=skill.skillGroup=='spell' and skill.catalystKind=='arcane' and (recipe and recipe.cost or self.rule.defaultCost) or 0
+        skill.castingBoostLimit=0;skill.castingBoost=0;skill.castingCost=baseCost+skill.craftCastingCost;skill.castingRecipe={}
+        return skill
+    end
     local row=self.recipes:Find(skill.id)
     local damage=false
     for _,id in ipairs(skill.effectIds)do if self.stats.effects:Get(id).kind=='damage' then damage=true;break end end

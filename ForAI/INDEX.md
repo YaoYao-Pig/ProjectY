@@ -13,6 +13,7 @@
 | 职业触媒部署验收、联合存档、基础玩法迭代、Play 验收、准备道具 | [基础玩法迭代验收](../Docs/GameplayFoundationIteration.md)（已执行范围与复验入口） |
 | 新职业、技能扩展、兼职联动、解剖学家、精准解剖、异种学家、随机敌人职业、奥术骑士、炼金师、吟游诗人、神官、咒术师、决斗家、驯兽师 | [职业与课程](Business/Progression.md)、[职业战斗契约](Business/ProfessionCombat.md)、[职业探索与单挑](Business/ProfessionExploration.md)、[设计依据](../Docs/ProfessionExpansionDesign.md)；动物指令见动物模块 |
 | 法师、施法点、组合法术、法术强化、爆裂火球、落石、水流、陨石、迷雾、泥沼、熔星、静心回路 | [施法资源与组合](Business/Spellcasting.md)、[本轮职业扩展](../Docs/ProfessionDepthAndSpellcasting.md) |
+| 自创技能、职业熟练度、职业等级、职业精通、跨职业组合、技能素材 | [职业熟练度与自创技能](Business/CustomSkills.md)、[设计依据](../Docs/CustomSkillsDesign.md) |
 | 特殊技能、NPC绝技、传授、师徒、转授、观摩、战后领悟 | [特殊技能与传授](Business/SpecialSkills.md) |
 | 内容接入复盘、启动报错、缺交易价格、独立特效重复、挂点数量不一致、共享Prefab、防回归 | [内容接入报错复盘](../Docs/ContentIntegrationErrorsPostmortem.md)（2026-10-25三项错误的原因、修复证据与验证缺口） |
 | 营地关系战利品验收、技能图标异常、入口整理、v6验收、待同步资源 | [营地／关系／战利品迭代](../Docs/GameplayExpansionIteration.md)（源码与数据层结果，原生资源及本轮实机验收尚未完成） |

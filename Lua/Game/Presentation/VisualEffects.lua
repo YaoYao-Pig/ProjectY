@@ -15,7 +15,7 @@ end
 function Effects.Skill(battle,source,skill,target,shot,outcome,cell)
     assert(outcome=='hit' or outcome=='miss' or outcome=='cast','Invalid skill visual outcome')
     assert(target or cell,'Skill visual needs a target or cell')
-    append(battle,{skillId=assert(skill.id),itemId=0,sourceId=source.Id,targetId=target and target.Id or 0,
+    append(battle,{skillId=skill.visualSkillId or assert(skill.id),itemId=0,sourceId=source.Id,targetId=target and target.Id or 0,
         sourceQ=assert(source.Q),sourceR=assert(source.R),targetQ=cell and cell.q or target.Q,targetR=cell and cell.r or target.R,
         sourceLayer=type(source)=='table' and source.layer or -2147483648,targetLayer=cell and cell.layer or -2147483648,
         shot=shot or 1,outcome=outcome})

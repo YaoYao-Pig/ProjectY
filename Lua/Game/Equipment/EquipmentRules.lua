@@ -252,6 +252,9 @@ function Rules:Catalyst(actor,kind)
     return nil,'需要奥术触媒（主手或副手）'
 end
 function Rules:CheckSkillEquipment(actor,skill,stats)
+    if skill.craftCastingCost and skill.craftCastingCost>0 then
+        local catalyst,reason=self:Catalyst(actor,'arcane');if not catalyst then return false,reason end
+    end
     if skill.skillGroup=='weapon' or skill.skillGroup=='slash' then
         local main,off=self:Weapon(actor),self:Offhand(actor)
         local selected=off and self.weapons:Get(off.ItemId).offhandSkillId==skill.id and off or main
@@ -264,12 +267,14 @@ function Rules:CheckSkillEquipment(actor,skill,stats)
     return weapon~=nil,reason,weapon
 end
 function Rules:Skill(actor, id, stats)
-    local base=self.skills:Get(id);local result={}
+    local base=self.skillCraft and self.skillCraft:Definition(actor,id) or self.skills:Get(id);local result={}
+    id=base.sourceSkillId or id
     result.appliedRuneIds={}
     result.baseHitChance=base.hitChance
     for _,key in ipairs({'id','name','description','iconId','action','cost','range','rangeShape','minRange','fixedRange','target','proficiency','effectIds',
         'skillGroup','cooldownTurns','hitChance','shots','ammoPerShot','damageScale','actionTemplate','contexts','affectsContainers','opportunityAttack','trajectory','catalystKind','skillKind','weaponWear','allowTransfer','preserveArmor','selectBodyPart'}) do result[key]=base[key] end
     result.maxTargets=base.maxTargets;result.splashRadius=base.splashRadius;result.splashShape=base.splashShape
+    for _,key in ipairs({'sourceSkillId','crafted','craftCastingCost','craftDamageType','visualSkillId','craftParts','craftWide'})do result[key]=base[key]end
     result.criticalChance=base.criticalChance;result.criticalMultiplier=base.criticalMultiplier
     local damageSkill=false
     for _,effectId in ipairs(base.effectIds)do if self.effects:Get(effectId).kind=='damage' then damageSkill=true end end
